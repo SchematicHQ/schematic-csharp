@@ -1,0 +1,838 @@
+using System.Text.Json;
+using Schematic.Client;
+
+namespace Schematic.Client;
+
+public class CompaniesClient
+{
+    private RawClient _client;
+
+    public CompaniesClient(RawClient client)
+    {
+        _client = client;
+    }
+
+    public async Task<ListCompaniesResponse> ListCompaniesAsync(ListCompaniesRequest request)
+    {
+        var _query = new Dictionary<string, object>() { };
+        if (request.Ids != null)
+        {
+            _query["ids"] = request.Ids;
+        }
+        if (request.PlanId != null)
+        {
+            _query["plan_id"] = request.PlanId;
+        }
+        if (request.Q != null)
+        {
+            _query["q"] = request.Q;
+        }
+        if (request.WithoutFeatureOverrideFor != null)
+        {
+            _query["without_feature_override_for"] = request.WithoutFeatureOverrideFor;
+        }
+        if (request.Limit != null)
+        {
+            _query["limit"] = request.Limit;
+        }
+        if (request.Offset != null)
+        {
+            _query["offset"] = request.Offset;
+        }
+        var response = await _client.MakeRequestAsync(
+            new RawClient.ApiRequest
+            {
+                Method = HttpMethod.Get,
+                Path = "/companies",
+                Query = _query
+            }
+        );
+        string responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        {
+            return JsonSerializer.Deserialize<ListCompaniesResponse>(responseBody);
+        }
+        throw new Exception();
+    }
+
+    public async Task<UpsertCompanyResponse> UpsertCompanyAsync(UpsertCompanyRequestBody request)
+    {
+        var response = await _client.MakeRequestAsync(
+            new RawClient.ApiRequest
+            {
+                Method = HttpMethod.Post,
+                Path = "/companies",
+                Body = request
+            }
+        );
+        string responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        {
+            return JsonSerializer.Deserialize<UpsertCompanyResponse>(responseBody);
+        }
+        throw new Exception();
+    }
+
+    public async Task<GetCompanyResponse> GetCompanyAsync(string companyId)
+    {
+        var response = await _client.MakeRequestAsync(
+            new RawClient.ApiRequest { Method = HttpMethod.Get, Path = $"/companies/{companyId}" }
+        );
+        string responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        {
+            return JsonSerializer.Deserialize<GetCompanyResponse>(responseBody);
+        }
+        throw new Exception();
+    }
+
+    public async Task<DeleteCompanyResponse> DeleteCompanyAsync(string companyId)
+    {
+        var response = await _client.MakeRequestAsync(
+            new RawClient.ApiRequest
+            {
+                Method = HttpMethod.Delete,
+                Path = $"/companies/{companyId}"
+            }
+        );
+        string responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        {
+            return JsonSerializer.Deserialize<DeleteCompanyResponse>(responseBody);
+        }
+        throw new Exception();
+    }
+
+    public async Task<CountCompaniesResponse> CountCompaniesAsync(CountCompaniesRequest request)
+    {
+        var _query = new Dictionary<string, object>() { };
+        if (request.Ids != null)
+        {
+            _query["ids"] = request.Ids;
+        }
+        if (request.PlanId != null)
+        {
+            _query["plan_id"] = request.PlanId;
+        }
+        if (request.Q != null)
+        {
+            _query["q"] = request.Q;
+        }
+        if (request.WithoutFeatureOverrideFor != null)
+        {
+            _query["without_feature_override_for"] = request.WithoutFeatureOverrideFor;
+        }
+        if (request.Limit != null)
+        {
+            _query["limit"] = request.Limit;
+        }
+        if (request.Offset != null)
+        {
+            _query["offset"] = request.Offset;
+        }
+        var response = await _client.MakeRequestAsync(
+            new RawClient.ApiRequest
+            {
+                Method = HttpMethod.Get,
+                Path = "/companies/count",
+                Query = _query
+            }
+        );
+        string responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        {
+            return JsonSerializer.Deserialize<CountCompaniesResponse>(responseBody);
+        }
+        throw new Exception();
+    }
+
+    public async Task<CreateCompanyResponse> CreateCompanyAsync(UpsertCompanyRequestBody request)
+    {
+        var response = await _client.MakeRequestAsync(
+            new RawClient.ApiRequest
+            {
+                Method = HttpMethod.Post,
+                Path = "/companies/create",
+                Body = request
+            }
+        );
+        string responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        {
+            return JsonSerializer.Deserialize<CreateCompanyResponse>(responseBody);
+        }
+        throw new Exception();
+    }
+
+    public async Task<DeleteCompanyByKeysResponse> DeleteCompanyByKeysAsync(KeysRequestBody request)
+    {
+        var response = await _client.MakeRequestAsync(
+            new RawClient.ApiRequest
+            {
+                Method = HttpMethod.Post,
+                Path = "/companies/delete",
+                Body = request
+            }
+        );
+        string responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        {
+            return JsonSerializer.Deserialize<DeleteCompanyByKeysResponse>(responseBody);
+        }
+        throw new Exception();
+    }
+
+    public async Task<LookupCompanyResponse> LookupCompanyAsync(LookupCompanyRequest request)
+    {
+        var _query = new Dictionary<string, object>() { { "keys", request.Keys.ToString() }, };
+        var response = await _client.MakeRequestAsync(
+            new RawClient.ApiRequest
+            {
+                Method = HttpMethod.Get,
+                Path = "/companies/lookup",
+                Query = _query
+            }
+        );
+        string responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        {
+            return JsonSerializer.Deserialize<LookupCompanyResponse>(responseBody);
+        }
+        throw new Exception();
+    }
+
+    public async Task<ListCompanyMembershipsResponse> ListCompanyMembershipsAsync(
+        ListCompanyMembershipsRequest request
+    )
+    {
+        var _query = new Dictionary<string, object>() { };
+        if (request.CompanyId != null)
+        {
+            _query["company_id"] = request.CompanyId;
+        }
+        if (request.UserId != null)
+        {
+            _query["user_id"] = request.UserId;
+        }
+        if (request.Limit != null)
+        {
+            _query["limit"] = request.Limit;
+        }
+        if (request.Offset != null)
+        {
+            _query["offset"] = request.Offset;
+        }
+        var response = await _client.MakeRequestAsync(
+            new RawClient.ApiRequest
+            {
+                Method = HttpMethod.Get,
+                Path = "/company-memberships",
+                Query = _query
+            }
+        );
+        string responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        {
+            return JsonSerializer.Deserialize<ListCompanyMembershipsResponse>(responseBody);
+        }
+        throw new Exception();
+    }
+
+    public async Task<GetOrCreateCompanyMembershipResponse> GetOrCreateCompanyMembershipAsync(
+        GetOrCreateCompanyMembershipRequestBody request
+    )
+    {
+        var response = await _client.MakeRequestAsync(
+            new RawClient.ApiRequest
+            {
+                Method = HttpMethod.Post,
+                Path = "/company-memberships",
+                Body = request
+            }
+        );
+        string responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        {
+            return JsonSerializer.Deserialize<GetOrCreateCompanyMembershipResponse>(responseBody);
+        }
+        throw new Exception();
+    }
+
+    public async Task<DeleteCompanyMembershipResponse> DeleteCompanyMembershipAsync(
+        string companyMembershipId
+    )
+    {
+        var response = await _client.MakeRequestAsync(
+            new RawClient.ApiRequest
+            {
+                Method = HttpMethod.Delete,
+                Path = $"/company-memberships/{companyMembershipId}"
+            }
+        );
+        string responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        {
+            return JsonSerializer.Deserialize<DeleteCompanyMembershipResponse>(responseBody);
+        }
+        throw new Exception();
+    }
+
+    public async Task<ListCompanyPlansResponse> ListCompanyPlansAsync(
+        ListCompanyPlansRequest request
+    )
+    {
+        var _query = new Dictionary<string, object>() { };
+        if (request.CompanyId != null)
+        {
+            _query["company_id"] = request.CompanyId;
+        }
+        if (request.PlanId != null)
+        {
+            _query["plan_id"] = request.PlanId;
+        }
+        if (request.Limit != null)
+        {
+            _query["limit"] = request.Limit;
+        }
+        if (request.Offset != null)
+        {
+            _query["offset"] = request.Offset;
+        }
+        var response = await _client.MakeRequestAsync(
+            new RawClient.ApiRequest
+            {
+                Method = HttpMethod.Get,
+                Path = "/company-plans",
+                Query = _query
+            }
+        );
+        string responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        {
+            return JsonSerializer.Deserialize<ListCompanyPlansResponse>(responseBody);
+        }
+        throw new Exception();
+    }
+
+    public async Task<GetActiveCompanySubscriptionResponse> GetActiveCompanySubscriptionAsync(
+        GetActiveCompanySubscriptionRequest request
+    )
+    {
+        var _query = new Dictionary<string, object>() { { "company_id", request.CompanyId }, };
+        if (request.Limit != null)
+        {
+            _query["limit"] = request.Limit;
+        }
+        if (request.Offset != null)
+        {
+            _query["offset"] = request.Offset;
+        }
+        var response = await _client.MakeRequestAsync(
+            new RawClient.ApiRequest
+            {
+                Method = HttpMethod.Get,
+                Path = "/company-subscriptions",
+                Query = _query
+            }
+        );
+        string responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        {
+            return JsonSerializer.Deserialize<GetActiveCompanySubscriptionResponse>(responseBody);
+        }
+        throw new Exception();
+    }
+
+    public async Task<UpsertCompanyTraitResponse> UpsertCompanyTraitAsync(
+        UpsertTraitRequestBody request
+    )
+    {
+        var response = await _client.MakeRequestAsync(
+            new RawClient.ApiRequest
+            {
+                Method = HttpMethod.Post,
+                Path = "/company-traits",
+                Body = request
+            }
+        );
+        string responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        {
+            return JsonSerializer.Deserialize<UpsertCompanyTraitResponse>(responseBody);
+        }
+        throw new Exception();
+    }
+
+    public async Task<ListEntityKeyDefinitionsResponse> ListEntityKeyDefinitionsAsync(
+        ListEntityKeyDefinitionsRequest request
+    )
+    {
+        var _query = new Dictionary<string, object>() { };
+        if (request.EntityType != null)
+        {
+            _query["entity_type"] = request.EntityType;
+        }
+        if (request.Ids != null)
+        {
+            _query["ids"] = request.Ids;
+        }
+        if (request.Key != null)
+        {
+            _query["key"] = request.Key;
+        }
+        if (request.Limit != null)
+        {
+            _query["limit"] = request.Limit;
+        }
+        if (request.Offset != null)
+        {
+            _query["offset"] = request.Offset;
+        }
+        var response = await _client.MakeRequestAsync(
+            new RawClient.ApiRequest
+            {
+                Method = HttpMethod.Get,
+                Path = "/entity-key-definitions",
+                Query = _query
+            }
+        );
+        string responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        {
+            return JsonSerializer.Deserialize<ListEntityKeyDefinitionsResponse>(responseBody);
+        }
+        throw new Exception();
+    }
+
+    public async Task<CountEntityKeyDefinitionsResponse> CountEntityKeyDefinitionsAsync(
+        CountEntityKeyDefinitionsRequest request
+    )
+    {
+        var _query = new Dictionary<string, object>() { };
+        if (request.EntityType != null)
+        {
+            _query["entity_type"] = request.EntityType;
+        }
+        if (request.Ids != null)
+        {
+            _query["ids"] = request.Ids;
+        }
+        if (request.Key != null)
+        {
+            _query["key"] = request.Key;
+        }
+        if (request.Limit != null)
+        {
+            _query["limit"] = request.Limit;
+        }
+        if (request.Offset != null)
+        {
+            _query["offset"] = request.Offset;
+        }
+        var response = await _client.MakeRequestAsync(
+            new RawClient.ApiRequest
+            {
+                Method = HttpMethod.Get,
+                Path = "/entity-key-definitions/count",
+                Query = _query
+            }
+        );
+        string responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        {
+            return JsonSerializer.Deserialize<CountEntityKeyDefinitionsResponse>(responseBody);
+        }
+        throw new Exception();
+    }
+
+    public async Task<ListEntityTraitDefinitionsResponse> ListEntityTraitDefinitionsAsync(
+        ListEntityTraitDefinitionsRequest request
+    )
+    {
+        var _query = new Dictionary<string, object>() { };
+        if (request.EntityType != null)
+        {
+            _query["entity_type"] = request.EntityType;
+        }
+        if (request.Ids != null)
+        {
+            _query["ids"] = request.Ids;
+        }
+        if (request.TraitType != null)
+        {
+            _query["trait_type"] = request.TraitType;
+        }
+        if (request.Q != null)
+        {
+            _query["q"] = request.Q;
+        }
+        if (request.Limit != null)
+        {
+            _query["limit"] = request.Limit;
+        }
+        if (request.Offset != null)
+        {
+            _query["offset"] = request.Offset;
+        }
+        var response = await _client.MakeRequestAsync(
+            new RawClient.ApiRequest
+            {
+                Method = HttpMethod.Get,
+                Path = "/entity-trait-definitions",
+                Query = _query
+            }
+        );
+        string responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        {
+            return JsonSerializer.Deserialize<ListEntityTraitDefinitionsResponse>(responseBody);
+        }
+        throw new Exception();
+    }
+
+    public async Task<GetOrCreateEntityTraitDefinitionResponse> GetOrCreateEntityTraitDefinitionAsync(
+        CreateEntityTraitDefinitionRequestBody request
+    )
+    {
+        var response = await _client.MakeRequestAsync(
+            new RawClient.ApiRequest
+            {
+                Method = HttpMethod.Post,
+                Path = "/entity-trait-definitions",
+                Body = request
+            }
+        );
+        string responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        {
+            return JsonSerializer.Deserialize<GetOrCreateEntityTraitDefinitionResponse>(
+                responseBody
+            );
+        }
+        throw new Exception();
+    }
+
+    public async Task<GetEntityTraitDefinitionResponse> GetEntityTraitDefinitionAsync(
+        string entityTraitDefinitionId
+    )
+    {
+        var response = await _client.MakeRequestAsync(
+            new RawClient.ApiRequest
+            {
+                Method = HttpMethod.Get,
+                Path = $"/entity-trait-definitions/{entityTraitDefinitionId}"
+            }
+        );
+        string responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        {
+            return JsonSerializer.Deserialize<GetEntityTraitDefinitionResponse>(responseBody);
+        }
+        throw new Exception();
+    }
+
+    public async Task<UpdateEntityTraitDefinitionResponse> UpdateEntityTraitDefinitionAsync(
+        string entityTraitDefinitionId,
+        UpdateEntityTraitDefinitionRequestBody request
+    )
+    {
+        var response = await _client.MakeRequestAsync(
+            new RawClient.ApiRequest
+            {
+                Method = HttpMethod.Put,
+                Path = $"/entity-trait-definitions/{entityTraitDefinitionId}",
+                Body = request
+            }
+        );
+        string responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        {
+            return JsonSerializer.Deserialize<UpdateEntityTraitDefinitionResponse>(responseBody);
+        }
+        throw new Exception();
+    }
+
+    public async Task<CountEntityTraitDefinitionsResponse> CountEntityTraitDefinitionsAsync(
+        CountEntityTraitDefinitionsRequest request
+    )
+    {
+        var _query = new Dictionary<string, object>() { };
+        if (request.EntityType != null)
+        {
+            _query["entity_type"] = request.EntityType;
+        }
+        if (request.Ids != null)
+        {
+            _query["ids"] = request.Ids;
+        }
+        if (request.TraitType != null)
+        {
+            _query["trait_type"] = request.TraitType;
+        }
+        if (request.Q != null)
+        {
+            _query["q"] = request.Q;
+        }
+        if (request.Limit != null)
+        {
+            _query["limit"] = request.Limit;
+        }
+        if (request.Offset != null)
+        {
+            _query["offset"] = request.Offset;
+        }
+        var response = await _client.MakeRequestAsync(
+            new RawClient.ApiRequest
+            {
+                Method = HttpMethod.Get,
+                Path = "/entity-trait-definitions/count",
+                Query = _query
+            }
+        );
+        string responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        {
+            return JsonSerializer.Deserialize<CountEntityTraitDefinitionsResponse>(responseBody);
+        }
+        throw new Exception();
+    }
+
+    public async Task<GetEntityTraitValuesResponse> GetEntityTraitValuesAsync(
+        GetEntityTraitValuesRequest request
+    )
+    {
+        var _query = new Dictionary<string, object>()
+        {
+            { "definition_id", request.DefinitionId },
+        };
+        if (request.Q != null)
+        {
+            _query["q"] = request.Q;
+        }
+        if (request.Limit != null)
+        {
+            _query["limit"] = request.Limit;
+        }
+        if (request.Offset != null)
+        {
+            _query["offset"] = request.Offset;
+        }
+        var response = await _client.MakeRequestAsync(
+            new RawClient.ApiRequest
+            {
+                Method = HttpMethod.Get,
+                Path = "/entity-trait-values",
+                Query = _query
+            }
+        );
+        string responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        {
+            return JsonSerializer.Deserialize<GetEntityTraitValuesResponse>(responseBody);
+        }
+        throw new Exception();
+    }
+
+    public async Task<UpsertUserTraitResponse> UpsertUserTraitAsync(UpsertTraitRequestBody request)
+    {
+        var response = await _client.MakeRequestAsync(
+            new RawClient.ApiRequest
+            {
+                Method = HttpMethod.Post,
+                Path = "/user-traits",
+                Body = request
+            }
+        );
+        string responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        {
+            return JsonSerializer.Deserialize<UpsertUserTraitResponse>(responseBody);
+        }
+        throw new Exception();
+    }
+
+    public async Task<ListUsersResponse> ListUsersAsync(ListUsersRequest request)
+    {
+        var _query = new Dictionary<string, object>() { };
+        if (request.CompanyId != null)
+        {
+            _query["company_id"] = request.CompanyId;
+        }
+        if (request.Ids != null)
+        {
+            _query["ids"] = request.Ids;
+        }
+        if (request.PlanId != null)
+        {
+            _query["plan_id"] = request.PlanId;
+        }
+        if (request.Q != null)
+        {
+            _query["q"] = request.Q;
+        }
+        if (request.Limit != null)
+        {
+            _query["limit"] = request.Limit;
+        }
+        if (request.Offset != null)
+        {
+            _query["offset"] = request.Offset;
+        }
+        var response = await _client.MakeRequestAsync(
+            new RawClient.ApiRequest
+            {
+                Method = HttpMethod.Get,
+                Path = "/users",
+                Query = _query
+            }
+        );
+        string responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        {
+            return JsonSerializer.Deserialize<ListUsersResponse>(responseBody);
+        }
+        throw new Exception();
+    }
+
+    public async Task<UpsertUserResponse> UpsertUserAsync(UpsertUserRequestBody request)
+    {
+        var response = await _client.MakeRequestAsync(
+            new RawClient.ApiRequest
+            {
+                Method = HttpMethod.Post,
+                Path = "/users",
+                Body = request
+            }
+        );
+        string responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        {
+            return JsonSerializer.Deserialize<UpsertUserResponse>(responseBody);
+        }
+        throw new Exception();
+    }
+
+    public async Task<GetUserResponse> GetUserAsync(string userId)
+    {
+        var response = await _client.MakeRequestAsync(
+            new RawClient.ApiRequest { Method = HttpMethod.Get, Path = $"/users/{userId}" }
+        );
+        string responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        {
+            return JsonSerializer.Deserialize<GetUserResponse>(responseBody);
+        }
+        throw new Exception();
+    }
+
+    public async Task<DeleteUserResponse> DeleteUserAsync(string userId)
+    {
+        var response = await _client.MakeRequestAsync(
+            new RawClient.ApiRequest { Method = HttpMethod.Delete, Path = $"/users/{userId}" }
+        );
+        string responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        {
+            return JsonSerializer.Deserialize<DeleteUserResponse>(responseBody);
+        }
+        throw new Exception();
+    }
+
+    public async Task<CountUsersResponse> CountUsersAsync(CountUsersRequest request)
+    {
+        var _query = new Dictionary<string, object>() { };
+        if (request.CompanyId != null)
+        {
+            _query["company_id"] = request.CompanyId;
+        }
+        if (request.Ids != null)
+        {
+            _query["ids"] = request.Ids;
+        }
+        if (request.PlanId != null)
+        {
+            _query["plan_id"] = request.PlanId;
+        }
+        if (request.Q != null)
+        {
+            _query["q"] = request.Q;
+        }
+        if (request.Limit != null)
+        {
+            _query["limit"] = request.Limit;
+        }
+        if (request.Offset != null)
+        {
+            _query["offset"] = request.Offset;
+        }
+        var response = await _client.MakeRequestAsync(
+            new RawClient.ApiRequest
+            {
+                Method = HttpMethod.Get,
+                Path = "/users/count",
+                Query = _query
+            }
+        );
+        string responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        {
+            return JsonSerializer.Deserialize<CountUsersResponse>(responseBody);
+        }
+        throw new Exception();
+    }
+
+    public async Task<CreateUserResponse> CreateUserAsync(UpsertUserRequestBody request)
+    {
+        var response = await _client.MakeRequestAsync(
+            new RawClient.ApiRequest
+            {
+                Method = HttpMethod.Post,
+                Path = "/users/create",
+                Body = request
+            }
+        );
+        string responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        {
+            return JsonSerializer.Deserialize<CreateUserResponse>(responseBody);
+        }
+        throw new Exception();
+    }
+
+    public async Task<DeleteUserByKeysResponse> DeleteUserByKeysAsync(KeysRequestBody request)
+    {
+        var response = await _client.MakeRequestAsync(
+            new RawClient.ApiRequest
+            {
+                Method = HttpMethod.Post,
+                Path = "/users/delete",
+                Body = request
+            }
+        );
+        string responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        {
+            return JsonSerializer.Deserialize<DeleteUserByKeysResponse>(responseBody);
+        }
+        throw new Exception();
+    }
+
+    public async Task<LookupUserResponse> LookupUserAsync(LookupUserRequest request)
+    {
+        var _query = new Dictionary<string, object>() { { "keys", request.Keys.ToString() }, };
+        var response = await _client.MakeRequestAsync(
+            new RawClient.ApiRequest
+            {
+                Method = HttpMethod.Get,
+                Path = "/users/lookup",
+                Query = _query
+            }
+        );
+        string responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        {
+            return JsonSerializer.Deserialize<LookupUserResponse>(responseBody);
+        }
+        throw new Exception();
+    }
+}
