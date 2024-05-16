@@ -14,7 +14,7 @@ public partial class Schematic
                 { "X-Schematic-Api-Key", apiKey },
                 { "X-Fern-Language", "C#" },
                 { "X-Fern-SDK-Name", "schematic_fern_api_sdk" },
-                { "X-Fern-SDK-Version", "0.0.7" },
+                { "X-Fern-SDK-Version", "0.0.8" },
             },
             clientOptions ?? new ClientOptions()
         );
