@@ -1,0 +1,9 @@
+using System.Text.Json.Serialization;
+
+namespace SchematicHQ.Client;
+
+public class CountResponse
+{
+    [JsonPropertyName("count")]
+    public int Count { get; init; }
+}
