@@ -1,0 +1,24 @@
+using System.Text.Json.Serialization;
+
+namespace SchematicHQ.Client;
+
+public class UserResponseData
+{
+    [JsonPropertyName("created_at")]
+    public DateTime CreatedAt { get; init; }
+
+    [JsonPropertyName("environment_id")]
+    public string EnvironmentId { get; init; }
+
+    [JsonPropertyName("id")]
+    public string Id { get; init; }
+
+    [JsonPropertyName("last_seen_at")]
+    public DateTime? LastSeenAt { get; init; }
+
+    [JsonPropertyName("name")]
+    public string Name { get; init; }
+
+    [JsonPropertyName("updated_at")]
+    public DateTime UpdatedAt { get; init; }
+}
