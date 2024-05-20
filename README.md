@@ -2,22 +2,20 @@
 
 [![fern shield](https://img.shields.io/badge/%F0%9F%8C%BF-SDK%20generated%20by%20Fern-brightgreen)](https://github.com/fern-api/fern)
 
-
 The official Schematic C# library, supporting .NET Standard, .NET Core, and .NET Framework. 
-
 
 ## Installation
 
 Using the .NET Core command-line interface (CLI) tools:
 
 ```sh
-dotnet add package Schematic.Client
+dotnet add package SchematicHQ.Client
 ```
 
 Using the NuGet Command Line Interface (CLI):
 
 ```sh
-nuget install Schematic.Client
+nuget install SchematicHQ.Client
 ```
 
 ## Instantiation 
