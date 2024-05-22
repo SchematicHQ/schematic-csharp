@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SchematicHQ.Client", "SchematicHQ.Client\SchematicHQ.Client.csproj", "{EE8E0485-C844-4D5A-A5CB-F2805679CCFD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SchematicHQ.Client", "SchematicHQ.Client\SchematicHQ.Client.csproj", "{642A9849-7457-4F8D-8AA5-299F6EDABC24}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SchematicHQ.Client.Test", "SchematicHQ.Client.Test\SchematicHQ.Client.Test.csproj", "{3F0DC5BA-F8CF-4D81-85F8-284C421A69DC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SchematicHQ.Client.Test", "SchematicHQ.Client.Test\SchematicHQ.Client.Test.csproj", "{DB43F450-D369-4A66-BADA-80B0C29CA3C5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -16,13 +16,13 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{EE8E0485-C844-4D5A-A5CB-F2805679CCFD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EE8E0485-C844-4D5A-A5CB-F2805679CCFD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EE8E0485-C844-4D5A-A5CB-F2805679CCFD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EE8E0485-C844-4D5A-A5CB-F2805679CCFD}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3F0DC5BA-F8CF-4D81-85F8-284C421A69DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3F0DC5BA-F8CF-4D81-85F8-284C421A69DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3F0DC5BA-F8CF-4D81-85F8-284C421A69DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3F0DC5BA-F8CF-4D81-85F8-284C421A69DC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{642A9849-7457-4F8D-8AA5-299F6EDABC24}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{642A9849-7457-4F8D-8AA5-299F6EDABC24}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{642A9849-7457-4F8D-8AA5-299F6EDABC24}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{642A9849-7457-4F8D-8AA5-299F6EDABC24}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DB43F450-D369-4A66-BADA-80B0C29CA3C5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DB43F450-D369-4A66-BADA-80B0C29CA3C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DB43F450-D369-4A66-BADA-80B0C29CA3C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DB43F450-D369-4A66-BADA-80B0C29CA3C5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
