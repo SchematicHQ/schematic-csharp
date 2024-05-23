@@ -44,7 +44,6 @@ a subclass of SchematicException will be thrown:
 
 ```csharp
 using SchematicHQ;
-using SchematicHQ.Accounts;
 
 try {
   schematic.Accounts.ListApiKeysAsync(...);
@@ -60,9 +59,8 @@ Below are code snippets of how you can use the C# SDK.
 
 ```csharp
 using SchematicHQ;
-using SchematicHQ.Accounts;
 
-SchematicClient schematic = new Schematic("YOUR_API_KEY")
+Schematic schematic = new Schematic("YOUR_API_KEY")
 Employee employee = schematic.Accounts.ListApiKeysAsync(
     new ListApiKeysRequest{
         RequireEnvironment = true
