@@ -10,6 +10,9 @@ public class BillingProductResponseData
     [JsonPropertyName("created_at")]
     public DateTime CreatedAt { get; init; }
 
+    [JsonPropertyName("currency")]
+    public string Currency { get; init; }
+
     [JsonPropertyName("deleted_at")]
     public DateTime? DeletedAt { get; init; }
 
