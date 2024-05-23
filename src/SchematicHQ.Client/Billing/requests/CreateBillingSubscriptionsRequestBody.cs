@@ -6,6 +6,8 @@ public class CreateBillingSubscriptionsRequestBody
 
     public DateTime ExpiredAt { get; init; }
 
+    public string? Interval { get; init; }
+
     public List<string> ProductExternalIds { get; init; }
 
     public string SubscriptionExternalId { get; init; }

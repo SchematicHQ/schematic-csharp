@@ -11,6 +11,9 @@ public class CompanySubscriptionResponseData
     [JsonPropertyName("expired_at")]
     public DateTime? ExpiredAt { get; init; }
 
+    [JsonPropertyName("interval")]
+    public string Interval { get; init; }
+
     [JsonPropertyName("products")]
     public List<BillingProductResponseData> Products { get; init; }
 
