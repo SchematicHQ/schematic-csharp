@@ -1,15 +1,14 @@
 using System.Text.Json.Serialization;
 
+#nullable enable
+
 namespace SchematicHQ.Client;
 
-public class CreateApiKeyRequestBody
+public class UpdateApiKeyRequestBody
 {
     [JsonPropertyName("description")]
     public string? Description { get; init; }
 
-    [JsonPropertyName("environment_id")]
-    public string? EnvironmentId { get; init; }
-
     [JsonPropertyName("name")]
-    public string Name { get; init; }
+    public string? Name { get; init; }
 }

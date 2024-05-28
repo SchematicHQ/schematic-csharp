@@ -1,6 +1,8 @@
 using System.Text.Json;
 using SchematicHQ.Client;
 
+#nullable enable
+
 namespace SchematicHQ.Client;
 
 public class BillingClient
