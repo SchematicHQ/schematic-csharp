@@ -1,12 +1,20 @@
 using System.Text.Json.Serialization;
 using SchematicHQ.Client;
 
+#nullable enable
+
 namespace SchematicHQ.Client;
 
-public class UpdateCompanyOverrideRequestBody
+public class CreateCompanyOverrideRequestBody
 {
+    [JsonPropertyName("company_id")]
+    public string CompanyId { get; init; }
+
+    [JsonPropertyName("feature_id")]
+    public string FeatureId { get; init; }
+
     [JsonPropertyName("metric_period")]
-    public UpdateCompanyOverrideRequestBodyMetricPeriod? MetricPeriod { get; init; }
+    public CreateCompanyOverrideRequestBodyMetricPeriod? MetricPeriod { get; init; }
 
     [JsonPropertyName("value_bool")]
     public bool? ValueBool { get; init; }
@@ -18,5 +26,5 @@ public class UpdateCompanyOverrideRequestBody
     public string? ValueTraitId { get; init; }
 
     [JsonPropertyName("value_type")]
-    public UpdateCompanyOverrideRequestBodyValueType ValueType { get; init; }
+    public CreateCompanyOverrideRequestBodyValueType ValueType { get; init; }
 }

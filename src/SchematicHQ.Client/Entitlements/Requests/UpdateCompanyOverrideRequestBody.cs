@@ -1,12 +1,14 @@
 using System.Text.Json.Serialization;
 using SchematicHQ.Client;
 
+#nullable enable
+
 namespace SchematicHQ.Client;
 
-public class UpdatePlanEntitlementRequestBody
+public class UpdateCompanyOverrideRequestBody
 {
     [JsonPropertyName("metric_period")]
-    public UpdatePlanEntitlementRequestBodyMetricPeriod? MetricPeriod { get; init; }
+    public UpdateCompanyOverrideRequestBodyMetricPeriod? MetricPeriod { get; init; }
 
     [JsonPropertyName("value_bool")]
     public bool? ValueBool { get; init; }
@@ -18,5 +20,5 @@ public class UpdatePlanEntitlementRequestBody
     public string? ValueTraitId { get; init; }
 
     [JsonPropertyName("value_type")]
-    public UpdatePlanEntitlementRequestBodyValueType ValueType { get; init; }
+    public UpdateCompanyOverrideRequestBodyValueType ValueType { get; init; }
 }

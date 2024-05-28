@@ -1,5 +1,7 @@
 using SchematicHQ.Client.Core;
 
+#nullable enable
+
 namespace SchematicHQ.Client;
 
 public partial class ClientOptions

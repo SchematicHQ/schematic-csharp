@@ -1,5 +1,7 @@
 using SchematicHQ.Client;
 
+#nullable enable
+
 namespace SchematicHQ.Client;
 
 public partial class Schematic
@@ -13,8 +15,8 @@ public partial class Schematic
             {
                 { "X-Schematic-Api-Key", apiKey },
                 { "X-Fern-Language", "C#" },
-                { "X-Fern-SDK-Name", "schematic_fern_api_sdk" },
-                { "X-Fern-SDK-Version", "0.0.13" },
+                { "X-Fern-SDK-Name", "SchematicHQ.Client" },
+                { "X-Fern-SDK-Version", "0.0.14" },
             },
             clientOptions ?? new ClientOptions()
         );

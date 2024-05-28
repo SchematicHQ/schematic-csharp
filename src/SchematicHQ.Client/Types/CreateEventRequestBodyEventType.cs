@@ -1,5 +1,7 @@
 using System.Runtime.Serialization;
 
+#nullable enable
+
 namespace SchematicHQ.Client;
 
 public enum CreateEventRequestBodyEventType
