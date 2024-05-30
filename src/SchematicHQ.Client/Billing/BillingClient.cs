@@ -31,7 +31,7 @@ public class BillingClient
         {
             return JsonSerializer.Deserialize<UpsertBillingProductResponse>(responseBody);
         }
-        throw new Exception();
+        throw new Exception(responseBody);
     }
 
     public async Task<ListProductsResponse> ListProductsAsync(ListProductsRequest request)
@@ -66,7 +66,7 @@ public class BillingClient
         {
             return JsonSerializer.Deserialize<ListProductsResponse>(responseBody);
         }
-        throw new Exception();
+        throw new Exception(responseBody);
     }
 
     public async Task<UpsertBillingSubscriptionResponse> UpsertBillingSubscriptionAsync(
@@ -86,6 +86,6 @@ public class BillingClient
         {
             return JsonSerializer.Deserialize<UpsertBillingSubscriptionResponse>(responseBody);
         }
-        throw new Exception();
+        throw new Exception(responseBody);
     }
 }

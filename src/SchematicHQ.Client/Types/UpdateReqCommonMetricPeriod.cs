@@ -1,9 +1,13 @@
 using System.Runtime.Serialization;
+using System.Text.Json.Serialization;
+using SchematicHQ.Client;
+using SchematicHQ.Client.Core;
 
 #nullable enable
 
 namespace SchematicHQ.Client;
 
+[JsonConverter(typeof(StringEnumSerializer<UpdateReqCommonMetricPeriod>))]
 public enum UpdateReqCommonMetricPeriod
 {
     [EnumMember(Value = "current_month")]

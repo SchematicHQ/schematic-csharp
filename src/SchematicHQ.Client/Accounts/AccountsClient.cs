@@ -45,7 +45,7 @@ public class AccountsClient
         {
             return JsonSerializer.Deserialize<ListApiKeysResponse>(responseBody);
         }
-        throw new Exception();
+        throw new Exception(responseBody);
     }
 
     public async Task<CreateApiKeyResponse> CreateApiKeyAsync(CreateApiKeyRequestBody request)
@@ -63,7 +63,7 @@ public class AccountsClient
         {
             return JsonSerializer.Deserialize<CreateApiKeyResponse>(responseBody);
         }
-        throw new Exception();
+        throw new Exception(responseBody);
     }
 
     public async Task<GetApiKeyResponse> GetApiKeyAsync(string apiKeyId)
@@ -76,7 +76,7 @@ public class AccountsClient
         {
             return JsonSerializer.Deserialize<GetApiKeyResponse>(responseBody);
         }
-        throw new Exception();
+        throw new Exception(responseBody);
     }
 
     public async Task<UpdateApiKeyResponse> UpdateApiKeyAsync(
@@ -97,7 +97,7 @@ public class AccountsClient
         {
             return JsonSerializer.Deserialize<UpdateApiKeyResponse>(responseBody);
         }
-        throw new Exception();
+        throw new Exception(responseBody);
     }
 
     public async Task<DeleteApiKeyResponse> DeleteApiKeyAsync(string apiKeyId)
@@ -110,7 +110,7 @@ public class AccountsClient
         {
             return JsonSerializer.Deserialize<DeleteApiKeyResponse>(responseBody);
         }
-        throw new Exception();
+        throw new Exception(responseBody);
     }
 
     public async Task<CountApiKeysResponse> CountApiKeysAsync(CountApiKeysRequest request)
@@ -144,7 +144,7 @@ public class AccountsClient
         {
             return JsonSerializer.Deserialize<CountApiKeysResponse>(responseBody);
         }
-        throw new Exception();
+        throw new Exception(responseBody);
     }
 
     public async Task<ListApiRequestsResponse> ListApiRequestsAsync(ListApiRequestsRequest request)
@@ -183,7 +183,7 @@ public class AccountsClient
         {
             return JsonSerializer.Deserialize<ListApiRequestsResponse>(responseBody);
         }
-        throw new Exception();
+        throw new Exception(responseBody);
     }
 
     public async Task<GetApiRequestResponse> GetApiRequestAsync(string apiRequestId)
@@ -200,7 +200,7 @@ public class AccountsClient
         {
             return JsonSerializer.Deserialize<GetApiRequestResponse>(responseBody);
         }
-        throw new Exception();
+        throw new Exception(responseBody);
     }
 
     public async Task<CountApiRequestsResponse> CountApiRequestsAsync(
@@ -241,7 +241,7 @@ public class AccountsClient
         {
             return JsonSerializer.Deserialize<CountApiRequestsResponse>(responseBody);
         }
-        throw new Exception();
+        throw new Exception(responseBody);
     }
 
     public async Task<ListEnvironmentsResponse> ListEnvironmentsAsync(
@@ -274,7 +274,7 @@ public class AccountsClient
         {
             return JsonSerializer.Deserialize<ListEnvironmentsResponse>(responseBody);
         }
-        throw new Exception();
+        throw new Exception(responseBody);
     }
 
     public async Task<CreateEnvironmentResponse> CreateEnvironmentAsync(
@@ -294,7 +294,7 @@ public class AccountsClient
         {
             return JsonSerializer.Deserialize<CreateEnvironmentResponse>(responseBody);
         }
-        throw new Exception();
+        throw new Exception(responseBody);
     }
 
     public async Task<GetEnvironmentResponse> GetEnvironmentAsync(string environmentId)
@@ -311,7 +311,7 @@ public class AccountsClient
         {
             return JsonSerializer.Deserialize<GetEnvironmentResponse>(responseBody);
         }
-        throw new Exception();
+        throw new Exception(responseBody);
     }
 
     public async Task<UpdateEnvironmentResponse> UpdateEnvironmentAsync(
@@ -332,7 +332,7 @@ public class AccountsClient
         {
             return JsonSerializer.Deserialize<UpdateEnvironmentResponse>(responseBody);
         }
-        throw new Exception();
+        throw new Exception(responseBody);
     }
 
     public async Task<DeleteEnvironmentResponse> DeleteEnvironmentAsync(string environmentId)
@@ -349,6 +349,6 @@ public class AccountsClient
         {
             return JsonSerializer.Deserialize<DeleteEnvironmentResponse>(responseBody);
         }
-        throw new Exception();
+        throw new Exception(responseBody);
     }
 }

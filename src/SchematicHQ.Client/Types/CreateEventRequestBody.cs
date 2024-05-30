@@ -1,6 +1,7 @@
 using System.Text.Json.Serialization;
 using OneOf;
 using SchematicHQ.Client;
+using SchematicHQ.Client.Core;
 
 #nullable enable
 
@@ -9,6 +10,7 @@ namespace SchematicHQ.Client;
 public class CreateEventRequestBody
 {
     [JsonPropertyName("body")]
+    [JsonConverter(typeof(OneOfSerializer<OneOf<EventBodyTrack, EventBodyIdentify>>))]
     public OneOf<EventBodyTrack, EventBodyIdentify>? Body { get; init; }
 
     /// <summary>

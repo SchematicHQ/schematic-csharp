@@ -31,7 +31,7 @@ public class FeaturesClient
         {
             return JsonSerializer.Deserialize<CountAudienceCompaniesResponse>(responseBody);
         }
-        throw new Exception();
+        throw new Exception(responseBody);
     }
 
     public async Task<CountAudienceUsersResponse> CountAudienceUsersAsync(
@@ -51,7 +51,7 @@ public class FeaturesClient
         {
             return JsonSerializer.Deserialize<CountAudienceUsersResponse>(responseBody);
         }
-        throw new Exception();
+        throw new Exception(responseBody);
     }
 
     public async Task<ListAudienceCompaniesResponse> ListAudienceCompaniesAsync(
@@ -71,7 +71,7 @@ public class FeaturesClient
         {
             return JsonSerializer.Deserialize<ListAudienceCompaniesResponse>(responseBody);
         }
-        throw new Exception();
+        throw new Exception(responseBody);
     }
 
     public async Task<ListAudienceUsersResponse> ListAudienceUsersAsync(AudienceRequestBody request)
@@ -89,7 +89,7 @@ public class FeaturesClient
         {
             return JsonSerializer.Deserialize<ListAudienceUsersResponse>(responseBody);
         }
-        throw new Exception();
+        throw new Exception(responseBody);
     }
 
     public async Task<ListFeaturesResponse> ListFeaturesAsync(ListFeaturesRequest request)
@@ -132,7 +132,7 @@ public class FeaturesClient
         {
             return JsonSerializer.Deserialize<ListFeaturesResponse>(responseBody);
         }
-        throw new Exception();
+        throw new Exception(responseBody);
     }
 
     public async Task<CreateFeatureResponse> CreateFeatureAsync(CreateFeatureRequestBody request)
@@ -150,7 +150,7 @@ public class FeaturesClient
         {
             return JsonSerializer.Deserialize<CreateFeatureResponse>(responseBody);
         }
-        throw new Exception();
+        throw new Exception(responseBody);
     }
 
     public async Task<GetFeatureResponse> GetFeatureAsync(string featureId)
@@ -163,7 +163,7 @@ public class FeaturesClient
         {
             return JsonSerializer.Deserialize<GetFeatureResponse>(responseBody);
         }
-        throw new Exception();
+        throw new Exception(responseBody);
     }
 
     public async Task<UpdateFeatureResponse> UpdateFeatureAsync(
@@ -184,7 +184,7 @@ public class FeaturesClient
         {
             return JsonSerializer.Deserialize<UpdateFeatureResponse>(responseBody);
         }
-        throw new Exception();
+        throw new Exception(responseBody);
     }
 
     public async Task<DeleteFeatureResponse> DeleteFeatureAsync(string featureId)
@@ -197,7 +197,7 @@ public class FeaturesClient
         {
             return JsonSerializer.Deserialize<DeleteFeatureResponse>(responseBody);
         }
-        throw new Exception();
+        throw new Exception(responseBody);
     }
 
     public async Task<CountFeaturesResponse> CountFeaturesAsync(CountFeaturesRequest request)
@@ -240,7 +240,7 @@ public class FeaturesClient
         {
             return JsonSerializer.Deserialize<CountFeaturesResponse>(responseBody);
         }
-        throw new Exception();
+        throw new Exception(responseBody);
     }
 
     public async Task<ListFlagChecksResponse> ListFlagChecksAsync(ListFlagChecksRequest request)
@@ -279,7 +279,7 @@ public class FeaturesClient
         {
             return JsonSerializer.Deserialize<ListFlagChecksResponse>(responseBody);
         }
-        throw new Exception();
+        throw new Exception(responseBody);
     }
 
     public async Task<GetFlagCheckResponse> GetFlagCheckAsync(string flagCheckId)
@@ -296,7 +296,7 @@ public class FeaturesClient
         {
             return JsonSerializer.Deserialize<GetFlagCheckResponse>(responseBody);
         }
-        throw new Exception();
+        throw new Exception(responseBody);
     }
 
     public async Task<CountFlagChecksResponse> CountFlagChecksAsync(CountFlagChecksRequest request)
@@ -335,7 +335,7 @@ public class FeaturesClient
         {
             return JsonSerializer.Deserialize<CountFlagChecksResponse>(responseBody);
         }
-        throw new Exception();
+        throw new Exception(responseBody);
     }
 
     public async Task<GetLatestFlagChecksResponse> GetLatestFlagChecksAsync(
@@ -376,7 +376,7 @@ public class FeaturesClient
         {
             return JsonSerializer.Deserialize<GetLatestFlagChecksResponse>(responseBody);
         }
-        throw new Exception();
+        throw new Exception(responseBody);
     }
 
     public async Task<ListFlagsResponse> ListFlagsAsync(ListFlagsRequest request)
@@ -415,7 +415,7 @@ public class FeaturesClient
         {
             return JsonSerializer.Deserialize<ListFlagsResponse>(responseBody);
         }
-        throw new Exception();
+        throw new Exception(responseBody);
     }
 
     public async Task<CreateFlagResponse> CreateFlagAsync(CreateFlagRequestBody request)
@@ -433,7 +433,7 @@ public class FeaturesClient
         {
             return JsonSerializer.Deserialize<CreateFlagResponse>(responseBody);
         }
-        throw new Exception();
+        throw new Exception(responseBody);
     }
 
     public async Task<GetFlagResponse> GetFlagAsync(string flagId)
@@ -446,7 +446,7 @@ public class FeaturesClient
         {
             return JsonSerializer.Deserialize<GetFlagResponse>(responseBody);
         }
-        throw new Exception();
+        throw new Exception(responseBody);
     }
 
     public async Task<UpdateFlagResponse> UpdateFlagAsync(
@@ -467,7 +467,7 @@ public class FeaturesClient
         {
             return JsonSerializer.Deserialize<UpdateFlagResponse>(responseBody);
         }
-        throw new Exception();
+        throw new Exception(responseBody);
     }
 
     public async Task<DeleteFlagResponse> DeleteFlagAsync(string flagId)
@@ -480,7 +480,7 @@ public class FeaturesClient
         {
             return JsonSerializer.Deserialize<DeleteFlagResponse>(responseBody);
         }
-        throw new Exception();
+        throw new Exception(responseBody);
     }
 
     public async Task<UpdateFlagRulesResponse> UpdateFlagRulesAsync(
@@ -501,7 +501,7 @@ public class FeaturesClient
         {
             return JsonSerializer.Deserialize<UpdateFlagRulesResponse>(responseBody);
         }
-        throw new Exception();
+        throw new Exception(responseBody);
     }
 
     public async Task<CheckFlagResponse> CheckFlagAsync(string key, CheckFlagRequestBody request)
@@ -519,7 +519,7 @@ public class FeaturesClient
         {
             return JsonSerializer.Deserialize<CheckFlagResponse>(responseBody);
         }
-        throw new Exception();
+        throw new Exception(responseBody);
     }
 
     public async Task<CheckFlagsResponse> CheckFlagsAsync(CheckFlagRequestBody request)
@@ -537,7 +537,7 @@ public class FeaturesClient
         {
             return JsonSerializer.Deserialize<CheckFlagsResponse>(responseBody);
         }
-        throw new Exception();
+        throw new Exception(responseBody);
     }
 
     public async Task<CountFlagsResponse> CountFlagsAsync(CountFlagsRequest request)
@@ -576,6 +576,6 @@ public class FeaturesClient
         {
             return JsonSerializer.Deserialize<CountFlagsResponse>(responseBody);
         }
-        throw new Exception();
+        throw new Exception(responseBody);
     }
 }
