@@ -28,7 +28,7 @@ public class PlansClient
         {
             return JsonSerializer.Deserialize<GetAudienceResponse>(responseBody);
         }
-        throw new Exception();
+        throw new Exception(responseBody);
     }
 
     public async Task<UpdateAudienceResponse> UpdateAudienceAsync(
@@ -49,7 +49,7 @@ public class PlansClient
         {
             return JsonSerializer.Deserialize<UpdateAudienceResponse>(responseBody);
         }
-        throw new Exception();
+        throw new Exception(responseBody);
     }
 
     public async Task<DeleteAudienceResponse> DeleteAudienceAsync(string planAudienceId)
@@ -66,7 +66,7 @@ public class PlansClient
         {
             return JsonSerializer.Deserialize<DeleteAudienceResponse>(responseBody);
         }
-        throw new Exception();
+        throw new Exception(responseBody);
     }
 
     public async Task<ListPlansResponse> ListPlansAsync(ListPlansRequest request)
@@ -109,7 +109,7 @@ public class PlansClient
         {
             return JsonSerializer.Deserialize<ListPlansResponse>(responseBody);
         }
-        throw new Exception();
+        throw new Exception(responseBody);
     }
 
     public async Task<CreatePlanResponse> CreatePlanAsync(CreatePlanRequestBody request)
@@ -127,7 +127,7 @@ public class PlansClient
         {
             return JsonSerializer.Deserialize<CreatePlanResponse>(responseBody);
         }
-        throw new Exception();
+        throw new Exception(responseBody);
     }
 
     public async Task<GetPlanResponse> GetPlanAsync(string planId)
@@ -140,7 +140,7 @@ public class PlansClient
         {
             return JsonSerializer.Deserialize<GetPlanResponse>(responseBody);
         }
-        throw new Exception();
+        throw new Exception(responseBody);
     }
 
     public async Task<UpdatePlanResponse> UpdatePlanAsync(
@@ -161,7 +161,7 @@ public class PlansClient
         {
             return JsonSerializer.Deserialize<UpdatePlanResponse>(responseBody);
         }
-        throw new Exception();
+        throw new Exception(responseBody);
     }
 
     public async Task<DeletePlanResponse> DeletePlanAsync(string planId)
@@ -174,7 +174,7 @@ public class PlansClient
         {
             return JsonSerializer.Deserialize<DeletePlanResponse>(responseBody);
         }
-        throw new Exception();
+        throw new Exception(responseBody);
     }
 
     public async Task<CountPlansResponse> CountPlansAsync(CountPlansRequest request)
@@ -217,6 +217,6 @@ public class PlansClient
         {
             return JsonSerializer.Deserialize<CountPlansResponse>(responseBody);
         }
-        throw new Exception();
+        throw new Exception(responseBody);
     }
 }

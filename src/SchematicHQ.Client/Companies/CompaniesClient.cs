@@ -54,7 +54,7 @@ public class CompaniesClient
         {
             return JsonSerializer.Deserialize<ListCompaniesResponse>(responseBody);
         }
-        throw new Exception();
+        throw new Exception(responseBody);
     }
 
     public async Task<UpsertCompanyResponse> UpsertCompanyAsync(UpsertCompanyRequestBody request)
@@ -72,7 +72,7 @@ public class CompaniesClient
         {
             return JsonSerializer.Deserialize<UpsertCompanyResponse>(responseBody);
         }
-        throw new Exception();
+        throw new Exception(responseBody);
     }
 
     public async Task<GetCompanyResponse> GetCompanyAsync(string companyId)
@@ -85,7 +85,7 @@ public class CompaniesClient
         {
             return JsonSerializer.Deserialize<GetCompanyResponse>(responseBody);
         }
-        throw new Exception();
+        throw new Exception(responseBody);
     }
 
     public async Task<DeleteCompanyResponse> DeleteCompanyAsync(string companyId)
@@ -102,7 +102,7 @@ public class CompaniesClient
         {
             return JsonSerializer.Deserialize<DeleteCompanyResponse>(responseBody);
         }
-        throw new Exception();
+        throw new Exception(responseBody);
     }
 
     public async Task<CountCompaniesResponse> CountCompaniesAsync(CountCompaniesRequest request)
@@ -145,7 +145,7 @@ public class CompaniesClient
         {
             return JsonSerializer.Deserialize<CountCompaniesResponse>(responseBody);
         }
-        throw new Exception();
+        throw new Exception(responseBody);
     }
 
     public async Task<CreateCompanyResponse> CreateCompanyAsync(UpsertCompanyRequestBody request)
@@ -163,7 +163,7 @@ public class CompaniesClient
         {
             return JsonSerializer.Deserialize<CreateCompanyResponse>(responseBody);
         }
-        throw new Exception();
+        throw new Exception(responseBody);
     }
 
     public async Task<DeleteCompanyByKeysResponse> DeleteCompanyByKeysAsync(KeysRequestBody request)
@@ -181,7 +181,7 @@ public class CompaniesClient
         {
             return JsonSerializer.Deserialize<DeleteCompanyByKeysResponse>(responseBody);
         }
-        throw new Exception();
+        throw new Exception(responseBody);
     }
 
     public async Task<LookupCompanyResponse> LookupCompanyAsync(LookupCompanyRequest request)
@@ -200,7 +200,7 @@ public class CompaniesClient
         {
             return JsonSerializer.Deserialize<LookupCompanyResponse>(responseBody);
         }
-        throw new Exception();
+        throw new Exception(responseBody);
     }
 
     public async Task<ListCompanyMembershipsResponse> ListCompanyMembershipsAsync(
@@ -237,7 +237,7 @@ public class CompaniesClient
         {
             return JsonSerializer.Deserialize<ListCompanyMembershipsResponse>(responseBody);
         }
-        throw new Exception();
+        throw new Exception(responseBody);
     }
 
     public async Task<GetOrCreateCompanyMembershipResponse> GetOrCreateCompanyMembershipAsync(
@@ -257,7 +257,7 @@ public class CompaniesClient
         {
             return JsonSerializer.Deserialize<GetOrCreateCompanyMembershipResponse>(responseBody);
         }
-        throw new Exception();
+        throw new Exception(responseBody);
     }
 
     public async Task<DeleteCompanyMembershipResponse> DeleteCompanyMembershipAsync(
@@ -276,7 +276,7 @@ public class CompaniesClient
         {
             return JsonSerializer.Deserialize<DeleteCompanyMembershipResponse>(responseBody);
         }
-        throw new Exception();
+        throw new Exception(responseBody);
     }
 
     public async Task<ListCompanyPlansResponse> ListCompanyPlansAsync(
@@ -313,7 +313,7 @@ public class CompaniesClient
         {
             return JsonSerializer.Deserialize<ListCompanyPlansResponse>(responseBody);
         }
-        throw new Exception();
+        throw new Exception(responseBody);
     }
 
     public async Task<GetActiveCompanySubscriptionResponse> GetActiveCompanySubscriptionAsync(
@@ -342,7 +342,7 @@ public class CompaniesClient
         {
             return JsonSerializer.Deserialize<GetActiveCompanySubscriptionResponse>(responseBody);
         }
-        throw new Exception();
+        throw new Exception(responseBody);
     }
 
     public async Task<UpsertCompanyTraitResponse> UpsertCompanyTraitAsync(
@@ -362,7 +362,7 @@ public class CompaniesClient
         {
             return JsonSerializer.Deserialize<UpsertCompanyTraitResponse>(responseBody);
         }
-        throw new Exception();
+        throw new Exception(responseBody);
     }
 
     public async Task<ListEntityKeyDefinitionsResponse> ListEntityKeyDefinitionsAsync(
@@ -403,7 +403,7 @@ public class CompaniesClient
         {
             return JsonSerializer.Deserialize<ListEntityKeyDefinitionsResponse>(responseBody);
         }
-        throw new Exception();
+        throw new Exception(responseBody);
     }
 
     public async Task<CountEntityKeyDefinitionsResponse> CountEntityKeyDefinitionsAsync(
@@ -444,7 +444,7 @@ public class CompaniesClient
         {
             return JsonSerializer.Deserialize<CountEntityKeyDefinitionsResponse>(responseBody);
         }
-        throw new Exception();
+        throw new Exception(responseBody);
     }
 
     public async Task<ListEntityTraitDefinitionsResponse> ListEntityTraitDefinitionsAsync(
@@ -489,7 +489,7 @@ public class CompaniesClient
         {
             return JsonSerializer.Deserialize<ListEntityTraitDefinitionsResponse>(responseBody);
         }
-        throw new Exception();
+        throw new Exception(responseBody);
     }
 
     public async Task<GetOrCreateEntityTraitDefinitionResponse> GetOrCreateEntityTraitDefinitionAsync(
@@ -511,7 +511,7 @@ public class CompaniesClient
                 responseBody
             );
         }
-        throw new Exception();
+        throw new Exception(responseBody);
     }
 
     public async Task<GetEntityTraitDefinitionResponse> GetEntityTraitDefinitionAsync(
@@ -530,7 +530,7 @@ public class CompaniesClient
         {
             return JsonSerializer.Deserialize<GetEntityTraitDefinitionResponse>(responseBody);
         }
-        throw new Exception();
+        throw new Exception(responseBody);
     }
 
     public async Task<UpdateEntityTraitDefinitionResponse> UpdateEntityTraitDefinitionAsync(
@@ -551,7 +551,7 @@ public class CompaniesClient
         {
             return JsonSerializer.Deserialize<UpdateEntityTraitDefinitionResponse>(responseBody);
         }
-        throw new Exception();
+        throw new Exception(responseBody);
     }
 
     public async Task<CountEntityTraitDefinitionsResponse> CountEntityTraitDefinitionsAsync(
@@ -596,7 +596,7 @@ public class CompaniesClient
         {
             return JsonSerializer.Deserialize<CountEntityTraitDefinitionsResponse>(responseBody);
         }
-        throw new Exception();
+        throw new Exception(responseBody);
     }
 
     public async Task<GetEntityTraitValuesResponse> GetEntityTraitValuesAsync(
@@ -632,7 +632,7 @@ public class CompaniesClient
         {
             return JsonSerializer.Deserialize<GetEntityTraitValuesResponse>(responseBody);
         }
-        throw new Exception();
+        throw new Exception(responseBody);
     }
 
     public async Task<UpsertUserTraitResponse> UpsertUserTraitAsync(UpsertTraitRequestBody request)
@@ -650,7 +650,7 @@ public class CompaniesClient
         {
             return JsonSerializer.Deserialize<UpsertUserTraitResponse>(responseBody);
         }
-        throw new Exception();
+        throw new Exception(responseBody);
     }
 
     public async Task<ListUsersResponse> ListUsersAsync(ListUsersRequest request)
@@ -693,7 +693,7 @@ public class CompaniesClient
         {
             return JsonSerializer.Deserialize<ListUsersResponse>(responseBody);
         }
-        throw new Exception();
+        throw new Exception(responseBody);
     }
 
     public async Task<UpsertUserResponse> UpsertUserAsync(UpsertUserRequestBody request)
@@ -711,7 +711,7 @@ public class CompaniesClient
         {
             return JsonSerializer.Deserialize<UpsertUserResponse>(responseBody);
         }
-        throw new Exception();
+        throw new Exception(responseBody);
     }
 
     public async Task<GetUserResponse> GetUserAsync(string userId)
@@ -724,7 +724,7 @@ public class CompaniesClient
         {
             return JsonSerializer.Deserialize<GetUserResponse>(responseBody);
         }
-        throw new Exception();
+        throw new Exception(responseBody);
     }
 
     public async Task<DeleteUserResponse> DeleteUserAsync(string userId)
@@ -737,7 +737,7 @@ public class CompaniesClient
         {
             return JsonSerializer.Deserialize<DeleteUserResponse>(responseBody);
         }
-        throw new Exception();
+        throw new Exception(responseBody);
     }
 
     public async Task<CountUsersResponse> CountUsersAsync(CountUsersRequest request)
@@ -780,7 +780,7 @@ public class CompaniesClient
         {
             return JsonSerializer.Deserialize<CountUsersResponse>(responseBody);
         }
-        throw new Exception();
+        throw new Exception(responseBody);
     }
 
     public async Task<CreateUserResponse> CreateUserAsync(UpsertUserRequestBody request)
@@ -798,7 +798,7 @@ public class CompaniesClient
         {
             return JsonSerializer.Deserialize<CreateUserResponse>(responseBody);
         }
-        throw new Exception();
+        throw new Exception(responseBody);
     }
 
     public async Task<DeleteUserByKeysResponse> DeleteUserByKeysAsync(KeysRequestBody request)
@@ -816,7 +816,7 @@ public class CompaniesClient
         {
             return JsonSerializer.Deserialize<DeleteUserByKeysResponse>(responseBody);
         }
-        throw new Exception();
+        throw new Exception(responseBody);
     }
 
     public async Task<LookupUserResponse> LookupUserAsync(LookupUserRequest request)
@@ -835,6 +835,6 @@ public class CompaniesClient
         {
             return JsonSerializer.Deserialize<LookupUserResponse>(responseBody);
         }
-        throw new Exception();
+        throw new Exception(responseBody);
     }
 }

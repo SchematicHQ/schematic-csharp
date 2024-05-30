@@ -60,7 +60,7 @@ public class EntitlementsClient
         {
             return JsonSerializer.Deserialize<ListCompanyOverridesResponse>(responseBody);
         }
-        throw new Exception();
+        throw new Exception(responseBody);
     }
 
     public async Task<CreateCompanyOverrideResponse> CreateCompanyOverrideAsync(
@@ -80,7 +80,7 @@ public class EntitlementsClient
         {
             return JsonSerializer.Deserialize<CreateCompanyOverrideResponse>(responseBody);
         }
-        throw new Exception();
+        throw new Exception(responseBody);
     }
 
     public async Task<GetCompanyOverrideResponse> GetCompanyOverrideAsync(string companyOverrideId)
@@ -97,7 +97,7 @@ public class EntitlementsClient
         {
             return JsonSerializer.Deserialize<GetCompanyOverrideResponse>(responseBody);
         }
-        throw new Exception();
+        throw new Exception(responseBody);
     }
 
     public async Task<UpdateCompanyOverrideResponse> UpdateCompanyOverrideAsync(
@@ -118,7 +118,7 @@ public class EntitlementsClient
         {
             return JsonSerializer.Deserialize<UpdateCompanyOverrideResponse>(responseBody);
         }
-        throw new Exception();
+        throw new Exception(responseBody);
     }
 
     public async Task<DeleteCompanyOverrideResponse> DeleteCompanyOverrideAsync(
@@ -137,7 +137,7 @@ public class EntitlementsClient
         {
             return JsonSerializer.Deserialize<DeleteCompanyOverrideResponse>(responseBody);
         }
-        throw new Exception();
+        throw new Exception(responseBody);
     }
 
     public async Task<CountCompanyOverridesResponse> CountCompanyOverridesAsync(
@@ -186,7 +186,7 @@ public class EntitlementsClient
         {
             return JsonSerializer.Deserialize<CountCompanyOverridesResponse>(responseBody);
         }
-        throw new Exception();
+        throw new Exception(responseBody);
     }
 
     public async Task<ListFeatureCompaniesResponse> ListFeatureCompaniesAsync(
@@ -219,7 +219,7 @@ public class EntitlementsClient
         {
             return JsonSerializer.Deserialize<ListFeatureCompaniesResponse>(responseBody);
         }
-        throw new Exception();
+        throw new Exception(responseBody);
     }
 
     public async Task<CountFeatureCompaniesResponse> CountFeatureCompaniesAsync(
@@ -252,7 +252,7 @@ public class EntitlementsClient
         {
             return JsonSerializer.Deserialize<CountFeatureCompaniesResponse>(responseBody);
         }
-        throw new Exception();
+        throw new Exception(responseBody);
     }
 
     public async Task<ListFeatureUsageResponse> ListFeatureUsageAsync(
@@ -297,7 +297,7 @@ public class EntitlementsClient
         {
             return JsonSerializer.Deserialize<ListFeatureUsageResponse>(responseBody);
         }
-        throw new Exception();
+        throw new Exception(responseBody);
     }
 
     public async Task<CountFeatureUsageResponse> CountFeatureUsageAsync(
@@ -342,7 +342,7 @@ public class EntitlementsClient
         {
             return JsonSerializer.Deserialize<CountFeatureUsageResponse>(responseBody);
         }
-        throw new Exception();
+        throw new Exception(responseBody);
     }
 
     public async Task<ListFeatureUsersResponse> ListFeatureUsersAsync(
@@ -375,7 +375,7 @@ public class EntitlementsClient
         {
             return JsonSerializer.Deserialize<ListFeatureUsersResponse>(responseBody);
         }
-        throw new Exception();
+        throw new Exception(responseBody);
     }
 
     public async Task<CountFeatureUsersResponse> CountFeatureUsersAsync(
@@ -408,7 +408,7 @@ public class EntitlementsClient
         {
             return JsonSerializer.Deserialize<CountFeatureUsersResponse>(responseBody);
         }
-        throw new Exception();
+        throw new Exception(responseBody);
     }
 
     public async Task<ListPlanEntitlementsResponse> ListPlanEntitlementsAsync(
@@ -457,7 +457,7 @@ public class EntitlementsClient
         {
             return JsonSerializer.Deserialize<ListPlanEntitlementsResponse>(responseBody);
         }
-        throw new Exception();
+        throw new Exception(responseBody);
     }
 
     public async Task<CreatePlanEntitlementResponse> CreatePlanEntitlementAsync(
@@ -477,7 +477,7 @@ public class EntitlementsClient
         {
             return JsonSerializer.Deserialize<CreatePlanEntitlementResponse>(responseBody);
         }
-        throw new Exception();
+        throw new Exception(responseBody);
     }
 
     public async Task<GetPlanEntitlementResponse> GetPlanEntitlementAsync(string planEntitlementId)
@@ -494,7 +494,7 @@ public class EntitlementsClient
         {
             return JsonSerializer.Deserialize<GetPlanEntitlementResponse>(responseBody);
         }
-        throw new Exception();
+        throw new Exception(responseBody);
     }
 
     public async Task<UpdatePlanEntitlementResponse> UpdatePlanEntitlementAsync(
@@ -515,7 +515,7 @@ public class EntitlementsClient
         {
             return JsonSerializer.Deserialize<UpdatePlanEntitlementResponse>(responseBody);
         }
-        throw new Exception();
+        throw new Exception(responseBody);
     }
 
     public async Task<DeletePlanEntitlementResponse> DeletePlanEntitlementAsync(
@@ -534,7 +534,7 @@ public class EntitlementsClient
         {
             return JsonSerializer.Deserialize<DeletePlanEntitlementResponse>(responseBody);
         }
-        throw new Exception();
+        throw new Exception(responseBody);
     }
 
     public async Task<CountPlanEntitlementsResponse> CountPlanEntitlementsAsync(
@@ -583,7 +583,7 @@ public class EntitlementsClient
         {
             return JsonSerializer.Deserialize<CountPlanEntitlementsResponse>(responseBody);
         }
-        throw new Exception();
+        throw new Exception(responseBody);
     }
 
     public async Task<GetFeatureUsageByCompanyResponse> GetFeatureUsageByCompanyAsync(
@@ -604,6 +604,6 @@ public class EntitlementsClient
         {
             return JsonSerializer.Deserialize<GetFeatureUsageByCompanyResponse>(responseBody);
         }
-        throw new Exception();
+        throw new Exception(responseBody);
     }
 }

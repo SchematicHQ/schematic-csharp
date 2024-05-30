@@ -31,7 +31,7 @@ public class EventsClient
         {
             return JsonSerializer.Deserialize<CreateEventBatchResponse>(responseBody);
         }
-        throw new Exception();
+        throw new Exception(responseBody);
     }
 
     public async Task<GetEventSummariesResponse> GetEventSummariesAsync(
@@ -68,7 +68,7 @@ public class EventsClient
         {
             return JsonSerializer.Deserialize<GetEventSummariesResponse>(responseBody);
         }
-        throw new Exception();
+        throw new Exception(responseBody);
     }
 
     public async Task<GetEventSummaryBySubtypeResponse> GetEventSummaryBySubtypeAsync(string key)
@@ -81,7 +81,7 @@ public class EventsClient
         {
             return JsonSerializer.Deserialize<GetEventSummaryBySubtypeResponse>(responseBody);
         }
-        throw new Exception();
+        throw new Exception(responseBody);
     }
 
     public async Task<ListEventsResponse> ListEventsAsync(ListEventsRequest request)
@@ -120,7 +120,7 @@ public class EventsClient
         {
             return JsonSerializer.Deserialize<ListEventsResponse>(responseBody);
         }
-        throw new Exception();
+        throw new Exception(responseBody);
     }
 
     public async Task<CreateEventResponse> CreateEventAsync(CreateEventRequestBody request)
@@ -138,7 +138,7 @@ public class EventsClient
         {
             return JsonSerializer.Deserialize<CreateEventResponse>(responseBody);
         }
-        throw new Exception();
+        throw new Exception(responseBody);
     }
 
     public async Task<GetEventResponse> GetEventAsync(string eventId)
@@ -151,7 +151,7 @@ public class EventsClient
         {
             return JsonSerializer.Deserialize<GetEventResponse>(responseBody);
         }
-        throw new Exception();
+        throw new Exception(responseBody);
     }
 
     public async Task<ListMetricCountsResponse> ListMetricCountsAsync(
@@ -212,6 +212,6 @@ public class EventsClient
         {
             return JsonSerializer.Deserialize<ListMetricCountsResponse>(responseBody);
         }
-        throw new Exception();
+        throw new Exception(responseBody);
     }
 }
