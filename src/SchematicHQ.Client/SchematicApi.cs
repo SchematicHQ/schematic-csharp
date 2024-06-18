@@ -4,11 +4,11 @@ using SchematicHQ.Client;
 
 namespace SchematicHQ.Client;
 
-public partial class Schematic
+public partial class SchematicApi
 {
     private RawClient _client;
 
-    public Schematic(string apiKey = null, ClientOptions clientOptions = null)
+    public SchematicApi(string apiKey = null, ClientOptions clientOptions = null)
     {
         _client = new RawClient(
             new Dictionary<string, string>()
@@ -16,7 +16,7 @@ public partial class Schematic
                 { "X-Schematic-Api-Key", apiKey },
                 { "X-Fern-Language", "C#" },
                 { "X-Fern-SDK-Name", "SchematicHQ.Client" },
-                { "X-Fern-SDK-Version", "0.0.14" },
+                { "X-Fern-SDK-Version", "1.0.0" },
             },
             clientOptions ?? new ClientOptions()
         );
@@ -25,8 +25,10 @@ public partial class Schematic
         Billing = new BillingClient(_client);
         Companies = new CompaniesClient(_client);
         Entitlements = new EntitlementsClient(_client);
+        Crm = new CrmClient(_client);
         Events = new EventsClient(_client);
         Plans = new PlansClient(_client);
+        Webhooks = new WebhooksClient(_client);
     }
 
     public AccountsClient Accounts { get; }
@@ -39,9 +41,13 @@ public partial class Schematic
 
     public EntitlementsClient Entitlements { get; }
 
+    public CrmClient Crm { get; }
+
     public EventsClient Events { get; }
 
     public PlansClient Plans { get; }
+
+    public WebhooksClient Webhooks { get; }
 
     private string GetFromEnvironmentOrThrow(string env, string message)
     {
