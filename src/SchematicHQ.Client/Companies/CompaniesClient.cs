@@ -203,6 +203,37 @@ public class CompaniesClient
         throw new Exception(responseBody);
     }
 
+    public async Task<GetActiveDealsResponse> GetActiveDealsAsync(GetActiveDealsRequest request)
+    {
+        var _query = new Dictionary<string, object>()
+        {
+            { "company_id", request.CompanyId },
+            { "deal_stage", request.DealStage },
+        };
+        if (request.Limit != null)
+        {
+            _query["limit"] = request.Limit;
+        }
+        if (request.Offset != null)
+        {
+            _query["offset"] = request.Offset;
+        }
+        var response = await _client.MakeRequestAsync(
+            new RawClient.ApiRequest
+            {
+                Method = HttpMethod.Get,
+                Path = "/company-crm-deals",
+                Query = _query
+            }
+        );
+        string responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        {
+            return JsonSerializer.Deserialize<GetActiveDealsResponse>(responseBody);
+        }
+        throw new Exception(responseBody);
+    }
+
     public async Task<ListCompanyMembershipsResponse> ListCompanyMembershipsAsync(
         ListCompanyMembershipsRequest request
     )
