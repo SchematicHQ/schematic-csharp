@@ -26,5 +26,8 @@ public enum CreateOrUpdateConditionRequestBodyConditionType
     Plan,
 
     [EnumMember(Value = "billing_product")]
-    BillingProduct
+    BillingProduct,
+
+    [EnumMember(Value = "crm_product")]
+    CrmProduct
 }
