@@ -13,7 +13,7 @@ public class UpsertUserSubRequestBody
     public string? CompanyId { get; init; }
 
     [JsonPropertyName("keys")]
-    public Dictionary<string, object> Keys { get; init; }
+    public Dictionary<string, string> Keys { get; init; }
 
     [JsonPropertyName("last_seen_at")]
     public DateTime? LastSeenAt { get; init; }

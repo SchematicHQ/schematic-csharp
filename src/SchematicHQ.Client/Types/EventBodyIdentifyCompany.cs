@@ -1,4 +1,5 @@
 using System.Text.Json.Serialization;
+using OneOf;
 
 #nullable enable
 
@@ -10,7 +11,7 @@ public class EventBodyIdentifyCompany
     /// Key-value pairs to identify the company
     /// </summary>
     [JsonPropertyName("keys")]
-    public Dictionary<string, object> Keys { get; init; }
+    public Dictionary<string, string> Keys { get; init; }
 
     /// <summary>
     /// The display name of the company; required only if it is a new company
@@ -19,8 +20,11 @@ public class EventBodyIdentifyCompany
     public string? Name { get; init; }
 
     /// <summary>
-    /// A map of company trait names to trait values
+    /// A map of trait names to trait values
     /// </summary>
     [JsonPropertyName("traits")]
-    public Dictionary<string, object>? Traits { get; init; }
+    public Dictionary<
+        string,
+        OneOf<string, double, bool, OneOf<string, double, bool>>
+    >? Traits { get; init; }
 }

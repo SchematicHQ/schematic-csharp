@@ -4,7 +4,7 @@ public class CountFeatureUsageRequest
 {
     public string? CompanyId { get; init; }
 
-    public Dictionary<string, object>? CompanyKeys { get; init; }
+    public Dictionary<string, string?>? CompanyKeys { get; init; }
 
     public string? FeatureIds { get; init; }
 

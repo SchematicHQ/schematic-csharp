@@ -1,4 +1,5 @@
 using System.Text.Json.Serialization;
+using OneOf;
 using SchematicHQ.Client;
 
 #nullable enable
@@ -17,7 +18,7 @@ public class EventBodyIdentify
     /// Key-value pairs to identify the user
     /// </summary>
     [JsonPropertyName("keys")]
-    public Dictionary<string, object> Keys { get; init; }
+    public Dictionary<string, string> Keys { get; init; }
 
     /// <summary>
     /// The display name of the user being identified; required only if it is a new user
@@ -26,8 +27,11 @@ public class EventBodyIdentify
     public string? Name { get; init; }
 
     /// <summary>
-    /// A map of user trait names to trait values
+    /// A map of trait names to trait values
     /// </summary>
     [JsonPropertyName("traits")]
-    public Dictionary<string, object>? Traits { get; init; }
+    public Dictionary<
+        string,
+        OneOf<string, double, bool, OneOf<string, double, bool>>
+    >? Traits { get; init; }
 }

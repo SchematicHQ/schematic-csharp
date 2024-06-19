@@ -34,10 +34,10 @@ public class FlagCheckLogResponseData
     public string Reason { get; init; }
 
     [JsonPropertyName("req_company")]
-    public Dictionary<string, object>? ReqCompany { get; init; }
+    public Dictionary<string, string?>? ReqCompany { get; init; }
 
     [JsonPropertyName("req_user")]
-    public Dictionary<string, object>? ReqUser { get; init; }
+    public Dictionary<string, string?>? ReqUser { get; init; }
 
     [JsonPropertyName("rule_id")]
     public string? RuleId { get; init; }
