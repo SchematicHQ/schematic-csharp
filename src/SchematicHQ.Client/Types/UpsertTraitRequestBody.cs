@@ -16,7 +16,7 @@ public class UpsertTraitRequestBody
     /// Key/value pairs too identify a company or user
     /// </summary>
     [JsonPropertyName("keys")]
-    public Dictionary<string, object> Keys { get; init; }
+    public Dictionary<string, string> Keys { get; init; }
 
     /// <summary>
     /// Value to set the trait to

@@ -10,14 +10,20 @@ public class ListFeatureUsageParams
     public string? CompanyId { get; init; }
 
     [JsonPropertyName("company_keys")]
-    public Dictionary<string, object>? CompanyKeys { get; init; }
+    public Dictionary<string, string>? CompanyKeys { get; init; }
 
     [JsonPropertyName("feature_ids")]
     public List<string>? FeatureIds { get; init; }
 
+    /// <summary>
+    /// Page limit (default 100)
+    /// </summary>
     [JsonPropertyName("limit")]
     public int? Limit { get; init; }
 
+    /// <summary>
+    /// Page offset (default 0)
+    /// </summary>
     [JsonPropertyName("offset")]
     public int? Offset { get; init; }
 

@@ -1,4 +1,5 @@
 using System.Text.Json.Serialization;
+using OneOf;
 using SchematicHQ.Client;
 
 #nullable enable
@@ -11,7 +12,10 @@ public class EventDetailResponseData
     public string? ApiKey { get; init; }
 
     [JsonPropertyName("body")]
-    public Dictionary<string, object> Body { get; init; }
+    public Dictionary<
+        string,
+        OneOf<string, double, bool, OneOf<string, double, bool>>
+    > Body { get; init; }
 
     [JsonPropertyName("body_preview")]
     public string BodyPreview { get; init; }

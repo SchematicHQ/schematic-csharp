@@ -10,7 +10,7 @@ public class UpsertUserRequestBody
     /// Optionally specify company using key/value pairs
     /// </summary>
     [JsonPropertyName("company")]
-    public Dictionary<string, object> Company { get; init; }
+    public Dictionary<string, string> Company { get; init; }
 
     /// <summary>
     /// Optionally specify company using Schematic company ID
@@ -19,7 +19,7 @@ public class UpsertUserRequestBody
     public string? CompanyId { get; init; }
 
     [JsonPropertyName("keys")]
-    public Dictionary<string, object> Keys { get; init; }
+    public Dictionary<string, string> Keys { get; init; }
 
     [JsonPropertyName("last_seen_at")]
     public DateTime? LastSeenAt { get; init; }

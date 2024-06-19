@@ -7,5 +7,5 @@ namespace SchematicHQ.Client;
 public class KeysRequestBody
 {
     [JsonPropertyName("keys")]
-    public Dictionary<string, object> Keys { get; init; }
+    public Dictionary<string, string> Keys { get; init; }
 }
