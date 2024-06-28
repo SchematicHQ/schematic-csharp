@@ -62,12 +62,12 @@ public partial class Schematic
             string cacheKey = flagKey;
              if (company != null && company.Count > 0)
             {
-                cacheKey += ":" + string.Join(";", company.Select(kvp => $"{kvp.Key}={kvp.Value}"));
+                cacheKey += ":c-" + string.Join(";", company.Select(kvp => $"{kvp.Key}={kvp.Value}"));
             }
 
             if (user != null && user.Count > 0)
             {
-                cacheKey += ":" + string.Join(";", user.Select(kvp => $"{kvp.Key}={kvp.Value}"));
+                cacheKey += ":u-" + string.Join(";", user.Select(kvp => $"{kvp.Key}={kvp.Value}"));
             }
 
             foreach (var provider in _flagCheckCacheProviders)

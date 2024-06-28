@@ -90,7 +90,7 @@ namespace SchematicHQ.Client.Test
             // Arrange
             SetupSchematicTestClient(isOffline: false, response: CreateCheckFlagResponse(HttpStatusCode.OK, false));
             string flagKey = "test_flag";
-            string cacheKey = "test_flag:name=test_company:id=unique_id";
+            string cacheKey = "test_flag:c-name=test_company:u-id=unique_id";
             foreach (var cacheProvider in _options.CacheProviders)
             {
                 cacheProvider.Set(cacheKey, true);
