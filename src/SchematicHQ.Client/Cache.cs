@@ -1,114 +1,111 @@
-using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Threading;
 
 #nullable enable
 
 namespace SchematicHQ.Client;
 
-public interface ICacheProvider<T>
-{
-    T? Get(string key);
-    void Set(string key, T val, int? ttlOverride = null);
-}
-
-public class LocalCache<T> : ICacheProvider<T>
-{
-    private const int DEFAULT_CACHE_CAPACITY = 1000;
-    private const int DEFAULT_CACHE_TTL = 5000; // 5 seconds
-
-    private readonly ConcurrentDictionary<string, CachedItem<T>> _cache;
-    private readonly LinkedList<string> _lruList;
-    private readonly object _lock = new object();
-    private readonly int _maxItems;
-    private readonly int _ttl;
-
-    public LocalCache(int maxItems = DEFAULT_CACHE_CAPACITY, int ttl = DEFAULT_CACHE_TTL)
+    public interface ICacheProvider<T>
     {
-        _cache = new ConcurrentDictionary<string, CachedItem<T>>();
-        _lruList = new LinkedList<string>();
-        _maxItems = maxItems;
-        _ttl = ttl;
+        T? Get(string key);
+        void Set(string key, T val, TimeSpan? ttlOverride = null);
     }
 
-    public T? Get(string key)
+    public class LocalCache<T> : ICacheProvider<T>
     {
-        if (_maxItems == 0)
-            return default;
+        public const int DEFAULT_CACHE_CAPACITY = 1000;
+        public static readonly TimeSpan DEFAULT_CACHE_TTL = TimeSpan.FromMilliseconds(5000); // 5000 milliseconds
 
-        if (!_cache.TryGetValue(key, out var item))
-            return default;
+        private readonly ConcurrentDictionary<string, CachedItem<T>> _cache;
+        private readonly LinkedList<string> _lruList;
+        private readonly object _lock = new object();
+        private readonly int _maxItems;
+        private readonly TimeSpan _ttl;
 
-        if (DateTime.UtcNow > item.Expiration)
+        public LocalCache(int maxItems = DEFAULT_CACHE_CAPACITY, TimeSpan? ttl = null)
         {
-            Remove(key);
-            return default;
+            _cache = new ConcurrentDictionary<string, CachedItem<T>>();
+            _lruList = new LinkedList<string>();
+            _maxItems = maxItems;
+            _ttl = ttl ?? DEFAULT_CACHE_TTL;
         }
 
-        lock (_lock)
+        public T? Get(string key)
         {
-            _lruList.Remove(item.Node);
-            _lruList.AddFirst(item.Node);
-        }
+            if (_maxItems == 0)
+                return default;
 
-        return item.Value;
-    }
+            if (!_cache.TryGetValue(key, out var item))
+                return default;
 
-    public void Set(string key, T val, int? ttlOverride = null)
-    {
-        if (_maxItems == 0)
-            return;
-
-        var ttl = ttlOverride ?? _ttl;
-        var expiration = DateTime.UtcNow.AddMilliseconds(ttl);
-
-        lock (_lock)
-        {
-            if (_cache.TryGetValue(key, out var existingItem))
+            if (DateTime.UtcNow > item.Expiration)
             {
-                existingItem.Value = val;
-                existingItem.Expiration = expiration;
-                _lruList.Remove(existingItem.Node);
-                _lruList.AddFirst(existingItem.Node);
+                Remove(key);
+                return default;
             }
-            else
-            {
-                if (_cache.Count >= _maxItems)
-                {
-                    var lruKey = _lruList.Last!.Value;
-                    Remove(lruKey);
-                }
 
-                var node = _lruList.AddFirst(key);
-                var newItem = new CachedItem<T>(val, expiration, node);
-                _cache[key] = newItem;
-            }
-        }
-    }
-
-    private void Remove(string key)
-    {
-        if (_cache.TryRemove(key, out var removedItem))
-        {
             lock (_lock)
             {
-                _lruList.Remove(removedItem.Node);
+                _lruList.Remove(item.Node);
+                _lruList.AddFirst(item.Node);
+            }
+
+            return item.Value;
+        }
+
+        public void Set(string key, T val, TimeSpan? ttlOverride = null)
+        {
+            if (_maxItems == 0)
+                return;
+
+            var ttl = ttlOverride ?? _ttl;
+            var expiration = DateTime.UtcNow.Add(ttl);
+
+            lock (_lock)
+            {
+                if (_cache.TryGetValue(key, out var existingItem))
+                {
+                    existingItem.Value = val;
+                    existingItem.Expiration = expiration;
+                    _lruList.Remove(existingItem.Node);
+                    _lruList.AddFirst(existingItem.Node);
+                }
+                else
+                {
+                    if (_cache.Count >= _maxItems)
+                    {
+                        var lruKey = _lruList.Last!.Value;
+                        Remove(lruKey);
+                    }
+
+                    var node = _lruList.AddFirst(key);
+                    var newItem = new CachedItem<T>(val, expiration, node);
+                    _cache[key] = newItem;
+                }
+            }
+        }
+
+        private void Remove(string key)
+        {
+            if (_cache.TryRemove(key, out var removedItem))
+            {
+                lock (_lock)
+                {
+                    _lruList.Remove(removedItem.Node);
+                }
             }
         }
     }
-}
 
-public class CachedItem<T>
-{
-    public T Value { get; set; }
-    public DateTime Expiration { get; set; }
-    public LinkedListNode<string> Node { get; }
-
-    public CachedItem(T value, DateTime expiration, LinkedListNode<string> node)
+    public class CachedItem<T>
     {
-        Value = value;
-        Expiration = expiration;
-        Node = node;
+        public T Value { get; set; }
+        public DateTime Expiration { get; set; }
+        public LinkedListNode<string> Node { get; }
+
+        public CachedItem(T value, DateTime expiration, LinkedListNode<string> node)
+        {
+            Value = value;
+            Expiration = expiration;
+            Node = node;
+        }
     }
-}

@@ -8,9 +8,10 @@ public partial class ClientOptions
 {
     public Dictionary<string, bool> FlagDefaults { get; set; }
     public ISchematicLogger Logger { get; set; }
-    public List<ICacheProvider<bool>> CacheProviders { get; set; }
+    public List<ICacheProvider<bool?>> CacheProviders { get; set; }
     public bool Offline { get; set; }
-    public int? EventBufferPeriod { get; set; }
+    public TimeSpan? DefaultEventBufferPeriod { get; set; }
+    public IEventBuffer<CreateEventRequestBody>? EventBuffer { get; set; }
 }
 
 public static class ClientOptionsExtensions
@@ -27,7 +28,8 @@ public static class ClientOptionsExtensions
             Logger = options.Logger,
             CacheProviders = options.CacheProviders,
             Offline = options.Offline,
-            EventBufferPeriod = options.EventBufferPeriod
+            DefaultEventBufferPeriod = options.DefaultEventBufferPeriod,
+            EventBuffer = options.EventBuffer
         };
     }
 }

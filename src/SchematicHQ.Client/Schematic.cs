@@ -2,7 +2,7 @@ using OneOf;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
-using System.Text.Json.Serialization;
+using System.Threading.Tasks;
 
 #nullable enable
 
@@ -11,9 +11,9 @@ namespace SchematicHQ.Client;
 public partial class Schematic
 {
     private readonly ClientOptions _options;
-    private readonly EventBuffer _eventBuffer;
+    private readonly IEventBuffer<CreateEventRequestBody> _eventBuffer;
     private readonly ISchematicLogger _logger;
-    private readonly List<ICacheProvider<bool>> _flagCheckCacheProviders;
+    private readonly List<ICacheProvider<bool?>> _flagCheckCacheProviders;
     private readonly bool _offline;
     public readonly SchematicApi API;
 
@@ -26,49 +26,69 @@ public partial class Schematic
         var httpClient = _offline ? new OfflineHttpClient() : _options.HttpClient;
         API = new SchematicApi(apiKey, _options.WithHttpClient(httpClient));
 
-        _eventBuffer = new EventBuffer(
-            API.Events,
+        _eventBuffer = _options.EventBuffer ?? new EventBuffer<CreateEventRequestBody>(
+            async items => 
+            {
+                var request = new CreateEventBatchRequestBody
+                {
+                    Events = items
+                };
+                await API.Events.CreateEventBatchAsync(request);
+            },
             _logger,
-            _options.EventBufferPeriod
+            flushPeriod: options.DefaultEventBufferPeriod  // default flush period
         );
+        _eventBuffer.Start();
 
-        _flagCheckCacheProviders = _options.CacheProviders ?? new List<ICacheProvider<bool>>
+        _flagCheckCacheProviders = _options.CacheProviders ?? new List<ICacheProvider<bool?>>
         {
-            new LocalCache<bool>()
+            new LocalCache<bool?>()
         };
     }
 
     public void Shutdown()
     {
-        _eventBuffer.Stop();
+        _eventBuffer.Dispose();
     }
 
     public async Task<bool> CheckFlag(string flagKey, Dictionary<string, string>? company = null, Dictionary<string, string>? user = null)
     {
+       
         if (_offline)
             return GetFlagDefault(flagKey);
 
         try
         {
-            string cacheKey = (company != null || user != null)
-                ? $"{flagKey}:{company}:{user}"
-                : flagKey;
+            string cacheKey = flagKey;
+             if (company != null && company.Count > 0)
+            {
+                cacheKey += ":" + string.Join(";", company.Select(kvp => $"{kvp.Key}={kvp.Value}"));
+            }
+
+            if (user != null && user.Count > 0)
+            {
+                cacheKey += ":" + string.Join(";", user.Select(kvp => $"{kvp.Key}={kvp.Value}"));
+            }
 
             foreach (var provider in _flagCheckCacheProviders)
             {
                 if (provider.Get(cacheKey) is bool cachedValue)
                     return cachedValue;
             }
-
             var requestBody = new CheckFlagRequestBody
             {
                 Company = company,
                 User = user
             };
-
+      
             var response = await API.Features.CheckFlagAsync(flagKey, requestBody);
-            if (response == null)
+                  
+           
+           
+            if (response == null){
+            
                 return GetFlagDefault(flagKey);
+            }
 
             foreach (var provider in _flagCheckCacheProviders)
             {
@@ -128,10 +148,16 @@ public partial class Schematic
         }
     }
 
+    public int GetBufferWaitingEventCount()
+    {
+        return this._eventBuffer.GetEventCount();
+    }
+
     private bool GetFlagDefault(string flagKey)
     {
         return _options.FlagDefaults?.GetValueOrDefault(flagKey) ?? false;
     }
+
 }
 
 public class OfflineHttpClient : HttpClient
