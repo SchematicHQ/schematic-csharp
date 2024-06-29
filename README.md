@@ -176,25 +176,26 @@ There are a number of configuration options that can be specified passing in `Cl
 
 ### Flag Check Options
 
-By default, the client will do some local caching for flag checks. If you would like to change this behavior, you can do so using an initialization option to specify the max size of the cache (in terms of number of cached items) and the max age of the cache (in milliseconds):
+By default, the client will do some local caching for flag checks. If you would like to change this behavior, you can do so using an initialization option to specify the max size of the cache (in terms of number of cached items) and the max age of the cache:
 
 ```csharp
 using SchematicHQ.Client;
 using System.Collections.Generic;
 
 int cacheMaxItems = 1000; // Max number of entries in the cache
-int cacheTtl = 1000; // TTL in milliseconds
+TimeSpan cacheTtl = TimeSpan.FromSeconds(1); // Set TTL to 1 second
 
 var options = new ClientOptions
 {
-    CacheProviders = new List<ICacheProvider<bool>>
+    CacheProviders = new List<ICacheProvider<bool?>>
     {
-        new LocalCache<bool>(cacheMaxItems, cacheTtl)
+        new LocalCache<bool?>(cacheMaxItems, cacheTtl)
     }
 };
 
 Schematic schematic = new Schematic("YOUR_API_KEY", options);
 ```
+***Note about LocalCache:*** LocalCache implementation returns default value the type it is initiated with when it is a cache miss. Hence, when using with Schematic it is initiated with type (bool?) so that cache returns null when it is a miss
 
 You can also disable local caching entirely; bear in mind that, in this case, every flag check will result in a network request:
 
@@ -204,7 +205,7 @@ using System.Collections.Generic;
 
 var options = new ClientOptions
 {
-    CacheProviders = new List<ICacheProvider<bool>>()
+    CacheProviders = new List<ICacheProvider<bool?>>()
 };
 
 Schematic schematic = new Schematic("YOUR_API_KEY", options);
@@ -262,6 +263,26 @@ Schematic schematic = new Schematic("", options);
 bool flagValue = await schematic.CheckFlag("some-flag-key"); // Returns true
 ```
 
+### Event Buffer
+Schematic API uses an Event Buffer to batch *Identify* and *Track* requests and avoid multiple API calls.
+You can set the event buffer flush period in options:
+```csharp
+using SchematicHQ.Client;
+
+var options = new ClientOptions
+{
+	DefaultEventBufferPeriod = TimeSpan.FromSeconds(5)
+};
+```
+You may also want to use your custom event buffer. To do so, your custom event buffer has to implement *IEventBuffer* interface, and pass an instance to the Schematic API through options:
+```csharp
+using SchematicHQ.Client;
+
+var options = new ClientOptions
+{
+	EventBuffer = new MyCustomEventBuffer();//instance of your custom event buffer
+}
+```
 
 ### HTTP Client
 You can override the HttpClient:
@@ -307,7 +328,7 @@ try {
   System.Console.WriteLine(e.Message)
   System.Console.WriteLine(e.StatusCode)
 }
-```
+``` 
 
 ## Contributing
 While we value open-source contributions to this SDK, this library
