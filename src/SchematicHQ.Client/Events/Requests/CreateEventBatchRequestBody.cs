@@ -8,5 +8,5 @@ namespace SchematicHQ.Client;
 public class CreateEventBatchRequestBody
 {
     [JsonPropertyName("events")]
-    public List<CreateEventRequestBody> Events { get; init; }
+    public IEnumerable<CreateEventRequestBody> Events { get; init; }
 }

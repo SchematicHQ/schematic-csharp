@@ -13,7 +13,7 @@ public class CountFeatureUsageParams
     public Dictionary<string, string>? CompanyKeys { get; init; }
 
     [JsonPropertyName("feature_ids")]
-    public List<string>? FeatureIds { get; init; }
+    public IEnumerable<string>? FeatureIds { get; init; }
 
     /// <summary>
     /// Page limit (default 100)

@@ -27,7 +27,7 @@ public partial class Schematic
         API = new SchematicApi(apiKey, _options.WithHttpClient(httpClient));
 
         _eventBuffer = _options.EventBuffer ?? new EventBuffer<CreateEventRequestBody>(
-            async items => 
+            async items =>
             {
                 var request = new CreateEventBatchRequestBody
                 {
@@ -53,7 +53,7 @@ public partial class Schematic
 
     public async Task<bool> CheckFlag(string flagKey, Dictionary<string, string>? company = null, Dictionary<string, string>? user = null)
     {
-       
+
         if (_offline)
             return GetFlagDefault(flagKey);
 
@@ -80,13 +80,11 @@ public partial class Schematic
                 Company = company,
                 User = user
             };
-      
+
             var response = await API.Features.CheckFlagAsync(flagKey, requestBody);
-                  
-           
-           
+
             if (response == null){
-            
+
                 return GetFlagDefault(flagKey);
             }
 
@@ -105,7 +103,7 @@ public partial class Schematic
         }
     }
 
-    public void Identify(Dictionary<string, string> keys, EventBodyIdentifyCompany? company = null, string? name = null, Dictionary<string, OneOf<string, double, bool, OneOf<string, double, bool>>>? traits = null)
+    public void Identify(Dictionary<string, string> keys, EventBodyIdentifyCompany? company = null, string? name = null, Dictionary<string, object>? traits = null)
     {
         EnqueueEvent(CreateEventRequestBodyEventType.Identify, new EventBodyIdentify
         {
@@ -116,7 +114,7 @@ public partial class Schematic
         });
     }
 
-    public void Track(string eventName, Dictionary<string, string>? company = null, Dictionary<string, string>? user = null, Dictionary<string, OneOf<string, double, bool, OneOf<string, double, bool>>>? traits = null)
+    public void Track(string eventName, Dictionary<string, string>? company = null, Dictionary<string, string>? user = null, Dictionary<string, object>? traits = null)
     {
         EnqueueEvent(CreateEventRequestBodyEventType.Track, new EventBodyTrack
         {

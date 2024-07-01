@@ -1,5 +1,4 @@
 using System.Text.Json.Serialization;
-using OneOf;
 
 #nullable enable
 
@@ -23,8 +22,5 @@ public class EventBodyIdentifyCompany
     /// A map of trait names to trait values
     /// </summary>
     [JsonPropertyName("traits")]
-    public Dictionary<
-        string,
-        OneOf<string, double, bool, OneOf<string, double, bool>>
-    >? Traits { get; init; }
+    public Dictionary<string, object>? Traits { get; init; }
 }

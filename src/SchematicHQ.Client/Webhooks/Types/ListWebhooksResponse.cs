@@ -11,7 +11,7 @@ public class ListWebhooksResponse
     /// The returned resources
     /// </summary>
     [JsonPropertyName("data")]
-    public List<WebhookResponseData> Data { get; init; }
+    public IEnumerable<WebhookResponseData> Data { get; init; }
 
     /// <summary>
     /// Input parameters

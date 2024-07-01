@@ -33,17 +33,17 @@ public class WebhooksClient
         }
         if (request.Limit != null)
         {
-            _query["limit"] = request.Limit;
+            _query["limit"] = request.Limit.ToString();
         }
         if (request.Offset != null)
         {
-            _query["offset"] = request.Offset;
+            _query["offset"] = request.Offset.ToString();
         }
         var response = await _client.MakeRequestAsync(
-            new RawClient.ApiRequest
+            new RawClient.JsonApiRequest
             {
                 Method = HttpMethod.Get,
-                Path = "/webhook-events",
+                Path = "webhook-events",
                 Query = _query
             }
         );
@@ -58,10 +58,10 @@ public class WebhooksClient
     public async Task<GetWebhookEventResponse> GetWebhookEventAsync(string webhookEventId)
     {
         var response = await _client.MakeRequestAsync(
-            new RawClient.ApiRequest
+            new RawClient.JsonApiRequest
             {
                 Method = HttpMethod.Get,
-                Path = $"/webhook-events/{webhookEventId}"
+                Path = $"webhook-events/{webhookEventId}"
             }
         );
         string responseBody = await response.Raw.Content.ReadAsStringAsync();
@@ -91,17 +91,17 @@ public class WebhooksClient
         }
         if (request.Limit != null)
         {
-            _query["limit"] = request.Limit;
+            _query["limit"] = request.Limit.ToString();
         }
         if (request.Offset != null)
         {
-            _query["offset"] = request.Offset;
+            _query["offset"] = request.Offset.ToString();
         }
         var response = await _client.MakeRequestAsync(
-            new RawClient.ApiRequest
+            new RawClient.JsonApiRequest
             {
                 Method = HttpMethod.Get,
-                Path = "/webhook-events/count",
+                Path = "webhook-events/count",
                 Query = _query
             }
         );
@@ -122,17 +122,17 @@ public class WebhooksClient
         }
         if (request.Limit != null)
         {
-            _query["limit"] = request.Limit;
+            _query["limit"] = request.Limit.ToString();
         }
         if (request.Offset != null)
         {
-            _query["offset"] = request.Offset;
+            _query["offset"] = request.Offset.ToString();
         }
         var response = await _client.MakeRequestAsync(
-            new RawClient.ApiRequest
+            new RawClient.JsonApiRequest
             {
                 Method = HttpMethod.Get,
-                Path = "/webhooks",
+                Path = "webhooks",
                 Query = _query
             }
         );
@@ -147,10 +147,10 @@ public class WebhooksClient
     public async Task<CreateWebhookResponse> CreateWebhookAsync(CreateWebhookRequestBody request)
     {
         var response = await _client.MakeRequestAsync(
-            new RawClient.ApiRequest
+            new RawClient.JsonApiRequest
             {
                 Method = HttpMethod.Post,
-                Path = "/webhooks",
+                Path = "webhooks",
                 Body = request
             }
         );
@@ -165,7 +165,7 @@ public class WebhooksClient
     public async Task<GetWebhookResponse> GetWebhookAsync(string webhookId)
     {
         var response = await _client.MakeRequestAsync(
-            new RawClient.ApiRequest { Method = HttpMethod.Get, Path = $"/webhooks/{webhookId}" }
+            new RawClient.JsonApiRequest { Method = HttpMethod.Get, Path = $"webhooks/{webhookId}" }
         );
         string responseBody = await response.Raw.Content.ReadAsStringAsync();
         if (response.StatusCode >= 200 && response.StatusCode < 400)
@@ -181,10 +181,10 @@ public class WebhooksClient
     )
     {
         var response = await _client.MakeRequestAsync(
-            new RawClient.ApiRequest
+            new RawClient.JsonApiRequest
             {
                 Method = HttpMethod.Put,
-                Path = $"/webhooks/{webhookId}",
+                Path = $"webhooks/{webhookId}",
                 Body = request
             }
         );
@@ -199,7 +199,11 @@ public class WebhooksClient
     public async Task<DeleteWebhookResponse> DeleteWebhookAsync(string webhookId)
     {
         var response = await _client.MakeRequestAsync(
-            new RawClient.ApiRequest { Method = HttpMethod.Delete, Path = $"/webhooks/{webhookId}" }
+            new RawClient.JsonApiRequest
+            {
+                Method = HttpMethod.Delete,
+                Path = $"webhooks/{webhookId}"
+            }
         );
         string responseBody = await response.Raw.Content.ReadAsStringAsync();
         if (response.StatusCode >= 200 && response.StatusCode < 400)
@@ -218,17 +222,17 @@ public class WebhooksClient
         }
         if (request.Limit != null)
         {
-            _query["limit"] = request.Limit;
+            _query["limit"] = request.Limit.ToString();
         }
         if (request.Offset != null)
         {
-            _query["offset"] = request.Offset;
+            _query["offset"] = request.Offset.ToString();
         }
         var response = await _client.MakeRequestAsync(
-            new RawClient.ApiRequest
+            new RawClient.JsonApiRequest
             {
                 Method = HttpMethod.Get,
-                Path = "/webhooks/count",
+                Path = "webhooks/count",
                 Query = _query
             }
         );

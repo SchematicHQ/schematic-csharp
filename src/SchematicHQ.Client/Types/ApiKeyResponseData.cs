@@ -25,7 +25,7 @@ public class ApiKeyResponseData
     public string Name { get; init; }
 
     [JsonPropertyName("scopes")]
-    public List<string> Scopes { get; init; }
+    public IEnumerable<string> Scopes { get; init; }
 
     [JsonPropertyName("updated_at")]
     public DateTime UpdatedAt { get; init; }

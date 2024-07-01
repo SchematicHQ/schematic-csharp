@@ -14,7 +14,7 @@ public class CreateEntityTraitDefinitionRequestBody
     public CreateEntityTraitDefinitionRequestBodyEntityType EntityType { get; init; }
 
     [JsonPropertyName("hierarchy")]
-    public List<string> Hierarchy { get; init; }
+    public IEnumerable<string> Hierarchy { get; init; }
 
     [JsonPropertyName("trait_type")]
     public CreateEntityTraitDefinitionRequestBodyTraitType TraitType { get; init; }

@@ -11,7 +11,7 @@ public class GetActiveDealsResponse
     /// The returned resources
     /// </summary>
     [JsonPropertyName("data")]
-    public List<CompanyCrmDealsResponseData> Data { get; init; }
+    public IEnumerable<CompanyCrmDealsResponseData> Data { get; init; }
 
     /// <summary>
     /// Input parameters

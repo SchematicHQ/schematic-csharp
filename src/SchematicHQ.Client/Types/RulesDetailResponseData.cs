@@ -11,5 +11,5 @@ public class RulesDetailResponseData
     public FlagResponseData? Flag { get; init; }
 
     [JsonPropertyName("rules")]
-    public List<RuleDetailResponseData> Rules { get; init; }
+    public IEnumerable<RuleDetailResponseData> Rules { get; init; }
 }

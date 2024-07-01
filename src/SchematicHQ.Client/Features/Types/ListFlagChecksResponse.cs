@@ -11,7 +11,7 @@ public class ListFlagChecksResponse
     /// The returned resources
     /// </summary>
     [JsonPropertyName("data")]
-    public List<FlagCheckLogDetailResponseData> Data { get; init; }
+    public IEnumerable<FlagCheckLogDetailResponseData> Data { get; init; }
 
     /// <summary>
     /// Input parameters

@@ -38,7 +38,7 @@ public class FlagDetailResponseData
     public string Name { get; init; }
 
     [JsonPropertyName("rules")]
-    public List<RuleDetailResponseData> Rules { get; init; }
+    public IEnumerable<RuleDetailResponseData> Rules { get; init; }
 
     [JsonPropertyName("updated_at")]
     public DateTime UpdatedAt { get; init; }

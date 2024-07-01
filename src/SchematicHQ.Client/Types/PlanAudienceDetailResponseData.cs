@@ -8,10 +8,10 @@ namespace SchematicHQ.Client;
 public class PlanAudienceDetailResponseData
 {
     [JsonPropertyName("condition_groups")]
-    public List<RuleConditionGroupDetailResponseData> ConditionGroups { get; init; }
+    public IEnumerable<RuleConditionGroupDetailResponseData> ConditionGroups { get; init; }
 
     [JsonPropertyName("conditions")]
-    public List<RuleConditionDetailResponseData> Conditions { get; init; }
+    public IEnumerable<RuleConditionDetailResponseData> Conditions { get; init; }
 
     [JsonPropertyName("created_at")]
     public DateTime CreatedAt { get; init; }

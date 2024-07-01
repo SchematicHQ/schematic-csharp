@@ -11,7 +11,7 @@ public class ListEventsResponse
     /// The returned resources
     /// </summary>
     [JsonPropertyName("data")]
-    public List<EventDetailResponseData> Data { get; init; }
+    public IEnumerable<EventDetailResponseData> Data { get; init; }
 
     /// <summary>
     /// Input parameters

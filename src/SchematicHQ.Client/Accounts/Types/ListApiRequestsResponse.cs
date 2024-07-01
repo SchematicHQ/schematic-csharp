@@ -11,7 +11,7 @@ public class ListApiRequestsResponse
     /// The returned resources
     /// </summary>
     [JsonPropertyName("data")]
-    public List<ApiKeyRequestListResponseData> Data { get; init; }
+    public IEnumerable<ApiKeyRequestListResponseData> Data { get; init; }
 
     /// <summary>
     /// Input parameters

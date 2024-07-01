@@ -1,5 +1,4 @@
 using System.Text.Json.Serialization;
-using OneOf;
 
 #nullable enable
 
@@ -11,10 +10,7 @@ public class EventResponseData
     public string? ApiKey { get; init; }
 
     [JsonPropertyName("body")]
-    public Dictionary<
-        string,
-        OneOf<string, double, bool, OneOf<string, double, bool>>
-    > Body { get; init; }
+    public Dictionary<string, object> Body { get; init; }
 
     [JsonPropertyName("body_preview")]
     public string BodyPreview { get; init; }
@@ -35,7 +31,7 @@ public class EventResponseData
     public string? ErrorMessage { get; init; }
 
     [JsonPropertyName("feature_ids")]
-    public List<string> FeatureIds { get; init; }
+    public IEnumerable<string> FeatureIds { get; init; }
 
     [JsonPropertyName("id")]
     public string Id { get; init; }

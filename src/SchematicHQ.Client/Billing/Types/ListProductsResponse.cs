@@ -11,7 +11,7 @@ public class ListProductsResponse
     /// The returned resources
     /// </summary>
     [JsonPropertyName("data")]
-    public List<BillingProductResponseData> Data { get; init; }
+    public IEnumerable<BillingProductResponseData> Data { get; init; }
 
     /// <summary>
     /// Input parameters

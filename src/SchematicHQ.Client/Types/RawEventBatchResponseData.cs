@@ -8,5 +8,5 @@ namespace SchematicHQ.Client;
 public class RawEventBatchResponseData
 {
     [JsonPropertyName("events")]
-    public List<RawEventResponseData> Events { get; init; }
+    public IEnumerable<RawEventResponseData> Events { get; init; }
 }

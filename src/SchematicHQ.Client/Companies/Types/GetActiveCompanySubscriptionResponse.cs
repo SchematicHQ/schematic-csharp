@@ -11,7 +11,7 @@ public class GetActiveCompanySubscriptionResponse
     /// The returned resources
     /// </summary>
     [JsonPropertyName("data")]
-    public List<CompanySubscriptionResponseData> Data { get; init; }
+    public IEnumerable<CompanySubscriptionResponseData> Data { get; init; }
 
     /// <summary>
     /// Input parameters

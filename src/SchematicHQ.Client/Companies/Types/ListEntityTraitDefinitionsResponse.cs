@@ -11,7 +11,7 @@ public class ListEntityTraitDefinitionsResponse
     /// The returned resources
     /// </summary>
     [JsonPropertyName("data")]
-    public List<EntityTraitDefinitionResponseData> Data { get; init; }
+    public IEnumerable<EntityTraitDefinitionResponseData> Data { get; init; }
 
     /// <summary>
     /// Input parameters

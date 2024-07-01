@@ -8,5 +8,5 @@ namespace SchematicHQ.Client;
 public class CheckFlagsResponseData
 {
     [JsonPropertyName("flags")]
-    public List<CheckFlagOutputWithFlagKey> Flags { get; init; }
+    public IEnumerable<CheckFlagOutputWithFlagKey> Flags { get; init; }
 }

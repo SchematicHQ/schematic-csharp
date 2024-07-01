@@ -11,7 +11,7 @@ public class GetLatestFlagChecksResponse
     /// The returned resources
     /// </summary>
     [JsonPropertyName("data")]
-    public List<FlagCheckLogResponseData> Data { get; init; }
+    public IEnumerable<FlagCheckLogResponseData> Data { get; init; }
 
     /// <summary>
     /// Input parameters

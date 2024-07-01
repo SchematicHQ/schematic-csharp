@@ -11,7 +11,7 @@ public class ListCompanyOverridesResponse
     /// The returned resources
     /// </summary>
     [JsonPropertyName("data")]
-    public List<CompanyOverrideResponseData> Data { get; init; }
+    public IEnumerable<CompanyOverrideResponseData> Data { get; init; }
 
     /// <summary>
     /// Input parameters

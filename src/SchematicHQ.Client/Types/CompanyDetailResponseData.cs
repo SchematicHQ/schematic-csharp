@@ -11,7 +11,7 @@ public class CompanyDetailResponseData
     public DateTime CreatedAt { get; init; }
 
     [JsonPropertyName("entity_traits")]
-    public List<EntityTraitDetailResponseData> EntityTraits { get; init; }
+    public IEnumerable<EntityTraitDetailResponseData> EntityTraits { get; init; }
 
     [JsonPropertyName("environment_id")]
     public string EnvironmentId { get; init; }
@@ -20,7 +20,7 @@ public class CompanyDetailResponseData
     public string Id { get; init; }
 
     [JsonPropertyName("keys")]
-    public List<EntityKeyDetailResponseData> Keys { get; init; }
+    public IEnumerable<EntityKeyDetailResponseData> Keys { get; init; }
 
     [JsonPropertyName("last_seen_at")]
     public DateTime? LastSeenAt { get; init; }
@@ -32,7 +32,7 @@ public class CompanyDetailResponseData
     public string Name { get; init; }
 
     [JsonPropertyName("plans")]
-    public List<PreviewObject> Plans { get; init; }
+    public IEnumerable<PreviewObject> Plans { get; init; }
 
     /// <summary>
     /// A map of trait names to trait values

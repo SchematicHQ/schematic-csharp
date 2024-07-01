@@ -11,7 +11,7 @@ public class ListCrmProductsResponse
     /// The returned resources
     /// </summary>
     [JsonPropertyName("data")]
-    public List<CrmProductResponseData> Data { get; init; }
+    public IEnumerable<CrmProductResponseData> Data { get; init; }
 
     /// <summary>
     /// Input parameters

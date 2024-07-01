@@ -16,7 +16,7 @@ public partial class SchematicApi
                 { "X-Schematic-Api-Key", apiKey },
                 { "X-Fern-Language", "C#" },
                 { "X-Fern-SDK-Name", "SchematicHQ.Client" },
-                { "X-Fern-SDK-Version", "1.0.0-rc" },
+                { "X-Fern-SDK-Version", "0.0.15" },
             },
             clientOptions ?? new ClientOptions()
         );
@@ -51,7 +51,7 @@ public partial class SchematicApi
 
     private string GetFromEnvironmentOrThrow(string env, string message)
     {
-        var value = Environment.GetEnvironmentVariable(env);
+        var value = System.Environment.GetEnvironmentVariable(env);
         if (value == null)
         {
             throw new Exception(message);

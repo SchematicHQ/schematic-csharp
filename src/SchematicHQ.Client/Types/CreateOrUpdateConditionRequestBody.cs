@@ -44,7 +44,7 @@ public class CreateOrUpdateConditionRequestBody
     /// List of resource IDs (companies, users, or plans) targeted by this condition
     /// </summary>
     [JsonPropertyName("resource_ids")]
-    public List<string> ResourceIds { get; init; }
+    public IEnumerable<string> ResourceIds { get; init; }
 
     /// <summary>
     /// ID of trait to use to measure this condition

@@ -23,7 +23,7 @@ public class FeatureDetailResponseData
     public string FeatureType { get; init; }
 
     [JsonPropertyName("flags")]
-    public List<FlagDetailResponseData> Flags { get; init; }
+    public IEnumerable<FlagDetailResponseData> Flags { get; init; }
 
     [JsonPropertyName("id")]
     public string Id { get; init; }
@@ -35,7 +35,7 @@ public class FeatureDetailResponseData
     public string Name { get; init; }
 
     [JsonPropertyName("plans")]
-    public List<PreviewObject> Plans { get; init; }
+    public IEnumerable<PreviewObject> Plans { get; init; }
 
     [JsonPropertyName("trait")]
     public EntityTraitDefinitionResponseData? Trait { get; init; }

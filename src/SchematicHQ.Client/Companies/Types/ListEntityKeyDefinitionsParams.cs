@@ -1,4 +1,5 @@
 using System.Text.Json.Serialization;
+using SchematicHQ.Client;
 
 #nullable enable
 
@@ -7,10 +8,10 @@ namespace SchematicHQ.Client;
 public class ListEntityKeyDefinitionsParams
 {
     [JsonPropertyName("entity_type")]
-    public string? EntityType { get; init; }
+    public ListEntityKeyDefinitionsResponseParamsEntityType? EntityType { get; init; }
 
     [JsonPropertyName("ids")]
-    public List<string>? Ids { get; init; }
+    public IEnumerable<string>? Ids { get; init; }
 
     [JsonPropertyName("key")]
     public string? Key { get; init; }

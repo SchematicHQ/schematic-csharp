@@ -8,5 +8,5 @@ namespace SchematicHQ.Client;
 public class UpdateFlagRulesRequestBody
 {
     [JsonPropertyName("rules")]
-    public List<CreateOrUpdateRuleRequestBody> Rules { get; init; }
+    public IEnumerable<CreateOrUpdateRuleRequestBody> Rules { get; init; }
 }

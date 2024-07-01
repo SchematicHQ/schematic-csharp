@@ -19,10 +19,10 @@ public class BillingClient
     )
     {
         var response = await _client.MakeRequestAsync(
-            new RawClient.ApiRequest
+            new RawClient.JsonApiRequest
             {
                 Method = HttpMethod.Post,
-                Path = "/billing/product/upsert",
+                Path = "billing/product/upsert",
                 Body = request
             }
         );
@@ -47,17 +47,17 @@ public class BillingClient
         }
         if (request.Limit != null)
         {
-            _query["limit"] = request.Limit;
+            _query["limit"] = request.Limit.ToString();
         }
         if (request.Offset != null)
         {
-            _query["offset"] = request.Offset;
+            _query["offset"] = request.Offset.ToString();
         }
         var response = await _client.MakeRequestAsync(
-            new RawClient.ApiRequest
+            new RawClient.JsonApiRequest
             {
                 Method = HttpMethod.Get,
-                Path = "/billing/products",
+                Path = "billing/products",
                 Query = _query
             }
         );
@@ -74,10 +74,10 @@ public class BillingClient
     )
     {
         var response = await _client.MakeRequestAsync(
-            new RawClient.ApiRequest
+            new RawClient.JsonApiRequest
             {
                 Method = HttpMethod.Post,
-                Path = "/billing/subscription/upsert",
+                Path = "billing/subscription/upsert",
                 Body = request
             }
         );

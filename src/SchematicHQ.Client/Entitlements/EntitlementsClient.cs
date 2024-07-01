@@ -41,17 +41,17 @@ public class EntitlementsClient
         }
         if (request.Limit != null)
         {
-            _query["limit"] = request.Limit;
+            _query["limit"] = request.Limit.ToString();
         }
         if (request.Offset != null)
         {
-            _query["offset"] = request.Offset;
+            _query["offset"] = request.Offset.ToString();
         }
         var response = await _client.MakeRequestAsync(
-            new RawClient.ApiRequest
+            new RawClient.JsonApiRequest
             {
                 Method = HttpMethod.Get,
-                Path = "/company-overrides",
+                Path = "company-overrides",
                 Query = _query
             }
         );
@@ -68,10 +68,10 @@ public class EntitlementsClient
     )
     {
         var response = await _client.MakeRequestAsync(
-            new RawClient.ApiRequest
+            new RawClient.JsonApiRequest
             {
                 Method = HttpMethod.Post,
-                Path = "/company-overrides",
+                Path = "company-overrides",
                 Body = request
             }
         );
@@ -86,10 +86,10 @@ public class EntitlementsClient
     public async Task<GetCompanyOverrideResponse> GetCompanyOverrideAsync(string companyOverrideId)
     {
         var response = await _client.MakeRequestAsync(
-            new RawClient.ApiRequest
+            new RawClient.JsonApiRequest
             {
                 Method = HttpMethod.Get,
-                Path = $"/company-overrides/{companyOverrideId}"
+                Path = $"company-overrides/{companyOverrideId}"
             }
         );
         string responseBody = await response.Raw.Content.ReadAsStringAsync();
@@ -106,10 +106,10 @@ public class EntitlementsClient
     )
     {
         var response = await _client.MakeRequestAsync(
-            new RawClient.ApiRequest
+            new RawClient.JsonApiRequest
             {
                 Method = HttpMethod.Put,
-                Path = $"/company-overrides/{companyOverrideId}",
+                Path = $"company-overrides/{companyOverrideId}",
                 Body = request
             }
         );
@@ -126,10 +126,10 @@ public class EntitlementsClient
     )
     {
         var response = await _client.MakeRequestAsync(
-            new RawClient.ApiRequest
+            new RawClient.JsonApiRequest
             {
                 Method = HttpMethod.Delete,
-                Path = $"/company-overrides/{companyOverrideId}"
+                Path = $"company-overrides/{companyOverrideId}"
             }
         );
         string responseBody = await response.Raw.Content.ReadAsStringAsync();
@@ -167,17 +167,17 @@ public class EntitlementsClient
         }
         if (request.Limit != null)
         {
-            _query["limit"] = request.Limit;
+            _query["limit"] = request.Limit.ToString();
         }
         if (request.Offset != null)
         {
-            _query["offset"] = request.Offset;
+            _query["offset"] = request.Offset.ToString();
         }
         var response = await _client.MakeRequestAsync(
-            new RawClient.ApiRequest
+            new RawClient.JsonApiRequest
             {
                 Method = HttpMethod.Get,
-                Path = "/company-overrides/count",
+                Path = "company-overrides/count",
                 Query = _query
             }
         );
@@ -200,17 +200,17 @@ public class EntitlementsClient
         }
         if (request.Limit != null)
         {
-            _query["limit"] = request.Limit;
+            _query["limit"] = request.Limit.ToString();
         }
         if (request.Offset != null)
         {
-            _query["offset"] = request.Offset;
+            _query["offset"] = request.Offset.ToString();
         }
         var response = await _client.MakeRequestAsync(
-            new RawClient.ApiRequest
+            new RawClient.JsonApiRequest
             {
                 Method = HttpMethod.Get,
-                Path = "/feature-companies",
+                Path = "feature-companies",
                 Query = _query
             }
         );
@@ -233,17 +233,17 @@ public class EntitlementsClient
         }
         if (request.Limit != null)
         {
-            _query["limit"] = request.Limit;
+            _query["limit"] = request.Limit.ToString();
         }
         if (request.Offset != null)
         {
-            _query["offset"] = request.Offset;
+            _query["offset"] = request.Offset.ToString();
         }
         var response = await _client.MakeRequestAsync(
-            new RawClient.ApiRequest
+            new RawClient.JsonApiRequest
             {
                 Method = HttpMethod.Get,
-                Path = "/feature-companies/count",
+                Path = "feature-companies/count",
                 Query = _query
             }
         );
@@ -266,7 +266,7 @@ public class EntitlementsClient
         }
         if (request.CompanyKeys != null)
         {
-            _query["company_keys"] = request.CompanyKeys;
+            _query["company_keys"] = request.CompanyKeys.ToString();
         }
         if (request.FeatureIds != null)
         {
@@ -278,17 +278,17 @@ public class EntitlementsClient
         }
         if (request.Limit != null)
         {
-            _query["limit"] = request.Limit;
+            _query["limit"] = request.Limit.ToString();
         }
         if (request.Offset != null)
         {
-            _query["offset"] = request.Offset;
+            _query["offset"] = request.Offset.ToString();
         }
         var response = await _client.MakeRequestAsync(
-            new RawClient.ApiRequest
+            new RawClient.JsonApiRequest
             {
                 Method = HttpMethod.Get,
-                Path = "/feature-usage",
+                Path = "feature-usage",
                 Query = _query
             }
         );
@@ -311,7 +311,7 @@ public class EntitlementsClient
         }
         if (request.CompanyKeys != null)
         {
-            _query["company_keys"] = request.CompanyKeys;
+            _query["company_keys"] = request.CompanyKeys.ToString();
         }
         if (request.FeatureIds != null)
         {
@@ -323,17 +323,17 @@ public class EntitlementsClient
         }
         if (request.Limit != null)
         {
-            _query["limit"] = request.Limit;
+            _query["limit"] = request.Limit.ToString();
         }
         if (request.Offset != null)
         {
-            _query["offset"] = request.Offset;
+            _query["offset"] = request.Offset.ToString();
         }
         var response = await _client.MakeRequestAsync(
-            new RawClient.ApiRequest
+            new RawClient.JsonApiRequest
             {
                 Method = HttpMethod.Get,
-                Path = "/feature-usage/count",
+                Path = "feature-usage/count",
                 Query = _query
             }
         );
@@ -356,17 +356,17 @@ public class EntitlementsClient
         }
         if (request.Limit != null)
         {
-            _query["limit"] = request.Limit;
+            _query["limit"] = request.Limit.ToString();
         }
         if (request.Offset != null)
         {
-            _query["offset"] = request.Offset;
+            _query["offset"] = request.Offset.ToString();
         }
         var response = await _client.MakeRequestAsync(
-            new RawClient.ApiRequest
+            new RawClient.JsonApiRequest
             {
                 Method = HttpMethod.Get,
-                Path = "/feature-users",
+                Path = "feature-users",
                 Query = _query
             }
         );
@@ -389,17 +389,17 @@ public class EntitlementsClient
         }
         if (request.Limit != null)
         {
-            _query["limit"] = request.Limit;
+            _query["limit"] = request.Limit.ToString();
         }
         if (request.Offset != null)
         {
-            _query["offset"] = request.Offset;
+            _query["offset"] = request.Offset.ToString();
         }
         var response = await _client.MakeRequestAsync(
-            new RawClient.ApiRequest
+            new RawClient.JsonApiRequest
             {
                 Method = HttpMethod.Get,
-                Path = "/feature-users/count",
+                Path = "feature-users/count",
                 Query = _query
             }
         );
@@ -436,19 +436,23 @@ public class EntitlementsClient
         {
             _query["plan_ids"] = request.PlanIds;
         }
+        if (request.Q != null)
+        {
+            _query["q"] = request.Q;
+        }
         if (request.Limit != null)
         {
-            _query["limit"] = request.Limit;
+            _query["limit"] = request.Limit.ToString();
         }
         if (request.Offset != null)
         {
-            _query["offset"] = request.Offset;
+            _query["offset"] = request.Offset.ToString();
         }
         var response = await _client.MakeRequestAsync(
-            new RawClient.ApiRequest
+            new RawClient.JsonApiRequest
             {
                 Method = HttpMethod.Get,
-                Path = "/plan-entitlements",
+                Path = "plan-entitlements",
                 Query = _query
             }
         );
@@ -465,10 +469,10 @@ public class EntitlementsClient
     )
     {
         var response = await _client.MakeRequestAsync(
-            new RawClient.ApiRequest
+            new RawClient.JsonApiRequest
             {
                 Method = HttpMethod.Post,
-                Path = "/plan-entitlements",
+                Path = "plan-entitlements",
                 Body = request
             }
         );
@@ -483,10 +487,10 @@ public class EntitlementsClient
     public async Task<GetPlanEntitlementResponse> GetPlanEntitlementAsync(string planEntitlementId)
     {
         var response = await _client.MakeRequestAsync(
-            new RawClient.ApiRequest
+            new RawClient.JsonApiRequest
             {
                 Method = HttpMethod.Get,
-                Path = $"/plan-entitlements/{planEntitlementId}"
+                Path = $"plan-entitlements/{planEntitlementId}"
             }
         );
         string responseBody = await response.Raw.Content.ReadAsStringAsync();
@@ -503,10 +507,10 @@ public class EntitlementsClient
     )
     {
         var response = await _client.MakeRequestAsync(
-            new RawClient.ApiRequest
+            new RawClient.JsonApiRequest
             {
                 Method = HttpMethod.Put,
-                Path = $"/plan-entitlements/{planEntitlementId}",
+                Path = $"plan-entitlements/{planEntitlementId}",
                 Body = request
             }
         );
@@ -523,10 +527,10 @@ public class EntitlementsClient
     )
     {
         var response = await _client.MakeRequestAsync(
-            new RawClient.ApiRequest
+            new RawClient.JsonApiRequest
             {
                 Method = HttpMethod.Delete,
-                Path = $"/plan-entitlements/{planEntitlementId}"
+                Path = $"plan-entitlements/{planEntitlementId}"
             }
         );
         string responseBody = await response.Raw.Content.ReadAsStringAsync();
@@ -562,19 +566,23 @@ public class EntitlementsClient
         {
             _query["plan_ids"] = request.PlanIds;
         }
+        if (request.Q != null)
+        {
+            _query["q"] = request.Q;
+        }
         if (request.Limit != null)
         {
-            _query["limit"] = request.Limit;
+            _query["limit"] = request.Limit.ToString();
         }
         if (request.Offset != null)
         {
-            _query["offset"] = request.Offset;
+            _query["offset"] = request.Offset.ToString();
         }
         var response = await _client.MakeRequestAsync(
-            new RawClient.ApiRequest
+            new RawClient.JsonApiRequest
             {
                 Method = HttpMethod.Get,
-                Path = "/plan-entitlements/count",
+                Path = "plan-entitlements/count",
                 Query = _query
             }
         );
@@ -592,10 +600,10 @@ public class EntitlementsClient
     {
         var _query = new Dictionary<string, object>() { { "keys", request.Keys.ToString() }, };
         var response = await _client.MakeRequestAsync(
-            new RawClient.ApiRequest
+            new RawClient.JsonApiRequest
             {
                 Method = HttpMethod.Get,
-                Path = "/usage-by-company",
+                Path = "usage-by-company",
                 Query = _query
             }
         );

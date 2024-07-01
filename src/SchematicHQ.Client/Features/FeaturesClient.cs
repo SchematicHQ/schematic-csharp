@@ -19,10 +19,10 @@ public class FeaturesClient
     )
     {
         var response = await _client.MakeRequestAsync(
-            new RawClient.ApiRequest
+            new RawClient.JsonApiRequest
             {
                 Method = HttpMethod.Post,
-                Path = "/audience/count-companies",
+                Path = "audience/count-companies",
                 Body = request
             }
         );
@@ -39,10 +39,10 @@ public class FeaturesClient
     )
     {
         var response = await _client.MakeRequestAsync(
-            new RawClient.ApiRequest
+            new RawClient.JsonApiRequest
             {
                 Method = HttpMethod.Post,
-                Path = "/audience/count-users",
+                Path = "audience/count-users",
                 Body = request
             }
         );
@@ -59,10 +59,10 @@ public class FeaturesClient
     )
     {
         var response = await _client.MakeRequestAsync(
-            new RawClient.ApiRequest
+            new RawClient.JsonApiRequest
             {
                 Method = HttpMethod.Post,
-                Path = "/audience/get-companies",
+                Path = "audience/get-companies",
                 Body = request
             }
         );
@@ -77,10 +77,10 @@ public class FeaturesClient
     public async Task<ListAudienceUsersResponse> ListAudienceUsersAsync(AudienceRequestBody request)
     {
         var response = await _client.MakeRequestAsync(
-            new RawClient.ApiRequest
+            new RawClient.JsonApiRequest
             {
                 Method = HttpMethod.Post,
-                Path = "/audience/get-users",
+                Path = "audience/get-users",
                 Body = request
             }
         );
@@ -113,17 +113,17 @@ public class FeaturesClient
         }
         if (request.Limit != null)
         {
-            _query["limit"] = request.Limit;
+            _query["limit"] = request.Limit.ToString();
         }
         if (request.Offset != null)
         {
-            _query["offset"] = request.Offset;
+            _query["offset"] = request.Offset.ToString();
         }
         var response = await _client.MakeRequestAsync(
-            new RawClient.ApiRequest
+            new RawClient.JsonApiRequest
             {
                 Method = HttpMethod.Get,
-                Path = "/features",
+                Path = "features",
                 Query = _query
             }
         );
@@ -138,10 +138,10 @@ public class FeaturesClient
     public async Task<CreateFeatureResponse> CreateFeatureAsync(CreateFeatureRequestBody request)
     {
         var response = await _client.MakeRequestAsync(
-            new RawClient.ApiRequest
+            new RawClient.JsonApiRequest
             {
                 Method = HttpMethod.Post,
-                Path = "/features",
+                Path = "features",
                 Body = request
             }
         );
@@ -156,7 +156,7 @@ public class FeaturesClient
     public async Task<GetFeatureResponse> GetFeatureAsync(string featureId)
     {
         var response = await _client.MakeRequestAsync(
-            new RawClient.ApiRequest { Method = HttpMethod.Get, Path = $"/features/{featureId}" }
+            new RawClient.JsonApiRequest { Method = HttpMethod.Get, Path = $"features/{featureId}" }
         );
         string responseBody = await response.Raw.Content.ReadAsStringAsync();
         if (response.StatusCode >= 200 && response.StatusCode < 400)
@@ -172,10 +172,10 @@ public class FeaturesClient
     )
     {
         var response = await _client.MakeRequestAsync(
-            new RawClient.ApiRequest
+            new RawClient.JsonApiRequest
             {
                 Method = HttpMethod.Put,
-                Path = $"/features/{featureId}",
+                Path = $"features/{featureId}",
                 Body = request
             }
         );
@@ -190,7 +190,11 @@ public class FeaturesClient
     public async Task<DeleteFeatureResponse> DeleteFeatureAsync(string featureId)
     {
         var response = await _client.MakeRequestAsync(
-            new RawClient.ApiRequest { Method = HttpMethod.Delete, Path = $"/features/{featureId}" }
+            new RawClient.JsonApiRequest
+            {
+                Method = HttpMethod.Delete,
+                Path = $"features/{featureId}"
+            }
         );
         string responseBody = await response.Raw.Content.ReadAsStringAsync();
         if (response.StatusCode >= 200 && response.StatusCode < 400)
@@ -221,17 +225,17 @@ public class FeaturesClient
         }
         if (request.Limit != null)
         {
-            _query["limit"] = request.Limit;
+            _query["limit"] = request.Limit.ToString();
         }
         if (request.Offset != null)
         {
-            _query["offset"] = request.Offset;
+            _query["offset"] = request.Offset.ToString();
         }
         var response = await _client.MakeRequestAsync(
-            new RawClient.ApiRequest
+            new RawClient.JsonApiRequest
             {
                 Method = HttpMethod.Get,
-                Path = "/features/count",
+                Path = "features/count",
                 Query = _query
             }
         );
@@ -260,17 +264,17 @@ public class FeaturesClient
         }
         if (request.Limit != null)
         {
-            _query["limit"] = request.Limit;
+            _query["limit"] = request.Limit.ToString();
         }
         if (request.Offset != null)
         {
-            _query["offset"] = request.Offset;
+            _query["offset"] = request.Offset.ToString();
         }
         var response = await _client.MakeRequestAsync(
-            new RawClient.ApiRequest
+            new RawClient.JsonApiRequest
             {
                 Method = HttpMethod.Get,
-                Path = "/flag-checks",
+                Path = "flag-checks",
                 Query = _query
             }
         );
@@ -285,10 +289,10 @@ public class FeaturesClient
     public async Task<GetFlagCheckResponse> GetFlagCheckAsync(string flagCheckId)
     {
         var response = await _client.MakeRequestAsync(
-            new RawClient.ApiRequest
+            new RawClient.JsonApiRequest
             {
                 Method = HttpMethod.Get,
-                Path = $"/flag-checks/{flagCheckId}"
+                Path = $"flag-checks/{flagCheckId}"
             }
         );
         string responseBody = await response.Raw.Content.ReadAsStringAsync();
@@ -316,17 +320,17 @@ public class FeaturesClient
         }
         if (request.Limit != null)
         {
-            _query["limit"] = request.Limit;
+            _query["limit"] = request.Limit.ToString();
         }
         if (request.Offset != null)
         {
-            _query["offset"] = request.Offset;
+            _query["offset"] = request.Offset.ToString();
         }
         var response = await _client.MakeRequestAsync(
-            new RawClient.ApiRequest
+            new RawClient.JsonApiRequest
             {
                 Method = HttpMethod.Get,
-                Path = "/flag-checks/count",
+                Path = "flag-checks/count",
                 Query = _query
             }
         );
@@ -357,17 +361,17 @@ public class FeaturesClient
         }
         if (request.Limit != null)
         {
-            _query["limit"] = request.Limit;
+            _query["limit"] = request.Limit.ToString();
         }
         if (request.Offset != null)
         {
-            _query["offset"] = request.Offset;
+            _query["offset"] = request.Offset.ToString();
         }
         var response = await _client.MakeRequestAsync(
-            new RawClient.ApiRequest
+            new RawClient.JsonApiRequest
             {
                 Method = HttpMethod.Get,
-                Path = "/flag-checks/latest",
+                Path = "flag-checks/latest",
                 Query = _query
             }
         );
@@ -396,17 +400,17 @@ public class FeaturesClient
         }
         if (request.Limit != null)
         {
-            _query["limit"] = request.Limit;
+            _query["limit"] = request.Limit.ToString();
         }
         if (request.Offset != null)
         {
-            _query["offset"] = request.Offset;
+            _query["offset"] = request.Offset.ToString();
         }
         var response = await _client.MakeRequestAsync(
-            new RawClient.ApiRequest
+            new RawClient.JsonApiRequest
             {
                 Method = HttpMethod.Get,
-                Path = "/flags",
+                Path = "flags",
                 Query = _query
             }
         );
@@ -421,10 +425,10 @@ public class FeaturesClient
     public async Task<CreateFlagResponse> CreateFlagAsync(CreateFlagRequestBody request)
     {
         var response = await _client.MakeRequestAsync(
-            new RawClient.ApiRequest
+            new RawClient.JsonApiRequest
             {
                 Method = HttpMethod.Post,
-                Path = "/flags",
+                Path = "flags",
                 Body = request
             }
         );
@@ -439,7 +443,7 @@ public class FeaturesClient
     public async Task<GetFlagResponse> GetFlagAsync(string flagId)
     {
         var response = await _client.MakeRequestAsync(
-            new RawClient.ApiRequest { Method = HttpMethod.Get, Path = $"/flags/{flagId}" }
+            new RawClient.JsonApiRequest { Method = HttpMethod.Get, Path = $"flags/{flagId}" }
         );
         string responseBody = await response.Raw.Content.ReadAsStringAsync();
         if (response.StatusCode >= 200 && response.StatusCode < 400)
@@ -455,10 +459,10 @@ public class FeaturesClient
     )
     {
         var response = await _client.MakeRequestAsync(
-            new RawClient.ApiRequest
+            new RawClient.JsonApiRequest
             {
                 Method = HttpMethod.Put,
-                Path = $"/flags/{flagId}",
+                Path = $"flags/{flagId}",
                 Body = request
             }
         );
@@ -473,7 +477,7 @@ public class FeaturesClient
     public async Task<DeleteFlagResponse> DeleteFlagAsync(string flagId)
     {
         var response = await _client.MakeRequestAsync(
-            new RawClient.ApiRequest { Method = HttpMethod.Delete, Path = $"/flags/{flagId}" }
+            new RawClient.JsonApiRequest { Method = HttpMethod.Delete, Path = $"flags/{flagId}" }
         );
         string responseBody = await response.Raw.Content.ReadAsStringAsync();
         if (response.StatusCode >= 200 && response.StatusCode < 400)
@@ -489,10 +493,10 @@ public class FeaturesClient
     )
     {
         var response = await _client.MakeRequestAsync(
-            new RawClient.ApiRequest
+            new RawClient.JsonApiRequest
             {
                 Method = HttpMethod.Put,
-                Path = $"/flags/{flagId}/rules",
+                Path = $"flags/{flagId}/rules",
                 Body = request
             }
         );
@@ -507,10 +511,10 @@ public class FeaturesClient
     public async Task<CheckFlagResponse> CheckFlagAsync(string key, CheckFlagRequestBody request)
     {
         var response = await _client.MakeRequestAsync(
-            new RawClient.ApiRequest
+            new RawClient.JsonApiRequest
             {
                 Method = HttpMethod.Post,
-                Path = $"/flags/{key}/check",
+                Path = $"flags/{key}/check",
                 Body = request
             }
         );
@@ -525,10 +529,10 @@ public class FeaturesClient
     public async Task<CheckFlagsResponse> CheckFlagsAsync(CheckFlagRequestBody request)
     {
         var response = await _client.MakeRequestAsync(
-            new RawClient.ApiRequest
+            new RawClient.JsonApiRequest
             {
                 Method = HttpMethod.Post,
-                Path = "/flags/check",
+                Path = "flags/check",
                 Body = request
             }
         );
@@ -557,17 +561,17 @@ public class FeaturesClient
         }
         if (request.Limit != null)
         {
-            _query["limit"] = request.Limit;
+            _query["limit"] = request.Limit.ToString();
         }
         if (request.Offset != null)
         {
-            _query["offset"] = request.Offset;
+            _query["offset"] = request.Offset.ToString();
         }
         var response = await _client.MakeRequestAsync(
-            new RawClient.ApiRequest
+            new RawClient.JsonApiRequest
             {
                 Method = HttpMethod.Get,
-                Path = "/flags/count",
+                Path = "flags/count",
                 Query = _query
             }
         );

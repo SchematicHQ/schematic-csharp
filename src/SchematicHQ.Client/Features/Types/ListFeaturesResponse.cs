@@ -11,7 +11,7 @@ public class ListFeaturesResponse
     /// The returned resources
     /// </summary>
     [JsonPropertyName("data")]
-    public List<FeatureDetailResponseData> Data { get; init; }
+    public IEnumerable<FeatureDetailResponseData> Data { get; init; }
 
     /// <summary>
     /// Input parameters

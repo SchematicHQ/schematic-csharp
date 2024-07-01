@@ -1,4 +1,5 @@
 using System.Text.Json.Serialization;
+using SchematicHQ.Client;
 
 #nullable enable
 
@@ -10,7 +11,7 @@ public class UpdateWebhookRequestBody
     public string? Name { get; init; }
 
     [JsonPropertyName("request_types")]
-    public List<string>? RequestTypes { get; init; }
+    public IEnumerable<UpdateWebhookRequestBodyRequestTypesItem>? RequestTypes { get; init; }
 
     [JsonPropertyName("url")]
     public string? Url { get; init; }

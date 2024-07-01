@@ -12,6 +12,8 @@ public class CountPlanEntitlementsRequest
 
     public string? PlanIds { get; init; }
 
+    public string? Q { get; init; }
+
     /// <summary>
     /// Page limit (default 100)
     /// </summary>

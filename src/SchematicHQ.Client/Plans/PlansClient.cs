@@ -17,10 +17,10 @@ public class PlansClient
     public async Task<GetAudienceResponse> GetAudienceAsync(string planAudienceId)
     {
         var response = await _client.MakeRequestAsync(
-            new RawClient.ApiRequest
+            new RawClient.JsonApiRequest
             {
                 Method = HttpMethod.Get,
-                Path = $"/plan-audiences/{planAudienceId}"
+                Path = $"plan-audiences/{planAudienceId}"
             }
         );
         string responseBody = await response.Raw.Content.ReadAsStringAsync();
@@ -37,10 +37,10 @@ public class PlansClient
     )
     {
         var response = await _client.MakeRequestAsync(
-            new RawClient.ApiRequest
+            new RawClient.JsonApiRequest
             {
                 Method = HttpMethod.Put,
-                Path = $"/plan-audiences/{planAudienceId}",
+                Path = $"plan-audiences/{planAudienceId}",
                 Body = request
             }
         );
@@ -55,10 +55,10 @@ public class PlansClient
     public async Task<DeleteAudienceResponse> DeleteAudienceAsync(string planAudienceId)
     {
         var response = await _client.MakeRequestAsync(
-            new RawClient.ApiRequest
+            new RawClient.JsonApiRequest
             {
                 Method = HttpMethod.Delete,
-                Path = $"/plan-audiences/{planAudienceId}"
+                Path = $"plan-audiences/{planAudienceId}"
             }
         );
         string responseBody = await response.Raw.Content.ReadAsStringAsync();
@@ -90,17 +90,17 @@ public class PlansClient
         }
         if (request.Limit != null)
         {
-            _query["limit"] = request.Limit;
+            _query["limit"] = request.Limit.ToString();
         }
         if (request.Offset != null)
         {
-            _query["offset"] = request.Offset;
+            _query["offset"] = request.Offset.ToString();
         }
         var response = await _client.MakeRequestAsync(
-            new RawClient.ApiRequest
+            new RawClient.JsonApiRequest
             {
                 Method = HttpMethod.Get,
-                Path = "/plans",
+                Path = "plans",
                 Query = _query
             }
         );
@@ -115,10 +115,10 @@ public class PlansClient
     public async Task<CreatePlanResponse> CreatePlanAsync(CreatePlanRequestBody request)
     {
         var response = await _client.MakeRequestAsync(
-            new RawClient.ApiRequest
+            new RawClient.JsonApiRequest
             {
                 Method = HttpMethod.Post,
-                Path = "/plans",
+                Path = "plans",
                 Body = request
             }
         );
@@ -133,7 +133,7 @@ public class PlansClient
     public async Task<GetPlanResponse> GetPlanAsync(string planId)
     {
         var response = await _client.MakeRequestAsync(
-            new RawClient.ApiRequest { Method = HttpMethod.Get, Path = $"/plans/{planId}" }
+            new RawClient.JsonApiRequest { Method = HttpMethod.Get, Path = $"plans/{planId}" }
         );
         string responseBody = await response.Raw.Content.ReadAsStringAsync();
         if (response.StatusCode >= 200 && response.StatusCode < 400)
@@ -149,10 +149,10 @@ public class PlansClient
     )
     {
         var response = await _client.MakeRequestAsync(
-            new RawClient.ApiRequest
+            new RawClient.JsonApiRequest
             {
                 Method = HttpMethod.Put,
-                Path = $"/plans/{planId}",
+                Path = $"plans/{planId}",
                 Body = request
             }
         );
@@ -167,7 +167,7 @@ public class PlansClient
     public async Task<DeletePlanResponse> DeletePlanAsync(string planId)
     {
         var response = await _client.MakeRequestAsync(
-            new RawClient.ApiRequest { Method = HttpMethod.Delete, Path = $"/plans/{planId}" }
+            new RawClient.JsonApiRequest { Method = HttpMethod.Delete, Path = $"plans/{planId}" }
         );
         string responseBody = await response.Raw.Content.ReadAsStringAsync();
         if (response.StatusCode >= 200 && response.StatusCode < 400)
@@ -198,17 +198,17 @@ public class PlansClient
         }
         if (request.Limit != null)
         {
-            _query["limit"] = request.Limit;
+            _query["limit"] = request.Limit.ToString();
         }
         if (request.Offset != null)
         {
-            _query["offset"] = request.Offset;
+            _query["offset"] = request.Offset.ToString();
         }
         var response = await _client.MakeRequestAsync(
-            new RawClient.ApiRequest
+            new RawClient.JsonApiRequest
             {
                 Method = HttpMethod.Get,
-                Path = "/plans/count",
+                Path = "plans/count",
                 Query = _query
             }
         );
