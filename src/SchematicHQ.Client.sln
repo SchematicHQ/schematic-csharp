@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SchematicHQ.Client", "SchematicHQ.Client\SchematicHQ.Client.csproj", "{EBD4CF4C-350D-46AA-A99D-7304014BAF37}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SchematicHQ.Client", "SchematicHQ.Client\SchematicHQ.Client.csproj", "{6A39E647-F923-4508-81AE-30DB9B905AB2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SchematicHQ.Client.Test", "SchematicHQ.Client.Test\SchematicHQ.Client.Test.csproj", "{8412F3CF-8C8C-4A87-A39E-56894D4DAB79}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SchematicHQ.Client.Test", "SchematicHQ.Client.Test\SchematicHQ.Client.Test.csproj", "{80F38215-484B-4329-9AAA-B5973F14BF3A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -16,13 +16,13 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{EBD4CF4C-350D-46AA-A99D-7304014BAF37}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EBD4CF4C-350D-46AA-A99D-7304014BAF37}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EBD4CF4C-350D-46AA-A99D-7304014BAF37}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EBD4CF4C-350D-46AA-A99D-7304014BAF37}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8412F3CF-8C8C-4A87-A39E-56894D4DAB79}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8412F3CF-8C8C-4A87-A39E-56894D4DAB79}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8412F3CF-8C8C-4A87-A39E-56894D4DAB79}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8412F3CF-8C8C-4A87-A39E-56894D4DAB79}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6A39E647-F923-4508-81AE-30DB9B905AB2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6A39E647-F923-4508-81AE-30DB9B905AB2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6A39E647-F923-4508-81AE-30DB9B905AB2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6A39E647-F923-4508-81AE-30DB9B905AB2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{80F38215-484B-4329-9AAA-B5973F14BF3A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{80F38215-484B-4329-9AAA-B5973F14BF3A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{80F38215-484B-4329-9AAA-B5973F14BF3A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{80F38215-484B-4329-9AAA-B5973F14BF3A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

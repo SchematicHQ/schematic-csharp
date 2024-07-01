@@ -10,7 +10,7 @@ public class ListEntityKeyDefinitionsRequest
 
     public string? Ids { get; init; }
 
-    public string? Key { get; init; }
+    public string? Q { get; init; }
 
     /// <summary>
     /// Page limit (default 100)

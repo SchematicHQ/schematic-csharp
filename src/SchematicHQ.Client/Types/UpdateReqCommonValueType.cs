@@ -10,15 +10,15 @@ namespace SchematicHQ.Client;
 [JsonConverter(typeof(StringEnumSerializer<UpdateReqCommonValueType>))]
 public enum UpdateReqCommonValueType
 {
-    [EnumMember(Value = "Boolean")]
+    [EnumMember(Value = "boolean")]
     Boolean,
 
-    [EnumMember(Value = "Numeric")]
+    [EnumMember(Value = "numeric")]
     Numeric,
 
-    [EnumMember(Value = "Trait")]
+    [EnumMember(Value = "trait")]
     Trait,
 
-    [EnumMember(Value = "Unlimited")]
+    [EnumMember(Value = "unlimited")]
     Unlimited
 }

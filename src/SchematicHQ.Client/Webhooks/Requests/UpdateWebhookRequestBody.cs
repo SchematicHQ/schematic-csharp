@@ -13,6 +13,9 @@ public class UpdateWebhookRequestBody
     [JsonPropertyName("request_types")]
     public IEnumerable<UpdateWebhookRequestBodyRequestTypesItem>? RequestTypes { get; init; }
 
+    [JsonPropertyName("status")]
+    public UpdateWebhookRequestBodyStatus? Status { get; init; }
+
     [JsonPropertyName("url")]
     public string? Url { get; init; }
 }

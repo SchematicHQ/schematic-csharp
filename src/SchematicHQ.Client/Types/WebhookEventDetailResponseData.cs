@@ -13,6 +13,9 @@ public class WebhookEventDetailResponseData
     [JsonPropertyName("id")]
     public string Id { get; init; }
 
+    [JsonPropertyName("payload")]
+    public string Payload { get; init; }
+
     [JsonPropertyName("request_type")]
     public string RequestType { get; init; }
 
