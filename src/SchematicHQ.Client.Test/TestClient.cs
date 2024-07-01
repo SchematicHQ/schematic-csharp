@@ -153,7 +153,7 @@ namespace SchematicHQ.Client.Test
             var company = new EventBodyIdentifyCompany { Name = "test_company" };
 
             // Act
-            var identifyTask = Task.Run(() => _schematic.Identify(keys, company, "John Doe", new Dictionary<string, OneOf<string, double, bool, OneOf<string, double, bool>>>()));
+            var identifyTask = Task.Run(() => _schematic.Identify(keys, company, "John Doe", new Dictionary<string, object>()));
 
             // Assert
             await identifyTask; // Ensure the task completes
@@ -170,7 +170,7 @@ namespace SchematicHQ.Client.Test
             var user = new Dictionary<string, string> { { "user_id", "12345" } };
 
             // Act
-            var trackTask = Task.Run(() => _schematic.Track("event_name", company, user, new Dictionary<string, OneOf<string, double, bool, OneOf<string, double, bool>>>()));
+            var trackTask = Task.Run(() => _schematic.Track("event_name", company, user, new Dictionary<string, object>()));
 
             // Assert
             await trackTask; // Ensure the task completes
@@ -223,7 +223,7 @@ namespace SchematicHQ.Client.Test
             // Act
             for (int i = 0; i < 10; i++)
             {
-                _schematic.Identify(keys, company, "John Doe", new Dictionary<string, OneOf<string, double, bool, OneOf<string, double, bool>>>());
+                _schematic.Identify(keys, company, "John Doe", new Dictionary<string, object>());
             }
 
             // Assert
