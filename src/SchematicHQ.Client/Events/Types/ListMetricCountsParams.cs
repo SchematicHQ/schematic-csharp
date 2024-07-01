@@ -10,7 +10,7 @@ public class ListMetricCountsParams
     public string? CompanyId { get; init; }
 
     [JsonPropertyName("company_ids")]
-    public List<string>? CompanyIds { get; init; }
+    public IEnumerable<string>? CompanyIds { get; init; }
 
     [JsonPropertyName("end_time")]
     public DateTime? EndTime { get; init; }
@@ -19,7 +19,7 @@ public class ListMetricCountsParams
     public string? EventSubtype { get; init; }
 
     [JsonPropertyName("event_subtypes")]
-    public List<string>? EventSubtypes { get; init; }
+    public IEnumerable<string>? EventSubtypes { get; init; }
 
     [JsonPropertyName("grouping")]
     public string? Grouping { get; init; }

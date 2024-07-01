@@ -11,7 +11,7 @@ public class ListEnvironmentsResponse
     /// The returned resources
     /// </summary>
     [JsonPropertyName("data")]
-    public List<EnvironmentResponseData> Data { get; init; }
+    public IEnumerable<EnvironmentResponseData> Data { get; init; }
 
     /// <summary>
     /// Input parameters

@@ -11,7 +11,7 @@ public class ListPlansResponse
     /// The returned resources
     /// </summary>
     [JsonPropertyName("data")]
-    public List<PlanDetailResponseData> Data { get; init; }
+    public IEnumerable<PlanDetailResponseData> Data { get; init; }
 
     /// <summary>
     /// Input parameters

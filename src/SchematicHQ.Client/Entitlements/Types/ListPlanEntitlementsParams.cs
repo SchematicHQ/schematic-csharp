@@ -10,10 +10,10 @@ public class ListPlanEntitlementsParams
     public string? FeatureId { get; init; }
 
     [JsonPropertyName("feature_ids")]
-    public List<string>? FeatureIds { get; init; }
+    public IEnumerable<string>? FeatureIds { get; init; }
 
     [JsonPropertyName("ids")]
-    public List<string>? Ids { get; init; }
+    public IEnumerable<string>? Ids { get; init; }
 
     /// <summary>
     /// Page limit (default 100)
@@ -31,5 +31,8 @@ public class ListPlanEntitlementsParams
     public string? PlanId { get; init; }
 
     [JsonPropertyName("plan_ids")]
-    public List<string>? PlanIds { get; init; }
+    public IEnumerable<string>? PlanIds { get; init; }
+
+    [JsonPropertyName("q")]
+    public string? Q { get; init; }
 }

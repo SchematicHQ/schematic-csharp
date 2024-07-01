@@ -7,7 +7,7 @@ namespace SchematicHQ.Client;
 public class GetEventSummariesParams
 {
     [JsonPropertyName("event_subtypes")]
-    public List<string>? EventSubtypes { get; init; }
+    public IEnumerable<string>? EventSubtypes { get; init; }
 
     /// <summary>
     /// Page limit (default 100)

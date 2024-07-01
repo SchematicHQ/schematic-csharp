@@ -8,7 +8,7 @@ namespace SchematicHQ.Client;
 public class EnvironmentDetailResponseData
 {
     [JsonPropertyName("api_keys")]
-    public List<ApiKeyResponseData> ApiKeys { get; init; }
+    public IEnumerable<ApiKeyResponseData> ApiKeys { get; init; }
 
     [JsonPropertyName("created_at")]
     public DateTime CreatedAt { get; init; }

@@ -8,7 +8,7 @@ namespace SchematicHQ.Client;
 public class CreateOrUpdateConditionGroupRequestBody
 {
     [JsonPropertyName("conditions")]
-    public List<CreateOrUpdateConditionRequestBody> Conditions { get; init; }
+    public IEnumerable<CreateOrUpdateConditionRequestBody> Conditions { get; init; }
 
     [JsonPropertyName("flag_id")]
     public string? FlagId { get; init; }

@@ -17,7 +17,7 @@ public class CompanySubscriptionResponseData
     public string Interval { get; init; }
 
     [JsonPropertyName("products")]
-    public List<BillingProductResponseData> Products { get; init; }
+    public IEnumerable<BillingProductResponseData> Products { get; init; }
 
     [JsonPropertyName("subscription_external_id")]
     public string SubscriptionExternalId { get; init; }

@@ -20,5 +20,5 @@ public class CompanyCrmDealsResponseData
     public string? DealName { get; init; }
 
     [JsonPropertyName("line_items")]
-    public List<CrmDealLineItem> LineItems { get; init; }
+    public IEnumerable<CrmDealLineItem> LineItems { get; init; }
 }

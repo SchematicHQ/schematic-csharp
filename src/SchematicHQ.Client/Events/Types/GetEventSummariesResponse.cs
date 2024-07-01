@@ -11,7 +11,7 @@ public class GetEventSummariesResponse
     /// The returned resources
     /// </summary>
     [JsonPropertyName("data")]
-    public List<EventSummaryResponseData> Data { get; init; }
+    public IEnumerable<EventSummaryResponseData> Data { get; init; }
 
     /// <summary>
     /// Input parameters

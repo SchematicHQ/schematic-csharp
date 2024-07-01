@@ -8,13 +8,13 @@ namespace SchematicHQ.Client;
 public class UserDetailResponseData
 {
     [JsonPropertyName("company_memberships")]
-    public List<CompanyMembershipDetailResponseData> CompanyMemberships { get; init; }
+    public IEnumerable<CompanyMembershipDetailResponseData> CompanyMemberships { get; init; }
 
     [JsonPropertyName("created_at")]
     public DateTime CreatedAt { get; init; }
 
     [JsonPropertyName("entity_traits")]
-    public List<EntityTraitDetailResponseData> EntityTraits { get; init; }
+    public IEnumerable<EntityTraitDetailResponseData> EntityTraits { get; init; }
 
     [JsonPropertyName("environment_id")]
     public string EnvironmentId { get; init; }
@@ -23,7 +23,7 @@ public class UserDetailResponseData
     public string Id { get; init; }
 
     [JsonPropertyName("keys")]
-    public List<EntityKeyDetailResponseData> Keys { get; init; }
+    public IEnumerable<EntityKeyDetailResponseData> Keys { get; init; }
 
     [JsonPropertyName("last_seen_at")]
     public DateTime? LastSeenAt { get; init; }

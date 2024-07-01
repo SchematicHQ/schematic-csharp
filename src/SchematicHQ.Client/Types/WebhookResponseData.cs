@@ -16,7 +16,7 @@ public class WebhookResponseData
     public string Name { get; init; }
 
     [JsonPropertyName("request_types")]
-    public List<string> RequestTypes { get; init; }
+    public IEnumerable<string> RequestTypes { get; init; }
 
     [JsonPropertyName("status")]
     public string Status { get; init; }

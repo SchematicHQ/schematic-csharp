@@ -1,8 +1,12 @@
+using SchematicHQ.Client;
+
+#nullable enable
+
 namespace SchematicHQ.Client;
 
 public class CountEntityKeyDefinitionsRequest
 {
-    public string? EntityType { get; init; }
+    public CountEntityKeyDefinitionsRequestEntityType? EntityType { get; init; }
 
     public string? Ids { get; init; }
 

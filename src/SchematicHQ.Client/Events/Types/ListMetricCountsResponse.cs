@@ -11,7 +11,7 @@ public class ListMetricCountsResponse
     /// The returned resources
     /// </summary>
     [JsonPropertyName("data")]
-    public List<MetricCountsHourlyResponseData> Data { get; init; }
+    public IEnumerable<MetricCountsHourlyResponseData> Data { get; init; }
 
     /// <summary>
     /// Input parameters

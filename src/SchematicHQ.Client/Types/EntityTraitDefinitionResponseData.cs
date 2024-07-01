@@ -16,7 +16,7 @@ public class EntityTraitDefinitionResponseData
     public string EntityType { get; init; }
 
     [JsonPropertyName("hierarchy")]
-    public List<string> Hierarchy { get; init; }
+    public IEnumerable<string> Hierarchy { get; init; }
 
     [JsonPropertyName("id")]
     public string Id { get; init; }

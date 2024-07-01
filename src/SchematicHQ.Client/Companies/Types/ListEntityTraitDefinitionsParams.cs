@@ -1,4 +1,5 @@
 using System.Text.Json.Serialization;
+using SchematicHQ.Client;
 
 #nullable enable
 
@@ -7,10 +8,10 @@ namespace SchematicHQ.Client;
 public class ListEntityTraitDefinitionsParams
 {
     [JsonPropertyName("entity_type")]
-    public string? EntityType { get; init; }
+    public ListEntityTraitDefinitionsResponseParamsEntityType? EntityType { get; init; }
 
     [JsonPropertyName("ids")]
-    public List<string>? Ids { get; init; }
+    public IEnumerable<string>? Ids { get; init; }
 
     /// <summary>
     /// Page limit (default 100)
@@ -28,5 +29,5 @@ public class ListEntityTraitDefinitionsParams
     public string? Q { get; init; }
 
     [JsonPropertyName("trait_type")]
-    public string? TraitType { get; init; }
+    public ListEntityTraitDefinitionsResponseParamsTraitType? TraitType { get; init; }
 }

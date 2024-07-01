@@ -8,7 +8,7 @@ namespace SchematicHQ.Client;
 public class RuleConditionGroupDetailResponseData
 {
     [JsonPropertyName("conditions")]
-    public List<RuleConditionDetailResponseData> Conditions { get; init; }
+    public IEnumerable<RuleConditionDetailResponseData> Conditions { get; init; }
 
     [JsonPropertyName("created_at")]
     public DateTime CreatedAt { get; init; }

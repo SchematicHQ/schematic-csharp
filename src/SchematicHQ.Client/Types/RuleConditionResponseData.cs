@@ -43,7 +43,7 @@ public class RuleConditionResponseData
     public string? PlanId { get; init; }
 
     [JsonPropertyName("resource_ids")]
-    public List<string> ResourceIds { get; init; }
+    public IEnumerable<string> ResourceIds { get; init; }
 
     [JsonPropertyName("rule_id")]
     public string RuleId { get; init; }

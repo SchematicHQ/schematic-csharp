@@ -11,7 +11,7 @@ public class ListEntityKeyDefinitionsResponse
     /// The returned resources
     /// </summary>
     [JsonPropertyName("data")]
-    public List<EntityKeyDefinitionResponseData> Data { get; init; }
+    public IEnumerable<EntityKeyDefinitionResponseData> Data { get; init; }
 
     /// <summary>
     /// Input parameters

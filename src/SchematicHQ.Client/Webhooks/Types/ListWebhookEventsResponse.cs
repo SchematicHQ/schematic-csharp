@@ -11,7 +11,7 @@ public class ListWebhookEventsResponse
     /// The returned resources
     /// </summary>
     [JsonPropertyName("data")]
-    public List<WebhookEventDetailResponseData> Data { get; init; }
+    public IEnumerable<WebhookEventDetailResponseData> Data { get; init; }
 
     /// <summary>
     /// Input parameters

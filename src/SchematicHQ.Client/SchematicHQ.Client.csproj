@@ -2,10 +2,10 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFrameworks>net8.0;net7.0;net6.0</TargetFrameworks>
+        <TargetFrameworks>net8.0;net7.0;net6.0;</TargetFrameworks>
         <ImplicitUsings>enable</ImplicitUsings>
         <NuGetAudit>false</NuGetAudit>
-        <Version>1.0.0-rc</Version>
+        <Version>0.0.15</Version>
         <PackageReadmeFile>README.md</PackageReadmeFile>
         <PackageProjectUrl>https://github.com/schematichq/schematic-csharp</PackageProjectUrl>
     </PropertyGroup>
@@ -13,6 +13,8 @@
     <ItemGroup>
         <PackageReference Include="OneOf" Version="3.0.263" />
         <PackageReference Include="System.Text.Json" Version="8.0.3" />
+        <PackageReference Include="moq" Version="4.20.70" />
+        <PackageReference Include="Moq.Contrib.HttpClient" Version="1.4.0" />
     </ItemGroup>
 
     <ItemGroup>

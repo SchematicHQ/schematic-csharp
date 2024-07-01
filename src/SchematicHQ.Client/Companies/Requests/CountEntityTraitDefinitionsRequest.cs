@@ -1,12 +1,16 @@
+using SchematicHQ.Client;
+
+#nullable enable
+
 namespace SchematicHQ.Client;
 
 public class CountEntityTraitDefinitionsRequest
 {
-    public string? EntityType { get; init; }
+    public CountEntityTraitDefinitionsRequestEntityType? EntityType { get; init; }
 
     public string? Ids { get; init; }
 
-    public string? TraitType { get; init; }
+    public CountEntityTraitDefinitionsRequestTraitType? TraitType { get; init; }
 
     public string? Q { get; init; }
 

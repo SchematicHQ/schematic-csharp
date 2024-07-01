@@ -1,12 +1,16 @@
+using SchematicHQ.Client;
+
+#nullable enable
+
 namespace SchematicHQ.Client;
 
 public class ListEntityTraitDefinitionsRequest
 {
-    public string? EntityType { get; init; }
+    public ListEntityTraitDefinitionsRequestEntityType? EntityType { get; init; }
 
     public string? Ids { get; init; }
 
-    public string? TraitType { get; init; }
+    public ListEntityTraitDefinitionsRequestTraitType? TraitType { get; init; }
 
     public string? Q { get; init; }
 

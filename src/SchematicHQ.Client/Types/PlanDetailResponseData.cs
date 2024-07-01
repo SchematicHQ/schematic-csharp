@@ -17,7 +17,7 @@ public class PlanDetailResponseData
     public string Description { get; init; }
 
     [JsonPropertyName("features")]
-    public List<FeatureDetailResponseData> Features { get; init; }
+    public IEnumerable<FeatureDetailResponseData> Features { get; init; }
 
     [JsonPropertyName("id")]
     public string Id { get; init; }

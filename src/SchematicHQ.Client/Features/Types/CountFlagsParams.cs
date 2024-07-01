@@ -10,7 +10,7 @@ public class CountFlagsParams
     public string? FeatureId { get; init; }
 
     [JsonPropertyName("ids")]
-    public List<string>? Ids { get; init; }
+    public IEnumerable<string>? Ids { get; init; }
 
     /// <summary>
     /// Page limit (default 100)

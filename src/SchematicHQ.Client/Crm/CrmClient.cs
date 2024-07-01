@@ -19,10 +19,10 @@ public class CrmClient
     )
     {
         var response = await _client.MakeRequestAsync(
-            new RawClient.ApiRequest
+            new RawClient.JsonApiRequest
             {
                 Method = HttpMethod.Post,
-                Path = "/crm/associations/deal-line-item",
+                Path = "crm/associations/deal-line-item",
                 Body = request
             }
         );
@@ -39,10 +39,10 @@ public class CrmClient
     )
     {
         var response = await _client.MakeRequestAsync(
-            new RawClient.ApiRequest
+            new RawClient.JsonApiRequest
             {
                 Method = HttpMethod.Post,
-                Path = "/crm/deal-line-item/upsert",
+                Path = "crm/deal-line-item/upsert",
                 Body = request
             }
         );
@@ -57,10 +57,10 @@ public class CrmClient
     public async Task<UpsertCrmDealResponse> UpsertCrmDealAsync(CreateCrmDealRequestBody request)
     {
         var response = await _client.MakeRequestAsync(
-            new RawClient.ApiRequest
+            new RawClient.JsonApiRequest
             {
                 Method = HttpMethod.Post,
-                Path = "/crm/deals/upsert",
+                Path = "crm/deals/upsert",
                 Body = request
             }
         );
@@ -85,17 +85,17 @@ public class CrmClient
         }
         if (request.Limit != null)
         {
-            _query["limit"] = request.Limit;
+            _query["limit"] = request.Limit.ToString();
         }
         if (request.Offset != null)
         {
-            _query["offset"] = request.Offset;
+            _query["offset"] = request.Offset.ToString();
         }
         var response = await _client.MakeRequestAsync(
-            new RawClient.ApiRequest
+            new RawClient.JsonApiRequest
             {
                 Method = HttpMethod.Get,
-                Path = "/crm/products",
+                Path = "crm/products",
                 Query = _query
             }
         );
@@ -112,10 +112,10 @@ public class CrmClient
     )
     {
         var response = await _client.MakeRequestAsync(
-            new RawClient.ApiRequest
+            new RawClient.JsonApiRequest
             {
                 Method = HttpMethod.Post,
-                Path = "/crm/products/upsert",
+                Path = "crm/products/upsert",
                 Body = request
             }
         );

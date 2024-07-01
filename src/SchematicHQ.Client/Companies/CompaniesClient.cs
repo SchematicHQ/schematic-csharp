@@ -35,17 +35,17 @@ public class CompaniesClient
         }
         if (request.Limit != null)
         {
-            _query["limit"] = request.Limit;
+            _query["limit"] = request.Limit.ToString();
         }
         if (request.Offset != null)
         {
-            _query["offset"] = request.Offset;
+            _query["offset"] = request.Offset.ToString();
         }
         var response = await _client.MakeRequestAsync(
-            new RawClient.ApiRequest
+            new RawClient.JsonApiRequest
             {
                 Method = HttpMethod.Get,
-                Path = "/companies",
+                Path = "companies",
                 Query = _query
             }
         );
@@ -60,10 +60,10 @@ public class CompaniesClient
     public async Task<UpsertCompanyResponse> UpsertCompanyAsync(UpsertCompanyRequestBody request)
     {
         var response = await _client.MakeRequestAsync(
-            new RawClient.ApiRequest
+            new RawClient.JsonApiRequest
             {
                 Method = HttpMethod.Post,
-                Path = "/companies",
+                Path = "companies",
                 Body = request
             }
         );
@@ -78,7 +78,11 @@ public class CompaniesClient
     public async Task<GetCompanyResponse> GetCompanyAsync(string companyId)
     {
         var response = await _client.MakeRequestAsync(
-            new RawClient.ApiRequest { Method = HttpMethod.Get, Path = $"/companies/{companyId}" }
+            new RawClient.JsonApiRequest
+            {
+                Method = HttpMethod.Get,
+                Path = $"companies/{companyId}"
+            }
         );
         string responseBody = await response.Raw.Content.ReadAsStringAsync();
         if (response.StatusCode >= 200 && response.StatusCode < 400)
@@ -91,10 +95,10 @@ public class CompaniesClient
     public async Task<DeleteCompanyResponse> DeleteCompanyAsync(string companyId)
     {
         var response = await _client.MakeRequestAsync(
-            new RawClient.ApiRequest
+            new RawClient.JsonApiRequest
             {
                 Method = HttpMethod.Delete,
-                Path = $"/companies/{companyId}"
+                Path = $"companies/{companyId}"
             }
         );
         string responseBody = await response.Raw.Content.ReadAsStringAsync();
@@ -126,17 +130,17 @@ public class CompaniesClient
         }
         if (request.Limit != null)
         {
-            _query["limit"] = request.Limit;
+            _query["limit"] = request.Limit.ToString();
         }
         if (request.Offset != null)
         {
-            _query["offset"] = request.Offset;
+            _query["offset"] = request.Offset.ToString();
         }
         var response = await _client.MakeRequestAsync(
-            new RawClient.ApiRequest
+            new RawClient.JsonApiRequest
             {
                 Method = HttpMethod.Get,
-                Path = "/companies/count",
+                Path = "companies/count",
                 Query = _query
             }
         );
@@ -151,10 +155,10 @@ public class CompaniesClient
     public async Task<CreateCompanyResponse> CreateCompanyAsync(UpsertCompanyRequestBody request)
     {
         var response = await _client.MakeRequestAsync(
-            new RawClient.ApiRequest
+            new RawClient.JsonApiRequest
             {
                 Method = HttpMethod.Post,
-                Path = "/companies/create",
+                Path = "companies/create",
                 Body = request
             }
         );
@@ -169,10 +173,10 @@ public class CompaniesClient
     public async Task<DeleteCompanyByKeysResponse> DeleteCompanyByKeysAsync(KeysRequestBody request)
     {
         var response = await _client.MakeRequestAsync(
-            new RawClient.ApiRequest
+            new RawClient.JsonApiRequest
             {
                 Method = HttpMethod.Post,
-                Path = "/companies/delete",
+                Path = "companies/delete",
                 Body = request
             }
         );
@@ -188,10 +192,10 @@ public class CompaniesClient
     {
         var _query = new Dictionary<string, object>() { { "keys", request.Keys.ToString() }, };
         var response = await _client.MakeRequestAsync(
-            new RawClient.ApiRequest
+            new RawClient.JsonApiRequest
             {
                 Method = HttpMethod.Get,
-                Path = "/companies/lookup",
+                Path = "companies/lookup",
                 Query = _query
             }
         );
@@ -212,17 +216,17 @@ public class CompaniesClient
         };
         if (request.Limit != null)
         {
-            _query["limit"] = request.Limit;
+            _query["limit"] = request.Limit.ToString();
         }
         if (request.Offset != null)
         {
-            _query["offset"] = request.Offset;
+            _query["offset"] = request.Offset.ToString();
         }
         var response = await _client.MakeRequestAsync(
-            new RawClient.ApiRequest
+            new RawClient.JsonApiRequest
             {
                 Method = HttpMethod.Get,
-                Path = "/company-crm-deals",
+                Path = "company-crm-deals",
                 Query = _query
             }
         );
@@ -249,17 +253,17 @@ public class CompaniesClient
         }
         if (request.Limit != null)
         {
-            _query["limit"] = request.Limit;
+            _query["limit"] = request.Limit.ToString();
         }
         if (request.Offset != null)
         {
-            _query["offset"] = request.Offset;
+            _query["offset"] = request.Offset.ToString();
         }
         var response = await _client.MakeRequestAsync(
-            new RawClient.ApiRequest
+            new RawClient.JsonApiRequest
             {
                 Method = HttpMethod.Get,
-                Path = "/company-memberships",
+                Path = "company-memberships",
                 Query = _query
             }
         );
@@ -276,10 +280,10 @@ public class CompaniesClient
     )
     {
         var response = await _client.MakeRequestAsync(
-            new RawClient.ApiRequest
+            new RawClient.JsonApiRequest
             {
                 Method = HttpMethod.Post,
-                Path = "/company-memberships",
+                Path = "company-memberships",
                 Body = request
             }
         );
@@ -296,10 +300,10 @@ public class CompaniesClient
     )
     {
         var response = await _client.MakeRequestAsync(
-            new RawClient.ApiRequest
+            new RawClient.JsonApiRequest
             {
                 Method = HttpMethod.Delete,
-                Path = $"/company-memberships/{companyMembershipId}"
+                Path = $"company-memberships/{companyMembershipId}"
             }
         );
         string responseBody = await response.Raw.Content.ReadAsStringAsync();
@@ -325,17 +329,17 @@ public class CompaniesClient
         }
         if (request.Limit != null)
         {
-            _query["limit"] = request.Limit;
+            _query["limit"] = request.Limit.ToString();
         }
         if (request.Offset != null)
         {
-            _query["offset"] = request.Offset;
+            _query["offset"] = request.Offset.ToString();
         }
         var response = await _client.MakeRequestAsync(
-            new RawClient.ApiRequest
+            new RawClient.JsonApiRequest
             {
                 Method = HttpMethod.Get,
-                Path = "/company-plans",
+                Path = "company-plans",
                 Query = _query
             }
         );
@@ -354,17 +358,17 @@ public class CompaniesClient
         var _query = new Dictionary<string, object>() { { "company_id", request.CompanyId }, };
         if (request.Limit != null)
         {
-            _query["limit"] = request.Limit;
+            _query["limit"] = request.Limit.ToString();
         }
         if (request.Offset != null)
         {
-            _query["offset"] = request.Offset;
+            _query["offset"] = request.Offset.ToString();
         }
         var response = await _client.MakeRequestAsync(
-            new RawClient.ApiRequest
+            new RawClient.JsonApiRequest
             {
                 Method = HttpMethod.Get,
-                Path = "/company-subscriptions",
+                Path = "company-subscriptions",
                 Query = _query
             }
         );
@@ -381,10 +385,10 @@ public class CompaniesClient
     )
     {
         var response = await _client.MakeRequestAsync(
-            new RawClient.ApiRequest
+            new RawClient.JsonApiRequest
             {
                 Method = HttpMethod.Post,
-                Path = "/company-traits",
+                Path = "company-traits",
                 Body = request
             }
         );
@@ -403,7 +407,7 @@ public class CompaniesClient
         var _query = new Dictionary<string, object>() { };
         if (request.EntityType != null)
         {
-            _query["entity_type"] = request.EntityType;
+            _query["entity_type"] = JsonSerializer.Serialize(request.EntityType.Value);
         }
         if (request.Ids != null)
         {
@@ -415,17 +419,17 @@ public class CompaniesClient
         }
         if (request.Limit != null)
         {
-            _query["limit"] = request.Limit;
+            _query["limit"] = request.Limit.ToString();
         }
         if (request.Offset != null)
         {
-            _query["offset"] = request.Offset;
+            _query["offset"] = request.Offset.ToString();
         }
         var response = await _client.MakeRequestAsync(
-            new RawClient.ApiRequest
+            new RawClient.JsonApiRequest
             {
                 Method = HttpMethod.Get,
-                Path = "/entity-key-definitions",
+                Path = "entity-key-definitions",
                 Query = _query
             }
         );
@@ -444,7 +448,7 @@ public class CompaniesClient
         var _query = new Dictionary<string, object>() { };
         if (request.EntityType != null)
         {
-            _query["entity_type"] = request.EntityType;
+            _query["entity_type"] = JsonSerializer.Serialize(request.EntityType.Value);
         }
         if (request.Ids != null)
         {
@@ -456,17 +460,17 @@ public class CompaniesClient
         }
         if (request.Limit != null)
         {
-            _query["limit"] = request.Limit;
+            _query["limit"] = request.Limit.ToString();
         }
         if (request.Offset != null)
         {
-            _query["offset"] = request.Offset;
+            _query["offset"] = request.Offset.ToString();
         }
         var response = await _client.MakeRequestAsync(
-            new RawClient.ApiRequest
+            new RawClient.JsonApiRequest
             {
                 Method = HttpMethod.Get,
-                Path = "/entity-key-definitions/count",
+                Path = "entity-key-definitions/count",
                 Query = _query
             }
         );
@@ -485,7 +489,7 @@ public class CompaniesClient
         var _query = new Dictionary<string, object>() { };
         if (request.EntityType != null)
         {
-            _query["entity_type"] = request.EntityType;
+            _query["entity_type"] = JsonSerializer.Serialize(request.EntityType.Value);
         }
         if (request.Ids != null)
         {
@@ -493,7 +497,7 @@ public class CompaniesClient
         }
         if (request.TraitType != null)
         {
-            _query["trait_type"] = request.TraitType;
+            _query["trait_type"] = JsonSerializer.Serialize(request.TraitType.Value);
         }
         if (request.Q != null)
         {
@@ -501,17 +505,17 @@ public class CompaniesClient
         }
         if (request.Limit != null)
         {
-            _query["limit"] = request.Limit;
+            _query["limit"] = request.Limit.ToString();
         }
         if (request.Offset != null)
         {
-            _query["offset"] = request.Offset;
+            _query["offset"] = request.Offset.ToString();
         }
         var response = await _client.MakeRequestAsync(
-            new RawClient.ApiRequest
+            new RawClient.JsonApiRequest
             {
                 Method = HttpMethod.Get,
-                Path = "/entity-trait-definitions",
+                Path = "entity-trait-definitions",
                 Query = _query
             }
         );
@@ -528,10 +532,10 @@ public class CompaniesClient
     )
     {
         var response = await _client.MakeRequestAsync(
-            new RawClient.ApiRequest
+            new RawClient.JsonApiRequest
             {
                 Method = HttpMethod.Post,
-                Path = "/entity-trait-definitions",
+                Path = "entity-trait-definitions",
                 Body = request
             }
         );
@@ -550,10 +554,10 @@ public class CompaniesClient
     )
     {
         var response = await _client.MakeRequestAsync(
-            new RawClient.ApiRequest
+            new RawClient.JsonApiRequest
             {
                 Method = HttpMethod.Get,
-                Path = $"/entity-trait-definitions/{entityTraitDefinitionId}"
+                Path = $"entity-trait-definitions/{entityTraitDefinitionId}"
             }
         );
         string responseBody = await response.Raw.Content.ReadAsStringAsync();
@@ -570,10 +574,10 @@ public class CompaniesClient
     )
     {
         var response = await _client.MakeRequestAsync(
-            new RawClient.ApiRequest
+            new RawClient.JsonApiRequest
             {
                 Method = HttpMethod.Put,
-                Path = $"/entity-trait-definitions/{entityTraitDefinitionId}",
+                Path = $"entity-trait-definitions/{entityTraitDefinitionId}",
                 Body = request
             }
         );
@@ -592,7 +596,7 @@ public class CompaniesClient
         var _query = new Dictionary<string, object>() { };
         if (request.EntityType != null)
         {
-            _query["entity_type"] = request.EntityType;
+            _query["entity_type"] = JsonSerializer.Serialize(request.EntityType.Value);
         }
         if (request.Ids != null)
         {
@@ -600,7 +604,7 @@ public class CompaniesClient
         }
         if (request.TraitType != null)
         {
-            _query["trait_type"] = request.TraitType;
+            _query["trait_type"] = JsonSerializer.Serialize(request.TraitType.Value);
         }
         if (request.Q != null)
         {
@@ -608,17 +612,17 @@ public class CompaniesClient
         }
         if (request.Limit != null)
         {
-            _query["limit"] = request.Limit;
+            _query["limit"] = request.Limit.ToString();
         }
         if (request.Offset != null)
         {
-            _query["offset"] = request.Offset;
+            _query["offset"] = request.Offset.ToString();
         }
         var response = await _client.MakeRequestAsync(
-            new RawClient.ApiRequest
+            new RawClient.JsonApiRequest
             {
                 Method = HttpMethod.Get,
-                Path = "/entity-trait-definitions/count",
+                Path = "entity-trait-definitions/count",
                 Query = _query
             }
         );
@@ -644,17 +648,17 @@ public class CompaniesClient
         }
         if (request.Limit != null)
         {
-            _query["limit"] = request.Limit;
+            _query["limit"] = request.Limit.ToString();
         }
         if (request.Offset != null)
         {
-            _query["offset"] = request.Offset;
+            _query["offset"] = request.Offset.ToString();
         }
         var response = await _client.MakeRequestAsync(
-            new RawClient.ApiRequest
+            new RawClient.JsonApiRequest
             {
                 Method = HttpMethod.Get,
-                Path = "/entity-trait-values",
+                Path = "entity-trait-values",
                 Query = _query
             }
         );
@@ -669,10 +673,10 @@ public class CompaniesClient
     public async Task<UpsertUserTraitResponse> UpsertUserTraitAsync(UpsertTraitRequestBody request)
     {
         var response = await _client.MakeRequestAsync(
-            new RawClient.ApiRequest
+            new RawClient.JsonApiRequest
             {
                 Method = HttpMethod.Post,
-                Path = "/user-traits",
+                Path = "user-traits",
                 Body = request
             }
         );
@@ -705,17 +709,17 @@ public class CompaniesClient
         }
         if (request.Limit != null)
         {
-            _query["limit"] = request.Limit;
+            _query["limit"] = request.Limit.ToString();
         }
         if (request.Offset != null)
         {
-            _query["offset"] = request.Offset;
+            _query["offset"] = request.Offset.ToString();
         }
         var response = await _client.MakeRequestAsync(
-            new RawClient.ApiRequest
+            new RawClient.JsonApiRequest
             {
                 Method = HttpMethod.Get,
-                Path = "/users",
+                Path = "users",
                 Query = _query
             }
         );
@@ -730,10 +734,10 @@ public class CompaniesClient
     public async Task<UpsertUserResponse> UpsertUserAsync(UpsertUserRequestBody request)
     {
         var response = await _client.MakeRequestAsync(
-            new RawClient.ApiRequest
+            new RawClient.JsonApiRequest
             {
                 Method = HttpMethod.Post,
-                Path = "/users",
+                Path = "users",
                 Body = request
             }
         );
@@ -748,7 +752,7 @@ public class CompaniesClient
     public async Task<GetUserResponse> GetUserAsync(string userId)
     {
         var response = await _client.MakeRequestAsync(
-            new RawClient.ApiRequest { Method = HttpMethod.Get, Path = $"/users/{userId}" }
+            new RawClient.JsonApiRequest { Method = HttpMethod.Get, Path = $"users/{userId}" }
         );
         string responseBody = await response.Raw.Content.ReadAsStringAsync();
         if (response.StatusCode >= 200 && response.StatusCode < 400)
@@ -761,7 +765,7 @@ public class CompaniesClient
     public async Task<DeleteUserResponse> DeleteUserAsync(string userId)
     {
         var response = await _client.MakeRequestAsync(
-            new RawClient.ApiRequest { Method = HttpMethod.Delete, Path = $"/users/{userId}" }
+            new RawClient.JsonApiRequest { Method = HttpMethod.Delete, Path = $"users/{userId}" }
         );
         string responseBody = await response.Raw.Content.ReadAsStringAsync();
         if (response.StatusCode >= 200 && response.StatusCode < 400)
@@ -792,17 +796,17 @@ public class CompaniesClient
         }
         if (request.Limit != null)
         {
-            _query["limit"] = request.Limit;
+            _query["limit"] = request.Limit.ToString();
         }
         if (request.Offset != null)
         {
-            _query["offset"] = request.Offset;
+            _query["offset"] = request.Offset.ToString();
         }
         var response = await _client.MakeRequestAsync(
-            new RawClient.ApiRequest
+            new RawClient.JsonApiRequest
             {
                 Method = HttpMethod.Get,
-                Path = "/users/count",
+                Path = "users/count",
                 Query = _query
             }
         );
@@ -817,10 +821,10 @@ public class CompaniesClient
     public async Task<CreateUserResponse> CreateUserAsync(UpsertUserRequestBody request)
     {
         var response = await _client.MakeRequestAsync(
-            new RawClient.ApiRequest
+            new RawClient.JsonApiRequest
             {
                 Method = HttpMethod.Post,
-                Path = "/users/create",
+                Path = "users/create",
                 Body = request
             }
         );
@@ -835,10 +839,10 @@ public class CompaniesClient
     public async Task<DeleteUserByKeysResponse> DeleteUserByKeysAsync(KeysRequestBody request)
     {
         var response = await _client.MakeRequestAsync(
-            new RawClient.ApiRequest
+            new RawClient.JsonApiRequest
             {
                 Method = HttpMethod.Post,
-                Path = "/users/delete",
+                Path = "users/delete",
                 Body = request
             }
         );
@@ -854,10 +858,10 @@ public class CompaniesClient
     {
         var _query = new Dictionary<string, object>() { { "keys", request.Keys.ToString() }, };
         var response = await _client.MakeRequestAsync(
-            new RawClient.ApiRequest
+            new RawClient.JsonApiRequest
             {
                 Method = HttpMethod.Get,
-                Path = "/users/lookup",
+                Path = "users/lookup",
                 Query = _query
             }
         );

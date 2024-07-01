@@ -26,17 +26,17 @@ public class AccountsClient
         }
         if (request.Limit != null)
         {
-            _query["limit"] = request.Limit;
+            _query["limit"] = request.Limit.ToString();
         }
         if (request.Offset != null)
         {
-            _query["offset"] = request.Offset;
+            _query["offset"] = request.Offset.ToString();
         }
         var response = await _client.MakeRequestAsync(
-            new RawClient.ApiRequest
+            new RawClient.JsonApiRequest
             {
                 Method = HttpMethod.Get,
-                Path = "/api-keys",
+                Path = "api-keys",
                 Query = _query
             }
         );
@@ -51,10 +51,10 @@ public class AccountsClient
     public async Task<CreateApiKeyResponse> CreateApiKeyAsync(CreateApiKeyRequestBody request)
     {
         var response = await _client.MakeRequestAsync(
-            new RawClient.ApiRequest
+            new RawClient.JsonApiRequest
             {
                 Method = HttpMethod.Post,
-                Path = "/api-keys",
+                Path = "api-keys",
                 Body = request
             }
         );
@@ -69,7 +69,7 @@ public class AccountsClient
     public async Task<GetApiKeyResponse> GetApiKeyAsync(string apiKeyId)
     {
         var response = await _client.MakeRequestAsync(
-            new RawClient.ApiRequest { Method = HttpMethod.Get, Path = $"/api-keys/{apiKeyId}" }
+            new RawClient.JsonApiRequest { Method = HttpMethod.Get, Path = $"api-keys/{apiKeyId}" }
         );
         string responseBody = await response.Raw.Content.ReadAsStringAsync();
         if (response.StatusCode >= 200 && response.StatusCode < 400)
@@ -85,10 +85,10 @@ public class AccountsClient
     )
     {
         var response = await _client.MakeRequestAsync(
-            new RawClient.ApiRequest
+            new RawClient.JsonApiRequest
             {
                 Method = HttpMethod.Put,
-                Path = $"/api-keys/{apiKeyId}",
+                Path = $"api-keys/{apiKeyId}",
                 Body = request
             }
         );
@@ -103,7 +103,11 @@ public class AccountsClient
     public async Task<DeleteApiKeyResponse> DeleteApiKeyAsync(string apiKeyId)
     {
         var response = await _client.MakeRequestAsync(
-            new RawClient.ApiRequest { Method = HttpMethod.Delete, Path = $"/api-keys/{apiKeyId}" }
+            new RawClient.JsonApiRequest
+            {
+                Method = HttpMethod.Delete,
+                Path = $"api-keys/{apiKeyId}"
+            }
         );
         string responseBody = await response.Raw.Content.ReadAsStringAsync();
         if (response.StatusCode >= 200 && response.StatusCode < 400)
@@ -125,17 +129,17 @@ public class AccountsClient
         }
         if (request.Limit != null)
         {
-            _query["limit"] = request.Limit;
+            _query["limit"] = request.Limit.ToString();
         }
         if (request.Offset != null)
         {
-            _query["offset"] = request.Offset;
+            _query["offset"] = request.Offset.ToString();
         }
         var response = await _client.MakeRequestAsync(
-            new RawClient.ApiRequest
+            new RawClient.JsonApiRequest
             {
                 Method = HttpMethod.Get,
-                Path = "/api-keys/count",
+                Path = "api-keys/count",
                 Query = _query
             }
         );
@@ -164,17 +168,17 @@ public class AccountsClient
         }
         if (request.Limit != null)
         {
-            _query["limit"] = request.Limit;
+            _query["limit"] = request.Limit.ToString();
         }
         if (request.Offset != null)
         {
-            _query["offset"] = request.Offset;
+            _query["offset"] = request.Offset.ToString();
         }
         var response = await _client.MakeRequestAsync(
-            new RawClient.ApiRequest
+            new RawClient.JsonApiRequest
             {
                 Method = HttpMethod.Get,
-                Path = "/api-requests",
+                Path = "api-requests",
                 Query = _query
             }
         );
@@ -189,10 +193,10 @@ public class AccountsClient
     public async Task<GetApiRequestResponse> GetApiRequestAsync(string apiRequestId)
     {
         var response = await _client.MakeRequestAsync(
-            new RawClient.ApiRequest
+            new RawClient.JsonApiRequest
             {
                 Method = HttpMethod.Get,
-                Path = $"/api-requests/{apiRequestId}"
+                Path = $"api-requests/{apiRequestId}"
             }
         );
         string responseBody = await response.Raw.Content.ReadAsStringAsync();
@@ -222,17 +226,17 @@ public class AccountsClient
         }
         if (request.Limit != null)
         {
-            _query["limit"] = request.Limit;
+            _query["limit"] = request.Limit.ToString();
         }
         if (request.Offset != null)
         {
-            _query["offset"] = request.Offset;
+            _query["offset"] = request.Offset.ToString();
         }
         var response = await _client.MakeRequestAsync(
-            new RawClient.ApiRequest
+            new RawClient.JsonApiRequest
             {
                 Method = HttpMethod.Get,
-                Path = "/api-requests/count",
+                Path = "api-requests/count",
                 Query = _query
             }
         );
@@ -255,17 +259,17 @@ public class AccountsClient
         }
         if (request.Limit != null)
         {
-            _query["limit"] = request.Limit;
+            _query["limit"] = request.Limit.ToString();
         }
         if (request.Offset != null)
         {
-            _query["offset"] = request.Offset;
+            _query["offset"] = request.Offset.ToString();
         }
         var response = await _client.MakeRequestAsync(
-            new RawClient.ApiRequest
+            new RawClient.JsonApiRequest
             {
                 Method = HttpMethod.Get,
-                Path = "/environments",
+                Path = "environments",
                 Query = _query
             }
         );
@@ -282,10 +286,10 @@ public class AccountsClient
     )
     {
         var response = await _client.MakeRequestAsync(
-            new RawClient.ApiRequest
+            new RawClient.JsonApiRequest
             {
                 Method = HttpMethod.Post,
-                Path = "/environments",
+                Path = "environments",
                 Body = request
             }
         );
@@ -300,10 +304,10 @@ public class AccountsClient
     public async Task<GetEnvironmentResponse> GetEnvironmentAsync(string environmentId)
     {
         var response = await _client.MakeRequestAsync(
-            new RawClient.ApiRequest
+            new RawClient.JsonApiRequest
             {
                 Method = HttpMethod.Get,
-                Path = $"/environments/{environmentId}"
+                Path = $"environments/{environmentId}"
             }
         );
         string responseBody = await response.Raw.Content.ReadAsStringAsync();
@@ -320,10 +324,10 @@ public class AccountsClient
     )
     {
         var response = await _client.MakeRequestAsync(
-            new RawClient.ApiRequest
+            new RawClient.JsonApiRequest
             {
                 Method = HttpMethod.Put,
-                Path = $"/environments/{environmentId}",
+                Path = $"environments/{environmentId}",
                 Body = request
             }
         );
@@ -338,10 +342,10 @@ public class AccountsClient
     public async Task<DeleteEnvironmentResponse> DeleteEnvironmentAsync(string environmentId)
     {
         var response = await _client.MakeRequestAsync(
-            new RawClient.ApiRequest
+            new RawClient.JsonApiRequest
             {
                 Method = HttpMethod.Delete,
-                Path = $"/environments/{environmentId}"
+                Path = $"environments/{environmentId}"
             }
         );
         string responseBody = await response.Raw.Content.ReadAsStringAsync();

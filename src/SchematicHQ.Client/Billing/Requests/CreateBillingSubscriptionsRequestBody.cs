@@ -16,7 +16,7 @@ public class CreateBillingSubscriptionsRequestBody
     public string? Interval { get; init; }
 
     [JsonPropertyName("product_external_ids")]
-    public List<string> ProductExternalIds { get; init; }
+    public IEnumerable<string> ProductExternalIds { get; init; }
 
     [JsonPropertyName("subscription_external_id")]
     public string SubscriptionExternalId { get; init; }

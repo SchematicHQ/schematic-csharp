@@ -8,10 +8,10 @@ namespace SchematicHQ.Client;
 public class UpdateRuleRequestBody
 {
     [JsonPropertyName("condition_groups")]
-    public List<CreateOrUpdateConditionGroupRequestBody> ConditionGroups { get; init; }
+    public IEnumerable<CreateOrUpdateConditionGroupRequestBody> ConditionGroups { get; init; }
 
     [JsonPropertyName("conditions")]
-    public List<CreateOrUpdateConditionRequestBody> Conditions { get; init; }
+    public IEnumerable<CreateOrUpdateConditionRequestBody> Conditions { get; init; }
 
     [JsonPropertyName("name")]
     public string Name { get; init; }

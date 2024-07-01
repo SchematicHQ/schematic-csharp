@@ -11,7 +11,7 @@ public class ListAudienceUsersResponse
     /// The returned resources
     /// </summary>
     [JsonPropertyName("data")]
-    public List<UserDetailResponseData> Data { get; init; }
+    public IEnumerable<UserDetailResponseData> Data { get; init; }
 
     /// <summary>
     /// Input parameters

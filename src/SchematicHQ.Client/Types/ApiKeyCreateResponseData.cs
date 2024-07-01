@@ -25,7 +25,7 @@ public class ApiKeyCreateResponseData
     public string Name { get; init; }
 
     [JsonPropertyName("scopes")]
-    public List<string> Scopes { get; init; }
+    public IEnumerable<string> Scopes { get; init; }
 
     [JsonPropertyName("secret")]
     public string Secret { get; init; }

@@ -1,8 +1,12 @@
+using SchematicHQ.Client;
+
+#nullable enable
+
 namespace SchematicHQ.Client;
 
 public class ListEntityKeyDefinitionsRequest
 {
-    public string? EntityType { get; init; }
+    public ListEntityKeyDefinitionsRequestEntityType? EntityType { get; init; }
 
     public string? Ids { get; init; }
 
