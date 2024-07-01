@@ -13,9 +13,6 @@ public class CountEntityKeyDefinitionsParams
     [JsonPropertyName("ids")]
     public IEnumerable<string>? Ids { get; init; }
 
-    [JsonPropertyName("key")]
-    public string? Key { get; init; }
-
     /// <summary>
     /// Page limit (default 100)
     /// </summary>
@@ -27,4 +24,7 @@ public class CountEntityKeyDefinitionsParams
     /// </summary>
     [JsonPropertyName("offset")]
     public int? Offset { get; init; }
+
+    [JsonPropertyName("q")]
+    public string? Q { get; init; }
 }

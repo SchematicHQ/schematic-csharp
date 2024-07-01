@@ -413,9 +413,9 @@ public class CompaniesClient
         {
             _query["ids"] = request.Ids;
         }
-        if (request.Key != null)
+        if (request.Q != null)
         {
-            _query["key"] = request.Key;
+            _query["q"] = request.Q;
         }
         if (request.Limit != null)
         {
@@ -454,9 +454,9 @@ public class CompaniesClient
         {
             _query["ids"] = request.Ids;
         }
-        if (request.Key != null)
+        if (request.Q != null)
         {
-            _query["key"] = request.Key;
+            _query["q"] = request.Q;
         }
         if (request.Limit != null)
         {
