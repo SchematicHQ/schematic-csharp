@@ -5,17 +5,18 @@ using SchematicHQ.Client;
 
 namespace SchematicHQ.Client;
 
-public class ListMetricCountsResponse
+public record ListMetricCountsResponse
 {
     /// <summary>
     /// The returned resources
     /// </summary>
     [JsonPropertyName("data")]
-    public IEnumerable<MetricCountsHourlyResponseData> Data { get; init; }
+    public IEnumerable<MetricCountsHourlyResponseData> Data { get; init; } =
+        new List<MetricCountsHourlyResponseData>();
 
     /// <summary>
     /// Input parameters
     /// </summary>
     [JsonPropertyName("params")]
-    public ListMetricCountsParams Params { get; init; }
+    public required ListMetricCountsParams Params { get; init; }
 }

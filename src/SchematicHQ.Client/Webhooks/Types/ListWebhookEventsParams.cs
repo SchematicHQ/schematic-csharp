@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 
 namespace SchematicHQ.Client;
 
-public class ListWebhookEventsParams
+public record ListWebhookEventsParams
 {
     [JsonPropertyName("ids")]
     public IEnumerable<string>? Ids { get; init; }

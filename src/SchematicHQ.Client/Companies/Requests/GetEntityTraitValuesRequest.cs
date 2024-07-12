@@ -1,8 +1,8 @@
 namespace SchematicHQ.Client;
 
-public class GetEntityTraitValuesRequest
+public record GetEntityTraitValuesRequest
 {
-    public string DefinitionId { get; init; }
+    public required string DefinitionId { get; init; }
 
     public string? Q { get; init; }
 

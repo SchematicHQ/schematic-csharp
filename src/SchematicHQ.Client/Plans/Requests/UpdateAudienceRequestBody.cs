@@ -5,11 +5,13 @@ using SchematicHQ.Client;
 
 namespace SchematicHQ.Client;
 
-public class UpdateAudienceRequestBody
+public record UpdateAudienceRequestBody
 {
     [JsonPropertyName("condition_groups")]
-    public IEnumerable<CreateOrUpdateConditionGroupRequestBody> ConditionGroups { get; init; }
+    public IEnumerable<CreateOrUpdateConditionGroupRequestBody> ConditionGroups { get; init; } =
+        new List<CreateOrUpdateConditionGroupRequestBody>();
 
     [JsonPropertyName("conditions")]
-    public IEnumerable<CreateOrUpdateConditionRequestBody> Conditions { get; init; }
+    public IEnumerable<CreateOrUpdateConditionRequestBody> Conditions { get; init; } =
+        new List<CreateOrUpdateConditionRequestBody>();
 }

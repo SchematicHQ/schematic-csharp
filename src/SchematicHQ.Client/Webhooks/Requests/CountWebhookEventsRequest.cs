@@ -1,6 +1,6 @@
 namespace SchematicHQ.Client;
 
-public class CountWebhookEventsRequest
+public record CountWebhookEventsRequest
 {
     public string? WebhookId { get; init; }
 

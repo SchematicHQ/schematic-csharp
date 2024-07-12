@@ -5,8 +5,9 @@ using SchematicHQ.Client;
 
 namespace SchematicHQ.Client;
 
-public class FeatureUsageDetailResponseData
+public record FeatureUsageDetailResponseData
 {
     [JsonPropertyName("features")]
-    public IEnumerable<FeatureUsageResponseData> Features { get; init; }
+    public IEnumerable<FeatureUsageResponseData> Features { get; init; } =
+        new List<FeatureUsageResponseData>();
 }

@@ -1,6 +1,6 @@
 namespace SchematicHQ.Client;
 
-public class GetEventSummariesRequest
+public record GetEventSummariesRequest
 {
     public string? Q { get; init; }
 

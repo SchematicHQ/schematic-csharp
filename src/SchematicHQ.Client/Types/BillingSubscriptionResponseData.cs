@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 
 namespace SchematicHQ.Client;
 
-public class BillingSubscriptionResponseData
+public record BillingSubscriptionResponseData
 {
     [JsonPropertyName("deleted_at")]
     public DateTime? DeletedAt { get; init; }
@@ -13,11 +13,11 @@ public class BillingSubscriptionResponseData
     public DateTime? ExpiredAt { get; init; }
 
     [JsonPropertyName("external_id")]
-    public string ExternalId { get; init; }
+    public required string ExternalId { get; init; }
 
     [JsonPropertyName("id")]
-    public int Id { get; init; }
+    public required int Id { get; init; }
 
     [JsonPropertyName("updated_at")]
-    public DateTime UpdatedAt { get; init; }
+    public required DateTime UpdatedAt { get; init; }
 }

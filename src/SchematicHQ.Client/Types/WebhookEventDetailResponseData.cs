@@ -5,19 +5,19 @@ using SchematicHQ.Client;
 
 namespace SchematicHQ.Client;
 
-public class WebhookEventDetailResponseData
+public record WebhookEventDetailResponseData
 {
     [JsonPropertyName("created_at")]
-    public DateTime CreatedAt { get; init; }
+    public required DateTime CreatedAt { get; init; }
 
     [JsonPropertyName("id")]
-    public string Id { get; init; }
+    public required string Id { get; init; }
 
     [JsonPropertyName("payload")]
-    public string Payload { get; init; }
+    public string? Payload { get; init; }
 
     [JsonPropertyName("request_type")]
-    public string RequestType { get; init; }
+    public required string RequestType { get; init; }
 
     [JsonPropertyName("response_code")]
     public int? ResponseCode { get; init; }
@@ -26,14 +26,14 @@ public class WebhookEventDetailResponseData
     public DateTime? SentAt { get; init; }
 
     [JsonPropertyName("status")]
-    public string Status { get; init; }
+    public required string Status { get; init; }
 
     [JsonPropertyName("updated_at")]
-    public DateTime UpdatedAt { get; init; }
+    public required DateTime UpdatedAt { get; init; }
 
     [JsonPropertyName("webhook")]
     public WebhookResponseData? Webhook { get; init; }
 
     [JsonPropertyName("webhook_id")]
-    public string WebhookId { get; init; }
+    public required string WebhookId { get; init; }
 }

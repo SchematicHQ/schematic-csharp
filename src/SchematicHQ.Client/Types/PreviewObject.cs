@@ -4,14 +4,14 @@ using System.Text.Json.Serialization;
 
 namespace SchematicHQ.Client;
 
-public class PreviewObject
+public record PreviewObject
 {
     [JsonPropertyName("id")]
-    public string Id { get; init; }
+    public required string Id { get; init; }
 
     [JsonPropertyName("image_url")]
     public string? ImageUrl { get; init; }
 
     [JsonPropertyName("name")]
-    public string Name { get; init; }
+    public required string Name { get; init; }
 }

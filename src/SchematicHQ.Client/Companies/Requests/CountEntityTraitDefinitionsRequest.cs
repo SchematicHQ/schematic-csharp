@@ -4,7 +4,7 @@ using SchematicHQ.Client;
 
 namespace SchematicHQ.Client;
 
-public class CountEntityTraitDefinitionsRequest
+public record CountEntityTraitDefinitionsRequest
 {
     public CountEntityTraitDefinitionsRequestEntityType? EntityType { get; init; }
 

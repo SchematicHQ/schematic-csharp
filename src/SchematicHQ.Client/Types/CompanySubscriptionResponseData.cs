@@ -5,20 +5,21 @@ using SchematicHQ.Client;
 
 namespace SchematicHQ.Client;
 
-public class CompanySubscriptionResponseData
+public record CompanySubscriptionResponseData
 {
     [JsonPropertyName("customer_external_id")]
-    public string CustomerExternalId { get; init; }
+    public required string CustomerExternalId { get; init; }
 
     [JsonPropertyName("expired_at")]
     public DateTime? ExpiredAt { get; init; }
 
     [JsonPropertyName("interval")]
-    public string Interval { get; init; }
+    public required string Interval { get; init; }
 
     [JsonPropertyName("products")]
-    public IEnumerable<BillingProductResponseData> Products { get; init; }
+    public IEnumerable<BillingProductResponseData> Products { get; init; } =
+        new List<BillingProductResponseData>();
 
     [JsonPropertyName("subscription_external_id")]
-    public string SubscriptionExternalId { get; init; }
+    public required string SubscriptionExternalId { get; init; }
 }

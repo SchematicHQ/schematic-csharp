@@ -5,7 +5,7 @@ using SchematicHQ.Client;
 
 namespace SchematicHQ.Client;
 
-public class UpdatePlanEntitlementRequestBody
+public record UpdatePlanEntitlementRequestBody
 {
     [JsonPropertyName("metric_period")]
     public UpdatePlanEntitlementRequestBodyMetricPeriod? MetricPeriod { get; init; }
@@ -20,5 +20,5 @@ public class UpdatePlanEntitlementRequestBody
     public string? ValueTraitId { get; init; }
 
     [JsonPropertyName("value_type")]
-    public UpdatePlanEntitlementRequestBodyValueType ValueType { get; init; }
+    public required UpdatePlanEntitlementRequestBodyValueType ValueType { get; init; }
 }

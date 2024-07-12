@@ -5,14 +5,14 @@ using SchematicHQ.Client;
 
 namespace SchematicHQ.Client;
 
-public class CountWebhooksResponse
+public record CountWebhooksResponse
 {
     [JsonPropertyName("data")]
-    public CountResponse Data { get; init; }
+    public required CountResponse Data { get; init; }
 
     /// <summary>
     /// Input parameters
     /// </summary>
     [JsonPropertyName("params")]
-    public CountWebhooksParams Params { get; init; }
+    public required CountWebhooksParams Params { get; init; }
 }

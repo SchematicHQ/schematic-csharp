@@ -5,14 +5,14 @@ using SchematicHQ.Client;
 
 namespace SchematicHQ.Client;
 
-public class CountApiKeysResponse
+public record CountApiKeysResponse
 {
     [JsonPropertyName("data")]
-    public CountResponse Data { get; init; }
+    public required CountResponse Data { get; init; }
 
     /// <summary>
     /// Input parameters
     /// </summary>
     [JsonPropertyName("params")]
-    public CountApiKeysParams Params { get; init; }
+    public required CountApiKeysParams Params { get; init; }
 }

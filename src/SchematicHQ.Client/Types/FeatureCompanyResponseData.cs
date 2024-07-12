@@ -5,13 +5,13 @@ using SchematicHQ.Client;
 
 namespace SchematicHQ.Client;
 
-public class FeatureCompanyResponseData
+public record FeatureCompanyResponseData
 {
     /// <summary>
     /// Whether further usage is permitted.
     /// </summary>
     [JsonPropertyName("access")]
-    public bool Access { get; init; }
+    public required bool Access { get; init; }
 
     /// <summary>
     /// The maximum amount of usage that is permitted; a null value indicates that unlimited usage is permitted.
@@ -19,14 +19,20 @@ public class FeatureCompanyResponseData
     [JsonPropertyName("allocation")]
     public int? Allocation { get; init; }
 
+    /// <summary>
+    /// The type of allocation that is being used.
+    /// </summary>
+    [JsonPropertyName("allocation_type")]
+    public required FeatureCompanyResponseDataAllocationType AllocationType { get; init; }
+
     [JsonPropertyName("company")]
     public CompanyDetailResponseData? Company { get; init; }
 
     [JsonPropertyName("entitlement_id")]
-    public string EntitlementId { get; init; }
+    public required string EntitlementId { get; init; }
 
     [JsonPropertyName("entitlement_type")]
-    public string EntitlementType { get; init; }
+    public required string EntitlementType { get; init; }
 
     [JsonPropertyName("feature")]
     public FeatureDetailResponseData? Feature { get; init; }

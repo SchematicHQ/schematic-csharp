@@ -5,11 +5,11 @@ using SchematicHQ.Client;
 
 namespace SchematicHQ.Client;
 
-public class UpdateEntityTraitDefinitionRequestBody
+public record UpdateEntityTraitDefinitionRequestBody
 {
     [JsonPropertyName("display_name")]
     public string? DisplayName { get; init; }
 
     [JsonPropertyName("trait_type")]
-    public UpdateEntityTraitDefinitionRequestBodyTraitType TraitType { get; init; }
+    public required UpdateEntityTraitDefinitionRequestBodyTraitType TraitType { get; init; }
 }

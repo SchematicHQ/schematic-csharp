@@ -1,6 +1,6 @@
 namespace SchematicHQ.Client;
 
-public class CountFeaturesRequest
+public record CountFeaturesRequest
 {
     public string? Ids { get; init; }
 

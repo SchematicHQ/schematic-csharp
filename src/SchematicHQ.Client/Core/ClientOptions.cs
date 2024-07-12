@@ -1,8 +1,9 @@
+using System.Net.Http;
 using SchematicHQ.Client.Core;
 
 #nullable enable
 
-namespace SchematicHQ.Client;
+namespace SchematicHQ.Client.Core;
 
 public partial class ClientOptions
 {

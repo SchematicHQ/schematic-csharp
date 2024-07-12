@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 
 namespace SchematicHQ.Client;
 
-public class ListFlagChecksParams
+public record ListFlagChecksParams
 {
     [JsonPropertyName("flag_id")]
     public string? FlagId { get; init; }

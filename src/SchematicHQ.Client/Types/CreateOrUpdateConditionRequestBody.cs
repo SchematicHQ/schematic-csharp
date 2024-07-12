@@ -5,7 +5,7 @@ using SchematicHQ.Client;
 
 namespace SchematicHQ.Client;
 
-public class CreateOrUpdateConditionRequestBody
+public record CreateOrUpdateConditionRequestBody
 {
     /// <summary>
     /// Optionally provide a trait ID to compare a metric or trait value against instead of a value
@@ -14,7 +14,7 @@ public class CreateOrUpdateConditionRequestBody
     public string? ComparisonTraitId { get; init; }
 
     [JsonPropertyName("condition_type")]
-    public CreateOrUpdateConditionRequestBodyConditionType ConditionType { get; init; }
+    public required CreateOrUpdateConditionRequestBodyConditionType ConditionType { get; init; }
 
     /// <summary>
     /// Name of track event type used to measure this condition
@@ -35,16 +35,16 @@ public class CreateOrUpdateConditionRequestBody
     /// Value to compare the track event metric against
     /// </summary>
     [JsonPropertyName("metric_value")]
-    public int MetricValue { get; init; }
+    public int? MetricValue { get; init; }
 
     [JsonPropertyName("operator")]
-    public CreateOrUpdateConditionRequestBodyOperator Operator { get; init; }
+    public required CreateOrUpdateConditionRequestBodyOperator Operator { get; init; }
 
     /// <summary>
     /// List of resource IDs (companies, users, or plans) targeted by this condition
     /// </summary>
     [JsonPropertyName("resource_ids")]
-    public IEnumerable<string> ResourceIds { get; init; }
+    public IEnumerable<string> ResourceIds { get; init; } = new List<string>();
 
     /// <summary>
     /// ID of trait to use to measure this condition

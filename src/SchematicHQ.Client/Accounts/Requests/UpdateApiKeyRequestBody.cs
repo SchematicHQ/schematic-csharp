@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 
 namespace SchematicHQ.Client;
 
-public class UpdateApiKeyRequestBody
+public record UpdateApiKeyRequestBody
 {
     [JsonPropertyName("description")]
     public string? Description { get; init; }

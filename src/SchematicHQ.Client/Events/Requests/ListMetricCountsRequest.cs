@@ -1,6 +1,6 @@
 namespace SchematicHQ.Client;
 
-public class ListMetricCountsRequest
+public record ListMetricCountsRequest
 {
     public DateTime? StartTime { get; init; }
 

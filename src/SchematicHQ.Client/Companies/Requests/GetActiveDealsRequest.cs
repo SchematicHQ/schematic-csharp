@@ -1,10 +1,10 @@
 namespace SchematicHQ.Client;
 
-public class GetActiveDealsRequest
+public record GetActiveDealsRequest
 {
-    public string CompanyId { get; init; }
+    public required string CompanyId { get; init; }
 
-    public string DealStage { get; init; }
+    public required string DealStage { get; init; }
 
     /// <summary>
     /// Page limit (default 100)

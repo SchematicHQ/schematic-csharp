@@ -5,7 +5,7 @@ using SchematicHQ.Client;
 
 namespace SchematicHQ.Client;
 
-public class UpdateWebhookRequestBody
+public record UpdateWebhookRequestBody
 {
     [JsonPropertyName("name")]
     public string? Name { get; init; }

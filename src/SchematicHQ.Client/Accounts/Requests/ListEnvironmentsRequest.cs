@@ -1,6 +1,6 @@
 namespace SchematicHQ.Client;
 
-public class ListEnvironmentsRequest
+public record ListEnvironmentsRequest
 {
     public string? Ids { get; init; }
 

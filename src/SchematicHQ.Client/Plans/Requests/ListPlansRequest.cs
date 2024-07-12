@@ -1,6 +1,6 @@
 namespace SchematicHQ.Client;
 
-public class ListPlansRequest
+public record ListPlansRequest
 {
     public string? CompanyId { get; init; }
 

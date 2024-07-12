@@ -4,11 +4,11 @@ using System.Text.Json.Serialization;
 
 namespace SchematicHQ.Client;
 
-public class GetOrCreateCompanyMembershipRequestBody
+public record GetOrCreateCompanyMembershipRequestBody
 {
     [JsonPropertyName("company_id")]
-    public string CompanyId { get; init; }
+    public required string CompanyId { get; init; }
 
     [JsonPropertyName("user_id")]
-    public string UserId { get; init; }
+    public required string UserId { get; init; }
 }

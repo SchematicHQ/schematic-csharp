@@ -5,19 +5,19 @@ using SchematicHQ.Client;
 
 namespace SchematicHQ.Client;
 
-public class EventDetailResponseData
+public record EventDetailResponseData
 {
     [JsonPropertyName("api_key")]
     public string? ApiKey { get; init; }
 
     [JsonPropertyName("body")]
-    public Dictionary<string, object> Body { get; init; }
+    public Dictionary<string, object> Body { get; init; } = new Dictionary<string, object>();
 
     [JsonPropertyName("body_preview")]
-    public string BodyPreview { get; init; }
+    public required string BodyPreview { get; init; }
 
     [JsonPropertyName("captured_at")]
-    public DateTime CapturedAt { get; init; }
+    public required DateTime CapturedAt { get; init; }
 
     [JsonPropertyName("company")]
     public PreviewObject? Company { get; init; }
@@ -35,13 +35,13 @@ public class EventDetailResponseData
     public string? ErrorMessage { get; init; }
 
     [JsonPropertyName("feature_ids")]
-    public IEnumerable<string> FeatureIds { get; init; }
+    public IEnumerable<string> FeatureIds { get; init; } = new List<string>();
 
     [JsonPropertyName("features")]
-    public IEnumerable<PreviewObject> Features { get; init; }
+    public IEnumerable<PreviewObject> Features { get; init; } = new List<PreviewObject>();
 
     [JsonPropertyName("id")]
-    public string Id { get; init; }
+    public required string Id { get; init; }
 
     [JsonPropertyName("loaded_at")]
     public DateTime? LoadedAt { get; init; }
@@ -53,16 +53,16 @@ public class EventDetailResponseData
     public DateTime? SentAt { get; init; }
 
     [JsonPropertyName("status")]
-    public string Status { get; init; }
+    public required string Status { get; init; }
 
     [JsonPropertyName("subtype")]
     public string? Subtype { get; init; }
 
     [JsonPropertyName("type")]
-    public string Type { get; init; }
+    public required string Type { get; init; }
 
     [JsonPropertyName("updated_at")]
-    public DateTime UpdatedAt { get; init; }
+    public required DateTime UpdatedAt { get; init; }
 
     [JsonPropertyName("user")]
     public PreviewObject? User { get; init; }

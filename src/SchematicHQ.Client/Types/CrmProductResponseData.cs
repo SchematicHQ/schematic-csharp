@@ -4,38 +4,38 @@ using System.Text.Json.Serialization;
 
 namespace SchematicHQ.Client;
 
-public class CrmProductResponseData
+public record CrmProductResponseData
 {
     [JsonPropertyName("account_id")]
-    public string AccountId { get; init; }
+    public required string AccountId { get; init; }
 
     [JsonPropertyName("created_at")]
-    public DateTime CreatedAt { get; init; }
+    public required DateTime CreatedAt { get; init; }
 
     [JsonPropertyName("currency")]
-    public string Currency { get; init; }
+    public required string Currency { get; init; }
 
     [JsonPropertyName("deleted_at")]
     public DateTime? DeletedAt { get; init; }
 
     [JsonPropertyName("environment_id")]
-    public string EnvironmentId { get; init; }
+    public required string EnvironmentId { get; init; }
 
     [JsonPropertyName("external_id")]
-    public string ExternalId { get; init; }
+    public required string ExternalId { get; init; }
 
     [JsonPropertyName("name")]
-    public string Name { get; init; }
+    public required string Name { get; init; }
 
     [JsonPropertyName("price")]
-    public string Price { get; init; }
+    public required string Price { get; init; }
 
     [JsonPropertyName("product_id")]
-    public string ProductId { get; init; }
+    public required string ProductId { get; init; }
 
     [JsonPropertyName("quantity")]
-    public double Quantity { get; init; }
+    public required double Quantity { get; init; }
 
     [JsonPropertyName("updated_at")]
-    public DateTime UpdatedAt { get; init; }
+    public required DateTime UpdatedAt { get; init; }
 }

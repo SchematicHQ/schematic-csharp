@@ -1,4 +1,5 @@
 using SchematicHQ.Client;
+using SchematicHQ.Client.Core;
 
 #nullable enable
 
@@ -8,7 +9,7 @@ public partial class SchematicApi
 {
     private RawClient _client;
 
-    public SchematicApi(string apiKey = null, ClientOptions clientOptions = null)
+    public SchematicApi(string? apiKey = null, ClientOptions? clientOptions = null)
     {
         _client = new RawClient(
             new Dictionary<string, string>()
@@ -16,7 +17,7 @@ public partial class SchematicApi
                 { "X-Schematic-Api-Key", apiKey },
                 { "X-Fern-Language", "C#" },
                 { "X-Fern-SDK-Name", "SchematicHQ.Client" },
-                { "X-Fern-SDK-Version", "1.0.0" },
+                { "X-Fern-SDK-Version", "1.0.1" },
             },
             clientOptions ?? new ClientOptions()
         );
@@ -25,37 +26,30 @@ public partial class SchematicApi
         Billing = new BillingClient(_client);
         Companies = new CompaniesClient(_client);
         Entitlements = new EntitlementsClient(_client);
+        Components = new ComponentsClient(_client);
         Crm = new CrmClient(_client);
         Events = new EventsClient(_client);
         Plans = new PlansClient(_client);
         Webhooks = new WebhooksClient(_client);
     }
 
-    public AccountsClient Accounts { get; }
+    public AccountsClient Accounts { get; init; }
 
-    public FeaturesClient Features { get; }
+    public FeaturesClient Features { get; init; }
 
-    public BillingClient Billing { get; }
+    public BillingClient Billing { get; init; }
 
-    public CompaniesClient Companies { get; }
+    public CompaniesClient Companies { get; init; }
 
-    public EntitlementsClient Entitlements { get; }
+    public EntitlementsClient Entitlements { get; init; }
 
-    public CrmClient Crm { get; }
+    public ComponentsClient Components { get; init; }
 
-    public EventsClient Events { get; }
+    public CrmClient Crm { get; init; }
 
-    public PlansClient Plans { get; }
+    public EventsClient Events { get; init; }
 
-    public WebhooksClient Webhooks { get; }
+    public PlansClient Plans { get; init; }
 
-    private string GetFromEnvironmentOrThrow(string env, string message)
-    {
-        var value = System.Environment.GetEnvironmentVariable(env);
-        if (value == null)
-        {
-            throw new Exception(message);
-        }
-        return value;
-    }
+    public WebhooksClient Webhooks { get; init; }
 }

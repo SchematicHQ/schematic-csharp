@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 
 namespace SchematicHQ.Client;
 
-public class DeleteResponse
+public record DeleteResponse
 {
     /// <summary>
     /// Whether the delete was successful

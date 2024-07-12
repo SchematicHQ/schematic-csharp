@@ -5,17 +5,18 @@ using SchematicHQ.Client;
 
 namespace SchematicHQ.Client;
 
-public class ListCrmProductsResponse
+public record ListCrmProductsResponse
 {
     /// <summary>
     /// The returned resources
     /// </summary>
     [JsonPropertyName("data")]
-    public IEnumerable<CrmProductResponseData> Data { get; init; }
+    public IEnumerable<CrmProductResponseData> Data { get; init; } =
+        new List<CrmProductResponseData>();
 
     /// <summary>
     /// Input parameters
     /// </summary>
     [JsonPropertyName("params")]
-    public ListCrmProductsParams Params { get; init; }
+    public required ListCrmProductsParams Params { get; init; }
 }

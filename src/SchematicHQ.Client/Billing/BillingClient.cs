@@ -1,5 +1,7 @@
+using System.Net.Http;
 using System.Text.Json;
 using SchematicHQ.Client;
+using SchematicHQ.Client.Core;
 
 #nullable enable
 
@@ -26,10 +28,10 @@ public class BillingClient
                 Body = request
             }
         );
-        string responseBody = await response.Raw.Content.ReadAsStringAsync();
-        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode is >= 200 and < 400)
         {
-            return JsonSerializer.Deserialize<UpsertBillingProductResponse>(responseBody);
+            return JsonSerializer.Deserialize<UpsertBillingProductResponse>(responseBody)!;
         }
         throw new Exception(responseBody);
     }
@@ -44,6 +46,10 @@ public class BillingClient
         if (request.Name != null)
         {
             _query["name"] = request.Name;
+        }
+        if (request.Q != null)
+        {
+            _query["q"] = request.Q;
         }
         if (request.Limit != null)
         {
@@ -61,10 +67,10 @@ public class BillingClient
                 Query = _query
             }
         );
-        string responseBody = await response.Raw.Content.ReadAsStringAsync();
-        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode is >= 200 and < 400)
         {
-            return JsonSerializer.Deserialize<ListProductsResponse>(responseBody);
+            return JsonSerializer.Deserialize<ListProductsResponse>(responseBody)!;
         }
         throw new Exception(responseBody);
     }
@@ -81,10 +87,10 @@ public class BillingClient
                 Body = request
             }
         );
-        string responseBody = await response.Raw.Content.ReadAsStringAsync();
-        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode is >= 200 and < 400)
         {
-            return JsonSerializer.Deserialize<UpsertBillingSubscriptionResponse>(responseBody);
+            return JsonSerializer.Deserialize<UpsertBillingSubscriptionResponse>(responseBody)!;
         }
         throw new Exception(responseBody);
     }

@@ -4,23 +4,23 @@ using System.Text.Json.Serialization;
 
 namespace SchematicHQ.Client;
 
-public class EventSummaryResponseData
+public record EventSummaryResponseData
 {
     [JsonPropertyName("company_count")]
-    public int CompanyCount { get; init; }
+    public required int CompanyCount { get; init; }
 
     [JsonPropertyName("environment_id")]
-    public string EnvironmentId { get; init; }
+    public required string EnvironmentId { get; init; }
 
     [JsonPropertyName("event_count")]
-    public int EventCount { get; init; }
+    public required int EventCount { get; init; }
 
     [JsonPropertyName("event_subtype")]
-    public string EventSubtype { get; init; }
+    public required string EventSubtype { get; init; }
 
     [JsonPropertyName("last_seen_at")]
     public DateTime? LastSeenAt { get; init; }
 
     [JsonPropertyName("user_count")]
-    public int UserCount { get; init; }
+    public required int UserCount { get; init; }
 }

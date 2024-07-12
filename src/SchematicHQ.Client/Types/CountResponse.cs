@@ -4,8 +4,8 @@ using System.Text.Json.Serialization;
 
 namespace SchematicHQ.Client;
 
-public class CountResponse
+public record CountResponse
 {
     [JsonPropertyName("count")]
-    public int Count { get; init; }
+    public required int Count { get; init; }
 }

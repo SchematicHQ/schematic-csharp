@@ -5,13 +5,13 @@ using SchematicHQ.Client;
 
 namespace SchematicHQ.Client;
 
-public class FeatureDetailResponseData
+public record FeatureDetailResponseData
 {
     [JsonPropertyName("created_at")]
-    public DateTime CreatedAt { get; init; }
+    public required DateTime CreatedAt { get; init; }
 
     [JsonPropertyName("description")]
-    public string Description { get; init; }
+    public required string Description { get; init; }
 
     [JsonPropertyName("event_subtype")]
     public string? EventSubtype { get; init; }
@@ -20,22 +20,23 @@ public class FeatureDetailResponseData
     public EventSummaryResponseData? EventSummary { get; init; }
 
     [JsonPropertyName("feature_type")]
-    public string FeatureType { get; init; }
+    public required string FeatureType { get; init; }
 
     [JsonPropertyName("flags")]
-    public IEnumerable<FlagDetailResponseData> Flags { get; init; }
+    public IEnumerable<FlagDetailResponseData> Flags { get; init; } =
+        new List<FlagDetailResponseData>();
 
     [JsonPropertyName("id")]
-    public string Id { get; init; }
+    public required string Id { get; init; }
 
     [JsonPropertyName("lifecycle_phase")]
     public string? LifecyclePhase { get; init; }
 
     [JsonPropertyName("name")]
-    public string Name { get; init; }
+    public required string Name { get; init; }
 
     [JsonPropertyName("plans")]
-    public IEnumerable<PreviewObject> Plans { get; init; }
+    public IEnumerable<PreviewObject> Plans { get; init; } = new List<PreviewObject>();
 
     [JsonPropertyName("trait")]
     public EntityTraitDefinitionResponseData? Trait { get; init; }
@@ -44,5 +45,5 @@ public class FeatureDetailResponseData
     public string? TraitId { get; init; }
 
     [JsonPropertyName("updated_at")]
-    public DateTime UpdatedAt { get; init; }
+    public required DateTime UpdatedAt { get; init; }
 }

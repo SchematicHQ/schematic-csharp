@@ -5,7 +5,7 @@ using SchematicHQ.Client;
 
 namespace SchematicHQ.Client;
 
-public class RuleConditionDetailResponseData
+public record RuleConditionDetailResponseData
 {
     [JsonPropertyName("comparison_trait")]
     public EntityTraitDefinitionResponseData? ComparisonTrait { get; init; }
@@ -17,13 +17,13 @@ public class RuleConditionDetailResponseData
     public string? ConditionGroupId { get; init; }
 
     [JsonPropertyName("condition_type")]
-    public string ConditionType { get; init; }
+    public required string ConditionType { get; init; }
 
     [JsonPropertyName("created_at")]
-    public DateTime CreatedAt { get; init; }
+    public required DateTime CreatedAt { get; init; }
 
     [JsonPropertyName("environment_id")]
-    public string EnvironmentId { get; init; }
+    public required string EnvironmentId { get; init; }
 
     [JsonPropertyName("event_subtype")]
     public string? EventSubtype { get; init; }
@@ -32,28 +32,29 @@ public class RuleConditionDetailResponseData
     public string? FlagId { get; init; }
 
     [JsonPropertyName("id")]
-    public string Id { get; init; }
+    public required string Id { get; init; }
 
     [JsonPropertyName("metric_period")]
     public string? MetricPeriod { get; init; }
 
     [JsonPropertyName("metric_value")]
-    public int MetricValue { get; init; }
+    public int? MetricValue { get; init; }
 
     [JsonPropertyName("operator")]
-    public string Operator { get; init; }
+    public required string Operator { get; init; }
 
     [JsonPropertyName("plan_id")]
     public string? PlanId { get; init; }
 
     [JsonPropertyName("resource_ids")]
-    public IEnumerable<string> ResourceIds { get; init; }
+    public IEnumerable<string> ResourceIds { get; init; } = new List<string>();
 
     [JsonPropertyName("resources")]
-    public IEnumerable<RuleConditionResourceResponseData> Resources { get; init; }
+    public IEnumerable<RuleConditionResourceResponseData> Resources { get; init; } =
+        new List<RuleConditionResourceResponseData>();
 
     [JsonPropertyName("rule_id")]
-    public string RuleId { get; init; }
+    public required string RuleId { get; init; }
 
     [JsonPropertyName("trait")]
     public EntityTraitDefinitionResponseData? Trait { get; init; }
@@ -65,8 +66,8 @@ public class RuleConditionDetailResponseData
     public string? TraitId { get; init; }
 
     [JsonPropertyName("trait_value")]
-    public string TraitValue { get; init; }
+    public required string TraitValue { get; init; }
 
     [JsonPropertyName("updated_at")]
-    public DateTime UpdatedAt { get; init; }
+    public required DateTime UpdatedAt { get; init; }
 }

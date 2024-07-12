@@ -5,7 +5,7 @@ using SchematicHQ.Client;
 
 namespace SchematicHQ.Client;
 
-public class UpdateReqCommon
+public record UpdateReqCommon
 {
     [JsonPropertyName("metric_period")]
     public UpdateReqCommonMetricPeriod? MetricPeriod { get; init; }
@@ -20,5 +20,5 @@ public class UpdateReqCommon
     public string? ValueTraitId { get; init; }
 
     [JsonPropertyName("value_type")]
-    public UpdateReqCommonValueType ValueType { get; init; }
+    public required UpdateReqCommonValueType ValueType { get; init; }
 }

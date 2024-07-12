@@ -5,31 +5,34 @@ using SchematicHQ.Client;
 
 namespace SchematicHQ.Client;
 
-public class UserDetailResponseData
+public record UserDetailResponseData
 {
     [JsonPropertyName("company_memberships")]
-    public IEnumerable<CompanyMembershipDetailResponseData> CompanyMemberships { get; init; }
+    public IEnumerable<CompanyMembershipDetailResponseData> CompanyMemberships { get; init; } =
+        new List<CompanyMembershipDetailResponseData>();
 
     [JsonPropertyName("created_at")]
-    public DateTime CreatedAt { get; init; }
+    public required DateTime CreatedAt { get; init; }
 
     [JsonPropertyName("entity_traits")]
-    public IEnumerable<EntityTraitDetailResponseData> EntityTraits { get; init; }
+    public IEnumerable<EntityTraitDetailResponseData> EntityTraits { get; init; } =
+        new List<EntityTraitDetailResponseData>();
 
     [JsonPropertyName("environment_id")]
-    public string EnvironmentId { get; init; }
+    public required string EnvironmentId { get; init; }
 
     [JsonPropertyName("id")]
-    public string Id { get; init; }
+    public required string Id { get; init; }
 
     [JsonPropertyName("keys")]
-    public IEnumerable<EntityKeyDetailResponseData> Keys { get; init; }
+    public IEnumerable<EntityKeyDetailResponseData> Keys { get; init; } =
+        new List<EntityKeyDetailResponseData>();
 
     [JsonPropertyName("last_seen_at")]
     public DateTime? LastSeenAt { get; init; }
 
     [JsonPropertyName("name")]
-    public string Name { get; init; }
+    public required string Name { get; init; }
 
     /// <summary>
     /// A map of trait names to trait values
@@ -38,5 +41,5 @@ public class UserDetailResponseData
     public Dictionary<string, object>? Traits { get; init; }
 
     [JsonPropertyName("updated_at")]
-    public DateTime UpdatedAt { get; init; }
+    public required DateTime UpdatedAt { get; init; }
 }

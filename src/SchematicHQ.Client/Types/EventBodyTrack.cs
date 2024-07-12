@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 
 namespace SchematicHQ.Client;
 
-public class EventBodyTrack
+public record EventBodyTrack
 {
     /// <summary>
     /// Key-value pairs to identify company associated with track event
@@ -16,7 +16,7 @@ public class EventBodyTrack
     /// The name of the type of track event
     /// </summary>
     [JsonPropertyName("event")]
-    public string Event { get; init; }
+    public required string Event { get; init; }
 
     /// <summary>
     /// A map of trait names to trait values

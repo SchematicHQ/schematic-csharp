@@ -4,37 +4,37 @@ using System.Text.Json.Serialization;
 
 namespace SchematicHQ.Client;
 
-public class CrmDealLineItem
+public record CrmDealLineItem
 {
     [JsonPropertyName("billing_frequency")]
-    public string BillingFrequency { get; init; }
+    public required string BillingFrequency { get; init; }
 
     [JsonPropertyName("created_at")]
-    public DateTime CreatedAt { get; init; }
+    public required DateTime CreatedAt { get; init; }
 
     [JsonPropertyName("currency")]
-    public string Currency { get; init; }
+    public required string Currency { get; init; }
 
     [JsonPropertyName("deleted_at")]
     public DateTime? DeletedAt { get; init; }
 
     [JsonPropertyName("description")]
-    public string Description { get; init; }
+    public required string Description { get; init; }
 
     [JsonPropertyName("discount_percentage")]
     public Dictionary<string, object>? DiscountPercentage { get; init; }
 
     [JsonPropertyName("id")]
-    public string Id { get; init; }
+    public required string Id { get; init; }
 
     [JsonPropertyName("name")]
-    public string Name { get; init; }
+    public required string Name { get; init; }
 
     [JsonPropertyName("price")]
-    public double Price { get; init; }
+    public required double Price { get; init; }
 
     [JsonPropertyName("quantity")]
-    public int Quantity { get; init; }
+    public required int Quantity { get; init; }
 
     [JsonPropertyName("term_month")]
     public int? TermMonth { get; init; }
@@ -43,5 +43,5 @@ public class CrmDealLineItem
     public Dictionary<string, object>? TotalDiscount { get; init; }
 
     [JsonPropertyName("updated_at")]
-    public DateTime UpdatedAt { get; init; }
+    public required DateTime UpdatedAt { get; init; }
 }

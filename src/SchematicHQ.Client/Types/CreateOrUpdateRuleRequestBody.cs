@@ -5,26 +5,28 @@ using SchematicHQ.Client;
 
 namespace SchematicHQ.Client;
 
-public class CreateOrUpdateRuleRequestBody
+public record CreateOrUpdateRuleRequestBody
 {
     [JsonPropertyName("condition_groups")]
-    public IEnumerable<CreateOrUpdateConditionGroupRequestBody> ConditionGroups { get; init; }
+    public IEnumerable<CreateOrUpdateConditionGroupRequestBody> ConditionGroups { get; init; } =
+        new List<CreateOrUpdateConditionGroupRequestBody>();
 
     [JsonPropertyName("conditions")]
-    public IEnumerable<CreateOrUpdateConditionRequestBody> Conditions { get; init; }
+    public IEnumerable<CreateOrUpdateConditionRequestBody> Conditions { get; init; } =
+        new List<CreateOrUpdateConditionRequestBody>();
 
     [JsonPropertyName("id")]
     public string? Id { get; init; }
 
     [JsonPropertyName("name")]
-    public string Name { get; init; }
+    public required string Name { get; init; }
 
     [JsonPropertyName("priority")]
-    public int Priority { get; init; }
+    public required int Priority { get; init; }
 
     [JsonPropertyName("rule_type")]
     public CreateOrUpdateRuleRequestBodyRuleType? RuleType { get; init; }
 
     [JsonPropertyName("value")]
-    public bool Value { get; init; }
+    public required bool Value { get; init; }
 }

@@ -5,13 +5,13 @@ using SchematicHQ.Client;
 
 namespace SchematicHQ.Client;
 
-public class CreateCompanyOverrideRequestBody
+public record CreateCompanyOverrideRequestBody
 {
     [JsonPropertyName("company_id")]
-    public string CompanyId { get; init; }
+    public required string CompanyId { get; init; }
 
     [JsonPropertyName("feature_id")]
-    public string FeatureId { get; init; }
+    public required string FeatureId { get; init; }
 
     [JsonPropertyName("metric_period")]
     public CreateCompanyOverrideRequestBodyMetricPeriod? MetricPeriod { get; init; }
@@ -26,5 +26,5 @@ public class CreateCompanyOverrideRequestBody
     public string? ValueTraitId { get; init; }
 
     [JsonPropertyName("value_type")]
-    public CreateCompanyOverrideRequestBodyValueType ValueType { get; init; }
+    public required CreateCompanyOverrideRequestBodyValueType ValueType { get; init; }
 }

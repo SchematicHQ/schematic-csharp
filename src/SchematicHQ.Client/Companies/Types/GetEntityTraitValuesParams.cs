@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 
 namespace SchematicHQ.Client;
 
-public class GetEntityTraitValuesParams
+public record GetEntityTraitValuesParams
 {
     [JsonPropertyName("definition_id")]
     public string? DefinitionId { get; init; }

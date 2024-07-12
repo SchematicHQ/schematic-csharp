@@ -7,7 +7,7 @@ using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
 
-public class CreateEventRequestBody
+public record CreateEventRequestBody
 {
     [JsonPropertyName("body")]
     [JsonConverter(typeof(OneOfSerializer<OneOf<EventBodyTrack, EventBodyIdentify>>))]
@@ -17,7 +17,7 @@ public class CreateEventRequestBody
     /// Either 'identify' or 'track'
     /// </summary>
     [JsonPropertyName("event_type")]
-    public CreateEventRequestBodyEventType EventType { get; init; }
+    public required CreateEventRequestBodyEventType EventType { get; init; }
 
     /// <summary>
     /// Optionally provide a timestamp at which the event was sent to Schematic

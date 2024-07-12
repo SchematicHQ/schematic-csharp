@@ -5,23 +5,23 @@ using SchematicHQ.Client;
 
 namespace SchematicHQ.Client;
 
-public class EnvironmentDetailResponseData
+public record EnvironmentDetailResponseData
 {
     [JsonPropertyName("api_keys")]
-    public IEnumerable<ApiKeyResponseData> ApiKeys { get; init; }
+    public IEnumerable<ApiKeyResponseData> ApiKeys { get; init; } = new List<ApiKeyResponseData>();
 
     [JsonPropertyName("created_at")]
-    public DateTime CreatedAt { get; init; }
+    public required DateTime CreatedAt { get; init; }
 
     [JsonPropertyName("environment_type")]
-    public string EnvironmentType { get; init; }
+    public required string EnvironmentType { get; init; }
 
     [JsonPropertyName("id")]
-    public string Id { get; init; }
+    public required string Id { get; init; }
 
     [JsonPropertyName("name")]
-    public string Name { get; init; }
+    public required string Name { get; init; }
 
     [JsonPropertyName("updated_at")]
-    public DateTime UpdatedAt { get; init; }
+    public required DateTime UpdatedAt { get; init; }
 }

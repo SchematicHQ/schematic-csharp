@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 
 namespace SchematicHQ.Client;
 
-public class CountUsersParams
+public record CountUsersParams
 {
     [JsonPropertyName("company_id")]
     public string? CompanyId { get; init; }

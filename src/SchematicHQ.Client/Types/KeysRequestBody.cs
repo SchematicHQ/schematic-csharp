@@ -4,8 +4,8 @@ using System.Text.Json.Serialization;
 
 namespace SchematicHQ.Client;
 
-public class KeysRequestBody
+public record KeysRequestBody
 {
     [JsonPropertyName("keys")]
-    public Dictionary<string, string> Keys { get; init; }
+    public Dictionary<string, string> Keys { get; init; } = new Dictionary<string, string>();
 }

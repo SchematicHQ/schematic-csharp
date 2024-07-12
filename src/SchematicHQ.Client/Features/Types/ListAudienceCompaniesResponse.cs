@@ -5,17 +5,18 @@ using SchematicHQ.Client;
 
 namespace SchematicHQ.Client;
 
-public class ListAudienceCompaniesResponse
+public record ListAudienceCompaniesResponse
 {
     /// <summary>
     /// The returned resources
     /// </summary>
     [JsonPropertyName("data")]
-    public IEnumerable<CompanyDetailResponseData> Data { get; init; }
+    public IEnumerable<CompanyDetailResponseData> Data { get; init; } =
+        new List<CompanyDetailResponseData>();
 
     /// <summary>
     /// Input parameters
     /// </summary>
     [JsonPropertyName("params")]
-    public Dictionary<string, object> Params { get; init; }
+    public Dictionary<string, object> Params { get; init; } = new Dictionary<string, object>();
 }

@@ -5,7 +5,7 @@ using SchematicHQ.Client;
 
 namespace SchematicHQ.Client;
 
-public class UpdateCompanyOverrideRequestBody
+public record UpdateCompanyOverrideRequestBody
 {
     [JsonPropertyName("metric_period")]
     public UpdateCompanyOverrideRequestBodyMetricPeriod? MetricPeriod { get; init; }
@@ -20,5 +20,5 @@ public class UpdateCompanyOverrideRequestBody
     public string? ValueTraitId { get; init; }
 
     [JsonPropertyName("value_type")]
-    public UpdateCompanyOverrideRequestBodyValueType ValueType { get; init; }
+    public required UpdateCompanyOverrideRequestBodyValueType ValueType { get; init; }
 }

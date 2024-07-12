@@ -4,11 +4,11 @@ using System.Text.Json.Serialization;
 
 namespace SchematicHQ.Client;
 
-public class RuleConditionResourceResponseData
+public record RuleConditionResourceResponseData
 {
     [JsonPropertyName("id")]
-    public string Id { get; init; }
+    public required string Id { get; init; }
 
     [JsonPropertyName("name")]
-    public string Name { get; init; }
+    public required string Name { get; init; }
 }

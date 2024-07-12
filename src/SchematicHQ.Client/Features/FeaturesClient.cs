@@ -1,5 +1,7 @@
+using System.Net.Http;
 using System.Text.Json;
 using SchematicHQ.Client;
+using SchematicHQ.Client.Core;
 
 #nullable enable
 
@@ -26,10 +28,10 @@ public class FeaturesClient
                 Body = request
             }
         );
-        string responseBody = await response.Raw.Content.ReadAsStringAsync();
-        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode is >= 200 and < 400)
         {
-            return JsonSerializer.Deserialize<CountAudienceCompaniesResponse>(responseBody);
+            return JsonSerializer.Deserialize<CountAudienceCompaniesResponse>(responseBody)!;
         }
         throw new Exception(responseBody);
     }
@@ -46,10 +48,10 @@ public class FeaturesClient
                 Body = request
             }
         );
-        string responseBody = await response.Raw.Content.ReadAsStringAsync();
-        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode is >= 200 and < 400)
         {
-            return JsonSerializer.Deserialize<CountAudienceUsersResponse>(responseBody);
+            return JsonSerializer.Deserialize<CountAudienceUsersResponse>(responseBody)!;
         }
         throw new Exception(responseBody);
     }
@@ -66,10 +68,10 @@ public class FeaturesClient
                 Body = request
             }
         );
-        string responseBody = await response.Raw.Content.ReadAsStringAsync();
-        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode is >= 200 and < 400)
         {
-            return JsonSerializer.Deserialize<ListAudienceCompaniesResponse>(responseBody);
+            return JsonSerializer.Deserialize<ListAudienceCompaniesResponse>(responseBody)!;
         }
         throw new Exception(responseBody);
     }
@@ -84,10 +86,10 @@ public class FeaturesClient
                 Body = request
             }
         );
-        string responseBody = await response.Raw.Content.ReadAsStringAsync();
-        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode is >= 200 and < 400)
         {
-            return JsonSerializer.Deserialize<ListAudienceUsersResponse>(responseBody);
+            return JsonSerializer.Deserialize<ListAudienceUsersResponse>(responseBody)!;
         }
         throw new Exception(responseBody);
     }
@@ -127,10 +129,10 @@ public class FeaturesClient
                 Query = _query
             }
         );
-        string responseBody = await response.Raw.Content.ReadAsStringAsync();
-        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode is >= 200 and < 400)
         {
-            return JsonSerializer.Deserialize<ListFeaturesResponse>(responseBody);
+            return JsonSerializer.Deserialize<ListFeaturesResponse>(responseBody)!;
         }
         throw new Exception(responseBody);
     }
@@ -145,10 +147,10 @@ public class FeaturesClient
                 Body = request
             }
         );
-        string responseBody = await response.Raw.Content.ReadAsStringAsync();
-        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode is >= 200 and < 400)
         {
-            return JsonSerializer.Deserialize<CreateFeatureResponse>(responseBody);
+            return JsonSerializer.Deserialize<CreateFeatureResponse>(responseBody)!;
         }
         throw new Exception(responseBody);
     }
@@ -158,10 +160,10 @@ public class FeaturesClient
         var response = await _client.MakeRequestAsync(
             new RawClient.JsonApiRequest { Method = HttpMethod.Get, Path = $"features/{featureId}" }
         );
-        string responseBody = await response.Raw.Content.ReadAsStringAsync();
-        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode is >= 200 and < 400)
         {
-            return JsonSerializer.Deserialize<GetFeatureResponse>(responseBody);
+            return JsonSerializer.Deserialize<GetFeatureResponse>(responseBody)!;
         }
         throw new Exception(responseBody);
     }
@@ -179,10 +181,10 @@ public class FeaturesClient
                 Body = request
             }
         );
-        string responseBody = await response.Raw.Content.ReadAsStringAsync();
-        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode is >= 200 and < 400)
         {
-            return JsonSerializer.Deserialize<UpdateFeatureResponse>(responseBody);
+            return JsonSerializer.Deserialize<UpdateFeatureResponse>(responseBody)!;
         }
         throw new Exception(responseBody);
     }
@@ -196,10 +198,10 @@ public class FeaturesClient
                 Path = $"features/{featureId}"
             }
         );
-        string responseBody = await response.Raw.Content.ReadAsStringAsync();
-        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode is >= 200 and < 400)
         {
-            return JsonSerializer.Deserialize<DeleteFeatureResponse>(responseBody);
+            return JsonSerializer.Deserialize<DeleteFeatureResponse>(responseBody)!;
         }
         throw new Exception(responseBody);
     }
@@ -239,10 +241,10 @@ public class FeaturesClient
                 Query = _query
             }
         );
-        string responseBody = await response.Raw.Content.ReadAsStringAsync();
-        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode is >= 200 and < 400)
         {
-            return JsonSerializer.Deserialize<CountFeaturesResponse>(responseBody);
+            return JsonSerializer.Deserialize<CountFeaturesResponse>(responseBody)!;
         }
         throw new Exception(responseBody);
     }
@@ -278,10 +280,10 @@ public class FeaturesClient
                 Query = _query
             }
         );
-        string responseBody = await response.Raw.Content.ReadAsStringAsync();
-        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode is >= 200 and < 400)
         {
-            return JsonSerializer.Deserialize<ListFlagChecksResponse>(responseBody);
+            return JsonSerializer.Deserialize<ListFlagChecksResponse>(responseBody)!;
         }
         throw new Exception(responseBody);
     }
@@ -295,10 +297,10 @@ public class FeaturesClient
                 Path = $"flag-checks/{flagCheckId}"
             }
         );
-        string responseBody = await response.Raw.Content.ReadAsStringAsync();
-        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode is >= 200 and < 400)
         {
-            return JsonSerializer.Deserialize<GetFlagCheckResponse>(responseBody);
+            return JsonSerializer.Deserialize<GetFlagCheckResponse>(responseBody)!;
         }
         throw new Exception(responseBody);
     }
@@ -334,10 +336,10 @@ public class FeaturesClient
                 Query = _query
             }
         );
-        string responseBody = await response.Raw.Content.ReadAsStringAsync();
-        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode is >= 200 and < 400)
         {
-            return JsonSerializer.Deserialize<CountFlagChecksResponse>(responseBody);
+            return JsonSerializer.Deserialize<CountFlagChecksResponse>(responseBody)!;
         }
         throw new Exception(responseBody);
     }
@@ -375,10 +377,10 @@ public class FeaturesClient
                 Query = _query
             }
         );
-        string responseBody = await response.Raw.Content.ReadAsStringAsync();
-        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode is >= 200 and < 400)
         {
-            return JsonSerializer.Deserialize<GetLatestFlagChecksResponse>(responseBody);
+            return JsonSerializer.Deserialize<GetLatestFlagChecksResponse>(responseBody)!;
         }
         throw new Exception(responseBody);
     }
@@ -414,10 +416,10 @@ public class FeaturesClient
                 Query = _query
             }
         );
-        string responseBody = await response.Raw.Content.ReadAsStringAsync();
-        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode is >= 200 and < 400)
         {
-            return JsonSerializer.Deserialize<ListFlagsResponse>(responseBody);
+            return JsonSerializer.Deserialize<ListFlagsResponse>(responseBody)!;
         }
         throw new Exception(responseBody);
     }
@@ -432,10 +434,10 @@ public class FeaturesClient
                 Body = request
             }
         );
-        string responseBody = await response.Raw.Content.ReadAsStringAsync();
-        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode is >= 200 and < 400)
         {
-            return JsonSerializer.Deserialize<CreateFlagResponse>(responseBody);
+            return JsonSerializer.Deserialize<CreateFlagResponse>(responseBody)!;
         }
         throw new Exception(responseBody);
     }
@@ -445,10 +447,10 @@ public class FeaturesClient
         var response = await _client.MakeRequestAsync(
             new RawClient.JsonApiRequest { Method = HttpMethod.Get, Path = $"flags/{flagId}" }
         );
-        string responseBody = await response.Raw.Content.ReadAsStringAsync();
-        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode is >= 200 and < 400)
         {
-            return JsonSerializer.Deserialize<GetFlagResponse>(responseBody);
+            return JsonSerializer.Deserialize<GetFlagResponse>(responseBody)!;
         }
         throw new Exception(responseBody);
     }
@@ -466,10 +468,10 @@ public class FeaturesClient
                 Body = request
             }
         );
-        string responseBody = await response.Raw.Content.ReadAsStringAsync();
-        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode is >= 200 and < 400)
         {
-            return JsonSerializer.Deserialize<UpdateFlagResponse>(responseBody);
+            return JsonSerializer.Deserialize<UpdateFlagResponse>(responseBody)!;
         }
         throw new Exception(responseBody);
     }
@@ -479,10 +481,10 @@ public class FeaturesClient
         var response = await _client.MakeRequestAsync(
             new RawClient.JsonApiRequest { Method = HttpMethod.Delete, Path = $"flags/{flagId}" }
         );
-        string responseBody = await response.Raw.Content.ReadAsStringAsync();
-        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode is >= 200 and < 400)
         {
-            return JsonSerializer.Deserialize<DeleteFlagResponse>(responseBody);
+            return JsonSerializer.Deserialize<DeleteFlagResponse>(responseBody)!;
         }
         throw new Exception(responseBody);
     }
@@ -500,10 +502,10 @@ public class FeaturesClient
                 Body = request
             }
         );
-        string responseBody = await response.Raw.Content.ReadAsStringAsync();
-        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode is >= 200 and < 400)
         {
-            return JsonSerializer.Deserialize<UpdateFlagRulesResponse>(responseBody);
+            return JsonSerializer.Deserialize<UpdateFlagRulesResponse>(responseBody)!;
         }
         throw new Exception(responseBody);
     }
@@ -518,10 +520,10 @@ public class FeaturesClient
                 Body = request
             }
         );
-        string responseBody = await response.Raw.Content.ReadAsStringAsync();
-        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode is >= 200 and < 400)
         {
-            return JsonSerializer.Deserialize<CheckFlagResponse>(responseBody);
+            return JsonSerializer.Deserialize<CheckFlagResponse>(responseBody)!;
         }
         throw new Exception(responseBody);
     }
@@ -536,10 +538,10 @@ public class FeaturesClient
                 Body = request
             }
         );
-        string responseBody = await response.Raw.Content.ReadAsStringAsync();
-        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode is >= 200 and < 400)
         {
-            return JsonSerializer.Deserialize<CheckFlagsResponse>(responseBody);
+            return JsonSerializer.Deserialize<CheckFlagsResponse>(responseBody)!;
         }
         throw new Exception(responseBody);
     }
@@ -575,10 +577,10 @@ public class FeaturesClient
                 Query = _query
             }
         );
-        string responseBody = await response.Raw.Content.ReadAsStringAsync();
-        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode is >= 200 and < 400)
         {
-            return JsonSerializer.Deserialize<CountFlagsResponse>(responseBody);
+            return JsonSerializer.Deserialize<CountFlagsResponse>(responseBody)!;
         }
         throw new Exception(responseBody);
     }

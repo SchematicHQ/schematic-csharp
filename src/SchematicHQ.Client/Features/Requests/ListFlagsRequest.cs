@@ -1,6 +1,6 @@
 namespace SchematicHQ.Client;
 
-public class ListFlagsRequest
+public record ListFlagsRequest
 {
     public string? FeatureId { get; init; }
 

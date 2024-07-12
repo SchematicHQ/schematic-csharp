@@ -4,10 +4,10 @@ using System.Text.Json.Serialization;
 
 namespace SchematicHQ.Client;
 
-public class ApiKeyResponseData
+public record ApiKeyResponseData
 {
     [JsonPropertyName("created_at")]
-    public DateTime CreatedAt { get; init; }
+    public required DateTime CreatedAt { get; init; }
 
     [JsonPropertyName("description")]
     public string? Description { get; init; }
@@ -16,17 +16,17 @@ public class ApiKeyResponseData
     public string? EnvironmentId { get; init; }
 
     [JsonPropertyName("id")]
-    public string Id { get; init; }
+    public required string Id { get; init; }
 
     [JsonPropertyName("last_used_at")]
     public DateTime? LastUsedAt { get; init; }
 
     [JsonPropertyName("name")]
-    public string Name { get; init; }
+    public required string Name { get; init; }
 
     [JsonPropertyName("scopes")]
-    public IEnumerable<string> Scopes { get; init; }
+    public IEnumerable<string> Scopes { get; init; } = new List<string>();
 
     [JsonPropertyName("updated_at")]
-    public DateTime UpdatedAt { get; init; }
+    public required DateTime UpdatedAt { get; init; }
 }

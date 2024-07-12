@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 
 namespace SchematicHQ.Client;
 
-public class ListCompaniesParams
+public record ListCompaniesParams
 {
     [JsonPropertyName("ids")]
     public IEnumerable<string>? Ids { get; init; }

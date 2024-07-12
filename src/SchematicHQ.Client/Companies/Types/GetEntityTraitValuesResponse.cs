@@ -5,17 +5,17 @@ using SchematicHQ.Client;
 
 namespace SchematicHQ.Client;
 
-public class GetEntityTraitValuesResponse
+public record GetEntityTraitValuesResponse
 {
     /// <summary>
     /// The returned resources
     /// </summary>
     [JsonPropertyName("data")]
-    public IEnumerable<EntityTraitValue> Data { get; init; }
+    public IEnumerable<EntityTraitValue> Data { get; init; } = new List<EntityTraitValue>();
 
     /// <summary>
     /// Input parameters
     /// </summary>
     [JsonPropertyName("params")]
-    public GetEntityTraitValuesParams Params { get; init; }
+    public required GetEntityTraitValuesParams Params { get; init; }
 }

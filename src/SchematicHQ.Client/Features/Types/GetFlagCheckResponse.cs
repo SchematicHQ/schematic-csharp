@@ -5,14 +5,14 @@ using SchematicHQ.Client;
 
 namespace SchematicHQ.Client;
 
-public class GetFlagCheckResponse
+public record GetFlagCheckResponse
 {
     [JsonPropertyName("data")]
-    public FlagCheckLogDetailResponseData Data { get; init; }
+    public required FlagCheckLogDetailResponseData Data { get; init; }
 
     /// <summary>
     /// Input parameters
     /// </summary>
     [JsonPropertyName("params")]
-    public Dictionary<string, object> Params { get; init; }
+    public Dictionary<string, object> Params { get; init; } = new Dictionary<string, object>();
 }

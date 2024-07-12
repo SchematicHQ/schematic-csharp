@@ -5,37 +5,37 @@ using SchematicHQ.Client;
 
 namespace SchematicHQ.Client;
 
-public class CompanyOverrideResponseData
+public record CompanyOverrideResponseData
 {
     [JsonPropertyName("company")]
     public CompanyDetailResponseData? Company { get; init; }
 
     [JsonPropertyName("company_id")]
-    public string CompanyId { get; init; }
+    public required string CompanyId { get; init; }
 
     [JsonPropertyName("created_at")]
-    public DateTime CreatedAt { get; init; }
+    public required DateTime CreatedAt { get; init; }
 
     [JsonPropertyName("environment_id")]
-    public string EnvironmentId { get; init; }
+    public required string EnvironmentId { get; init; }
 
     [JsonPropertyName("feature")]
     public FeatureResponseData? Feature { get; init; }
 
     [JsonPropertyName("feature_id")]
-    public string FeatureId { get; init; }
+    public required string FeatureId { get; init; }
 
     [JsonPropertyName("id")]
-    public string Id { get; init; }
+    public required string Id { get; init; }
 
     [JsonPropertyName("metric_period")]
     public string? MetricPeriod { get; init; }
 
     [JsonPropertyName("rule_id")]
-    public string RuleId { get; init; }
+    public required string RuleId { get; init; }
 
     [JsonPropertyName("updated_at")]
-    public DateTime UpdatedAt { get; init; }
+    public required DateTime UpdatedAt { get; init; }
 
     [JsonPropertyName("value_bool")]
     public bool? ValueBool { get; init; }
@@ -50,5 +50,5 @@ public class CompanyOverrideResponseData
     public string? ValueTraitId { get; init; }
 
     [JsonPropertyName("value_type")]
-    public string ValueType { get; init; }
+    public required string ValueType { get; init; }
 }

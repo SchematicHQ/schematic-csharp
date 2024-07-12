@@ -1,6 +1,6 @@
 namespace SchematicHQ.Client;
 
-public class ListFeatureUsageRequest
+public record ListFeatureUsageRequest
 {
     public string? CompanyId { get; init; }
 

@@ -1,6 +1,6 @@
 namespace SchematicHQ.Client;
 
-public class ListApiRequestsRequest
+public record ListApiRequestsRequest
 {
     public string? Q { get; init; }
 

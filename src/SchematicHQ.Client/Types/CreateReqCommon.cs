@@ -5,10 +5,10 @@ using SchematicHQ.Client;
 
 namespace SchematicHQ.Client;
 
-public class CreateReqCommon
+public record CreateReqCommon
 {
     [JsonPropertyName("feature_id")]
-    public string FeatureId { get; init; }
+    public required string FeatureId { get; init; }
 
     [JsonPropertyName("metric_period")]
     public CreateReqCommonMetricPeriod? MetricPeriod { get; init; }
@@ -23,5 +23,5 @@ public class CreateReqCommon
     public string? ValueTraitId { get; init; }
 
     [JsonPropertyName("value_type")]
-    public CreateReqCommonValueType ValueType { get; init; }
+    public required CreateReqCommonValueType ValueType { get; init; }
 }

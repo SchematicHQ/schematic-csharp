@@ -4,20 +4,20 @@ using System.Text.Json.Serialization;
 
 namespace SchematicHQ.Client;
 
-public class CreateBillingProductRequestBody
+public record CreateBillingProductRequestBody
 {
     [JsonPropertyName("currency")]
-    public string Currency { get; init; }
+    public required string Currency { get; init; }
 
     [JsonPropertyName("external_id")]
-    public string ExternalId { get; init; }
+    public required string ExternalId { get; init; }
 
     [JsonPropertyName("name")]
-    public string Name { get; init; }
+    public required string Name { get; init; }
 
     [JsonPropertyName("price")]
-    public double Price { get; init; }
+    public required double Price { get; init; }
 
     [JsonPropertyName("quantity")]
-    public int Quantity { get; init; }
+    public required int Quantity { get; init; }
 }

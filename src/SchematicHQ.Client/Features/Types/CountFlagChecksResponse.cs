@@ -5,14 +5,14 @@ using SchematicHQ.Client;
 
 namespace SchematicHQ.Client;
 
-public class CountFlagChecksResponse
+public record CountFlagChecksResponse
 {
     [JsonPropertyName("data")]
-    public CountResponse Data { get; init; }
+    public required CountResponse Data { get; init; }
 
     /// <summary>
     /// Input parameters
     /// </summary>
     [JsonPropertyName("params")]
-    public CountFlagChecksParams Params { get; init; }
+    public required CountFlagChecksParams Params { get; init; }
 }

@@ -1,5 +1,7 @@
+using System.Net.Http;
 using System.Text.Json;
 using SchematicHQ.Client;
+using SchematicHQ.Client.Core;
 
 #nullable enable
 
@@ -49,10 +51,10 @@ public class CompaniesClient
                 Query = _query
             }
         );
-        string responseBody = await response.Raw.Content.ReadAsStringAsync();
-        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode is >= 200 and < 400)
         {
-            return JsonSerializer.Deserialize<ListCompaniesResponse>(responseBody);
+            return JsonSerializer.Deserialize<ListCompaniesResponse>(responseBody)!;
         }
         throw new Exception(responseBody);
     }
@@ -67,10 +69,10 @@ public class CompaniesClient
                 Body = request
             }
         );
-        string responseBody = await response.Raw.Content.ReadAsStringAsync();
-        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode is >= 200 and < 400)
         {
-            return JsonSerializer.Deserialize<UpsertCompanyResponse>(responseBody);
+            return JsonSerializer.Deserialize<UpsertCompanyResponse>(responseBody)!;
         }
         throw new Exception(responseBody);
     }
@@ -84,10 +86,10 @@ public class CompaniesClient
                 Path = $"companies/{companyId}"
             }
         );
-        string responseBody = await response.Raw.Content.ReadAsStringAsync();
-        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode is >= 200 and < 400)
         {
-            return JsonSerializer.Deserialize<GetCompanyResponse>(responseBody);
+            return JsonSerializer.Deserialize<GetCompanyResponse>(responseBody)!;
         }
         throw new Exception(responseBody);
     }
@@ -101,10 +103,10 @@ public class CompaniesClient
                 Path = $"companies/{companyId}"
             }
         );
-        string responseBody = await response.Raw.Content.ReadAsStringAsync();
-        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode is >= 200 and < 400)
         {
-            return JsonSerializer.Deserialize<DeleteCompanyResponse>(responseBody);
+            return JsonSerializer.Deserialize<DeleteCompanyResponse>(responseBody)!;
         }
         throw new Exception(responseBody);
     }
@@ -144,10 +146,10 @@ public class CompaniesClient
                 Query = _query
             }
         );
-        string responseBody = await response.Raw.Content.ReadAsStringAsync();
-        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode is >= 200 and < 400)
         {
-            return JsonSerializer.Deserialize<CountCompaniesResponse>(responseBody);
+            return JsonSerializer.Deserialize<CountCompaniesResponse>(responseBody)!;
         }
         throw new Exception(responseBody);
     }
@@ -162,10 +164,10 @@ public class CompaniesClient
                 Body = request
             }
         );
-        string responseBody = await response.Raw.Content.ReadAsStringAsync();
-        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode is >= 200 and < 400)
         {
-            return JsonSerializer.Deserialize<CreateCompanyResponse>(responseBody);
+            return JsonSerializer.Deserialize<CreateCompanyResponse>(responseBody)!;
         }
         throw new Exception(responseBody);
     }
@@ -180,10 +182,10 @@ public class CompaniesClient
                 Body = request
             }
         );
-        string responseBody = await response.Raw.Content.ReadAsStringAsync();
-        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode is >= 200 and < 400)
         {
-            return JsonSerializer.Deserialize<DeleteCompanyByKeysResponse>(responseBody);
+            return JsonSerializer.Deserialize<DeleteCompanyByKeysResponse>(responseBody)!;
         }
         throw new Exception(responseBody);
     }
@@ -199,10 +201,10 @@ public class CompaniesClient
                 Query = _query
             }
         );
-        string responseBody = await response.Raw.Content.ReadAsStringAsync();
-        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode is >= 200 and < 400)
         {
-            return JsonSerializer.Deserialize<LookupCompanyResponse>(responseBody);
+            return JsonSerializer.Deserialize<LookupCompanyResponse>(responseBody)!;
         }
         throw new Exception(responseBody);
     }
@@ -230,10 +232,10 @@ public class CompaniesClient
                 Query = _query
             }
         );
-        string responseBody = await response.Raw.Content.ReadAsStringAsync();
-        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode is >= 200 and < 400)
         {
-            return JsonSerializer.Deserialize<GetActiveDealsResponse>(responseBody);
+            return JsonSerializer.Deserialize<GetActiveDealsResponse>(responseBody)!;
         }
         throw new Exception(responseBody);
     }
@@ -267,10 +269,10 @@ public class CompaniesClient
                 Query = _query
             }
         );
-        string responseBody = await response.Raw.Content.ReadAsStringAsync();
-        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode is >= 200 and < 400)
         {
-            return JsonSerializer.Deserialize<ListCompanyMembershipsResponse>(responseBody);
+            return JsonSerializer.Deserialize<ListCompanyMembershipsResponse>(responseBody)!;
         }
         throw new Exception(responseBody);
     }
@@ -287,10 +289,10 @@ public class CompaniesClient
                 Body = request
             }
         );
-        string responseBody = await response.Raw.Content.ReadAsStringAsync();
-        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode is >= 200 and < 400)
         {
-            return JsonSerializer.Deserialize<GetOrCreateCompanyMembershipResponse>(responseBody);
+            return JsonSerializer.Deserialize<GetOrCreateCompanyMembershipResponse>(responseBody)!;
         }
         throw new Exception(responseBody);
     }
@@ -306,10 +308,10 @@ public class CompaniesClient
                 Path = $"company-memberships/{companyMembershipId}"
             }
         );
-        string responseBody = await response.Raw.Content.ReadAsStringAsync();
-        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode is >= 200 and < 400)
         {
-            return JsonSerializer.Deserialize<DeleteCompanyMembershipResponse>(responseBody);
+            return JsonSerializer.Deserialize<DeleteCompanyMembershipResponse>(responseBody)!;
         }
         throw new Exception(responseBody);
     }
@@ -343,10 +345,10 @@ public class CompaniesClient
                 Query = _query
             }
         );
-        string responseBody = await response.Raw.Content.ReadAsStringAsync();
-        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode is >= 200 and < 400)
         {
-            return JsonSerializer.Deserialize<ListCompanyPlansResponse>(responseBody);
+            return JsonSerializer.Deserialize<ListCompanyPlansResponse>(responseBody)!;
         }
         throw new Exception(responseBody);
     }
@@ -372,10 +374,10 @@ public class CompaniesClient
                 Query = _query
             }
         );
-        string responseBody = await response.Raw.Content.ReadAsStringAsync();
-        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode is >= 200 and < 400)
         {
-            return JsonSerializer.Deserialize<GetActiveCompanySubscriptionResponse>(responseBody);
+            return JsonSerializer.Deserialize<GetActiveCompanySubscriptionResponse>(responseBody)!;
         }
         throw new Exception(responseBody);
     }
@@ -392,10 +394,10 @@ public class CompaniesClient
                 Body = request
             }
         );
-        string responseBody = await response.Raw.Content.ReadAsStringAsync();
-        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode is >= 200 and < 400)
         {
-            return JsonSerializer.Deserialize<UpsertCompanyTraitResponse>(responseBody);
+            return JsonSerializer.Deserialize<UpsertCompanyTraitResponse>(responseBody)!;
         }
         throw new Exception(responseBody);
     }
@@ -433,10 +435,10 @@ public class CompaniesClient
                 Query = _query
             }
         );
-        string responseBody = await response.Raw.Content.ReadAsStringAsync();
-        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode is >= 200 and < 400)
         {
-            return JsonSerializer.Deserialize<ListEntityKeyDefinitionsResponse>(responseBody);
+            return JsonSerializer.Deserialize<ListEntityKeyDefinitionsResponse>(responseBody)!;
         }
         throw new Exception(responseBody);
     }
@@ -474,10 +476,10 @@ public class CompaniesClient
                 Query = _query
             }
         );
-        string responseBody = await response.Raw.Content.ReadAsStringAsync();
-        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode is >= 200 and < 400)
         {
-            return JsonSerializer.Deserialize<CountEntityKeyDefinitionsResponse>(responseBody);
+            return JsonSerializer.Deserialize<CountEntityKeyDefinitionsResponse>(responseBody)!;
         }
         throw new Exception(responseBody);
     }
@@ -519,10 +521,10 @@ public class CompaniesClient
                 Query = _query
             }
         );
-        string responseBody = await response.Raw.Content.ReadAsStringAsync();
-        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode is >= 200 and < 400)
         {
-            return JsonSerializer.Deserialize<ListEntityTraitDefinitionsResponse>(responseBody);
+            return JsonSerializer.Deserialize<ListEntityTraitDefinitionsResponse>(responseBody)!;
         }
         throw new Exception(responseBody);
     }
@@ -539,12 +541,12 @@ public class CompaniesClient
                 Body = request
             }
         );
-        string responseBody = await response.Raw.Content.ReadAsStringAsync();
-        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode is >= 200 and < 400)
         {
             return JsonSerializer.Deserialize<GetOrCreateEntityTraitDefinitionResponse>(
                 responseBody
-            );
+            )!;
         }
         throw new Exception(responseBody);
     }
@@ -560,10 +562,10 @@ public class CompaniesClient
                 Path = $"entity-trait-definitions/{entityTraitDefinitionId}"
             }
         );
-        string responseBody = await response.Raw.Content.ReadAsStringAsync();
-        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode is >= 200 and < 400)
         {
-            return JsonSerializer.Deserialize<GetEntityTraitDefinitionResponse>(responseBody);
+            return JsonSerializer.Deserialize<GetEntityTraitDefinitionResponse>(responseBody)!;
         }
         throw new Exception(responseBody);
     }
@@ -581,10 +583,10 @@ public class CompaniesClient
                 Body = request
             }
         );
-        string responseBody = await response.Raw.Content.ReadAsStringAsync();
-        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode is >= 200 and < 400)
         {
-            return JsonSerializer.Deserialize<UpdateEntityTraitDefinitionResponse>(responseBody);
+            return JsonSerializer.Deserialize<UpdateEntityTraitDefinitionResponse>(responseBody)!;
         }
         throw new Exception(responseBody);
     }
@@ -626,10 +628,10 @@ public class CompaniesClient
                 Query = _query
             }
         );
-        string responseBody = await response.Raw.Content.ReadAsStringAsync();
-        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode is >= 200 and < 400)
         {
-            return JsonSerializer.Deserialize<CountEntityTraitDefinitionsResponse>(responseBody);
+            return JsonSerializer.Deserialize<CountEntityTraitDefinitionsResponse>(responseBody)!;
         }
         throw new Exception(responseBody);
     }
@@ -662,10 +664,10 @@ public class CompaniesClient
                 Query = _query
             }
         );
-        string responseBody = await response.Raw.Content.ReadAsStringAsync();
-        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode is >= 200 and < 400)
         {
-            return JsonSerializer.Deserialize<GetEntityTraitValuesResponse>(responseBody);
+            return JsonSerializer.Deserialize<GetEntityTraitValuesResponse>(responseBody)!;
         }
         throw new Exception(responseBody);
     }
@@ -680,10 +682,10 @@ public class CompaniesClient
                 Body = request
             }
         );
-        string responseBody = await response.Raw.Content.ReadAsStringAsync();
-        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode is >= 200 and < 400)
         {
-            return JsonSerializer.Deserialize<UpsertUserTraitResponse>(responseBody);
+            return JsonSerializer.Deserialize<UpsertUserTraitResponse>(responseBody)!;
         }
         throw new Exception(responseBody);
     }
@@ -723,10 +725,10 @@ public class CompaniesClient
                 Query = _query
             }
         );
-        string responseBody = await response.Raw.Content.ReadAsStringAsync();
-        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode is >= 200 and < 400)
         {
-            return JsonSerializer.Deserialize<ListUsersResponse>(responseBody);
+            return JsonSerializer.Deserialize<ListUsersResponse>(responseBody)!;
         }
         throw new Exception(responseBody);
     }
@@ -741,10 +743,10 @@ public class CompaniesClient
                 Body = request
             }
         );
-        string responseBody = await response.Raw.Content.ReadAsStringAsync();
-        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode is >= 200 and < 400)
         {
-            return JsonSerializer.Deserialize<UpsertUserResponse>(responseBody);
+            return JsonSerializer.Deserialize<UpsertUserResponse>(responseBody)!;
         }
         throw new Exception(responseBody);
     }
@@ -754,10 +756,10 @@ public class CompaniesClient
         var response = await _client.MakeRequestAsync(
             new RawClient.JsonApiRequest { Method = HttpMethod.Get, Path = $"users/{userId}" }
         );
-        string responseBody = await response.Raw.Content.ReadAsStringAsync();
-        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode is >= 200 and < 400)
         {
-            return JsonSerializer.Deserialize<GetUserResponse>(responseBody);
+            return JsonSerializer.Deserialize<GetUserResponse>(responseBody)!;
         }
         throw new Exception(responseBody);
     }
@@ -767,10 +769,10 @@ public class CompaniesClient
         var response = await _client.MakeRequestAsync(
             new RawClient.JsonApiRequest { Method = HttpMethod.Delete, Path = $"users/{userId}" }
         );
-        string responseBody = await response.Raw.Content.ReadAsStringAsync();
-        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode is >= 200 and < 400)
         {
-            return JsonSerializer.Deserialize<DeleteUserResponse>(responseBody);
+            return JsonSerializer.Deserialize<DeleteUserResponse>(responseBody)!;
         }
         throw new Exception(responseBody);
     }
@@ -810,10 +812,10 @@ public class CompaniesClient
                 Query = _query
             }
         );
-        string responseBody = await response.Raw.Content.ReadAsStringAsync();
-        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode is >= 200 and < 400)
         {
-            return JsonSerializer.Deserialize<CountUsersResponse>(responseBody);
+            return JsonSerializer.Deserialize<CountUsersResponse>(responseBody)!;
         }
         throw new Exception(responseBody);
     }
@@ -828,10 +830,10 @@ public class CompaniesClient
                 Body = request
             }
         );
-        string responseBody = await response.Raw.Content.ReadAsStringAsync();
-        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode is >= 200 and < 400)
         {
-            return JsonSerializer.Deserialize<CreateUserResponse>(responseBody);
+            return JsonSerializer.Deserialize<CreateUserResponse>(responseBody)!;
         }
         throw new Exception(responseBody);
     }
@@ -846,10 +848,10 @@ public class CompaniesClient
                 Body = request
             }
         );
-        string responseBody = await response.Raw.Content.ReadAsStringAsync();
-        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode is >= 200 and < 400)
         {
-            return JsonSerializer.Deserialize<DeleteUserByKeysResponse>(responseBody);
+            return JsonSerializer.Deserialize<DeleteUserByKeysResponse>(responseBody)!;
         }
         throw new Exception(responseBody);
     }
@@ -865,10 +867,10 @@ public class CompaniesClient
                 Query = _query
             }
         );
-        string responseBody = await response.Raw.Content.ReadAsStringAsync();
-        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode is >= 200 and < 400)
         {
-            return JsonSerializer.Deserialize<LookupUserResponse>(responseBody);
+            return JsonSerializer.Deserialize<LookupUserResponse>(responseBody)!;
         }
         throw new Exception(responseBody);
     }

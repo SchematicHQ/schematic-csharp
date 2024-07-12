@@ -1,6 +1,6 @@
 namespace SchematicHQ.Client;
 
-public class CountFeatureUsageRequest
+public record CountFeatureUsageRequest
 {
     public string? CompanyId { get; init; }
 

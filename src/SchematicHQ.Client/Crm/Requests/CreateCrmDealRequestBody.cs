@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 
 namespace SchematicHQ.Client;
 
-public class CreateCrmDealRequestBody
+public record CreateCrmDealRequestBody
 {
     [JsonPropertyName("arr")]
     public string? Arr { get; init; }
@@ -13,16 +13,16 @@ public class CreateCrmDealRequestBody
     public string? CrmCompanyId { get; init; }
 
     [JsonPropertyName("crm_company_key")]
-    public string CrmCompanyKey { get; init; }
+    public required string CrmCompanyKey { get; init; }
 
     [JsonPropertyName("crm_product_id")]
     public string? CrmProductId { get; init; }
 
     [JsonPropertyName("crm_type")]
-    public string CrmType { get; init; }
+    public required string CrmType { get; init; }
 
     [JsonPropertyName("deal_external_id")]
-    public string DealExternalId { get; init; }
+    public required string DealExternalId { get; init; }
 
     [JsonPropertyName("deal_name")]
     public string? DealName { get; init; }

@@ -5,17 +5,18 @@ using SchematicHQ.Client;
 
 namespace SchematicHQ.Client;
 
-public class ListCompanyOverridesResponse
+public record ListCompanyOverridesResponse
 {
     /// <summary>
     /// The returned resources
     /// </summary>
     [JsonPropertyName("data")]
-    public IEnumerable<CompanyOverrideResponseData> Data { get; init; }
+    public IEnumerable<CompanyOverrideResponseData> Data { get; init; } =
+        new List<CompanyOverrideResponseData>();
 
     /// <summary>
     /// Input parameters
     /// </summary>
     [JsonPropertyName("params")]
-    public ListCompanyOverridesParams Params { get; init; }
+    public required ListCompanyOverridesParams Params { get; init; }
 }

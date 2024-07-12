@@ -5,11 +5,11 @@ using SchematicHQ.Client;
 
 namespace SchematicHQ.Client;
 
-public class CreateEnvironmentRequestBody
+public record CreateEnvironmentRequestBody
 {
     [JsonPropertyName("environment_type")]
-    public CreateEnvironmentRequestBodyEnvironmentType EnvironmentType { get; init; }
+    public required CreateEnvironmentRequestBodyEnvironmentType EnvironmentType { get; init; }
 
     [JsonPropertyName("name")]
-    public string Name { get; init; }
+    public required string Name { get; init; }
 }

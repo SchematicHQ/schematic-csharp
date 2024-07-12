@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 
 namespace SchematicHQ.Client;
 
-public class GetEventSummariesParams
+public record GetEventSummariesParams
 {
     [JsonPropertyName("event_subtypes")]
     public IEnumerable<string>? EventSubtypes { get; init; }

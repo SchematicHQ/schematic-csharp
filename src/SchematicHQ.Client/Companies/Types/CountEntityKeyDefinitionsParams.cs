@@ -5,7 +5,7 @@ using SchematicHQ.Client;
 
 namespace SchematicHQ.Client;
 
-public class CountEntityKeyDefinitionsParams
+public record CountEntityKeyDefinitionsParams
 {
     [JsonPropertyName("entity_type")]
     public CountEntityKeyDefinitionsResponseParamsEntityType? EntityType { get; init; }

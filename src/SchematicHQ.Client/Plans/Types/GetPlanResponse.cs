@@ -5,14 +5,14 @@ using SchematicHQ.Client;
 
 namespace SchematicHQ.Client;
 
-public class GetPlanResponse
+public record GetPlanResponse
 {
     [JsonPropertyName("data")]
-    public PlanDetailResponseData Data { get; init; }
+    public required PlanDetailResponseData Data { get; init; }
 
     /// <summary>
     /// Input parameters
     /// </summary>
     [JsonPropertyName("params")]
-    public Dictionary<string, object> Params { get; init; }
+    public Dictionary<string, object> Params { get; init; } = new Dictionary<string, object>();
 }

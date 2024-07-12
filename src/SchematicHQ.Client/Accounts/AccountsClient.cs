@@ -1,5 +1,7 @@
+using System.Net.Http;
 using System.Text.Json;
 using SchematicHQ.Client;
+using SchematicHQ.Client.Core;
 
 #nullable enable
 
@@ -40,10 +42,10 @@ public class AccountsClient
                 Query = _query
             }
         );
-        string responseBody = await response.Raw.Content.ReadAsStringAsync();
-        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode is >= 200 and < 400)
         {
-            return JsonSerializer.Deserialize<ListApiKeysResponse>(responseBody);
+            return JsonSerializer.Deserialize<ListApiKeysResponse>(responseBody)!;
         }
         throw new Exception(responseBody);
     }
@@ -58,10 +60,10 @@ public class AccountsClient
                 Body = request
             }
         );
-        string responseBody = await response.Raw.Content.ReadAsStringAsync();
-        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode is >= 200 and < 400)
         {
-            return JsonSerializer.Deserialize<CreateApiKeyResponse>(responseBody);
+            return JsonSerializer.Deserialize<CreateApiKeyResponse>(responseBody)!;
         }
         throw new Exception(responseBody);
     }
@@ -71,10 +73,10 @@ public class AccountsClient
         var response = await _client.MakeRequestAsync(
             new RawClient.JsonApiRequest { Method = HttpMethod.Get, Path = $"api-keys/{apiKeyId}" }
         );
-        string responseBody = await response.Raw.Content.ReadAsStringAsync();
-        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode is >= 200 and < 400)
         {
-            return JsonSerializer.Deserialize<GetApiKeyResponse>(responseBody);
+            return JsonSerializer.Deserialize<GetApiKeyResponse>(responseBody)!;
         }
         throw new Exception(responseBody);
     }
@@ -92,10 +94,10 @@ public class AccountsClient
                 Body = request
             }
         );
-        string responseBody = await response.Raw.Content.ReadAsStringAsync();
-        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode is >= 200 and < 400)
         {
-            return JsonSerializer.Deserialize<UpdateApiKeyResponse>(responseBody);
+            return JsonSerializer.Deserialize<UpdateApiKeyResponse>(responseBody)!;
         }
         throw new Exception(responseBody);
     }
@@ -109,10 +111,10 @@ public class AccountsClient
                 Path = $"api-keys/{apiKeyId}"
             }
         );
-        string responseBody = await response.Raw.Content.ReadAsStringAsync();
-        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode is >= 200 and < 400)
         {
-            return JsonSerializer.Deserialize<DeleteApiKeyResponse>(responseBody);
+            return JsonSerializer.Deserialize<DeleteApiKeyResponse>(responseBody)!;
         }
         throw new Exception(responseBody);
     }
@@ -143,10 +145,10 @@ public class AccountsClient
                 Query = _query
             }
         );
-        string responseBody = await response.Raw.Content.ReadAsStringAsync();
-        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode is >= 200 and < 400)
         {
-            return JsonSerializer.Deserialize<CountApiKeysResponse>(responseBody);
+            return JsonSerializer.Deserialize<CountApiKeysResponse>(responseBody)!;
         }
         throw new Exception(responseBody);
     }
@@ -182,10 +184,10 @@ public class AccountsClient
                 Query = _query
             }
         );
-        string responseBody = await response.Raw.Content.ReadAsStringAsync();
-        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode is >= 200 and < 400)
         {
-            return JsonSerializer.Deserialize<ListApiRequestsResponse>(responseBody);
+            return JsonSerializer.Deserialize<ListApiRequestsResponse>(responseBody)!;
         }
         throw new Exception(responseBody);
     }
@@ -199,10 +201,10 @@ public class AccountsClient
                 Path = $"api-requests/{apiRequestId}"
             }
         );
-        string responseBody = await response.Raw.Content.ReadAsStringAsync();
-        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode is >= 200 and < 400)
         {
-            return JsonSerializer.Deserialize<GetApiRequestResponse>(responseBody);
+            return JsonSerializer.Deserialize<GetApiRequestResponse>(responseBody)!;
         }
         throw new Exception(responseBody);
     }
@@ -240,10 +242,10 @@ public class AccountsClient
                 Query = _query
             }
         );
-        string responseBody = await response.Raw.Content.ReadAsStringAsync();
-        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode is >= 200 and < 400)
         {
-            return JsonSerializer.Deserialize<CountApiRequestsResponse>(responseBody);
+            return JsonSerializer.Deserialize<CountApiRequestsResponse>(responseBody)!;
         }
         throw new Exception(responseBody);
     }
@@ -273,10 +275,10 @@ public class AccountsClient
                 Query = _query
             }
         );
-        string responseBody = await response.Raw.Content.ReadAsStringAsync();
-        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode is >= 200 and < 400)
         {
-            return JsonSerializer.Deserialize<ListEnvironmentsResponse>(responseBody);
+            return JsonSerializer.Deserialize<ListEnvironmentsResponse>(responseBody)!;
         }
         throw new Exception(responseBody);
     }
@@ -293,10 +295,10 @@ public class AccountsClient
                 Body = request
             }
         );
-        string responseBody = await response.Raw.Content.ReadAsStringAsync();
-        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode is >= 200 and < 400)
         {
-            return JsonSerializer.Deserialize<CreateEnvironmentResponse>(responseBody);
+            return JsonSerializer.Deserialize<CreateEnvironmentResponse>(responseBody)!;
         }
         throw new Exception(responseBody);
     }
@@ -310,10 +312,10 @@ public class AccountsClient
                 Path = $"environments/{environmentId}"
             }
         );
-        string responseBody = await response.Raw.Content.ReadAsStringAsync();
-        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode is >= 200 and < 400)
         {
-            return JsonSerializer.Deserialize<GetEnvironmentResponse>(responseBody);
+            return JsonSerializer.Deserialize<GetEnvironmentResponse>(responseBody)!;
         }
         throw new Exception(responseBody);
     }
@@ -331,10 +333,10 @@ public class AccountsClient
                 Body = request
             }
         );
-        string responseBody = await response.Raw.Content.ReadAsStringAsync();
-        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode is >= 200 and < 400)
         {
-            return JsonSerializer.Deserialize<UpdateEnvironmentResponse>(responseBody);
+            return JsonSerializer.Deserialize<UpdateEnvironmentResponse>(responseBody)!;
         }
         throw new Exception(responseBody);
     }
@@ -348,10 +350,10 @@ public class AccountsClient
                 Path = $"environments/{environmentId}"
             }
         );
-        string responseBody = await response.Raw.Content.ReadAsStringAsync();
-        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode is >= 200 and < 400)
         {
-            return JsonSerializer.Deserialize<DeleteEnvironmentResponse>(responseBody);
+            return JsonSerializer.Deserialize<DeleteEnvironmentResponse>(responseBody)!;
         }
         throw new Exception(responseBody);
     }

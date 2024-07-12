@@ -5,13 +5,16 @@ using SchematicHQ.Client;
 
 namespace SchematicHQ.Client;
 
-public class UpdatePlanRequestBody
+public record UpdatePlanRequestBody
 {
+    [JsonPropertyName("audience_type")]
+    public required string AudienceType { get; init; }
+
     [JsonPropertyName("description")]
     public string? Description { get; init; }
 
     [JsonPropertyName("name")]
-    public string Name { get; init; }
+    public required string Name { get; init; }
 
     [JsonPropertyName("plan_type")]
     public UpdatePlanRequestBodyPlanType? PlanType { get; init; }

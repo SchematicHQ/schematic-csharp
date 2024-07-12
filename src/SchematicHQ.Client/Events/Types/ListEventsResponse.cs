@@ -5,17 +5,18 @@ using SchematicHQ.Client;
 
 namespace SchematicHQ.Client;
 
-public class ListEventsResponse
+public record ListEventsResponse
 {
     /// <summary>
     /// The returned resources
     /// </summary>
     [JsonPropertyName("data")]
-    public IEnumerable<EventDetailResponseData> Data { get; init; }
+    public IEnumerable<EventDetailResponseData> Data { get; init; } =
+        new List<EventDetailResponseData>();
 
     /// <summary>
     /// Input parameters
     /// </summary>
     [JsonPropertyName("params")]
-    public ListEventsParams Params { get; init; }
+    public required ListEventsParams Params { get; init; }
 }

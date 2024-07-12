@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 
 namespace SchematicHQ.Client;
 
-public class CountFlagsParams
+public record CountFlagsParams
 {
     [JsonPropertyName("feature_id")]
     public string? FeatureId { get; init; }

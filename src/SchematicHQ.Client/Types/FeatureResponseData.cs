@@ -4,32 +4,32 @@ using System.Text.Json.Serialization;
 
 namespace SchematicHQ.Client;
 
-public class FeatureResponseData
+public record FeatureResponseData
 {
     [JsonPropertyName("created_at")]
-    public DateTime CreatedAt { get; init; }
+    public required DateTime CreatedAt { get; init; }
 
     [JsonPropertyName("description")]
-    public string Description { get; init; }
+    public required string Description { get; init; }
 
     [JsonPropertyName("event_subtype")]
     public string? EventSubtype { get; init; }
 
     [JsonPropertyName("feature_type")]
-    public string FeatureType { get; init; }
+    public required string FeatureType { get; init; }
 
     [JsonPropertyName("id")]
-    public string Id { get; init; }
+    public required string Id { get; init; }
 
     [JsonPropertyName("lifecycle_phase")]
     public string? LifecyclePhase { get; init; }
 
     [JsonPropertyName("name")]
-    public string Name { get; init; }
+    public required string Name { get; init; }
 
     [JsonPropertyName("trait_id")]
     public string? TraitId { get; init; }
 
     [JsonPropertyName("updated_at")]
-    public DateTime UpdatedAt { get; init; }
+    public required DateTime UpdatedAt { get; init; }
 }

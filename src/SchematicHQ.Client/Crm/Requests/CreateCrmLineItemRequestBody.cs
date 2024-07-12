@@ -4,28 +4,28 @@ using System.Text.Json.Serialization;
 
 namespace SchematicHQ.Client;
 
-public class CreateCrmLineItemRequestBody
+public record CreateCrmLineItemRequestBody
 {
     [JsonPropertyName("TermMonth")]
     public int? TermMonth { get; init; }
 
     [JsonPropertyName("amount")]
-    public string Amount { get; init; }
+    public required string Amount { get; init; }
 
     [JsonPropertyName("discount_percentage")]
     public string? DiscountPercentage { get; init; }
 
     [JsonPropertyName("interval")]
-    public string Interval { get; init; }
+    public required string Interval { get; init; }
 
     [JsonPropertyName("line_item_external_id")]
-    public string LineItemExternalId { get; init; }
+    public required string LineItemExternalId { get; init; }
 
     [JsonPropertyName("product_external_id")]
-    public string ProductExternalId { get; init; }
+    public required string ProductExternalId { get; init; }
 
     [JsonPropertyName("quantity")]
-    public int Quantity { get; init; }
+    public required int Quantity { get; init; }
 
     [JsonPropertyName("total_discount")]
     public string? TotalDiscount { get; init; }

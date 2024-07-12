@@ -5,14 +5,14 @@ using SchematicHQ.Client;
 
 namespace SchematicHQ.Client;
 
-public class UpsertCrmProductResponse
+public record UpsertCrmProductResponse
 {
     [JsonPropertyName("data")]
-    public CrmProductResponseData Data { get; init; }
+    public required CrmProductResponseData Data { get; init; }
 
     /// <summary>
     /// Input parameters
     /// </summary>
     [JsonPropertyName("params")]
-    public Dictionary<string, object> Params { get; init; }
+    public Dictionary<string, object> Params { get; init; } = new Dictionary<string, object>();
 }

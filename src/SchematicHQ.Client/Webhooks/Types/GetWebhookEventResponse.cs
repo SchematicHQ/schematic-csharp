@@ -5,14 +5,14 @@ using SchematicHQ.Client;
 
 namespace SchematicHQ.Client;
 
-public class GetWebhookEventResponse
+public record GetWebhookEventResponse
 {
     [JsonPropertyName("data")]
-    public WebhookEventDetailResponseData Data { get; init; }
+    public required WebhookEventDetailResponseData Data { get; init; }
 
     /// <summary>
     /// Input parameters
     /// </summary>
     [JsonPropertyName("params")]
-    public Dictionary<string, object> Params { get; init; }
+    public Dictionary<string, object> Params { get; init; } = new Dictionary<string, object>();
 }

@@ -1,5 +1,7 @@
+using System.Net.Http;
 using System.Text.Json;
 using SchematicHQ.Client;
+using SchematicHQ.Client.Core;
 
 #nullable enable
 
@@ -23,10 +25,10 @@ public class PlansClient
                 Path = $"plan-audiences/{planAudienceId}"
             }
         );
-        string responseBody = await response.Raw.Content.ReadAsStringAsync();
-        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode is >= 200 and < 400)
         {
-            return JsonSerializer.Deserialize<GetAudienceResponse>(responseBody);
+            return JsonSerializer.Deserialize<GetAudienceResponse>(responseBody)!;
         }
         throw new Exception(responseBody);
     }
@@ -44,10 +46,10 @@ public class PlansClient
                 Body = request
             }
         );
-        string responseBody = await response.Raw.Content.ReadAsStringAsync();
-        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode is >= 200 and < 400)
         {
-            return JsonSerializer.Deserialize<UpdateAudienceResponse>(responseBody);
+            return JsonSerializer.Deserialize<UpdateAudienceResponse>(responseBody)!;
         }
         throw new Exception(responseBody);
     }
@@ -61,10 +63,10 @@ public class PlansClient
                 Path = $"plan-audiences/{planAudienceId}"
             }
         );
-        string responseBody = await response.Raw.Content.ReadAsStringAsync();
-        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode is >= 200 and < 400)
         {
-            return JsonSerializer.Deserialize<DeleteAudienceResponse>(responseBody);
+            return JsonSerializer.Deserialize<DeleteAudienceResponse>(responseBody)!;
         }
         throw new Exception(responseBody);
     }
@@ -104,10 +106,10 @@ public class PlansClient
                 Query = _query
             }
         );
-        string responseBody = await response.Raw.Content.ReadAsStringAsync();
-        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode is >= 200 and < 400)
         {
-            return JsonSerializer.Deserialize<ListPlansResponse>(responseBody);
+            return JsonSerializer.Deserialize<ListPlansResponse>(responseBody)!;
         }
         throw new Exception(responseBody);
     }
@@ -122,10 +124,10 @@ public class PlansClient
                 Body = request
             }
         );
-        string responseBody = await response.Raw.Content.ReadAsStringAsync();
-        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode is >= 200 and < 400)
         {
-            return JsonSerializer.Deserialize<CreatePlanResponse>(responseBody);
+            return JsonSerializer.Deserialize<CreatePlanResponse>(responseBody)!;
         }
         throw new Exception(responseBody);
     }
@@ -135,10 +137,10 @@ public class PlansClient
         var response = await _client.MakeRequestAsync(
             new RawClient.JsonApiRequest { Method = HttpMethod.Get, Path = $"plans/{planId}" }
         );
-        string responseBody = await response.Raw.Content.ReadAsStringAsync();
-        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode is >= 200 and < 400)
         {
-            return JsonSerializer.Deserialize<GetPlanResponse>(responseBody);
+            return JsonSerializer.Deserialize<GetPlanResponse>(responseBody)!;
         }
         throw new Exception(responseBody);
     }
@@ -156,10 +158,10 @@ public class PlansClient
                 Body = request
             }
         );
-        string responseBody = await response.Raw.Content.ReadAsStringAsync();
-        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode is >= 200 and < 400)
         {
-            return JsonSerializer.Deserialize<UpdatePlanResponse>(responseBody);
+            return JsonSerializer.Deserialize<UpdatePlanResponse>(responseBody)!;
         }
         throw new Exception(responseBody);
     }
@@ -169,10 +171,31 @@ public class PlansClient
         var response = await _client.MakeRequestAsync(
             new RawClient.JsonApiRequest { Method = HttpMethod.Delete, Path = $"plans/{planId}" }
         );
-        string responseBody = await response.Raw.Content.ReadAsStringAsync();
-        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode is >= 200 and < 400)
         {
-            return JsonSerializer.Deserialize<DeletePlanResponse>(responseBody);
+            return JsonSerializer.Deserialize<DeletePlanResponse>(responseBody)!;
+        }
+        throw new Exception(responseBody);
+    }
+
+    public async Task<UpsertBillingProductPlanResponse> UpsertBillingProductPlanAsync(
+        string planId,
+        UpsertBillingProductRequestBody request
+    )
+    {
+        var response = await _client.MakeRequestAsync(
+            new RawClient.JsonApiRequest
+            {
+                Method = HttpMethod.Put,
+                Path = $"plans/{planId}/billing_products",
+                Body = request
+            }
+        );
+        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode is >= 200 and < 400)
+        {
+            return JsonSerializer.Deserialize<UpsertBillingProductPlanResponse>(responseBody)!;
         }
         throw new Exception(responseBody);
     }
@@ -212,10 +235,10 @@ public class PlansClient
                 Query = _query
             }
         );
-        string responseBody = await response.Raw.Content.ReadAsStringAsync();
-        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode is >= 200 and < 400)
         {
-            return JsonSerializer.Deserialize<CountPlansResponse>(responseBody);
+            return JsonSerializer.Deserialize<CountPlansResponse>(responseBody)!;
         }
         throw new Exception(responseBody);
     }

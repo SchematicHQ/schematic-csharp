@@ -4,26 +4,26 @@ using System.Text.Json.Serialization;
 
 namespace SchematicHQ.Client;
 
-public class WebhookResponseData
+public record WebhookResponseData
 {
     [JsonPropertyName("created_at")]
-    public DateTime CreatedAt { get; init; }
+    public required DateTime CreatedAt { get; init; }
 
     [JsonPropertyName("id")]
-    public string Id { get; init; }
+    public required string Id { get; init; }
 
     [JsonPropertyName("name")]
-    public string Name { get; init; }
+    public required string Name { get; init; }
 
     [JsonPropertyName("request_types")]
-    public IEnumerable<string> RequestTypes { get; init; }
+    public IEnumerable<string> RequestTypes { get; init; } = new List<string>();
 
     [JsonPropertyName("status")]
-    public string Status { get; init; }
+    public required string Status { get; init; }
 
     [JsonPropertyName("updated_at")]
-    public DateTime UpdatedAt { get; init; }
+    public required DateTime UpdatedAt { get; init; }
 
     [JsonPropertyName("url")]
-    public string Url { get; init; }
+    public required string Url { get; init; }
 }
