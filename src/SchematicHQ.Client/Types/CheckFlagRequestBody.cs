@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 
 namespace SchematicHQ.Client;
 
-public class CheckFlagRequestBody
+public record CheckFlagRequestBody
 {
     [JsonPropertyName("company")]
     public Dictionary<string, string?>? Company { get; init; }

@@ -1,5 +1,7 @@
+using System.Net.Http;
 using System.Text.Json;
 using SchematicHQ.Client;
+using SchematicHQ.Client.Core;
 
 #nullable enable
 
@@ -26,10 +28,10 @@ public class EventsClient
                 Body = request
             }
         );
-        string responseBody = await response.Raw.Content.ReadAsStringAsync();
-        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode is >= 200 and < 400)
         {
-            return JsonSerializer.Deserialize<CreateEventBatchResponse>(responseBody);
+            return JsonSerializer.Deserialize<CreateEventBatchResponse>(responseBody)!;
         }
         throw new Exception(responseBody);
     }
@@ -63,10 +65,10 @@ public class EventsClient
                 Query = _query
             }
         );
-        string responseBody = await response.Raw.Content.ReadAsStringAsync();
-        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode is >= 200 and < 400)
         {
-            return JsonSerializer.Deserialize<GetEventSummariesResponse>(responseBody);
+            return JsonSerializer.Deserialize<GetEventSummariesResponse>(responseBody)!;
         }
         throw new Exception(responseBody);
     }
@@ -76,10 +78,10 @@ public class EventsClient
         var response = await _client.MakeRequestAsync(
             new RawClient.JsonApiRequest { Method = HttpMethod.Get, Path = $"event-types/{key}" }
         );
-        string responseBody = await response.Raw.Content.ReadAsStringAsync();
-        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode is >= 200 and < 400)
         {
-            return JsonSerializer.Deserialize<GetEventSummaryBySubtypeResponse>(responseBody);
+            return JsonSerializer.Deserialize<GetEventSummaryBySubtypeResponse>(responseBody)!;
         }
         throw new Exception(responseBody);
     }
@@ -115,10 +117,10 @@ public class EventsClient
                 Query = _query
             }
         );
-        string responseBody = await response.Raw.Content.ReadAsStringAsync();
-        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode is >= 200 and < 400)
         {
-            return JsonSerializer.Deserialize<ListEventsResponse>(responseBody);
+            return JsonSerializer.Deserialize<ListEventsResponse>(responseBody)!;
         }
         throw new Exception(responseBody);
     }
@@ -133,10 +135,10 @@ public class EventsClient
                 Body = request
             }
         );
-        string responseBody = await response.Raw.Content.ReadAsStringAsync();
-        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode is >= 200 and < 400)
         {
-            return JsonSerializer.Deserialize<CreateEventResponse>(responseBody);
+            return JsonSerializer.Deserialize<CreateEventResponse>(responseBody)!;
         }
         throw new Exception(responseBody);
     }
@@ -146,10 +148,10 @@ public class EventsClient
         var response = await _client.MakeRequestAsync(
             new RawClient.JsonApiRequest { Method = HttpMethod.Get, Path = $"events/{eventId}" }
         );
-        string responseBody = await response.Raw.Content.ReadAsStringAsync();
-        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode is >= 200 and < 400)
         {
-            return JsonSerializer.Deserialize<GetEventResponse>(responseBody);
+            return JsonSerializer.Deserialize<GetEventResponse>(responseBody)!;
         }
         throw new Exception(responseBody);
     }
@@ -207,10 +209,10 @@ public class EventsClient
                 Query = _query
             }
         );
-        string responseBody = await response.Raw.Content.ReadAsStringAsync();
-        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode is >= 200 and < 400)
         {
-            return JsonSerializer.Deserialize<ListMetricCountsResponse>(responseBody);
+            return JsonSerializer.Deserialize<ListMetricCountsResponse>(responseBody)!;
         }
         throw new Exception(responseBody);
     }
@@ -220,10 +222,10 @@ public class EventsClient
         var response = await _client.MakeRequestAsync(
             new RawClient.JsonApiRequest { Method = HttpMethod.Get, Path = "segment-integration" }
         );
-        string responseBody = await response.Raw.Content.ReadAsStringAsync();
-        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode is >= 200 and < 400)
         {
-            return JsonSerializer.Deserialize<GetSegmentIntegrationStatusResponse>(responseBody);
+            return JsonSerializer.Deserialize<GetSegmentIntegrationStatusResponse>(responseBody)!;
         }
         throw new Exception(responseBody);
     }

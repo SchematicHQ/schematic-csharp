@@ -4,23 +4,23 @@ using System.Text.Json.Serialization;
 
 namespace SchematicHQ.Client;
 
-public class CompanyPlanResponseData
+public record CompanyPlanResponseData
 {
     [JsonPropertyName("company_id")]
-    public string CompanyId { get; init; }
+    public required string CompanyId { get; init; }
 
     [JsonPropertyName("created_at")]
-    public DateTime CreatedAt { get; init; }
+    public required DateTime CreatedAt { get; init; }
 
     [JsonPropertyName("environment_id")]
-    public string EnvironmentId { get; init; }
+    public required string EnvironmentId { get; init; }
 
     [JsonPropertyName("id")]
-    public string Id { get; init; }
+    public required string Id { get; init; }
 
     [JsonPropertyName("plan_id")]
-    public string PlanId { get; init; }
+    public required string PlanId { get; init; }
 
     [JsonPropertyName("updated_at")]
-    public DateTime UpdatedAt { get; init; }
+    public required DateTime UpdatedAt { get; init; }
 }

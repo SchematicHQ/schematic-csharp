@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 
 namespace SchematicHQ.Client;
 
-public class PaginationFilter
+public record PaginationFilter
 {
     /// <summary>
     /// Page limit (default 100)

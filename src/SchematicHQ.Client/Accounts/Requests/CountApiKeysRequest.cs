@@ -1,10 +1,10 @@
 namespace SchematicHQ.Client;
 
-public class CountApiKeysRequest
+public record CountApiKeysRequest
 {
     public string? EnvironmentId { get; init; }
 
-    public bool RequireEnvironment { get; init; }
+    public required bool RequireEnvironment { get; init; }
 
     /// <summary>
     /// Page limit (default 100)

@@ -4,7 +4,7 @@ using SchematicHQ.Client;
 
 namespace SchematicHQ.Client;
 
-public class CountEntityKeyDefinitionsRequest
+public record CountEntityKeyDefinitionsRequest
 {
     public CountEntityKeyDefinitionsRequestEntityType? EntityType { get; init; }
 

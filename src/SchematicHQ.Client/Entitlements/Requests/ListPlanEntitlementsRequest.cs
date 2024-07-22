@@ -1,6 +1,6 @@
 namespace SchematicHQ.Client;
 
-public class ListPlanEntitlementsRequest
+public record ListPlanEntitlementsRequest
 {
     public string? FeatureId { get; init; }
 

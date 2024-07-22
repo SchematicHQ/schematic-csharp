@@ -5,17 +5,18 @@ using SchematicHQ.Client;
 
 namespace SchematicHQ.Client;
 
-public class ListFlagChecksResponse
+public record ListFlagChecksResponse
 {
     /// <summary>
     /// The returned resources
     /// </summary>
     [JsonPropertyName("data")]
-    public IEnumerable<FlagCheckLogDetailResponseData> Data { get; init; }
+    public IEnumerable<FlagCheckLogDetailResponseData> Data { get; init; } =
+        new List<FlagCheckLogDetailResponseData>();
 
     /// <summary>
     /// Input parameters
     /// </summary>
     [JsonPropertyName("params")]
-    public ListFlagChecksParams Params { get; init; }
+    public required ListFlagChecksParams Params { get; init; }
 }

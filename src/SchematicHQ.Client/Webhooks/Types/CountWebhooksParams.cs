@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 
 namespace SchematicHQ.Client;
 
-public class CountWebhooksParams
+public record CountWebhooksParams
 {
     /// <summary>
     /// Page limit (default 100)

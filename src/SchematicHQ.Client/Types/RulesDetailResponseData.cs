@@ -5,11 +5,12 @@ using SchematicHQ.Client;
 
 namespace SchematicHQ.Client;
 
-public class RulesDetailResponseData
+public record RulesDetailResponseData
 {
     [JsonPropertyName("Flag")]
     public FlagResponseData? Flag { get; init; }
 
     [JsonPropertyName("rules")]
-    public IEnumerable<RuleDetailResponseData> Rules { get; init; }
+    public IEnumerable<RuleDetailResponseData> Rules { get; init; } =
+        new List<RuleDetailResponseData>();
 }

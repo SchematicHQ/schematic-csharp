@@ -1,6 +1,6 @@
 namespace SchematicHQ.Client;
 
-public class CountUsersRequest
+public record CountUsersRequest
 {
     public string? CompanyId { get; init; }
 

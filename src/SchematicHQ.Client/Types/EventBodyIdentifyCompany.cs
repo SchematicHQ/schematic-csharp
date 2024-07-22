@@ -4,13 +4,13 @@ using System.Text.Json.Serialization;
 
 namespace SchematicHQ.Client;
 
-public class EventBodyIdentifyCompany
+public record EventBodyIdentifyCompany
 {
     /// <summary>
     /// Key-value pairs to identify the company
     /// </summary>
     [JsonPropertyName("keys")]
-    public Dictionary<string, string> Keys { get; init; }
+    public Dictionary<string, string> Keys { get; init; } = new Dictionary<string, string>();
 
     /// <summary>
     /// The display name of the company; required only if it is a new company

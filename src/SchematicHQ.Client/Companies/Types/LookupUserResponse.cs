@@ -5,14 +5,14 @@ using SchematicHQ.Client;
 
 namespace SchematicHQ.Client;
 
-public class LookupUserResponse
+public record LookupUserResponse
 {
     [JsonPropertyName("data")]
-    public UserDetailResponseData Data { get; init; }
+    public required UserDetailResponseData Data { get; init; }
 
     /// <summary>
     /// Input parameters
     /// </summary>
     [JsonPropertyName("params")]
-    public LookupUserParams Params { get; init; }
+    public required LookupUserParams Params { get; init; }
 }

@@ -1,5 +1,7 @@
+using System.Net.Http;
 using System.Text.Json;
 using SchematicHQ.Client;
+using SchematicHQ.Client.Core;
 
 #nullable enable
 
@@ -26,10 +28,10 @@ public class CrmClient
                 Body = request
             }
         );
-        string responseBody = await response.Raw.Content.ReadAsStringAsync();
-        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode is >= 200 and < 400)
         {
-            return JsonSerializer.Deserialize<UpsertDealLineItemAssociationResponse>(responseBody);
+            return JsonSerializer.Deserialize<UpsertDealLineItemAssociationResponse>(responseBody)!;
         }
         throw new Exception(responseBody);
     }
@@ -46,10 +48,10 @@ public class CrmClient
                 Body = request
             }
         );
-        string responseBody = await response.Raw.Content.ReadAsStringAsync();
-        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode is >= 200 and < 400)
         {
-            return JsonSerializer.Deserialize<UpsertLineItemResponse>(responseBody);
+            return JsonSerializer.Deserialize<UpsertLineItemResponse>(responseBody)!;
         }
         throw new Exception(responseBody);
     }
@@ -64,10 +66,10 @@ public class CrmClient
                 Body = request
             }
         );
-        string responseBody = await response.Raw.Content.ReadAsStringAsync();
-        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode is >= 200 and < 400)
         {
-            return JsonSerializer.Deserialize<UpsertCrmDealResponse>(responseBody);
+            return JsonSerializer.Deserialize<UpsertCrmDealResponse>(responseBody)!;
         }
         throw new Exception(responseBody);
     }
@@ -99,10 +101,10 @@ public class CrmClient
                 Query = _query
             }
         );
-        string responseBody = await response.Raw.Content.ReadAsStringAsync();
-        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode is >= 200 and < 400)
         {
-            return JsonSerializer.Deserialize<ListCrmProductsResponse>(responseBody);
+            return JsonSerializer.Deserialize<ListCrmProductsResponse>(responseBody)!;
         }
         throw new Exception(responseBody);
     }
@@ -119,10 +121,10 @@ public class CrmClient
                 Body = request
             }
         );
-        string responseBody = await response.Raw.Content.ReadAsStringAsync();
-        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode is >= 200 and < 400)
         {
-            return JsonSerializer.Deserialize<UpsertCrmProductResponse>(responseBody);
+            return JsonSerializer.Deserialize<UpsertCrmProductResponse>(responseBody)!;
         }
         throw new Exception(responseBody);
     }

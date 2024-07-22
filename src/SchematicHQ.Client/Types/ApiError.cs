@@ -4,11 +4,11 @@ using System.Text.Json.Serialization;
 
 namespace SchematicHQ.Client;
 
-public class ApiError
+public record ApiError
 {
     /// <summary>
     /// Error message
     /// </summary>
     [JsonPropertyName("error")]
-    public string Error { get; init; }
+    public required string Error { get; init; }
 }

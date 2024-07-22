@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 
 namespace SchematicHQ.Client;
 
-public class UpsertTraitRequestBody
+public record UpsertTraitRequestBody
 {
     /// <summary>
     /// Amount to increment the trait by (positive or negative)
@@ -16,7 +16,7 @@ public class UpsertTraitRequestBody
     /// Key/value pairs too identify a company or user
     /// </summary>
     [JsonPropertyName("keys")]
-    public Dictionary<string, string> Keys { get; init; }
+    public Dictionary<string, string> Keys { get; init; } = new Dictionary<string, string>();
 
     /// <summary>
     /// Value to set the trait to
@@ -28,7 +28,7 @@ public class UpsertTraitRequestBody
     /// Name of the trait to update
     /// </summary>
     [JsonPropertyName("trait")]
-    public string Trait { get; init; }
+    public required string Trait { get; init; }
 
     /// <summary>
     /// Unless this is set, the company or user will be created if it does not already exist

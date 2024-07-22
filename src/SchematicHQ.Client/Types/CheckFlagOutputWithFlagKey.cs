@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 
 namespace SchematicHQ.Client;
 
-public class CheckFlagOutputWithFlagKey
+public record CheckFlagOutputWithFlagKey
 {
     [JsonPropertyName("company_id")]
     public string? CompanyId { get; init; }
@@ -13,10 +13,10 @@ public class CheckFlagOutputWithFlagKey
     public string? Error { get; init; }
 
     [JsonPropertyName("flag")]
-    public string Flag { get; init; }
+    public required string Flag { get; init; }
 
     [JsonPropertyName("reason")]
-    public string Reason { get; init; }
+    public required string Reason { get; init; }
 
     [JsonPropertyName("rule_id")]
     public string? RuleId { get; init; }
@@ -25,5 +25,5 @@ public class CheckFlagOutputWithFlagKey
     public string? UserId { get; init; }
 
     [JsonPropertyName("value")]
-    public bool Value { get; init; }
+    public required bool Value { get; init; }
 }

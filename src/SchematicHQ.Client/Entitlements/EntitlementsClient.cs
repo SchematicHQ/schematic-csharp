@@ -1,5 +1,7 @@
+using System.Net.Http;
 using System.Text.Json;
 using SchematicHQ.Client;
+using SchematicHQ.Client.Core;
 
 #nullable enable
 
@@ -39,6 +41,10 @@ public class EntitlementsClient
         {
             _query["ids"] = request.Ids;
         }
+        if (request.Q != null)
+        {
+            _query["q"] = request.Q;
+        }
         if (request.Limit != null)
         {
             _query["limit"] = request.Limit.ToString();
@@ -55,10 +61,10 @@ public class EntitlementsClient
                 Query = _query
             }
         );
-        string responseBody = await response.Raw.Content.ReadAsStringAsync();
-        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode is >= 200 and < 400)
         {
-            return JsonSerializer.Deserialize<ListCompanyOverridesResponse>(responseBody);
+            return JsonSerializer.Deserialize<ListCompanyOverridesResponse>(responseBody)!;
         }
         throw new Exception(responseBody);
     }
@@ -75,10 +81,10 @@ public class EntitlementsClient
                 Body = request
             }
         );
-        string responseBody = await response.Raw.Content.ReadAsStringAsync();
-        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode is >= 200 and < 400)
         {
-            return JsonSerializer.Deserialize<CreateCompanyOverrideResponse>(responseBody);
+            return JsonSerializer.Deserialize<CreateCompanyOverrideResponse>(responseBody)!;
         }
         throw new Exception(responseBody);
     }
@@ -92,10 +98,10 @@ public class EntitlementsClient
                 Path = $"company-overrides/{companyOverrideId}"
             }
         );
-        string responseBody = await response.Raw.Content.ReadAsStringAsync();
-        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode is >= 200 and < 400)
         {
-            return JsonSerializer.Deserialize<GetCompanyOverrideResponse>(responseBody);
+            return JsonSerializer.Deserialize<GetCompanyOverrideResponse>(responseBody)!;
         }
         throw new Exception(responseBody);
     }
@@ -113,10 +119,10 @@ public class EntitlementsClient
                 Body = request
             }
         );
-        string responseBody = await response.Raw.Content.ReadAsStringAsync();
-        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode is >= 200 and < 400)
         {
-            return JsonSerializer.Deserialize<UpdateCompanyOverrideResponse>(responseBody);
+            return JsonSerializer.Deserialize<UpdateCompanyOverrideResponse>(responseBody)!;
         }
         throw new Exception(responseBody);
     }
@@ -132,10 +138,10 @@ public class EntitlementsClient
                 Path = $"company-overrides/{companyOverrideId}"
             }
         );
-        string responseBody = await response.Raw.Content.ReadAsStringAsync();
-        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode is >= 200 and < 400)
         {
-            return JsonSerializer.Deserialize<DeleteCompanyOverrideResponse>(responseBody);
+            return JsonSerializer.Deserialize<DeleteCompanyOverrideResponse>(responseBody)!;
         }
         throw new Exception(responseBody);
     }
@@ -165,6 +171,10 @@ public class EntitlementsClient
         {
             _query["ids"] = request.Ids;
         }
+        if (request.Q != null)
+        {
+            _query["q"] = request.Q;
+        }
         if (request.Limit != null)
         {
             _query["limit"] = request.Limit.ToString();
@@ -181,10 +191,10 @@ public class EntitlementsClient
                 Query = _query
             }
         );
-        string responseBody = await response.Raw.Content.ReadAsStringAsync();
-        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode is >= 200 and < 400)
         {
-            return JsonSerializer.Deserialize<CountCompanyOverridesResponse>(responseBody);
+            return JsonSerializer.Deserialize<CountCompanyOverridesResponse>(responseBody)!;
         }
         throw new Exception(responseBody);
     }
@@ -214,10 +224,10 @@ public class EntitlementsClient
                 Query = _query
             }
         );
-        string responseBody = await response.Raw.Content.ReadAsStringAsync();
-        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode is >= 200 and < 400)
         {
-            return JsonSerializer.Deserialize<ListFeatureCompaniesResponse>(responseBody);
+            return JsonSerializer.Deserialize<ListFeatureCompaniesResponse>(responseBody)!;
         }
         throw new Exception(responseBody);
     }
@@ -247,10 +257,10 @@ public class EntitlementsClient
                 Query = _query
             }
         );
-        string responseBody = await response.Raw.Content.ReadAsStringAsync();
-        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode is >= 200 and < 400)
         {
-            return JsonSerializer.Deserialize<CountFeatureCompaniesResponse>(responseBody);
+            return JsonSerializer.Deserialize<CountFeatureCompaniesResponse>(responseBody)!;
         }
         throw new Exception(responseBody);
     }
@@ -292,10 +302,10 @@ public class EntitlementsClient
                 Query = _query
             }
         );
-        string responseBody = await response.Raw.Content.ReadAsStringAsync();
-        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode is >= 200 and < 400)
         {
-            return JsonSerializer.Deserialize<ListFeatureUsageResponse>(responseBody);
+            return JsonSerializer.Deserialize<ListFeatureUsageResponse>(responseBody)!;
         }
         throw new Exception(responseBody);
     }
@@ -337,10 +347,10 @@ public class EntitlementsClient
                 Query = _query
             }
         );
-        string responseBody = await response.Raw.Content.ReadAsStringAsync();
-        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode is >= 200 and < 400)
         {
-            return JsonSerializer.Deserialize<CountFeatureUsageResponse>(responseBody);
+            return JsonSerializer.Deserialize<CountFeatureUsageResponse>(responseBody)!;
         }
         throw new Exception(responseBody);
     }
@@ -370,10 +380,10 @@ public class EntitlementsClient
                 Query = _query
             }
         );
-        string responseBody = await response.Raw.Content.ReadAsStringAsync();
-        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode is >= 200 and < 400)
         {
-            return JsonSerializer.Deserialize<ListFeatureUsersResponse>(responseBody);
+            return JsonSerializer.Deserialize<ListFeatureUsersResponse>(responseBody)!;
         }
         throw new Exception(responseBody);
     }
@@ -403,10 +413,10 @@ public class EntitlementsClient
                 Query = _query
             }
         );
-        string responseBody = await response.Raw.Content.ReadAsStringAsync();
-        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode is >= 200 and < 400)
         {
-            return JsonSerializer.Deserialize<CountFeatureUsersResponse>(responseBody);
+            return JsonSerializer.Deserialize<CountFeatureUsersResponse>(responseBody)!;
         }
         throw new Exception(responseBody);
     }
@@ -456,10 +466,10 @@ public class EntitlementsClient
                 Query = _query
             }
         );
-        string responseBody = await response.Raw.Content.ReadAsStringAsync();
-        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode is >= 200 and < 400)
         {
-            return JsonSerializer.Deserialize<ListPlanEntitlementsResponse>(responseBody);
+            return JsonSerializer.Deserialize<ListPlanEntitlementsResponse>(responseBody)!;
         }
         throw new Exception(responseBody);
     }
@@ -476,10 +486,10 @@ public class EntitlementsClient
                 Body = request
             }
         );
-        string responseBody = await response.Raw.Content.ReadAsStringAsync();
-        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode is >= 200 and < 400)
         {
-            return JsonSerializer.Deserialize<CreatePlanEntitlementResponse>(responseBody);
+            return JsonSerializer.Deserialize<CreatePlanEntitlementResponse>(responseBody)!;
         }
         throw new Exception(responseBody);
     }
@@ -493,10 +503,10 @@ public class EntitlementsClient
                 Path = $"plan-entitlements/{planEntitlementId}"
             }
         );
-        string responseBody = await response.Raw.Content.ReadAsStringAsync();
-        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode is >= 200 and < 400)
         {
-            return JsonSerializer.Deserialize<GetPlanEntitlementResponse>(responseBody);
+            return JsonSerializer.Deserialize<GetPlanEntitlementResponse>(responseBody)!;
         }
         throw new Exception(responseBody);
     }
@@ -514,10 +524,10 @@ public class EntitlementsClient
                 Body = request
             }
         );
-        string responseBody = await response.Raw.Content.ReadAsStringAsync();
-        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode is >= 200 and < 400)
         {
-            return JsonSerializer.Deserialize<UpdatePlanEntitlementResponse>(responseBody);
+            return JsonSerializer.Deserialize<UpdatePlanEntitlementResponse>(responseBody)!;
         }
         throw new Exception(responseBody);
     }
@@ -533,10 +543,10 @@ public class EntitlementsClient
                 Path = $"plan-entitlements/{planEntitlementId}"
             }
         );
-        string responseBody = await response.Raw.Content.ReadAsStringAsync();
-        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode is >= 200 and < 400)
         {
-            return JsonSerializer.Deserialize<DeletePlanEntitlementResponse>(responseBody);
+            return JsonSerializer.Deserialize<DeletePlanEntitlementResponse>(responseBody)!;
         }
         throw new Exception(responseBody);
     }
@@ -586,10 +596,10 @@ public class EntitlementsClient
                 Query = _query
             }
         );
-        string responseBody = await response.Raw.Content.ReadAsStringAsync();
-        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode is >= 200 and < 400)
         {
-            return JsonSerializer.Deserialize<CountPlanEntitlementsResponse>(responseBody);
+            return JsonSerializer.Deserialize<CountPlanEntitlementsResponse>(responseBody)!;
         }
         throw new Exception(responseBody);
     }
@@ -607,10 +617,10 @@ public class EntitlementsClient
                 Query = _query
             }
         );
-        string responseBody = await response.Raw.Content.ReadAsStringAsync();
-        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode is >= 200 and < 400)
         {
-            return JsonSerializer.Deserialize<GetFeatureUsageByCompanyResponse>(responseBody);
+            return JsonSerializer.Deserialize<GetFeatureUsageByCompanyResponse>(responseBody)!;
         }
         throw new Exception(responseBody);
     }

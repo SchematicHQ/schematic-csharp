@@ -5,7 +5,7 @@ using SchematicHQ.Client;
 
 namespace SchematicHQ.Client;
 
-public class EventBodyIdentify
+public record EventBodyIdentify
 {
     /// <summary>
     /// Information about the company associated with the user; required only if it is a new user
@@ -17,7 +17,7 @@ public class EventBodyIdentify
     /// Key-value pairs to identify the user
     /// </summary>
     [JsonPropertyName("keys")]
-    public Dictionary<string, string> Keys { get; init; }
+    public Dictionary<string, string> Keys { get; init; } = new Dictionary<string, string>();
 
     /// <summary>
     /// The display name of the user being identified; required only if it is a new user

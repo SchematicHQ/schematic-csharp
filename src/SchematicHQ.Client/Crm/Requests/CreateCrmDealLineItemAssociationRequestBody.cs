@@ -4,11 +4,11 @@ using System.Text.Json.Serialization;
 
 namespace SchematicHQ.Client;
 
-public class CreateCrmDealLineItemAssociationRequestBody
+public record CreateCrmDealLineItemAssociationRequestBody
 {
     [JsonPropertyName("deal_external_id")]
-    public string DealExternalId { get; init; }
+    public required string DealExternalId { get; init; }
 
     [JsonPropertyName("line_item_external_id")]
-    public string LineItemExternalId { get; init; }
+    public required string LineItemExternalId { get; init; }
 }

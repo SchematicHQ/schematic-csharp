@@ -5,8 +5,9 @@ using SchematicHQ.Client;
 
 namespace SchematicHQ.Client;
 
-public class CheckFlagsResponseData
+public record CheckFlagsResponseData
 {
     [JsonPropertyName("flags")]
-    public IEnumerable<CheckFlagOutputWithFlagKey> Flags { get; init; }
+    public IEnumerable<CheckFlagOutputWithFlagKey> Flags { get; init; } =
+        new List<CheckFlagOutputWithFlagKey>();
 }

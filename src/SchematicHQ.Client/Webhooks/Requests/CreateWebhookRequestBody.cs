@@ -5,14 +5,15 @@ using SchematicHQ.Client;
 
 namespace SchematicHQ.Client;
 
-public class CreateWebhookRequestBody
+public record CreateWebhookRequestBody
 {
     [JsonPropertyName("name")]
-    public string Name { get; init; }
+    public required string Name { get; init; }
 
     [JsonPropertyName("request_types")]
-    public IEnumerable<CreateWebhookRequestBodyRequestTypesItem> RequestTypes { get; init; }
+    public IEnumerable<CreateWebhookRequestBodyRequestTypesItem> RequestTypes { get; init; } =
+        new List<CreateWebhookRequestBodyRequestTypesItem>();
 
     [JsonPropertyName("url")]
-    public string Url { get; init; }
+    public required string Url { get; init; }
 }

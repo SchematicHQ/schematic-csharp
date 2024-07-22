@@ -5,7 +5,7 @@ using SchematicHQ.Client;
 
 namespace SchematicHQ.Client;
 
-public class UpdateEnvironmentRequestBody
+public record UpdateEnvironmentRequestBody
 {
     [JsonPropertyName("environment_type")]
     public UpdateEnvironmentRequestBodyEnvironmentType? EnvironmentType { get; init; }

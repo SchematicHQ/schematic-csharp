@@ -1,10 +1,12 @@
 namespace SchematicHQ.Client;
 
-public class ListProductsRequest
+public record ListProductsRequest
 {
     public string? Ids { get; init; }
 
     public string? Name { get; init; }
+
+    public string? Q { get; init; }
 
     /// <summary>
     /// Page limit (default 100)

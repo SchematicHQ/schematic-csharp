@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 
 namespace SchematicHQ.Client;
 
-public class ListCompanyOverridesParams
+public record ListCompanyOverridesParams
 {
     [JsonPropertyName("company_id")]
     public string? CompanyId { get; init; }
@@ -32,4 +32,7 @@ public class ListCompanyOverridesParams
     /// </summary>
     [JsonPropertyName("offset")]
     public int? Offset { get; init; }
+
+    [JsonPropertyName("q")]
+    public string? Q { get; init; }
 }

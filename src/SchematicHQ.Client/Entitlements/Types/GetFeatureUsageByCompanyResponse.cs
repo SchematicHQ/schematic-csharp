@@ -5,14 +5,14 @@ using SchematicHQ.Client;
 
 namespace SchematicHQ.Client;
 
-public class GetFeatureUsageByCompanyResponse
+public record GetFeatureUsageByCompanyResponse
 {
     [JsonPropertyName("data")]
-    public FeatureUsageDetailResponseData Data { get; init; }
+    public required FeatureUsageDetailResponseData Data { get; init; }
 
     /// <summary>
     /// Input parameters
     /// </summary>
     [JsonPropertyName("params")]
-    public GetFeatureUsageByCompanyParams Params { get; init; }
+    public required GetFeatureUsageByCompanyParams Params { get; init; }
 }

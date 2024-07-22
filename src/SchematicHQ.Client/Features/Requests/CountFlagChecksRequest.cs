@@ -1,6 +1,6 @@
 namespace SchematicHQ.Client;
 
-public class CountFlagChecksRequest
+public record CountFlagChecksRequest
 {
     public string? FlagId { get; init; }
 

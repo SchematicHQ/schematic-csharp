@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 
 namespace SchematicHQ.Client;
 
-public class ListApiRequestsParams
+public record ListApiRequestsParams
 {
     [JsonPropertyName("environment_id")]
     public string? EnvironmentId { get; init; }

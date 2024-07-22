@@ -1,6 +1,6 @@
 namespace SchematicHQ.Client;
 
-public class CountCompanyOverridesRequest
+public record CountCompanyOverridesRequest
 {
     public string? CompanyId { get; init; }
 
@@ -11,6 +11,8 @@ public class CountCompanyOverridesRequest
     public string? FeatureIds { get; init; }
 
     public string? Ids { get; init; }
+
+    public string? Q { get; init; }
 
     /// <summary>
     /// Page limit (default 100)

@@ -5,7 +5,7 @@ using SchematicHQ.Client;
 
 namespace SchematicHQ.Client;
 
-public class ListEntityKeyDefinitionsParams
+public record ListEntityKeyDefinitionsParams
 {
     [JsonPropertyName("entity_type")]
     public ListEntityKeyDefinitionsResponseParamsEntityType? EntityType { get; init; }

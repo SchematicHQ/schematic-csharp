@@ -1,8 +1,8 @@
 namespace SchematicHQ.Client;
 
-public class ListFeatureCompaniesRequest
+public record ListFeatureCompaniesRequest
 {
-    public string FeatureId { get; init; }
+    public required string FeatureId { get; init; }
 
     public string? Q { get; init; }
 

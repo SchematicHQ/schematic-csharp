@@ -1,6 +1,6 @@
 namespace SchematicHQ.Client;
 
-public class ListWebhookEventsRequest
+public record ListWebhookEventsRequest
 {
     public string? WebhookId { get; init; }
 

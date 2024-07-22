@@ -4,11 +4,11 @@ using System.Text.Json.Serialization;
 
 namespace SchematicHQ.Client;
 
-public class EntityTraitValue
+public record EntityTraitValue
 {
     [JsonPropertyName("definition_id")]
-    public string DefinitionId { get; init; }
+    public required string DefinitionId { get; init; }
 
     [JsonPropertyName("value")]
-    public string Value { get; init; }
+    public required string Value { get; init; }
 }

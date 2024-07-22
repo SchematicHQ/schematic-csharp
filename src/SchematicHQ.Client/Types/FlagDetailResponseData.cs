@@ -5,16 +5,16 @@ using SchematicHQ.Client;
 
 namespace SchematicHQ.Client;
 
-public class FlagDetailResponseData
+public record FlagDetailResponseData
 {
     [JsonPropertyName("created_at")]
-    public DateTime CreatedAt { get; init; }
+    public required DateTime CreatedAt { get; init; }
 
     [JsonPropertyName("default_value")]
-    public bool DefaultValue { get; init; }
+    public required bool DefaultValue { get; init; }
 
     [JsonPropertyName("description")]
-    public string Description { get; init; }
+    public required string Description { get; init; }
 
     [JsonPropertyName("feature")]
     public FeatureResponseData? Feature { get; init; }
@@ -23,23 +23,24 @@ public class FlagDetailResponseData
     public string? FeatureId { get; init; }
 
     [JsonPropertyName("flag_type")]
-    public string FlagType { get; init; }
+    public required string FlagType { get; init; }
 
     [JsonPropertyName("id")]
-    public string Id { get; init; }
+    public required string Id { get; init; }
 
     [JsonPropertyName("key")]
-    public string Key { get; init; }
+    public required string Key { get; init; }
 
     [JsonPropertyName("latest_check")]
     public FlagCheckLogResponseData? LatestCheck { get; init; }
 
     [JsonPropertyName("name")]
-    public string Name { get; init; }
+    public required string Name { get; init; }
 
     [JsonPropertyName("rules")]
-    public IEnumerable<RuleDetailResponseData> Rules { get; init; }
+    public IEnumerable<RuleDetailResponseData> Rules { get; init; } =
+        new List<RuleDetailResponseData>();
 
     [JsonPropertyName("updated_at")]
-    public DateTime UpdatedAt { get; init; }
+    public required DateTime UpdatedAt { get; init; }
 }

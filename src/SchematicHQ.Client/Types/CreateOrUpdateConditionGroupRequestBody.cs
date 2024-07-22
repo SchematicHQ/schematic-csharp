@@ -5,10 +5,11 @@ using SchematicHQ.Client;
 
 namespace SchematicHQ.Client;
 
-public class CreateOrUpdateConditionGroupRequestBody
+public record CreateOrUpdateConditionGroupRequestBody
 {
     [JsonPropertyName("conditions")]
-    public IEnumerable<CreateOrUpdateConditionRequestBody> Conditions { get; init; }
+    public IEnumerable<CreateOrUpdateConditionRequestBody> Conditions { get; init; } =
+        new List<CreateOrUpdateConditionRequestBody>();
 
     [JsonPropertyName("flag_id")]
     public string? FlagId { get; init; }

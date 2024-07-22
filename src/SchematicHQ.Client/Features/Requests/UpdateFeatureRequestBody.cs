@@ -5,7 +5,7 @@ using SchematicHQ.Client;
 
 namespace SchematicHQ.Client;
 
-public class UpdateFeatureRequestBody
+public record UpdateFeatureRequestBody
 {
     [JsonPropertyName("description")]
     public string? Description { get; init; }

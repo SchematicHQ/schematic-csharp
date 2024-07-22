@@ -5,14 +5,14 @@ using SchematicHQ.Client;
 
 namespace SchematicHQ.Client;
 
-public class UpdateApiKeyResponse
+public record UpdateApiKeyResponse
 {
     [JsonPropertyName("data")]
-    public ApiKeyResponseData Data { get; init; }
+    public required ApiKeyResponseData Data { get; init; }
 
     /// <summary>
     /// Input parameters
     /// </summary>
     [JsonPropertyName("params")]
-    public Dictionary<string, object> Params { get; init; }
+    public Dictionary<string, object> Params { get; init; } = new Dictionary<string, object>();
 }

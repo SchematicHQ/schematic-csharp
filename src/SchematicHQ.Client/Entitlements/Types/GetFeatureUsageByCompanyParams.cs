@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 
 namespace SchematicHQ.Client;
 
-public class GetFeatureUsageByCompanyParams
+public record GetFeatureUsageByCompanyParams
 {
     [JsonPropertyName("keys")]
     public Dictionary<string, object>? Keys { get; init; }

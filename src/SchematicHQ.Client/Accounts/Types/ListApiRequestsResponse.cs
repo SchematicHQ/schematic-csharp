@@ -5,17 +5,18 @@ using SchematicHQ.Client;
 
 namespace SchematicHQ.Client;
 
-public class ListApiRequestsResponse
+public record ListApiRequestsResponse
 {
     /// <summary>
     /// The returned resources
     /// </summary>
     [JsonPropertyName("data")]
-    public IEnumerable<ApiKeyRequestListResponseData> Data { get; init; }
+    public IEnumerable<ApiKeyRequestListResponseData> Data { get; init; } =
+        new List<ApiKeyRequestListResponseData>();
 
     /// <summary>
     /// Input parameters
     /// </summary>
     [JsonPropertyName("params")]
-    public ListApiRequestsParams Params { get; init; }
+    public required ListApiRequestsParams Params { get; init; }
 }

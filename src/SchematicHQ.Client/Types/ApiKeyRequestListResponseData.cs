@@ -4,10 +4,10 @@ using System.Text.Json.Serialization;
 
 namespace SchematicHQ.Client;
 
-public class ApiKeyRequestListResponseData
+public record ApiKeyRequestListResponseData
 {
     [JsonPropertyName("api_key_id")]
-    public string ApiKeyId { get; init; }
+    public required string ApiKeyId { get; init; }
 
     [JsonPropertyName("ended_at")]
     public DateTime? EndedAt { get; init; }
@@ -16,10 +16,10 @@ public class ApiKeyRequestListResponseData
     public string? EnvironmentId { get; init; }
 
     [JsonPropertyName("id")]
-    public string Id { get; init; }
+    public required string Id { get; init; }
 
     [JsonPropertyName("method")]
-    public string Method { get; init; }
+    public required string Method { get; init; }
 
     [JsonPropertyName("req_body")]
     public string? ReqBody { get; init; }
@@ -46,10 +46,10 @@ public class ApiKeyRequestListResponseData
     public string? SecondaryResource { get; init; }
 
     [JsonPropertyName("started_at")]
-    public DateTime StartedAt { get; init; }
+    public required DateTime StartedAt { get; init; }
 
     [JsonPropertyName("url")]
-    public string Url { get; init; }
+    public required string Url { get; init; }
 
     [JsonPropertyName("user_name")]
     public string? UserName { get; init; }

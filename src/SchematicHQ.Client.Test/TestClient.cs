@@ -5,6 +5,7 @@ using Moq.Contrib.HttpClient;
 using System.Text.Json;
 using System.Text;
 using OneOf;
+using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client.Test
 {
@@ -22,6 +23,7 @@ namespace SchematicHQ.Client.Test
             {
                 Data = new CheckFlagResponseData
                 {
+                    Reason = "test_reason",
                     Value = flagValue
                 }
             };
@@ -34,7 +36,7 @@ namespace SchematicHQ.Client.Test
 
         private void SetupSchematicTestClient(bool isOffline, HttpResponseMessage response, Dictionary<string, bool>? flagDefaults = null)
         {
-            HttpClient testClient = new OfflineHttpClient();
+            HttpClient testClient = new HttpClient(new OfflineHttpMessageHandler());
             _options = new ClientOptions
             {
                 Logger = _logger.Object,

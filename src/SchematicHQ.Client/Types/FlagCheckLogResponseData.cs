@@ -4,19 +4,19 @@ using System.Text.Json.Serialization;
 
 namespace SchematicHQ.Client;
 
-public class FlagCheckLogResponseData
+public record FlagCheckLogResponseData
 {
     [JsonPropertyName("check_status")]
-    public string CheckStatus { get; init; }
+    public required string CheckStatus { get; init; }
 
     [JsonPropertyName("company_id")]
     public string? CompanyId { get; init; }
 
     [JsonPropertyName("created_at")]
-    public DateTime CreatedAt { get; init; }
+    public required DateTime CreatedAt { get; init; }
 
     [JsonPropertyName("environment_id")]
-    public string EnvironmentId { get; init; }
+    public required string EnvironmentId { get; init; }
 
     [JsonPropertyName("error")]
     public string? Error { get; init; }
@@ -25,13 +25,13 @@ public class FlagCheckLogResponseData
     public string? FlagId { get; init; }
 
     [JsonPropertyName("flag_key")]
-    public string FlagKey { get; init; }
+    public required string FlagKey { get; init; }
 
     [JsonPropertyName("id")]
-    public string Id { get; init; }
+    public required string Id { get; init; }
 
     [JsonPropertyName("reason")]
-    public string Reason { get; init; }
+    public required string Reason { get; init; }
 
     [JsonPropertyName("req_company")]
     public Dictionary<string, string?>? ReqCompany { get; init; }
@@ -43,11 +43,11 @@ public class FlagCheckLogResponseData
     public string? RuleId { get; init; }
 
     [JsonPropertyName("updated_at")]
-    public DateTime UpdatedAt { get; init; }
+    public required DateTime UpdatedAt { get; init; }
 
     [JsonPropertyName("user_id")]
     public string? UserId { get; init; }
 
     [JsonPropertyName("value")]
-    public bool Value { get; init; }
+    public required bool Value { get; init; }
 }

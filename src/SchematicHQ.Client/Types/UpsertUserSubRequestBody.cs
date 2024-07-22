@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 
 namespace SchematicHQ.Client;
 
-public class UpsertUserSubRequestBody
+public record UpsertUserSubRequestBody
 {
     /// <summary>
     /// Optionally specify company using Schematic company ID
@@ -12,8 +12,14 @@ public class UpsertUserSubRequestBody
     [JsonPropertyName("company_id")]
     public string? CompanyId { get; init; }
 
+    /// <summary>
+    /// If you know the Schematic ID, you can use that here instead of keys
+    /// </summary>
+    [JsonPropertyName("id")]
+    public string? Id { get; init; }
+
     [JsonPropertyName("keys")]
-    public Dictionary<string, string> Keys { get; init; }
+    public Dictionary<string, string> Keys { get; init; } = new Dictionary<string, string>();
 
     [JsonPropertyName("last_seen_at")]
     public DateTime? LastSeenAt { get; init; }

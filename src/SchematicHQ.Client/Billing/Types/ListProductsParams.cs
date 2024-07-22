@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 
 namespace SchematicHQ.Client;
 
-public class ListProductsParams
+public record ListProductsParams
 {
     [JsonPropertyName("ids")]
     public IEnumerable<string>? Ids { get; init; }
@@ -23,4 +23,7 @@ public class ListProductsParams
     /// </summary>
     [JsonPropertyName("offset")]
     public int? Offset { get; init; }
+
+    [JsonPropertyName("q")]
+    public string? Q { get; init; }
 }

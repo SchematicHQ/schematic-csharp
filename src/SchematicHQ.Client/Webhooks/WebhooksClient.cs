@@ -1,5 +1,7 @@
+using System.Net.Http;
 using System.Text.Json;
 using SchematicHQ.Client;
+using SchematicHQ.Client.Core;
 
 #nullable enable
 
@@ -47,10 +49,10 @@ public class WebhooksClient
                 Query = _query
             }
         );
-        string responseBody = await response.Raw.Content.ReadAsStringAsync();
-        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode is >= 200 and < 400)
         {
-            return JsonSerializer.Deserialize<ListWebhookEventsResponse>(responseBody);
+            return JsonSerializer.Deserialize<ListWebhookEventsResponse>(responseBody)!;
         }
         throw new Exception(responseBody);
     }
@@ -64,10 +66,10 @@ public class WebhooksClient
                 Path = $"webhook-events/{webhookEventId}"
             }
         );
-        string responseBody = await response.Raw.Content.ReadAsStringAsync();
-        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode is >= 200 and < 400)
         {
-            return JsonSerializer.Deserialize<GetWebhookEventResponse>(responseBody);
+            return JsonSerializer.Deserialize<GetWebhookEventResponse>(responseBody)!;
         }
         throw new Exception(responseBody);
     }
@@ -105,10 +107,10 @@ public class WebhooksClient
                 Query = _query
             }
         );
-        string responseBody = await response.Raw.Content.ReadAsStringAsync();
-        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode is >= 200 and < 400)
         {
-            return JsonSerializer.Deserialize<CountWebhookEventsResponse>(responseBody);
+            return JsonSerializer.Deserialize<CountWebhookEventsResponse>(responseBody)!;
         }
         throw new Exception(responseBody);
     }
@@ -136,10 +138,10 @@ public class WebhooksClient
                 Query = _query
             }
         );
-        string responseBody = await response.Raw.Content.ReadAsStringAsync();
-        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode is >= 200 and < 400)
         {
-            return JsonSerializer.Deserialize<ListWebhooksResponse>(responseBody);
+            return JsonSerializer.Deserialize<ListWebhooksResponse>(responseBody)!;
         }
         throw new Exception(responseBody);
     }
@@ -154,10 +156,10 @@ public class WebhooksClient
                 Body = request
             }
         );
-        string responseBody = await response.Raw.Content.ReadAsStringAsync();
-        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode is >= 200 and < 400)
         {
-            return JsonSerializer.Deserialize<CreateWebhookResponse>(responseBody);
+            return JsonSerializer.Deserialize<CreateWebhookResponse>(responseBody)!;
         }
         throw new Exception(responseBody);
     }
@@ -167,10 +169,10 @@ public class WebhooksClient
         var response = await _client.MakeRequestAsync(
             new RawClient.JsonApiRequest { Method = HttpMethod.Get, Path = $"webhooks/{webhookId}" }
         );
-        string responseBody = await response.Raw.Content.ReadAsStringAsync();
-        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode is >= 200 and < 400)
         {
-            return JsonSerializer.Deserialize<GetWebhookResponse>(responseBody);
+            return JsonSerializer.Deserialize<GetWebhookResponse>(responseBody)!;
         }
         throw new Exception(responseBody);
     }
@@ -188,10 +190,10 @@ public class WebhooksClient
                 Body = request
             }
         );
-        string responseBody = await response.Raw.Content.ReadAsStringAsync();
-        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode is >= 200 and < 400)
         {
-            return JsonSerializer.Deserialize<UpdateWebhookResponse>(responseBody);
+            return JsonSerializer.Deserialize<UpdateWebhookResponse>(responseBody)!;
         }
         throw new Exception(responseBody);
     }
@@ -205,10 +207,10 @@ public class WebhooksClient
                 Path = $"webhooks/{webhookId}"
             }
         );
-        string responseBody = await response.Raw.Content.ReadAsStringAsync();
-        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode is >= 200 and < 400)
         {
-            return JsonSerializer.Deserialize<DeleteWebhookResponse>(responseBody);
+            return JsonSerializer.Deserialize<DeleteWebhookResponse>(responseBody)!;
         }
         throw new Exception(responseBody);
     }
@@ -236,10 +238,10 @@ public class WebhooksClient
                 Query = _query
             }
         );
-        string responseBody = await response.Raw.Content.ReadAsStringAsync();
-        if (response.StatusCode >= 200 && response.StatusCode < 400)
+        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode is >= 200 and < 400)
         {
-            return JsonSerializer.Deserialize<CountWebhooksResponse>(responseBody);
+            return JsonSerializer.Deserialize<CountWebhooksResponse>(responseBody)!;
         }
         throw new Exception(responseBody);
     }

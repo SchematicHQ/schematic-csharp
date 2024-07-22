@@ -5,14 +5,14 @@ using SchematicHQ.Client;
 
 namespace SchematicHQ.Client;
 
-public class GetEventSummaryBySubtypeResponse
+public record GetEventSummaryBySubtypeResponse
 {
     [JsonPropertyName("data")]
-    public EventSummaryResponseData Data { get; init; }
+    public required EventSummaryResponseData Data { get; init; }
 
     /// <summary>
     /// Input parameters
     /// </summary>
     [JsonPropertyName("params")]
-    public Dictionary<string, object> Params { get; init; }
+    public Dictionary<string, object> Params { get; init; } = new Dictionary<string, object>();
 }

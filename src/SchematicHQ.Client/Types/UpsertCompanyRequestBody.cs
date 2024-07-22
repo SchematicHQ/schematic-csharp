@@ -4,13 +4,16 @@ using System.Text.Json.Serialization;
 
 namespace SchematicHQ.Client;
 
-public class UpsertCompanyRequestBody
+public record UpsertCompanyRequestBody
 {
+    /// <summary>
+    /// If you know the Schematic ID, you can use that here instead of keys
+    /// </summary>
     [JsonPropertyName("id")]
     public string? Id { get; init; }
 
     [JsonPropertyName("keys")]
-    public Dictionary<string, string> Keys { get; init; }
+    public Dictionary<string, string> Keys { get; init; } = new Dictionary<string, string>();
 
     [JsonPropertyName("last_seen_at")]
     public DateTime? LastSeenAt { get; init; }

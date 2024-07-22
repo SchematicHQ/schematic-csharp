@@ -4,20 +4,20 @@ using System.Text.Json.Serialization;
 
 namespace SchematicHQ.Client;
 
-public class CreateBillingSubscriptionsRequestBody
+public record CreateBillingSubscriptionsRequestBody
 {
     [JsonPropertyName("customer_external_id")]
-    public string CustomerExternalId { get; init; }
+    public required string CustomerExternalId { get; init; }
 
     [JsonPropertyName("expired_at")]
-    public DateTime ExpiredAt { get; init; }
+    public required DateTime ExpiredAt { get; init; }
 
     [JsonPropertyName("interval")]
     public string? Interval { get; init; }
 
     [JsonPropertyName("product_external_ids")]
-    public IEnumerable<string> ProductExternalIds { get; init; }
+    public IEnumerable<string> ProductExternalIds { get; init; } = new List<string>();
 
     [JsonPropertyName("subscription_external_id")]
-    public string SubscriptionExternalId { get; init; }
+    public required string SubscriptionExternalId { get; init; }
 }

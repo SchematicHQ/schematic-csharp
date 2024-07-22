@@ -1,6 +1,6 @@
 namespace SchematicHQ.Client;
 
-public class CountPlanEntitlementsRequest
+public record CountPlanEntitlementsRequest
 {
     public string? FeatureId { get; init; }
 

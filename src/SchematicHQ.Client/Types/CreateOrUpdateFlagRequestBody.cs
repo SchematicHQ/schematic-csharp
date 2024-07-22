@@ -4,26 +4,26 @@ using System.Text.Json.Serialization;
 
 namespace SchematicHQ.Client;
 
-public class CreateOrUpdateFlagRequestBody
+public record CreateOrUpdateFlagRequestBody
 {
     [JsonPropertyName("default_value")]
-    public bool DefaultValue { get; init; }
+    public required bool DefaultValue { get; init; }
 
     [JsonPropertyName("description")]
-    public string Description { get; init; }
+    public required string Description { get; init; }
 
     [JsonPropertyName("feature_id")]
     public string? FeatureId { get; init; }
 
     [JsonPropertyName("flag_type")]
-    public string FlagType { get; init; }
+    public required string FlagType { get; init; }
 
     [JsonPropertyName("id")]
     public string? Id { get; init; }
 
     [JsonPropertyName("key")]
-    public string Key { get; init; }
+    public required string Key { get; init; }
 
     [JsonPropertyName("name")]
-    public string Name { get; init; }
+    public required string Name { get; init; }
 }

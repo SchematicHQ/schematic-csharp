@@ -1,6 +1,6 @@
 namespace SchematicHQ.Client;
 
-public class CountApiRequestsRequest
+public record CountApiRequestsRequest
 {
     public string? Q { get; init; }
 

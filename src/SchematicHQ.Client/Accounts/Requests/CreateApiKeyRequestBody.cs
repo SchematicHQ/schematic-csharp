@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 
 namespace SchematicHQ.Client;
 
-public class CreateApiKeyRequestBody
+public record CreateApiKeyRequestBody
 {
     [JsonPropertyName("description")]
     public string? Description { get; init; }
@@ -13,5 +13,5 @@ public class CreateApiKeyRequestBody
     public string? EnvironmentId { get; init; }
 
     [JsonPropertyName("name")]
-    public string Name { get; init; }
+    public required string Name { get; init; }
 }

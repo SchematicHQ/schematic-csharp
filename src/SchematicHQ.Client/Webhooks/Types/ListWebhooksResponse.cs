@@ -5,17 +5,17 @@ using SchematicHQ.Client;
 
 namespace SchematicHQ.Client;
 
-public class ListWebhooksResponse
+public record ListWebhooksResponse
 {
     /// <summary>
     /// The returned resources
     /// </summary>
     [JsonPropertyName("data")]
-    public IEnumerable<WebhookResponseData> Data { get; init; }
+    public IEnumerable<WebhookResponseData> Data { get; init; } = new List<WebhookResponseData>();
 
     /// <summary>
     /// Input parameters
     /// </summary>
     [JsonPropertyName("params")]
-    public ListWebhooksParams Params { get; init; }
+    public required ListWebhooksParams Params { get; init; }
 }
