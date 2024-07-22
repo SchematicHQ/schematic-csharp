@@ -122,6 +122,23 @@ public class ComponentsClient
         throw new Exception(responseBody);
     }
 
+    public async Task<HydrateComponentResponse> HydrateComponentAsync(string componentId)
+    {
+        var response = await _client.MakeRequestAsync(
+            new RawClient.JsonApiRequest
+            {
+                Method = HttpMethod.Get,
+                Path = $"components/{componentId}/hydrate"
+            }
+        );
+        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode is >= 200 and < 400)
+        {
+            return JsonSerializer.Deserialize<HydrateComponentResponse>(responseBody)!;
+        }
+        throw new Exception(responseBody);
+    }
+
     public async Task<CountComponentsResponse> CountComponentsAsync(CountComponentsRequest request)
     {
         var _query = new Dictionary<string, object>() { };

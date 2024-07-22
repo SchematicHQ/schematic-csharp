@@ -6,9 +6,6 @@ namespace SchematicHQ.Client;
 
 public record BillingSubscriptionResponseData
 {
-    [JsonPropertyName("deleted_at")]
-    public DateTime? DeletedAt { get; init; }
-
     [JsonPropertyName("expired_at")]
     public DateTime? ExpiredAt { get; init; }
 

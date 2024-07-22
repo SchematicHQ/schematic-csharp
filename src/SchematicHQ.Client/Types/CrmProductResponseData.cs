@@ -15,9 +15,6 @@ public record CrmProductResponseData
     [JsonPropertyName("currency")]
     public required string Currency { get; init; }
 
-    [JsonPropertyName("deleted_at")]
-    public DateTime? DeletedAt { get; init; }
-
     [JsonPropertyName("environment_id")]
     public required string EnvironmentId { get; init; }
 

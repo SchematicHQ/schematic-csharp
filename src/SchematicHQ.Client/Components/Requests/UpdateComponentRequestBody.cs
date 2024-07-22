@@ -15,4 +15,7 @@ public record UpdateComponentRequestBody
 
     [JsonPropertyName("name")]
     public string? Name { get; init; }
+
+    [JsonPropertyName("state")]
+    public UpdateComponentRequestBodyState? State { get; init; }
 }
