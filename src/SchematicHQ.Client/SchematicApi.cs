@@ -30,6 +30,7 @@ public partial class SchematicApi
         Crm = new CrmClient(_client);
         Events = new EventsClient(_client);
         Plans = new PlansClient(_client);
+        Accesstokens = new AccesstokensClient(_client);
         Webhooks = new WebhooksClient(_client);
     }
 
@@ -50,6 +51,8 @@ public partial class SchematicApi
     public EventsClient Events { get; init; }
 
     public PlansClient Plans { get; init; }
+
+    public AccesstokensClient Accesstokens { get; init; }
 
     public WebhooksClient Webhooks { get; init; }
 }

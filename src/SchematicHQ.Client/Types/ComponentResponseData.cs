@@ -18,6 +18,9 @@ public record ComponentResponseData
     [JsonPropertyName("name")]
     public required string Name { get; init; }
 
+    [JsonPropertyName("state")]
+    public required string State { get; init; }
+
     [JsonPropertyName("type")]
     public required string Type { get; init; }
 

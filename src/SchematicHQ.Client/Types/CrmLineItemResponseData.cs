@@ -15,9 +15,6 @@ public record CrmLineItemResponseData
     [JsonPropertyName("deal_id")]
     public string? DealId { get; init; }
 
-    [JsonPropertyName("deleted_at")]
-    public DateTime? DeletedAt { get; init; }
-
     [JsonPropertyName("environment_id")]
     public required string EnvironmentId { get; init; }
 

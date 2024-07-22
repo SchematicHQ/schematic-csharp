@@ -24,8 +24,7 @@ jobs:
       - name: Build Release
         run: dotnet build src -c Release /p:ContinuousIntegrationBuild=true
 
-
-  test:
+  unit-tests:
     runs-on: ubuntu-latest
 
     steps:
@@ -43,8 +42,9 @@ jobs:
         run: |
           dotnet tool restore
 
-      - name: Build Release
-        run: dotnet test src
+      - name: Run Tests
+        run: |
+          dotnet test src
 
 
   publish:
