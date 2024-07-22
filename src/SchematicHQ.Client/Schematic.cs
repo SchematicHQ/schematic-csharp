@@ -1,4 +1,5 @@
 using OneOf;
+using SchematicHQ.Client.Core;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -23,7 +24,7 @@ public partial class Schematic
         _offline = _options.Offline;
         _logger = _options.Logger ?? new ConsoleLogger();
 
-        var httpClient = _offline ? new OfflineHttpClient() : _options.HttpClient;
+        var httpClient = _offline ? new HttpClient(new OfflineHttpMessageHandler()) : _options.HttpClient;
         API = new SchematicApi(apiKey, _options.WithHttpClient(httpClient));
 
         _eventBuffer = _options.EventBuffer ?? new EventBuffer<CreateEventRequestBody>(
@@ -153,19 +154,18 @@ public partial class Schematic
 
     private bool GetFlagDefault(string flagKey)
     {
-        return _options.FlagDefaults?.GetValueOrDefault(flagKey) ?? false;
+        return _options.FlagDefaults != null && _options.FlagDefaults.TryGetValue(flagKey, out bool value) ? value : false;
     }
-
 }
 
-public class OfflineHttpClient : HttpClient
+public class OfflineHttpMessageHandler : HttpMessageHandler
 {
-    public override HttpResponseMessage Send(HttpRequestMessage request, System.Threading.CancellationToken cancellationToken)
+    protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
     {
         var response = new HttpResponseMessage(System.Net.HttpStatusCode.OK)
         {
             Content = new StringContent("{\"data\":{}}")
         };
-        return response;
+        return Task.FromResult(response);
     }
 }
