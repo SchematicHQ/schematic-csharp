@@ -31,8 +31,11 @@ public record FlagDetailResponseData
     [JsonPropertyName("key")]
     public required string Key { get; init; }
 
-    [JsonPropertyName("latest_check")]
-    public FlagCheckLogResponseData? LatestCheck { get; init; }
+    [JsonPropertyName("last_checked_at")]
+    public DateTime? LastCheckedAt { get; init; }
+
+    [JsonPropertyName("maintainer_id")]
+    public string? MaintainerId { get; init; }
 
     [JsonPropertyName("name")]
     public required string Name { get; init; }

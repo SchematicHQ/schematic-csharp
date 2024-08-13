@@ -1,3 +1,4 @@
+using System.Net.Http;
 using SchematicHQ.Client;
 using SchematicHQ.Client.Core;
 
@@ -17,7 +18,7 @@ public partial class SchematicApi
                 { "X-Schematic-Api-Key", apiKey },
                 { "X-Fern-Language", "C#" },
                 { "X-Fern-SDK-Name", "SchematicHQ.Client" },
-                { "X-Fern-SDK-Version", "1.0.1" },
+                { "X-Fern-SDK-Version", "1.0.2" },
             },
             clientOptions ?? new ClientOptions()
         );
@@ -55,4 +56,11 @@ public partial class SchematicApi
     public AccesstokensClient Accesstokens { get; init; }
 
     public WebhooksClient Webhooks { get; init; }
+
+    public async Task GetCompanyPlansAsync()
+    {
+        await _client.MakeRequestAsync(
+            new RawClient.JsonApiRequest { Method = HttpMethod.Get, Path = "company-plans" }
+        );
+    }
 }

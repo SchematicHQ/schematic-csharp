@@ -316,43 +316,6 @@ public class CompaniesClient
         throw new Exception(responseBody);
     }
 
-    public async Task<ListCompanyPlansResponse> ListCompanyPlansAsync(
-        ListCompanyPlansRequest request
-    )
-    {
-        var _query = new Dictionary<string, object>() { };
-        if (request.CompanyId != null)
-        {
-            _query["company_id"] = request.CompanyId;
-        }
-        if (request.PlanId != null)
-        {
-            _query["plan_id"] = request.PlanId;
-        }
-        if (request.Limit != null)
-        {
-            _query["limit"] = request.Limit.ToString();
-        }
-        if (request.Offset != null)
-        {
-            _query["offset"] = request.Offset.ToString();
-        }
-        var response = await _client.MakeRequestAsync(
-            new RawClient.JsonApiRequest
-            {
-                Method = HttpMethod.Get,
-                Path = "company-plans",
-                Query = _query
-            }
-        );
-        var responseBody = await response.Raw.Content.ReadAsStringAsync();
-        if (response.StatusCode is >= 200 and < 400)
-        {
-            return JsonSerializer.Deserialize<ListCompanyPlansResponse>(responseBody)!;
-        }
-        throw new Exception(responseBody);
-    }
-
     public async Task<GetActiveCompanySubscriptionResponse> GetActiveCompanySubscriptionAsync(
         GetActiveCompanySubscriptionRequest request
     )

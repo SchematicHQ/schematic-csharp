@@ -8,7 +8,7 @@ namespace SchematicHQ.Client;
 public record UpdateComponentRequestBody
 {
     [JsonPropertyName("ast")]
-    public IEnumerable<int>? Ast { get; init; }
+    public Dictionary<string, double>? Ast { get; init; }
 
     [JsonPropertyName("entity_type")]
     public UpdateComponentRequestBodyEntityType? EntityType { get; init; }

@@ -93,13 +93,21 @@ public class EventsClient
         {
             _query["company_id"] = request.CompanyId;
         }
-        if (request.UserId != null)
-        {
-            _query["user_id"] = request.UserId;
-        }
         if (request.EventSubtype != null)
         {
             _query["event_subtype"] = request.EventSubtype;
+        }
+        if (request.EventTypes != null)
+        {
+            _query["event_types"] = request.EventTypes;
+        }
+        if (request.FlagId != null)
+        {
+            _query["flag_id"] = request.FlagId;
+        }
+        if (request.UserId != null)
+        {
+            _query["user_id"] = request.UserId;
         }
         if (request.Limit != null)
         {

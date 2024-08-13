@@ -19,8 +19,14 @@ public record CreateFeatureRequestBody
     [JsonPropertyName("flag")]
     public CreateOrUpdateFlagRequestBody? Flag { get; init; }
 
+    [JsonPropertyName("icon")]
+    public string? Icon { get; init; }
+
     [JsonPropertyName("lifecycle_phase")]
     public string? LifecyclePhase { get; init; }
+
+    [JsonPropertyName("maintainer_id")]
+    public string? MaintainerId { get; init; }
 
     [JsonPropertyName("name")]
     public required string Name { get; init; }

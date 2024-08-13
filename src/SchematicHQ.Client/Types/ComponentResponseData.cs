@@ -7,7 +7,7 @@ namespace SchematicHQ.Client;
 public record ComponentResponseData
 {
     [JsonPropertyName("ast")]
-    public IEnumerable<int> Ast { get; init; } = new List<int>();
+    public Dictionary<string, double>? Ast { get; init; }
 
     [JsonPropertyName("created_at")]
     public required DateTime CreatedAt { get; init; }

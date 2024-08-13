@@ -7,6 +7,9 @@ namespace SchematicHQ.Client;
 
 public record CompanyDetailResponseData
 {
+    [JsonPropertyName("add_ons")]
+    public IEnumerable<PreviewObject> AddOns { get; init; } = new List<PreviewObject>();
+
     [JsonPropertyName("created_at")]
     public required DateTime CreatedAt { get; init; }
 
@@ -32,6 +35,9 @@ public record CompanyDetailResponseData
 
     [JsonPropertyName("name")]
     public required string Name { get; init; }
+
+    [JsonPropertyName("plan")]
+    public BillingPlan? Plan { get; init; }
 
     [JsonPropertyName("plans")]
     public IEnumerable<PreviewObject> Plans { get; init; } = new List<PreviewObject>();

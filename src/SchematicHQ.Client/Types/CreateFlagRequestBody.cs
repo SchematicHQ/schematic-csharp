@@ -21,6 +21,9 @@ public record CreateFlagRequestBody
     [JsonPropertyName("key")]
     public required string Key { get; init; }
 
+    [JsonPropertyName("maintainer_id")]
+    public string? MaintainerId { get; init; }
+
     [JsonPropertyName("name")]
     public required string Name { get; init; }
 }

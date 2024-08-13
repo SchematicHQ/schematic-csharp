@@ -4,9 +4,13 @@ public record ListEventsRequest
 {
     public string? CompanyId { get; init; }
 
-    public string? UserId { get; init; }
-
     public string? EventSubtype { get; init; }
+
+    public string? EventTypes { get; init; }
+
+    public string? FlagId { get; init; }
+
+    public string? UserId { get; init; }
 
     /// <summary>
     /// Page limit (default 100)

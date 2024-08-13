@@ -86,6 +86,10 @@ public class PlansClient
         {
             _query["q"] = request.Q;
         }
+        if (request.PlanType != null)
+        {
+            _query["plan_type"] = JsonSerializer.Serialize(request.PlanType.Value);
+        }
         if (request.WithoutEntitlementFor != null)
         {
             _query["without_entitlement_for"] = request.WithoutEntitlementFor;
@@ -214,6 +218,10 @@ public class PlansClient
         if (request.Q != null)
         {
             _query["q"] = request.Q;
+        }
+        if (request.PlanType != null)
+        {
+            _query["plan_type"] = JsonSerializer.Serialize(request.PlanType.Value);
         }
         if (request.WithoutEntitlementFor != null)
         {

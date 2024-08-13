@@ -17,8 +17,8 @@ public record CompanySubscriptionResponseData
     public required string Interval { get; init; }
 
     [JsonPropertyName("products")]
-    public IEnumerable<BillingProductResponseData> Products { get; init; } =
-        new List<BillingProductResponseData>();
+    public IEnumerable<BillingProductForSubscriptionResponseData> Products { get; init; } =
+        new List<BillingProductForSubscriptionResponseData>();
 
     [JsonPropertyName("subscription_external_id")]
     public required string SubscriptionExternalId { get; init; }

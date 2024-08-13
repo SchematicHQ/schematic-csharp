@@ -10,8 +10,10 @@ namespace SchematicHQ.Client;
 public record CreateEventRequestBody
 {
     [JsonPropertyName("body")]
-    [JsonConverter(typeof(OneOfSerializer<OneOf<EventBodyTrack, EventBodyIdentify>>))]
-    public OneOf<EventBodyTrack, EventBodyIdentify>? Body { get; init; }
+    [JsonConverter(
+        typeof(OneOfSerializer<OneOf<EventBodyTrack, EventBodyFlagCheck, EventBodyIdentify>>)
+    )]
+    public OneOf<EventBodyTrack, EventBodyFlagCheck, EventBodyIdentify>? Body { get; init; }
 
     /// <summary>
     /// Either 'identify' or 'track'

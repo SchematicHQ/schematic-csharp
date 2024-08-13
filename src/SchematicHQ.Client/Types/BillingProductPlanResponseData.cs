@@ -15,6 +15,12 @@ public record BillingProductPlanResponseData
     [JsonPropertyName("environment_id")]
     public required string EnvironmentId { get; init; }
 
+    [JsonPropertyName("monthly_price_id")]
+    public string? MonthlyPriceId { get; init; }
+
     [JsonPropertyName("plan_id")]
     public required string PlanId { get; init; }
+
+    [JsonPropertyName("yearly_price_id")]
+    public string? YearlyPriceId { get; init; }
 }

@@ -14,5 +14,8 @@ public enum CreateEventRequestBodyEventType
     Identify,
 
     [EnumMember(Value = "track")]
-    Track
+    Track,
+
+    [EnumMember(Value = "flag_check")]
+    FlagCheck
 }
