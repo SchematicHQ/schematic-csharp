@@ -126,7 +126,7 @@ public partial class Schematic
         });
     }
 
-    private void EnqueueEvent(CreateEventRequestBodyEventType eventType, OneOf<EventBodyTrack, EventBodyIdentify> body)
+    private void EnqueueEvent(CreateEventRequestBodyEventType eventType, OneOf<EventBodyTrack, EventBodyFlagCheck, EventBodyIdentify> body)
     {
         if (_offline)
             return;
