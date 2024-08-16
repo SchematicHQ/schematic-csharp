@@ -18,11 +18,17 @@ public record FeatureResponseData
     [JsonPropertyName("feature_type")]
     public required string FeatureType { get; init; }
 
+    [JsonPropertyName("icon")]
+    public required string Icon { get; init; }
+
     [JsonPropertyName("id")]
     public required string Id { get; init; }
 
     [JsonPropertyName("lifecycle_phase")]
     public string? LifecyclePhase { get; init; }
+
+    [JsonPropertyName("maintainer_id")]
+    public string? MaintainerId { get; init; }
 
     [JsonPropertyName("name")]
     public required string Name { get; init; }

@@ -1,4 +1,5 @@
 using System.Text.Json.Serialization;
+using SchematicHQ.Client;
 
 #nullable enable
 
@@ -23,6 +24,12 @@ public record CountPlansParams
     /// </summary>
     [JsonPropertyName("offset")]
     public int? Offset { get; init; }
+
+    /// <summary>
+    /// Filter by plan type
+    /// </summary>
+    [JsonPropertyName("plan_type")]
+    public CountPlansResponseParamsPlanType? PlanType { get; init; }
 
     [JsonPropertyName("q")]
     public string? Q { get; init; }

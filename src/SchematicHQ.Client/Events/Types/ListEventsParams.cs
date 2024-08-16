@@ -12,6 +12,12 @@ public record ListEventsParams
     [JsonPropertyName("event_subtype")]
     public string? EventSubtype { get; init; }
 
+    [JsonPropertyName("event_types")]
+    public IEnumerable<string>? EventTypes { get; init; }
+
+    [JsonPropertyName("flag_id")]
+    public string? FlagId { get; init; }
+
     /// <summary>
     /// Page limit (default 100)
     /// </summary>

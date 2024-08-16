@@ -6,6 +6,9 @@ namespace SchematicHQ.Client;
 
 public record PreviewObject
 {
+    [JsonPropertyName("description")]
+    public string? Description { get; init; }
+
     [JsonPropertyName("id")]
     public required string Id { get; init; }
 

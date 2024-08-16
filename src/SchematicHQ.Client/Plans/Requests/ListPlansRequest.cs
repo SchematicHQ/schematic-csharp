@@ -1,3 +1,7 @@
+using SchematicHQ.Client;
+
+#nullable enable
+
 namespace SchematicHQ.Client;
 
 public record ListPlansRequest
@@ -7,6 +11,11 @@ public record ListPlansRequest
     public string? Ids { get; init; }
 
     public string? Q { get; init; }
+
+    /// <summary>
+    /// Filter by plan type
+    /// </summary>
+    public ListPlansRequestPlanType? PlanType { get; init; }
 
     /// <summary>
     /// Filter out plans that already have a plan entitlement for the specified feature ID

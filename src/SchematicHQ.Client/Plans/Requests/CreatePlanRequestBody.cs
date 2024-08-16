@@ -7,11 +7,11 @@ namespace SchematicHQ.Client;
 
 public record CreatePlanRequestBody
 {
-    [JsonPropertyName("audience_type")]
-    public string? AudienceType { get; init; }
-
     [JsonPropertyName("description")]
     public required string Description { get; init; }
+
+    [JsonPropertyName("icon")]
+    public string? Icon { get; init; }
 
     [JsonPropertyName("name")]
     public required string Name { get; init; }

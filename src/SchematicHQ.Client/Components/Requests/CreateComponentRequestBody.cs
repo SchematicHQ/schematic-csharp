@@ -8,7 +8,7 @@ namespace SchematicHQ.Client;
 public record CreateComponentRequestBody
 {
     [JsonPropertyName("ast")]
-    public IEnumerable<int> Ast { get; init; } = new List<int>();
+    public Dictionary<string, double>? Ast { get; init; }
 
     [JsonPropertyName("entity_type")]
     public required CreateComponentRequestBodyEntityType EntityType { get; init; }

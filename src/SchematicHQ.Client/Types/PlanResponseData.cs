@@ -7,13 +7,16 @@ namespace SchematicHQ.Client;
 public record PlanResponseData
 {
     [JsonPropertyName("audience_type")]
-    public required string AudienceType { get; init; }
+    public string? AudienceType { get; init; }
 
     [JsonPropertyName("created_at")]
     public required DateTime CreatedAt { get; init; }
 
     [JsonPropertyName("description")]
     public required string Description { get; init; }
+
+    [JsonPropertyName("icon")]
+    public required string Icon { get; init; }
 
     [JsonPropertyName("id")]
     public required string Id { get; init; }

@@ -8,7 +8,10 @@ namespace SchematicHQ.Client;
 public record PlanDetailResponseData
 {
     [JsonPropertyName("audience_type")]
-    public required string AudienceType { get; init; }
+    public string? AudienceType { get; init; }
+
+    [JsonPropertyName("billing_product")]
+    public BillingProductDetailResponseData? BillingProduct { get; init; }
 
     [JsonPropertyName("company_count")]
     public required int CompanyCount { get; init; }
@@ -22,6 +25,9 @@ public record PlanDetailResponseData
     [JsonPropertyName("features")]
     public IEnumerable<FeatureDetailResponseData> Features { get; init; } =
         new List<FeatureDetailResponseData>();
+
+    [JsonPropertyName("icon")]
+    public required string Icon { get; init; }
 
     [JsonPropertyName("id")]
     public required string Id { get; init; }
