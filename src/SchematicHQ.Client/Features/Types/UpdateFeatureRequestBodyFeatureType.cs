@@ -1,6 +1,5 @@
 using System.Runtime.Serialization;
 using System.Text.Json.Serialization;
-using SchematicHQ.Client;
 using SchematicHQ.Client.Core;
 
 #nullable enable
@@ -17,5 +16,5 @@ public enum UpdateFeatureRequestBodyFeatureType
     Event,
 
     [EnumMember(Value = "trait")]
-    Trait
+    Trait,
 }

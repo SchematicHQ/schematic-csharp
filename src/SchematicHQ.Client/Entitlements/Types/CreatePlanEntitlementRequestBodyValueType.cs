@@ -1,6 +1,5 @@
 using System.Runtime.Serialization;
 using System.Text.Json.Serialization;
-using SchematicHQ.Client;
 using SchematicHQ.Client.Core;
 
 #nullable enable
@@ -20,5 +19,5 @@ public enum CreatePlanEntitlementRequestBodyValueType
     Trait,
 
     [EnumMember(Value = "unlimited")]
-    Unlimited
+    Unlimited,
 }

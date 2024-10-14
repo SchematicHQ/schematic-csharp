@@ -1,6 +1,5 @@
 using System.Runtime.Serialization;
 using System.Text.Json.Serialization;
-using SchematicHQ.Client;
 using SchematicHQ.Client.Core;
 
 #nullable enable
@@ -26,5 +25,5 @@ public enum CreateOrUpdateRuleRequestBodyRuleType
     Default,
 
     [EnumMember(Value = "plan_audience")]
-    PlanAudience
+    PlanAudience,
 }

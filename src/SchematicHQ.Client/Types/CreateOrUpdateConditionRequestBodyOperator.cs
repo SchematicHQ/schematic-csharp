@@ -1,6 +1,5 @@
 using System.Runtime.Serialization;
 using System.Text.Json.Serialization;
-using SchematicHQ.Client;
 using SchematicHQ.Client.Core;
 
 #nullable enable
@@ -26,5 +25,11 @@ public enum CreateOrUpdateConditionRequestBodyOperator
     Lt,
 
     [EnumMember(Value = "lte")]
-    Lte
+    Lte,
+
+    [EnumMember(Value = "is_empty")]
+    IsEmpty,
+
+    [EnumMember(Value = "not_empty")]
+    NotEmpty,
 }

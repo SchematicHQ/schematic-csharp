@@ -1,6 +1,5 @@
 using System.Runtime.Serialization;
 using System.Text.Json.Serialization;
-using SchematicHQ.Client;
 using SchematicHQ.Client.Core;
 
 #nullable enable
@@ -14,5 +13,5 @@ public enum UpdateWebhookRequestBodyStatus
     Active,
 
     [EnumMember(Value = "inactive")]
-    Inactive
+    Inactive,
 }

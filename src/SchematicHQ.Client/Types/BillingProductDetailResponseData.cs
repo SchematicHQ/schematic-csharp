@@ -1,5 +1,5 @@
 using System.Text.Json.Serialization;
-using SchematicHQ.Client;
+using SchematicHQ.Client.Core;
 
 #nullable enable
 
@@ -8,36 +8,41 @@ namespace SchematicHQ.Client;
 public record BillingProductDetailResponseData
 {
     [JsonPropertyName("Prices")]
-    public IEnumerable<BillingPriceResponseData> Prices { get; init; } =
+    public IEnumerable<BillingPriceResponseData> Prices { get; set; } =
         new List<BillingPriceResponseData>();
 
     [JsonPropertyName("account_id")]
-    public required string AccountId { get; init; }
+    public required string AccountId { get; set; }
 
     [JsonPropertyName("created_at")]
-    public required DateTime CreatedAt { get; init; }
+    public required DateTime CreatedAt { get; set; }
 
     [JsonPropertyName("currency")]
-    public required string Currency { get; init; }
+    public required string Currency { get; set; }
 
     [JsonPropertyName("environment_id")]
-    public required string EnvironmentId { get; init; }
+    public required string EnvironmentId { get; set; }
 
     [JsonPropertyName("external_id")]
-    public required string ExternalId { get; init; }
+    public required string ExternalId { get; set; }
 
     [JsonPropertyName("name")]
-    public required string Name { get; init; }
+    public required string Name { get; set; }
 
     [JsonPropertyName("price")]
-    public required double Price { get; init; }
+    public required double Price { get; set; }
 
     [JsonPropertyName("product_id")]
-    public required string ProductId { get; init; }
+    public required string ProductId { get; set; }
 
     [JsonPropertyName("quantity")]
-    public required double Quantity { get; init; }
+    public required double Quantity { get; set; }
 
     [JsonPropertyName("updated_at")]
-    public required DateTime UpdatedAt { get; init; }
+    public required DateTime UpdatedAt { get; set; }
+
+    public override string ToString()
+    {
+        return JsonUtils.Serialize(this);
+    }
 }
