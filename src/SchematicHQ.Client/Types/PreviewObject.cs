@@ -7,14 +7,14 @@ namespace SchematicHQ.Client;
 public record PreviewObject
 {
     [JsonPropertyName("description")]
-    public string? Description { get; init; }
+    public string? Description { get; set; }
 
     [JsonPropertyName("id")]
-    public required string Id { get; init; }
+    public required string Id { get; set; }
 
     [JsonPropertyName("image_url")]
-    public string? ImageUrl { get; init; }
+    public string? ImageUrl { get; set; }
 
     [JsonPropertyName("name")]
-    public required string Name { get; init; }
+    public required string Name { get; set; }
 }

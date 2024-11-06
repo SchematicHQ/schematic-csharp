@@ -1,5 +1,4 @@
 using System.Text.Json.Serialization;
-using SchematicHQ.Client;
 
 #nullable enable
 
@@ -11,12 +10,12 @@ public record ListCustomersResponse
     /// The returned resources
     /// </summary>
     [JsonPropertyName("data")]
-    public IEnumerable<BillingCustomerWithSubscriptionsResponseData> Data { get; init; } =
+    public IEnumerable<BillingCustomerWithSubscriptionsResponseData> Data { get; set; } =
         new List<BillingCustomerWithSubscriptionsResponseData>();
 
     /// <summary>
     /// Input parameters
     /// </summary>
     [JsonPropertyName("params")]
-    public required ListCustomersParams Params { get; init; }
+    public required ListCustomersParams Params { get; set; }
 }

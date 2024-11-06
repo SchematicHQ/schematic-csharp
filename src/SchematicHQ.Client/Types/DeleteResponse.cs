@@ -10,5 +10,5 @@ public record DeleteResponse
     /// Whether the delete was successful
     /// </summary>
     [JsonPropertyName("deleted")]
-    public bool? Deleted { get; init; }
+    public bool? Deleted { get; set; }
 }

@@ -7,29 +7,29 @@ namespace SchematicHQ.Client;
 public record EntityKeyResponseData
 {
     [JsonPropertyName("created_at")]
-    public required DateTime CreatedAt { get; init; }
+    public required DateTime CreatedAt { get; set; }
 
     [JsonPropertyName("definition_id")]
-    public required string DefinitionId { get; init; }
+    public required string DefinitionId { get; set; }
 
     [JsonPropertyName("entity_id")]
-    public required string EntityId { get; init; }
+    public required string EntityId { get; set; }
 
     [JsonPropertyName("entity_type")]
-    public required string EntityType { get; init; }
+    public required string EntityType { get; set; }
 
     [JsonPropertyName("environment_id")]
-    public required string EnvironmentId { get; init; }
+    public required string EnvironmentId { get; set; }
 
     [JsonPropertyName("id")]
-    public required string Id { get; init; }
+    public required string Id { get; set; }
 
     [JsonPropertyName("key")]
-    public required string Key { get; init; }
+    public required string Key { get; set; }
 
     [JsonPropertyName("updated_at")]
-    public required DateTime UpdatedAt { get; init; }
+    public required DateTime UpdatedAt { get; set; }
 
     [JsonPropertyName("value")]
-    public required string Value { get; init; }
+    public required string Value { get; set; }
 }

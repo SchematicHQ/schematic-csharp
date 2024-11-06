@@ -7,8 +7,8 @@ namespace SchematicHQ.Client;
 public record EntityTraitValue
 {
     [JsonPropertyName("definition_id")]
-    public required string DefinitionId { get; init; }
+    public required string DefinitionId { get; set; }
 
     [JsonPropertyName("value")]
-    public required string Value { get; init; }
+    public required string Value { get; set; }
 }

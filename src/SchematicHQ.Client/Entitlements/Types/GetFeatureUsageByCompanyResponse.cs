@@ -1,5 +1,4 @@
 using System.Text.Json.Serialization;
-using SchematicHQ.Client;
 
 #nullable enable
 
@@ -8,11 +7,11 @@ namespace SchematicHQ.Client;
 public record GetFeatureUsageByCompanyResponse
 {
     [JsonPropertyName("data")]
-    public required FeatureUsageDetailResponseData Data { get; init; }
+    public required FeatureUsageDetailResponseData Data { get; set; }
 
     /// <summary>
     /// Input parameters
     /// </summary>
     [JsonPropertyName("params")]
-    public required GetFeatureUsageByCompanyParams Params { get; init; }
+    public required GetFeatureUsageByCompanyParams Params { get; set; }
 }

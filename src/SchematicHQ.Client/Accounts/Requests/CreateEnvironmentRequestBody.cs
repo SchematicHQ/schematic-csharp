@@ -1,5 +1,4 @@
 using System.Text.Json.Serialization;
-using SchematicHQ.Client;
 
 #nullable enable
 
@@ -8,8 +7,8 @@ namespace SchematicHQ.Client;
 public record CreateEnvironmentRequestBody
 {
     [JsonPropertyName("environment_type")]
-    public required CreateEnvironmentRequestBodyEnvironmentType EnvironmentType { get; init; }
+    public required CreateEnvironmentRequestBodyEnvironmentType EnvironmentType { get; set; }
 
     [JsonPropertyName("name")]
-    public required string Name { get; init; }
+    public required string Name { get; set; }
 }

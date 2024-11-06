@@ -7,32 +7,32 @@ namespace SchematicHQ.Client;
 public record PlanAudienceResponseData
 {
     [JsonPropertyName("created_at")]
-    public required DateTime CreatedAt { get; init; }
+    public required DateTime CreatedAt { get; set; }
 
     [JsonPropertyName("environment_id")]
-    public required string EnvironmentId { get; init; }
+    public required string EnvironmentId { get; set; }
 
     [JsonPropertyName("flag_id")]
-    public string? FlagId { get; init; }
+    public string? FlagId { get; set; }
 
     [JsonPropertyName("id")]
-    public required string Id { get; init; }
+    public required string Id { get; set; }
 
     [JsonPropertyName("name")]
-    public required string Name { get; init; }
+    public required string Name { get; set; }
 
     [JsonPropertyName("plan_id")]
-    public string? PlanId { get; init; }
+    public string? PlanId { get; set; }
 
     [JsonPropertyName("priority")]
-    public required int Priority { get; init; }
+    public required int Priority { get; set; }
 
     [JsonPropertyName("rule_type")]
-    public required string RuleType { get; init; }
+    public required string RuleType { get; set; }
 
     [JsonPropertyName("updated_at")]
-    public required DateTime UpdatedAt { get; init; }
+    public required DateTime UpdatedAt { get; set; }
 
     [JsonPropertyName("value")]
-    public required bool Value { get; init; }
+    public required bool Value { get; set; }
 }

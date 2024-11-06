@@ -1,5 +1,4 @@
 using System.Text.Json.Serialization;
-using SchematicHQ.Client;
 
 #nullable enable
 
@@ -11,11 +10,11 @@ public record GetEntityTraitValuesResponse
     /// The returned resources
     /// </summary>
     [JsonPropertyName("data")]
-    public IEnumerable<EntityTraitValue> Data { get; init; } = new List<EntityTraitValue>();
+    public IEnumerable<EntityTraitValue> Data { get; set; } = new List<EntityTraitValue>();
 
     /// <summary>
     /// Input parameters
     /// </summary>
     [JsonPropertyName("params")]
-    public required GetEntityTraitValuesParams Params { get; init; }
+    public required GetEntityTraitValuesParams Params { get; set; }
 }

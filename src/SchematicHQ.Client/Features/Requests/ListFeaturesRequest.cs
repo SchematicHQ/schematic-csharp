@@ -2,27 +2,27 @@ namespace SchematicHQ.Client;
 
 public record ListFeaturesRequest
 {
-    public string? Ids { get; init; }
+    public IEnumerable<string> Ids { get; set; } = new List<string>();
 
-    public string? Q { get; init; }
+    public string? Q { get; set; }
 
     /// <summary>
     /// Filter out features that already have a company override for the specified company ID
     /// </summary>
-    public string? WithoutCompanyOverrideFor { get; init; }
+    public string? WithoutCompanyOverrideFor { get; set; }
 
     /// <summary>
     /// Filter out features that already have a plan entitlement for the specified plan ID
     /// </summary>
-    public string? WithoutPlanEntitlementFor { get; init; }
+    public string? WithoutPlanEntitlementFor { get; set; }
 
     /// <summary>
     /// Page limit (default 100)
     /// </summary>
-    public int? Limit { get; init; }
+    public int? Limit { get; set; }
 
     /// <summary>
     /// Page offset (default 0)
     /// </summary>
-    public int? Offset { get; init; }
+    public int? Offset { get; set; }
 }

@@ -7,8 +7,8 @@ namespace SchematicHQ.Client;
 public record UpdateApiKeyRequestBody
 {
     [JsonPropertyName("description")]
-    public string? Description { get; init; }
+    public string? Description { get; set; }
 
     [JsonPropertyName("name")]
-    public string? Name { get; init; }
+    public string? Name { get; set; }
 }

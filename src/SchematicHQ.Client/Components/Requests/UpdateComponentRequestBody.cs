@@ -1,5 +1,4 @@
 using System.Text.Json.Serialization;
-using SchematicHQ.Client;
 
 #nullable enable
 
@@ -8,14 +7,14 @@ namespace SchematicHQ.Client;
 public record UpdateComponentRequestBody
 {
     [JsonPropertyName("ast")]
-    public Dictionary<string, double>? Ast { get; init; }
+    public Dictionary<string, double>? Ast { get; set; }
 
     [JsonPropertyName("entity_type")]
-    public UpdateComponentRequestBodyEntityType? EntityType { get; init; }
+    public UpdateComponentRequestBodyEntityType? EntityType { get; set; }
 
     [JsonPropertyName("name")]
-    public string? Name { get; init; }
+    public string? Name { get; set; }
 
     [JsonPropertyName("state")]
-    public UpdateComponentRequestBodyState? State { get; init; }
+    public UpdateComponentRequestBodyState? State { get; set; }
 }

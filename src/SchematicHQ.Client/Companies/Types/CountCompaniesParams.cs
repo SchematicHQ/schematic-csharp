@@ -6,33 +6,45 @@ namespace SchematicHQ.Client;
 
 public record CountCompaniesParams
 {
+    /// <summary>
+    /// Filter companies by multiple company IDs (starts with comp\_)
+    /// </summary>
     [JsonPropertyName("ids")]
-    public IEnumerable<string>? Ids { get; init; }
+    public IEnumerable<string>? Ids { get; set; }
 
     /// <summary>
     /// Page limit (default 100)
     /// </summary>
     [JsonPropertyName("limit")]
-    public int? Limit { get; init; }
+    public int? Limit { get; set; }
 
     /// <summary>
     /// Page offset (default 0)
     /// </summary>
     [JsonPropertyName("offset")]
-    public int? Offset { get; init; }
-
-    [JsonPropertyName("plan_id")]
-    public string? PlanId { get; init; }
+    public int? Offset { get; set; }
 
     /// <summary>
-    /// Search filter
+    /// Filter companies by plan ID (starts with plan\_)
+    /// </summary>
+    [JsonPropertyName("plan_id")]
+    public string? PlanId { get; set; }
+
+    /// <summary>
+    /// Search for companies by name, keys or string traits
     /// </summary>
     [JsonPropertyName("q")]
-    public string? Q { get; init; }
+    public string? Q { get; set; }
 
     /// <summary>
     /// Filter out companies that already have a company override for the specified feature ID
     /// </summary>
     [JsonPropertyName("without_feature_override_for")]
-    public string? WithoutFeatureOverrideFor { get; init; }
+    public string? WithoutFeatureOverrideFor { get; set; }
+
+    /// <summary>
+    /// Filter out companies that have a plan
+    /// </summary>
+    [JsonPropertyName("without_plan")]
+    public bool? WithoutPlan { get; set; }
 }

@@ -1,5 +1,4 @@
 using System.Text.Json.Serialization;
-using SchematicHQ.Client;
 
 #nullable enable
 
@@ -8,11 +7,11 @@ namespace SchematicHQ.Client;
 public record UpsertUserResponse
 {
     [JsonPropertyName("data")]
-    public required UserDetailResponseData Data { get; init; }
+    public required UserDetailResponseData Data { get; set; }
 
     /// <summary>
     /// Input parameters
     /// </summary>
     [JsonPropertyName("params")]
-    public Dictionary<string, object> Params { get; init; } = new Dictionary<string, object>();
+    public Dictionary<string, object?> Params { get; set; } = new Dictionary<string, object?>();
 }

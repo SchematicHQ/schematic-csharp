@@ -7,11 +7,11 @@ namespace SchematicHQ.Client;
 public record UpsertBillingProductRequestBody
 {
     [JsonPropertyName("billing_product_id")]
-    public required string BillingProductId { get; init; }
+    public string? BillingProductId { get; set; }
 
     [JsonPropertyName("monthly_price_id")]
-    public string? MonthlyPriceId { get; init; }
+    public string? MonthlyPriceId { get; set; }
 
     [JsonPropertyName("yearly_price_id")]
-    public string? YearlyPriceId { get; init; }
+    public string? YearlyPriceId { get; set; }
 }

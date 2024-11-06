@@ -1,5 +1,4 @@
 using System.Text.Json.Serialization;
-using SchematicHQ.Client;
 
 #nullable enable
 
@@ -11,12 +10,12 @@ public record ListCompanyOverridesResponse
     /// The returned resources
     /// </summary>
     [JsonPropertyName("data")]
-    public IEnumerable<CompanyOverrideResponseData> Data { get; init; } =
+    public IEnumerable<CompanyOverrideResponseData> Data { get; set; } =
         new List<CompanyOverrideResponseData>();
 
     /// <summary>
     /// Input parameters
     /// </summary>
     [JsonPropertyName("params")]
-    public required ListCompanyOverridesParams Params { get; init; }
+    public required ListCompanyOverridesParams Params { get; set; }
 }

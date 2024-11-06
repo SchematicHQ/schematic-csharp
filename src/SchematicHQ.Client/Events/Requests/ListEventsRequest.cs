@@ -2,23 +2,23 @@ namespace SchematicHQ.Client;
 
 public record ListEventsRequest
 {
-    public string? CompanyId { get; init; }
+    public string? CompanyId { get; set; }
 
-    public string? EventSubtype { get; init; }
+    public string? EventSubtype { get; set; }
 
-    public string? EventTypes { get; init; }
+    public IEnumerable<string> EventTypes { get; set; } = new List<string>();
 
-    public string? FlagId { get; init; }
+    public string? FlagId { get; set; }
 
-    public string? UserId { get; init; }
+    public string? UserId { get; set; }
 
     /// <summary>
     /// Page limit (default 100)
     /// </summary>
-    public int? Limit { get; init; }
+    public int? Limit { get; set; }
 
     /// <summary>
     /// Page offset (default 0)
     /// </summary>
-    public int? Offset { get; init; }
+    public int? Offset { get; set; }
 }

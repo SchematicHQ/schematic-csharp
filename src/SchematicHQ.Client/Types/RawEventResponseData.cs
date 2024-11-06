@@ -7,17 +7,17 @@ namespace SchematicHQ.Client;
 public record RawEventResponseData
 {
     [JsonPropertyName("captured_at")]
-    public required DateTime CapturedAt { get; init; }
+    public required DateTime CapturedAt { get; set; }
 
     [JsonPropertyName("event_id")]
-    public string? EventId { get; init; }
+    public string? EventId { get; set; }
 
     [JsonPropertyName("remote_addr")]
-    public required string RemoteAddr { get; init; }
+    public required string RemoteAddr { get; set; }
 
     [JsonPropertyName("remote_ip")]
-    public required string RemoteIp { get; init; }
+    public required string RemoteIp { get; set; }
 
     [JsonPropertyName("user_agent")]
-    public required string UserAgent { get; init; }
+    public required string UserAgent { get; set; }
 }

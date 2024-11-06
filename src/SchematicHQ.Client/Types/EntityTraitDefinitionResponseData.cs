@@ -7,23 +7,23 @@ namespace SchematicHQ.Client;
 public record EntityTraitDefinitionResponseData
 {
     [JsonPropertyName("created_at")]
-    public required DateTime CreatedAt { get; init; }
+    public required DateTime CreatedAt { get; set; }
 
     [JsonPropertyName("display_name")]
-    public required string DisplayName { get; init; }
+    public required string DisplayName { get; set; }
 
     [JsonPropertyName("entity_type")]
-    public required string EntityType { get; init; }
+    public required string EntityType { get; set; }
 
     [JsonPropertyName("hierarchy")]
-    public IEnumerable<string> Hierarchy { get; init; } = new List<string>();
+    public IEnumerable<string> Hierarchy { get; set; } = new List<string>();
 
     [JsonPropertyName("id")]
-    public required string Id { get; init; }
+    public required string Id { get; set; }
 
     [JsonPropertyName("trait_type")]
-    public required string TraitType { get; init; }
+    public required string TraitType { get; set; }
 
     [JsonPropertyName("updated_at")]
-    public required DateTime UpdatedAt { get; init; }
+    public required DateTime UpdatedAt { get; set; }
 }

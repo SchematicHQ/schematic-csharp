@@ -1,5 +1,4 @@
 using System.Text.Json.Serialization;
-using SchematicHQ.Client;
 
 #nullable enable
 
@@ -8,40 +7,40 @@ namespace SchematicHQ.Client;
 public record RuleDetailResponseData
 {
     [JsonPropertyName("condition_groups")]
-    public IEnumerable<RuleConditionGroupDetailResponseData> ConditionGroups { get; init; } =
+    public IEnumerable<RuleConditionGroupDetailResponseData> ConditionGroups { get; set; } =
         new List<RuleConditionGroupDetailResponseData>();
 
     [JsonPropertyName("conditions")]
-    public IEnumerable<RuleConditionDetailResponseData> Conditions { get; init; } =
+    public IEnumerable<RuleConditionDetailResponseData> Conditions { get; set; } =
         new List<RuleConditionDetailResponseData>();
 
     [JsonPropertyName("created_at")]
-    public required DateTime CreatedAt { get; init; }
+    public required DateTime CreatedAt { get; set; }
 
     [JsonPropertyName("environment_id")]
-    public required string EnvironmentId { get; init; }
+    public required string EnvironmentId { get; set; }
 
     [JsonPropertyName("flag_id")]
-    public string? FlagId { get; init; }
+    public string? FlagId { get; set; }
 
     [JsonPropertyName("id")]
-    public required string Id { get; init; }
+    public required string Id { get; set; }
 
     [JsonPropertyName("name")]
-    public required string Name { get; init; }
+    public required string Name { get; set; }
 
     [JsonPropertyName("plan_id")]
-    public string? PlanId { get; init; }
+    public string? PlanId { get; set; }
 
     [JsonPropertyName("priority")]
-    public required int Priority { get; init; }
+    public required int Priority { get; set; }
 
     [JsonPropertyName("rule_type")]
-    public required string RuleType { get; init; }
+    public required string RuleType { get; set; }
 
     [JsonPropertyName("updated_at")]
-    public required DateTime UpdatedAt { get; init; }
+    public required DateTime UpdatedAt { get; set; }
 
     [JsonPropertyName("value")]
-    public required bool Value { get; init; }
+    public required bool Value { get; set; }
 }

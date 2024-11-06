@@ -7,20 +7,20 @@ namespace SchematicHQ.Client;
 public record CreateBillingCustomerRequestBody
 {
     [JsonPropertyName("company_id")]
-    public string? CompanyId { get; init; }
+    public string? CompanyId { get; set; }
 
     [JsonPropertyName("email")]
-    public required string Email { get; init; }
+    public required string Email { get; set; }
 
     [JsonPropertyName("external_id")]
-    public required string ExternalId { get; init; }
+    public required string ExternalId { get; set; }
 
     [JsonPropertyName("failed_to_import")]
-    public required bool FailedToImport { get; init; }
+    public required bool FailedToImport { get; set; }
 
     [JsonPropertyName("meta")]
-    public Dictionary<string, string> Meta { get; init; } = new Dictionary<string, string>();
+    public Dictionary<string, string> Meta { get; set; } = new Dictionary<string, string>();
 
     [JsonPropertyName("name")]
-    public required string Name { get; init; }
+    public required string Name { get; set; }
 }

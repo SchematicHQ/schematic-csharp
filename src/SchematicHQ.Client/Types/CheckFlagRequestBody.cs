@@ -7,8 +7,8 @@ namespace SchematicHQ.Client;
 public record CheckFlagRequestBody
 {
     [JsonPropertyName("company")]
-    public Dictionary<string, string?>? Company { get; init; }
+    public Dictionary<string, string>? Company { get; set; }
 
     [JsonPropertyName("user")]
-    public Dictionary<string, string?>? User { get; init; }
+    public Dictionary<string, string>? User { get; set; }
 }

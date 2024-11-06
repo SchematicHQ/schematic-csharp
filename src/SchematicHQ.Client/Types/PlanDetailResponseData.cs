@@ -1,5 +1,4 @@
 using System.Text.Json.Serialization;
-using SchematicHQ.Client;
 
 #nullable enable
 
@@ -8,36 +7,45 @@ namespace SchematicHQ.Client;
 public record PlanDetailResponseData
 {
     [JsonPropertyName("audience_type")]
-    public string? AudienceType { get; init; }
+    public string? AudienceType { get; set; }
 
     [JsonPropertyName("billing_product")]
-    public BillingProductDetailResponseData? BillingProduct { get; init; }
+    public BillingProductDetailResponseData? BillingProduct { get; set; }
 
     [JsonPropertyName("company_count")]
-    public required int CompanyCount { get; init; }
+    public required int CompanyCount { get; set; }
 
     [JsonPropertyName("created_at")]
-    public required DateTime CreatedAt { get; init; }
+    public required DateTime CreatedAt { get; set; }
 
     [JsonPropertyName("description")]
-    public required string Description { get; init; }
+    public required string Description { get; set; }
 
     [JsonPropertyName("features")]
-    public IEnumerable<FeatureDetailResponseData> Features { get; init; } =
+    public IEnumerable<FeatureDetailResponseData> Features { get; set; } =
         new List<FeatureDetailResponseData>();
 
     [JsonPropertyName("icon")]
-    public required string Icon { get; init; }
+    public required string Icon { get; set; }
 
     [JsonPropertyName("id")]
-    public required string Id { get; init; }
+    public required string Id { get; set; }
+
+    [JsonPropertyName("is_default")]
+    public required bool IsDefault { get; set; }
+
+    [JsonPropertyName("monthly_price")]
+    public BillingPriceResponseData? MonthlyPrice { get; set; }
 
     [JsonPropertyName("name")]
-    public required string Name { get; init; }
+    public required string Name { get; set; }
 
     [JsonPropertyName("plan_type")]
-    public required string PlanType { get; init; }
+    public required string PlanType { get; set; }
 
     [JsonPropertyName("updated_at")]
-    public required DateTime UpdatedAt { get; init; }
+    public required DateTime UpdatedAt { get; set; }
+
+    [JsonPropertyName("yearly_price")]
+    public BillingPriceResponseData? YearlyPrice { get; set; }
 }

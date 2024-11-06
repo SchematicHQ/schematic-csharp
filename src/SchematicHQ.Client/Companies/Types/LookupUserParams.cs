@@ -7,5 +7,5 @@ namespace SchematicHQ.Client;
 public record LookupUserParams
 {
     [JsonPropertyName("keys")]
-    public Dictionary<string, object>? Keys { get; init; }
+    public Dictionary<string, object?>? Keys { get; set; }
 }

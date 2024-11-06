@@ -7,5 +7,5 @@ namespace SchematicHQ.Client;
 public record CountResponse
 {
     [JsonPropertyName("count")]
-    public required int Count { get; init; }
+    public required int Count { get; set; }
 }

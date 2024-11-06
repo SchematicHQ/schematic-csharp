@@ -7,35 +7,35 @@ namespace SchematicHQ.Client;
 public record CrmDealResponseData
 {
     [JsonPropertyName("account_id")]
-    public required string AccountId { get; init; }
+    public required string AccountId { get; set; }
 
     [JsonPropertyName("arr")]
-    public required string Arr { get; init; }
+    public required string Arr { get; set; }
 
     [JsonPropertyName("company_external_id")]
-    public string? CompanyExternalId { get; init; }
+    public string? CompanyExternalId { get; set; }
 
     [JsonPropertyName("created_at")]
-    public required DateTime CreatedAt { get; init; }
+    public required DateTime CreatedAt { get; set; }
 
     [JsonPropertyName("deal_external_id")]
-    public required string DealExternalId { get; init; }
+    public required string DealExternalId { get; set; }
 
     [JsonPropertyName("deal_id")]
-    public required string DealId { get; init; }
+    public required string DealId { get; set; }
 
     [JsonPropertyName("environment_id")]
-    public required string EnvironmentId { get; init; }
+    public required string EnvironmentId { get; set; }
 
     [JsonPropertyName("mrr")]
-    public required string Mrr { get; init; }
+    public required string Mrr { get; set; }
 
     [JsonPropertyName("name")]
-    public string? Name { get; init; }
+    public string? Name { get; set; }
 
     [JsonPropertyName("product_external_id")]
-    public string? ProductExternalId { get; init; }
+    public string? ProductExternalId { get; set; }
 
     [JsonPropertyName("updated_at")]
-    public required DateTime UpdatedAt { get; init; }
+    public required DateTime UpdatedAt { get; set; }
 }

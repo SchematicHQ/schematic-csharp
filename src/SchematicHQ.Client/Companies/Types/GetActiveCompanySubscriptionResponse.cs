@@ -1,5 +1,4 @@
 using System.Text.Json.Serialization;
-using SchematicHQ.Client;
 
 #nullable enable
 
@@ -11,12 +10,12 @@ public record GetActiveCompanySubscriptionResponse
     /// The returned resources
     /// </summary>
     [JsonPropertyName("data")]
-    public IEnumerable<CompanySubscriptionResponseData> Data { get; init; } =
+    public IEnumerable<CompanySubscriptionResponseData> Data { get; set; } =
         new List<CompanySubscriptionResponseData>();
 
     /// <summary>
     /// Input parameters
     /// </summary>
     [JsonPropertyName("params")]
-    public required GetActiveCompanySubscriptionParams Params { get; init; }
+    public required GetActiveCompanySubscriptionParams Params { get; set; }
 }

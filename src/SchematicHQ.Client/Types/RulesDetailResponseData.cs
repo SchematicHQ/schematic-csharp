@@ -1,5 +1,4 @@
 using System.Text.Json.Serialization;
-using SchematicHQ.Client;
 
 #nullable enable
 
@@ -7,10 +6,10 @@ namespace SchematicHQ.Client;
 
 public record RulesDetailResponseData
 {
-    [JsonPropertyName("Flag")]
-    public FlagResponseData? Flag { get; init; }
+    [JsonPropertyName("flag")]
+    public FlagResponseData? Flag { get; set; }
 
     [JsonPropertyName("rules")]
-    public IEnumerable<RuleDetailResponseData> Rules { get; init; } =
+    public IEnumerable<RuleDetailResponseData> Rules { get; set; } =
         new List<RuleDetailResponseData>();
 }

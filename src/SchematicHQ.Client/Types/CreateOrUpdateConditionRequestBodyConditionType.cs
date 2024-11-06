@@ -1,6 +1,5 @@
 using System.Runtime.Serialization;
 using System.Text.Json.Serialization;
-using SchematicHQ.Client;
 using SchematicHQ.Client.Core;
 
 #nullable enable
@@ -29,5 +28,8 @@ public enum CreateOrUpdateConditionRequestBodyConditionType
     BillingProduct,
 
     [EnumMember(Value = "crm_product")]
-    CrmProduct
+    CrmProduct,
+
+    [EnumMember(Value = "base_plan")]
+    BasePlan
 }

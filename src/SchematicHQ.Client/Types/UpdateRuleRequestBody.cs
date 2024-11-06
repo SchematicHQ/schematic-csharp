@@ -1,5 +1,4 @@
 using System.Text.Json.Serialization;
-using SchematicHQ.Client;
 
 #nullable enable
 
@@ -8,19 +7,19 @@ namespace SchematicHQ.Client;
 public record UpdateRuleRequestBody
 {
     [JsonPropertyName("condition_groups")]
-    public IEnumerable<CreateOrUpdateConditionGroupRequestBody> ConditionGroups { get; init; } =
+    public IEnumerable<CreateOrUpdateConditionGroupRequestBody> ConditionGroups { get; set; } =
         new List<CreateOrUpdateConditionGroupRequestBody>();
 
     [JsonPropertyName("conditions")]
-    public IEnumerable<CreateOrUpdateConditionRequestBody> Conditions { get; init; } =
+    public IEnumerable<CreateOrUpdateConditionRequestBody> Conditions { get; set; } =
         new List<CreateOrUpdateConditionRequestBody>();
 
     [JsonPropertyName("name")]
-    public required string Name { get; init; }
+    public required string Name { get; set; }
 
     [JsonPropertyName("priority")]
-    public required int Priority { get; init; }
+    public required int Priority { get; set; }
 
     [JsonPropertyName("value")]
-    public required bool Value { get; init; }
+    public required bool Value { get; set; }
 }

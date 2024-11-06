@@ -7,8 +7,8 @@ namespace SchematicHQ.Client;
 public record IssueTemporaryAccessTokenRequestBody
 {
     [JsonPropertyName("lookup")]
-    public Dictionary<string, string> Lookup { get; init; } = new Dictionary<string, string>();
+    public Dictionary<string, string> Lookup { get; set; } = new Dictionary<string, string>();
 
     [JsonPropertyName("resource_type")]
-    public required string ResourceType { get; init; }
+    public required string ResourceType { get; set; }
 }

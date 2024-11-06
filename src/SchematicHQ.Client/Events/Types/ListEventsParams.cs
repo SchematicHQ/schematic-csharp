@@ -7,29 +7,29 @@ namespace SchematicHQ.Client;
 public record ListEventsParams
 {
     [JsonPropertyName("company_id")]
-    public string? CompanyId { get; init; }
+    public string? CompanyId { get; set; }
 
     [JsonPropertyName("event_subtype")]
-    public string? EventSubtype { get; init; }
+    public string? EventSubtype { get; set; }
 
     [JsonPropertyName("event_types")]
-    public IEnumerable<string>? EventTypes { get; init; }
+    public IEnumerable<string>? EventTypes { get; set; }
 
     [JsonPropertyName("flag_id")]
-    public string? FlagId { get; init; }
+    public string? FlagId { get; set; }
 
     /// <summary>
     /// Page limit (default 100)
     /// </summary>
     [JsonPropertyName("limit")]
-    public int? Limit { get; init; }
+    public int? Limit { get; set; }
 
     /// <summary>
     /// Page offset (default 0)
     /// </summary>
     [JsonPropertyName("offset")]
-    public int? Offset { get; init; }
+    public int? Offset { get; set; }
 
     [JsonPropertyName("user_id")]
-    public string? UserId { get; init; }
+    public string? UserId { get; set; }
 }

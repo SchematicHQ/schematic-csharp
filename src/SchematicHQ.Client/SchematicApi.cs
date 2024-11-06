@@ -1,5 +1,5 @@
+using System;
 using System.Net.Http;
-using SchematicHQ.Client;
 using SchematicHQ.Client.Core;
 
 #nullable enable
@@ -18,8 +18,9 @@ public partial class SchematicApi
                 { "X-Schematic-Api-Key", apiKey },
                 { "X-Fern-Language", "C#" },
                 { "X-Fern-SDK-Name", "SchematicHQ.Client" },
-                { "X-Fern-SDK-Version", "1.0.2" },
+                { "X-Fern-SDK-Version", "1.0.3" },
             },
+            new Dictionary<string, Func<string>>() { },
             clientOptions ?? new ClientOptions()
         );
         Accounts = new AccountsClient(_client);
@@ -31,6 +32,7 @@ public partial class SchematicApi
         Crm = new CrmClient(_client);
         Events = new EventsClient(_client);
         Plans = new PlansClient(_client);
+        Plangroups = new PlangroupsClient(_client);
         Accesstokens = new AccesstokensClient(_client);
         Webhooks = new WebhooksClient(_client);
     }
@@ -53,14 +55,32 @@ public partial class SchematicApi
 
     public PlansClient Plans { get; init; }
 
+    public PlangroupsClient Plangroups { get; init; }
+
     public AccesstokensClient Accesstokens { get; init; }
 
     public WebhooksClient Webhooks { get; init; }
 
-    public async Task GetCompanyPlansAsync()
+    public async Task GetCompanyPlansAsync(RequestOptions? options = null)
     {
-        await _client.MakeRequestAsync(
-            new RawClient.JsonApiRequest { Method = HttpMethod.Get, Path = "company-plans" }
+        var response = await _client.MakeRequestAsync(
+            new RawClient.JsonApiRequest
+            {
+                BaseUrl = _client.Options.BaseUrl,
+                Method = HttpMethod.Get,
+                Path = "company-plans",
+                Options = options
+            }
+        );
+        if (response.StatusCode is >= 200 and < 400)
+        {
+            return;
+        }
+        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+        throw new SchematicApiApiException(
+            $"Error with status code {response.StatusCode}",
+            response.StatusCode,
+            JsonUtils.Deserialize<object>(responseBody)
         );
     }
 }

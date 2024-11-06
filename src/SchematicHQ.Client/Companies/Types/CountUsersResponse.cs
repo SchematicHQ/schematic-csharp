@@ -1,5 +1,4 @@
 using System.Text.Json.Serialization;
-using SchematicHQ.Client;
 
 #nullable enable
 
@@ -8,11 +7,11 @@ namespace SchematicHQ.Client;
 public record CountUsersResponse
 {
     [JsonPropertyName("data")]
-    public required CountResponse Data { get; init; }
+    public required CountResponse Data { get; set; }
 
     /// <summary>
     /// Input parameters
     /// </summary>
     [JsonPropertyName("params")]
-    public required CountUsersParams Params { get; init; }
+    public required CountUsersParams Params { get; set; }
 }

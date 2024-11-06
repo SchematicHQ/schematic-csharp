@@ -1,5 +1,4 @@
 using System.Text.Json.Serialization;
-using SchematicHQ.Client;
 
 #nullable enable
 
@@ -11,12 +10,12 @@ public record ListEventsResponse
     /// The returned resources
     /// </summary>
     [JsonPropertyName("data")]
-    public IEnumerable<EventDetailResponseData> Data { get; init; } =
+    public IEnumerable<EventDetailResponseData> Data { get; set; } =
         new List<EventDetailResponseData>();
 
     /// <summary>
     /// Input parameters
     /// </summary>
     [JsonPropertyName("params")]
-    public required ListEventsParams Params { get; init; }
+    public required ListEventsParams Params { get; set; }
 }

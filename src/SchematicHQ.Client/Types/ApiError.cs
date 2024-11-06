@@ -10,5 +10,5 @@ public record ApiError
     /// Error message
     /// </summary>
     [JsonPropertyName("error")]
-    public required string Error { get; init; }
+    public required string Error { get; set; }
 }
