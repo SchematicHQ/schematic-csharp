@@ -1,13 +1,12 @@
 using System.Runtime.Serialization;
 using System.Text.Json.Serialization;
-using SchematicHQ.Client;
 using SchematicHQ.Client.Core;
 
 #nullable enable
 
 namespace SchematicHQ.Client;
 
-[JsonConverter(typeof(StringEnumSerializer<CreateEventRequestBodyEventType>))]
+[JsonConverter(typeof(EnumSerializer<CreateEventRequestBodyEventType>))]
 public enum CreateEventRequestBodyEventType
 {
     [EnumMember(Value = "identify")]
@@ -17,5 +16,5 @@ public enum CreateEventRequestBodyEventType
     Track,
 
     [EnumMember(Value = "flag_check")]
-    FlagCheck
+    FlagCheck,
 }

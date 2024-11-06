@@ -1,5 +1,5 @@
 using System.Text.Json.Serialization;
-using SchematicHQ.Client;
+using SchematicHQ.Client.Core;
 
 #nullable enable
 
@@ -8,8 +8,13 @@ namespace SchematicHQ.Client;
 public record UpdateEntityTraitDefinitionRequestBody
 {
     [JsonPropertyName("display_name")]
-    public string? DisplayName { get; init; }
+    public string? DisplayName { get; set; }
 
     [JsonPropertyName("trait_type")]
-    public required UpdateEntityTraitDefinitionRequestBodyTraitType TraitType { get; init; }
+    public required UpdateEntityTraitDefinitionRequestBodyTraitType TraitType { get; set; }
+
+    public override string ToString()
+    {
+        return JsonUtils.Serialize(this);
+    }
 }

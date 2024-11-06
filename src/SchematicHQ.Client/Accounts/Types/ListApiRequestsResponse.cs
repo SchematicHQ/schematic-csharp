@@ -1,5 +1,5 @@
 using System.Text.Json.Serialization;
-using SchematicHQ.Client;
+using SchematicHQ.Client.Core;
 
 #nullable enable
 
@@ -11,12 +11,17 @@ public record ListApiRequestsResponse
     /// The returned resources
     /// </summary>
     [JsonPropertyName("data")]
-    public IEnumerable<ApiKeyRequestListResponseData> Data { get; init; } =
+    public IEnumerable<ApiKeyRequestListResponseData> Data { get; set; } =
         new List<ApiKeyRequestListResponseData>();
 
     /// <summary>
     /// Input parameters
     /// </summary>
     [JsonPropertyName("params")]
-    public required ListApiRequestsParams Params { get; init; }
+    public required ListApiRequestsParams Params { get; set; }
+
+    public override string ToString()
+    {
+        return JsonUtils.Serialize(this);
+    }
 }

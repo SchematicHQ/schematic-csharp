@@ -1,13 +1,12 @@
 using System.Runtime.Serialization;
 using System.Text.Json.Serialization;
-using SchematicHQ.Client;
 using SchematicHQ.Client.Core;
 
 #nullable enable
 
 namespace SchematicHQ.Client;
 
-[JsonConverter(typeof(StringEnumSerializer<CreateOrUpdateConditionRequestBodyOperator>))]
+[JsonConverter(typeof(EnumSerializer<CreateOrUpdateConditionRequestBodyOperator>))]
 public enum CreateOrUpdateConditionRequestBodyOperator
 {
     [EnumMember(Value = "eq")]
@@ -26,5 +25,11 @@ public enum CreateOrUpdateConditionRequestBodyOperator
     Lt,
 
     [EnumMember(Value = "lte")]
-    Lte
+    Lte,
+
+    [EnumMember(Value = "is_empty")]
+    IsEmpty,
+
+    [EnumMember(Value = "not_empty")]
+    NotEmpty,
 }

@@ -1,5 +1,5 @@
 using System.Text.Json.Serialization;
-using SchematicHQ.Client;
+using SchematicHQ.Client.Core;
 
 #nullable enable
 
@@ -8,66 +8,71 @@ namespace SchematicHQ.Client;
 public record RuleConditionDetailResponseData
 {
     [JsonPropertyName("comparison_trait")]
-    public EntityTraitDefinitionResponseData? ComparisonTrait { get; init; }
+    public EntityTraitDefinitionResponseData? ComparisonTrait { get; set; }
 
     [JsonPropertyName("comparison_trait_id")]
-    public string? ComparisonTraitId { get; init; }
+    public string? ComparisonTraitId { get; set; }
 
     [JsonPropertyName("condition_group_id")]
-    public string? ConditionGroupId { get; init; }
+    public string? ConditionGroupId { get; set; }
 
     [JsonPropertyName("condition_type")]
-    public required string ConditionType { get; init; }
+    public required string ConditionType { get; set; }
 
     [JsonPropertyName("created_at")]
-    public required DateTime CreatedAt { get; init; }
+    public required DateTime CreatedAt { get; set; }
 
     [JsonPropertyName("environment_id")]
-    public required string EnvironmentId { get; init; }
+    public required string EnvironmentId { get; set; }
 
     [JsonPropertyName("event_subtype")]
-    public string? EventSubtype { get; init; }
+    public string? EventSubtype { get; set; }
 
     [JsonPropertyName("flag_id")]
-    public string? FlagId { get; init; }
+    public string? FlagId { get; set; }
 
     [JsonPropertyName("id")]
-    public required string Id { get; init; }
+    public required string Id { get; set; }
 
     [JsonPropertyName("metric_period")]
-    public string? MetricPeriod { get; init; }
+    public string? MetricPeriod { get; set; }
 
     [JsonPropertyName("metric_value")]
-    public int? MetricValue { get; init; }
+    public int? MetricValue { get; set; }
 
     [JsonPropertyName("operator")]
-    public required string Operator { get; init; }
+    public required string Operator { get; set; }
 
     [JsonPropertyName("plan_id")]
-    public string? PlanId { get; init; }
+    public string? PlanId { get; set; }
 
     [JsonPropertyName("resource_ids")]
-    public IEnumerable<string> ResourceIds { get; init; } = new List<string>();
+    public IEnumerable<string> ResourceIds { get; set; } = new List<string>();
 
     [JsonPropertyName("resources")]
-    public IEnumerable<RuleConditionResourceResponseData> Resources { get; init; } =
+    public IEnumerable<RuleConditionResourceResponseData> Resources { get; set; } =
         new List<RuleConditionResourceResponseData>();
 
     [JsonPropertyName("rule_id")]
-    public required string RuleId { get; init; }
+    public required string RuleId { get; set; }
 
     [JsonPropertyName("trait")]
-    public EntityTraitDefinitionResponseData? Trait { get; init; }
+    public EntityTraitDefinitionResponseData? Trait { get; set; }
 
     [JsonPropertyName("trait_entity_type")]
-    public string? TraitEntityType { get; init; }
+    public string? TraitEntityType { get; set; }
 
     [JsonPropertyName("trait_id")]
-    public string? TraitId { get; init; }
+    public string? TraitId { get; set; }
 
     [JsonPropertyName("trait_value")]
-    public required string TraitValue { get; init; }
+    public required string TraitValue { get; set; }
 
     [JsonPropertyName("updated_at")]
-    public required DateTime UpdatedAt { get; init; }
+    public required DateTime UpdatedAt { get; set; }
+
+    public override string ToString()
+    {
+        return JsonUtils.Serialize(this);
+    }
 }

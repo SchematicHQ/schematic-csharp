@@ -1,13 +1,12 @@
 using System.Runtime.Serialization;
 using System.Text.Json.Serialization;
-using SchematicHQ.Client;
 using SchematicHQ.Client.Core;
 
 #nullable enable
 
 namespace SchematicHQ.Client;
 
-[JsonConverter(typeof(StringEnumSerializer<ListEntityTraitDefinitionsRequestTraitType>))]
+[JsonConverter(typeof(EnumSerializer<ListEntityTraitDefinitionsRequestTraitType>))]
 public enum ListEntityTraitDefinitionsRequestTraitType
 {
     [EnumMember(Value = "boolean")]
@@ -26,5 +25,5 @@ public enum ListEntityTraitDefinitionsRequestTraitType
     String,
 
     [EnumMember(Value = "url")]
-    Url
+    Url,
 }

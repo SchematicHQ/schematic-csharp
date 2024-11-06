@@ -1,13 +1,12 @@
 using System.Runtime.Serialization;
 using System.Text.Json.Serialization;
-using SchematicHQ.Client;
 using SchematicHQ.Client.Core;
 
 #nullable enable
 
 namespace SchematicHQ.Client;
 
-[JsonConverter(typeof(StringEnumSerializer<CreateOrUpdateRuleRequestBodyRuleType>))]
+[JsonConverter(typeof(EnumSerializer<CreateOrUpdateRuleRequestBodyRuleType>))]
 public enum CreateOrUpdateRuleRequestBodyRuleType
 {
     [EnumMember(Value = "global_override")]
@@ -26,5 +25,5 @@ public enum CreateOrUpdateRuleRequestBodyRuleType
     Default,
 
     [EnumMember(Value = "plan_audience")]
-    PlanAudience
+    PlanAudience,
 }

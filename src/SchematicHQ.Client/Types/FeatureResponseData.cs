@@ -1,4 +1,5 @@
 using System.Text.Json.Serialization;
+using SchematicHQ.Client.Core;
 
 #nullable enable
 
@@ -7,35 +8,40 @@ namespace SchematicHQ.Client;
 public record FeatureResponseData
 {
     [JsonPropertyName("created_at")]
-    public required DateTime CreatedAt { get; init; }
+    public required DateTime CreatedAt { get; set; }
 
     [JsonPropertyName("description")]
-    public required string Description { get; init; }
+    public required string Description { get; set; }
 
     [JsonPropertyName("event_subtype")]
-    public string? EventSubtype { get; init; }
+    public string? EventSubtype { get; set; }
 
     [JsonPropertyName("feature_type")]
-    public required string FeatureType { get; init; }
+    public required string FeatureType { get; set; }
 
     [JsonPropertyName("icon")]
-    public required string Icon { get; init; }
+    public required string Icon { get; set; }
 
     [JsonPropertyName("id")]
-    public required string Id { get; init; }
+    public required string Id { get; set; }
 
     [JsonPropertyName("lifecycle_phase")]
-    public string? LifecyclePhase { get; init; }
+    public string? LifecyclePhase { get; set; }
 
     [JsonPropertyName("maintainer_id")]
-    public string? MaintainerId { get; init; }
+    public string? MaintainerId { get; set; }
 
     [JsonPropertyName("name")]
-    public required string Name { get; init; }
+    public required string Name { get; set; }
 
     [JsonPropertyName("trait_id")]
-    public string? TraitId { get; init; }
+    public string? TraitId { get; set; }
 
     [JsonPropertyName("updated_at")]
-    public required DateTime UpdatedAt { get; init; }
+    public required DateTime UpdatedAt { get; set; }
+
+    public override string ToString()
+    {
+        return JsonUtils.Serialize(this);
+    }
 }

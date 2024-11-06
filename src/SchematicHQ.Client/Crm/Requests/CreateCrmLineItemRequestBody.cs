@@ -1,4 +1,5 @@
 using System.Text.Json.Serialization;
+using SchematicHQ.Client.Core;
 
 #nullable enable
 
@@ -6,27 +7,32 @@ namespace SchematicHQ.Client;
 
 public record CreateCrmLineItemRequestBody
 {
-    [JsonPropertyName("TermMonth")]
-    public int? TermMonth { get; init; }
-
     [JsonPropertyName("amount")]
-    public required string Amount { get; init; }
+    public required string Amount { get; set; }
 
     [JsonPropertyName("discount_percentage")]
-    public string? DiscountPercentage { get; init; }
+    public string? DiscountPercentage { get; set; }
 
     [JsonPropertyName("interval")]
-    public required string Interval { get; init; }
+    public required string Interval { get; set; }
 
     [JsonPropertyName("line_item_external_id")]
-    public required string LineItemExternalId { get; init; }
+    public required string LineItemExternalId { get; set; }
 
     [JsonPropertyName("product_external_id")]
-    public required string ProductExternalId { get; init; }
+    public required string ProductExternalId { get; set; }
 
     [JsonPropertyName("quantity")]
-    public required int Quantity { get; init; }
+    public required int Quantity { get; set; }
+
+    [JsonPropertyName("term_month")]
+    public int? TermMonth { get; set; }
 
     [JsonPropertyName("total_discount")]
-    public string? TotalDiscount { get; init; }
+    public string? TotalDiscount { get; set; }
+
+    public override string ToString()
+    {
+        return JsonUtils.Serialize(this);
+    }
 }

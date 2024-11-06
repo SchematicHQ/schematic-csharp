@@ -1,5 +1,5 @@
 using System.Text.Json.Serialization;
-using SchematicHQ.Client;
+using SchematicHQ.Client.Core;
 
 #nullable enable
 
@@ -8,27 +8,32 @@ namespace SchematicHQ.Client;
 public record RuleConditionGroupDetailResponseData
 {
     [JsonPropertyName("conditions")]
-    public IEnumerable<RuleConditionDetailResponseData> Conditions { get; init; } =
+    public IEnumerable<RuleConditionDetailResponseData> Conditions { get; set; } =
         new List<RuleConditionDetailResponseData>();
 
     [JsonPropertyName("created_at")]
-    public required DateTime CreatedAt { get; init; }
+    public required DateTime CreatedAt { get; set; }
 
     [JsonPropertyName("environment_id")]
-    public required string EnvironmentId { get; init; }
+    public required string EnvironmentId { get; set; }
 
     [JsonPropertyName("flag_id")]
-    public string? FlagId { get; init; }
+    public string? FlagId { get; set; }
 
     [JsonPropertyName("id")]
-    public required string Id { get; init; }
+    public required string Id { get; set; }
 
     [JsonPropertyName("plan_id")]
-    public string? PlanId { get; init; }
+    public string? PlanId { get; set; }
 
     [JsonPropertyName("rule_id")]
-    public required string RuleId { get; init; }
+    public required string RuleId { get; set; }
 
     [JsonPropertyName("updated_at")]
-    public required DateTime UpdatedAt { get; init; }
+    public required DateTime UpdatedAt { get; set; }
+
+    public override string ToString()
+    {
+        return JsonUtils.Serialize(this);
+    }
 }

@@ -1,15 +1,20 @@
 using System.Runtime.Serialization;
 using System.Text.Json.Serialization;
-using SchematicHQ.Client;
 using SchematicHQ.Client.Core;
 
 #nullable enable
 
 namespace SchematicHQ.Client;
 
-[JsonConverter(typeof(StringEnumSerializer<UpdateReqCommonMetricPeriod>))]
+[JsonConverter(typeof(EnumSerializer<UpdateReqCommonMetricPeriod>))]
 public enum UpdateReqCommonMetricPeriod
 {
+    [EnumMember(Value = "all_time")]
+    AllTime,
+
+    [EnumMember(Value = "billing")]
+    Billing,
+
     [EnumMember(Value = "current_month")]
     CurrentMonth,
 
@@ -17,5 +22,5 @@ public enum UpdateReqCommonMetricPeriod
     CurrentWeek,
 
     [EnumMember(Value = "current_day")]
-    CurrentDay
+    CurrentDay,
 }

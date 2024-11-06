@@ -1,13 +1,12 @@
 using System.Runtime.Serialization;
 using System.Text.Json.Serialization;
-using SchematicHQ.Client;
 using SchematicHQ.Client.Core;
 
 #nullable enable
 
 namespace SchematicHQ.Client;
 
-[JsonConverter(typeof(StringEnumSerializer<FeatureUsageResponseDataAllocationType>))]
+[JsonConverter(typeof(EnumSerializer<FeatureUsageResponseDataAllocationType>))]
 public enum FeatureUsageResponseDataAllocationType
 {
     [EnumMember(Value = "boolean")]
@@ -20,5 +19,5 @@ public enum FeatureUsageResponseDataAllocationType
     Trait,
 
     [EnumMember(Value = "unlimited")]
-    Unlimited
+    Unlimited,
 }
