@@ -1,13 +1,12 @@
 using System.Runtime.Serialization;
 using System.Text.Json.Serialization;
-using SchematicHQ.Client;
 using SchematicHQ.Client.Core;
 
 #nullable enable
 
 namespace SchematicHQ.Client;
 
-[JsonConverter(typeof(StringEnumSerializer<CreateReqCommonValueType>))]
+[JsonConverter(typeof(EnumSerializer<CreateReqCommonValueType>))]
 public enum CreateReqCommonValueType
 {
     [EnumMember(Value = "boolean")]
@@ -20,5 +19,5 @@ public enum CreateReqCommonValueType
     Trait,
 
     [EnumMember(Value = "unlimited")]
-    Unlimited
+    Unlimited,
 }

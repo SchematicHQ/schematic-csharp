@@ -1,5 +1,5 @@
 using System.Text.Json.Serialization;
-using SchematicHQ.Client;
+using SchematicHQ.Client.Core;
 
 #nullable enable
 
@@ -11,11 +11,16 @@ public record ListWebhooksResponse
     /// The returned resources
     /// </summary>
     [JsonPropertyName("data")]
-    public IEnumerable<WebhookResponseData> Data { get; init; } = new List<WebhookResponseData>();
+    public IEnumerable<WebhookResponseData> Data { get; set; } = new List<WebhookResponseData>();
 
     /// <summary>
     /// Input parameters
     /// </summary>
     [JsonPropertyName("params")]
-    public required ListWebhooksParams Params { get; init; }
+    public required ListWebhooksParams Params { get; set; }
+
+    public override string ToString()
+    {
+        return JsonUtils.Serialize(this);
+    }
 }

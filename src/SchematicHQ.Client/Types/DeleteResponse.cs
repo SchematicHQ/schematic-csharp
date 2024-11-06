@@ -1,4 +1,5 @@
 using System.Text.Json.Serialization;
+using SchematicHQ.Client.Core;
 
 #nullable enable
 
@@ -10,5 +11,10 @@ public record DeleteResponse
     /// Whether the delete was successful
     /// </summary>
     [JsonPropertyName("deleted")]
-    public bool? Deleted { get; init; }
+    public bool? Deleted { get; set; }
+
+    public override string ToString()
+    {
+        return JsonUtils.Serialize(this);
+    }
 }
