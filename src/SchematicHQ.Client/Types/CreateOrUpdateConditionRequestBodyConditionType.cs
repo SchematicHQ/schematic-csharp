@@ -1,13 +1,12 @@
 using System.Runtime.Serialization;
 using System.Text.Json.Serialization;
-using SchematicHQ.Client;
 using SchematicHQ.Client.Core;
 
 #nullable enable
 
 namespace SchematicHQ.Client;
 
-[JsonConverter(typeof(StringEnumSerializer<CreateOrUpdateConditionRequestBodyConditionType>))]
+[JsonConverter(typeof(EnumSerializer<CreateOrUpdateConditionRequestBodyConditionType>))]
 public enum CreateOrUpdateConditionRequestBodyConditionType
 {
     [EnumMember(Value = "company")]
@@ -32,5 +31,5 @@ public enum CreateOrUpdateConditionRequestBodyConditionType
     CrmProduct,
 
     [EnumMember(Value = "base_plan")]
-    BasePlan
+    BasePlan,
 }

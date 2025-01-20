@@ -1,4 +1,5 @@
 using System.Text.Json.Serialization;
+using SchematicHQ.Client.Core;
 
 #nullable enable
 
@@ -7,20 +8,25 @@ namespace SchematicHQ.Client;
 public record BillingCustomerSubscription
 {
     [JsonPropertyName("currency")]
-    public required string Currency { get; init; }
+    public required string Currency { get; set; }
 
     [JsonPropertyName("expired_at")]
-    public DateTime? ExpiredAt { get; init; }
+    public DateTime? ExpiredAt { get; set; }
 
     [JsonPropertyName("interval")]
-    public required string Interval { get; init; }
+    public required string Interval { get; set; }
 
     [JsonPropertyName("metered_usage")]
-    public required bool MeteredUsage { get; init; }
+    public required bool MeteredUsage { get; set; }
 
     [JsonPropertyName("per_unit_price")]
-    public required int PerUnitPrice { get; init; }
+    public required int PerUnitPrice { get; set; }
 
     [JsonPropertyName("total_price")]
-    public required int TotalPrice { get; init; }
+    public required int TotalPrice { get; set; }
+
+    public override string ToString()
+    {
+        return JsonUtils.Serialize(this);
+    }
 }

@@ -1,13 +1,12 @@
 using System.Runtime.Serialization;
 using System.Text.Json.Serialization;
-using SchematicHQ.Client;
 using SchematicHQ.Client.Core;
 
 #nullable enable
 
 namespace SchematicHQ.Client;
 
-[JsonConverter(typeof(StringEnumSerializer<CreateEnvironmentRequestBodyEnvironmentType>))]
+[JsonConverter(typeof(EnumSerializer<CreateEnvironmentRequestBodyEnvironmentType>))]
 public enum CreateEnvironmentRequestBodyEnvironmentType
 {
     [EnumMember(Value = "development")]
@@ -17,5 +16,5 @@ public enum CreateEnvironmentRequestBodyEnvironmentType
     Staging,
 
     [EnumMember(Value = "production")]
-    Production
+    Production,
 }

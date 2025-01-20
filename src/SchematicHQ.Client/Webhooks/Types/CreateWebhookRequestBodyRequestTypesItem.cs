@@ -1,13 +1,12 @@
 using System.Runtime.Serialization;
 using System.Text.Json.Serialization;
-using SchematicHQ.Client;
 using SchematicHQ.Client.Core;
 
 #nullable enable
 
 namespace SchematicHQ.Client;
 
-[JsonConverter(typeof(StringEnumSerializer<CreateWebhookRequestBodyRequestTypesItem>))]
+[JsonConverter(typeof(EnumSerializer<CreateWebhookRequestBodyRequestTypesItem>))]
 public enum CreateWebhookRequestBodyRequestTypesItem
 {
     [EnumMember(Value = "company.updated")]
@@ -77,5 +76,5 @@ public enum CreateWebhookRequestBodyRequestTypesItem
     FlagDeleted,
 
     [EnumMember(Value = "test.send")]
-    TestSend
+    TestSend,
 }

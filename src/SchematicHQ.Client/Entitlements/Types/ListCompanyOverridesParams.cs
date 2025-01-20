@@ -1,4 +1,5 @@
 using System.Text.Json.Serialization;
+using SchematicHQ.Client.Core;
 
 #nullable enable
 
@@ -10,53 +11,58 @@ public record ListCompanyOverridesParams
     /// Filter company overrides by a single company ID (starting with comp_)
     /// </summary>
     [JsonPropertyName("company_id")]
-    public string? CompanyId { get; init; }
+    public string? CompanyId { get; set; }
 
     /// <summary>
     /// Filter company overrides by multiple company IDs (starting with comp_)
     /// </summary>
     [JsonPropertyName("company_ids")]
-    public IEnumerable<string>? CompanyIds { get; init; }
+    public IEnumerable<string>? CompanyIds { get; set; }
 
     /// <summary>
     /// Filter company overrides by a single feature ID (starting with feat_)
     /// </summary>
     [JsonPropertyName("feature_id")]
-    public string? FeatureId { get; init; }
+    public string? FeatureId { get; set; }
 
     /// <summary>
     /// Filter company overrides by multiple feature IDs (starting with feat_)
     /// </summary>
     [JsonPropertyName("feature_ids")]
-    public IEnumerable<string>? FeatureIds { get; init; }
+    public IEnumerable<string>? FeatureIds { get; set; }
 
     /// <summary>
     /// Filter company overrides by multiple company override IDs (starting with cmov_)
     /// </summary>
     [JsonPropertyName("ids")]
-    public IEnumerable<string>? Ids { get; init; }
+    public IEnumerable<string>? Ids { get; set; }
 
     /// <summary>
     /// Page limit (default 100)
     /// </summary>
     [JsonPropertyName("limit")]
-    public int? Limit { get; init; }
+    public int? Limit { get; set; }
 
     /// <summary>
     /// Page offset (default 0)
     /// </summary>
     [JsonPropertyName("offset")]
-    public int? Offset { get; init; }
+    public int? Offset { get; set; }
 
     /// <summary>
     /// Search for company overrides by feature or company name
     /// </summary>
     [JsonPropertyName("q")]
-    public string? Q { get; init; }
+    public string? Q { get; set; }
 
     /// <summary>
     /// Filter company overrides by whether they have not expired
     /// </summary>
     [JsonPropertyName("without_expired")]
-    public bool? WithoutExpired { get; init; }
+    public bool? WithoutExpired { get; set; }
+
+    public override string ToString()
+    {
+        return JsonUtils.Serialize(this);
+    }
 }

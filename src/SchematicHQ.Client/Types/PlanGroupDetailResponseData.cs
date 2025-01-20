@@ -1,5 +1,5 @@
 using System.Text.Json.Serialization;
-using SchematicHQ.Client;
+using SchematicHQ.Client.Core;
 
 #nullable enable
 
@@ -8,25 +8,30 @@ namespace SchematicHQ.Client;
 public record PlanGroupDetailResponseData
 {
     [JsonPropertyName("add_ons")]
-    public IEnumerable<PlanGroupPlanDetailResponseData> AddOns { get; init; } =
+    public IEnumerable<PlanGroupPlanDetailResponseData> AddOns { get; set; } =
         new List<PlanGroupPlanDetailResponseData>();
 
     [JsonPropertyName("default_plan")]
-    public PlanGroupPlanDetailResponseData? DefaultPlan { get; init; }
+    public PlanGroupPlanDetailResponseData? DefaultPlan { get; set; }
 
     [JsonPropertyName("default_plan_id")]
-    public string? DefaultPlanId { get; init; }
+    public string? DefaultPlanId { get; set; }
 
     [JsonPropertyName("id")]
-    public required string Id { get; init; }
+    public required string Id { get; set; }
 
     [JsonPropertyName("plans")]
-    public IEnumerable<PlanGroupPlanDetailResponseData> Plans { get; init; } =
+    public IEnumerable<PlanGroupPlanDetailResponseData> Plans { get; set; } =
         new List<PlanGroupPlanDetailResponseData>();
 
     [JsonPropertyName("trial_days")]
-    public int? TrialDays { get; init; }
+    public int? TrialDays { get; set; }
 
     [JsonPropertyName("trial_payment_method_required")]
-    public bool? TrialPaymentMethodRequired { get; init; }
+    public bool? TrialPaymentMethodRequired { get; set; }
+
+    public override string ToString()
+    {
+        return JsonUtils.Serialize(this);
+    }
 }
