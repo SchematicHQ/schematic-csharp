@@ -1,5 +1,5 @@
 using System.Text.Json.Serialization;
-using SchematicHQ.Client;
+using SchematicHQ.Client.Core;
 
 #nullable enable
 
@@ -11,12 +11,17 @@ public record ListPaymentMethodsResponse
     /// The returned resources
     /// </summary>
     [JsonPropertyName("data")]
-    public IEnumerable<PaymentMethodResponseData> Data { get; init; } =
+    public IEnumerable<PaymentMethodResponseData> Data { get; set; } =
         new List<PaymentMethodResponseData>();
 
     /// <summary>
     /// Input parameters
     /// </summary>
     [JsonPropertyName("params")]
-    public required ListPaymentMethodsParams Params { get; init; }
+    public required ListPaymentMethodsParams Params { get; set; }
+
+    public override string ToString()
+    {
+        return JsonUtils.Serialize(this);
+    }
 }

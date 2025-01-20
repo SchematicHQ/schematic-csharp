@@ -1,13 +1,12 @@
 using System.Runtime.Serialization;
 using System.Text.Json.Serialization;
-using SchematicHQ.Client;
 using SchematicHQ.Client.Core;
 
 #nullable enable
 
 namespace SchematicHQ.Client;
 
-[JsonConverter(typeof(StringEnumSerializer<CreateOrUpdateConditionRequestBodyMetricPeriod>))]
+[JsonConverter(typeof(EnumSerializer<CreateOrUpdateConditionRequestBodyMetricPeriod>))]
 public enum CreateOrUpdateConditionRequestBodyMetricPeriod
 {
     [EnumMember(Value = "all_time")]
@@ -20,5 +19,5 @@ public enum CreateOrUpdateConditionRequestBodyMetricPeriod
     CurrentWeek,
 
     [EnumMember(Value = "current_day")]
-    CurrentDay
+    CurrentDay,
 }

@@ -71,7 +71,7 @@ namespace SchematicHQ.Client;
                 }
                 else
                 {
-                    if (_cache.Count >= _maxItems)
+                    while (_cache.Count >= _maxItems)
                     {
                         var lruKey = _lruList.Last!.Value;
                         Remove(lruKey);
@@ -79,7 +79,11 @@ namespace SchematicHQ.Client;
 
                     var node = _lruList.AddFirst(key);
                     var newItem = new CachedItem<T>(val, expiration, node);
-                    _cache[key] = newItem;
+                    if (!_cache.TryAdd(key, newItem))
+                    {
+                        // If we couldn't add it, clean up the linked list node
+                        _lruList.Remove(node);
+                    }
                 }
             }
         }

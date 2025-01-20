@@ -1,5 +1,5 @@
 using System.Text.Json.Serialization;
-using SchematicHQ.Client;
+using SchematicHQ.Client.Core;
 
 #nullable enable
 
@@ -8,6 +8,11 @@ namespace SchematicHQ.Client;
 public record CheckFlagsResponseData
 {
     [JsonPropertyName("flags")]
-    public IEnumerable<CheckFlagOutputWithFlagKey> Flags { get; init; } =
-        new List<CheckFlagOutputWithFlagKey>();
+    public IEnumerable<CheckFlagResponseData> Flags { get; set; } =
+        new List<CheckFlagResponseData>();
+
+    public override string ToString()
+    {
+        return JsonUtils.Serialize(this);
+    }
 }

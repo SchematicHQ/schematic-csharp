@@ -1,4 +1,5 @@
 using System.Text.Json.Serialization;
+using SchematicHQ.Client.Core;
 
 #nullable enable
 
@@ -10,23 +11,28 @@ public record EventBodyTrack
     /// Key-value pairs to identify company associated with track event
     /// </summary>
     [JsonPropertyName("company")]
-    public Dictionary<string, string>? Company { get; init; }
+    public Dictionary<string, string>? Company { get; set; }
 
     /// <summary>
     /// The name of the type of track event
     /// </summary>
     [JsonPropertyName("event")]
-    public required string Event { get; init; }
+    public required string Event { get; set; }
 
     /// <summary>
     /// A map of trait names to trait values
     /// </summary>
     [JsonPropertyName("traits")]
-    public Dictionary<string, object>? Traits { get; init; }
+    public object? Traits { get; set; }
 
     /// <summary>
     /// Key-value pairs to identify user associated with track event
     /// </summary>
     [JsonPropertyName("user")]
-    public Dictionary<string, string>? User { get; init; }
+    public Dictionary<string, string>? User { get; set; }
+
+    public override string ToString()
+    {
+        return JsonUtils.Serialize(this);
+    }
 }

@@ -77,7 +77,7 @@ namespace SchematicHQ.Client.Test
         [Test]
         public void Test_ConcurrentAccess()
         {
-            int numberOfThreads = 10;
+            int numberOfThreads = 50;
             int cacheCapacity = 30;
             LocalCache<int?> cacheProvider = new LocalCache<int?>(maxItems: cacheCapacity, ttl: TimeSpan.FromHours(5));
             var tasks = new List<Task>();

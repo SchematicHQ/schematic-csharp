@@ -1,5 +1,4 @@
 using OneOf;
-using SchematicHQ.Client.Core;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;

@@ -1,5 +1,5 @@
 using System.Text.Json.Serialization;
-using SchematicHQ.Client;
+using SchematicHQ.Client.Core;
 
 #nullable enable
 
@@ -8,61 +8,66 @@ namespace SchematicHQ.Client;
 public record BillingSubscriptionView
 {
     [JsonPropertyName("company_id")]
-    public string? CompanyId { get; init; }
+    public string? CompanyId { get; set; }
 
     [JsonPropertyName("created_at")]
-    public required DateTime CreatedAt { get; init; }
+    public required DateTime CreatedAt { get; set; }
 
     [JsonPropertyName("currency")]
-    public required string Currency { get; init; }
+    public required string Currency { get; set; }
 
     [JsonPropertyName("customer_external_id")]
-    public required string CustomerExternalId { get; init; }
+    public required string CustomerExternalId { get; set; }
 
     [JsonPropertyName("discounts")]
-    public IEnumerable<BillingSubscriptionDiscountView> Discounts { get; init; } =
+    public IEnumerable<BillingSubscriptionDiscountView> Discounts { get; set; } =
         new List<BillingSubscriptionDiscountView>();
 
     [JsonPropertyName("expired_at")]
-    public DateTime? ExpiredAt { get; init; }
+    public DateTime? ExpiredAt { get; set; }
 
     [JsonPropertyName("id")]
-    public required string Id { get; init; }
+    public required string Id { get; set; }
 
     [JsonPropertyName("interval")]
-    public required string Interval { get; init; }
+    public required string Interval { get; set; }
 
     [JsonPropertyName("latest_invoice")]
-    public InvoiceResponseData? LatestInvoice { get; init; }
+    public InvoiceResponseData? LatestInvoice { get; set; }
 
     [JsonPropertyName("metadata")]
-    public Dictionary<string, object>? Metadata { get; init; }
+    public object? Metadata { get; set; }
 
     [JsonPropertyName("payment_method")]
-    public PaymentMethodResponseData? PaymentMethod { get; init; }
+    public PaymentMethodResponseData? PaymentMethod { get; set; }
 
     [JsonPropertyName("period_end")]
-    public required int PeriodEnd { get; init; }
+    public required int PeriodEnd { get; set; }
 
     [JsonPropertyName("period_start")]
-    public required int PeriodStart { get; init; }
+    public required int PeriodStart { get; set; }
 
     [JsonPropertyName("products")]
-    public IEnumerable<BillingProductForSubscriptionResponseData> Products { get; init; } =
+    public IEnumerable<BillingProductForSubscriptionResponseData> Products { get; set; } =
         new List<BillingProductForSubscriptionResponseData>();
 
     [JsonPropertyName("status")]
-    public required string Status { get; init; }
+    public required string Status { get; set; }
 
     [JsonPropertyName("subscription_external_id")]
-    public required string SubscriptionExternalId { get; init; }
+    public required string SubscriptionExternalId { get; set; }
 
     [JsonPropertyName("total_price")]
-    public required int TotalPrice { get; init; }
+    public required int TotalPrice { get; set; }
 
     [JsonPropertyName("trial_end")]
-    public int? TrialEnd { get; init; }
+    public int? TrialEnd { get; set; }
 
     [JsonPropertyName("trial_end_setting")]
-    public string? TrialEndSetting { get; init; }
+    public string? TrialEndSetting { get; set; }
+
+    public override string ToString()
+    {
+        return JsonUtils.Serialize(this);
+    }
 }

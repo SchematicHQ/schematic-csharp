@@ -1,4 +1,5 @@
 using System.Text.Json.Serialization;
+using SchematicHQ.Client.Core;
 
 #nullable enable
 
@@ -7,20 +8,25 @@ namespace SchematicHQ.Client;
 public record PlanGroupResponseData
 {
     [JsonPropertyName("add_on_ids")]
-    public IEnumerable<string> AddOnIds { get; init; } = new List<string>();
+    public IEnumerable<string> AddOnIds { get; set; } = new List<string>();
 
     [JsonPropertyName("default_plan_id")]
-    public string? DefaultPlanId { get; init; }
+    public string? DefaultPlanId { get; set; }
 
     [JsonPropertyName("id")]
-    public required string Id { get; init; }
+    public required string Id { get; set; }
 
     [JsonPropertyName("plan_ids")]
-    public IEnumerable<string> PlanIds { get; init; } = new List<string>();
+    public IEnumerable<string> PlanIds { get; set; } = new List<string>();
 
     [JsonPropertyName("trial_days")]
-    public int? TrialDays { get; init; }
+    public int? TrialDays { get; set; }
 
     [JsonPropertyName("trial_payment_method_required")]
-    public bool? TrialPaymentMethodRequired { get; init; }
+    public bool? TrialPaymentMethodRequired { get; set; }
+
+    public override string ToString()
+    {
+        return JsonUtils.Serialize(this);
+    }
 }
