@@ -1,13 +1,12 @@
 using System.Runtime.Serialization;
 using System.Text.Json.Serialization;
-using SchematicHQ.Client;
 using SchematicHQ.Client.Core;
 
 #nullable enable
 
 namespace SchematicHQ.Client;
 
-[JsonConverter(typeof(StringEnumSerializer<CreateCompanyOverrideRequestBodyValueType>))]
+[JsonConverter(typeof(EnumSerializer<CreateCompanyOverrideRequestBodyValueType>))]
 public enum CreateCompanyOverrideRequestBodyValueType
 {
     [EnumMember(Value = "boolean")]
@@ -20,5 +19,5 @@ public enum CreateCompanyOverrideRequestBodyValueType
     Trait,
 
     [EnumMember(Value = "unlimited")]
-    Unlimited
+    Unlimited,
 }

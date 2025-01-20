@@ -1,26 +1,58 @@
+using SchematicHQ.Client.Core;
+
+#nullable enable
+
 namespace SchematicHQ.Client;
 
 public record ListPlanEntitlementsRequest
 {
-    public string? FeatureId { get; init; }
+    /// <summary>
+    /// Filter plan entitlements by a single feature ID (starting with feat_)
+    /// </summary>
+    public string? FeatureId { get; set; }
 
-    public string? FeatureIds { get; init; }
+    /// <summary>
+    /// Filter plan entitlements by multiple feature IDs (starting with feat_)
+    /// </summary>
+    public IEnumerable<string> FeatureIds { get; set; } = new List<string>();
 
-    public string? Ids { get; init; }
+    /// <summary>
+    /// Filter plan entitlements by multiple plan entitlement IDs (starting with pltl_)
+    /// </summary>
+    public IEnumerable<string> Ids { get; set; } = new List<string>();
 
-    public string? PlanId { get; init; }
+    /// <summary>
+    /// Filter plan entitlements by a single plan ID (starting with plan_)
+    /// </summary>
+    public string? PlanId { get; set; }
 
-    public string? PlanIds { get; init; }
+    /// <summary>
+    /// Filter plan entitlements by multiple plan IDs (starting with plan_)
+    /// </summary>
+    public IEnumerable<string> PlanIds { get; set; } = new List<string>();
 
-    public string? Q { get; init; }
+    /// <summary>
+    /// Search for plan entitlements by feature or company name
+    /// </summary>
+    public string? Q { get; set; }
+
+    /// <summary>
+    /// Filter plan entitlements only with metered products
+    /// </summary>
+    public bool? WithMeteredProducts { get; set; }
 
     /// <summary>
     /// Page limit (default 100)
     /// </summary>
-    public int? Limit { get; init; }
+    public int? Limit { get; set; }
 
     /// <summary>
     /// Page offset (default 0)
     /// </summary>
-    public int? Offset { get; init; }
+    public int? Offset { get; set; }
+
+    public override string ToString()
+    {
+        return JsonUtils.Serialize(this);
+    }
 }
