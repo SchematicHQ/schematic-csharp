@@ -37,7 +37,7 @@ public partial class Schematic
                 await API.Events.CreateEventBatchAsync(request);
             },
             _logger,
-            flushPeriod: options.DefaultEventBufferPeriod  // default flush period
+            flushPeriod: _options.DefaultEventBufferPeriod
         );
         _eventBuffer.Start();
 
@@ -47,9 +47,12 @@ public partial class Schematic
         };
     }
 
-    public void Shutdown()
+    public async Task Shutdown()
     {
-        _eventBuffer.Dispose();
+        if (_eventBuffer != null)
+        {
+            await _eventBuffer.Stop();
+        }
     }
 
     public async Task<bool> CheckFlag(string flagKey, Dictionary<string, string>? company = null, Dictionary<string, string>? user = null)

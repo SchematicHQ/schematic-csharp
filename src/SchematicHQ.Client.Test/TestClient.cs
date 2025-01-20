@@ -34,6 +34,20 @@ namespace SchematicHQ.Client.Test
             };
         }
 
+        private HttpResponseMessage CreateEventBatchResponse(HttpStatusCode code)
+        {
+            var response = new CreateEventBatchResponse{
+              Data = new RawEventBatchResponseData{
+                Events = new List<RawEventResponseData>()
+              }
+            };
+            var serializedResponse = JsonSerializer.Serialize(response, new JsonSerializerOptions { WriteIndented = true });
+            return new HttpResponseMessage(code)
+            {
+                Content = new StringContent(serializedResponse, Encoding.UTF8, "application/json")
+            };
+        }
+
         private void SetupSchematicTestClient(bool isOffline, HttpResponseMessage response, Dictionary<string, bool>? flagDefaults = null)
         {
             HttpClient testClient = new HttpClient(new OfflineHttpMessageHandler());
@@ -64,9 +78,9 @@ namespace SchematicHQ.Client.Test
         }
 
         [TearDown]
-        public void TearDown()
+        public async Task TearDown()
         {
-            if (_schematic != null) _schematic.Shutdown();
+            if (_schematic != null) await _schematic.Shutdown();
         }
 
         [Test]
@@ -150,7 +164,7 @@ namespace SchematicHQ.Client.Test
         public async Task Identify_EnqueuesEventNonBlocking()
         {
             // Arrange
-            SetupSchematicTestClient(isOffline: false, response: null);
+            SetupSchematicTestClient(isOffline: false, response: CreateEventBatchResponse(HttpStatusCode.OK));
             var keys = new Dictionary<string, string> { { "user_id", "12345" } };
             var company = new EventBodyIdentifyCompany { Name = "test_company" };
 
@@ -167,7 +181,7 @@ namespace SchematicHQ.Client.Test
         public async Task Track_EnqueuesEventNonBlocking()
         {
             // Arrange
-            SetupSchematicTestClient(isOffline: false, response: CreateCheckFlagResponse(HttpStatusCode.OK, false));
+            SetupSchematicTestClient(isOffline: false, response: CreateEventBatchResponse(HttpStatusCode.OK));
             var company = new Dictionary<string, string> { { "company_id", "67890" } };
             var user = new Dictionary<string, string> { { "user_id", "12345" } };
 

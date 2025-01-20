@@ -25,9 +25,9 @@ public static class ClientOptionsExtensions
             HttpClient = httpClient,
             MaxRetries = options.MaxRetries,
             TimeoutInSeconds = options.TimeoutInSeconds,
-            FlagDefaults = options.FlagDefaults,
-            Logger = options.Logger,
-            CacheProviders = options.CacheProviders,
+            FlagDefaults = options.FlagDefaults ?? new Dictionary<string, bool>(),
+            Logger = options.Logger ?? new ConsoleLogger(),
+            CacheProviders = options.CacheProviders ?? new List<ICacheProvider<bool?>>(),
             Offline = options.Offline,
             DefaultEventBufferPeriod = options.DefaultEventBufferPeriod,
             EventBuffer = options.EventBuffer

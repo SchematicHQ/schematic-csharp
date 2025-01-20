@@ -26,9 +26,9 @@ namespace SchematicHQ.Client.Tests
         }
 
         [TearDown]
-        public void TearDown()
+        public async Task TearDown()
         {
-            _buffer.Dispose();
+            await _buffer.Stop();
         }
 
         [Test]
@@ -39,11 +39,19 @@ namespace SchematicHQ.Client.Tests
         }
 
         [Test]
-        public void Stop_BufferStopsSuccessfully()
+        public async Task Stop_BufferStopsSuccessfully()
         {
             _buffer.Start();
-            _buffer.Stop();
+
+            await _buffer.Stop();
+
             Assert.Throws<InvalidOperationException>(() => _buffer.Push(1));
+
+            var semaphore = GetPrivateFieldValue<SemaphoreSlim>(_buffer, "_semaphore");
+            var cts = GetPrivateFieldValue<CancellationTokenSource>(_buffer, "_cts");
+
+            Assert.That(IsSemaphoreSlimDisposed(semaphore), Is.True, "SemaphoreSlim was not disposed.");
+            Assert.That(IsCancellationTokenSourceDisposed(cts), Is.True, "CancellationTokenSource was not disposed.");
         }
 
         [Test]
@@ -66,23 +74,6 @@ namespace SchematicHQ.Client.Tests
 
             Assert.That(_processedItems.Count, Is.EqualTo(1));
             Assert.That(_processedItems[0], Is.EqualTo(1));
-        }
-
-        [Test]
-        public void Dispose_BufferDisposesSuccessfully()
-        {
-            // Arrange
-            _buffer.Start();
-
-            // Act
-            Assert.DoesNotThrow(() => _buffer.Dispose());
-
-            // Assert
-            var semaphore = GetPrivateFieldValue<SemaphoreSlim>(_buffer, "_semaphore");
-            var cts = GetPrivateFieldValue<CancellationTokenSource>(_buffer, "_cts");
-
-            Assert.That(IsSemaphoreSlimDisposed(semaphore), Is.True, "SemaphoreSlim was not disposed.");
-            Assert.That(IsCancellationTokenSourceDisposed(cts), Is.True, "CancellationTokenSource was not disposed.");
         }
 
         [Test]
@@ -157,7 +148,7 @@ namespace SchematicHQ.Client.Tests
             {
                 _buffer.Start();
                 await Task.Delay(10);
-                _buffer.Stop();
+                await _buffer.Stop();
             }).ToArray();
 
             await Task.WhenAll(startStopTasks);

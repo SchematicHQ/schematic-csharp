@@ -61,6 +61,9 @@ schematic.Identify(
         { "is_staff", false }
     }
 );
+
+// to guarantee that all events are sent before the application exits, call this method before your program shuts down
+await schematic.Shutdown();
 ```
 
 This call is non-blocking and there is no response to check.
@@ -76,6 +79,9 @@ schematic.Track(
     user: new Dictionary<string, string> { { "user_id", "your-user-id" } },
     company: new Dictionary<string, string> { { "id", "your-company-id" } }
 );
+
+// to guarantee that all events are sent before the application exits, call this method before your program shuts down
+await schematic.Shutdown();
 ```
 
 This call is non-blocking and there is no response to check.
@@ -328,7 +334,7 @@ try {
   System.Console.WriteLine(e.Message)
   System.Console.WriteLine(e.StatusCode)
 }
-``` 
+```
 
 ## Contributing
 While we value open-source contributions to this SDK, this library
