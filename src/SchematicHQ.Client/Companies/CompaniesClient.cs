@@ -122,6 +122,7 @@ public partial class CompaniesClient
                 Method = HttpMethod.Post,
                 Path = "companies",
                 Body = request,
+                ContentType = "application/json",
                 Options = options,
             },
             cancellationToken
@@ -388,6 +389,7 @@ public partial class CompaniesClient
                 Method = HttpMethod.Post,
                 Path = "companies/create",
                 Body = request,
+                ContentType = "application/json",
                 Options = options,
             },
             cancellationToken
@@ -450,6 +452,7 @@ public partial class CompaniesClient
                 Method = HttpMethod.Post,
                 Path = "companies/delete",
                 Body = request,
+                ContentType = "application/json",
                 Options = options,
             },
             cancellationToken
@@ -735,6 +738,7 @@ public partial class CompaniesClient
                 Method = HttpMethod.Post,
                 Path = "company-memberships",
                 Body = request,
+                ContentType = "application/json",
                 Options = options,
             },
             cancellationToken
@@ -934,6 +938,7 @@ public partial class CompaniesClient
                 Method = HttpMethod.Post,
                 Path = "company-traits",
                 Body = request,
+                ContentType = "application/json",
                 Options = options,
             },
             cancellationToken
@@ -1239,6 +1244,7 @@ public partial class CompaniesClient
                 Method = HttpMethod.Post,
                 Path = "entity-trait-definitions",
                 Body = request,
+                ContentType = "application/json",
                 Options = options,
             },
             cancellationToken
@@ -1367,6 +1373,7 @@ public partial class CompaniesClient
                 Method = HttpMethod.Put,
                 Path = $"entity-trait-definitions/{entityTraitDefinitionId}",
                 Body = request,
+                ContentType = "application/json",
                 Options = options,
             },
             cancellationToken
@@ -1593,6 +1600,7 @@ public partial class CompaniesClient
                 Method = HttpMethod.Post,
                 Path = "user-traits",
                 Body = request,
+                ContentType = "application/json",
                 Options = options,
             },
             cancellationToken
@@ -1741,6 +1749,7 @@ public partial class CompaniesClient
                 Method = HttpMethod.Post,
                 Path = "users",
                 Body = request,
+                ContentType = "application/json",
                 Options = options,
             },
             cancellationToken
@@ -2007,6 +2016,7 @@ public partial class CompaniesClient
                 Method = HttpMethod.Post,
                 Path = "users/create",
                 Body = request,
+                ContentType = "application/json",
                 Options = options,
             },
             cancellationToken
@@ -2069,6 +2079,7 @@ public partial class CompaniesClient
                 Method = HttpMethod.Post,
                 Path = "users/delete",
                 Body = request,
+                ContentType = "application/json",
                 Options = options,
             },
             cancellationToken

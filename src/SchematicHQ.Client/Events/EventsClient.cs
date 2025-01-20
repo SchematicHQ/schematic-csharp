@@ -42,6 +42,7 @@ public partial class EventsClient
                 Method = HttpMethod.Post,
                 Path = "event-batch",
                 Body = request,
+                ContentType = "application/json",
                 Options = options,
             },
             cancellationToken
@@ -260,6 +261,7 @@ public partial class EventsClient
                 Method = HttpMethod.Post,
                 Path = "events",
                 Body = request,
+                ContentType = "application/json",
                 Options = options,
             },
             cancellationToken

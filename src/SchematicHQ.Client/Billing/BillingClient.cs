@@ -46,6 +46,7 @@ public partial class BillingClient
                 Method = HttpMethod.Post,
                 Path = "billing/coupons",
                 Body = request,
+                ContentType = "application/json",
                 Options = options,
             },
             cancellationToken
@@ -115,6 +116,7 @@ public partial class BillingClient
                 Method = HttpMethod.Post,
                 Path = "billing/customer/upsert",
                 Body = request,
+                ContentType = "application/json",
                 Options = options,
             },
             cancellationToken
@@ -428,6 +430,7 @@ public partial class BillingClient
                 Method = HttpMethod.Post,
                 Path = "billing/invoices",
                 Body = request,
+                ContentType = "application/json",
                 Options = options,
             },
             cancellationToken
@@ -569,6 +572,7 @@ public partial class BillingClient
                 Method = HttpMethod.Post,
                 Path = "billing/meter/upsert",
                 Body = request,
+                ContentType = "application/json",
                 Options = options,
             },
             cancellationToken
@@ -716,6 +720,7 @@ public partial class BillingClient
                 Method = HttpMethod.Post,
                 Path = "billing/payment-methods",
                 Body = request,
+                ContentType = "application/json",
                 Options = options,
             },
             cancellationToken
@@ -869,6 +874,7 @@ public partial class BillingClient
                 Method = HttpMethod.Post,
                 Path = "billing/price/upsert",
                 Body = request,
+                ContentType = "application/json",
                 Options = options,
             },
             cancellationToken
@@ -1091,6 +1097,7 @@ public partial class BillingClient
                 Method = HttpMethod.Post,
                 Path = "billing/product/upsert",
                 Body = request,
+                ContentType = "application/json",
                 Options = options,
             },
             cancellationToken
@@ -1371,6 +1378,7 @@ public partial class BillingClient
                 Method = HttpMethod.Post,
                 Path = "billing/subscription/upsert",
                 Body = request,
+                ContentType = "application/json",
                 Options = options,
             },
             cancellationToken

@@ -129,6 +129,7 @@ public partial class EntitlementsClient
                 Method = HttpMethod.Post,
                 Path = "company-overrides",
                 Body = request,
+                ContentType = "application/json",
                 Options = options,
             },
             cancellationToken
@@ -255,6 +256,7 @@ public partial class EntitlementsClient
                 Method = HttpMethod.Put,
                 Path = $"company-overrides/{companyOverrideId}",
                 Body = request,
+                ContentType = "application/json",
                 Options = options,
             },
             cancellationToken
@@ -1037,6 +1039,7 @@ public partial class EntitlementsClient
                 Method = HttpMethod.Post,
                 Path = "plan-entitlements",
                 Body = request,
+                ContentType = "application/json",
                 Options = options,
             },
             cancellationToken
@@ -1163,6 +1166,7 @@ public partial class EntitlementsClient
                 Method = HttpMethod.Put,
                 Path = $"plan-entitlements/{planEntitlementId}",
                 Body = request,
+                ContentType = "application/json",
                 Options = options,
             },
             cancellationToken

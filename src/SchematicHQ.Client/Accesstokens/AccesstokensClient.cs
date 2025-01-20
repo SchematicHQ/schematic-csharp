@@ -40,6 +40,7 @@ public partial class AccesstokensClient
                 Method = HttpMethod.Post,
                 Path = "temporary-access-tokens",
                 Body = request,
+                ContentType = "application/json",
                 Options = options,
             },
             cancellationToken

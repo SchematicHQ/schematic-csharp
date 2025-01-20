@@ -49,6 +49,7 @@ public partial class CheckoutClient
                 Method = HttpMethod.Post,
                 Path = "checkout-internal",
                 Body = request,
+                ContentType = "application/json",
                 Options = options,
             },
             cancellationToken
@@ -124,6 +125,7 @@ public partial class CheckoutClient
                 Method = HttpMethod.Post,
                 Path = "checkout-internal/preview",
                 Body = request,
+                ContentType = "application/json",
                 Options = options,
             },
             cancellationToken
@@ -188,6 +190,7 @@ public partial class CheckoutClient
                 Method = HttpMethod.Put,
                 Path = $"subscription/{subscriptionId}/edit-trial-end",
                 Body = request,
+                ContentType = "application/json",
                 Options = options,
             },
             cancellationToken

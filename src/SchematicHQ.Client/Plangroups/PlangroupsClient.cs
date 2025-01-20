@@ -98,6 +98,7 @@ public partial class PlangroupsClient
                 Method = HttpMethod.Post,
                 Path = "plan-groups",
                 Body = request,
+                ContentType = "application/json",
                 Options = options,
             },
             cancellationToken
@@ -166,6 +167,7 @@ public partial class PlangroupsClient
                 Method = HttpMethod.Put,
                 Path = $"plan-groups/{planGroupId}",
                 Body = request,
+                ContentType = "application/json",
                 Options = options,
             },
             cancellationToken
