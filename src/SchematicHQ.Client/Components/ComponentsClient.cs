@@ -113,6 +113,7 @@ public partial class ComponentsClient
                 Method = HttpMethod.Post,
                 Path = "components",
                 Body = request,
+                ContentType = "application/json",
                 Options = options,
             },
             cancellationToken
@@ -233,6 +234,7 @@ public partial class ComponentsClient
                 Method = HttpMethod.Put,
                 Path = $"components/{componentId}",
                 Body = request,
+                ContentType = "application/json",
                 Options = options,
             },
             cancellationToken

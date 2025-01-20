@@ -40,6 +40,7 @@ public partial class CrmClient
                 Method = HttpMethod.Post,
                 Path = "crm/associations/deal-line-item",
                 Body = request,
+                ContentType = "application/json",
                 Options = options,
             },
             cancellationToken
@@ -109,6 +110,7 @@ public partial class CrmClient
                 Method = HttpMethod.Post,
                 Path = "crm/deal-line-item/upsert",
                 Body = request,
+                ContentType = "application/json",
                 Options = options,
             },
             cancellationToken
@@ -176,6 +178,7 @@ public partial class CrmClient
                 Method = HttpMethod.Post,
                 Path = "crm/deals/upsert",
                 Body = request,
+                ContentType = "application/json",
                 Options = options,
             },
             cancellationToken
@@ -322,6 +325,7 @@ public partial class CrmClient
                 Method = HttpMethod.Post,
                 Path = "crm/products/upsert",
                 Body = request,
+                ContentType = "application/json",
                 Options = options,
             },
             cancellationToken

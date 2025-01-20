@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SchematicHQ.Client", "SchematicHQ.Client\SchematicHQ.Client.csproj", "{603CB046-0244-4360-AD5F-EB0417530A9C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SchematicHQ.Client", "SchematicHQ.Client\SchematicHQ.Client.csproj", "{C7897C78-B2CF-41F1-8A88-ADD58148B4CC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SchematicHQ.Client.Test", "SchematicHQ.Client.Test\SchematicHQ.Client.Test.csproj", "{6DACA18E-F6B2-41D3-9FB8-C082057ED882}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SchematicHQ.Client.Test", "SchematicHQ.Client.Test\SchematicHQ.Client.Test.csproj", "{F15D4EF4-BEA7-404C-9599-ECCE91902E80}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -16,13 +16,13 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{603CB046-0244-4360-AD5F-EB0417530A9C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{603CB046-0244-4360-AD5F-EB0417530A9C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{603CB046-0244-4360-AD5F-EB0417530A9C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{603CB046-0244-4360-AD5F-EB0417530A9C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6DACA18E-F6B2-41D3-9FB8-C082057ED882}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6DACA18E-F6B2-41D3-9FB8-C082057ED882}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6DACA18E-F6B2-41D3-9FB8-C082057ED882}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6DACA18E-F6B2-41D3-9FB8-C082057ED882}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C7897C78-B2CF-41F1-8A88-ADD58148B4CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C7897C78-B2CF-41F1-8A88-ADD58148B4CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C7897C78-B2CF-41F1-8A88-ADD58148B4CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C7897C78-B2CF-41F1-8A88-ADD58148B4CC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F15D4EF4-BEA7-404C-9599-ECCE91902E80}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F15D4EF4-BEA7-404C-9599-ECCE91902E80}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F15D4EF4-BEA7-404C-9599-ECCE91902E80}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F15D4EF4-BEA7-404C-9599-ECCE91902E80}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

@@ -108,6 +108,7 @@ public partial class AccountsClient
                 Method = HttpMethod.Post,
                 Path = "api-keys",
                 Body = request,
+                ContentType = "application/json",
                 Options = options,
             },
             cancellationToken
@@ -228,6 +229,7 @@ public partial class AccountsClient
                 Method = HttpMethod.Put,
                 Path = $"api-keys/{apiKeyId}",
                 Body = request,
+                ContentType = "application/json",
                 Options = options,
             },
             cancellationToken
@@ -720,6 +722,7 @@ public partial class AccountsClient
                 Method = HttpMethod.Post,
                 Path = "environments",
                 Body = request,
+                ContentType = "application/json",
                 Options = options,
             },
             cancellationToken
@@ -840,6 +843,7 @@ public partial class AccountsClient
                 Method = HttpMethod.Put,
                 Path = $"environments/{environmentId}",
                 Body = request,
+                ContentType = "application/json",
                 Options = options,
             },
             cancellationToken

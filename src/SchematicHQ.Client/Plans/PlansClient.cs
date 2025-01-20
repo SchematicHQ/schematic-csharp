@@ -38,6 +38,7 @@ public partial class PlansClient
                 Method = HttpMethod.Put,
                 Path = $"company-plans/{companyPlanId}",
                 Body = request,
+                ContentType = "application/json",
                 Options = options,
             },
             cancellationToken
@@ -189,6 +190,7 @@ public partial class PlansClient
                 Method = HttpMethod.Put,
                 Path = $"plan-audiences/{planAudienceId}",
                 Body = request,
+                ContentType = "application/json",
                 Options = options,
             },
             cancellationToken
@@ -411,6 +413,7 @@ public partial class PlansClient
                 Method = HttpMethod.Post,
                 Path = "plans",
                 Body = request,
+                ContentType = "application/json",
                 Options = options,
             },
             cancellationToken
@@ -531,6 +534,7 @@ public partial class PlansClient
                 Method = HttpMethod.Put,
                 Path = $"plans/{planId}",
                 Body = request,
+                ContentType = "application/json",
                 Options = options,
             },
             cancellationToken
@@ -656,6 +660,7 @@ public partial class PlansClient
                 Method = HttpMethod.Put,
                 Path = $"plans/{planId}/billing_products",
                 Body = request,
+                ContentType = "application/json",
                 Options = options,
             },
             cancellationToken

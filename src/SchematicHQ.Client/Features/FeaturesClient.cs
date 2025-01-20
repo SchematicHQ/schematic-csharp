@@ -62,6 +62,7 @@ public partial class FeaturesClient
                 Method = HttpMethod.Post,
                 Path = "audience/count-companies",
                 Body = request,
+                ContentType = "application/json",
                 Options = options,
             },
             cancellationToken
@@ -150,6 +151,7 @@ public partial class FeaturesClient
                 Method = HttpMethod.Post,
                 Path = "audience/count-users",
                 Body = request,
+                ContentType = "application/json",
                 Options = options,
             },
             cancellationToken
@@ -238,6 +240,7 @@ public partial class FeaturesClient
                 Method = HttpMethod.Post,
                 Path = "audience/get-companies",
                 Body = request,
+                ContentType = "application/json",
                 Options = options,
             },
             cancellationToken
@@ -326,6 +329,7 @@ public partial class FeaturesClient
                 Method = HttpMethod.Post,
                 Path = "audience/get-users",
                 Body = request,
+                ContentType = "application/json",
                 Options = options,
             },
             cancellationToken
@@ -475,6 +479,7 @@ public partial class FeaturesClient
                 Method = HttpMethod.Post,
                 Path = "features",
                 Body = request,
+                ContentType = "application/json",
                 Options = options,
             },
             cancellationToken
@@ -595,6 +600,7 @@ public partial class FeaturesClient
                 Method = HttpMethod.Put,
                 Path = $"features/{featureId}",
                 Body = request,
+                ContentType = "application/json",
                 Options = options,
             },
             cancellationToken
@@ -885,6 +891,7 @@ public partial class FeaturesClient
                 Method = HttpMethod.Post,
                 Path = "flags",
                 Body = request,
+                ContentType = "application/json",
                 Options = options,
             },
             cancellationToken
@@ -1015,6 +1022,7 @@ public partial class FeaturesClient
                 Method = HttpMethod.Put,
                 Path = $"flags/{flagId}",
                 Body = request,
+                ContentType = "application/json",
                 Options = options,
             },
             cancellationToken
@@ -1176,6 +1184,7 @@ public partial class FeaturesClient
                 Method = HttpMethod.Put,
                 Path = $"flags/{flagId}/rules",
                 Body = request,
+                ContentType = "application/json",
                 Options = options,
             },
             cancellationToken
@@ -1239,6 +1248,7 @@ public partial class FeaturesClient
                 Method = HttpMethod.Post,
                 Path = $"flags/{key}/check",
                 Body = request,
+                ContentType = "application/json",
                 Options = options,
             },
             cancellationToken
@@ -1299,6 +1309,7 @@ public partial class FeaturesClient
                 Method = HttpMethod.Post,
                 Path = "flags/check",
                 Body = request,
+                ContentType = "application/json",
                 Options = options,
             },
             cancellationToken
