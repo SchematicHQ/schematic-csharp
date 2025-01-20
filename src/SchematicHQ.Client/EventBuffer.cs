@@ -4,11 +4,11 @@ using System.Collections.Concurrent;
 
 namespace SchematicHQ.Client;
 
-public interface IEventBuffer<T> : IDisposable
+public interface IEventBuffer<T>
 {
     void Push(T item);
     void Start();
-    void Stop();
+    Task Stop();
     Task Flush();
     int GetEventCount();
 }
@@ -16,8 +16,8 @@ public interface IEventBuffer<T> : IDisposable
 public class EventBuffer<T> : IEventBuffer<T>
 {
     private const int DefaultMaxSize = 100;
-    private static readonly TimeSpan DefaultFlushPeriod = TimeSpan.FromMilliseconds(5000);
-    private const int MaxWaitForBuffer = 3; //seconds to wait for event buffer to flush on Stop and Shutdown
+    private static readonly TimeSpan DefaultFlushPeriod = TimeSpan.FromMilliseconds(3000);
+    private const int MaxWaitForBuffer = 3; //seconds to wait for event buffer to flush on Stop
 
     private readonly int _maxSize;
     private readonly TimeSpan _flushPeriod;
@@ -43,7 +43,41 @@ public class EventBuffer<T> : IEventBuffer<T>
         _cts = new CancellationTokenSource();
         _isRunning = false;
 
-        _logger.Info("EventBuffer initialized with maxSize: {0}, flushPeriod: {1}", _maxSize, _flushPeriod);
+        _logger.Debug("EventBuffer initialized with maxSize: {0}, flushPeriod: {1}", _maxSize, _flushPeriod);
+
+        AppDomain.CurrentDomain.ProcessExit += async (s, e) => {
+            await EmergencyFlush();
+        };
+
+        Console.CancelKeyPress += async (s, e) => {
+            e.Cancel = true; // Prevent immediate termination
+            await EmergencyFlush();
+        };
+    }
+
+    private async Task EmergencyFlush()
+    {
+        try
+        {
+            _logger.Debug("Emergency flush triggered by program termination");
+            // Don't check _isRunning here since we're in an emergency shutdown
+            var items = new List<T>();
+            while (_queue.TryDequeue(out var item))
+            {
+                items.Add(item);
+            }
+
+            if (items.Count > 0)
+            {
+                _logger.Info("Emergency flushing {0} items", items.Count);
+                await _action(items);
+            }
+            _logger.Info("Emergency flush completed");
+        }
+        catch (Exception ex)
+        {
+            _logger.Error("Error during emergency flush: {0}", ex.Message);
+        }
     }
 
     public void Push(T item)
@@ -84,32 +118,6 @@ public class EventBuffer<T> : IEventBuffer<T>
         }
 
         _logger.Info("EventBuffer started.");
-    }
-
-    public void Stop()
-    {
-        lock (_runningLock)
-        {
-            if (!_isRunning) return;
-
-            _isRunning = false;
-            _cts.Cancel();
-        }
-
-        // Wait for a maximum of MaxWaitForBuffer seconds for the periodic flush task to complete
-        if (_periodicFlushTask != Task.CompletedTask)
-        {
-            try
-            {
-                _periodicFlushTask.Wait(TimeSpan.FromSeconds(MaxWaitForBuffer));
-            }
-            catch (AggregateException ex) when (ex.InnerExceptions.All(e => e is TaskCanceledException))
-            {
-                _logger.Warn("Periodic flush task was canceled.");
-            }
-        }
-
-        _logger.Info("EventBuffer stopped.");
     }
 
     public async Task Flush()
@@ -178,53 +186,41 @@ public class EventBuffer<T> : IEventBuffer<T>
         }
     }
 
-    public void Dispose()
+    public async Task Stop()
     {
+        if (!_isRunning) return;
+
         try
         {
-            _cts.Cancel();
-        }
-        catch (ObjectDisposedException)
-        {
-            // The CancellationTokenSource has already been disposed
-        }
+            await Flush();
 
-        // Wait for a maximum of MaxWaitForBuffer seconds for the periodic flush task to complete
-        if (_periodicFlushTask != Task.CompletedTask)
-        {
-            try
+            lock (_runningLock)
             {
-                _periodicFlushTask.Wait(TimeSpan.FromSeconds(MaxWaitForBuffer));
+                _isRunning = false;
+                _cts.Cancel();
             }
-            catch (AggregateException ex) when (ex.InnerExceptions.All(e => e is TaskCanceledException))
-            {
-                _logger.Warn("Periodic flush task was canceled.");
-            }
-            catch (ObjectDisposedException)
-            {
-                _logger.Warn("Periodic flush task's CancellationTokenSource was disposed.");
-            }
-        }
 
-        if (_processBufferTask != Task.CompletedTask)
-        {
-            try
+            if (_periodicFlushTask != Task.CompletedTask)
             {
-                _processBufferTask.Wait(TimeSpan.FromSeconds(5));
+                var timeoutTask = Task.Delay(TimeSpan.FromSeconds(MaxWaitForBuffer));
+                await Task.WhenAny(_periodicFlushTask, timeoutTask);
             }
-            catch (AggregateException ex) when (ex.InnerExceptions.All(e => e is TaskCanceledException))
-            {
-                _logger.Warn("Process buffer task was canceled.");
-            }
-            catch (ObjectDisposedException)
-            {
-                _logger.Warn("Process buffer task's CancellationTokenSource was disposed.");
-            }
-        }
 
-        _semaphore.Dispose();
-        _cts.Dispose();
-        _logger.Info("EventBuffer disposed.");
+            if (_processBufferTask != Task.CompletedTask)
+            {
+                var timeoutTask = Task.Delay(TimeSpan.FromSeconds(MaxWaitForBuffer));
+                await Task.WhenAny(_processBufferTask, timeoutTask);
+            }
+
+            _semaphore.Dispose();
+            _cts.Dispose();
+            _logger.Info("EventBuffer shut down cleanly.");
+        }
+        catch (Exception ex)
+        {
+            _logger.Error("Error during shutdown: {0}", ex.Message);
+            throw;
+        }
     }
 
     public int GetEventCount()
