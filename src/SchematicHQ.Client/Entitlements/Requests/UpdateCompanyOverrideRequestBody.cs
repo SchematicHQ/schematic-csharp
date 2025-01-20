@@ -7,8 +7,14 @@ namespace SchematicHQ.Client;
 
 public record UpdateCompanyOverrideRequestBody
 {
+    [JsonPropertyName("expiration_date")]
+    public DateTime? ExpirationDate { get; init; }
+
     [JsonPropertyName("metric_period")]
     public UpdateCompanyOverrideRequestBodyMetricPeriod? MetricPeriod { get; init; }
+
+    [JsonPropertyName("metric_period_month_reset")]
+    public UpdateCompanyOverrideRequestBodyMetricPeriodMonthReset? MetricPeriodMonthReset { get; init; }
 
     [JsonPropertyName("value_bool")]
     public bool? ValueBool { get; init; }

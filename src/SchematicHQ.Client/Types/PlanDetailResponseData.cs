@@ -32,12 +32,30 @@ public record PlanDetailResponseData
     [JsonPropertyName("id")]
     public required string Id { get; init; }
 
+    [JsonPropertyName("is_default")]
+    public required bool IsDefault { get; init; }
+
+    [JsonPropertyName("is_free")]
+    public required bool IsFree { get; init; }
+
+    [JsonPropertyName("is_trialable")]
+    public required bool IsTrialable { get; init; }
+
+    [JsonPropertyName("monthly_price")]
+    public BillingPriceResponseData? MonthlyPrice { get; init; }
+
     [JsonPropertyName("name")]
     public required string Name { get; init; }
 
     [JsonPropertyName("plan_type")]
     public required string PlanType { get; init; }
 
+    [JsonPropertyName("trial_days")]
+    public int? TrialDays { get; init; }
+
     [JsonPropertyName("updated_at")]
     public required DateTime UpdatedAt { get; init; }
+
+    [JsonPropertyName("yearly_price")]
+    public BillingPriceResponseData? YearlyPrice { get; init; }
 }

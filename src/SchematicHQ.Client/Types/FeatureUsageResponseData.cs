@@ -25,6 +25,9 @@ public record FeatureUsageResponseData
     [JsonPropertyName("allocation_type")]
     public required FeatureUsageResponseDataAllocationType AllocationType { get; init; }
 
+    [JsonPropertyName("entitlement_expiration_date")]
+    public DateTime? EntitlementExpirationDate { get; init; }
+
     [JsonPropertyName("entitlement_id")]
     public required string EntitlementId { get; init; }
 
@@ -35,6 +38,21 @@ public record FeatureUsageResponseData
     public FeatureDetailResponseData? Feature { get; init; }
 
     /// <summary>
+    /// The time at which the metric will reset.
+    /// </summary>
+    [JsonPropertyName("metric_reset_at")]
+    public DateTime? MetricResetAt { get; init; }
+
+    /// <summary>
+    /// If the period is current_month, when the month resets.
+    /// </summary>
+    [JsonPropertyName("month_reset")]
+    public string? MonthReset { get; init; }
+
+    [JsonPropertyName("monthly_usage_based_price")]
+    public BillingPriceView? MonthlyUsageBasedPrice { get; init; }
+
+    /// <summary>
     /// The period over which usage is measured.
     /// </summary>
     [JsonPropertyName("period")]
@@ -43,9 +61,15 @@ public record FeatureUsageResponseData
     [JsonPropertyName("plan")]
     public PlanResponseData? Plan { get; init; }
 
+    [JsonPropertyName("price_behavior")]
+    public string? PriceBehavior { get; init; }
+
     /// <summary>
     /// The amount of usage that has been consumed; a null value indicates that usage is not being measured.
     /// </summary>
     [JsonPropertyName("usage")]
     public int? Usage { get; init; }
+
+    [JsonPropertyName("yearly_usage_based_price")]
+    public BillingPriceView? YearlyUsageBasedPrice { get; init; }
 }

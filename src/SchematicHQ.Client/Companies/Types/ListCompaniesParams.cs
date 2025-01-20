@@ -6,6 +6,9 @@ namespace SchematicHQ.Client;
 
 public record ListCompaniesParams
 {
+    /// <summary>
+    /// Filter companies by multiple company IDs (starts with comp_)
+    /// </summary>
     [JsonPropertyName("ids")]
     public IEnumerable<string>? Ids { get; init; }
 
@@ -21,11 +24,14 @@ public record ListCompaniesParams
     [JsonPropertyName("offset")]
     public int? Offset { get; init; }
 
+    /// <summary>
+    /// Filter companies by plan ID (starts with plan_)
+    /// </summary>
     [JsonPropertyName("plan_id")]
     public string? PlanId { get; init; }
 
     /// <summary>
-    /// Search filter
+    /// Search for companies by name, keys or string traits
     /// </summary>
     [JsonPropertyName("q")]
     public string? Q { get; init; }
@@ -35,4 +41,10 @@ public record ListCompaniesParams
     /// </summary>
     [JsonPropertyName("without_feature_override_for")]
     public string? WithoutFeatureOverrideFor { get; init; }
+
+    /// <summary>
+    /// Filter out companies that have a plan
+    /// </summary>
+    [JsonPropertyName("without_plan")]
+    public bool? WithoutPlan { get; init; }
 }

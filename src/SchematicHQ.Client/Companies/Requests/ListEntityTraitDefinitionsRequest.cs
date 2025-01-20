@@ -10,9 +10,9 @@ public record ListEntityTraitDefinitionsRequest
 
     public string? Ids { get; init; }
 
-    public ListEntityTraitDefinitionsRequestTraitType? TraitType { get; init; }
-
     public string? Q { get; init; }
+
+    public ListEntityTraitDefinitionsRequestTraitType? TraitType { get; init; }
 
     /// <summary>
     /// Page limit (default 100)

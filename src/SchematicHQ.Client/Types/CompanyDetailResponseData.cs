@@ -8,7 +8,15 @@ namespace SchematicHQ.Client;
 public record CompanyDetailResponseData
 {
     [JsonPropertyName("add_ons")]
-    public IEnumerable<PreviewObject> AddOns { get; init; } = new List<PreviewObject>();
+    public IEnumerable<CompanyPlanWithBillingSubView> AddOns { get; init; } =
+        new List<CompanyPlanWithBillingSubView>();
+
+    [JsonPropertyName("billing_subscription")]
+    public BillingSubscriptionView? BillingSubscription { get; init; }
+
+    [JsonPropertyName("billing_subscriptions")]
+    public IEnumerable<BillingSubscriptionView> BillingSubscriptions { get; init; } =
+        new List<BillingSubscriptionView>();
 
     [JsonPropertyName("created_at")]
     public required DateTime CreatedAt { get; init; }
@@ -33,14 +41,19 @@ public record CompanyDetailResponseData
     [JsonPropertyName("logo_url")]
     public string? LogoUrl { get; init; }
 
+    [JsonPropertyName("metrics")]
+    public IEnumerable<CompanyEventPeriodMetricsResponseData> Metrics { get; init; } =
+        new List<CompanyEventPeriodMetricsResponseData>();
+
     [JsonPropertyName("name")]
     public required string Name { get; init; }
 
     [JsonPropertyName("plan")]
-    public BillingPlan? Plan { get; init; }
+    public CompanyPlanWithBillingSubView? Plan { get; init; }
 
     [JsonPropertyName("plans")]
-    public IEnumerable<PreviewObject> Plans { get; init; } = new List<PreviewObject>();
+    public IEnumerable<GenericPreviewObject> Plans { get; init; } =
+        new List<GenericPreviewObject>();
 
     /// <summary>
     /// A map of trait names to trait values

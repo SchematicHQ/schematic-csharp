@@ -8,6 +8,23 @@ public record ListProductPricesRequest
 
     public string? Q { get; init; }
 
+    public string? PriceUsageType { get; init; }
+
+    /// <summary>
+    /// Filter products that are not linked to any plan
+    /// </summary>
+    public bool? WithoutLinkedToPlan { get; init; }
+
+    /// <summary>
+    /// Filter products that have zero price for free subscription type
+    /// </summary>
+    public bool? WithZeroPrice { get; init; }
+
+    /// <summary>
+    /// Filter products that have prices
+    /// </summary>
+    public bool? WithPricesOnly { get; init; }
+
     /// <summary>
     /// Page limit (default 100)
     /// </summary>

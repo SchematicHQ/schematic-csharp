@@ -10,6 +10,12 @@ public record ListPlansParams
     [JsonPropertyName("company_id")]
     public string? CompanyId { get; init; }
 
+    /// <summary>
+    /// Filter out plans that do not have a billing product ID
+    /// </summary>
+    [JsonPropertyName("has_product_id")]
+    public bool? HasProductId { get; init; }
+
     [JsonPropertyName("ids")]
     public IEnumerable<string>? Ids { get; init; }
 
@@ -39,4 +45,10 @@ public record ListPlansParams
     /// </summary>
     [JsonPropertyName("without_entitlement_for")]
     public string? WithoutEntitlementFor { get; init; }
+
+    /// <summary>
+    /// Filter out plans that have a billing product ID
+    /// </summary>
+    [JsonPropertyName("without_product_id")]
+    public bool? WithoutProductId { get; init; }
 }

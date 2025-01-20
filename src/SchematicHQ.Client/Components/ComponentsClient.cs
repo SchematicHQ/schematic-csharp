@@ -152,4 +152,33 @@ public class ComponentsClient
         }
         throw new Exception(responseBody);
     }
+
+    public async Task<PreviewComponentDataResponse> PreviewComponentDataAsync(
+        PreviewComponentDataRequest request
+    )
+    {
+        var _query = new Dictionary<string, object>() { };
+        if (request.CompanyId != null)
+        {
+            _query["company_id"] = request.CompanyId;
+        }
+        if (request.ComponentId != null)
+        {
+            _query["component_id"] = request.ComponentId;
+        }
+        var response = await _client.MakeRequestAsync(
+            new RawClient.JsonApiRequest
+            {
+                Method = HttpMethod.Get,
+                Path = "components/preview-data",
+                Query = _query
+            }
+        );
+        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode is >= 200 and < 400)
+        {
+            return JsonSerializer.Deserialize<PreviewComponentDataResponse>(responseBody)!;
+        }
+        throw new Exception(responseBody);
+    }
 }

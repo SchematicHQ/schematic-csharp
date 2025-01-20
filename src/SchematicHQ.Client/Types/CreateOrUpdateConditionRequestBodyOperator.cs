@@ -26,5 +26,11 @@ public enum CreateOrUpdateConditionRequestBodyOperator
     Lt,
 
     [EnumMember(Value = "lte")]
-    Lte
+    Lte,
+
+    [EnumMember(Value = "is_empty")]
+    IsEmpty,
+
+    [EnumMember(Value = "not_empty")]
+    NotEmpty
 }

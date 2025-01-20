@@ -18,19 +18,21 @@ public partial class SchematicApi
                 { "X-Schematic-Api-Key", apiKey },
                 { "X-Fern-Language", "C#" },
                 { "X-Fern-SDK-Name", "SchematicHQ.Client" },
-                { "X-Fern-SDK-Version", "1.0.2" },
+                { "X-Fern-SDK-Version", "1.0.3" },
             },
             clientOptions ?? new ClientOptions()
         );
         Accounts = new AccountsClient(_client);
         Features = new FeaturesClient(_client);
         Billing = new BillingClient(_client);
+        Checkout = new CheckoutClient(_client);
         Companies = new CompaniesClient(_client);
         Entitlements = new EntitlementsClient(_client);
         Components = new ComponentsClient(_client);
         Crm = new CrmClient(_client);
         Events = new EventsClient(_client);
         Plans = new PlansClient(_client);
+        Plangroups = new PlangroupsClient(_client);
         Accesstokens = new AccesstokensClient(_client);
         Webhooks = new WebhooksClient(_client);
     }
@@ -40,6 +42,8 @@ public partial class SchematicApi
     public FeaturesClient Features { get; init; }
 
     public BillingClient Billing { get; init; }
+
+    public CheckoutClient Checkout { get; init; }
 
     public CompaniesClient Companies { get; init; }
 
@@ -52,6 +56,8 @@ public partial class SchematicApi
     public EventsClient Events { get; init; }
 
     public PlansClient Plans { get; init; }
+
+    public PlangroupsClient Plangroups { get; init; }
 
     public AccesstokensClient Accesstokens { get; init; }
 

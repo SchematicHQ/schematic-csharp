@@ -37,6 +37,9 @@ public record RuleConditionDetailResponseData
     [JsonPropertyName("metric_period")]
     public string? MetricPeriod { get; init; }
 
+    [JsonPropertyName("metric_period_month_reset")]
+    public string? MetricPeriodMonthReset { get; init; }
+
     [JsonPropertyName("metric_value")]
     public int? MetricValue { get; init; }
 
@@ -50,8 +53,8 @@ public record RuleConditionDetailResponseData
     public IEnumerable<string> ResourceIds { get; init; } = new List<string>();
 
     [JsonPropertyName("resources")]
-    public IEnumerable<RuleConditionResourceResponseData> Resources { get; init; } =
-        new List<RuleConditionResourceResponseData>();
+    public IEnumerable<PreviewObjectResponseData> Resources { get; init; } =
+        new List<PreviewObjectResponseData>();
 
     [JsonPropertyName("rule_id")]
     public required string RuleId { get; init; }

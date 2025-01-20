@@ -35,6 +35,10 @@ public class CompaniesClient
         {
             _query["without_feature_override_for"] = request.WithoutFeatureOverrideFor;
         }
+        if (request.WithoutPlan != null)
+        {
+            _query["without_plan"] = request.WithoutPlan.ToString();
+        }
         if (request.Limit != null)
         {
             _query["limit"] = request.Limit.ToString();
@@ -129,6 +133,10 @@ public class CompaniesClient
         if (request.WithoutFeatureOverrideFor != null)
         {
             _query["without_feature_override_for"] = request.WithoutFeatureOverrideFor;
+        }
+        if (request.WithoutPlan != null)
+        {
+            _query["without_plan"] = request.WithoutPlan.ToString();
         }
         if (request.Limit != null)
         {
@@ -320,7 +328,15 @@ public class CompaniesClient
         GetActiveCompanySubscriptionRequest request
     )
     {
-        var _query = new Dictionary<string, object>() { { "company_id", request.CompanyId }, };
+        var _query = new Dictionary<string, object>() { };
+        if (request.CompanyId != null)
+        {
+            _query["company_id"] = request.CompanyId;
+        }
+        if (request.CompanyIds != null)
+        {
+            _query["company_ids"] = request.CompanyIds;
+        }
         if (request.Limit != null)
         {
             _query["limit"] = request.Limit.ToString();
@@ -460,13 +476,13 @@ public class CompaniesClient
         {
             _query["ids"] = request.Ids;
         }
-        if (request.TraitType != null)
-        {
-            _query["trait_type"] = JsonSerializer.Serialize(request.TraitType.Value);
-        }
         if (request.Q != null)
         {
             _query["q"] = request.Q;
+        }
+        if (request.TraitType != null)
+        {
+            _query["trait_type"] = JsonSerializer.Serialize(request.TraitType.Value);
         }
         if (request.Limit != null)
         {
@@ -567,13 +583,13 @@ public class CompaniesClient
         {
             _query["ids"] = request.Ids;
         }
-        if (request.TraitType != null)
-        {
-            _query["trait_type"] = JsonSerializer.Serialize(request.TraitType.Value);
-        }
         if (request.Q != null)
         {
             _query["q"] = request.Q;
+        }
+        if (request.TraitType != null)
+        {
+            _query["trait_type"] = JsonSerializer.Serialize(request.TraitType.Value);
         }
         if (request.Limit != null)
         {

@@ -6,6 +6,9 @@ namespace SchematicHQ.Client;
 
 public record BillingPriceResponseData
 {
+    [JsonPropertyName("currency")]
+    public required string Currency { get; init; }
+
     [JsonPropertyName("external_price_id")]
     public required string ExternalPriceId { get; init; }
 

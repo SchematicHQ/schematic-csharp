@@ -12,6 +12,9 @@ public record CheckFlagResponseData
     [JsonPropertyName("error")]
     public string? Error { get; init; }
 
+    [JsonPropertyName("flag_id")]
+    public string? FlagId { get; init; }
+
     [JsonPropertyName("reason")]
     public required string Reason { get; init; }
 

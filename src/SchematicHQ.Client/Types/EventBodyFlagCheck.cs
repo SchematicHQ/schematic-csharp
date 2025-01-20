@@ -7,7 +7,7 @@ namespace SchematicHQ.Client;
 public record EventBodyFlagCheck
 {
     /// <summary>
-    /// Schematic company ID (starting with 'comp\_') of the company evaluated, if any
+    /// Schematic company ID (starting with 'comp_') of the company evaluated, if any
     /// </summary>
     [JsonPropertyName("company_id")]
     public string? CompanyId { get; init; }
@@ -19,7 +19,7 @@ public record EventBodyFlagCheck
     public string? Error { get; init; }
 
     /// <summary>
-    /// Schematic flag ID (starting with 'flag\_') for the flag matching the key, if any
+    /// Schematic flag ID (starting with 'flag_') for the flag matching the key, if any
     /// </summary>
     [JsonPropertyName("flag_id")]
     public string? FlagId { get; init; }
@@ -40,22 +40,22 @@ public record EventBodyFlagCheck
     /// Key-value pairs used to to identify company for which the flag was checked
     /// </summary>
     [JsonPropertyName("req_company")]
-    public Dictionary<string, string?>? ReqCompany { get; init; }
+    public Dictionary<string, string>? ReqCompany { get; init; }
 
     /// <summary>
     /// Key-value pairs used to to identify user for which the flag was checked
     /// </summary>
     [JsonPropertyName("req_user")]
-    public Dictionary<string, string?>? ReqUser { get; init; }
+    public Dictionary<string, string>? ReqUser { get; init; }
 
     /// <summary>
-    /// Schematic rule ID (starting with 'rule\_') of the rule that matched for the flag, if any
+    /// Schematic rule ID (starting with 'rule_') of the rule that matched for the flag, if any
     /// </summary>
     [JsonPropertyName("rule_id")]
     public string? RuleId { get; init; }
 
     /// <summary>
-    /// Schematic user ID (starting with 'user\_') of the user evaluated, if any
+    /// Schematic user ID (starting with 'user_') of the user evaluated, if any
     /// </summary>
     [JsonPropertyName("user_id")]
     public string? UserId { get; init; }

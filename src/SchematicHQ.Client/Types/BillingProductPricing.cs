@@ -6,15 +6,27 @@ namespace SchematicHQ.Client;
 
 public record BillingProductPricing
 {
+    [JsonPropertyName("currency")]
+    public required string Currency { get; init; }
+
     [JsonPropertyName("interval")]
-    public string? Interval { get; init; }
+    public required string Interval { get; init; }
+
+    [JsonPropertyName("meter_id")]
+    public string? MeterId { get; init; }
 
     [JsonPropertyName("price")]
     public required int Price { get; init; }
 
     [JsonPropertyName("price_external_id")]
-    public string? PriceExternalId { get; init; }
+    public required string PriceExternalId { get; init; }
 
     [JsonPropertyName("product_external_id")]
     public required string ProductExternalId { get; init; }
+
+    [JsonPropertyName("quantity")]
+    public required int Quantity { get; init; }
+
+    [JsonPropertyName("usage_type")]
+    public required string UsageType { get; init; }
 }
