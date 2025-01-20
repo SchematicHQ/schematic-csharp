@@ -6,7 +6,7 @@ src/SchematicHQ.Client.Test/TestEventBuffer.cs
 src/SchematicHQ.Client.Test/TestClient.cs
 src/SchematicHQ.Client.Test/TestLogger.cs
 src/SchematicHQ.Client/Cache.cs
-src/SchematicHQ.Client/Core/ClientOptionsCustom.cs
+src/SchematicHQ.Client/Core/Public/ClientOptionsCustom.cs
 src/SchematicHQ.Client/EventBuffer.cs
 src/SchematicHQ.Client/Logger.cs
 src/SchematicHQ.Client/Schematic.cs

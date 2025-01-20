@@ -3,7 +3,7 @@ using SchematicHQ.Client.Core;
 
 #nullable enable
 
-namespace SchematicHQ.Client.Core;
+namespace SchematicHQ.Client;
 
 public partial class ClientOptions
 {
@@ -22,15 +22,16 @@ public static class ClientOptionsExtensions
         return new ClientOptions
         {
             BaseUrl = options.BaseUrl,
-            HttpClient = httpClient,
-            MaxRetries = options.MaxRetries,
-            TimeoutInSeconds = options.TimeoutInSeconds,
-            FlagDefaults = options.FlagDefaults ?? new Dictionary<string, bool>(),
-            Logger = options.Logger ?? new ConsoleLogger(),
             CacheProviders = options.CacheProviders ?? new List<ICacheProvider<bool?>>(),
-            Offline = options.Offline,
             DefaultEventBufferPeriod = options.DefaultEventBufferPeriod,
-            EventBuffer = options.EventBuffer
+            EventBuffer = options.EventBuffer,
+            FlagDefaults = options.FlagDefaults ?? new Dictionary<string, bool>(),
+            Headers = new Headers(new Dictionary<string, HeaderValue>(options.Headers)),
+            HttpClient = httpClient,
+            Logger = options.Logger ?? new ConsoleLogger(),
+            MaxRetries = options.MaxRetries,
+            Offline = options.Offline,
+            Timeout = options.Timeout,
         };
     }
 }

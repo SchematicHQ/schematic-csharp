@@ -23,6 +23,7 @@ namespace SchematicHQ.Client.Test
             {
                 Data = new CheckFlagResponseData
                 {
+                    Flag = "test_flag",
                     Reason = "test_reason",
                     Value = flagValue
                 }
