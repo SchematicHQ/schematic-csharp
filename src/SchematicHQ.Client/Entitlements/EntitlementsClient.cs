@@ -41,6 +41,10 @@ public class EntitlementsClient
         {
             _query["ids"] = request.Ids;
         }
+        if (request.WithoutExpired != null)
+        {
+            _query["without_expired"] = request.WithoutExpired.ToString();
+        }
         if (request.Q != null)
         {
             _query["q"] = request.Q;
@@ -171,6 +175,10 @@ public class EntitlementsClient
         {
             _query["ids"] = request.Ids;
         }
+        if (request.WithoutExpired != null)
+        {
+            _query["without_expired"] = request.WithoutExpired.ToString();
+        }
         if (request.Q != null)
         {
             _query["q"] = request.Q;
@@ -286,6 +294,11 @@ public class EntitlementsClient
         {
             _query["q"] = request.Q;
         }
+        if (request.WithoutNegativeEntitlements != null)
+        {
+            _query["without_negative_entitlements"] =
+                request.WithoutNegativeEntitlements.ToString();
+        }
         if (request.Limit != null)
         {
             _query["limit"] = request.Limit.ToString();
@@ -330,6 +343,11 @@ public class EntitlementsClient
         if (request.Q != null)
         {
             _query["q"] = request.Q;
+        }
+        if (request.WithoutNegativeEntitlements != null)
+        {
+            _query["without_negative_entitlements"] =
+                request.WithoutNegativeEntitlements.ToString();
         }
         if (request.Limit != null)
         {
@@ -449,6 +467,10 @@ public class EntitlementsClient
         if (request.Q != null)
         {
             _query["q"] = request.Q;
+        }
+        if (request.WithMeteredProducts != null)
+        {
+            _query["with_metered_products"] = request.WithMeteredProducts.ToString();
         }
         if (request.Limit != null)
         {
@@ -579,6 +601,10 @@ public class EntitlementsClient
         if (request.Q != null)
         {
             _query["q"] = request.Q;
+        }
+        if (request.WithMeteredProducts != null)
+        {
+            _query["with_metered_products"] = request.WithMeteredProducts.ToString();
         }
         if (request.Limit != null)
         {

@@ -2,7 +2,9 @@ namespace SchematicHQ.Client;
 
 public record GetActiveCompanySubscriptionRequest
 {
-    public required string CompanyId { get; init; }
+    public string? CompanyId { get; init; }
+
+    public string? CompanyIds { get; init; }
 
     /// <summary>
     /// Page limit (default 100)

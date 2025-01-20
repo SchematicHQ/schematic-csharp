@@ -19,6 +19,9 @@ public record CompanyOverrideResponseData
     [JsonPropertyName("environment_id")]
     public required string EnvironmentId { get; init; }
 
+    [JsonPropertyName("expiration_date")]
+    public DateTime? ExpirationDate { get; init; }
+
     [JsonPropertyName("feature")]
     public FeatureResponseData? Feature { get; init; }
 
@@ -31,8 +34,11 @@ public record CompanyOverrideResponseData
     [JsonPropertyName("metric_period")]
     public string? MetricPeriod { get; init; }
 
+    [JsonPropertyName("metric_period_month_reset")]
+    public string? MetricPeriodMonthReset { get; init; }
+
     [JsonPropertyName("rule_id")]
-    public required string RuleId { get; init; }
+    public string? RuleId { get; init; }
 
     [JsonPropertyName("updated_at")]
     public required DateTime UpdatedAt { get; init; }

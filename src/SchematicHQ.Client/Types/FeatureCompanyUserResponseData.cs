@@ -38,6 +38,18 @@ public record FeatureCompanyUserResponseData
     public FeatureDetailResponseData? Feature { get; init; }
 
     /// <summary>
+    /// The time at which the metric will resets.
+    /// </summary>
+    [JsonPropertyName("metric_reset_at")]
+    public DateTime? MetricResetAt { get; init; }
+
+    /// <summary>
+    /// If the period is current_month, when the month resets.
+    /// </summary>
+    [JsonPropertyName("month_reset")]
+    public string? MonthReset { get; init; }
+
+    /// <summary>
     /// The period over which usage is measured.
     /// </summary>
     [JsonPropertyName("period")]

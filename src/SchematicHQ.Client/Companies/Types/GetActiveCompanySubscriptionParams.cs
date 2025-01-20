@@ -9,6 +9,9 @@ public record GetActiveCompanySubscriptionParams
     [JsonPropertyName("company_id")]
     public string? CompanyId { get; init; }
 
+    [JsonPropertyName("company_ids")]
+    public IEnumerable<string>? CompanyIds { get; init; }
+
     /// <summary>
     /// Page limit (default 100)
     /// </summary>

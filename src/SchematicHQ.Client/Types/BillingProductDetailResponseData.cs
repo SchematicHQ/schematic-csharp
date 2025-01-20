@@ -7,10 +7,6 @@ namespace SchematicHQ.Client;
 
 public record BillingProductDetailResponseData
 {
-    [JsonPropertyName("Prices")]
-    public IEnumerable<BillingPriceResponseData> Prices { get; init; } =
-        new List<BillingPriceResponseData>();
-
     [JsonPropertyName("account_id")]
     public required string AccountId { get; init; }
 
@@ -31,6 +27,10 @@ public record BillingProductDetailResponseData
 
     [JsonPropertyName("price")]
     public required double Price { get; init; }
+
+    [JsonPropertyName("prices")]
+    public IEnumerable<BillingPriceResponseData> Prices { get; init; } =
+        new List<BillingPriceResponseData>();
 
     [JsonPropertyName("product_id")]
     public required string ProductId { get; init; }

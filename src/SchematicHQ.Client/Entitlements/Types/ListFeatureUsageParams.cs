@@ -29,4 +29,7 @@ public record ListFeatureUsageParams
 
     [JsonPropertyName("q")]
     public string? Q { get; init; }
+
+    [JsonPropertyName("without_negative_entitlements")]
+    public bool? WithoutNegativeEntitlements { get; init; }
 }

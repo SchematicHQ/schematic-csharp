@@ -6,15 +6,48 @@ namespace SchematicHQ.Client;
 
 public record BillingSubscriptionResponseData
 {
+    [JsonPropertyName("company_id")]
+    public string? CompanyId { get; init; }
+
+    [JsonPropertyName("created_at")]
+    public required DateTime CreatedAt { get; init; }
+
+    [JsonPropertyName("currency")]
+    public required string Currency { get; init; }
+
+    [JsonPropertyName("customer_external_id")]
+    public required string CustomerExternalId { get; init; }
+
     [JsonPropertyName("expired_at")]
     public DateTime? ExpiredAt { get; init; }
 
-    [JsonPropertyName("external_id")]
-    public required string ExternalId { get; init; }
-
     [JsonPropertyName("id")]
-    public required int Id { get; init; }
+    public required string Id { get; init; }
 
-    [JsonPropertyName("updated_at")]
-    public required DateTime UpdatedAt { get; init; }
+    [JsonPropertyName("interval")]
+    public required string Interval { get; init; }
+
+    [JsonPropertyName("metadata")]
+    public Dictionary<string, object>? Metadata { get; init; }
+
+    [JsonPropertyName("period_end")]
+    public required int PeriodEnd { get; init; }
+
+    [JsonPropertyName("period_start")]
+    public required int PeriodStart { get; init; }
+
+    [JsonPropertyName("status")]
+    public required string Status { get; init; }
+
+    [JsonPropertyName("subscription_external_id")]
+    public required string SubscriptionExternalId { get; init; }
+
+    [JsonPropertyName("total_price")]
+    public required int TotalPrice { get; init; }
+
+    [JsonPropertyName("trial_end")]
+    public int? TrialEnd { get; init; }
+
+    [JsonPropertyName("trial_end_setting")]
+    public string? TrialEndSetting { get; init; }
 }

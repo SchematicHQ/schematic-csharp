@@ -16,6 +16,26 @@ public class BillingClient
         _client = client;
     }
 
+    public async Task<UpsertBillingCouponResponse> UpsertBillingCouponAsync(
+        CreateCouponRequestBody request
+    )
+    {
+        var response = await _client.MakeRequestAsync(
+            new RawClient.JsonApiRequest
+            {
+                Method = HttpMethod.Post,
+                Path = "billing/coupons",
+                Body = request
+            }
+        );
+        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode is >= 200 and < 400)
+        {
+            return JsonSerializer.Deserialize<UpsertBillingCouponResponse>(responseBody)!;
+        }
+        throw new Exception(responseBody);
+    }
+
     public async Task<UpsertBillingCustomerResponse> UpsertBillingCustomerAsync(
         CreateBillingCustomerRequestBody request
     )
@@ -114,58 +134,214 @@ public class BillingClient
         throw new Exception(responseBody);
     }
 
-    public async Task<GetBillingPlanGroupByAccountIdResponse> GetBillingPlanGroupByAccountIdAsync()
+    public async Task<ListInvoicesResponse> ListInvoicesAsync(ListInvoicesRequest request)
     {
+        var _query = new Dictionary<string, object>()
+        {
+            { "customer_external_id", request.CustomerExternalId },
+        };
+        if (request.CompanyId != null)
+        {
+            _query["company_id"] = request.CompanyId;
+        }
+        if (request.SubscriptionExternalId != null)
+        {
+            _query["subscription_external_id"] = request.SubscriptionExternalId;
+        }
+        if (request.Limit != null)
+        {
+            _query["limit"] = request.Limit.ToString();
+        }
+        if (request.Offset != null)
+        {
+            _query["offset"] = request.Offset.ToString();
+        }
         var response = await _client.MakeRequestAsync(
-            new RawClient.JsonApiRequest { Method = HttpMethod.Get, Path = "billing/plan-group" }
+            new RawClient.JsonApiRequest
+            {
+                Method = HttpMethod.Get,
+                Path = "billing/invoices",
+                Query = _query
+            }
         );
         var responseBody = await response.Raw.Content.ReadAsStringAsync();
         if (response.StatusCode is >= 200 and < 400)
         {
-            return JsonSerializer.Deserialize<GetBillingPlanGroupByAccountIdResponse>(
-                responseBody
-            )!;
+            return JsonSerializer.Deserialize<ListInvoicesResponse>(responseBody)!;
         }
         throw new Exception(responseBody);
     }
 
-    public async Task<CreateBillingPlanGroupResponse> CreateBillingPlanGroupAsync(
-        CreateBillingPlanGroupRequestBody request
+    public async Task<UpsertInvoiceResponse> UpsertInvoiceAsync(CreateInvoiceRequestBody request)
+    {
+        var response = await _client.MakeRequestAsync(
+            new RawClient.JsonApiRequest
+            {
+                Method = HttpMethod.Post,
+                Path = "billing/invoices",
+                Body = request
+            }
+        );
+        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode is >= 200 and < 400)
+        {
+            return JsonSerializer.Deserialize<UpsertInvoiceResponse>(responseBody)!;
+        }
+        throw new Exception(responseBody);
+    }
+
+    public async Task<ListMetersResponse> ListMetersAsync(ListMetersRequest request)
+    {
+        var _query = new Dictionary<string, object>() { };
+        if (request.DisplayName != null)
+        {
+            _query["display_name"] = request.DisplayName;
+        }
+        if (request.Limit != null)
+        {
+            _query["limit"] = request.Limit.ToString();
+        }
+        if (request.Offset != null)
+        {
+            _query["offset"] = request.Offset.ToString();
+        }
+        var response = await _client.MakeRequestAsync(
+            new RawClient.JsonApiRequest
+            {
+                Method = HttpMethod.Get,
+                Path = "billing/meter",
+                Query = _query
+            }
+        );
+        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode is >= 200 and < 400)
+        {
+            return JsonSerializer.Deserialize<ListMetersResponse>(responseBody)!;
+        }
+        throw new Exception(responseBody);
+    }
+
+    public async Task<UpsertBillingMeterResponse> UpsertBillingMeterAsync(
+        CreateMeterRequestBody request
     )
     {
         var response = await _client.MakeRequestAsync(
             new RawClient.JsonApiRequest
             {
                 Method = HttpMethod.Post,
-                Path = "billing/plan-group",
+                Path = "billing/meter/upsert",
                 Body = request
             }
         );
         var responseBody = await response.Raw.Content.ReadAsStringAsync();
         if (response.StatusCode is >= 200 and < 400)
         {
-            return JsonSerializer.Deserialize<CreateBillingPlanGroupResponse>(responseBody)!;
+            return JsonSerializer.Deserialize<UpsertBillingMeterResponse>(responseBody)!;
         }
         throw new Exception(responseBody);
     }
 
-    public async Task<UpdateBillingPlanGroupResponse> UpdateBillingPlanGroupAsync(
-        string billingId,
-        UpdateBillingPlanGroupRequestBody request
+    public async Task<ListPaymentMethodsResponse> ListPaymentMethodsAsync(
+        ListPaymentMethodsRequest request
+    )
+    {
+        var _query = new Dictionary<string, object>()
+        {
+            { "customer_external_id", request.CustomerExternalId },
+        };
+        if (request.CompanyId != null)
+        {
+            _query["company_id"] = request.CompanyId;
+        }
+        if (request.SubscriptionExternalId != null)
+        {
+            _query["subscription_external_id"] = request.SubscriptionExternalId;
+        }
+        if (request.Limit != null)
+        {
+            _query["limit"] = request.Limit.ToString();
+        }
+        if (request.Offset != null)
+        {
+            _query["offset"] = request.Offset.ToString();
+        }
+        var response = await _client.MakeRequestAsync(
+            new RawClient.JsonApiRequest
+            {
+                Method = HttpMethod.Get,
+                Path = "billing/payment-methods",
+                Query = _query
+            }
+        );
+        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode is >= 200 and < 400)
+        {
+            return JsonSerializer.Deserialize<ListPaymentMethodsResponse>(responseBody)!;
+        }
+        throw new Exception(responseBody);
+    }
+
+    public async Task<UpsertPaymentMethodResponse> UpsertPaymentMethodAsync(
+        CreatePaymentMethodRequestBody request
     )
     {
         var response = await _client.MakeRequestAsync(
             new RawClient.JsonApiRequest
             {
-                Method = HttpMethod.Put,
-                Path = $"billing/plan-group/{billingId}",
+                Method = HttpMethod.Post,
+                Path = "billing/payment-methods",
                 Body = request
             }
         );
         var responseBody = await response.Raw.Content.ReadAsStringAsync();
         if (response.StatusCode is >= 200 and < 400)
         {
-            return JsonSerializer.Deserialize<UpdateBillingPlanGroupResponse>(responseBody)!;
+            return JsonSerializer.Deserialize<UpsertPaymentMethodResponse>(responseBody)!;
+        }
+        throw new Exception(responseBody);
+    }
+
+    public async Task<SearchBillingPricesResponse> SearchBillingPricesAsync(
+        SearchBillingPricesRequest request
+    )
+    {
+        var _query = new Dictionary<string, object>() { };
+        if (request.Ids != null)
+        {
+            _query["ids"] = request.Ids;
+        }
+        if (request.Interval != null)
+        {
+            _query["interval"] = request.Interval;
+        }
+        if (request.UsageType != null)
+        {
+            _query["usage_type"] = request.UsageType;
+        }
+        if (request.Price != null)
+        {
+            _query["price"] = request.Price.ToString();
+        }
+        if (request.Limit != null)
+        {
+            _query["limit"] = request.Limit.ToString();
+        }
+        if (request.Offset != null)
+        {
+            _query["offset"] = request.Offset.ToString();
+        }
+        var response = await _client.MakeRequestAsync(
+            new RawClient.JsonApiRequest
+            {
+                Method = HttpMethod.Get,
+                Path = "billing/price",
+                Query = _query
+            }
+        );
+        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode is >= 200 and < 400)
+        {
+            return JsonSerializer.Deserialize<SearchBillingPricesResponse>(responseBody)!;
         }
         throw new Exception(responseBody);
     }
@@ -207,6 +383,22 @@ public class BillingClient
         {
             _query["q"] = request.Q;
         }
+        if (request.PriceUsageType != null)
+        {
+            _query["price_usage_type"] = request.PriceUsageType;
+        }
+        if (request.WithoutLinkedToPlan != null)
+        {
+            _query["without_linked_to_plan"] = request.WithoutLinkedToPlan.ToString();
+        }
+        if (request.WithZeroPrice != null)
+        {
+            _query["with_zero_price"] = request.WithZeroPrice.ToString();
+        }
+        if (request.WithPricesOnly != null)
+        {
+            _query["with_prices_only"] = request.WithPricesOnly.ToString();
+        }
         if (request.Limit != null)
         {
             _query["limit"] = request.Limit.ToString();
@@ -227,6 +419,23 @@ public class BillingClient
         if (response.StatusCode is >= 200 and < 400)
         {
             return JsonSerializer.Deserialize<ListProductPricesResponse>(responseBody)!;
+        }
+        throw new Exception(responseBody);
+    }
+
+    public async Task<DeleteProductPriceResponse> DeleteProductPriceAsync(string billingId)
+    {
+        var response = await _client.MakeRequestAsync(
+            new RawClient.JsonApiRequest
+            {
+                Method = HttpMethod.Delete,
+                Path = $"billing/product/prices/{billingId}"
+            }
+        );
+        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode is >= 200 and < 400)
+        {
+            return JsonSerializer.Deserialize<DeleteProductPriceResponse>(responseBody)!;
         }
         throw new Exception(responseBody);
     }
@@ -268,6 +477,22 @@ public class BillingClient
         {
             _query["q"] = request.Q;
         }
+        if (request.PriceUsageType != null)
+        {
+            _query["price_usage_type"] = request.PriceUsageType;
+        }
+        if (request.WithoutLinkedToPlan != null)
+        {
+            _query["without_linked_to_plan"] = request.WithoutLinkedToPlan.ToString();
+        }
+        if (request.WithZeroPrice != null)
+        {
+            _query["with_zero_price"] = request.WithZeroPrice.ToString();
+        }
+        if (request.WithPricesOnly != null)
+        {
+            _query["with_prices_only"] = request.WithPricesOnly.ToString();
+        }
         if (request.Limit != null)
         {
             _query["limit"] = request.Limit.ToString();
@@ -288,6 +513,63 @@ public class BillingClient
         if (response.StatusCode is >= 200 and < 400)
         {
             return JsonSerializer.Deserialize<ListBillingProductsResponse>(responseBody)!;
+        }
+        throw new Exception(responseBody);
+    }
+
+    public async Task<CountBillingProductsResponse> CountBillingProductsAsync(
+        CountBillingProductsRequest request
+    )
+    {
+        var _query = new Dictionary<string, object>() { };
+        if (request.Ids != null)
+        {
+            _query["ids"] = request.Ids;
+        }
+        if (request.Name != null)
+        {
+            _query["name"] = request.Name;
+        }
+        if (request.Q != null)
+        {
+            _query["q"] = request.Q;
+        }
+        if (request.PriceUsageType != null)
+        {
+            _query["price_usage_type"] = request.PriceUsageType;
+        }
+        if (request.WithoutLinkedToPlan != null)
+        {
+            _query["without_linked_to_plan"] = request.WithoutLinkedToPlan.ToString();
+        }
+        if (request.WithZeroPrice != null)
+        {
+            _query["with_zero_price"] = request.WithZeroPrice.ToString();
+        }
+        if (request.WithPricesOnly != null)
+        {
+            _query["with_prices_only"] = request.WithPricesOnly.ToString();
+        }
+        if (request.Limit != null)
+        {
+            _query["limit"] = request.Limit.ToString();
+        }
+        if (request.Offset != null)
+        {
+            _query["offset"] = request.Offset.ToString();
+        }
+        var response = await _client.MakeRequestAsync(
+            new RawClient.JsonApiRequest
+            {
+                Method = HttpMethod.Get,
+                Path = "billing/products/count",
+                Query = _query
+            }
+        );
+        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode is >= 200 and < 400)
+        {
+            return JsonSerializer.Deserialize<CountBillingProductsResponse>(responseBody)!;
         }
         throw new Exception(responseBody);
     }

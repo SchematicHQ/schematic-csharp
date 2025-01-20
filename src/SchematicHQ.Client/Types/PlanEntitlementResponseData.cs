@@ -22,14 +22,26 @@ public record PlanEntitlementResponseData
     [JsonPropertyName("id")]
     public required string Id { get; init; }
 
+    [JsonPropertyName("metered_monthly_price")]
+    public BillingPriceView? MeteredMonthlyPrice { get; init; }
+
+    [JsonPropertyName("metered_yearly_price")]
+    public BillingPriceView? MeteredYearlyPrice { get; init; }
+
     [JsonPropertyName("metric_period")]
     public string? MetricPeriod { get; init; }
+
+    [JsonPropertyName("metric_period_month_reset")]
+    public string? MetricPeriodMonthReset { get; init; }
 
     [JsonPropertyName("plan")]
     public PlanResponseData? Plan { get; init; }
 
     [JsonPropertyName("plan_id")]
     public required string PlanId { get; init; }
+
+    [JsonPropertyName("price_behavior")]
+    public string? PriceBehavior { get; init; }
 
     [JsonPropertyName("rule_id")]
     public required string RuleId { get; init; }

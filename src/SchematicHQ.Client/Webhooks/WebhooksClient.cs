@@ -21,10 +21,6 @@ public class WebhooksClient
     )
     {
         var _query = new Dictionary<string, object>() { };
-        if (request.WebhookId != null)
-        {
-            _query["webhook_id"] = request.WebhookId;
-        }
         if (request.Ids != null)
         {
             _query["ids"] = request.Ids;
@@ -32,6 +28,10 @@ public class WebhooksClient
         if (request.Q != null)
         {
             _query["q"] = request.Q;
+        }
+        if (request.WebhookId != null)
+        {
+            _query["webhook_id"] = request.WebhookId;
         }
         if (request.Limit != null)
         {
@@ -79,10 +79,6 @@ public class WebhooksClient
     )
     {
         var _query = new Dictionary<string, object>() { };
-        if (request.WebhookId != null)
-        {
-            _query["webhook_id"] = request.WebhookId;
-        }
         if (request.Ids != null)
         {
             _query["ids"] = request.Ids;
@@ -90,6 +86,10 @@ public class WebhooksClient
         if (request.Q != null)
         {
             _query["q"] = request.Q;
+        }
+        if (request.WebhookId != null)
+        {
+            _query["webhook_id"] = request.WebhookId;
         }
         if (request.Limit != null)
         {

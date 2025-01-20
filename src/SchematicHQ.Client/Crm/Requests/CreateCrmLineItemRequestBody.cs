@@ -6,9 +6,6 @@ namespace SchematicHQ.Client;
 
 public record CreateCrmLineItemRequestBody
 {
-    [JsonPropertyName("TermMonth")]
-    public int? TermMonth { get; init; }
-
     [JsonPropertyName("amount")]
     public required string Amount { get; init; }
 
@@ -26,6 +23,9 @@ public record CreateCrmLineItemRequestBody
 
     [JsonPropertyName("quantity")]
     public required int Quantity { get; init; }
+
+    [JsonPropertyName("term_month")]
+    public int? TermMonth { get; init; }
 
     [JsonPropertyName("total_discount")]
     public string? TotalDiscount { get; init; }

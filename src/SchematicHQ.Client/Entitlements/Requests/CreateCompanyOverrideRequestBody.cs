@@ -10,11 +10,17 @@ public record CreateCompanyOverrideRequestBody
     [JsonPropertyName("company_id")]
     public required string CompanyId { get; init; }
 
+    [JsonPropertyName("expiration_date")]
+    public DateTime? ExpirationDate { get; init; }
+
     [JsonPropertyName("feature_id")]
     public required string FeatureId { get; init; }
 
     [JsonPropertyName("metric_period")]
     public CreateCompanyOverrideRequestBodyMetricPeriod? MetricPeriod { get; init; }
+
+    [JsonPropertyName("metric_period_month_reset")]
+    public CreateCompanyOverrideRequestBodyMetricPeriodMonthReset? MetricPeriodMonthReset { get; init; }
 
     [JsonPropertyName("value_bool")]
     public bool? ValueBool { get; init; }

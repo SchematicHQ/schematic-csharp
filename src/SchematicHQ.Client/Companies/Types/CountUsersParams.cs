@@ -6,9 +6,15 @@ namespace SchematicHQ.Client;
 
 public record CountUsersParams
 {
+    /// <summary>
+    /// Filter users by company ID (starts with comp_)
+    /// </summary>
     [JsonPropertyName("company_id")]
     public string? CompanyId { get; init; }
 
+    /// <summary>
+    /// Filter users by multiple user IDs (starts with user_)
+    /// </summary>
     [JsonPropertyName("ids")]
     public IEnumerable<string>? Ids { get; init; }
 
@@ -24,11 +30,14 @@ public record CountUsersParams
     [JsonPropertyName("offset")]
     public int? Offset { get; init; }
 
+    /// <summary>
+    /// Filter users by plan ID (starts with plan_)
+    /// </summary>
     [JsonPropertyName("plan_id")]
     public string? PlanId { get; init; }
 
     /// <summary>
-    /// Search filter
+    /// Search for users by name, keys or string traits
     /// </summary>
     [JsonPropertyName("q")]
     public string? Q { get; init; }

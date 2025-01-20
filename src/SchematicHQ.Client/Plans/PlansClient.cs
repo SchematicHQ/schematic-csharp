@@ -78,21 +78,29 @@ public class PlansClient
         {
             _query["company_id"] = request.CompanyId;
         }
+        if (request.HasProductId != null)
+        {
+            _query["has_product_id"] = request.HasProductId.ToString();
+        }
         if (request.Ids != null)
         {
             _query["ids"] = request.Ids;
-        }
-        if (request.Q != null)
-        {
-            _query["q"] = request.Q;
         }
         if (request.PlanType != null)
         {
             _query["plan_type"] = JsonSerializer.Serialize(request.PlanType.Value);
         }
+        if (request.Q != null)
+        {
+            _query["q"] = request.Q;
+        }
         if (request.WithoutEntitlementFor != null)
         {
             _query["without_entitlement_for"] = request.WithoutEntitlementFor;
+        }
+        if (request.WithoutProductId != null)
+        {
+            _query["without_product_id"] = request.WithoutProductId.ToString();
         }
         if (request.Limit != null)
         {
@@ -211,21 +219,29 @@ public class PlansClient
         {
             _query["company_id"] = request.CompanyId;
         }
+        if (request.HasProductId != null)
+        {
+            _query["has_product_id"] = request.HasProductId.ToString();
+        }
         if (request.Ids != null)
         {
             _query["ids"] = request.Ids;
-        }
-        if (request.Q != null)
-        {
-            _query["q"] = request.Q;
         }
         if (request.PlanType != null)
         {
             _query["plan_type"] = JsonSerializer.Serialize(request.PlanType.Value);
         }
+        if (request.Q != null)
+        {
+            _query["q"] = request.Q;
+        }
         if (request.WithoutEntitlementFor != null)
         {
             _query["without_entitlement_for"] = request.WithoutEntitlementFor;
+        }
+        if (request.WithoutProductId != null)
+        {
+            _query["without_product_id"] = request.WithoutProductId.ToString();
         }
         if (request.Limit != null)
         {

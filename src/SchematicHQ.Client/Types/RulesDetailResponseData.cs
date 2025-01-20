@@ -7,7 +7,7 @@ namespace SchematicHQ.Client;
 
 public record RulesDetailResponseData
 {
-    [JsonPropertyName("Flag")]
+    [JsonPropertyName("flag")]
     public FlagResponseData? Flag { get; init; }
 
     [JsonPropertyName("rules")]

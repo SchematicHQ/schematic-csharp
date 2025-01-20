@@ -10,6 +10,9 @@ namespace SchematicHQ.Client;
 [JsonConverter(typeof(StringEnumSerializer<CreatePlanEntitlementRequestBodyMetricPeriod>))]
 public enum CreatePlanEntitlementRequestBodyMetricPeriod
 {
+    [EnumMember(Value = "all_time")]
+    AllTime,
+
     [EnumMember(Value = "current_month")]
     CurrentMonth,
 

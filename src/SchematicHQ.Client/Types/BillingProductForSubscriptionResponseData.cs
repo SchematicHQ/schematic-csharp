@@ -6,9 +6,6 @@ namespace SchematicHQ.Client;
 
 public record BillingProductForSubscriptionResponseData
 {
-    [JsonPropertyName("account_id")]
-    public required string AccountId { get; init; }
-
     [JsonPropertyName("created_at")]
     public required DateTime CreatedAt { get; init; }
 
@@ -25,17 +22,32 @@ public record BillingProductForSubscriptionResponseData
     public required string Id { get; init; }
 
     [JsonPropertyName("interval")]
-    public string? Interval { get; init; }
+    public required string Interval { get; init; }
+
+    [JsonPropertyName("meter_id")]
+    public string? MeterId { get; init; }
 
     [JsonPropertyName("name")]
     public required string Name { get; init; }
 
     [JsonPropertyName("price")]
-    public required double Price { get; init; }
+    public required int Price { get; init; }
+
+    [JsonPropertyName("price_external_id")]
+    public required string PriceExternalId { get; init; }
+
+    [JsonPropertyName("price_id")]
+    public required string PriceId { get; init; }
 
     [JsonPropertyName("quantity")]
     public required double Quantity { get; init; }
 
+    [JsonPropertyName("subscription_id")]
+    public required string SubscriptionId { get; init; }
+
     [JsonPropertyName("updated_at")]
     public required DateTime UpdatedAt { get; init; }
+
+    [JsonPropertyName("usage_type")]
+    public required string UsageType { get; init; }
 }

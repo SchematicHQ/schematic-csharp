@@ -24,6 +24,27 @@ public record ListProductPricesParams
     [JsonPropertyName("offset")]
     public int? Offset { get; init; }
 
+    [JsonPropertyName("price_usage_type")]
+    public string? PriceUsageType { get; init; }
+
     [JsonPropertyName("q")]
     public string? Q { get; init; }
+
+    /// <summary>
+    /// Filter products that have prices
+    /// </summary>
+    [JsonPropertyName("with_prices_only")]
+    public bool? WithPricesOnly { get; init; }
+
+    /// <summary>
+    /// Filter products that have zero price for free subscription type
+    /// </summary>
+    [JsonPropertyName("with_zero_price")]
+    public bool? WithZeroPrice { get; init; }
+
+    /// <summary>
+    /// Filter products that are not linked to any plan
+    /// </summary>
+    [JsonPropertyName("without_linked_to_plan")]
+    public bool? WithoutLinkedToPlan { get; init; }
 }

@@ -32,6 +32,12 @@ public record CreateOrUpdateConditionRequestBody
     public CreateOrUpdateConditionRequestBodyMetricPeriod? MetricPeriod { get; init; }
 
     /// <summary>
+    /// When metric_period=current_month, specify whether the month restarts based on the calendar month or the billing period
+    /// </summary>
+    [JsonPropertyName("metric_period_month_reset")]
+    public CreateOrUpdateConditionRequestBodyMetricPeriodMonthReset? MetricPeriodMonthReset { get; init; }
+
+    /// <summary>
     /// Value to compare the track event metric against
     /// </summary>
     [JsonPropertyName("metric_value")]

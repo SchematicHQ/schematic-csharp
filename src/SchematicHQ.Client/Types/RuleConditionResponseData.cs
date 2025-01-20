@@ -33,6 +33,9 @@ public record RuleConditionResponseData
     [JsonPropertyName("metric_period")]
     public string? MetricPeriod { get; init; }
 
+    [JsonPropertyName("metric_period_month_reset")]
+    public string? MetricPeriodMonthReset { get; init; }
+
     [JsonPropertyName("metric_value")]
     public int? MetricValue { get; init; }
 

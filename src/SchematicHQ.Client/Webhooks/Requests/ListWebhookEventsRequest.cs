@@ -2,11 +2,11 @@ namespace SchematicHQ.Client;
 
 public record ListWebhookEventsRequest
 {
-    public string? WebhookId { get; init; }
-
     public string? Ids { get; init; }
 
     public string? Q { get; init; }
+
+    public string? WebhookId { get; init; }
 
     /// <summary>
     /// Page limit (default 100)

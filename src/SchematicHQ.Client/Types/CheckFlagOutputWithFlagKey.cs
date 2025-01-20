@@ -15,6 +15,9 @@ public record CheckFlagOutputWithFlagKey
     [JsonPropertyName("flag")]
     public required string Flag { get; init; }
 
+    [JsonPropertyName("flag_id")]
+    public string? FlagId { get; init; }
+
     [JsonPropertyName("reason")]
     public required string Reason { get; init; }
 
