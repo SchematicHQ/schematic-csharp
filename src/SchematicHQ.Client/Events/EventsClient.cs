@@ -104,11 +104,11 @@ public partial class EventsClient
         }
         if (request.Limit != null)
         {
-            _query["limit"] = request.Limit.ToString();
+            _query["limit"] = request.Limit.Value.ToString();
         }
         if (request.Offset != null)
         {
-            _query["offset"] = request.Offset.ToString();
+            _query["offset"] = request.Offset.Value.ToString();
         }
         var response = await _client.MakeRequestAsync(
             new RawClient.JsonApiRequest
@@ -186,11 +186,11 @@ public partial class EventsClient
         }
         if (request.Limit != null)
         {
-            _query["limit"] = request.Limit.ToString();
+            _query["limit"] = request.Limit.Value.ToString();
         }
         if (request.Offset != null)
         {
-            _query["offset"] = request.Offset.ToString();
+            _query["offset"] = request.Offset.Value.ToString();
         }
         var response = await _client.MakeRequestAsync(
             new RawClient.JsonApiRequest

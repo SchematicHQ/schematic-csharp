@@ -41,7 +41,7 @@ public partial class EntitlementsClient
         }
         if (request.WithoutExpired != null)
         {
-            _query["without_expired"] = request.WithoutExpired.ToString();
+            _query["without_expired"] = JsonUtils.Serialize(request.WithoutExpired.Value);
         }
         if (request.Q != null)
         {
@@ -49,11 +49,11 @@ public partial class EntitlementsClient
         }
         if (request.Limit != null)
         {
-            _query["limit"] = request.Limit.ToString();
+            _query["limit"] = request.Limit.Value.ToString();
         }
         if (request.Offset != null)
         {
-            _query["offset"] = request.Offset.ToString();
+            _query["offset"] = request.Offset.Value.ToString();
         }
         var response = await _client.MakeRequestAsync(
             new RawClient.JsonApiRequest
@@ -385,7 +385,7 @@ public partial class EntitlementsClient
         }
         if (request.WithoutExpired != null)
         {
-            _query["without_expired"] = request.WithoutExpired.ToString();
+            _query["without_expired"] = JsonUtils.Serialize(request.WithoutExpired.Value);
         }
         if (request.Q != null)
         {
@@ -393,11 +393,11 @@ public partial class EntitlementsClient
         }
         if (request.Limit != null)
         {
-            _query["limit"] = request.Limit.ToString();
+            _query["limit"] = request.Limit.Value.ToString();
         }
         if (request.Offset != null)
         {
-            _query["offset"] = request.Offset.ToString();
+            _query["offset"] = request.Offset.Value.ToString();
         }
         var response = await _client.MakeRequestAsync(
             new RawClient.JsonApiRequest
@@ -469,11 +469,11 @@ public partial class EntitlementsClient
         }
         if (request.Limit != null)
         {
-            _query["limit"] = request.Limit.ToString();
+            _query["limit"] = request.Limit.Value.ToString();
         }
         if (request.Offset != null)
         {
-            _query["offset"] = request.Offset.ToString();
+            _query["offset"] = request.Offset.Value.ToString();
         }
         var response = await _client.MakeRequestAsync(
             new RawClient.JsonApiRequest
@@ -545,11 +545,11 @@ public partial class EntitlementsClient
         }
         if (request.Limit != null)
         {
-            _query["limit"] = request.Limit.ToString();
+            _query["limit"] = request.Limit.Value.ToString();
         }
         if (request.Offset != null)
         {
-            _query["offset"] = request.Offset.ToString();
+            _query["offset"] = request.Offset.Value.ToString();
         }
         var response = await _client.MakeRequestAsync(
             new RawClient.JsonApiRequest
@@ -619,7 +619,7 @@ public partial class EntitlementsClient
         }
         if (request.CompanyKeys != null)
         {
-            _query["company_keys"] = request.CompanyKeys.ToString();
+            _query["company_keys"] = JsonUtils.Serialize(request.CompanyKeys);
         }
         if (request.Q != null)
         {
@@ -627,16 +627,17 @@ public partial class EntitlementsClient
         }
         if (request.WithoutNegativeEntitlements != null)
         {
-            _query["without_negative_entitlements"] =
-                request.WithoutNegativeEntitlements.ToString();
+            _query["without_negative_entitlements"] = JsonUtils.Serialize(
+                request.WithoutNegativeEntitlements.Value
+            );
         }
         if (request.Limit != null)
         {
-            _query["limit"] = request.Limit.ToString();
+            _query["limit"] = request.Limit.Value.ToString();
         }
         if (request.Offset != null)
         {
-            _query["offset"] = request.Offset.ToString();
+            _query["offset"] = request.Offset.Value.ToString();
         }
         var response = await _client.MakeRequestAsync(
             new RawClient.JsonApiRequest
@@ -706,7 +707,7 @@ public partial class EntitlementsClient
         }
         if (request.CompanyKeys != null)
         {
-            _query["company_keys"] = request.CompanyKeys.ToString();
+            _query["company_keys"] = JsonUtils.Serialize(request.CompanyKeys);
         }
         if (request.Q != null)
         {
@@ -714,16 +715,17 @@ public partial class EntitlementsClient
         }
         if (request.WithoutNegativeEntitlements != null)
         {
-            _query["without_negative_entitlements"] =
-                request.WithoutNegativeEntitlements.ToString();
+            _query["without_negative_entitlements"] = JsonUtils.Serialize(
+                request.WithoutNegativeEntitlements.Value
+            );
         }
         if (request.Limit != null)
         {
-            _query["limit"] = request.Limit.ToString();
+            _query["limit"] = request.Limit.Value.ToString();
         }
         if (request.Offset != null)
         {
-            _query["offset"] = request.Offset.ToString();
+            _query["offset"] = request.Offset.Value.ToString();
         }
         var response = await _client.MakeRequestAsync(
             new RawClient.JsonApiRequest
@@ -795,11 +797,11 @@ public partial class EntitlementsClient
         }
         if (request.Limit != null)
         {
-            _query["limit"] = request.Limit.ToString();
+            _query["limit"] = request.Limit.Value.ToString();
         }
         if (request.Offset != null)
         {
-            _query["offset"] = request.Offset.ToString();
+            _query["offset"] = request.Offset.Value.ToString();
         }
         var response = await _client.MakeRequestAsync(
             new RawClient.JsonApiRequest
@@ -871,11 +873,11 @@ public partial class EntitlementsClient
         }
         if (request.Limit != null)
         {
-            _query["limit"] = request.Limit.ToString();
+            _query["limit"] = request.Limit.Value.ToString();
         }
         if (request.Offset != null)
         {
-            _query["offset"] = request.Offset.ToString();
+            _query["offset"] = request.Offset.Value.ToString();
         }
         var response = await _client.MakeRequestAsync(
             new RawClient.JsonApiRequest
@@ -955,15 +957,17 @@ public partial class EntitlementsClient
         }
         if (request.WithMeteredProducts != null)
         {
-            _query["with_metered_products"] = request.WithMeteredProducts.ToString();
+            _query["with_metered_products"] = JsonUtils.Serialize(
+                request.WithMeteredProducts.Value
+            );
         }
         if (request.Limit != null)
         {
-            _query["limit"] = request.Limit.ToString();
+            _query["limit"] = request.Limit.Value.ToString();
         }
         if (request.Offset != null)
         {
-            _query["offset"] = request.Offset.ToString();
+            _query["offset"] = request.Offset.Value.ToString();
         }
         var response = await _client.MakeRequestAsync(
             new RawClient.JsonApiRequest
@@ -1299,15 +1303,17 @@ public partial class EntitlementsClient
         }
         if (request.WithMeteredProducts != null)
         {
-            _query["with_metered_products"] = request.WithMeteredProducts.ToString();
+            _query["with_metered_products"] = JsonUtils.Serialize(
+                request.WithMeteredProducts.Value
+            );
         }
         if (request.Limit != null)
         {
-            _query["limit"] = request.Limit.ToString();
+            _query["limit"] = request.Limit.Value.ToString();
         }
         if (request.Offset != null)
         {
-            _query["offset"] = request.Offset.ToString();
+            _query["offset"] = request.Offset.Value.ToString();
         }
         var response = await _client.MakeRequestAsync(
             new RawClient.JsonApiRequest
@@ -1381,7 +1387,7 @@ public partial class EntitlementsClient
     )
     {
         var _query = new Dictionary<string, object>();
-        _query["keys"] = request.Keys.ToString();
+        _query["keys"] = JsonUtils.Serialize(request.Keys);
         var response = await _client.MakeRequestAsync(
             new RawClient.JsonApiRequest
             {

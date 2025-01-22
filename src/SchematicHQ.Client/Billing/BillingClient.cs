@@ -177,7 +177,7 @@ public partial class BillingClient
         }
         if (request.FailedToImport != null)
         {
-            _query["failed_to_import"] = request.FailedToImport.ToString();
+            _query["failed_to_import"] = JsonUtils.Serialize(request.FailedToImport.Value);
         }
         if (request.Q != null)
         {
@@ -185,11 +185,11 @@ public partial class BillingClient
         }
         if (request.Limit != null)
         {
-            _query["limit"] = request.Limit.ToString();
+            _query["limit"] = request.Limit.Value.ToString();
         }
         if (request.Offset != null)
         {
-            _query["offset"] = request.Offset.ToString();
+            _query["offset"] = request.Offset.Value.ToString();
         }
         var response = await _client.MakeRequestAsync(
             new RawClient.JsonApiRequest
@@ -258,7 +258,7 @@ public partial class BillingClient
         }
         if (request.FailedToImport != null)
         {
-            _query["failed_to_import"] = request.FailedToImport.ToString();
+            _query["failed_to_import"] = JsonUtils.Serialize(request.FailedToImport.Value);
         }
         if (request.Q != null)
         {
@@ -266,11 +266,11 @@ public partial class BillingClient
         }
         if (request.Limit != null)
         {
-            _query["limit"] = request.Limit.ToString();
+            _query["limit"] = request.Limit.Value.ToString();
         }
         if (request.Offset != null)
         {
-            _query["offset"] = request.Offset.ToString();
+            _query["offset"] = request.Offset.Value.ToString();
         }
         var response = await _client.MakeRequestAsync(
             new RawClient.JsonApiRequest
@@ -346,11 +346,11 @@ public partial class BillingClient
         }
         if (request.Limit != null)
         {
-            _query["limit"] = request.Limit.ToString();
+            _query["limit"] = request.Limit.Value.ToString();
         }
         if (request.Offset != null)
         {
-            _query["offset"] = request.Offset.ToString();
+            _query["offset"] = request.Offset.Value.ToString();
         }
         var response = await _client.MakeRequestAsync(
             new RawClient.JsonApiRequest
@@ -491,11 +491,11 @@ public partial class BillingClient
         }
         if (request.Limit != null)
         {
-            _query["limit"] = request.Limit.ToString();
+            _query["limit"] = request.Limit.Value.ToString();
         }
         if (request.Offset != null)
         {
-            _query["offset"] = request.Offset.ToString();
+            _query["offset"] = request.Offset.Value.ToString();
         }
         var response = await _client.MakeRequestAsync(
             new RawClient.JsonApiRequest
@@ -640,11 +640,11 @@ public partial class BillingClient
         }
         if (request.Limit != null)
         {
-            _query["limit"] = request.Limit.ToString();
+            _query["limit"] = request.Limit.Value.ToString();
         }
         if (request.Offset != null)
         {
-            _query["offset"] = request.Offset.ToString();
+            _query["offset"] = request.Offset.Value.ToString();
         }
         var response = await _client.MakeRequestAsync(
             new RawClient.JsonApiRequest
@@ -786,15 +786,15 @@ public partial class BillingClient
         }
         if (request.Price != null)
         {
-            _query["price"] = request.Price.ToString();
+            _query["price"] = request.Price.Value.ToString();
         }
         if (request.Limit != null)
         {
-            _query["limit"] = request.Limit.ToString();
+            _query["limit"] = request.Limit.Value.ToString();
         }
         if (request.Offset != null)
         {
-            _query["offset"] = request.Offset.ToString();
+            _query["offset"] = request.Offset.Value.ToString();
         }
         var response = await _client.MakeRequestAsync(
             new RawClient.JsonApiRequest
@@ -944,23 +944,25 @@ public partial class BillingClient
         }
         if (request.WithoutLinkedToPlan != null)
         {
-            _query["without_linked_to_plan"] = request.WithoutLinkedToPlan.ToString();
+            _query["without_linked_to_plan"] = JsonUtils.Serialize(
+                request.WithoutLinkedToPlan.Value
+            );
         }
         if (request.WithZeroPrice != null)
         {
-            _query["with_zero_price"] = request.WithZeroPrice.ToString();
+            _query["with_zero_price"] = JsonUtils.Serialize(request.WithZeroPrice.Value);
         }
         if (request.WithPricesOnly != null)
         {
-            _query["with_prices_only"] = request.WithPricesOnly.ToString();
+            _query["with_prices_only"] = JsonUtils.Serialize(request.WithPricesOnly.Value);
         }
         if (request.Limit != null)
         {
-            _query["limit"] = request.Limit.ToString();
+            _query["limit"] = request.Limit.Value.ToString();
         }
         if (request.Offset != null)
         {
-            _query["offset"] = request.Offset.ToString();
+            _query["offset"] = request.Offset.Value.ToString();
         }
         var response = await _client.MakeRequestAsync(
             new RawClient.JsonApiRequest
@@ -1167,23 +1169,25 @@ public partial class BillingClient
         }
         if (request.WithoutLinkedToPlan != null)
         {
-            _query["without_linked_to_plan"] = request.WithoutLinkedToPlan.ToString();
+            _query["without_linked_to_plan"] = JsonUtils.Serialize(
+                request.WithoutLinkedToPlan.Value
+            );
         }
         if (request.WithZeroPrice != null)
         {
-            _query["with_zero_price"] = request.WithZeroPrice.ToString();
+            _query["with_zero_price"] = JsonUtils.Serialize(request.WithZeroPrice.Value);
         }
         if (request.WithPricesOnly != null)
         {
-            _query["with_prices_only"] = request.WithPricesOnly.ToString();
+            _query["with_prices_only"] = JsonUtils.Serialize(request.WithPricesOnly.Value);
         }
         if (request.Limit != null)
         {
-            _query["limit"] = request.Limit.ToString();
+            _query["limit"] = request.Limit.Value.ToString();
         }
         if (request.Offset != null)
         {
-            _query["offset"] = request.Offset.ToString();
+            _query["offset"] = request.Offset.Value.ToString();
         }
         var response = await _client.MakeRequestAsync(
             new RawClient.JsonApiRequest
@@ -1261,23 +1265,25 @@ public partial class BillingClient
         }
         if (request.WithoutLinkedToPlan != null)
         {
-            _query["without_linked_to_plan"] = request.WithoutLinkedToPlan.ToString();
+            _query["without_linked_to_plan"] = JsonUtils.Serialize(
+                request.WithoutLinkedToPlan.Value
+            );
         }
         if (request.WithZeroPrice != null)
         {
-            _query["with_zero_price"] = request.WithZeroPrice.ToString();
+            _query["with_zero_price"] = JsonUtils.Serialize(request.WithZeroPrice.Value);
         }
         if (request.WithPricesOnly != null)
         {
-            _query["with_prices_only"] = request.WithPricesOnly.ToString();
+            _query["with_prices_only"] = JsonUtils.Serialize(request.WithPricesOnly.Value);
         }
         if (request.Limit != null)
         {
-            _query["limit"] = request.Limit.ToString();
+            _query["limit"] = request.Limit.Value.ToString();
         }
         if (request.Offset != null)
         {
-            _query["offset"] = request.Offset.ToString();
+            _query["offset"] = request.Offset.Value.ToString();
         }
         var response = await _client.MakeRequestAsync(
             new RawClient.JsonApiRequest
