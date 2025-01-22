@@ -20,7 +20,7 @@ public partial class SchematicApi
                 { "X-Fern-Language", "C#" },
                 { "X-Fern-SDK-Name", "SchematicHQ.Client" },
                 { "X-Fern-SDK-Version", Version.Current },
-                { "User-Agent", "SchematicHQ.Client/1.0.4" },
+                { "User-Agent", "SchematicHQ.Client/1.0.5" },
             }
         );
         clientOptions ??= new ClientOptions();

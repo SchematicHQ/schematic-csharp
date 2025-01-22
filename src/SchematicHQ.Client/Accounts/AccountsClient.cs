@@ -28,18 +28,18 @@ public partial class AccountsClient
     )
     {
         var _query = new Dictionary<string, object>();
-        _query["require_environment"] = request.RequireEnvironment.ToString();
+        _query["require_environment"] = JsonUtils.Serialize(request.RequireEnvironment);
         if (request.EnvironmentId != null)
         {
             _query["environment_id"] = request.EnvironmentId;
         }
         if (request.Limit != null)
         {
-            _query["limit"] = request.Limit.ToString();
+            _query["limit"] = request.Limit.Value.ToString();
         }
         if (request.Offset != null)
         {
-            _query["offset"] = request.Offset.ToString();
+            _query["offset"] = request.Offset.Value.ToString();
         }
         var response = await _client.MakeRequestAsync(
             new RawClient.JsonApiRequest
@@ -345,18 +345,18 @@ public partial class AccountsClient
     )
     {
         var _query = new Dictionary<string, object>();
-        _query["require_environment"] = request.RequireEnvironment.ToString();
+        _query["require_environment"] = JsonUtils.Serialize(request.RequireEnvironment);
         if (request.EnvironmentId != null)
         {
             _query["environment_id"] = request.EnvironmentId;
         }
         if (request.Limit != null)
         {
-            _query["limit"] = request.Limit.ToString();
+            _query["limit"] = request.Limit.Value.ToString();
         }
         if (request.Offset != null)
         {
-            _query["offset"] = request.Offset.ToString();
+            _query["offset"] = request.Offset.Value.ToString();
         }
         var response = await _client.MakeRequestAsync(
             new RawClient.JsonApiRequest
@@ -433,11 +433,11 @@ public partial class AccountsClient
         }
         if (request.Limit != null)
         {
-            _query["limit"] = request.Limit.ToString();
+            _query["limit"] = request.Limit.Value.ToString();
         }
         if (request.Offset != null)
         {
-            _query["offset"] = request.Offset.ToString();
+            _query["offset"] = request.Offset.Value.ToString();
         }
         var response = await _client.MakeRequestAsync(
             new RawClient.JsonApiRequest
@@ -573,11 +573,11 @@ public partial class AccountsClient
         }
         if (request.Limit != null)
         {
-            _query["limit"] = request.Limit.ToString();
+            _query["limit"] = request.Limit.Value.ToString();
         }
         if (request.Offset != null)
         {
-            _query["offset"] = request.Offset.ToString();
+            _query["offset"] = request.Offset.Value.ToString();
         }
         var response = await _client.MakeRequestAsync(
             new RawClient.JsonApiRequest
@@ -643,11 +643,11 @@ public partial class AccountsClient
         _query["ids"] = request.Ids;
         if (request.Limit != null)
         {
-            _query["limit"] = request.Limit.ToString();
+            _query["limit"] = request.Limit.Value.ToString();
         }
         if (request.Offset != null)
         {
-            _query["offset"] = request.Offset.ToString();
+            _query["offset"] = request.Offset.Value.ToString();
         }
         var response = await _client.MakeRequestAsync(
             new RawClient.JsonApiRequest

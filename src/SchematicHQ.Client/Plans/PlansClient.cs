@@ -313,7 +313,7 @@ public partial class PlansClient
         }
         if (request.HasProductId != null)
         {
-            _query["has_product_id"] = request.HasProductId.ToString();
+            _query["has_product_id"] = JsonUtils.Serialize(request.HasProductId.Value);
         }
         if (request.PlanType != null)
         {
@@ -329,15 +329,15 @@ public partial class PlansClient
         }
         if (request.WithoutProductId != null)
         {
-            _query["without_product_id"] = request.WithoutProductId.ToString();
+            _query["without_product_id"] = JsonUtils.Serialize(request.WithoutProductId.Value);
         }
         if (request.Limit != null)
         {
-            _query["limit"] = request.Limit.ToString();
+            _query["limit"] = request.Limit.Value.ToString();
         }
         if (request.Offset != null)
         {
-            _query["offset"] = request.Offset.ToString();
+            _query["offset"] = request.Offset.Value.ToString();
         }
         var response = await _client.MakeRequestAsync(
             new RawClient.JsonApiRequest
@@ -724,7 +724,7 @@ public partial class PlansClient
         }
         if (request.HasProductId != null)
         {
-            _query["has_product_id"] = request.HasProductId.ToString();
+            _query["has_product_id"] = JsonUtils.Serialize(request.HasProductId.Value);
         }
         if (request.PlanType != null)
         {
@@ -740,15 +740,15 @@ public partial class PlansClient
         }
         if (request.WithoutProductId != null)
         {
-            _query["without_product_id"] = request.WithoutProductId.ToString();
+            _query["without_product_id"] = JsonUtils.Serialize(request.WithoutProductId.Value);
         }
         if (request.Limit != null)
         {
-            _query["limit"] = request.Limit.ToString();
+            _query["limit"] = request.Limit.Value.ToString();
         }
         if (request.Offset != null)
         {
-            _query["offset"] = request.Offset.ToString();
+            _query["offset"] = request.Offset.Value.ToString();
         }
         var response = await _client.MakeRequestAsync(
             new RawClient.JsonApiRequest
