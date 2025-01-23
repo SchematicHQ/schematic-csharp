@@ -2457,6 +2457,46 @@ await client.Checkout.InternalAsync(
 </dl>
 </details>
 
+<details><summary><code>client.Checkout.<a href="/src/SchematicHQ.Client/Checkout/CheckoutClient.cs">GetCheckoutDataAsync</a>(checkoutInternalId) -> GetCheckoutDataResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Checkout.GetCheckoutDataAsync("checkout_internal_id");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**checkoutInternalId:** `string` — checkout_internal_id
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.Checkout.<a href="/src/SchematicHQ.Client/Checkout/CheckoutClient.cs">PreviewCheckoutInternalAsync</a>(ChangeSubscriptionInternalRequestBody { ... }) -> PreviewCheckoutInternalResponse</code></summary>
 <dl>
 <dd>

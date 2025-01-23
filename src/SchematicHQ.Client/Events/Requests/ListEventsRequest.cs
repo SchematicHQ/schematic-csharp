@@ -12,6 +12,8 @@ public record ListEventsRequest
 
     public IEnumerable<string> EventTypes { get; set; } = new List<string>();
 
+    public string? FlagId { get; set; }
+
     public string? UserId { get; set; }
 
     /// <summary>

@@ -16,6 +16,9 @@ public record ListEventsParams
     [JsonPropertyName("event_types")]
     public IEnumerable<string>? EventTypes { get; set; }
 
+    [JsonPropertyName("flag_id")]
+    public string? FlagId { get; set; }
+
     /// <summary>
     /// Page limit (default 100)
     /// </summary>
