@@ -49,6 +49,9 @@ public record EventDetailResponseData
     [JsonPropertyName("processed_at")]
     public DateTime? ProcessedAt { get; set; }
 
+    [JsonPropertyName("quantity")]
+    public required int Quantity { get; set; }
+
     [JsonPropertyName("sent_at")]
     public DateTime? SentAt { get; set; }
 

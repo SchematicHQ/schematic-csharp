@@ -33,6 +33,11 @@ public record ListPlansRequest
     public bool? WithoutProductId { get; set; }
 
     /// <summary>
+    /// Filter out plans that have a paid billing product ID
+    /// </summary>
+    public bool? WithoutPaidProductId { get; set; }
+
+    /// <summary>
     /// Page limit (default 100)
     /// </summary>
     public int? Limit { get; set; }

@@ -94,6 +94,65 @@ public partial class CheckoutClient
 
     /// <example>
     /// <code>
+    /// await client.Checkout.GetCheckoutDataAsync("checkout_internal_id");
+    /// </code>
+    /// </example>
+    public async Task<GetCheckoutDataResponse> GetCheckoutDataAsync(
+        string checkoutInternalId,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        var response = await _client.MakeRequestAsync(
+            new RawClient.JsonApiRequest
+            {
+                BaseUrl = _client.Options.BaseUrl,
+                Method = HttpMethod.Get,
+                Path = $"checkout-internal/{checkoutInternalId}/data",
+                Options = options,
+            },
+            cancellationToken
+        );
+        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode is >= 200 and < 400)
+        {
+            try
+            {
+                return JsonUtils.Deserialize<GetCheckoutDataResponse>(responseBody)!;
+            }
+            catch (JsonException e)
+            {
+                throw new SchematicApiException("Failed to deserialize response", e);
+            }
+        }
+
+        try
+        {
+            switch (response.StatusCode)
+            {
+                case 401:
+                    throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
+                case 403:
+                    throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                case 404:
+                    throw new NotFoundError(JsonUtils.Deserialize<ApiError>(responseBody));
+                case 500:
+                    throw new InternalServerError(JsonUtils.Deserialize<ApiError>(responseBody));
+            }
+        }
+        catch (JsonException)
+        {
+            // unable to map error response, throwing generic error
+        }
+        throw new SchematicApiApiException(
+            $"Error with status code {response.StatusCode}",
+            response.StatusCode,
+            responseBody
+        );
+    }
+
+    /// <example>
+    /// <code>
     /// await client.Checkout.PreviewCheckoutInternalAsync(
     ///     new ChangeSubscriptionInternalRequestBody
     ///     {
