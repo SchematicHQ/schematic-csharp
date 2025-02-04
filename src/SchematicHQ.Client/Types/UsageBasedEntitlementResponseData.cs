@@ -19,6 +19,9 @@ public record UsageBasedEntitlementResponseData
     [JsonPropertyName("metric_period_month_reset")]
     public string? MetricPeriodMonthReset { get; set; }
 
+    [JsonPropertyName("monthly_usage_based_price")]
+    public BillingPriceView? MonthlyUsageBasedPrice { get; set; }
+
     [JsonPropertyName("price_behavior")]
     public string? PriceBehavior { get; set; }
 
@@ -30,6 +33,9 @@ public record UsageBasedEntitlementResponseData
 
     [JsonPropertyName("value_type")]
     public required string ValueType { get; set; }
+
+    [JsonPropertyName("yearly_usage_based_price")]
+    public BillingPriceView? YearlyUsageBasedPrice { get; set; }
 
     public override string ToString()
     {

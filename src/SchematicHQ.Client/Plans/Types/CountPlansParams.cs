@@ -47,6 +47,12 @@ public record CountPlansParams
     public string? WithoutEntitlementFor { get; set; }
 
     /// <summary>
+    /// Filter out plans that have a paid billing product ID
+    /// </summary>
+    [JsonPropertyName("without_paid_product_id")]
+    public bool? WithoutPaidProductId { get; set; }
+
+    /// <summary>
     /// Filter out plans that have a billing product ID
     /// </summary>
     [JsonPropertyName("without_product_id")]
