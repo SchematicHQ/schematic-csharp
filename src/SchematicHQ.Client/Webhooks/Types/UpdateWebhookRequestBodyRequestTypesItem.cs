@@ -77,4 +77,7 @@ public enum UpdateWebhookRequestBodyRequestTypesItem
 
     [EnumMember(Value = "test.send")]
     TestSend,
+
+    [EnumMember(Value = "subscription.trial.ended")]
+    SubscriptionTrialEnded,
 }

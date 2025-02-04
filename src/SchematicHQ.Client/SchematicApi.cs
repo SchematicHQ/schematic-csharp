@@ -1,6 +1,3 @@
-using System.Net.Http;
-using System.Threading;
-using System.Threading.Tasks;
 using SchematicHQ.Client.Core;
 
 #nullable enable
@@ -20,7 +17,7 @@ public partial class SchematicApi
                 { "X-Fern-Language", "C#" },
                 { "X-Fern-SDK-Name", "SchematicHQ.Client" },
                 { "X-Fern-SDK-Version", Version.Current },
-                { "User-Agent", "SchematicHQ.Client/1.0.5" },
+                { "User-Agent", "SchematicHQ.Client/1.0.6" },
             }
         );
         clientOptions ??= new ClientOptions();
@@ -72,36 +69,4 @@ public partial class SchematicApi
     public AccesstokensClient Accesstokens { get; init; }
 
     public WebhooksClient Webhooks { get; init; }
-
-    /// <example>
-    /// <code>
-    /// await client.GetCompanyPlansAsync();
-    /// </code>
-    /// </example>
-    public async Task GetCompanyPlansAsync(
-        RequestOptions? options = null,
-        CancellationToken cancellationToken = default
-    )
-    {
-        var response = await _client.MakeRequestAsync(
-            new RawClient.JsonApiRequest
-            {
-                BaseUrl = _client.Options.BaseUrl,
-                Method = HttpMethod.Get,
-                Path = "company-plans",
-                Options = options,
-            },
-            cancellationToken
-        );
-        if (response.StatusCode is >= 200 and < 400)
-        {
-            return;
-        }
-        var responseBody = await response.Raw.Content.ReadAsStringAsync();
-        throw new SchematicApiApiException(
-            $"Error with status code {response.StatusCode}",
-            response.StatusCode,
-            responseBody
-        );
-    }
 }

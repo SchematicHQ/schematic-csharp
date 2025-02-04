@@ -180,6 +180,10 @@ public partial class EventsClient
         {
             _query["event_subtype"] = request.EventSubtype;
         }
+        if (request.FlagId != null)
+        {
+            _query["flag_id"] = request.FlagId;
+        }
         if (request.UserId != null)
         {
             _query["user_id"] = request.UserId;
