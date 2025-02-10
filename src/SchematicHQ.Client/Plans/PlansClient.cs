@@ -331,6 +331,12 @@ public partial class PlansClient
         {
             _query["without_product_id"] = JsonUtils.Serialize(request.WithoutProductId.Value);
         }
+        if (request.WithoutPaidProductId != null)
+        {
+            _query["without_paid_product_id"] = JsonUtils.Serialize(
+                request.WithoutPaidProductId.Value
+            );
+        }
         if (request.Limit != null)
         {
             _query["limit"] = request.Limit.Value.ToString();
@@ -741,6 +747,12 @@ public partial class PlansClient
         if (request.WithoutProductId != null)
         {
             _query["without_product_id"] = JsonUtils.Serialize(request.WithoutProductId.Value);
+        }
+        if (request.WithoutPaidProductId != null)
+        {
+            _query["without_paid_product_id"] = JsonUtils.Serialize(
+                request.WithoutPaidProductId.Value
+            );
         }
         if (request.Limit != null)
         {

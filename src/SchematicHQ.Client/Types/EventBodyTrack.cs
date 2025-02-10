@@ -20,6 +20,12 @@ public record EventBodyTrack
     public required string Event { get; set; }
 
     /// <summary>
+    /// Optionally specify the quantity of the event
+    /// </summary>
+    [JsonPropertyName("quantity")]
+    public int? Quantity { get; set; }
+
+    /// <summary>
     /// A map of trait names to trait values
     /// </summary>
     [JsonPropertyName("traits")]
