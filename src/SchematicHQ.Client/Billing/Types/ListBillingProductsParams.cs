@@ -1,8 +1,6 @@
 using System.Text.Json.Serialization;
 using SchematicHQ.Client.Core;
 
-#nullable enable
-
 namespace SchematicHQ.Client;
 
 public record ListBillingProductsParams
@@ -26,7 +24,7 @@ public record ListBillingProductsParams
     public int? Offset { get; set; }
 
     [JsonPropertyName("price_usage_type")]
-    public string? PriceUsageType { get; set; }
+    public ListBillingProductsResponseParamsPriceUsageType? PriceUsageType { get; set; }
 
     [JsonPropertyName("q")]
     public string? Q { get; set; }

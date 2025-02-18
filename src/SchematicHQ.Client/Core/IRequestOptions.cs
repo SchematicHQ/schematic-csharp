@@ -1,8 +1,6 @@
 using System;
 using System.Net.Http;
 
-#nullable enable
-
 namespace SchematicHQ.Client.Core;
 
 internal interface IRequestOptions

@@ -1,8 +1,6 @@
 using System.Text.Json.Serialization;
 using SchematicHQ.Client.Core;
 
-#nullable enable
-
 namespace SchematicHQ.Client;
 
 public record CheckoutDataResponseData
@@ -23,6 +21,13 @@ public record CheckoutDataResponseData
 
     [JsonPropertyName("feature_usage")]
     public FeatureUsageDetailResponseData? FeatureUsage { get; set; }
+
+    [JsonPropertyName("selected_plan")]
+    public PlanDetailResponseData? SelectedPlan { get; set; }
+
+    [JsonPropertyName("selected_usage_based_entitlements")]
+    public IEnumerable<UsageBasedEntitlementResponseData> SelectedUsageBasedEntitlements { get; set; } =
+        new List<UsageBasedEntitlementResponseData>();
 
     [JsonPropertyName("subscription")]
     public CompanySubscriptionResponseData? Subscription { get; set; }

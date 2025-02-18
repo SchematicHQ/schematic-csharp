@@ -1,12 +1,10 @@
 using SchematicHQ.Client.Core;
 
-#nullable enable
-
 namespace SchematicHQ.Client;
 
 public partial class SchematicApi
 {
-    private RawClient _client;
+    private readonly RawClient _client;
 
     public SchematicApi(string? apiKey = null, ClientOptions? clientOptions = null)
     {
