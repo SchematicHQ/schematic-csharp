@@ -1,8 +1,6 @@
 using System.Text.Json.Serialization;
 using SchematicHQ.Client.Core;
 
-#nullable enable
-
 namespace SchematicHQ.Client;
 
 public record CreateBillingPriceRequestBody
@@ -29,7 +27,7 @@ public record CreateBillingPriceRequestBody
     public required string ProductExternalId { get; set; }
 
     [JsonPropertyName("usage_type")]
-    public required string UsageType { get; set; }
+    public required CreateBillingPriceRequestBodyUsageType UsageType { get; set; }
 
     public override string ToString()
     {

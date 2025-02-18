@@ -2,8 +2,6 @@ using System.Text.Json.Serialization;
 using OneOf;
 using SchematicHQ.Client.Core;
 
-#nullable enable
-
 namespace SchematicHQ.Client;
 
 public record CreateEventRequestBody

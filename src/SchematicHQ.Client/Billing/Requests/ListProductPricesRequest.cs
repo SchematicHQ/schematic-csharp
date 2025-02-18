@@ -1,7 +1,5 @@
 using SchematicHQ.Client.Core;
 
-#nullable enable
-
 namespace SchematicHQ.Client;
 
 public record ListProductPricesRequest
@@ -12,7 +10,7 @@ public record ListProductPricesRequest
 
     public string? Q { get; set; }
 
-    public string? PriceUsageType { get; set; }
+    public ListProductPricesRequestPriceUsageType? PriceUsageType { get; set; }
 
     /// <summary>
     /// Filter products that are not linked to any plan

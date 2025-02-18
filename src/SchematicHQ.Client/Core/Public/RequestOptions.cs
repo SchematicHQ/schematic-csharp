@@ -2,8 +2,6 @@ using System;
 using System.Net.Http;
 using SchematicHQ.Client.Core;
 
-#nullable enable
-
 namespace SchematicHQ.Client;
 
 public partial class RequestOptions : IRequestOptions

@@ -1,8 +1,6 @@
 using System.Text.Json.Serialization;
 using SchematicHQ.Client.Core;
 
-#nullable enable
-
 namespace SchematicHQ.Client;
 
 public record ChangeSubscriptionRequestBody
@@ -10,6 +8,9 @@ public record ChangeSubscriptionRequestBody
     [JsonPropertyName("add_on_ids")]
     public IEnumerable<UpdateAddOnRequestBody> AddOnIds { get; set; } =
         new List<UpdateAddOnRequestBody>();
+
+    [JsonPropertyName("coupon_external_id")]
+    public string? CouponExternalId { get; set; }
 
     [JsonPropertyName("new_plan_id")]
     public required string NewPlanId { get; set; }

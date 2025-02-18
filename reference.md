@@ -1553,6 +1553,46 @@ await client.Features.CountFlagsAsync(new CountFlagsRequest());
 </details>
 
 ## billing
+<details><summary><code>client.Billing.<a href="/src/SchematicHQ.Client/Billing/BillingClient.cs">ListCouponsAsync</a>(ListCouponsRequest { ... }) -> ListCouponsResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Billing.ListCouponsAsync(new ListCouponsRequest());
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `ListCouponsRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.Billing.<a href="/src/SchematicHQ.Client/Billing/BillingClient.cs">UpsertBillingCouponAsync</a>(CreateCouponRequestBody { ... }) -> UpsertBillingCouponResponse</code></summary>
 <dl>
 <dd>
@@ -2066,7 +2106,7 @@ await client.Billing.UpsertBillingPriceAsync(
         Price = 1,
         PriceExternalId = "price_external_id",
         ProductExternalId = "product_external_id",
-        UsageType = "usage_type",
+        UsageType = CreateBillingPriceRequestBodyUsageType.Licensed,
     }
 );
 ```
@@ -2432,7 +2472,7 @@ await client.Checkout.InternalAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Checkout.<a href="/src/SchematicHQ.Client/Checkout/CheckoutClient.cs">GetCheckoutDataAsync</a>(checkoutInternalId) -> GetCheckoutDataResponse</code></summary>
+<details><summary><code>client.Checkout.<a href="/src/SchematicHQ.Client/Checkout/CheckoutClient.cs">GetCheckoutDataAsync</a>(CheckoutDataRequestBody { ... }) -> GetCheckoutDataResponse</code></summary>
 <dl>
 <dd>
 
@@ -2445,7 +2485,9 @@ await client.Checkout.InternalAsync(
 <dd>
 
 ```csharp
-await client.Checkout.GetCheckoutDataAsync("checkout_internal_id");
+await client.Checkout.GetCheckoutDataAsync(
+    new CheckoutDataRequestBody { CompanyId = "company_id" }
+);
 ```
 </dd>
 </dl>
@@ -2460,7 +2502,7 @@ await client.Checkout.GetCheckoutDataAsync("checkout_internal_id");
 <dl>
 <dd>
 
-**checkoutInternalId:** `string` — checkout_internal_id
+**request:** `CheckoutDataRequestBody` 
     
 </dd>
 </dl>
