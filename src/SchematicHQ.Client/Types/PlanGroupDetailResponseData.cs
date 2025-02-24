@@ -9,6 +9,12 @@ public record PlanGroupDetailResponseData
     public IEnumerable<PlanGroupPlanDetailResponseData> AddOns { get; set; } =
         new List<PlanGroupPlanDetailResponseData>();
 
+    [JsonPropertyName("custom_plan_config")]
+    public CustomPlanViewConfigResponseData? CustomPlanConfig { get; set; }
+
+    [JsonPropertyName("custom_plan_id")]
+    public string? CustomPlanId { get; set; }
+
     [JsonPropertyName("default_plan")]
     public PlanGroupPlanDetailResponseData? DefaultPlan { get; set; }
 

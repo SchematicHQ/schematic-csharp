@@ -17,6 +17,9 @@ public record PlanGroupPlanDetailResponseData
     [JsonPropertyName("created_at")]
     public required DateTime CreatedAt { get; set; }
 
+    [JsonPropertyName("custom_plan_config")]
+    public CustomPlanViewConfigResponseData? CustomPlanConfig { get; set; }
+
     [JsonPropertyName("description")]
     public required string Description { get; set; }
 
@@ -33,6 +36,9 @@ public record PlanGroupPlanDetailResponseData
 
     [JsonPropertyName("id")]
     public required string Id { get; set; }
+
+    [JsonPropertyName("is_custom")]
+    public required bool IsCustom { get; set; }
 
     [JsonPropertyName("is_default")]
     public required bool IsDefault { get; set; }

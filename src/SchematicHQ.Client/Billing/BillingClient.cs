@@ -873,6 +873,10 @@ public partial class BillingClient
     {
         var _query = new Dictionary<string, object>();
         _query["ids"] = request.Ids;
+        if (request.Q != null)
+        {
+            _query["q"] = request.Q;
+        }
         if (request.Interval != null)
         {
             _query["interval"] = request.Interval;

@@ -8,6 +8,12 @@ public record UpdatePlanGroupRequestBody
     [JsonPropertyName("add_on_ids")]
     public IEnumerable<string> AddOnIds { get; set; } = new List<string>();
 
+    [JsonPropertyName("custom_plan_config")]
+    public CustomPlanConfig? CustomPlanConfig { get; set; }
+
+    [JsonPropertyName("custom_plan_id")]
+    public string? CustomPlanId { get; set; }
+
     [JsonPropertyName("default_plan_id")]
     public string? DefaultPlanId { get; set; }
 
