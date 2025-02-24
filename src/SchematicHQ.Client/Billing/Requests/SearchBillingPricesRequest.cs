@@ -6,6 +6,8 @@ public record SearchBillingPricesRequest
 {
     public IEnumerable<string> Ids { get; set; } = new List<string>();
 
+    public string? Q { get; set; }
+
     public string? Interval { get; set; }
 
     public string? UsageType { get; set; }

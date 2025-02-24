@@ -23,6 +23,12 @@ public record CompanyPlanDetailResponseData
     [JsonPropertyName("current")]
     public required bool Current { get; set; }
 
+    [JsonPropertyName("custom")]
+    public required bool Custom { get; set; }
+
+    [JsonPropertyName("custom_plan_config")]
+    public CustomPlanConfig? CustomPlanConfig { get; set; }
+
     [JsonPropertyName("description")]
     public required string Description { get; set; }
 
@@ -39,6 +45,9 @@ public record CompanyPlanDetailResponseData
 
     [JsonPropertyName("id")]
     public required string Id { get; set; }
+
+    [JsonPropertyName("is_custom")]
+    public required bool IsCustom { get; set; }
 
     [JsonPropertyName("is_default")]
     public required bool IsDefault { get; set; }

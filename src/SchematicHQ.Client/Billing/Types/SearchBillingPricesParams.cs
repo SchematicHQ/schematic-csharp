@@ -26,6 +26,9 @@ public record SearchBillingPricesParams
     [JsonPropertyName("price")]
     public int? Price { get; set; }
 
+    [JsonPropertyName("q")]
+    public string? Q { get; set; }
+
     [JsonPropertyName("usage_type")]
     public string? UsageType { get; set; }
 
