@@ -2360,6 +2360,7 @@ await client.Billing.CountBillingProductsAsync(new CountBillingProductsRequest()
 await client.Billing.UpsertBillingSubscriptionAsync(
     new CreateBillingSubscriptionsRequestBody
     {
+        CancelAtPeriodEnd = true,
         Currency = "currency",
         CustomerExternalId = "customer_external_id",
         Discounts = new List<BillingSubscriptionDiscount>()
@@ -2383,7 +2384,7 @@ await client.Billing.UpsertBillingSubscriptionAsync(
                 PriceExternalId = "price_external_id",
                 ProductExternalId = "product_external_id",
                 Quantity = 1,
-                UsageType = "usage_type",
+                UsageType = BillingProductPricingUsageType.Licensed,
             },
         },
         SubscriptionExternalId = "subscription_external_id",

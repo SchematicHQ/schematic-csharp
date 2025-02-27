@@ -5,6 +5,12 @@ namespace SchematicHQ.Client;
 
 public record BillingSubscriptionView
 {
+    [JsonPropertyName("cancel_at")]
+    public int? CancelAt { get; set; }
+
+    [JsonPropertyName("cancel_at_period_end")]
+    public required bool CancelAtPeriodEnd { get; set; }
+
     [JsonPropertyName("company_id")]
     public string? CompanyId { get; set; }
 

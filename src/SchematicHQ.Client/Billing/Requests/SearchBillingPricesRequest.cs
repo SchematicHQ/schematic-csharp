@@ -10,7 +10,7 @@ public record SearchBillingPricesRequest
 
     public string? Interval { get; set; }
 
-    public string? UsageType { get; set; }
+    public SearchBillingPricesRequestUsageType? UsageType { get; set; }
 
     public int? Price { get; set; }
 

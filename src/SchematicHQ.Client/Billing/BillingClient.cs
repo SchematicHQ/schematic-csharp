@@ -883,7 +883,7 @@ public partial class BillingClient
         }
         if (request.UsageType != null)
         {
-            _query["usage_type"] = request.UsageType;
+            _query["usage_type"] = request.UsageType.Value.Stringify();
         }
         if (request.Price != null)
         {
@@ -1454,6 +1454,7 @@ public partial class BillingClient
     /// await client.Billing.UpsertBillingSubscriptionAsync(
     ///     new CreateBillingSubscriptionsRequestBody
     ///     {
+    ///         CancelAtPeriodEnd = true,
     ///         Currency = "currency",
     ///         CustomerExternalId = "customer_external_id",
     ///         Discounts = new List&lt;BillingSubscriptionDiscount&gt;()
@@ -1477,7 +1478,7 @@ public partial class BillingClient
     ///                 PriceExternalId = "price_external_id",
     ///                 ProductExternalId = "product_external_id",
     ///                 Quantity = 1,
-    ///                 UsageType = "usage_type",
+    ///                 UsageType = BillingProductPricingUsageType.Licensed,
     ///             },
     ///         },
     ///         SubscriptionExternalId = "subscription_external_id",
