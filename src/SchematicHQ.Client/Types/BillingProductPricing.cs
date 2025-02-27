@@ -27,7 +27,7 @@ public record BillingProductPricing
     public required int Quantity { get; set; }
 
     [JsonPropertyName("usage_type")]
-    public required string UsageType { get; set; }
+    public required BillingProductPricingUsageType UsageType { get; set; }
 
     public override string ToString()
     {

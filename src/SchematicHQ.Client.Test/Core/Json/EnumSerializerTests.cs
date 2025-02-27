@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 using NUnit.Framework;
 using SchematicHQ.Client.Core;
 
-namespace SchematicHQ.Client.Test.Core;
+namespace SchematicHQ.Client.Test.Core.Json;
 
 [TestFixture]
 [Parallelizable(ParallelScope.All)]

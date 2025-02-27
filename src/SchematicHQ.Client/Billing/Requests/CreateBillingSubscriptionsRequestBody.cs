@@ -5,6 +5,12 @@ namespace SchematicHQ.Client;
 
 public record CreateBillingSubscriptionsRequestBody
 {
+    [JsonPropertyName("cancel_at")]
+    public int? CancelAt { get; set; }
+
+    [JsonPropertyName("cancel_at_period_end")]
+    public required bool CancelAtPeriodEnd { get; set; }
+
     [JsonPropertyName("currency")]
     public required string Currency { get; set; }
 
@@ -47,7 +53,7 @@ public record CreateBillingSubscriptionsRequestBody
     public int? TrialEnd { get; set; }
 
     [JsonPropertyName("trial_end_setting")]
-    public string? TrialEndSetting { get; set; }
+    public CreateBillingSubscriptionsRequestBodyTrialEndSetting? TrialEndSetting { get; set; }
 
     public override string ToString()
     {

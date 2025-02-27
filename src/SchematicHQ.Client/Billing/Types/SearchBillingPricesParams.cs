@@ -30,7 +30,7 @@ public record SearchBillingPricesParams
     public string? Q { get; set; }
 
     [JsonPropertyName("usage_type")]
-    public string? UsageType { get; set; }
+    public SearchBillingPricesResponseParamsUsageType? UsageType { get; set; }
 
     public override string ToString()
     {

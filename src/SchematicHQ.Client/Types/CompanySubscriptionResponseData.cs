@@ -5,6 +5,12 @@ namespace SchematicHQ.Client;
 
 public record CompanySubscriptionResponseData
 {
+    [JsonPropertyName("cancel_at")]
+    public DateTime? CancelAt { get; set; }
+
+    [JsonPropertyName("cancel_at_period_end")]
+    public required bool CancelAtPeriodEnd { get; set; }
+
     [JsonPropertyName("currency")]
     public required string Currency { get; set; }
 
