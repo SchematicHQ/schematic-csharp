@@ -2,6 +2,7 @@
 README.md
 
 src/SchematicHQ.Client.Test/TestCache.cs
+src/SchematicHQ.Client.Test/TestCompaniesClient.cs
 src/SchematicHQ.Client.Test/TestEventBuffer.cs
 src/SchematicHQ.Client.Test/TestClient.cs
 src/SchematicHQ.Client.Test/TestLogger.cs

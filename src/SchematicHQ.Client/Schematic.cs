@@ -17,6 +17,20 @@ public partial class Schematic
     private readonly bool _offline;
     public readonly SchematicApi API;
 
+    public AccesstokensClient Accesstokens { get; init; }
+    public AccountsClient Accounts { get; init; }
+    public BillingClient Billing { get; init; }
+    public CheckoutClient Checkout { get; init; }
+    public CompaniesClient Companies { get; init; }
+    public ComponentsClient Components { get; init; }
+    public CrmClient Crm { get; init; }
+    public EntitlementsClient Entitlements { get; init; }
+    public EventsClient Events { get; init; }
+    public FeaturesClient Features { get; init; }
+    public PlangroupsClient Plangroups { get; init; }
+    public PlansClient Plans { get; init; }
+    public WebhooksClient Webhooks { get; init; }
+
     public Schematic(string apiKey, ClientOptions? options = null)
     {
         _options = options ?? new ClientOptions();
@@ -25,6 +39,19 @@ public partial class Schematic
 
         var httpClient = _offline ? new HttpClient(new OfflineHttpMessageHandler()) : _options.HttpClient;
         API = new SchematicApi(apiKey, _options.WithHttpClient(httpClient));
+        Accesstokens = API.Accesstokens;
+        Accounts = API.Accounts;
+        Billing = API.Billing;
+        Checkout = API.Checkout;
+        Companies = API.Companies;
+        Components = API.Components;
+        Crm = API.Crm;
+        Entitlements = API.Entitlements;
+        Events = API.Events;
+        Features = API.Features;
+        Plangroups = API.Plangroups;
+        Plans = API.Plans;
+        Webhooks = API.Webhooks;
 
         _eventBuffer = _options.EventBuffer ?? new EventBuffer<CreateEventRequestBody>(
             async items =>
