@@ -2,5 +2,5 @@ namespace SchematicHQ.Client;
 
 internal class Version
 {
-    public const string Current = "1.0.7";
+    public const string Current = "1.0.8";
 }
