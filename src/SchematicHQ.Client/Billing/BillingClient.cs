@@ -14,11 +14,9 @@ public partial class BillingClient
         _client = client;
     }
 
-    /// <example>
-    /// <code>
+    /// <example><code>
     /// await client.Billing.ListCouponsAsync(new ListCouponsRequest());
-    /// </code>
-    /// </example>
+    /// </code></example>
     public async Task<ListCouponsResponse> ListCouponsAsync(
         ListCouponsRequest request,
         RequestOptions? options = null,
@@ -43,8 +41,8 @@ public partial class BillingClient
             _query["offset"] = request.Offset.Value.ToString();
         }
         var response = await _client
-            .MakeRequestAsync(
-                new RawClient.JsonApiRequest
+            .SendRequestAsync(
+                new JsonRequest
                 {
                     BaseUrl = _client.Options.BaseUrl,
                     Method = HttpMethod.Get,
@@ -55,46 +53,50 @@ public partial class BillingClient
                 cancellationToken
             )
             .ConfigureAwait(false);
-        var responseBody = await response.Raw.Content.ReadAsStringAsync();
         if (response.StatusCode is >= 200 and < 400)
         {
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
             try
             {
                 return JsonUtils.Deserialize<ListCouponsResponse>(responseBody)!;
             }
             catch (JsonException e)
             {
-                throw new SchematicApiException("Failed to deserialize response", e);
+                throw new SchematicException("Failed to deserialize response", e);
             }
         }
 
-        try
         {
-            switch (response.StatusCode)
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            try
             {
-                case 400:
-                    throw new BadRequestError(JsonUtils.Deserialize<ApiError>(responseBody));
-                case 401:
-                    throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
-                case 403:
-                    throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
-                case 500:
-                    throw new InternalServerError(JsonUtils.Deserialize<ApiError>(responseBody));
+                switch (response.StatusCode)
+                {
+                    case 400:
+                        throw new BadRequestError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 401:
+                        throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 403:
+                        throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 500:
+                        throw new InternalServerError(
+                            JsonUtils.Deserialize<ApiError>(responseBody)
+                        );
+                }
             }
+            catch (JsonException)
+            {
+                // unable to map error response, throwing generic error
+            }
+            throw new SchematicApiException(
+                $"Error with status code {response.StatusCode}",
+                response.StatusCode,
+                responseBody
+            );
         }
-        catch (JsonException)
-        {
-            // unable to map error response, throwing generic error
-        }
-        throw new SchematicApiApiException(
-            $"Error with status code {response.StatusCode}",
-            response.StatusCode,
-            responseBody
-        );
     }
 
-    /// <example>
-    /// <code>
+    /// <example><code>
     /// await client.Billing.UpsertBillingCouponAsync(
     ///     new CreateCouponRequestBody
     ///     {
@@ -108,8 +110,7 @@ public partial class BillingClient
     ///         TimesRedeemed = 1,
     ///     }
     /// );
-    /// </code>
-    /// </example>
+    /// </code></example>
     public async Task<UpsertBillingCouponResponse> UpsertBillingCouponAsync(
         CreateCouponRequestBody request,
         RequestOptions? options = null,
@@ -117,8 +118,8 @@ public partial class BillingClient
     )
     {
         var response = await _client
-            .MakeRequestAsync(
-                new RawClient.JsonApiRequest
+            .SendRequestAsync(
+                new JsonRequest
                 {
                     BaseUrl = _client.Options.BaseUrl,
                     Method = HttpMethod.Post,
@@ -130,46 +131,50 @@ public partial class BillingClient
                 cancellationToken
             )
             .ConfigureAwait(false);
-        var responseBody = await response.Raw.Content.ReadAsStringAsync();
         if (response.StatusCode is >= 200 and < 400)
         {
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
             try
             {
                 return JsonUtils.Deserialize<UpsertBillingCouponResponse>(responseBody)!;
             }
             catch (JsonException e)
             {
-                throw new SchematicApiException("Failed to deserialize response", e);
+                throw new SchematicException("Failed to deserialize response", e);
             }
         }
 
-        try
         {
-            switch (response.StatusCode)
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            try
             {
-                case 400:
-                    throw new BadRequestError(JsonUtils.Deserialize<ApiError>(responseBody));
-                case 401:
-                    throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
-                case 403:
-                    throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
-                case 500:
-                    throw new InternalServerError(JsonUtils.Deserialize<ApiError>(responseBody));
+                switch (response.StatusCode)
+                {
+                    case 400:
+                        throw new BadRequestError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 401:
+                        throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 403:
+                        throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 500:
+                        throw new InternalServerError(
+                            JsonUtils.Deserialize<ApiError>(responseBody)
+                        );
+                }
             }
+            catch (JsonException)
+            {
+                // unable to map error response, throwing generic error
+            }
+            throw new SchematicApiException(
+                $"Error with status code {response.StatusCode}",
+                response.StatusCode,
+                responseBody
+            );
         }
-        catch (JsonException)
-        {
-            // unable to map error response, throwing generic error
-        }
-        throw new SchematicApiApiException(
-            $"Error with status code {response.StatusCode}",
-            response.StatusCode,
-            responseBody
-        );
     }
 
-    /// <example>
-    /// <code>
+    /// <example><code>
     /// await client.Billing.UpsertBillingCustomerAsync(
     ///     new CreateBillingCustomerRequestBody
     ///     {
@@ -180,8 +185,7 @@ public partial class BillingClient
     ///         Name = "name",
     ///     }
     /// );
-    /// </code>
-    /// </example>
+    /// </code></example>
     public async Task<UpsertBillingCustomerResponse> UpsertBillingCustomerAsync(
         CreateBillingCustomerRequestBody request,
         RequestOptions? options = null,
@@ -189,8 +193,8 @@ public partial class BillingClient
     )
     {
         var response = await _client
-            .MakeRequestAsync(
-                new RawClient.JsonApiRequest
+            .SendRequestAsync(
+                new JsonRequest
                 {
                     BaseUrl = _client.Options.BaseUrl,
                     Method = HttpMethod.Post,
@@ -202,49 +206,52 @@ public partial class BillingClient
                 cancellationToken
             )
             .ConfigureAwait(false);
-        var responseBody = await response.Raw.Content.ReadAsStringAsync();
         if (response.StatusCode is >= 200 and < 400)
         {
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
             try
             {
                 return JsonUtils.Deserialize<UpsertBillingCustomerResponse>(responseBody)!;
             }
             catch (JsonException e)
             {
-                throw new SchematicApiException("Failed to deserialize response", e);
+                throw new SchematicException("Failed to deserialize response", e);
             }
         }
 
-        try
         {
-            switch (response.StatusCode)
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            try
             {
-                case 400:
-                    throw new BadRequestError(JsonUtils.Deserialize<ApiError>(responseBody));
-                case 401:
-                    throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
-                case 403:
-                    throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
-                case 500:
-                    throw new InternalServerError(JsonUtils.Deserialize<ApiError>(responseBody));
+                switch (response.StatusCode)
+                {
+                    case 400:
+                        throw new BadRequestError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 401:
+                        throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 403:
+                        throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 500:
+                        throw new InternalServerError(
+                            JsonUtils.Deserialize<ApiError>(responseBody)
+                        );
+                }
             }
+            catch (JsonException)
+            {
+                // unable to map error response, throwing generic error
+            }
+            throw new SchematicApiException(
+                $"Error with status code {response.StatusCode}",
+                response.StatusCode,
+                responseBody
+            );
         }
-        catch (JsonException)
-        {
-            // unable to map error response, throwing generic error
-        }
-        throw new SchematicApiApiException(
-            $"Error with status code {response.StatusCode}",
-            response.StatusCode,
-            responseBody
-        );
     }
 
-    /// <example>
-    /// <code>
+    /// <example><code>
     /// await client.Billing.ListCustomersAsync(new ListCustomersRequest());
-    /// </code>
-    /// </example>
+    /// </code></example>
     public async Task<ListCustomersResponse> ListCustomersAsync(
         ListCustomersRequest request,
         RequestOptions? options = null,
@@ -273,8 +280,8 @@ public partial class BillingClient
             _query["offset"] = request.Offset.Value.ToString();
         }
         var response = await _client
-            .MakeRequestAsync(
-                new RawClient.JsonApiRequest
+            .SendRequestAsync(
+                new JsonRequest
                 {
                     BaseUrl = _client.Options.BaseUrl,
                     Method = HttpMethod.Get,
@@ -285,49 +292,52 @@ public partial class BillingClient
                 cancellationToken
             )
             .ConfigureAwait(false);
-        var responseBody = await response.Raw.Content.ReadAsStringAsync();
         if (response.StatusCode is >= 200 and < 400)
         {
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
             try
             {
                 return JsonUtils.Deserialize<ListCustomersResponse>(responseBody)!;
             }
             catch (JsonException e)
             {
-                throw new SchematicApiException("Failed to deserialize response", e);
+                throw new SchematicException("Failed to deserialize response", e);
             }
         }
 
-        try
         {
-            switch (response.StatusCode)
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            try
             {
-                case 400:
-                    throw new BadRequestError(JsonUtils.Deserialize<ApiError>(responseBody));
-                case 401:
-                    throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
-                case 403:
-                    throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
-                case 500:
-                    throw new InternalServerError(JsonUtils.Deserialize<ApiError>(responseBody));
+                switch (response.StatusCode)
+                {
+                    case 400:
+                        throw new BadRequestError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 401:
+                        throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 403:
+                        throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 500:
+                        throw new InternalServerError(
+                            JsonUtils.Deserialize<ApiError>(responseBody)
+                        );
+                }
             }
+            catch (JsonException)
+            {
+                // unable to map error response, throwing generic error
+            }
+            throw new SchematicApiException(
+                $"Error with status code {response.StatusCode}",
+                response.StatusCode,
+                responseBody
+            );
         }
-        catch (JsonException)
-        {
-            // unable to map error response, throwing generic error
-        }
-        throw new SchematicApiApiException(
-            $"Error with status code {response.StatusCode}",
-            response.StatusCode,
-            responseBody
-        );
     }
 
-    /// <example>
-    /// <code>
+    /// <example><code>
     /// await client.Billing.CountCustomersAsync(new CountCustomersRequest());
-    /// </code>
-    /// </example>
+    /// </code></example>
     public async Task<CountCustomersResponse> CountCustomersAsync(
         CountCustomersRequest request,
         RequestOptions? options = null,
@@ -356,8 +366,8 @@ public partial class BillingClient
             _query["offset"] = request.Offset.Value.ToString();
         }
         var response = await _client
-            .MakeRequestAsync(
-                new RawClient.JsonApiRequest
+            .SendRequestAsync(
+                new JsonRequest
                 {
                     BaseUrl = _client.Options.BaseUrl,
                     Method = HttpMethod.Get,
@@ -368,51 +378,54 @@ public partial class BillingClient
                 cancellationToken
             )
             .ConfigureAwait(false);
-        var responseBody = await response.Raw.Content.ReadAsStringAsync();
         if (response.StatusCode is >= 200 and < 400)
         {
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
             try
             {
                 return JsonUtils.Deserialize<CountCustomersResponse>(responseBody)!;
             }
             catch (JsonException e)
             {
-                throw new SchematicApiException("Failed to deserialize response", e);
+                throw new SchematicException("Failed to deserialize response", e);
             }
         }
 
-        try
         {
-            switch (response.StatusCode)
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            try
             {
-                case 400:
-                    throw new BadRequestError(JsonUtils.Deserialize<ApiError>(responseBody));
-                case 401:
-                    throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
-                case 403:
-                    throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
-                case 500:
-                    throw new InternalServerError(JsonUtils.Deserialize<ApiError>(responseBody));
+                switch (response.StatusCode)
+                {
+                    case 400:
+                        throw new BadRequestError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 401:
+                        throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 403:
+                        throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 500:
+                        throw new InternalServerError(
+                            JsonUtils.Deserialize<ApiError>(responseBody)
+                        );
+                }
             }
+            catch (JsonException)
+            {
+                // unable to map error response, throwing generic error
+            }
+            throw new SchematicApiException(
+                $"Error with status code {response.StatusCode}",
+                response.StatusCode,
+                responseBody
+            );
         }
-        catch (JsonException)
-        {
-            // unable to map error response, throwing generic error
-        }
-        throw new SchematicApiApiException(
-            $"Error with status code {response.StatusCode}",
-            response.StatusCode,
-            responseBody
-        );
     }
 
-    /// <example>
-    /// <code>
+    /// <example><code>
     /// await client.Billing.ListInvoicesAsync(
     ///     new ListInvoicesRequest { CustomerExternalId = "customer_external_id" }
     /// );
-    /// </code>
-    /// </example>
+    /// </code></example>
     public async Task<ListInvoicesResponse> ListInvoicesAsync(
         ListInvoicesRequest request,
         RequestOptions? options = null,
@@ -438,8 +451,8 @@ public partial class BillingClient
             _query["offset"] = request.Offset.Value.ToString();
         }
         var response = await _client
-            .MakeRequestAsync(
-                new RawClient.JsonApiRequest
+            .SendRequestAsync(
+                new JsonRequest
                 {
                     BaseUrl = _client.Options.BaseUrl,
                     Method = HttpMethod.Get,
@@ -450,46 +463,50 @@ public partial class BillingClient
                 cancellationToken
             )
             .ConfigureAwait(false);
-        var responseBody = await response.Raw.Content.ReadAsStringAsync();
         if (response.StatusCode is >= 200 and < 400)
         {
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
             try
             {
                 return JsonUtils.Deserialize<ListInvoicesResponse>(responseBody)!;
             }
             catch (JsonException e)
             {
-                throw new SchematicApiException("Failed to deserialize response", e);
+                throw new SchematicException("Failed to deserialize response", e);
             }
         }
 
-        try
         {
-            switch (response.StatusCode)
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            try
             {
-                case 400:
-                    throw new BadRequestError(JsonUtils.Deserialize<ApiError>(responseBody));
-                case 401:
-                    throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
-                case 403:
-                    throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
-                case 500:
-                    throw new InternalServerError(JsonUtils.Deserialize<ApiError>(responseBody));
+                switch (response.StatusCode)
+                {
+                    case 400:
+                        throw new BadRequestError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 401:
+                        throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 403:
+                        throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 500:
+                        throw new InternalServerError(
+                            JsonUtils.Deserialize<ApiError>(responseBody)
+                        );
+                }
             }
+            catch (JsonException)
+            {
+                // unable to map error response, throwing generic error
+            }
+            throw new SchematicApiException(
+                $"Error with status code {response.StatusCode}",
+                response.StatusCode,
+                responseBody
+            );
         }
-        catch (JsonException)
-        {
-            // unable to map error response, throwing generic error
-        }
-        throw new SchematicApiApiException(
-            $"Error with status code {response.StatusCode}",
-            response.StatusCode,
-            responseBody
-        );
     }
 
-    /// <example>
-    /// <code>
+    /// <example><code>
     /// await client.Billing.UpsertInvoiceAsync(
     ///     new CreateInvoiceRequestBody
     ///     {
@@ -502,8 +519,7 @@ public partial class BillingClient
     ///         Subtotal = 1,
     ///     }
     /// );
-    /// </code>
-    /// </example>
+    /// </code></example>
     public async Task<UpsertInvoiceResponse> UpsertInvoiceAsync(
         CreateInvoiceRequestBody request,
         RequestOptions? options = null,
@@ -511,8 +527,8 @@ public partial class BillingClient
     )
     {
         var response = await _client
-            .MakeRequestAsync(
-                new RawClient.JsonApiRequest
+            .SendRequestAsync(
+                new JsonRequest
                 {
                     BaseUrl = _client.Options.BaseUrl,
                     Method = HttpMethod.Post,
@@ -524,49 +540,52 @@ public partial class BillingClient
                 cancellationToken
             )
             .ConfigureAwait(false);
-        var responseBody = await response.Raw.Content.ReadAsStringAsync();
         if (response.StatusCode is >= 200 and < 400)
         {
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
             try
             {
                 return JsonUtils.Deserialize<UpsertInvoiceResponse>(responseBody)!;
             }
             catch (JsonException e)
             {
-                throw new SchematicApiException("Failed to deserialize response", e);
+                throw new SchematicException("Failed to deserialize response", e);
             }
         }
 
-        try
         {
-            switch (response.StatusCode)
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            try
             {
-                case 400:
-                    throw new BadRequestError(JsonUtils.Deserialize<ApiError>(responseBody));
-                case 401:
-                    throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
-                case 403:
-                    throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
-                case 500:
-                    throw new InternalServerError(JsonUtils.Deserialize<ApiError>(responseBody));
+                switch (response.StatusCode)
+                {
+                    case 400:
+                        throw new BadRequestError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 401:
+                        throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 403:
+                        throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 500:
+                        throw new InternalServerError(
+                            JsonUtils.Deserialize<ApiError>(responseBody)
+                        );
+                }
             }
+            catch (JsonException)
+            {
+                // unable to map error response, throwing generic error
+            }
+            throw new SchematicApiException(
+                $"Error with status code {response.StatusCode}",
+                response.StatusCode,
+                responseBody
+            );
         }
-        catch (JsonException)
-        {
-            // unable to map error response, throwing generic error
-        }
-        throw new SchematicApiApiException(
-            $"Error with status code {response.StatusCode}",
-            response.StatusCode,
-            responseBody
-        );
     }
 
-    /// <example>
-    /// <code>
+    /// <example><code>
     /// await client.Billing.ListMetersAsync(new ListMetersRequest());
-    /// </code>
-    /// </example>
+    /// </code></example>
     public async Task<ListMetersResponse> ListMetersAsync(
         ListMetersRequest request,
         RequestOptions? options = null,
@@ -587,8 +606,8 @@ public partial class BillingClient
             _query["offset"] = request.Offset.Value.ToString();
         }
         var response = await _client
-            .MakeRequestAsync(
-                new RawClient.JsonApiRequest
+            .SendRequestAsync(
+                new JsonRequest
                 {
                     BaseUrl = _client.Options.BaseUrl,
                     Method = HttpMethod.Get,
@@ -599,46 +618,50 @@ public partial class BillingClient
                 cancellationToken
             )
             .ConfigureAwait(false);
-        var responseBody = await response.Raw.Content.ReadAsStringAsync();
         if (response.StatusCode is >= 200 and < 400)
         {
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
             try
             {
                 return JsonUtils.Deserialize<ListMetersResponse>(responseBody)!;
             }
             catch (JsonException e)
             {
-                throw new SchematicApiException("Failed to deserialize response", e);
+                throw new SchematicException("Failed to deserialize response", e);
             }
         }
 
-        try
         {
-            switch (response.StatusCode)
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            try
             {
-                case 400:
-                    throw new BadRequestError(JsonUtils.Deserialize<ApiError>(responseBody));
-                case 401:
-                    throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
-                case 403:
-                    throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
-                case 500:
-                    throw new InternalServerError(JsonUtils.Deserialize<ApiError>(responseBody));
+                switch (response.StatusCode)
+                {
+                    case 400:
+                        throw new BadRequestError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 401:
+                        throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 403:
+                        throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 500:
+                        throw new InternalServerError(
+                            JsonUtils.Deserialize<ApiError>(responseBody)
+                        );
+                }
             }
+            catch (JsonException)
+            {
+                // unable to map error response, throwing generic error
+            }
+            throw new SchematicApiException(
+                $"Error with status code {response.StatusCode}",
+                response.StatusCode,
+                responseBody
+            );
         }
-        catch (JsonException)
-        {
-            // unable to map error response, throwing generic error
-        }
-        throw new SchematicApiApiException(
-            $"Error with status code {response.StatusCode}",
-            response.StatusCode,
-            responseBody
-        );
     }
 
-    /// <example>
-    /// <code>
+    /// <example><code>
     /// await client.Billing.UpsertBillingMeterAsync(
     ///     new CreateMeterRequestBody
     ///     {
@@ -648,8 +671,7 @@ public partial class BillingClient
     ///         ExternalId = "external_id",
     ///     }
     /// );
-    /// </code>
-    /// </example>
+    /// </code></example>
     public async Task<UpsertBillingMeterResponse> UpsertBillingMeterAsync(
         CreateMeterRequestBody request,
         RequestOptions? options = null,
@@ -657,8 +679,8 @@ public partial class BillingClient
     )
     {
         var response = await _client
-            .MakeRequestAsync(
-                new RawClient.JsonApiRequest
+            .SendRequestAsync(
+                new JsonRequest
                 {
                     BaseUrl = _client.Options.BaseUrl,
                     Method = HttpMethod.Post,
@@ -670,51 +692,54 @@ public partial class BillingClient
                 cancellationToken
             )
             .ConfigureAwait(false);
-        var responseBody = await response.Raw.Content.ReadAsStringAsync();
         if (response.StatusCode is >= 200 and < 400)
         {
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
             try
             {
                 return JsonUtils.Deserialize<UpsertBillingMeterResponse>(responseBody)!;
             }
             catch (JsonException e)
             {
-                throw new SchematicApiException("Failed to deserialize response", e);
+                throw new SchematicException("Failed to deserialize response", e);
             }
         }
 
-        try
         {
-            switch (response.StatusCode)
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            try
             {
-                case 400:
-                    throw new BadRequestError(JsonUtils.Deserialize<ApiError>(responseBody));
-                case 401:
-                    throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
-                case 403:
-                    throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
-                case 500:
-                    throw new InternalServerError(JsonUtils.Deserialize<ApiError>(responseBody));
+                switch (response.StatusCode)
+                {
+                    case 400:
+                        throw new BadRequestError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 401:
+                        throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 403:
+                        throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 500:
+                        throw new InternalServerError(
+                            JsonUtils.Deserialize<ApiError>(responseBody)
+                        );
+                }
             }
+            catch (JsonException)
+            {
+                // unable to map error response, throwing generic error
+            }
+            throw new SchematicApiException(
+                $"Error with status code {response.StatusCode}",
+                response.StatusCode,
+                responseBody
+            );
         }
-        catch (JsonException)
-        {
-            // unable to map error response, throwing generic error
-        }
-        throw new SchematicApiApiException(
-            $"Error with status code {response.StatusCode}",
-            response.StatusCode,
-            responseBody
-        );
     }
 
-    /// <example>
-    /// <code>
+    /// <example><code>
     /// await client.Billing.ListPaymentMethodsAsync(
     ///     new ListPaymentMethodsRequest { CustomerExternalId = "customer_external_id" }
     /// );
-    /// </code>
-    /// </example>
+    /// </code></example>
     public async Task<ListPaymentMethodsResponse> ListPaymentMethodsAsync(
         ListPaymentMethodsRequest request,
         RequestOptions? options = null,
@@ -727,10 +752,6 @@ public partial class BillingClient
         {
             _query["company_id"] = request.CompanyId;
         }
-        if (request.SubscriptionExternalId != null)
-        {
-            _query["subscription_external_id"] = request.SubscriptionExternalId;
-        }
         if (request.Limit != null)
         {
             _query["limit"] = request.Limit.Value.ToString();
@@ -740,8 +761,8 @@ public partial class BillingClient
             _query["offset"] = request.Offset.Value.ToString();
         }
         var response = await _client
-            .MakeRequestAsync(
-                new RawClient.JsonApiRequest
+            .SendRequestAsync(
+                new JsonRequest
                 {
                     BaseUrl = _client.Options.BaseUrl,
                     Method = HttpMethod.Get,
@@ -752,46 +773,50 @@ public partial class BillingClient
                 cancellationToken
             )
             .ConfigureAwait(false);
-        var responseBody = await response.Raw.Content.ReadAsStringAsync();
         if (response.StatusCode is >= 200 and < 400)
         {
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
             try
             {
                 return JsonUtils.Deserialize<ListPaymentMethodsResponse>(responseBody)!;
             }
             catch (JsonException e)
             {
-                throw new SchematicApiException("Failed to deserialize response", e);
+                throw new SchematicException("Failed to deserialize response", e);
             }
         }
 
-        try
         {
-            switch (response.StatusCode)
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            try
             {
-                case 400:
-                    throw new BadRequestError(JsonUtils.Deserialize<ApiError>(responseBody));
-                case 401:
-                    throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
-                case 403:
-                    throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
-                case 500:
-                    throw new InternalServerError(JsonUtils.Deserialize<ApiError>(responseBody));
+                switch (response.StatusCode)
+                {
+                    case 400:
+                        throw new BadRequestError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 401:
+                        throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 403:
+                        throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 500:
+                        throw new InternalServerError(
+                            JsonUtils.Deserialize<ApiError>(responseBody)
+                        );
+                }
             }
+            catch (JsonException)
+            {
+                // unable to map error response, throwing generic error
+            }
+            throw new SchematicApiException(
+                $"Error with status code {response.StatusCode}",
+                response.StatusCode,
+                responseBody
+            );
         }
-        catch (JsonException)
-        {
-            // unable to map error response, throwing generic error
-        }
-        throw new SchematicApiApiException(
-            $"Error with status code {response.StatusCode}",
-            response.StatusCode,
-            responseBody
-        );
     }
 
-    /// <example>
-    /// <code>
+    /// <example><code>
     /// await client.Billing.UpsertPaymentMethodAsync(
     ///     new CreatePaymentMethodRequestBody
     ///     {
@@ -800,8 +825,7 @@ public partial class BillingClient
     ///         PaymentMethodType = "payment_method_type",
     ///     }
     /// );
-    /// </code>
-    /// </example>
+    /// </code></example>
     public async Task<UpsertPaymentMethodResponse> UpsertPaymentMethodAsync(
         CreatePaymentMethodRequestBody request,
         RequestOptions? options = null,
@@ -809,8 +833,8 @@ public partial class BillingClient
     )
     {
         var response = await _client
-            .MakeRequestAsync(
-                new RawClient.JsonApiRequest
+            .SendRequestAsync(
+                new JsonRequest
                 {
                     BaseUrl = _client.Options.BaseUrl,
                     Method = HttpMethod.Post,
@@ -822,49 +846,52 @@ public partial class BillingClient
                 cancellationToken
             )
             .ConfigureAwait(false);
-        var responseBody = await response.Raw.Content.ReadAsStringAsync();
         if (response.StatusCode is >= 200 and < 400)
         {
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
             try
             {
                 return JsonUtils.Deserialize<UpsertPaymentMethodResponse>(responseBody)!;
             }
             catch (JsonException e)
             {
-                throw new SchematicApiException("Failed to deserialize response", e);
+                throw new SchematicException("Failed to deserialize response", e);
             }
         }
 
-        try
         {
-            switch (response.StatusCode)
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            try
             {
-                case 400:
-                    throw new BadRequestError(JsonUtils.Deserialize<ApiError>(responseBody));
-                case 401:
-                    throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
-                case 403:
-                    throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
-                case 500:
-                    throw new InternalServerError(JsonUtils.Deserialize<ApiError>(responseBody));
+                switch (response.StatusCode)
+                {
+                    case 400:
+                        throw new BadRequestError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 401:
+                        throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 403:
+                        throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 500:
+                        throw new InternalServerError(
+                            JsonUtils.Deserialize<ApiError>(responseBody)
+                        );
+                }
             }
+            catch (JsonException)
+            {
+                // unable to map error response, throwing generic error
+            }
+            throw new SchematicApiException(
+                $"Error with status code {response.StatusCode}",
+                response.StatusCode,
+                responseBody
+            );
         }
-        catch (JsonException)
-        {
-            // unable to map error response, throwing generic error
-        }
-        throw new SchematicApiApiException(
-            $"Error with status code {response.StatusCode}",
-            response.StatusCode,
-            responseBody
-        );
     }
 
-    /// <example>
-    /// <code>
+    /// <example><code>
     /// await client.Billing.SearchBillingPricesAsync(new SearchBillingPricesRequest());
-    /// </code>
-    /// </example>
+    /// </code></example>
     public async Task<SearchBillingPricesResponse> SearchBillingPricesAsync(
         SearchBillingPricesRequest request,
         RequestOptions? options = null,
@@ -898,8 +925,8 @@ public partial class BillingClient
             _query["offset"] = request.Offset.Value.ToString();
         }
         var response = await _client
-            .MakeRequestAsync(
-                new RawClient.JsonApiRequest
+            .SendRequestAsync(
+                new JsonRequest
                 {
                     BaseUrl = _client.Options.BaseUrl,
                     Method = HttpMethod.Get,
@@ -910,60 +937,68 @@ public partial class BillingClient
                 cancellationToken
             )
             .ConfigureAwait(false);
-        var responseBody = await response.Raw.Content.ReadAsStringAsync();
         if (response.StatusCode is >= 200 and < 400)
         {
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
             try
             {
                 return JsonUtils.Deserialize<SearchBillingPricesResponse>(responseBody)!;
             }
             catch (JsonException e)
             {
-                throw new SchematicApiException("Failed to deserialize response", e);
+                throw new SchematicException("Failed to deserialize response", e);
             }
         }
 
-        try
         {
-            switch (response.StatusCode)
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            try
             {
-                case 400:
-                    throw new BadRequestError(JsonUtils.Deserialize<ApiError>(responseBody));
-                case 401:
-                    throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
-                case 403:
-                    throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
-                case 500:
-                    throw new InternalServerError(JsonUtils.Deserialize<ApiError>(responseBody));
+                switch (response.StatusCode)
+                {
+                    case 400:
+                        throw new BadRequestError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 401:
+                        throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 403:
+                        throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 500:
+                        throw new InternalServerError(
+                            JsonUtils.Deserialize<ApiError>(responseBody)
+                        );
+                }
             }
+            catch (JsonException)
+            {
+                // unable to map error response, throwing generic error
+            }
+            throw new SchematicApiException(
+                $"Error with status code {response.StatusCode}",
+                response.StatusCode,
+                responseBody
+            );
         }
-        catch (JsonException)
-        {
-            // unable to map error response, throwing generic error
-        }
-        throw new SchematicApiApiException(
-            $"Error with status code {response.StatusCode}",
-            response.StatusCode,
-            responseBody
-        );
     }
 
-    /// <example>
-    /// <code>
+    /// <example><code>
     /// await client.Billing.UpsertBillingPriceAsync(
     ///     new CreateBillingPriceRequestBody
     ///     {
     ///         Currency = "currency",
+    ///         ExternalAccountId = "external_account_id",
     ///         Interval = "interval",
     ///         IsActive = true,
     ///         Price = 1,
     ///         PriceExternalId = "price_external_id",
+    ///         PriceTiers = new List&lt;CreateBillingPriceTierRequestBody&gt;()
+    ///         {
+    ///             new CreateBillingPriceTierRequestBody { PriceExternalId = "price_external_id" },
+    ///         },
     ///         ProductExternalId = "product_external_id",
     ///         UsageType = CreateBillingPriceRequestBodyUsageType.Licensed,
     ///     }
     /// );
-    /// </code>
-    /// </example>
+    /// </code></example>
     public async Task<UpsertBillingPriceResponse> UpsertBillingPriceAsync(
         CreateBillingPriceRequestBody request,
         RequestOptions? options = null,
@@ -971,8 +1006,8 @@ public partial class BillingClient
     )
     {
         var response = await _client
-            .MakeRequestAsync(
-                new RawClient.JsonApiRequest
+            .SendRequestAsync(
+                new JsonRequest
                 {
                     BaseUrl = _client.Options.BaseUrl,
                     Method = HttpMethod.Post,
@@ -984,49 +1019,119 @@ public partial class BillingClient
                 cancellationToken
             )
             .ConfigureAwait(false);
-        var responseBody = await response.Raw.Content.ReadAsStringAsync();
         if (response.StatusCode is >= 200 and < 400)
         {
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
             try
             {
                 return JsonUtils.Deserialize<UpsertBillingPriceResponse>(responseBody)!;
             }
             catch (JsonException e)
             {
-                throw new SchematicApiException("Failed to deserialize response", e);
+                throw new SchematicException("Failed to deserialize response", e);
             }
         }
 
-        try
         {
-            switch (response.StatusCode)
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            try
             {
-                case 400:
-                    throw new BadRequestError(JsonUtils.Deserialize<ApiError>(responseBody));
-                case 401:
-                    throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
-                case 403:
-                    throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
-                case 500:
-                    throw new InternalServerError(JsonUtils.Deserialize<ApiError>(responseBody));
+                switch (response.StatusCode)
+                {
+                    case 400:
+                        throw new BadRequestError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 401:
+                        throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 403:
+                        throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 500:
+                        throw new InternalServerError(
+                            JsonUtils.Deserialize<ApiError>(responseBody)
+                        );
+                }
             }
+            catch (JsonException)
+            {
+                // unable to map error response, throwing generic error
+            }
+            throw new SchematicApiException(
+                $"Error with status code {response.StatusCode}",
+                response.StatusCode,
+                responseBody
+            );
         }
-        catch (JsonException)
-        {
-            // unable to map error response, throwing generic error
-        }
-        throw new SchematicApiApiException(
-            $"Error with status code {response.StatusCode}",
-            response.StatusCode,
-            responseBody
-        );
     }
 
-    /// <example>
-    /// <code>
+    /// <example><code>
+    /// await client.Billing.DeleteBillingProductAsync("billing_id");
+    /// </code></example>
+    public async Task<DeleteBillingProductResponse> DeleteBillingProductAsync(
+        string billingId,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        var response = await _client
+            .SendRequestAsync(
+                new JsonRequest
+                {
+                    BaseUrl = _client.Options.BaseUrl,
+                    Method = HttpMethod.Delete,
+                    Path = string.Format(
+                        "billing/product/{0}",
+                        ValueConvert.ToPathParameterString(billingId)
+                    ),
+                    Options = options,
+                },
+                cancellationToken
+            )
+            .ConfigureAwait(false);
+        if (response.StatusCode is >= 200 and < 400)
+        {
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            try
+            {
+                return JsonUtils.Deserialize<DeleteBillingProductResponse>(responseBody)!;
+            }
+            catch (JsonException e)
+            {
+                throw new SchematicException("Failed to deserialize response", e);
+            }
+        }
+
+        {
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            try
+            {
+                switch (response.StatusCode)
+                {
+                    case 400:
+                        throw new BadRequestError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 401:
+                        throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 403:
+                        throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 500:
+                        throw new InternalServerError(
+                            JsonUtils.Deserialize<ApiError>(responseBody)
+                        );
+                }
+            }
+            catch (JsonException)
+            {
+                // unable to map error response, throwing generic error
+            }
+            throw new SchematicApiException(
+                $"Error with status code {response.StatusCode}",
+                response.StatusCode,
+                responseBody
+            );
+        }
+    }
+
+    /// <example><code>
     /// await client.Billing.ListProductPricesAsync(new ListProductPricesRequest());
-    /// </code>
-    /// </example>
+    /// </code></example>
     public async Task<ListProductPricesResponse> ListProductPricesAsync(
         ListProductPricesRequest request,
         RequestOptions? options = null,
@@ -1070,8 +1175,8 @@ public partial class BillingClient
             _query["offset"] = request.Offset.Value.ToString();
         }
         var response = await _client
-            .MakeRequestAsync(
-                new RawClient.JsonApiRequest
+            .SendRequestAsync(
+                new JsonRequest
                 {
                     BaseUrl = _client.Options.BaseUrl,
                     Method = HttpMethod.Get,
@@ -1082,49 +1187,52 @@ public partial class BillingClient
                 cancellationToken
             )
             .ConfigureAwait(false);
-        var responseBody = await response.Raw.Content.ReadAsStringAsync();
         if (response.StatusCode is >= 200 and < 400)
         {
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
             try
             {
                 return JsonUtils.Deserialize<ListProductPricesResponse>(responseBody)!;
             }
             catch (JsonException e)
             {
-                throw new SchematicApiException("Failed to deserialize response", e);
+                throw new SchematicException("Failed to deserialize response", e);
             }
         }
 
-        try
         {
-            switch (response.StatusCode)
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            try
             {
-                case 400:
-                    throw new BadRequestError(JsonUtils.Deserialize<ApiError>(responseBody));
-                case 401:
-                    throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
-                case 403:
-                    throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
-                case 500:
-                    throw new InternalServerError(JsonUtils.Deserialize<ApiError>(responseBody));
+                switch (response.StatusCode)
+                {
+                    case 400:
+                        throw new BadRequestError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 401:
+                        throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 403:
+                        throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 500:
+                        throw new InternalServerError(
+                            JsonUtils.Deserialize<ApiError>(responseBody)
+                        );
+                }
             }
+            catch (JsonException)
+            {
+                // unable to map error response, throwing generic error
+            }
+            throw new SchematicApiException(
+                $"Error with status code {response.StatusCode}",
+                response.StatusCode,
+                responseBody
+            );
         }
-        catch (JsonException)
-        {
-            // unable to map error response, throwing generic error
-        }
-        throw new SchematicApiApiException(
-            $"Error with status code {response.StatusCode}",
-            response.StatusCode,
-            responseBody
-        );
     }
 
-    /// <example>
-    /// <code>
+    /// <example><code>
     /// await client.Billing.DeleteProductPriceAsync("billing_id");
-    /// </code>
-    /// </example>
+    /// </code></example>
     public async Task<DeleteProductPriceResponse> DeleteProductPriceAsync(
         string billingId,
         RequestOptions? options = null,
@@ -1132,60 +1240,68 @@ public partial class BillingClient
     )
     {
         var response = await _client
-            .MakeRequestAsync(
-                new RawClient.JsonApiRequest
+            .SendRequestAsync(
+                new JsonRequest
                 {
                     BaseUrl = _client.Options.BaseUrl,
                     Method = HttpMethod.Delete,
-                    Path = $"billing/product/prices/{JsonUtils.SerializeAsString(billingId)}",
+                    Path = string.Format(
+                        "billing/product/prices/{0}",
+                        ValueConvert.ToPathParameterString(billingId)
+                    ),
                     Options = options,
                 },
                 cancellationToken
             )
             .ConfigureAwait(false);
-        var responseBody = await response.Raw.Content.ReadAsStringAsync();
         if (response.StatusCode is >= 200 and < 400)
         {
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
             try
             {
                 return JsonUtils.Deserialize<DeleteProductPriceResponse>(responseBody)!;
             }
             catch (JsonException e)
             {
-                throw new SchematicApiException("Failed to deserialize response", e);
+                throw new SchematicException("Failed to deserialize response", e);
             }
         }
 
-        try
         {
-            switch (response.StatusCode)
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            try
             {
-                case 400:
-                    throw new BadRequestError(JsonUtils.Deserialize<ApiError>(responseBody));
-                case 401:
-                    throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
-                case 403:
-                    throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
-                case 500:
-                    throw new InternalServerError(JsonUtils.Deserialize<ApiError>(responseBody));
+                switch (response.StatusCode)
+                {
+                    case 400:
+                        throw new BadRequestError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 401:
+                        throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 403:
+                        throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 500:
+                        throw new InternalServerError(
+                            JsonUtils.Deserialize<ApiError>(responseBody)
+                        );
+                }
             }
+            catch (JsonException)
+            {
+                // unable to map error response, throwing generic error
+            }
+            throw new SchematicApiException(
+                $"Error with status code {response.StatusCode}",
+                response.StatusCode,
+                responseBody
+            );
         }
-        catch (JsonException)
-        {
-            // unable to map error response, throwing generic error
-        }
-        throw new SchematicApiApiException(
-            $"Error with status code {response.StatusCode}",
-            response.StatusCode,
-            responseBody
-        );
     }
 
-    /// <example>
-    /// <code>
+    /// <example><code>
     /// await client.Billing.UpsertBillingProductAsync(
     ///     new CreateBillingProductRequestBody
     ///     {
+    ///         Active = true,
     ///         Currency = "currency",
     ///         ExternalId = "external_id",
     ///         Name = "name",
@@ -1193,8 +1309,7 @@ public partial class BillingClient
     ///         Quantity = 1,
     ///     }
     /// );
-    /// </code>
-    /// </example>
+    /// </code></example>
     public async Task<UpsertBillingProductResponse> UpsertBillingProductAsync(
         CreateBillingProductRequestBody request,
         RequestOptions? options = null,
@@ -1202,8 +1317,8 @@ public partial class BillingClient
     )
     {
         var response = await _client
-            .MakeRequestAsync(
-                new RawClient.JsonApiRequest
+            .SendRequestAsync(
+                new JsonRequest
                 {
                     BaseUrl = _client.Options.BaseUrl,
                     Method = HttpMethod.Post,
@@ -1215,49 +1330,52 @@ public partial class BillingClient
                 cancellationToken
             )
             .ConfigureAwait(false);
-        var responseBody = await response.Raw.Content.ReadAsStringAsync();
         if (response.StatusCode is >= 200 and < 400)
         {
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
             try
             {
                 return JsonUtils.Deserialize<UpsertBillingProductResponse>(responseBody)!;
             }
             catch (JsonException e)
             {
-                throw new SchematicApiException("Failed to deserialize response", e);
+                throw new SchematicException("Failed to deserialize response", e);
             }
         }
 
-        try
         {
-            switch (response.StatusCode)
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            try
             {
-                case 400:
-                    throw new BadRequestError(JsonUtils.Deserialize<ApiError>(responseBody));
-                case 401:
-                    throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
-                case 403:
-                    throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
-                case 500:
-                    throw new InternalServerError(JsonUtils.Deserialize<ApiError>(responseBody));
+                switch (response.StatusCode)
+                {
+                    case 400:
+                        throw new BadRequestError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 401:
+                        throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 403:
+                        throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 500:
+                        throw new InternalServerError(
+                            JsonUtils.Deserialize<ApiError>(responseBody)
+                        );
+                }
             }
+            catch (JsonException)
+            {
+                // unable to map error response, throwing generic error
+            }
+            throw new SchematicApiException(
+                $"Error with status code {response.StatusCode}",
+                response.StatusCode,
+                responseBody
+            );
         }
-        catch (JsonException)
-        {
-            // unable to map error response, throwing generic error
-        }
-        throw new SchematicApiApiException(
-            $"Error with status code {response.StatusCode}",
-            response.StatusCode,
-            responseBody
-        );
     }
 
-    /// <example>
-    /// <code>
+    /// <example><code>
     /// await client.Billing.ListBillingProductsAsync(new ListBillingProductsRequest());
-    /// </code>
-    /// </example>
+    /// </code></example>
     public async Task<ListBillingProductsResponse> ListBillingProductsAsync(
         ListBillingProductsRequest request,
         RequestOptions? options = null,
@@ -1301,8 +1419,8 @@ public partial class BillingClient
             _query["offset"] = request.Offset.Value.ToString();
         }
         var response = await _client
-            .MakeRequestAsync(
-                new RawClient.JsonApiRequest
+            .SendRequestAsync(
+                new JsonRequest
                 {
                     BaseUrl = _client.Options.BaseUrl,
                     Method = HttpMethod.Get,
@@ -1313,49 +1431,52 @@ public partial class BillingClient
                 cancellationToken
             )
             .ConfigureAwait(false);
-        var responseBody = await response.Raw.Content.ReadAsStringAsync();
         if (response.StatusCode is >= 200 and < 400)
         {
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
             try
             {
                 return JsonUtils.Deserialize<ListBillingProductsResponse>(responseBody)!;
             }
             catch (JsonException e)
             {
-                throw new SchematicApiException("Failed to deserialize response", e);
+                throw new SchematicException("Failed to deserialize response", e);
             }
         }
 
-        try
         {
-            switch (response.StatusCode)
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            try
             {
-                case 400:
-                    throw new BadRequestError(JsonUtils.Deserialize<ApiError>(responseBody));
-                case 401:
-                    throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
-                case 403:
-                    throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
-                case 500:
-                    throw new InternalServerError(JsonUtils.Deserialize<ApiError>(responseBody));
+                switch (response.StatusCode)
+                {
+                    case 400:
+                        throw new BadRequestError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 401:
+                        throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 403:
+                        throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 500:
+                        throw new InternalServerError(
+                            JsonUtils.Deserialize<ApiError>(responseBody)
+                        );
+                }
             }
+            catch (JsonException)
+            {
+                // unable to map error response, throwing generic error
+            }
+            throw new SchematicApiException(
+                $"Error with status code {response.StatusCode}",
+                response.StatusCode,
+                responseBody
+            );
         }
-        catch (JsonException)
-        {
-            // unable to map error response, throwing generic error
-        }
-        throw new SchematicApiApiException(
-            $"Error with status code {response.StatusCode}",
-            response.StatusCode,
-            responseBody
-        );
     }
 
-    /// <example>
-    /// <code>
+    /// <example><code>
     /// await client.Billing.CountBillingProductsAsync(new CountBillingProductsRequest());
-    /// </code>
-    /// </example>
+    /// </code></example>
     public async Task<CountBillingProductsResponse> CountBillingProductsAsync(
         CountBillingProductsRequest request,
         RequestOptions? options = null,
@@ -1399,8 +1520,8 @@ public partial class BillingClient
             _query["offset"] = request.Offset.Value.ToString();
         }
         var response = await _client
-            .MakeRequestAsync(
-                new RawClient.JsonApiRequest
+            .SendRequestAsync(
+                new JsonRequest
                 {
                     BaseUrl = _client.Options.BaseUrl,
                     Method = HttpMethod.Get,
@@ -1411,46 +1532,50 @@ public partial class BillingClient
                 cancellationToken
             )
             .ConfigureAwait(false);
-        var responseBody = await response.Raw.Content.ReadAsStringAsync();
         if (response.StatusCode is >= 200 and < 400)
         {
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
             try
             {
                 return JsonUtils.Deserialize<CountBillingProductsResponse>(responseBody)!;
             }
             catch (JsonException e)
             {
-                throw new SchematicApiException("Failed to deserialize response", e);
+                throw new SchematicException("Failed to deserialize response", e);
             }
         }
 
-        try
         {
-            switch (response.StatusCode)
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            try
             {
-                case 400:
-                    throw new BadRequestError(JsonUtils.Deserialize<ApiError>(responseBody));
-                case 401:
-                    throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
-                case 403:
-                    throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
-                case 500:
-                    throw new InternalServerError(JsonUtils.Deserialize<ApiError>(responseBody));
+                switch (response.StatusCode)
+                {
+                    case 400:
+                        throw new BadRequestError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 401:
+                        throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 403:
+                        throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 500:
+                        throw new InternalServerError(
+                            JsonUtils.Deserialize<ApiError>(responseBody)
+                        );
+                }
             }
+            catch (JsonException)
+            {
+                // unable to map error response, throwing generic error
+            }
+            throw new SchematicApiException(
+                $"Error with status code {response.StatusCode}",
+                response.StatusCode,
+                responseBody
+            );
         }
-        catch (JsonException)
-        {
-            // unable to map error response, throwing generic error
-        }
-        throw new SchematicApiApiException(
-            $"Error with status code {response.StatusCode}",
-            response.StatusCode,
-            responseBody
-        );
     }
 
-    /// <example>
-    /// <code>
+    /// <example><code>
     /// await client.Billing.UpsertBillingSubscriptionAsync(
     ///     new CreateBillingSubscriptionsRequestBody
     ///     {
@@ -1485,8 +1610,7 @@ public partial class BillingClient
     ///         TotalPrice = 1,
     ///     }
     /// );
-    /// </code>
-    /// </example>
+    /// </code></example>
     public async Task<UpsertBillingSubscriptionResponse> UpsertBillingSubscriptionAsync(
         CreateBillingSubscriptionsRequestBody request,
         RequestOptions? options = null,
@@ -1494,8 +1618,8 @@ public partial class BillingClient
     )
     {
         var response = await _client
-            .MakeRequestAsync(
-                new RawClient.JsonApiRequest
+            .SendRequestAsync(
+                new JsonRequest
                 {
                     BaseUrl = _client.Options.BaseUrl,
                     Method = HttpMethod.Post,
@@ -1507,41 +1631,46 @@ public partial class BillingClient
                 cancellationToken
             )
             .ConfigureAwait(false);
-        var responseBody = await response.Raw.Content.ReadAsStringAsync();
         if (response.StatusCode is >= 200 and < 400)
         {
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
             try
             {
                 return JsonUtils.Deserialize<UpsertBillingSubscriptionResponse>(responseBody)!;
             }
             catch (JsonException e)
             {
-                throw new SchematicApiException("Failed to deserialize response", e);
+                throw new SchematicException("Failed to deserialize response", e);
             }
         }
 
-        try
         {
-            switch (response.StatusCode)
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            try
             {
-                case 400:
-                    throw new BadRequestError(JsonUtils.Deserialize<ApiError>(responseBody));
-                case 401:
-                    throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
-                case 403:
-                    throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
-                case 500:
-                    throw new InternalServerError(JsonUtils.Deserialize<ApiError>(responseBody));
+                switch (response.StatusCode)
+                {
+                    case 400:
+                        throw new BadRequestError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 401:
+                        throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 403:
+                        throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 500:
+                        throw new InternalServerError(
+                            JsonUtils.Deserialize<ApiError>(responseBody)
+                        );
+                }
             }
+            catch (JsonException)
+            {
+                // unable to map error response, throwing generic error
+            }
+            throw new SchematicApiException(
+                $"Error with status code {response.StatusCode}",
+                response.StatusCode,
+                responseBody
+            );
         }
-        catch (JsonException)
-        {
-            // unable to map error response, throwing generic error
-        }
-        throw new SchematicApiApiException(
-            $"Error with status code {response.StatusCode}",
-            response.StatusCode,
-            responseBody
-        );
     }
 }

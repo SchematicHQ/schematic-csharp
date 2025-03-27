@@ -17,6 +17,9 @@ public record CreateBillingSubscriptionsRequestBody
     [JsonPropertyName("customer_external_id")]
     public required string CustomerExternalId { get; set; }
 
+    [JsonPropertyName("default_payment_method_id")]
+    public string? DefaultPaymentMethodId { get; set; }
+
     [JsonPropertyName("discounts")]
     public IEnumerable<BillingSubscriptionDiscount> Discounts { get; set; } =
         new List<BillingSubscriptionDiscount>();
@@ -55,6 +58,7 @@ public record CreateBillingSubscriptionsRequestBody
     [JsonPropertyName("trial_end_setting")]
     public CreateBillingSubscriptionsRequestBodyTrialEndSetting? TrialEndSetting { get; set; }
 
+    /// <inheritdoc />
     public override string ToString()
     {
         return JsonUtils.Serialize(this);

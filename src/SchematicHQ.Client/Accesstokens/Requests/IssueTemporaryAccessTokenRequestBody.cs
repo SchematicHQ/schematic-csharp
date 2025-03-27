@@ -11,6 +11,7 @@ public record IssueTemporaryAccessTokenRequestBody
     [JsonPropertyName("resource_type")]
     public required string ResourceType { get; set; }
 
+    /// <inheritdoc />
     public override string ToString()
     {
         return JsonUtils.Serialize(this);

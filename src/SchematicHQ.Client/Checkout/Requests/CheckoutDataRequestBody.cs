@@ -11,6 +11,7 @@ public record CheckoutDataRequestBody
     [JsonPropertyName("selected_plan_id")]
     public string? SelectedPlanId { get; set; }
 
+    /// <inheritdoc />
     public override string ToString()
     {
         return JsonUtils.Serialize(this);

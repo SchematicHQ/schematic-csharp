@@ -1,3 +1,4 @@
+using System.Text.Json;
 using System.Text.Json.Serialization;
 using SchematicHQ.Client.Core;
 
@@ -32,12 +33,26 @@ public record FeatureResponseData
     [JsonPropertyName("name")]
     public required string Name { get; set; }
 
+    [JsonPropertyName("plural_name")]
+    public string? PluralName { get; set; }
+
+    [JsonPropertyName("singular_name")]
+    public string? SingularName { get; set; }
+
     [JsonPropertyName("trait_id")]
     public string? TraitId { get; set; }
 
     [JsonPropertyName("updated_at")]
     public required DateTime UpdatedAt { get; set; }
 
+    /// <summary>
+    /// Additional properties received from the response, if any.
+    /// </summary>
+    [JsonExtensionData]
+    public IDictionary<string, JsonElement> AdditionalProperties { get; internal set; } =
+        new Dictionary<string, JsonElement>();
+
+    /// <inheritdoc />
     public override string ToString()
     {
         return JsonUtils.Serialize(this);

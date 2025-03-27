@@ -3,7 +3,7 @@ namespace SchematicHQ.Client;
 /// <summary>
 /// This exception type will be thrown for any non-2XX API responses.
 /// </summary>
-public class NotFoundError(ApiError body) : SchematicApiApiException("NotFoundError", 404, body)
+public class NotFoundError(ApiError body) : SchematicApiException("NotFoundError", 404, body)
 {
     /// <summary>
     /// The body of the response that triggered the exception.

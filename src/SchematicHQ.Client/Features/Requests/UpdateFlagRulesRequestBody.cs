@@ -9,6 +9,7 @@ public record UpdateFlagRulesRequestBody
     public IEnumerable<CreateOrUpdateRuleRequestBody> Rules { get; set; } =
         new List<CreateOrUpdateRuleRequestBody>();
 
+    /// <inheritdoc />
     public override string ToString()
     {
         return JsonUtils.Serialize(this);

@@ -1,8 +1,12 @@
+using System.Text.Json;
 using System.Text.Json.Serialization;
 using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
 
+/// <summary>
+/// Input parameters
+/// </summary>
 public record CountFeaturesParams
 {
     [JsonPropertyName("ids")]
@@ -35,6 +39,14 @@ public record CountFeaturesParams
     [JsonPropertyName("without_plan_entitlement_for")]
     public string? WithoutPlanEntitlementFor { get; set; }
 
+    /// <summary>
+    /// Additional properties received from the response, if any.
+    /// </summary>
+    [JsonExtensionData]
+    public IDictionary<string, JsonElement> AdditionalProperties { get; internal set; } =
+        new Dictionary<string, JsonElement>();
+
+    /// <inheritdoc />
     public override string ToString()
     {
         return JsonUtils.Serialize(this);

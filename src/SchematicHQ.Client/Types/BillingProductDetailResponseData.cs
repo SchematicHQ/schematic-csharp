@@ -1,3 +1,4 @@
+using System.Text.Json;
 using System.Text.Json.Serialization;
 using SchematicHQ.Client.Core;
 
@@ -36,9 +37,20 @@ public record BillingProductDetailResponseData
     [JsonPropertyName("quantity")]
     public required double Quantity { get; set; }
 
+    [JsonPropertyName("subscription_count")]
+    public required int SubscriptionCount { get; set; }
+
     [JsonPropertyName("updated_at")]
     public required DateTime UpdatedAt { get; set; }
 
+    /// <summary>
+    /// Additional properties received from the response, if any.
+    /// </summary>
+    [JsonExtensionData]
+    public IDictionary<string, JsonElement> AdditionalProperties { get; internal set; } =
+        new Dictionary<string, JsonElement>();
+
+    /// <inheritdoc />
     public override string ToString()
     {
         return JsonUtils.Serialize(this);

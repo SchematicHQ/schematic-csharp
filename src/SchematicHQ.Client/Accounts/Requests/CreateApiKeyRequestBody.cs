@@ -14,6 +14,7 @@ public record CreateApiKeyRequestBody
     [JsonPropertyName("name")]
     public required string Name { get; set; }
 
+    /// <inheritdoc />
     public override string ToString()
     {
         return JsonUtils.Serialize(this);

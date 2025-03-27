@@ -17,6 +17,7 @@ public record CreateEntityTraitDefinitionRequestBody
     [JsonPropertyName("trait_type")]
     public required CreateEntityTraitDefinitionRequestBodyTraitType TraitType { get; set; }
 
+    /// <inheritdoc />
     public override string ToString()
     {
         return JsonUtils.Serialize(this);

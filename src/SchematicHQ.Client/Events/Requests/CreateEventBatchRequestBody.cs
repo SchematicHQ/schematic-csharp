@@ -9,6 +9,7 @@ public record CreateEventBatchRequestBody
     public IEnumerable<CreateEventRequestBody> Events { get; set; } =
         new List<CreateEventRequestBody>();
 
+    /// <inheritdoc />
     public override string ToString()
     {
         return JsonUtils.Serialize(this);

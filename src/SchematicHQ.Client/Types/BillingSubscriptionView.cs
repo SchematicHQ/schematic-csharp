@@ -1,8 +1,12 @@
+using System.Text.Json;
 using System.Text.Json.Serialization;
 using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
 
+/// <summary>
+/// The updated resource
+/// </summary>
 public record BillingSubscriptionView
 {
     [JsonPropertyName("cancel_at")]
@@ -22,6 +26,9 @@ public record BillingSubscriptionView
 
     [JsonPropertyName("customer_external_id")]
     public required string CustomerExternalId { get; set; }
+
+    [JsonPropertyName("default_payment_method_id")]
+    public string? DefaultPaymentMethodId { get; set; }
 
     [JsonPropertyName("discounts")]
     public IEnumerable<BillingSubscriptionDiscountView> Discounts { get; set; } =
@@ -70,6 +77,14 @@ public record BillingSubscriptionView
     [JsonPropertyName("trial_end_setting")]
     public string? TrialEndSetting { get; set; }
 
+    /// <summary>
+    /// Additional properties received from the response, if any.
+    /// </summary>
+    [JsonExtensionData]
+    public IDictionary<string, JsonElement> AdditionalProperties { get; internal set; } =
+        new Dictionary<string, JsonElement>();
+
+    /// <inheritdoc />
     public override string ToString()
     {
         return JsonUtils.Serialize(this);

@@ -17,8 +17,9 @@ public record UpdatePlanGroupRequestBody
     [JsonPropertyName("default_plan_id")]
     public string? DefaultPlanId { get; set; }
 
-    [JsonPropertyName("plan_ids")]
-    public IEnumerable<string> PlanIds { get; set; } = new List<string>();
+    [JsonPropertyName("ordered_plans")]
+    public IEnumerable<OrderedPlansInGroup> OrderedPlans { get; set; } =
+        new List<OrderedPlansInGroup>();
 
     [JsonPropertyName("trial_days")]
     public int? TrialDays { get; set; }
@@ -26,6 +27,7 @@ public record UpdatePlanGroupRequestBody
     [JsonPropertyName("trial_payment_method_required")]
     public bool? TrialPaymentMethodRequired { get; set; }
 
+    /// <inheritdoc />
     public override string ToString()
     {
         return JsonUtils.Serialize(this);

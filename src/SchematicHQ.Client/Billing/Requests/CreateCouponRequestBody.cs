@@ -32,6 +32,7 @@ public record CreateCouponRequestBody
     [JsonPropertyName("times_redeemed")]
     public required int TimesRedeemed { get; set; }
 
+    /// <inheritdoc />
     public override string ToString()
     {
         return JsonUtils.Serialize(this);

@@ -11,6 +11,7 @@ public record GetOrCreateCompanyMembershipRequestBody
     [JsonPropertyName("user_id")]
     public required string UserId { get; set; }
 
+    /// <inheritdoc />
     public override string ToString()
     {
         return JsonUtils.Serialize(this);

@@ -17,6 +17,7 @@ public record CreateMeterRequestBody
     [JsonPropertyName("external_id")]
     public required string ExternalId { get; set; }
 
+    /// <inheritdoc />
     public override string ToString()
     {
         return JsonUtils.Serialize(this);

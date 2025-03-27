@@ -26,6 +26,7 @@ public record UpdateCompanyOverrideRequestBody
     [JsonPropertyName("value_type")]
     public required UpdateCompanyOverrideRequestBodyValueType ValueType { get; set; }
 
+    /// <inheritdoc />
     public override string ToString()
     {
         return JsonUtils.Serialize(this);

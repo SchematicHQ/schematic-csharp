@@ -8,6 +8,7 @@ public record UpdateTrialEndRequestBody
     [JsonPropertyName("trial_end")]
     public DateTime? TrialEnd { get; set; }
 
+    /// <inheritdoc />
     public override string ToString()
     {
         return JsonUtils.Serialize(this);

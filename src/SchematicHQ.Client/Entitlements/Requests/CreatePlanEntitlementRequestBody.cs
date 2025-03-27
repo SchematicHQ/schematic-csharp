@@ -23,6 +23,9 @@ public record CreatePlanEntitlementRequestBody
     [JsonPropertyName("price_behavior")]
     public string? PriceBehavior { get; set; }
 
+    [JsonPropertyName("soft_limit")]
+    public int? SoftLimit { get; set; }
+
     [JsonPropertyName("value_bool")]
     public bool? ValueBool { get; set; }
 
@@ -38,6 +41,7 @@ public record CreatePlanEntitlementRequestBody
     [JsonPropertyName("yearly_metered_price_id")]
     public string? YearlyMeteredPriceId { get; set; }
 
+    /// <inheritdoc />
     public override string ToString()
     {
         return JsonUtils.Serialize(this);

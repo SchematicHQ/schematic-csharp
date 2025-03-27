@@ -11,6 +11,7 @@ public record UpdateEntityTraitDefinitionRequestBody
     [JsonPropertyName("trait_type")]
     public required UpdateEntityTraitDefinitionRequestBodyTraitType TraitType { get; set; }
 
+    /// <inheritdoc />
     public override string ToString()
     {
         return JsonUtils.Serialize(this);

@@ -11,6 +11,7 @@ public record UpdateCompanyPlansRequestBody
     [JsonPropertyName("base_plan_id")]
     public string? BasePlanId { get; set; }
 
+    /// <inheritdoc />
     public override string ToString()
     {
         return JsonUtils.Serialize(this);

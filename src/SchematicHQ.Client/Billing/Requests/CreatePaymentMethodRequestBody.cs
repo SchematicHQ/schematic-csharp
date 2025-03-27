@@ -41,9 +41,7 @@ public record CreatePaymentMethodRequestBody
     [JsonPropertyName("payment_method_type")]
     public required string PaymentMethodType { get; set; }
 
-    [JsonPropertyName("subscription_external_id")]
-    public string? SubscriptionExternalId { get; set; }
-
+    /// <inheritdoc />
     public override string ToString()
     {
         return JsonUtils.Serialize(this);
