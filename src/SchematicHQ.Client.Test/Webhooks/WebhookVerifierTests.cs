@@ -145,5 +145,18 @@ namespace SchematicHQ.Client.Test.Webhooks
             // Act & Assert
             Assert.DoesNotThrow(() => WebhookVerifier.VerifyWebhookSignature(RequestBody, headers, WebhookSecret));
         }
+
+        [Test]
+        public void VerifySignature_WithWrongSecret_ThrowsException()
+        {
+            // Arrange
+            const string wrongSecret = "wrong_secret";
+
+            // Act & Assert
+            Assert.Throws<WebhookSignatureException>(
+                () => WebhookVerifier.VerifySignature(RequestBody, _validSignature, Timestamp, wrongSecret),
+                "Should throw when using wrong secret"
+            );
+        }
     }
 }
