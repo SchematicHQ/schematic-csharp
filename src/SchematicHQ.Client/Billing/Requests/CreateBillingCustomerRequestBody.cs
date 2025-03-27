@@ -8,6 +8,9 @@ public record CreateBillingCustomerRequestBody
     [JsonPropertyName("company_id")]
     public string? CompanyId { get; set; }
 
+    [JsonPropertyName("default_payment_method_id")]
+    public string? DefaultPaymentMethodId { get; set; }
+
     [JsonPropertyName("email")]
     public required string Email { get; set; }
 
@@ -23,6 +26,7 @@ public record CreateBillingCustomerRequestBody
     [JsonPropertyName("name")]
     public required string Name { get; set; }
 
+    /// <inheritdoc />
     public override string ToString()
     {
         return JsonUtils.Serialize(this);

@@ -23,6 +23,7 @@ public record UpsertBillingProductRequestBody
     [JsonPropertyName("yearly_price_id")]
     public string? YearlyPriceId { get; set; }
 
+    /// <inheritdoc />
     public override string ToString()
     {
         return JsonUtils.Serialize(this);

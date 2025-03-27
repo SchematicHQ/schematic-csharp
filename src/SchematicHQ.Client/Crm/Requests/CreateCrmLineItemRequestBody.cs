@@ -29,6 +29,7 @@ public record CreateCrmLineItemRequestBody
     [JsonPropertyName("total_discount")]
     public string? TotalDiscount { get; set; }
 
+    /// <inheritdoc />
     public override string ToString()
     {
         return JsonUtils.Serialize(this);

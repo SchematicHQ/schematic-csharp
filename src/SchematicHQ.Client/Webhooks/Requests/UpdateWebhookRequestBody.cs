@@ -17,6 +17,7 @@ public record UpdateWebhookRequestBody
     [JsonPropertyName("url")]
     public string? Url { get; set; }
 
+    /// <inheritdoc />
     public override string ToString()
     {
         return JsonUtils.Serialize(this);

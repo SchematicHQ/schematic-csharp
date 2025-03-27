@@ -17,6 +17,7 @@ public record UpdateComponentRequestBody
     [JsonPropertyName("state")]
     public UpdateComponentRequestBodyState? State { get; set; }
 
+    /// <inheritdoc />
     public override string ToString()
     {
         return JsonUtils.Serialize(this);

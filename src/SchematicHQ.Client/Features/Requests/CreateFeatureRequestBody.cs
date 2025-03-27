@@ -29,9 +29,16 @@ public record CreateFeatureRequestBody
     [JsonPropertyName("name")]
     public required string Name { get; set; }
 
+    [JsonPropertyName("plural_name")]
+    public string? PluralName { get; set; }
+
+    [JsonPropertyName("singular_name")]
+    public string? SingularName { get; set; }
+
     [JsonPropertyName("trait_id")]
     public string? TraitId { get; set; }
 
+    /// <inheritdoc />
     public override string ToString()
     {
         return JsonUtils.Serialize(this);

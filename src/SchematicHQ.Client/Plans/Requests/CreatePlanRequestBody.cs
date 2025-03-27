@@ -17,6 +17,7 @@ public record CreatePlanRequestBody
     [JsonPropertyName("plan_type")]
     public required CreatePlanRequestBodyPlanType PlanType { get; set; }
 
+    /// <inheritdoc />
     public override string ToString()
     {
         return JsonUtils.Serialize(this);

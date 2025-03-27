@@ -14,8 +14,7 @@ public partial class CrmClient
         _client = client;
     }
 
-    /// <example>
-    /// <code>
+    /// <example><code>
     /// await client.Crm.UpsertDealLineItemAssociationAsync(
     ///     new CreateCrmDealLineItemAssociationRequestBody
     ///     {
@@ -23,8 +22,7 @@ public partial class CrmClient
     ///         LineItemExternalId = "line_item_external_id",
     ///     }
     /// );
-    /// </code>
-    /// </example>
+    /// </code></example>
     public async Task<UpsertDealLineItemAssociationResponse> UpsertDealLineItemAssociationAsync(
         CreateCrmDealLineItemAssociationRequestBody request,
         RequestOptions? options = null,
@@ -32,8 +30,8 @@ public partial class CrmClient
     )
     {
         var response = await _client
-            .MakeRequestAsync(
-                new RawClient.JsonApiRequest
+            .SendRequestAsync(
+                new JsonRequest
                 {
                     BaseUrl = _client.Options.BaseUrl,
                     Method = HttpMethod.Post,
@@ -45,46 +43,50 @@ public partial class CrmClient
                 cancellationToken
             )
             .ConfigureAwait(false);
-        var responseBody = await response.Raw.Content.ReadAsStringAsync();
         if (response.StatusCode is >= 200 and < 400)
         {
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
             try
             {
                 return JsonUtils.Deserialize<UpsertDealLineItemAssociationResponse>(responseBody)!;
             }
             catch (JsonException e)
             {
-                throw new SchematicApiException("Failed to deserialize response", e);
+                throw new SchematicException("Failed to deserialize response", e);
             }
         }
 
-        try
         {
-            switch (response.StatusCode)
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            try
             {
-                case 400:
-                    throw new BadRequestError(JsonUtils.Deserialize<ApiError>(responseBody));
-                case 401:
-                    throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
-                case 403:
-                    throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
-                case 500:
-                    throw new InternalServerError(JsonUtils.Deserialize<ApiError>(responseBody));
+                switch (response.StatusCode)
+                {
+                    case 400:
+                        throw new BadRequestError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 401:
+                        throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 403:
+                        throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 500:
+                        throw new InternalServerError(
+                            JsonUtils.Deserialize<ApiError>(responseBody)
+                        );
+                }
             }
+            catch (JsonException)
+            {
+                // unable to map error response, throwing generic error
+            }
+            throw new SchematicApiException(
+                $"Error with status code {response.StatusCode}",
+                response.StatusCode,
+                responseBody
+            );
         }
-        catch (JsonException)
-        {
-            // unable to map error response, throwing generic error
-        }
-        throw new SchematicApiApiException(
-            $"Error with status code {response.StatusCode}",
-            response.StatusCode,
-            responseBody
-        );
     }
 
-    /// <example>
-    /// <code>
+    /// <example><code>
     /// await client.Crm.UpsertLineItemAsync(
     ///     new CreateCrmLineItemRequestBody
     ///     {
@@ -95,8 +97,7 @@ public partial class CrmClient
     ///         Quantity = 1,
     ///     }
     /// );
-    /// </code>
-    /// </example>
+    /// </code></example>
     public async Task<UpsertLineItemResponse> UpsertLineItemAsync(
         CreateCrmLineItemRequestBody request,
         RequestOptions? options = null,
@@ -104,8 +105,8 @@ public partial class CrmClient
     )
     {
         var response = await _client
-            .MakeRequestAsync(
-                new RawClient.JsonApiRequest
+            .SendRequestAsync(
+                new JsonRequest
                 {
                     BaseUrl = _client.Options.BaseUrl,
                     Method = HttpMethod.Post,
@@ -117,46 +118,50 @@ public partial class CrmClient
                 cancellationToken
             )
             .ConfigureAwait(false);
-        var responseBody = await response.Raw.Content.ReadAsStringAsync();
         if (response.StatusCode is >= 200 and < 400)
         {
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
             try
             {
                 return JsonUtils.Deserialize<UpsertLineItemResponse>(responseBody)!;
             }
             catch (JsonException e)
             {
-                throw new SchematicApiException("Failed to deserialize response", e);
+                throw new SchematicException("Failed to deserialize response", e);
             }
         }
 
-        try
         {
-            switch (response.StatusCode)
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            try
             {
-                case 400:
-                    throw new BadRequestError(JsonUtils.Deserialize<ApiError>(responseBody));
-                case 401:
-                    throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
-                case 403:
-                    throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
-                case 500:
-                    throw new InternalServerError(JsonUtils.Deserialize<ApiError>(responseBody));
+                switch (response.StatusCode)
+                {
+                    case 400:
+                        throw new BadRequestError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 401:
+                        throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 403:
+                        throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 500:
+                        throw new InternalServerError(
+                            JsonUtils.Deserialize<ApiError>(responseBody)
+                        );
+                }
             }
+            catch (JsonException)
+            {
+                // unable to map error response, throwing generic error
+            }
+            throw new SchematicApiException(
+                $"Error with status code {response.StatusCode}",
+                response.StatusCode,
+                responseBody
+            );
         }
-        catch (JsonException)
-        {
-            // unable to map error response, throwing generic error
-        }
-        throw new SchematicApiApiException(
-            $"Error with status code {response.StatusCode}",
-            response.StatusCode,
-            responseBody
-        );
     }
 
-    /// <example>
-    /// <code>
+    /// <example><code>
     /// await client.Crm.UpsertCrmDealAsync(
     ///     new CreateCrmDealRequestBody
     ///     {
@@ -165,8 +170,7 @@ public partial class CrmClient
     ///         DealExternalId = "deal_external_id",
     ///     }
     /// );
-    /// </code>
-    /// </example>
+    /// </code></example>
     public async Task<UpsertCrmDealResponse> UpsertCrmDealAsync(
         CreateCrmDealRequestBody request,
         RequestOptions? options = null,
@@ -174,8 +178,8 @@ public partial class CrmClient
     )
     {
         var response = await _client
-            .MakeRequestAsync(
-                new RawClient.JsonApiRequest
+            .SendRequestAsync(
+                new JsonRequest
                 {
                     BaseUrl = _client.Options.BaseUrl,
                     Method = HttpMethod.Post,
@@ -187,49 +191,52 @@ public partial class CrmClient
                 cancellationToken
             )
             .ConfigureAwait(false);
-        var responseBody = await response.Raw.Content.ReadAsStringAsync();
         if (response.StatusCode is >= 200 and < 400)
         {
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
             try
             {
                 return JsonUtils.Deserialize<UpsertCrmDealResponse>(responseBody)!;
             }
             catch (JsonException e)
             {
-                throw new SchematicApiException("Failed to deserialize response", e);
+                throw new SchematicException("Failed to deserialize response", e);
             }
         }
 
-        try
         {
-            switch (response.StatusCode)
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            try
             {
-                case 400:
-                    throw new BadRequestError(JsonUtils.Deserialize<ApiError>(responseBody));
-                case 401:
-                    throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
-                case 403:
-                    throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
-                case 500:
-                    throw new InternalServerError(JsonUtils.Deserialize<ApiError>(responseBody));
+                switch (response.StatusCode)
+                {
+                    case 400:
+                        throw new BadRequestError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 401:
+                        throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 403:
+                        throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 500:
+                        throw new InternalServerError(
+                            JsonUtils.Deserialize<ApiError>(responseBody)
+                        );
+                }
             }
+            catch (JsonException)
+            {
+                // unable to map error response, throwing generic error
+            }
+            throw new SchematicApiException(
+                $"Error with status code {response.StatusCode}",
+                response.StatusCode,
+                responseBody
+            );
         }
-        catch (JsonException)
-        {
-            // unable to map error response, throwing generic error
-        }
-        throw new SchematicApiApiException(
-            $"Error with status code {response.StatusCode}",
-            response.StatusCode,
-            responseBody
-        );
     }
 
-    /// <example>
-    /// <code>
+    /// <example><code>
     /// await client.Crm.ListCrmProductsAsync(new ListCrmProductsRequest());
-    /// </code>
-    /// </example>
+    /// </code></example>
     public async Task<ListCrmProductsResponse> ListCrmProductsAsync(
         ListCrmProductsRequest request,
         RequestOptions? options = null,
@@ -251,8 +258,8 @@ public partial class CrmClient
             _query["offset"] = request.Offset.Value.ToString();
         }
         var response = await _client
-            .MakeRequestAsync(
-                new RawClient.JsonApiRequest
+            .SendRequestAsync(
+                new JsonRequest
                 {
                     BaseUrl = _client.Options.BaseUrl,
                     Method = HttpMethod.Get,
@@ -263,46 +270,50 @@ public partial class CrmClient
                 cancellationToken
             )
             .ConfigureAwait(false);
-        var responseBody = await response.Raw.Content.ReadAsStringAsync();
         if (response.StatusCode is >= 200 and < 400)
         {
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
             try
             {
                 return JsonUtils.Deserialize<ListCrmProductsResponse>(responseBody)!;
             }
             catch (JsonException e)
             {
-                throw new SchematicApiException("Failed to deserialize response", e);
+                throw new SchematicException("Failed to deserialize response", e);
             }
         }
 
-        try
         {
-            switch (response.StatusCode)
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            try
             {
-                case 400:
-                    throw new BadRequestError(JsonUtils.Deserialize<ApiError>(responseBody));
-                case 401:
-                    throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
-                case 403:
-                    throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
-                case 500:
-                    throw new InternalServerError(JsonUtils.Deserialize<ApiError>(responseBody));
+                switch (response.StatusCode)
+                {
+                    case 400:
+                        throw new BadRequestError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 401:
+                        throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 403:
+                        throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 500:
+                        throw new InternalServerError(
+                            JsonUtils.Deserialize<ApiError>(responseBody)
+                        );
+                }
             }
+            catch (JsonException)
+            {
+                // unable to map error response, throwing generic error
+            }
+            throw new SchematicApiException(
+                $"Error with status code {response.StatusCode}",
+                response.StatusCode,
+                responseBody
+            );
         }
-        catch (JsonException)
-        {
-            // unable to map error response, throwing generic error
-        }
-        throw new SchematicApiApiException(
-            $"Error with status code {response.StatusCode}",
-            response.StatusCode,
-            responseBody
-        );
     }
 
-    /// <example>
-    /// <code>
+    /// <example><code>
     /// await client.Crm.UpsertCrmProductAsync(
     ///     new CreateCrmProductRequestBody
     ///     {
@@ -316,8 +327,7 @@ public partial class CrmClient
     ///         Sku = "sku",
     ///     }
     /// );
-    /// </code>
-    /// </example>
+    /// </code></example>
     public async Task<UpsertCrmProductResponse> UpsertCrmProductAsync(
         CreateCrmProductRequestBody request,
         RequestOptions? options = null,
@@ -325,8 +335,8 @@ public partial class CrmClient
     )
     {
         var response = await _client
-            .MakeRequestAsync(
-                new RawClient.JsonApiRequest
+            .SendRequestAsync(
+                new JsonRequest
                 {
                     BaseUrl = _client.Options.BaseUrl,
                     Method = HttpMethod.Post,
@@ -338,41 +348,46 @@ public partial class CrmClient
                 cancellationToken
             )
             .ConfigureAwait(false);
-        var responseBody = await response.Raw.Content.ReadAsStringAsync();
         if (response.StatusCode is >= 200 and < 400)
         {
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
             try
             {
                 return JsonUtils.Deserialize<UpsertCrmProductResponse>(responseBody)!;
             }
             catch (JsonException e)
             {
-                throw new SchematicApiException("Failed to deserialize response", e);
+                throw new SchematicException("Failed to deserialize response", e);
             }
         }
 
-        try
         {
-            switch (response.StatusCode)
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            try
             {
-                case 400:
-                    throw new BadRequestError(JsonUtils.Deserialize<ApiError>(responseBody));
-                case 401:
-                    throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
-                case 403:
-                    throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
-                case 500:
-                    throw new InternalServerError(JsonUtils.Deserialize<ApiError>(responseBody));
+                switch (response.StatusCode)
+                {
+                    case 400:
+                        throw new BadRequestError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 401:
+                        throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 403:
+                        throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 500:
+                        throw new InternalServerError(
+                            JsonUtils.Deserialize<ApiError>(responseBody)
+                        );
+                }
             }
+            catch (JsonException)
+            {
+                // unable to map error response, throwing generic error
+            }
+            throw new SchematicApiException(
+                $"Error with status code {response.StatusCode}",
+                response.StatusCode,
+                responseBody
+            );
         }
-        catch (JsonException)
-        {
-            // unable to map error response, throwing generic error
-        }
-        throw new SchematicApiApiException(
-            $"Error with status code {response.StatusCode}",
-            response.StatusCode,
-            responseBody
-        );
     }
 }

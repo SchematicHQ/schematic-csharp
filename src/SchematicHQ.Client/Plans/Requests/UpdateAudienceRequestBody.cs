@@ -13,6 +13,7 @@ public record UpdateAudienceRequestBody
     public IEnumerable<CreateOrUpdateConditionRequestBody> Conditions { get; set; } =
         new List<CreateOrUpdateConditionRequestBody>();
 
+    /// <inheritdoc />
     public override string ToString()
     {
         return JsonUtils.Serialize(this);

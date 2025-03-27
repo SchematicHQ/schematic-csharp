@@ -29,6 +29,7 @@ public record CreateCrmProductRequestBody
     [JsonPropertyName("sku")]
     public required string Sku { get; set; }
 
+    /// <inheritdoc />
     public override string ToString()
     {
         return JsonUtils.Serialize(this);

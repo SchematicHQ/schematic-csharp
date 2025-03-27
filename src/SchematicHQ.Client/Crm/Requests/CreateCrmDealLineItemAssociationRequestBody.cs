@@ -11,6 +11,7 @@ public record CreateCrmDealLineItemAssociationRequestBody
     [JsonPropertyName("line_item_external_id")]
     public required string LineItemExternalId { get; set; }
 
+    /// <inheritdoc />
     public override string ToString()
     {
         return JsonUtils.Serialize(this);

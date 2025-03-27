@@ -14,8 +14,7 @@ public partial class FeaturesClient
         _client = client;
     }
 
-    /// <example>
-    /// <code>
+    /// <example><code>
     /// await client.Features.CountAudienceCompaniesAsync(
     ///     new AudienceRequestBody
     ///     {
@@ -45,8 +44,7 @@ public partial class FeaturesClient
     ///         },
     ///     }
     /// );
-    /// </code>
-    /// </example>
+    /// </code></example>
     public async Task<CountAudienceCompaniesResponse> CountAudienceCompaniesAsync(
         AudienceRequestBody request,
         RequestOptions? options = null,
@@ -54,8 +52,8 @@ public partial class FeaturesClient
     )
     {
         var response = await _client
-            .MakeRequestAsync(
-                new RawClient.JsonApiRequest
+            .SendRequestAsync(
+                new JsonRequest
                 {
                     BaseUrl = _client.Options.BaseUrl,
                     Method = HttpMethod.Post,
@@ -67,46 +65,50 @@ public partial class FeaturesClient
                 cancellationToken
             )
             .ConfigureAwait(false);
-        var responseBody = await response.Raw.Content.ReadAsStringAsync();
         if (response.StatusCode is >= 200 and < 400)
         {
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
             try
             {
                 return JsonUtils.Deserialize<CountAudienceCompaniesResponse>(responseBody)!;
             }
             catch (JsonException e)
             {
-                throw new SchematicApiException("Failed to deserialize response", e);
+                throw new SchematicException("Failed to deserialize response", e);
             }
         }
 
-        try
         {
-            switch (response.StatusCode)
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            try
             {
-                case 400:
-                    throw new BadRequestError(JsonUtils.Deserialize<ApiError>(responseBody));
-                case 401:
-                    throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
-                case 403:
-                    throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
-                case 500:
-                    throw new InternalServerError(JsonUtils.Deserialize<ApiError>(responseBody));
+                switch (response.StatusCode)
+                {
+                    case 400:
+                        throw new BadRequestError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 401:
+                        throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 403:
+                        throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 500:
+                        throw new InternalServerError(
+                            JsonUtils.Deserialize<ApiError>(responseBody)
+                        );
+                }
             }
+            catch (JsonException)
+            {
+                // unable to map error response, throwing generic error
+            }
+            throw new SchematicApiException(
+                $"Error with status code {response.StatusCode}",
+                response.StatusCode,
+                responseBody
+            );
         }
-        catch (JsonException)
-        {
-            // unable to map error response, throwing generic error
-        }
-        throw new SchematicApiApiException(
-            $"Error with status code {response.StatusCode}",
-            response.StatusCode,
-            responseBody
-        );
     }
 
-    /// <example>
-    /// <code>
+    /// <example><code>
     /// await client.Features.CountAudienceUsersAsync(
     ///     new AudienceRequestBody
     ///     {
@@ -136,8 +138,7 @@ public partial class FeaturesClient
     ///         },
     ///     }
     /// );
-    /// </code>
-    /// </example>
+    /// </code></example>
     public async Task<CountAudienceUsersResponse> CountAudienceUsersAsync(
         AudienceRequestBody request,
         RequestOptions? options = null,
@@ -145,8 +146,8 @@ public partial class FeaturesClient
     )
     {
         var response = await _client
-            .MakeRequestAsync(
-                new RawClient.JsonApiRequest
+            .SendRequestAsync(
+                new JsonRequest
                 {
                     BaseUrl = _client.Options.BaseUrl,
                     Method = HttpMethod.Post,
@@ -158,46 +159,50 @@ public partial class FeaturesClient
                 cancellationToken
             )
             .ConfigureAwait(false);
-        var responseBody = await response.Raw.Content.ReadAsStringAsync();
         if (response.StatusCode is >= 200 and < 400)
         {
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
             try
             {
                 return JsonUtils.Deserialize<CountAudienceUsersResponse>(responseBody)!;
             }
             catch (JsonException e)
             {
-                throw new SchematicApiException("Failed to deserialize response", e);
+                throw new SchematicException("Failed to deserialize response", e);
             }
         }
 
-        try
         {
-            switch (response.StatusCode)
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            try
             {
-                case 400:
-                    throw new BadRequestError(JsonUtils.Deserialize<ApiError>(responseBody));
-                case 401:
-                    throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
-                case 403:
-                    throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
-                case 500:
-                    throw new InternalServerError(JsonUtils.Deserialize<ApiError>(responseBody));
+                switch (response.StatusCode)
+                {
+                    case 400:
+                        throw new BadRequestError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 401:
+                        throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 403:
+                        throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 500:
+                        throw new InternalServerError(
+                            JsonUtils.Deserialize<ApiError>(responseBody)
+                        );
+                }
             }
+            catch (JsonException)
+            {
+                // unable to map error response, throwing generic error
+            }
+            throw new SchematicApiException(
+                $"Error with status code {response.StatusCode}",
+                response.StatusCode,
+                responseBody
+            );
         }
-        catch (JsonException)
-        {
-            // unable to map error response, throwing generic error
-        }
-        throw new SchematicApiApiException(
-            $"Error with status code {response.StatusCode}",
-            response.StatusCode,
-            responseBody
-        );
     }
 
-    /// <example>
-    /// <code>
+    /// <example><code>
     /// await client.Features.ListAudienceCompaniesAsync(
     ///     new AudienceRequestBody
     ///     {
@@ -227,8 +232,7 @@ public partial class FeaturesClient
     ///         },
     ///     }
     /// );
-    /// </code>
-    /// </example>
+    /// </code></example>
     public async Task<ListAudienceCompaniesResponse> ListAudienceCompaniesAsync(
         AudienceRequestBody request,
         RequestOptions? options = null,
@@ -236,8 +240,8 @@ public partial class FeaturesClient
     )
     {
         var response = await _client
-            .MakeRequestAsync(
-                new RawClient.JsonApiRequest
+            .SendRequestAsync(
+                new JsonRequest
                 {
                     BaseUrl = _client.Options.BaseUrl,
                     Method = HttpMethod.Post,
@@ -249,46 +253,50 @@ public partial class FeaturesClient
                 cancellationToken
             )
             .ConfigureAwait(false);
-        var responseBody = await response.Raw.Content.ReadAsStringAsync();
         if (response.StatusCode is >= 200 and < 400)
         {
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
             try
             {
                 return JsonUtils.Deserialize<ListAudienceCompaniesResponse>(responseBody)!;
             }
             catch (JsonException e)
             {
-                throw new SchematicApiException("Failed to deserialize response", e);
+                throw new SchematicException("Failed to deserialize response", e);
             }
         }
 
-        try
         {
-            switch (response.StatusCode)
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            try
             {
-                case 400:
-                    throw new BadRequestError(JsonUtils.Deserialize<ApiError>(responseBody));
-                case 401:
-                    throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
-                case 403:
-                    throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
-                case 500:
-                    throw new InternalServerError(JsonUtils.Deserialize<ApiError>(responseBody));
+                switch (response.StatusCode)
+                {
+                    case 400:
+                        throw new BadRequestError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 401:
+                        throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 403:
+                        throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 500:
+                        throw new InternalServerError(
+                            JsonUtils.Deserialize<ApiError>(responseBody)
+                        );
+                }
             }
+            catch (JsonException)
+            {
+                // unable to map error response, throwing generic error
+            }
+            throw new SchematicApiException(
+                $"Error with status code {response.StatusCode}",
+                response.StatusCode,
+                responseBody
+            );
         }
-        catch (JsonException)
-        {
-            // unable to map error response, throwing generic error
-        }
-        throw new SchematicApiApiException(
-            $"Error with status code {response.StatusCode}",
-            response.StatusCode,
-            responseBody
-        );
     }
 
-    /// <example>
-    /// <code>
+    /// <example><code>
     /// await client.Features.ListAudienceUsersAsync(
     ///     new AudienceRequestBody
     ///     {
@@ -318,8 +326,7 @@ public partial class FeaturesClient
     ///         },
     ///     }
     /// );
-    /// </code>
-    /// </example>
+    /// </code></example>
     public async Task<ListAudienceUsersResponse> ListAudienceUsersAsync(
         AudienceRequestBody request,
         RequestOptions? options = null,
@@ -327,8 +334,8 @@ public partial class FeaturesClient
     )
     {
         var response = await _client
-            .MakeRequestAsync(
-                new RawClient.JsonApiRequest
+            .SendRequestAsync(
+                new JsonRequest
                 {
                     BaseUrl = _client.Options.BaseUrl,
                     Method = HttpMethod.Post,
@@ -340,49 +347,52 @@ public partial class FeaturesClient
                 cancellationToken
             )
             .ConfigureAwait(false);
-        var responseBody = await response.Raw.Content.ReadAsStringAsync();
         if (response.StatusCode is >= 200 and < 400)
         {
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
             try
             {
                 return JsonUtils.Deserialize<ListAudienceUsersResponse>(responseBody)!;
             }
             catch (JsonException e)
             {
-                throw new SchematicApiException("Failed to deserialize response", e);
+                throw new SchematicException("Failed to deserialize response", e);
             }
         }
 
-        try
         {
-            switch (response.StatusCode)
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            try
             {
-                case 400:
-                    throw new BadRequestError(JsonUtils.Deserialize<ApiError>(responseBody));
-                case 401:
-                    throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
-                case 403:
-                    throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
-                case 500:
-                    throw new InternalServerError(JsonUtils.Deserialize<ApiError>(responseBody));
+                switch (response.StatusCode)
+                {
+                    case 400:
+                        throw new BadRequestError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 401:
+                        throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 403:
+                        throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 500:
+                        throw new InternalServerError(
+                            JsonUtils.Deserialize<ApiError>(responseBody)
+                        );
+                }
             }
+            catch (JsonException)
+            {
+                // unable to map error response, throwing generic error
+            }
+            throw new SchematicApiException(
+                $"Error with status code {response.StatusCode}",
+                response.StatusCode,
+                responseBody
+            );
         }
-        catch (JsonException)
-        {
-            // unable to map error response, throwing generic error
-        }
-        throw new SchematicApiApiException(
-            $"Error with status code {response.StatusCode}",
-            response.StatusCode,
-            responseBody
-        );
     }
 
-    /// <example>
-    /// <code>
+    /// <example><code>
     /// await client.Features.ListFeaturesAsync(new ListFeaturesRequest());
-    /// </code>
-    /// </example>
+    /// </code></example>
     public async Task<ListFeaturesResponse> ListFeaturesAsync(
         ListFeaturesRequest request,
         RequestOptions? options = null,
@@ -412,8 +422,8 @@ public partial class FeaturesClient
             _query["offset"] = request.Offset.Value.ToString();
         }
         var response = await _client
-            .MakeRequestAsync(
-                new RawClient.JsonApiRequest
+            .SendRequestAsync(
+                new JsonRequest
                 {
                     BaseUrl = _client.Options.BaseUrl,
                     Method = HttpMethod.Get,
@@ -424,46 +434,50 @@ public partial class FeaturesClient
                 cancellationToken
             )
             .ConfigureAwait(false);
-        var responseBody = await response.Raw.Content.ReadAsStringAsync();
         if (response.StatusCode is >= 200 and < 400)
         {
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
             try
             {
                 return JsonUtils.Deserialize<ListFeaturesResponse>(responseBody)!;
             }
             catch (JsonException e)
             {
-                throw new SchematicApiException("Failed to deserialize response", e);
+                throw new SchematicException("Failed to deserialize response", e);
             }
         }
 
-        try
         {
-            switch (response.StatusCode)
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            try
             {
-                case 400:
-                    throw new BadRequestError(JsonUtils.Deserialize<ApiError>(responseBody));
-                case 401:
-                    throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
-                case 403:
-                    throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
-                case 500:
-                    throw new InternalServerError(JsonUtils.Deserialize<ApiError>(responseBody));
+                switch (response.StatusCode)
+                {
+                    case 400:
+                        throw new BadRequestError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 401:
+                        throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 403:
+                        throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 500:
+                        throw new InternalServerError(
+                            JsonUtils.Deserialize<ApiError>(responseBody)
+                        );
+                }
             }
+            catch (JsonException)
+            {
+                // unable to map error response, throwing generic error
+            }
+            throw new SchematicApiException(
+                $"Error with status code {response.StatusCode}",
+                response.StatusCode,
+                responseBody
+            );
         }
-        catch (JsonException)
-        {
-            // unable to map error response, throwing generic error
-        }
-        throw new SchematicApiApiException(
-            $"Error with status code {response.StatusCode}",
-            response.StatusCode,
-            responseBody
-        );
     }
 
-    /// <example>
-    /// <code>
+    /// <example><code>
     /// await client.Features.CreateFeatureAsync(
     ///     new CreateFeatureRequestBody
     ///     {
@@ -472,8 +486,7 @@ public partial class FeaturesClient
     ///         Name = "name",
     ///     }
     /// );
-    /// </code>
-    /// </example>
+    /// </code></example>
     public async Task<CreateFeatureResponse> CreateFeatureAsync(
         CreateFeatureRequestBody request,
         RequestOptions? options = null,
@@ -481,8 +494,8 @@ public partial class FeaturesClient
     )
     {
         var response = await _client
-            .MakeRequestAsync(
-                new RawClient.JsonApiRequest
+            .SendRequestAsync(
+                new JsonRequest
                 {
                     BaseUrl = _client.Options.BaseUrl,
                     Method = HttpMethod.Post,
@@ -494,49 +507,52 @@ public partial class FeaturesClient
                 cancellationToken
             )
             .ConfigureAwait(false);
-        var responseBody = await response.Raw.Content.ReadAsStringAsync();
         if (response.StatusCode is >= 200 and < 400)
         {
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
             try
             {
                 return JsonUtils.Deserialize<CreateFeatureResponse>(responseBody)!;
             }
             catch (JsonException e)
             {
-                throw new SchematicApiException("Failed to deserialize response", e);
+                throw new SchematicException("Failed to deserialize response", e);
             }
         }
 
-        try
         {
-            switch (response.StatusCode)
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            try
             {
-                case 400:
-                    throw new BadRequestError(JsonUtils.Deserialize<ApiError>(responseBody));
-                case 401:
-                    throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
-                case 403:
-                    throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
-                case 500:
-                    throw new InternalServerError(JsonUtils.Deserialize<ApiError>(responseBody));
+                switch (response.StatusCode)
+                {
+                    case 400:
+                        throw new BadRequestError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 401:
+                        throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 403:
+                        throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 500:
+                        throw new InternalServerError(
+                            JsonUtils.Deserialize<ApiError>(responseBody)
+                        );
+                }
             }
+            catch (JsonException)
+            {
+                // unable to map error response, throwing generic error
+            }
+            throw new SchematicApiException(
+                $"Error with status code {response.StatusCode}",
+                response.StatusCode,
+                responseBody
+            );
         }
-        catch (JsonException)
-        {
-            // unable to map error response, throwing generic error
-        }
-        throw new SchematicApiApiException(
-            $"Error with status code {response.StatusCode}",
-            response.StatusCode,
-            responseBody
-        );
     }
 
-    /// <example>
-    /// <code>
+    /// <example><code>
     /// await client.Features.GetFeatureAsync("feature_id");
-    /// </code>
-    /// </example>
+    /// </code></example>
     public async Task<GetFeatureResponse> GetFeatureAsync(
         string featureId,
         RequestOptions? options = null,
@@ -544,60 +560,66 @@ public partial class FeaturesClient
     )
     {
         var response = await _client
-            .MakeRequestAsync(
-                new RawClient.JsonApiRequest
+            .SendRequestAsync(
+                new JsonRequest
                 {
                     BaseUrl = _client.Options.BaseUrl,
                     Method = HttpMethod.Get,
-                    Path = $"features/{JsonUtils.SerializeAsString(featureId)}",
+                    Path = string.Format(
+                        "features/{0}",
+                        ValueConvert.ToPathParameterString(featureId)
+                    ),
                     Options = options,
                 },
                 cancellationToken
             )
             .ConfigureAwait(false);
-        var responseBody = await response.Raw.Content.ReadAsStringAsync();
         if (response.StatusCode is >= 200 and < 400)
         {
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
             try
             {
                 return JsonUtils.Deserialize<GetFeatureResponse>(responseBody)!;
             }
             catch (JsonException e)
             {
-                throw new SchematicApiException("Failed to deserialize response", e);
+                throw new SchematicException("Failed to deserialize response", e);
             }
         }
 
-        try
         {
-            switch (response.StatusCode)
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            try
             {
-                case 401:
-                    throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
-                case 403:
-                    throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
-                case 404:
-                    throw new NotFoundError(JsonUtils.Deserialize<ApiError>(responseBody));
-                case 500:
-                    throw new InternalServerError(JsonUtils.Deserialize<ApiError>(responseBody));
+                switch (response.StatusCode)
+                {
+                    case 401:
+                        throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 403:
+                        throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 404:
+                        throw new NotFoundError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 500:
+                        throw new InternalServerError(
+                            JsonUtils.Deserialize<ApiError>(responseBody)
+                        );
+                }
             }
+            catch (JsonException)
+            {
+                // unable to map error response, throwing generic error
+            }
+            throw new SchematicApiException(
+                $"Error with status code {response.StatusCode}",
+                response.StatusCode,
+                responseBody
+            );
         }
-        catch (JsonException)
-        {
-            // unable to map error response, throwing generic error
-        }
-        throw new SchematicApiApiException(
-            $"Error with status code {response.StatusCode}",
-            response.StatusCode,
-            responseBody
-        );
     }
 
-    /// <example>
-    /// <code>
+    /// <example><code>
     /// await client.Features.UpdateFeatureAsync("feature_id", new UpdateFeatureRequestBody());
-    /// </code>
-    /// </example>
+    /// </code></example>
     public async Task<UpdateFeatureResponse> UpdateFeatureAsync(
         string featureId,
         UpdateFeatureRequestBody request,
@@ -606,12 +628,15 @@ public partial class FeaturesClient
     )
     {
         var response = await _client
-            .MakeRequestAsync(
-                new RawClient.JsonApiRequest
+            .SendRequestAsync(
+                new JsonRequest
                 {
                     BaseUrl = _client.Options.BaseUrl,
                     Method = HttpMethod.Put,
-                    Path = $"features/{JsonUtils.SerializeAsString(featureId)}",
+                    Path = string.Format(
+                        "features/{0}",
+                        ValueConvert.ToPathParameterString(featureId)
+                    ),
                     Body = request,
                     ContentType = "application/json",
                     Options = options,
@@ -619,51 +644,54 @@ public partial class FeaturesClient
                 cancellationToken
             )
             .ConfigureAwait(false);
-        var responseBody = await response.Raw.Content.ReadAsStringAsync();
         if (response.StatusCode is >= 200 and < 400)
         {
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
             try
             {
                 return JsonUtils.Deserialize<UpdateFeatureResponse>(responseBody)!;
             }
             catch (JsonException e)
             {
-                throw new SchematicApiException("Failed to deserialize response", e);
+                throw new SchematicException("Failed to deserialize response", e);
             }
         }
 
-        try
         {
-            switch (response.StatusCode)
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            try
             {
-                case 400:
-                    throw new BadRequestError(JsonUtils.Deserialize<ApiError>(responseBody));
-                case 401:
-                    throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
-                case 403:
-                    throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
-                case 404:
-                    throw new NotFoundError(JsonUtils.Deserialize<ApiError>(responseBody));
-                case 500:
-                    throw new InternalServerError(JsonUtils.Deserialize<ApiError>(responseBody));
+                switch (response.StatusCode)
+                {
+                    case 400:
+                        throw new BadRequestError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 401:
+                        throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 403:
+                        throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 404:
+                        throw new NotFoundError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 500:
+                        throw new InternalServerError(
+                            JsonUtils.Deserialize<ApiError>(responseBody)
+                        );
+                }
             }
+            catch (JsonException)
+            {
+                // unable to map error response, throwing generic error
+            }
+            throw new SchematicApiException(
+                $"Error with status code {response.StatusCode}",
+                response.StatusCode,
+                responseBody
+            );
         }
-        catch (JsonException)
-        {
-            // unable to map error response, throwing generic error
-        }
-        throw new SchematicApiApiException(
-            $"Error with status code {response.StatusCode}",
-            response.StatusCode,
-            responseBody
-        );
     }
 
-    /// <example>
-    /// <code>
+    /// <example><code>
     /// await client.Features.DeleteFeatureAsync("feature_id");
-    /// </code>
-    /// </example>
+    /// </code></example>
     public async Task<DeleteFeatureResponse> DeleteFeatureAsync(
         string featureId,
         RequestOptions? options = null,
@@ -671,60 +699,66 @@ public partial class FeaturesClient
     )
     {
         var response = await _client
-            .MakeRequestAsync(
-                new RawClient.JsonApiRequest
+            .SendRequestAsync(
+                new JsonRequest
                 {
                     BaseUrl = _client.Options.BaseUrl,
                     Method = HttpMethod.Delete,
-                    Path = $"features/{JsonUtils.SerializeAsString(featureId)}",
+                    Path = string.Format(
+                        "features/{0}",
+                        ValueConvert.ToPathParameterString(featureId)
+                    ),
                     Options = options,
                 },
                 cancellationToken
             )
             .ConfigureAwait(false);
-        var responseBody = await response.Raw.Content.ReadAsStringAsync();
         if (response.StatusCode is >= 200 and < 400)
         {
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
             try
             {
                 return JsonUtils.Deserialize<DeleteFeatureResponse>(responseBody)!;
             }
             catch (JsonException e)
             {
-                throw new SchematicApiException("Failed to deserialize response", e);
+                throw new SchematicException("Failed to deserialize response", e);
             }
         }
 
-        try
         {
-            switch (response.StatusCode)
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            try
             {
-                case 400:
-                    throw new BadRequestError(JsonUtils.Deserialize<ApiError>(responseBody));
-                case 401:
-                    throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
-                case 403:
-                    throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
-                case 500:
-                    throw new InternalServerError(JsonUtils.Deserialize<ApiError>(responseBody));
+                switch (response.StatusCode)
+                {
+                    case 400:
+                        throw new BadRequestError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 401:
+                        throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 403:
+                        throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 500:
+                        throw new InternalServerError(
+                            JsonUtils.Deserialize<ApiError>(responseBody)
+                        );
+                }
             }
+            catch (JsonException)
+            {
+                // unable to map error response, throwing generic error
+            }
+            throw new SchematicApiException(
+                $"Error with status code {response.StatusCode}",
+                response.StatusCode,
+                responseBody
+            );
         }
-        catch (JsonException)
-        {
-            // unable to map error response, throwing generic error
-        }
-        throw new SchematicApiApiException(
-            $"Error with status code {response.StatusCode}",
-            response.StatusCode,
-            responseBody
-        );
     }
 
-    /// <example>
-    /// <code>
+    /// <example><code>
     /// await client.Features.CountFeaturesAsync(new CountFeaturesRequest());
-    /// </code>
-    /// </example>
+    /// </code></example>
     public async Task<CountFeaturesResponse> CountFeaturesAsync(
         CountFeaturesRequest request,
         RequestOptions? options = null,
@@ -754,8 +788,8 @@ public partial class FeaturesClient
             _query["offset"] = request.Offset.Value.ToString();
         }
         var response = await _client
-            .MakeRequestAsync(
-                new RawClient.JsonApiRequest
+            .SendRequestAsync(
+                new JsonRequest
                 {
                     BaseUrl = _client.Options.BaseUrl,
                     Method = HttpMethod.Get,
@@ -766,49 +800,52 @@ public partial class FeaturesClient
                 cancellationToken
             )
             .ConfigureAwait(false);
-        var responseBody = await response.Raw.Content.ReadAsStringAsync();
         if (response.StatusCode is >= 200 and < 400)
         {
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
             try
             {
                 return JsonUtils.Deserialize<CountFeaturesResponse>(responseBody)!;
             }
             catch (JsonException e)
             {
-                throw new SchematicApiException("Failed to deserialize response", e);
+                throw new SchematicException("Failed to deserialize response", e);
             }
         }
 
-        try
         {
-            switch (response.StatusCode)
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            try
             {
-                case 400:
-                    throw new BadRequestError(JsonUtils.Deserialize<ApiError>(responseBody));
-                case 401:
-                    throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
-                case 403:
-                    throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
-                case 500:
-                    throw new InternalServerError(JsonUtils.Deserialize<ApiError>(responseBody));
+                switch (response.StatusCode)
+                {
+                    case 400:
+                        throw new BadRequestError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 401:
+                        throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 403:
+                        throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 500:
+                        throw new InternalServerError(
+                            JsonUtils.Deserialize<ApiError>(responseBody)
+                        );
+                }
             }
+            catch (JsonException)
+            {
+                // unable to map error response, throwing generic error
+            }
+            throw new SchematicApiException(
+                $"Error with status code {response.StatusCode}",
+                response.StatusCode,
+                responseBody
+            );
         }
-        catch (JsonException)
-        {
-            // unable to map error response, throwing generic error
-        }
-        throw new SchematicApiApiException(
-            $"Error with status code {response.StatusCode}",
-            response.StatusCode,
-            responseBody
-        );
     }
 
-    /// <example>
-    /// <code>
+    /// <example><code>
     /// await client.Features.ListFlagsAsync(new ListFlagsRequest());
-    /// </code>
-    /// </example>
+    /// </code></example>
     public async Task<ListFlagsResponse> ListFlagsAsync(
         ListFlagsRequest request,
         RequestOptions? options = null,
@@ -834,8 +871,8 @@ public partial class FeaturesClient
             _query["offset"] = request.Offset.Value.ToString();
         }
         var response = await _client
-            .MakeRequestAsync(
-                new RawClient.JsonApiRequest
+            .SendRequestAsync(
+                new JsonRequest
                 {
                     BaseUrl = _client.Options.BaseUrl,
                     Method = HttpMethod.Get,
@@ -846,46 +883,50 @@ public partial class FeaturesClient
                 cancellationToken
             )
             .ConfigureAwait(false);
-        var responseBody = await response.Raw.Content.ReadAsStringAsync();
         if (response.StatusCode is >= 200 and < 400)
         {
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
             try
             {
                 return JsonUtils.Deserialize<ListFlagsResponse>(responseBody)!;
             }
             catch (JsonException e)
             {
-                throw new SchematicApiException("Failed to deserialize response", e);
+                throw new SchematicException("Failed to deserialize response", e);
             }
         }
 
-        try
         {
-            switch (response.StatusCode)
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            try
             {
-                case 400:
-                    throw new BadRequestError(JsonUtils.Deserialize<ApiError>(responseBody));
-                case 401:
-                    throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
-                case 403:
-                    throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
-                case 500:
-                    throw new InternalServerError(JsonUtils.Deserialize<ApiError>(responseBody));
+                switch (response.StatusCode)
+                {
+                    case 400:
+                        throw new BadRequestError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 401:
+                        throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 403:
+                        throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 500:
+                        throw new InternalServerError(
+                            JsonUtils.Deserialize<ApiError>(responseBody)
+                        );
+                }
             }
+            catch (JsonException)
+            {
+                // unable to map error response, throwing generic error
+            }
+            throw new SchematicApiException(
+                $"Error with status code {response.StatusCode}",
+                response.StatusCode,
+                responseBody
+            );
         }
-        catch (JsonException)
-        {
-            // unable to map error response, throwing generic error
-        }
-        throw new SchematicApiApiException(
-            $"Error with status code {response.StatusCode}",
-            response.StatusCode,
-            responseBody
-        );
     }
 
-    /// <example>
-    /// <code>
+    /// <example><code>
     /// await client.Features.CreateFlagAsync(
     ///     new CreateFlagRequestBody
     ///     {
@@ -896,8 +937,7 @@ public partial class FeaturesClient
     ///         Name = "name",
     ///     }
     /// );
-    /// </code>
-    /// </example>
+    /// </code></example>
     public async Task<CreateFlagResponse> CreateFlagAsync(
         CreateFlagRequestBody request,
         RequestOptions? options = null,
@@ -905,8 +945,8 @@ public partial class FeaturesClient
     )
     {
         var response = await _client
-            .MakeRequestAsync(
-                new RawClient.JsonApiRequest
+            .SendRequestAsync(
+                new JsonRequest
                 {
                     BaseUrl = _client.Options.BaseUrl,
                     Method = HttpMethod.Post,
@@ -918,49 +958,52 @@ public partial class FeaturesClient
                 cancellationToken
             )
             .ConfigureAwait(false);
-        var responseBody = await response.Raw.Content.ReadAsStringAsync();
         if (response.StatusCode is >= 200 and < 400)
         {
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
             try
             {
                 return JsonUtils.Deserialize<CreateFlagResponse>(responseBody)!;
             }
             catch (JsonException e)
             {
-                throw new SchematicApiException("Failed to deserialize response", e);
+                throw new SchematicException("Failed to deserialize response", e);
             }
         }
 
-        try
         {
-            switch (response.StatusCode)
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            try
             {
-                case 400:
-                    throw new BadRequestError(JsonUtils.Deserialize<ApiError>(responseBody));
-                case 401:
-                    throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
-                case 403:
-                    throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
-                case 500:
-                    throw new InternalServerError(JsonUtils.Deserialize<ApiError>(responseBody));
+                switch (response.StatusCode)
+                {
+                    case 400:
+                        throw new BadRequestError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 401:
+                        throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 403:
+                        throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 500:
+                        throw new InternalServerError(
+                            JsonUtils.Deserialize<ApiError>(responseBody)
+                        );
+                }
             }
+            catch (JsonException)
+            {
+                // unable to map error response, throwing generic error
+            }
+            throw new SchematicApiException(
+                $"Error with status code {response.StatusCode}",
+                response.StatusCode,
+                responseBody
+            );
         }
-        catch (JsonException)
-        {
-            // unable to map error response, throwing generic error
-        }
-        throw new SchematicApiApiException(
-            $"Error with status code {response.StatusCode}",
-            response.StatusCode,
-            responseBody
-        );
     }
 
-    /// <example>
-    /// <code>
+    /// <example><code>
     /// await client.Features.GetFlagAsync("flag_id");
-    /// </code>
-    /// </example>
+    /// </code></example>
     public async Task<GetFlagResponse> GetFlagAsync(
         string flagId,
         RequestOptions? options = null,
@@ -968,57 +1011,61 @@ public partial class FeaturesClient
     )
     {
         var response = await _client
-            .MakeRequestAsync(
-                new RawClient.JsonApiRequest
+            .SendRequestAsync(
+                new JsonRequest
                 {
                     BaseUrl = _client.Options.BaseUrl,
                     Method = HttpMethod.Get,
-                    Path = $"flags/{JsonUtils.SerializeAsString(flagId)}",
+                    Path = string.Format("flags/{0}", ValueConvert.ToPathParameterString(flagId)),
                     Options = options,
                 },
                 cancellationToken
             )
             .ConfigureAwait(false);
-        var responseBody = await response.Raw.Content.ReadAsStringAsync();
         if (response.StatusCode is >= 200 and < 400)
         {
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
             try
             {
                 return JsonUtils.Deserialize<GetFlagResponse>(responseBody)!;
             }
             catch (JsonException e)
             {
-                throw new SchematicApiException("Failed to deserialize response", e);
+                throw new SchematicException("Failed to deserialize response", e);
             }
         }
 
-        try
         {
-            switch (response.StatusCode)
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            try
             {
-                case 401:
-                    throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
-                case 403:
-                    throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
-                case 404:
-                    throw new NotFoundError(JsonUtils.Deserialize<ApiError>(responseBody));
-                case 500:
-                    throw new InternalServerError(JsonUtils.Deserialize<ApiError>(responseBody));
+                switch (response.StatusCode)
+                {
+                    case 401:
+                        throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 403:
+                        throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 404:
+                        throw new NotFoundError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 500:
+                        throw new InternalServerError(
+                            JsonUtils.Deserialize<ApiError>(responseBody)
+                        );
+                }
             }
+            catch (JsonException)
+            {
+                // unable to map error response, throwing generic error
+            }
+            throw new SchematicApiException(
+                $"Error with status code {response.StatusCode}",
+                response.StatusCode,
+                responseBody
+            );
         }
-        catch (JsonException)
-        {
-            // unable to map error response, throwing generic error
-        }
-        throw new SchematicApiApiException(
-            $"Error with status code {response.StatusCode}",
-            response.StatusCode,
-            responseBody
-        );
     }
 
-    /// <example>
-    /// <code>
+    /// <example><code>
     /// await client.Features.UpdateFlagAsync(
     ///     "flag_id",
     ///     new CreateFlagRequestBody
@@ -1030,8 +1077,7 @@ public partial class FeaturesClient
     ///         Name = "name",
     ///     }
     /// );
-    /// </code>
-    /// </example>
+    /// </code></example>
     public async Task<UpdateFlagResponse> UpdateFlagAsync(
         string flagId,
         CreateFlagRequestBody request,
@@ -1040,12 +1086,12 @@ public partial class FeaturesClient
     )
     {
         var response = await _client
-            .MakeRequestAsync(
-                new RawClient.JsonApiRequest
+            .SendRequestAsync(
+                new JsonRequest
                 {
                     BaseUrl = _client.Options.BaseUrl,
                     Method = HttpMethod.Put,
-                    Path = $"flags/{JsonUtils.SerializeAsString(flagId)}",
+                    Path = string.Format("flags/{0}", ValueConvert.ToPathParameterString(flagId)),
                     Body = request,
                     ContentType = "application/json",
                     Options = options,
@@ -1053,51 +1099,54 @@ public partial class FeaturesClient
                 cancellationToken
             )
             .ConfigureAwait(false);
-        var responseBody = await response.Raw.Content.ReadAsStringAsync();
         if (response.StatusCode is >= 200 and < 400)
         {
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
             try
             {
                 return JsonUtils.Deserialize<UpdateFlagResponse>(responseBody)!;
             }
             catch (JsonException e)
             {
-                throw new SchematicApiException("Failed to deserialize response", e);
+                throw new SchematicException("Failed to deserialize response", e);
             }
         }
 
-        try
         {
-            switch (response.StatusCode)
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            try
             {
-                case 400:
-                    throw new BadRequestError(JsonUtils.Deserialize<ApiError>(responseBody));
-                case 401:
-                    throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
-                case 403:
-                    throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
-                case 404:
-                    throw new NotFoundError(JsonUtils.Deserialize<ApiError>(responseBody));
-                case 500:
-                    throw new InternalServerError(JsonUtils.Deserialize<ApiError>(responseBody));
+                switch (response.StatusCode)
+                {
+                    case 400:
+                        throw new BadRequestError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 401:
+                        throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 403:
+                        throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 404:
+                        throw new NotFoundError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 500:
+                        throw new InternalServerError(
+                            JsonUtils.Deserialize<ApiError>(responseBody)
+                        );
+                }
             }
+            catch (JsonException)
+            {
+                // unable to map error response, throwing generic error
+            }
+            throw new SchematicApiException(
+                $"Error with status code {response.StatusCode}",
+                response.StatusCode,
+                responseBody
+            );
         }
-        catch (JsonException)
-        {
-            // unable to map error response, throwing generic error
-        }
-        throw new SchematicApiApiException(
-            $"Error with status code {response.StatusCode}",
-            response.StatusCode,
-            responseBody
-        );
     }
 
-    /// <example>
-    /// <code>
+    /// <example><code>
     /// await client.Features.DeleteFlagAsync("flag_id");
-    /// </code>
-    /// </example>
+    /// </code></example>
     public async Task<DeleteFlagResponse> DeleteFlagAsync(
         string flagId,
         RequestOptions? options = null,
@@ -1105,57 +1154,61 @@ public partial class FeaturesClient
     )
     {
         var response = await _client
-            .MakeRequestAsync(
-                new RawClient.JsonApiRequest
+            .SendRequestAsync(
+                new JsonRequest
                 {
                     BaseUrl = _client.Options.BaseUrl,
                     Method = HttpMethod.Delete,
-                    Path = $"flags/{JsonUtils.SerializeAsString(flagId)}",
+                    Path = string.Format("flags/{0}", ValueConvert.ToPathParameterString(flagId)),
                     Options = options,
                 },
                 cancellationToken
             )
             .ConfigureAwait(false);
-        var responseBody = await response.Raw.Content.ReadAsStringAsync();
         if (response.StatusCode is >= 200 and < 400)
         {
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
             try
             {
                 return JsonUtils.Deserialize<DeleteFlagResponse>(responseBody)!;
             }
             catch (JsonException e)
             {
-                throw new SchematicApiException("Failed to deserialize response", e);
+                throw new SchematicException("Failed to deserialize response", e);
             }
         }
 
-        try
         {
-            switch (response.StatusCode)
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            try
             {
-                case 400:
-                    throw new BadRequestError(JsonUtils.Deserialize<ApiError>(responseBody));
-                case 401:
-                    throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
-                case 403:
-                    throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
-                case 500:
-                    throw new InternalServerError(JsonUtils.Deserialize<ApiError>(responseBody));
+                switch (response.StatusCode)
+                {
+                    case 400:
+                        throw new BadRequestError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 401:
+                        throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 403:
+                        throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 500:
+                        throw new InternalServerError(
+                            JsonUtils.Deserialize<ApiError>(responseBody)
+                        );
+                }
             }
+            catch (JsonException)
+            {
+                // unable to map error response, throwing generic error
+            }
+            throw new SchematicApiException(
+                $"Error with status code {response.StatusCode}",
+                response.StatusCode,
+                responseBody
+            );
         }
-        catch (JsonException)
-        {
-            // unable to map error response, throwing generic error
-        }
-        throw new SchematicApiApiException(
-            $"Error with status code {response.StatusCode}",
-            response.StatusCode,
-            responseBody
-        );
     }
 
-    /// <example>
-    /// <code>
+    /// <example><code>
     /// await client.Features.UpdateFlagRulesAsync(
     ///     "flag_id",
     ///     new UpdateFlagRulesRequestBody
@@ -1196,8 +1249,7 @@ public partial class FeaturesClient
     ///         },
     ///     }
     /// );
-    /// </code>
-    /// </example>
+    /// </code></example>
     public async Task<UpdateFlagRulesResponse> UpdateFlagRulesAsync(
         string flagId,
         UpdateFlagRulesRequestBody request,
@@ -1206,12 +1258,15 @@ public partial class FeaturesClient
     )
     {
         var response = await _client
-            .MakeRequestAsync(
-                new RawClient.JsonApiRequest
+            .SendRequestAsync(
+                new JsonRequest
                 {
                     BaseUrl = _client.Options.BaseUrl,
                     Method = HttpMethod.Put,
-                    Path = $"flags/{JsonUtils.SerializeAsString(flagId)}/rules",
+                    Path = string.Format(
+                        "flags/{0}/rules",
+                        ValueConvert.ToPathParameterString(flagId)
+                    ),
                     Body = request,
                     ContentType = "application/json",
                     Options = options,
@@ -1219,51 +1274,54 @@ public partial class FeaturesClient
                 cancellationToken
             )
             .ConfigureAwait(false);
-        var responseBody = await response.Raw.Content.ReadAsStringAsync();
         if (response.StatusCode is >= 200 and < 400)
         {
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
             try
             {
                 return JsonUtils.Deserialize<UpdateFlagRulesResponse>(responseBody)!;
             }
             catch (JsonException e)
             {
-                throw new SchematicApiException("Failed to deserialize response", e);
+                throw new SchematicException("Failed to deserialize response", e);
             }
         }
 
-        try
         {
-            switch (response.StatusCode)
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            try
             {
-                case 400:
-                    throw new BadRequestError(JsonUtils.Deserialize<ApiError>(responseBody));
-                case 401:
-                    throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
-                case 403:
-                    throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
-                case 404:
-                    throw new NotFoundError(JsonUtils.Deserialize<ApiError>(responseBody));
-                case 500:
-                    throw new InternalServerError(JsonUtils.Deserialize<ApiError>(responseBody));
+                switch (response.StatusCode)
+                {
+                    case 400:
+                        throw new BadRequestError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 401:
+                        throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 403:
+                        throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 404:
+                        throw new NotFoundError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 500:
+                        throw new InternalServerError(
+                            JsonUtils.Deserialize<ApiError>(responseBody)
+                        );
+                }
             }
+            catch (JsonException)
+            {
+                // unable to map error response, throwing generic error
+            }
+            throw new SchematicApiException(
+                $"Error with status code {response.StatusCode}",
+                response.StatusCode,
+                responseBody
+            );
         }
-        catch (JsonException)
-        {
-            // unable to map error response, throwing generic error
-        }
-        throw new SchematicApiApiException(
-            $"Error with status code {response.StatusCode}",
-            response.StatusCode,
-            responseBody
-        );
     }
 
-    /// <example>
-    /// <code>
+    /// <example><code>
     /// await client.Features.CheckFlagAsync("key", new CheckFlagRequestBody());
-    /// </code>
-    /// </example>
+    /// </code></example>
     public async Task<CheckFlagResponse> CheckFlagAsync(
         string key,
         CheckFlagRequestBody request,
@@ -1272,12 +1330,15 @@ public partial class FeaturesClient
     )
     {
         var response = await _client
-            .MakeRequestAsync(
-                new RawClient.JsonApiRequest
+            .SendRequestAsync(
+                new JsonRequest
                 {
                     BaseUrl = _client.Options.BaseUrl,
                     Method = HttpMethod.Post,
-                    Path = $"flags/{JsonUtils.SerializeAsString(key)}/check",
+                    Path = string.Format(
+                        "flags/{0}/check",
+                        ValueConvert.ToPathParameterString(key)
+                    ),
                     Body = request,
                     ContentType = "application/json",
                     Options = options,
@@ -1285,49 +1346,52 @@ public partial class FeaturesClient
                 cancellationToken
             )
             .ConfigureAwait(false);
-        var responseBody = await response.Raw.Content.ReadAsStringAsync();
         if (response.StatusCode is >= 200 and < 400)
         {
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
             try
             {
                 return JsonUtils.Deserialize<CheckFlagResponse>(responseBody)!;
             }
             catch (JsonException e)
             {
-                throw new SchematicApiException("Failed to deserialize response", e);
+                throw new SchematicException("Failed to deserialize response", e);
             }
         }
 
-        try
         {
-            switch (response.StatusCode)
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            try
             {
-                case 400:
-                    throw new BadRequestError(JsonUtils.Deserialize<ApiError>(responseBody));
-                case 401:
-                    throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
-                case 403:
-                    throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
-                case 500:
-                    throw new InternalServerError(JsonUtils.Deserialize<ApiError>(responseBody));
+                switch (response.StatusCode)
+                {
+                    case 400:
+                        throw new BadRequestError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 401:
+                        throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 403:
+                        throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 500:
+                        throw new InternalServerError(
+                            JsonUtils.Deserialize<ApiError>(responseBody)
+                        );
+                }
             }
+            catch (JsonException)
+            {
+                // unable to map error response, throwing generic error
+            }
+            throw new SchematicApiException(
+                $"Error with status code {response.StatusCode}",
+                response.StatusCode,
+                responseBody
+            );
         }
-        catch (JsonException)
-        {
-            // unable to map error response, throwing generic error
-        }
-        throw new SchematicApiApiException(
-            $"Error with status code {response.StatusCode}",
-            response.StatusCode,
-            responseBody
-        );
     }
 
-    /// <example>
-    /// <code>
+    /// <example><code>
     /// await client.Features.CheckFlagsAsync(new CheckFlagRequestBody());
-    /// </code>
-    /// </example>
+    /// </code></example>
     public async Task<CheckFlagsResponse> CheckFlagsAsync(
         CheckFlagRequestBody request,
         RequestOptions? options = null,
@@ -1335,8 +1399,8 @@ public partial class FeaturesClient
     )
     {
         var response = await _client
-            .MakeRequestAsync(
-                new RawClient.JsonApiRequest
+            .SendRequestAsync(
+                new JsonRequest
                 {
                     BaseUrl = _client.Options.BaseUrl,
                     Method = HttpMethod.Post,
@@ -1348,49 +1412,52 @@ public partial class FeaturesClient
                 cancellationToken
             )
             .ConfigureAwait(false);
-        var responseBody = await response.Raw.Content.ReadAsStringAsync();
         if (response.StatusCode is >= 200 and < 400)
         {
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
             try
             {
                 return JsonUtils.Deserialize<CheckFlagsResponse>(responseBody)!;
             }
             catch (JsonException e)
             {
-                throw new SchematicApiException("Failed to deserialize response", e);
+                throw new SchematicException("Failed to deserialize response", e);
             }
         }
 
-        try
         {
-            switch (response.StatusCode)
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            try
             {
-                case 400:
-                    throw new BadRequestError(JsonUtils.Deserialize<ApiError>(responseBody));
-                case 401:
-                    throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
-                case 403:
-                    throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
-                case 500:
-                    throw new InternalServerError(JsonUtils.Deserialize<ApiError>(responseBody));
+                switch (response.StatusCode)
+                {
+                    case 400:
+                        throw new BadRequestError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 401:
+                        throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 403:
+                        throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 500:
+                        throw new InternalServerError(
+                            JsonUtils.Deserialize<ApiError>(responseBody)
+                        );
+                }
             }
+            catch (JsonException)
+            {
+                // unable to map error response, throwing generic error
+            }
+            throw new SchematicApiException(
+                $"Error with status code {response.StatusCode}",
+                response.StatusCode,
+                responseBody
+            );
         }
-        catch (JsonException)
-        {
-            // unable to map error response, throwing generic error
-        }
-        throw new SchematicApiApiException(
-            $"Error with status code {response.StatusCode}",
-            response.StatusCode,
-            responseBody
-        );
     }
 
-    /// <example>
-    /// <code>
+    /// <example><code>
     /// await client.Features.CountFlagsAsync(new CountFlagsRequest());
-    /// </code>
-    /// </example>
+    /// </code></example>
     public async Task<CountFlagsResponse> CountFlagsAsync(
         CountFlagsRequest request,
         RequestOptions? options = null,
@@ -1416,8 +1483,8 @@ public partial class FeaturesClient
             _query["offset"] = request.Offset.Value.ToString();
         }
         var response = await _client
-            .MakeRequestAsync(
-                new RawClient.JsonApiRequest
+            .SendRequestAsync(
+                new JsonRequest
                 {
                     BaseUrl = _client.Options.BaseUrl,
                     Method = HttpMethod.Get,
@@ -1428,41 +1495,46 @@ public partial class FeaturesClient
                 cancellationToken
             )
             .ConfigureAwait(false);
-        var responseBody = await response.Raw.Content.ReadAsStringAsync();
         if (response.StatusCode is >= 200 and < 400)
         {
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
             try
             {
                 return JsonUtils.Deserialize<CountFlagsResponse>(responseBody)!;
             }
             catch (JsonException e)
             {
-                throw new SchematicApiException("Failed to deserialize response", e);
+                throw new SchematicException("Failed to deserialize response", e);
             }
         }
 
-        try
         {
-            switch (response.StatusCode)
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            try
             {
-                case 400:
-                    throw new BadRequestError(JsonUtils.Deserialize<ApiError>(responseBody));
-                case 401:
-                    throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
-                case 403:
-                    throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
-                case 500:
-                    throw new InternalServerError(JsonUtils.Deserialize<ApiError>(responseBody));
+                switch (response.StatusCode)
+                {
+                    case 400:
+                        throw new BadRequestError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 401:
+                        throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 403:
+                        throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 500:
+                        throw new InternalServerError(
+                            JsonUtils.Deserialize<ApiError>(responseBody)
+                        );
+                }
             }
+            catch (JsonException)
+            {
+                // unable to map error response, throwing generic error
+            }
+            throw new SchematicApiException(
+                $"Error with status code {response.StatusCode}",
+                response.StatusCode,
+                responseBody
+            );
         }
-        catch (JsonException)
-        {
-            // unable to map error response, throwing generic error
-        }
-        throw new SchematicApiApiException(
-            $"Error with status code {response.StatusCode}",
-            response.StatusCode,
-            responseBody
-        );
     }
 }

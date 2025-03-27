@@ -1,3 +1,4 @@
+using System.Text.Json;
 using System.Text.Json.Serialization;
 using SchematicHQ.Client.Core;
 
@@ -46,6 +47,10 @@ public record CompanyDetailResponseData
     [JsonPropertyName("name")]
     public required string Name { get; set; }
 
+    [JsonPropertyName("payment_methods")]
+    public IEnumerable<PaymentMethodResponseData> PaymentMethods { get; set; } =
+        new List<PaymentMethodResponseData>();
+
     [JsonPropertyName("plan")]
     public CompanyPlanWithBillingSubView? Plan { get; set; }
 
@@ -64,6 +69,14 @@ public record CompanyDetailResponseData
     [JsonPropertyName("user_count")]
     public required int UserCount { get; set; }
 
+    /// <summary>
+    /// Additional properties received from the response, if any.
+    /// </summary>
+    [JsonExtensionData]
+    public IDictionary<string, JsonElement> AdditionalProperties { get; internal set; } =
+        new Dictionary<string, JsonElement>();
+
+    /// <inheritdoc />
     public override string ToString()
     {
         return JsonUtils.Serialize(this);

@@ -2101,10 +2101,15 @@ await client.Billing.UpsertBillingPriceAsync(
     new CreateBillingPriceRequestBody
     {
         Currency = "currency",
+        ExternalAccountId = "external_account_id",
         Interval = "interval",
         IsActive = true,
         Price = 1,
         PriceExternalId = "price_external_id",
+        PriceTiers = new List<CreateBillingPriceTierRequestBody>()
+        {
+            new CreateBillingPriceTierRequestBody { PriceExternalId = "price_external_id" },
+        },
         ProductExternalId = "product_external_id",
         UsageType = CreateBillingPriceRequestBodyUsageType.Licensed,
     }
@@ -2124,6 +2129,46 @@ await client.Billing.UpsertBillingPriceAsync(
 <dd>
 
 **request:** `CreateBillingPriceRequestBody` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Billing.<a href="/src/SchematicHQ.Client/Billing/BillingClient.cs">DeleteBillingProductAsync</a>(billingId) -> DeleteBillingProductResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Billing.DeleteBillingProductAsync("billing_id");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**billingId:** `string` — billing_id
     
 </dd>
 </dl>
@@ -2231,6 +2276,7 @@ await client.Billing.DeleteProductPriceAsync("billing_id");
 await client.Billing.UpsertBillingProductAsync(
     new CreateBillingProductRequestBody
     {
+        Active = true,
         Currency = "currency",
         ExternalId = "external_id",
         Name = "name",
@@ -6089,7 +6135,10 @@ await client.Plangroups.CreatePlanGroupAsync(
     new CreatePlanGroupRequestBody
     {
         AddOnIds = new List<string>() { "add_on_ids" },
-        PlanIds = new List<string>() { "plan_ids" },
+        OrderedPlans = new List<OrderedPlansInGroup>()
+        {
+            new OrderedPlansInGroup { PlanId = "plan_id" },
+        },
     }
 );
 ```
@@ -6136,7 +6185,10 @@ await client.Plangroups.UpdatePlanGroupAsync(
     new UpdatePlanGroupRequestBody
     {
         AddOnIds = new List<string>() { "add_on_ids" },
-        PlanIds = new List<string>() { "plan_ids" },
+        OrderedPlans = new List<OrderedPlansInGroup>()
+        {
+            new OrderedPlansInGroup { PlanId = "plan_id" },
+        },
     }
 );
 ```
