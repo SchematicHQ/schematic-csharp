@@ -7,6 +7,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SchematicHQ.Client", "Schem
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SchematicHQ.Client.Test", "SchematicHQ.Client.Test\SchematicHQ.Client.Test.csproj", "{4FF79F27-AFDD-47F4-A847-5FECEE0CB85A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "webhook-test-server", "..\examples\webhook-test-server\webhook-test-server.csproj", "{7B1CB4EF-F3BF-4017-83FF-A771BF222898}"
+EndProject
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +27,17 @@ Global
 		{4FF79F27-AFDD-47F4-A847-5FECEE0CB85A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4FF79F27-AFDD-47F4-A847-5FECEE0CB85A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4FF79F27-AFDD-47F4-A847-5FECEE0CB85A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7B1CB4EF-F3BF-4017-83FF-A771BF222898}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7B1CB4EF-F3BF-4017-83FF-A771BF222898}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7B1CB4EF-F3BF-4017-83FF-A771BF222898}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{7B1CB4EF-F3BF-4017-83FF-A771BF222898}.Debug|x64.Build.0 = Debug|Any CPU
+		{7B1CB4EF-F3BF-4017-83FF-A771BF222898}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{7B1CB4EF-F3BF-4017-83FF-A771BF222898}.Debug|x86.Build.0 = Debug|Any CPU
+		{7B1CB4EF-F3BF-4017-83FF-A771BF222898}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7B1CB4EF-F3BF-4017-83FF-A771BF222898}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7B1CB4EF-F3BF-4017-83FF-A771BF222898}.Release|x64.ActiveCfg = Release|Any CPU
+		{7B1CB4EF-F3BF-4017-83FF-A771BF222898}.Release|x64.Build.0 = Release|Any CPU
+		{7B1CB4EF-F3BF-4017-83FF-A771BF222898}.Release|x86.ActiveCfg = Release|Any CPU
+		{7B1CB4EF-F3BF-4017-83FF-A771BF222898}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
