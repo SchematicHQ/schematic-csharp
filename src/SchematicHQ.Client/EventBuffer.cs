@@ -18,6 +18,8 @@ public class EventBuffer<T> : IEventBuffer<T>
     private const int DefaultMaxSize = 100;
     private static readonly TimeSpan DefaultFlushPeriod = TimeSpan.FromMilliseconds(3000);
     private const int MaxWaitForBuffer = 3; //seconds to wait for event buffer to flush on Stop
+    private const int MaxRetries = 3; // Maximum number of retry attempts
+    private const double InitialRetryDelaySeconds = 1.0; // Initial retry delay in seconds
 
     private readonly int _maxSize;
     private readonly TimeSpan _flushPeriod;
@@ -182,7 +184,61 @@ public class EventBuffer<T> : IEventBuffer<T>
         if (items.Count > 0)
         {
             _logger.Info("Flushing buffer with {0} items.", items.Count);
-            await _action(items);
+
+            // Initialize retry counter and success flag
+            int retryCount = 0;
+            bool success = false;
+            Exception? lastException = null;
+            Random random = new Random();
+
+            // Try with retries and exponential backoff
+            while (retryCount <= MaxRetries && !success)
+            {
+                try
+                {
+                    if (retryCount > 0)
+                    {
+                        // Log retry attempt
+                        _logger.Info("Retrying event batch submission (attempt {0} of {1})", retryCount, MaxRetries);
+                    }
+
+                    // Attempt to send events
+                    await _action(items);
+                    success = true;
+                }
+                catch (Exception ex)
+                {
+                    lastException = ex;
+                    retryCount++;
+
+                    if (retryCount <= MaxRetries)
+                    {
+                        // Calculate backoff with jitter
+                        double baseDelay = InitialRetryDelaySeconds;
+                        double delay = baseDelay * Math.Pow(2, retryCount - 1);
+                        double jitter = random.NextDouble() * 0.1 * delay; // 10% jitter
+                        TimeSpan waitTime = TimeSpan.FromSeconds(delay + jitter);
+
+                        _logger.Warn(
+                            string.Format("Event batch submission failed: {0}. Retrying in {1:0.##} seconds...",
+                            ex.Message, waitTime.TotalSeconds)
+                        );
+
+                        // Wait before retry
+                        await Task.Delay(waitTime);
+                    }
+                }
+            }
+
+            // After all retries, if still not successful, log the error
+            if (!success)
+            {
+                _logger.Error("Event batch submission failed after {0} retries: {1}", MaxRetries, lastException?.Message);
+            }
+            else if (retryCount > 0)
+            {
+                _logger.Info("Event batch submission succeeded after {0} retries", retryCount);
+            }
         }
     }
 
