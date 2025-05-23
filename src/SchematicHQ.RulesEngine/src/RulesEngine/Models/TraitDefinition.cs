@@ -1,7 +1,7 @@
-using SchematicHQ.RulesEngine.Utils;
+using RulesEngine.Utils;
 using System.Text.Json.Serialization;
 
-namespace SchematicHQ.RulesEngine.Models
+namespace RulesEngine.Models
 {
     public class TraitDefinition
     {

@@ -1,4 +1,4 @@
-namespace SchematicHQ.RulesEngine
+namespace RulesEngine
 {
   public enum ConditionType
   {

@@ -1,7 +1,6 @@
-using SchematicHQ.RulesEngine.Models;
-using SchematicHQ.RulesEngine.Utils;
+using RulesEngine.Models;
 
-namespace SchematicHQ.RulesEngine
+namespace RulesEngine
 {
   public static class Metrics
   {

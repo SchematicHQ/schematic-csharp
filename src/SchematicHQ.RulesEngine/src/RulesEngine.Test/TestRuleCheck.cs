@@ -1,10 +1,7 @@
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using SchematicHQ.RulesEngine.Models;
-using SchematicHQ.RulesEngine.Utils;
-using NUnit.Framework;
+using RulesEngine.Models;
+using RulesEngine.Utils;
 
-namespace SchematicHQ.RulesEngine.Test
+namespace RulesEngine.Test
 {
   [TestFixture]
   public class RuleCheckServiceTests
