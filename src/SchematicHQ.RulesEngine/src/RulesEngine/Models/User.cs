@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace SchematicHQ.RulesEngine.Models
+namespace RulesEngine.Models
 {
     public class User
     {

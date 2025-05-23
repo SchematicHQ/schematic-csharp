@@ -1,6 +1,6 @@
 using System.Globalization;
 
-namespace SchematicHQ.RulesEngine.Utils
+namespace RulesEngine.Utils
 {
   
   public enum ComparableType

@@ -1,7 +1,7 @@
-using SchematicHQ.RulesEngine.Models;
-using SchematicHQ.RulesEngine.Utils;
+using RulesEngine.Models;
+using RulesEngine.Utils;
 
-namespace SchematicHQ.RulesEngine
+namespace RulesEngine
 {
     public class CheckFlagResult
     {

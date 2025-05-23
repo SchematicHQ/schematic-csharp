@@ -1,7 +1,7 @@
-using SchematicHQ.RulesEngine.Models;
-using SchematicHQ.RulesEngine.Utils;
+using RulesEngine.Models;
+using RulesEngine.Utils;
 
-namespace SchematicHQ.RulesEngine.Test
+namespace RulesEngine.Test
 {
     public static class TestHelpers
     {
