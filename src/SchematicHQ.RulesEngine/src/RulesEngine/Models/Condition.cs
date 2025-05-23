@@ -35,7 +35,7 @@ namespace RulesEngine.Models
     public MetricPeriod? MetricPeriod { get; set; }
     
     [JsonPropertyName("metric_period_month_reset")]
-    public int? MetricPeriodMonthReset { get; set; }
+    public MetricPeriodMonthReset? MetricPeriodMonthReset { get; set; }
     
     // Fields for Trait conditions
     [JsonPropertyName("trait_definition")]
