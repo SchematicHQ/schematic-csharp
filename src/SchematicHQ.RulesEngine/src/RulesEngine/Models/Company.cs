@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.Text.Json.Serialization;
 
 namespace RulesEngine.Models
@@ -37,13 +38,27 @@ namespace RulesEngine.Models
     [JsonPropertyName("subscription")]
     public Subscription? Subscription { get; set; }
 
+    private Mutex mu = new Mutex();
+
     public Trait? GetTraitByDefinitionId(string definitionId)
     {
       return Traits.Find(t => t.TraitDefinition?.Id == definitionId);
     }
 
-    public void AddMetric(CompanyMetric metric)
+    public void AddMetric(CompanyMetric? metric)
     {
+      if (metric == null)
+      {
+        return;
+      }
+
+      if (Metrics == null)
+      {
+        Metrics = new List<CompanyMetric>();
+      }
+
+      mu.WaitOne();
+
       var existingMetricIndex = Metrics.FindIndex(m =>
           m.EventSubtype == metric.EventSubtype &&
           m.Period == metric.Period &&
@@ -57,6 +72,8 @@ namespace RulesEngine.Models
       {
         Metrics.Add(metric);
       }
+
+      mu.ReleaseMutex();
     }
   }
 }

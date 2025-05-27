@@ -5,6 +5,92 @@ namespace RulesEngine
   public static class Metrics
   {
 
+    public static DateTime? GetCurrentMetricPeriodStartForCalendarMetricPeriod(MetricPeriod metricPeriod)
+    {
+      var now = DateTime.UtcNow;
+
+      switch (metricPeriod)
+      {
+        case MetricPeriod.CurrentDay:
+          // UTC midnight for the current day
+          return now.Date;
+
+        case MetricPeriod.CurrentWeek:
+          // UTC midnight for the current week's Monday
+          int daysSinceMonday = ((int)now.DayOfWeek - (int)DayOfWeek.Monday + 7) % 7;
+          return now.Date.AddDays(-daysSinceMonday);
+
+        case MetricPeriod.CurrentMonth:
+          // UTC midnight for the first day of current month
+          return new DateTime(now.Year, now.Month, 1, 0, 0, 0, DateTimeKind.Utc);
+
+        default:
+          return null;
+      }
+    }
+
+    /// <summary>
+    /// Given a company, determine the current metric period start based on the company's billing subscription.
+    /// </summary>
+    public static DateTime? GetCurrentMetricPeriodStartForCompanyBillingSubscription(Company? company)
+    {
+      // If no subscription exists, we use calendar month reset
+      if (company == null || company.Subscription == null)
+      {
+        return GetCurrentMetricPeriodStartForCalendarMetricPeriod(MetricPeriod.CurrentMonth);
+      }
+
+      var now = DateTime.UtcNow;
+      var periodStart = company.Subscription.PeriodStart;
+
+      // If the start period is in the future, use the first day of the current month
+      if (periodStart > now)
+      {
+        return GetCurrentMetricPeriodStartForCalendarMetricPeriod(MetricPeriod.CurrentMonth);
+      }
+
+      // Find the most recent occurrence of the subscription day in the current or previous months
+      var currentPeriodStart = new DateTime(
+          now.Year,
+          now.Month,
+          Math.Min(periodStart.Day, DateTime.DaysInMonth(now.Year, now.Month)),
+          periodStart.Hour,
+          periodStart.Minute,
+          periodStart.Second,
+          periodStart.Millisecond,
+          DateTimeKind.Utc);
+
+      // If the calculated date is in the future or exactly now, we need to go back one month
+      if (currentPeriodStart > now)
+      {
+        currentPeriodStart = currentPeriodStart.AddMonths(-1);
+
+        // Handle day adjustment when going back from 30/31 to a month with fewer days
+        var daysInMonth = DateTime.DaysInMonth(currentPeriodStart.Year, currentPeriodStart.Month);
+        if (periodStart.Day > daysInMonth)
+        {
+          currentPeriodStart = new DateTime(
+              currentPeriodStart.Year,
+              currentPeriodStart.Month,
+              daysInMonth,
+              periodStart.Hour,
+              periodStart.Minute,
+              periodStart.Second,
+              periodStart.Millisecond,
+              DateTimeKind.Utc);
+        }
+      }
+
+      // If the calculated current period start is before the subscription start date,
+      // then the subscription start date is the current period start
+      if (currentPeriodStart < periodStart)
+      {
+        return periodStart;
+      }
+
+      return currentPeriodStart;
+    }
+
     public static DateTime? GetNextMetricPeriodStartForCalendarMetricPeriod(MetricPeriod metricPeriod)
     {
       switch (metricPeriod)
@@ -12,7 +98,6 @@ namespace RulesEngine
         case MetricPeriod.CurrentDay:
           // UTC midnight for upcoming day
           return DateTime.UtcNow.Date.AddDays(1);
-          
         case MetricPeriod.CurrentWeek:
           // UTC midnight for upcoming Monday (C# uses Monday as first day, Go example used Sunday)
           var now = DateTime.UtcNow;
@@ -20,12 +105,11 @@ namespace RulesEngine
           if (daysUntilMonday == 0)
             daysUntilMonday = 7; // If today is Monday, get next Monday
           return now.Date.AddDays(daysUntilMonday);
-          
         case MetricPeriod.CurrentMonth:
           // UTC midnight for the first day of next month
           var currentDate = DateTime.UtcNow;
           return new DateTime(currentDate.Year, currentDate.Month, 1, 0, 0, 0, DateTimeKind.Utc).AddMonths(1);
-          
+
         default:
           return null;
       }
@@ -91,7 +175,7 @@ namespace RulesEngine
     /// Given a rule condition and a company, determine the next metric period start.
     /// Will return null if the condition is not a metric condition.
     /// </summary>
-    public static DateTime? GetNextMetricPeriodStartFromCondition(this Condition condition, Company? company)
+    public static DateTime? GetNextMetricPeriodStartFromCondition(Condition? condition, Company? company)
     {
       // Only metric conditions have a metric period that can reset
       if (condition == null || condition.ConditionType != ConditionType.Metric || condition.MetricPeriod == null)
