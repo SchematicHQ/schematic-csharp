@@ -20,7 +20,7 @@ namespace RulesEngine.Models
     public MetricPeriod Period { get; set; }
 
     [JsonPropertyName("month_reset")]
-    public int MonthReset { get; set; }
+    public MetricPeriodMonthReset MonthReset { get; set; }
 
     [JsonPropertyName("value")]
     public long Value { get; set; }
@@ -31,7 +31,7 @@ namespace RulesEngine.Models
     [JsonPropertyName("valid_until")]
     public DateTime? ValidUntil { get; set; }
 
-    public static CompanyMetric? Find(List<CompanyMetric> metrics, string eventSubtype, MetricPeriod? period, int? monthReset)
+    public static CompanyMetric? Find(List<CompanyMetric> metrics, string eventSubtype, MetricPeriod? period, MetricPeriodMonthReset? monthReset)
     {
       if (metrics == null || string.IsNullOrEmpty(eventSubtype) || period == null)
         return null;
@@ -39,7 +39,7 @@ namespace RulesEngine.Models
       return metrics.Find(m =>
           m.EventSubtype == eventSubtype &&
           m.Period == period.Value &&
-          (monthReset == null || m.MonthReset == monthReset.Value));
+          (monthReset == null || m.MonthReset == monthReset));
     }
   }
 }
