@@ -211,16 +211,12 @@ namespace RulesEngine.Test
                 var now = DateTime.UtcNow;
                 var company = TestHelpers.CreateTestCompany();
 
+                var periodStart = now.AddDays(-10);
                 // Set a recent subscription start date (10 days ago)
                 company.Subscription = new Subscription
                 {
                     Id = "test-subscription",
-                    PeriodStart = new DateTime(
-                        now.Year,
-                        now.Month,
-                        now.Day - 10,
-                        12, 0, 0,
-                        DateTimeKind.Utc),
+                    PeriodStart = periodStart,
                     PeriodEnd = now.AddMonths(1)
                 };
 
