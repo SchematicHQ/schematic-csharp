@@ -192,7 +192,7 @@ namespace RulesEngine
       // Metric period current month with billing cycle reset
       if (condition.MetricPeriod == MetricPeriod.CurrentMonth &&
           condition.MetricPeriodMonthReset.HasValue &&
-          condition.MetricPeriodMonthReset.Value == MetricPeriodMonthReset.Billing)
+          condition.MetricPeriodMonthReset.Value == MetricPeriodMonthReset.BillingCycle)
       {
         return GetNextMetricPeriodStartForCompanyBillingSubscription(company);
       }

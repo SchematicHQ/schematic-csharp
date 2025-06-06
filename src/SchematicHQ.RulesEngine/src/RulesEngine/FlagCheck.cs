@@ -162,7 +162,7 @@ namespace RulesEngine
             if (user != null)
             {
                 resp.UserId = user.Id;
-            }
+            }  
 
             var ruleChecker = RuleCheckService.NewRuleCheckService();
             foreach (var group in GroupRulesByPriority(flag.Rules))
@@ -182,7 +182,7 @@ namespace RulesEngine
                             Rule = rule,
                             User = user
                         }, cancellationToken);
-                        
+
                         if (checkRuleResp == null)
                         {
                             resp.Error = Errors.ErrorUnexpected;
@@ -199,6 +199,8 @@ namespace RulesEngine
                     }
                     catch (Exception ex)
                     {
+                        Console.WriteLine($"Error checking rule {rule.Id}: {ex.Message}");
+                        Console.WriteLine(ex.StackTrace);
                         resp.Error = ex;
                         return resp;
                     }

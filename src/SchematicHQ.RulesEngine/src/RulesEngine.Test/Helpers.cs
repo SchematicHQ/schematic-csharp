@@ -76,7 +76,7 @@ namespace RulesEngine.Test
                 EnvironmentId = GenerateTestId("env"),
                 ConditionType = conditionType,
                 ResourceIds = new List<string>(),
-                Operator = ComparableOperator.Equals
+                Operator = ComparableOperator.Eq
             };
             
             if (conditionType == ConditionType.Metric)

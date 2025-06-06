@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RulesEngine", "SchematicHQ.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RulesEngine.Test", "SchematicHQ.RulesEngine\src\RulesEngine.Test\RulesEngine.Test.csproj", "{F09AE642-3D32-4149-BC13-7D8AD2404752}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatastreamTestServer", "..\examples\DatastreamTestServer\DatastreamTestServer.csproj", "{C7827487-F7F6-46F0-82CD-2260D15A1B48}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -87,6 +89,18 @@ Global
 		{F09AE642-3D32-4149-BC13-7D8AD2404752}.Release|x64.Build.0 = Release|Any CPU
 		{F09AE642-3D32-4149-BC13-7D8AD2404752}.Release|x86.ActiveCfg = Release|Any CPU
 		{F09AE642-3D32-4149-BC13-7D8AD2404752}.Release|x86.Build.0 = Release|Any CPU
+		{C7827487-F7F6-46F0-82CD-2260D15A1B48}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C7827487-F7F6-46F0-82CD-2260D15A1B48}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C7827487-F7F6-46F0-82CD-2260D15A1B48}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{C7827487-F7F6-46F0-82CD-2260D15A1B48}.Debug|x64.Build.0 = Debug|Any CPU
+		{C7827487-F7F6-46F0-82CD-2260D15A1B48}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{C7827487-F7F6-46F0-82CD-2260D15A1B48}.Debug|x86.Build.0 = Debug|Any CPU
+		{C7827487-F7F6-46F0-82CD-2260D15A1B48}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C7827487-F7F6-46F0-82CD-2260D15A1B48}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C7827487-F7F6-46F0-82CD-2260D15A1B48}.Release|x64.ActiveCfg = Release|Any CPU
+		{C7827487-F7F6-46F0-82CD-2260D15A1B48}.Release|x64.Build.0 = Release|Any CPU
+		{C7827487-F7F6-46F0-82CD-2260D15A1B48}.Release|x86.ActiveCfg = Release|Any CPU
+		{C7827487-F7F6-46F0-82CD-2260D15A1B48}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

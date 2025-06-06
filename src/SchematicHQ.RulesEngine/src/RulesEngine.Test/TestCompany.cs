@@ -32,7 +32,7 @@ namespace RulesEngine.Test
             // Add initial metric
             string eventSubtype = "test-event";
             var period = MetricPeriod.AllTime;
-            int monthReset = (int)MetricPeriodMonthReset.First;
+            MetricPeriodMonthReset monthReset = MetricPeriodMonthReset.FirstOfMonth;
 
             var initialMetric = TestHelpers.CreateTestMetric(company, eventSubtype, period, 5);
             company.AddMetric(initialMetric);
@@ -49,7 +49,7 @@ namespace RulesEngine.Test
             Assert.That(company.Metrics, Does.Not.Contain(initialMetric));
 
             // Find the metric and verify it has the new value
-            var foundMetric = CompanyMetric.Find(company.Metrics, eventSubtype, period, (MetricPeriodMonthReset)monthReset);
+            var foundMetric = CompanyMetric.Find(company.Metrics, eventSubtype, period, monthReset);
             Assert.That(foundMetric, Is.Not.Null);
             Assert.That(foundMetric!.Value, Is.EqualTo(10));
         }

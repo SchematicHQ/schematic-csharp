@@ -42,7 +42,7 @@ namespace RulesEngine
             }
 
             bool match;
-            foreach (var condition in scope.Rule.Conditions)
+            foreach (var condition in scope.Rule.Conditions ?? Enumerable.Empty<Condition>())
             {
                 match = await CheckCondition(scope.Company, scope.User, condition, cancellationToken);
                 if (!match)
@@ -51,7 +51,7 @@ namespace RulesEngine
                 }
             }
 
-            foreach (var group in scope.Rule.ConditionGroups)
+            foreach (var group in scope.Rule.ConditionGroups ?? Enumerable.Empty<ConditionGroup>())
             {
                 match = await CheckConditionGroup(scope.Company, scope.User, group, cancellationToken);
                 if (!match)
@@ -120,7 +120,7 @@ namespace RulesEngine
             }
 
             var resourceMatch = Set<string>.NewSet(condition.ResourceIds.ToArray()).Contains(company.Id);
-            if (condition.Operator == ComparableOperator.NotEquals)
+            if (condition.Operator == ComparableOperator.Ne)
             {
                 return Task.FromResult(!resourceMatch);
             }
@@ -137,7 +137,7 @@ namespace RulesEngine
 
             var companyBillingProductIds = Set<string>.NewSet(company.BillingProductIds.ToArray());
             var resourceMatch = Set<string>.NewSet(condition.ResourceIds.ToArray()).Intersection(companyBillingProductIds).Len > 0;
-            if (condition.Operator == ComparableOperator.NotEquals)
+            if (condition.Operator == ComparableOperator.Ne)
             {
                 return Task.FromResult(!resourceMatch);
             }
@@ -154,7 +154,7 @@ namespace RulesEngine
 
             var companyCrmProductIds = Set<string>.NewSet(company.CrmProductIds.ToArray());
             var resourceMatch = Set<string>.NewSet(condition.ResourceIds.ToArray()).Intersection(companyCrmProductIds).Len > 0;
-            if (condition.Operator == ComparableOperator.NotEquals)
+            if (condition.Operator == ComparableOperator.Ne)
             {
                 return Task.FromResult(!resourceMatch);
             }
@@ -171,7 +171,7 @@ namespace RulesEngine
 
             var companyPlanIds = Set<string>.NewSet(company.PlanIds.ToArray());
             var resourceMatch = Set<string>.NewSet(condition.ResourceIds.ToArray()).Intersection(companyPlanIds).Len > 0;
-            if (condition.Operator == ComparableOperator.NotEquals)
+            if (condition.Operator == ComparableOperator.Ne)
             {
                 return Task.FromResult(!resourceMatch);
             }
@@ -187,7 +187,7 @@ namespace RulesEngine
             }
 
             var resourceMatch = Set<string>.NewSet(condition.ResourceIds.ToArray()).Contains(company.BasePlanId);
-            if (condition.Operator == ComparableOperator.NotEquals)
+            if (condition.Operator == ComparableOperator.Ne)
             {
                 return Task.FromResult(!resourceMatch);
             }
@@ -272,7 +272,7 @@ namespace RulesEngine
             }
 
             var resourceMatch = Set<string>.NewSet(condition.ResourceIds.ToArray()).Contains(user.Id);
-            if (condition.Operator == ComparableOperator.NotEquals)
+            if (condition.Operator == ComparableOperator.Ne)
             {
                 return Task.FromResult(!resourceMatch);
             }

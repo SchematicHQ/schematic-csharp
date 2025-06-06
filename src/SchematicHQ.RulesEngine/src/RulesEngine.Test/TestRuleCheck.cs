@@ -104,7 +104,7 @@ namespace RulesEngine.Test
       var condition = TestHelpers.CreateTestCondition(ConditionType.Metric);
       condition.EventSubtype = eventSubtype;
       condition.MetricValue = 10;
-      condition.Operator = ComparableOperator.LessThanOrEqual;
+      condition.Operator = ComparableOperator.Lte;
       rule.Conditions = new List<Condition> { condition };
 
       var metric = TestHelpers.CreateTestMetric(company, eventSubtype, condition.MetricPeriod!.Value, 5);
@@ -134,7 +134,7 @@ namespace RulesEngine.Test
       var condition = TestHelpers.CreateTestCondition(ConditionType.Metric);
       condition.EventSubtype = eventSubtype;
       condition.MetricValue = 5;
-      condition.Operator = ComparableOperator.LessThanOrEqual;
+      condition.Operator = ComparableOperator.Lte;
       rule.Conditions = new List<Condition> { condition };
 
       var metric = TestHelpers.CreateTestMetric(company, eventSubtype, condition.MetricPeriod!.Value, 6); // Value exceeds limit
@@ -165,7 +165,7 @@ namespace RulesEngine.Test
       var condition = TestHelpers.CreateTestCondition(ConditionType.Trait);
       condition.TraitDefinition = trait.TraitDefinition;
       condition.TraitValue = "test-value";
-      condition.Operator = ComparableOperator.Equals;
+      condition.Operator = ComparableOperator.Eq;
       rule.Conditions = new List<Condition> { condition };
 
       // Act
@@ -254,7 +254,7 @@ namespace RulesEngine.Test
       var condition = TestHelpers.CreateTestCondition(ConditionType.Trait);
       condition.TraitDefinition = traitDef;
       condition.TraitValue = "user-trait-value";
-      condition.Operator = ComparableOperator.Equals;
+      condition.Operator = ComparableOperator.Eq;
       rule.Conditions = new List<Condition> { condition };
 
       // Act
@@ -288,7 +288,7 @@ namespace RulesEngine.Test
       var condition2 = TestHelpers.CreateTestCondition(ConditionType.Trait);
       condition2.TraitDefinition = trait.TraitDefinition;
       condition2.TraitValue = "test-value";
-      condition2.Operator = ComparableOperator.Equals;
+      condition2.Operator = ComparableOperator.Eq;
       
       rule.Conditions = new List<Condition> { condition1, condition2 };
 
@@ -323,7 +323,7 @@ namespace RulesEngine.Test
       var condition2 = TestHelpers.CreateTestCondition(ConditionType.Trait);
       condition2.TraitDefinition = trait.TraitDefinition;
       condition2.TraitValue = "different-value";
-      condition2.Operator = ComparableOperator.Equals;
+      condition2.Operator = ComparableOperator.Eq;
       
       rule.Conditions = new List<Condition> { condition1, condition2 };
 

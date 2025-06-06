@@ -1,46 +1,97 @@
+using System.Text.Json.Serialization;
+using System.Collections.Generic;
+
 namespace RulesEngine
 {
+  [JsonConverter(typeof(JsonStringEnumConverter))]
   public enum ConditionType
   {
+    [JsonPropertyName("base_plan")]
     BasePlan,
+    
+    [JsonPropertyName("billing_product")]
     BillingProduct,
+    
+    [JsonPropertyName("company")]
     Company,
+    
+    [JsonPropertyName("crm_product")]
     CrmProduct,
+    
+    [JsonPropertyName("metric")]
     Metric,
+    
+    [JsonPropertyName("plan")]
     Plan,
+    
+    [JsonPropertyName("trait")]
     Trait,
+    
+    [JsonPropertyName("user")]
     User
   }
 
+  [JsonConverter(typeof(JsonStringEnumConverter))]
   public enum EntityType
   {
+    [JsonPropertyName("company")]
     Company,
+    
+    [JsonPropertyName("user")]
     User
   }
 
+  [JsonConverter(typeof(JsonStringEnumConverter))]
   public enum MetricPeriod
   {
+    [JsonPropertyName("all_time")]
     AllTime,
+    
+    [JsonPropertyName("current_day")]
     CurrentDay,
+    
+    [JsonPropertyName("current_month")]
     CurrentMonth,
+    
+    [JsonPropertyName("current_week")]
     CurrentWeek
   }
 
+  [JsonConverter(typeof(JsonStringEnumConverter))]
   public enum MetricPeriodMonthReset
   {
-    First,
-    Billing
+    [JsonPropertyName("first_of_month")]
+    FirstOfMonth,
+    
+    [JsonPropertyName("billing_cycle")]
+    BillingCycle
   }
 
+  [JsonConverter(typeof(JsonStringEnumConverter))]
   public enum RuleType
   {
+    [JsonPropertyName("global_override")]
     GlobalOverride,
+    
+    [JsonPropertyName("company_override")]
     CompanyOverride,
+    
+    [JsonPropertyName("company_override_usage_exceeded")]
     CompanyOverrideUsageExceeded,
+    
+    [JsonPropertyName("plan_entitlement")]
     PlanEntitlement,
+    
+    [JsonPropertyName("plan_entitlement_usage_exceeded")]
     PlanEntitlementUsageExceeded,
+    
+    [JsonPropertyName("standard")]
     Standard,
+    
+    [JsonPropertyName("default")]
     Default,
+    
+    [JsonPropertyName("plan_audience")]
     PlanAudience
   }
 
@@ -89,10 +140,16 @@ namespace RulesEngine
         };
   }
 
+  [JsonConverter(typeof(JsonStringEnumConverter))]
   public enum RulePrioritizationMethod
   {
+    [JsonPropertyName("none")]
     None,
+    
+    [JsonPropertyName("priority")]
     Priority,
+    
+    [JsonPropertyName("optimistic")]
     Optimistic
   }
 }

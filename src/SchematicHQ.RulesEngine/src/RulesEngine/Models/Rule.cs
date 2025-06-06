@@ -23,10 +23,10 @@ namespace RulesEngine.Models
     public long Priority { get; set; }
 
     [JsonPropertyName("conditions")]
-    public List<Condition> Conditions { get; set; } = new List<Condition>();
+    public List<Condition>? Conditions { get; set; } = new List<Condition>();
 
     [JsonPropertyName("condition_groups")]
-    public List<ConditionGroup> ConditionGroups { get; set; } = new List<ConditionGroup>();
+    public List<ConditionGroup>? ConditionGroups { get; set; } = new List<ConditionGroup>();
 
     [JsonPropertyName("value")]
     public bool Value { get; set; }

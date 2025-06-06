@@ -518,7 +518,7 @@ namespace RulesEngine.Test
 
                 var condition = TestHelpers.CreateTestCondition(ConditionType.Metric);
                 condition.MetricPeriod = MetricPeriod.CurrentMonth;
-                condition.MetricPeriodMonthReset = MetricPeriodMonthReset.Billing;
+                condition.MetricPeriodMonthReset = MetricPeriodMonthReset.BillingCycle;
 
                 var result = Metrics.GetNextMetricPeriodStartFromCondition(condition, company);
                 var expected = Metrics.GetNextMetricPeriodStartForCompanyBillingSubscription(company);

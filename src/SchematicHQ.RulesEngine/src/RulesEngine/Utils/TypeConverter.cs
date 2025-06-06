@@ -1,30 +1,50 @@
 using System.Globalization;
+using System.Text.Json.Serialization;
 
 namespace RulesEngine.Utils
 {
   
+  [JsonConverter(typeof(JsonStringEnumConverter))]
   public enum ComparableType
   {
+    [JsonPropertyName("string")]
     String,
+    
+    [JsonPropertyName("int")]
     Int,
+    
+    [JsonPropertyName("bool")]
     Boolean,
+    
+    [JsonPropertyName("date")]
     Date
   }
 
+  [JsonConverter(typeof(JsonStringEnumConverter))]
   public enum ComparableOperator
   {
-    Equals,
-    NotEquals,
-    LessThan,
-    LessThanOrEqual,
-    GreaterThan,
-    GreaterThanOrEqual,
-    Contains,
-    NotContains,
-    StartsWith,
-    NotStartsWith,
-    EndsWith,
-    NotEndsWith
+    [JsonPropertyName("eq")]
+    Eq,
+    
+    [JsonPropertyName("ne")]
+    Ne,
+    
+    [JsonPropertyName("lt")]
+    Lt,
+    
+    [JsonPropertyName("lte")]
+    Lte,
+    
+    [JsonPropertyName("gt")]
+    Gt,
+    
+    [JsonPropertyName("gte")]
+    Gte,
+    
+    [JsonPropertyName("is_empty")]
+    IsEmpty,
+    [JsonPropertyName("not_empty")]
+    NotEmpty,
   }
     public static class TypeConverter
   {
@@ -53,22 +73,22 @@ namespace RulesEngine.Utils
     {
       switch (op)
       {
-        case ComparableOperator.Equals:
+        case ComparableOperator.Eq:
           return string.Equals(a, b, StringComparison.OrdinalIgnoreCase);
-        case ComparableOperator.NotEquals:
+        case ComparableOperator.Ne:
           return !string.Equals(a, b, StringComparison.OrdinalIgnoreCase);
-        case ComparableOperator.Contains:
-          return a?.IndexOf(b, StringComparison.OrdinalIgnoreCase) >= 0;
-        case ComparableOperator.NotContains:
-          return !CompareString(a, b, ComparableOperator.Contains);
-        case ComparableOperator.StartsWith:
-          return a?.StartsWith(b, StringComparison.OrdinalIgnoreCase) == true;
-        case ComparableOperator.NotStartsWith:
-          return !CompareString(a, b, ComparableOperator.StartsWith);
-        case ComparableOperator.EndsWith:
-          return a?.EndsWith(b, StringComparison.OrdinalIgnoreCase) == true;
-        case ComparableOperator.NotEndsWith:
-          return !CompareString(a, b, ComparableOperator.EndsWith);
+        case ComparableOperator.Lt:
+          return string.Compare(a, b, StringComparison.OrdinalIgnoreCase) < 0;
+        case ComparableOperator.Lte:
+          return string.Compare(a, b, StringComparison.OrdinalIgnoreCase) <= 0;
+        case ComparableOperator.Gt:
+          return string.Compare(a, b, StringComparison.OrdinalIgnoreCase) > 0;
+        case ComparableOperator.Gte:
+          return string.Compare(a, b, StringComparison.OrdinalIgnoreCase) >= 0;
+        case ComparableOperator.IsEmpty:
+          return string.IsNullOrEmpty(a);
+        case ComparableOperator.NotEmpty:
+          return !string.IsNullOrEmpty(a);
         default:
           return false;
       }
@@ -78,17 +98,17 @@ namespace RulesEngine.Utils
     {
       switch (op)
       {
-        case ComparableOperator.Equals:
+        case ComparableOperator.Eq:
           return a == b;
-        case ComparableOperator.NotEquals:
+        case ComparableOperator.Ne:
           return a != b;
-        case ComparableOperator.LessThan:
+        case ComparableOperator.Lt:
           return a < b;
-        case ComparableOperator.LessThanOrEqual:
+        case ComparableOperator.Lte:
           return a <= b;
-        case ComparableOperator.GreaterThan:
+        case ComparableOperator.Gt:
           return a > b;
-        case ComparableOperator.GreaterThanOrEqual:
+        case ComparableOperator.Gte:
           return a >= b;
         default:
           return false;
@@ -99,17 +119,17 @@ namespace RulesEngine.Utils
     {
       switch (op)
       {
-        case ComparableOperator.Equals:
+        case ComparableOperator.Eq:
           return Math.Abs(a - b) < double.Epsilon;
-        case ComparableOperator.NotEquals:
+        case ComparableOperator.Ne:
           return Math.Abs(a - b) >= double.Epsilon;
-        case ComparableOperator.LessThan:
+        case ComparableOperator.Lt:
           return a < b;
-        case ComparableOperator.LessThanOrEqual:
+        case ComparableOperator.Lte:
           return a <= b;
-        case ComparableOperator.GreaterThan:
+        case ComparableOperator.Gt:
           return a > b;
-        case ComparableOperator.GreaterThanOrEqual:
+        case ComparableOperator.Gte:
           return a >= b;
         default:
           return false;
@@ -120,9 +140,9 @@ namespace RulesEngine.Utils
     {
       switch (op)
       {
-        case ComparableOperator.Equals:
+        case ComparableOperator.Eq:
           return a == b;
-        case ComparableOperator.NotEquals:
+        case ComparableOperator.Ne:
           return a != b;
         default:
           return false;
@@ -133,17 +153,17 @@ namespace RulesEngine.Utils
     {
       switch (op)
       {
-        case ComparableOperator.Equals:
+        case ComparableOperator.Eq:
           return a.Date == b.Date;
-        case ComparableOperator.NotEquals:
+        case ComparableOperator.Ne:
           return a.Date != b.Date;
-        case ComparableOperator.LessThan:
+        case ComparableOperator.Lt:
           return a < b;
-        case ComparableOperator.LessThanOrEqual:
+        case ComparableOperator.Lte:
           return a <= b;
-        case ComparableOperator.GreaterThan:
+        case ComparableOperator.Gt:
           return a > b;
-        case ComparableOperator.GreaterThanOrEqual:
+        case ComparableOperator.Gte:
           return a >= b;
         default:
           return false;
