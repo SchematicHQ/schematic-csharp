@@ -1,0 +1,6 @@
+@DatastreamTestServer_HostAddress = http://localhost:5053
+
+GET {{DatastreamTestServer_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

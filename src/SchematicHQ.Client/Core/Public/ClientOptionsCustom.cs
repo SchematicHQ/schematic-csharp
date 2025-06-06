@@ -11,6 +11,9 @@ public partial class ClientOptions
     public ISchematicLogger Logger { get; set; }
     public List<ICacheProvider<bool?>> CacheProviders { get; set; }
     public bool Offline { get; set; }
+
+    public bool UseDatastream { get; set; } = false;
+    public Datastream.DatastreamOptions DatastreamOptions { get; set; } = new Datastream.DatastreamOptions();
     public TimeSpan? DefaultEventBufferPeriod { get; set; }
     public IEventBuffer<CreateEventRequestBody>? EventBuffer { get; set; }
 }
@@ -23,6 +26,7 @@ public static class ClientOptionsExtensions
         {
             BaseUrl = options.BaseUrl,
             CacheProviders = options.CacheProviders ?? new List<ICacheProvider<bool?>>(),
+            DatastreamOptions = options.DatastreamOptions,
             DefaultEventBufferPeriod = options.DefaultEventBufferPeriod,
             EventBuffer = options.EventBuffer,
             FlagDefaults = options.FlagDefaults ?? new Dictionary<string, bool>(),
@@ -32,6 +36,7 @@ public static class ClientOptionsExtensions
             MaxRetries = options.MaxRetries,
             Offline = options.Offline,
             Timeout = options.Timeout,
+            UseDatastream = options.UseDatastream,
         };
     }
 }

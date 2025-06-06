@@ -2,7 +2,9 @@ using OneOf;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
+using SchematicHQ.Client.Datastream;
 
 #nullable enable
 
@@ -15,6 +17,8 @@ public partial class Schematic
     private readonly ISchematicLogger _logger;
     private readonly List<ICacheProvider<bool?>> _flagCheckCacheProviders;
     private readonly bool _offline;
+    private readonly DatastreamClientAdapter? _datastreamClient;
+    private bool _datastreamConnected;
     public readonly SchematicApi API;
 
     public AccesstokensClient Accesstokens { get; init; }
@@ -71,6 +75,19 @@ public partial class Schematic
         {
             new LocalCache<bool?>()
         };
+
+        // Initialize datastream if enabled
+        if (!_offline && _options.UseDatastream)
+        {
+            _datastreamClient = new DatastreamClientAdapter(
+                _options.BaseUrl, 
+                _logger,
+                apiKey,
+                _options.DatastreamOptions
+            );
+            _datastreamClient.Start();
+            _datastreamConnected = true;
+        }
     }
 
     public async Task Shutdown()
@@ -79,14 +96,34 @@ public partial class Schematic
         {
             await _eventBuffer.Stop();
         }
+        
+        if (_datastreamClient != null)
+        {
+            _datastreamClient.Close();
+        }
     }
 
     public async Task<bool> CheckFlag(string flagKey, Dictionary<string, string>? company = null, Dictionary<string, string>? user = null)
     {
-
         if (_offline)
             return GetFlagDefault(flagKey);
 
+        // Use datastream if enabled and connected
+        if (_datastreamConnected && _datastreamClient != null)
+        {
+            try
+            {
+                return await _datastreamClient.CheckFlag(company, user, flagKey);
+            }
+            catch (Exception ex)
+            {
+                _logger.Error("Error checking flag via datastream: {0}", ex.Message);
+                Console.WriteLine(ex.StackTrace);
+                return GetFlagDefault(flagKey);
+            }
+        }
+
+        // Fall back to API request
         try
         {
             string cacheKey = flagKey;
