@@ -199,8 +199,6 @@ namespace RulesEngine
                     }
                     catch (Exception ex)
                     {
-                        Console.WriteLine($"Error checking rule {rule.Id}: {ex.Message}");
-                        Console.WriteLine(ex.StackTrace);
                         resp.Error = ex;
                         return resp;
                     }

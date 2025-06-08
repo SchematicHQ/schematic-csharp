@@ -42,8 +42,6 @@ namespace SchematicHQ.Client.Datastream
                 return enumValue;
             }
 
-            // Log the unmapped value
-            Console.WriteLine($"Warning: Unable to map '{stringValue}' to EntityType enum");
             return EntityType.Unknown;
         }
 

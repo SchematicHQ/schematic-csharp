@@ -49,7 +49,8 @@ namespace SchematicHQ.Client.Datastream
     private const string CacheKeyPrefixFlags = "flags";
     private const string CacheKeyPrefixUser = "user";
 
-    private const int ResrouceTimeout = 2000; // 2 seconds timeout for resource requests
+    private static readonly Random _jitterRandom = new Random();
+    private static readonly object _randomLock = new object();
 
     public DatastreamClient(
         string baseUrl,
@@ -162,9 +163,15 @@ namespace SchematicHQ.Client.Datastream
 
     private TimeSpan CalculateBackoffDelay(int attempt)
     {
+      int jitterMs;
       // Add jitter to prevent synchronized reconnection attempts
-      var random = new Random();
-      var jitter = TimeSpan.FromMilliseconds(random.Next((int)MinReconnectDelay.TotalMilliseconds));
+      // Thread-safe access to the shared Random instance
+      lock (_randomLock)
+      {
+        jitterMs = _jitterRandom.Next((int)MinReconnectDelay.TotalMilliseconds);
+      }
+    
+    var jitter = TimeSpan.FromMilliseconds(jitterMs);
 
       // Exponential backoff with a cap
       var delay = TimeSpan.FromMilliseconds(Math.Pow(2, attempt - 1) * MinReconnectDelay.TotalMilliseconds) + jitter;
@@ -174,27 +181,6 @@ namespace SchematicHQ.Client.Datastream
       }
 
       return delay;
-    }
-
-    private async Task SendPingAsync()
-    {
-      if (_webSocket.State == WebSocketState.Open)
-      {
-        try
-        {
-          // Send a small binary message as a ping
-          var buffer = new byte[1]; // Single byte message
-          await _webSocket.SendAsync(
-              new ArraySegment<byte>(buffer),
-              WebSocketMessageType.Binary,
-              true,
-              CancellationToken.None);
-        }
-        catch (Exception ex)
-        {
-          _logger.Error("Error sending ping: {Message}", ex.Message);
-        }
-      }
     }
 
     private async Task ReadMessagesAsync()
@@ -835,18 +821,47 @@ namespace SchematicHQ.Client.Datastream
       {
         if (_webSocket.State == WebSocketState.Open)
         {
-          // Send close handshake
-          var closeTask = _webSocket.CloseAsync(
+          // Create a CancellationTokenSource with timeout
+          using var closeCts = new CancellationTokenSource(TimeSpan.FromSeconds(5));
+
+          // Try to close gracefully
+          Task closeTask = _webSocket.CloseAsync(
               WebSocketCloseStatus.NormalClosure,
               "Closing",
-              CancellationToken.None);
+              closeCts.Token);
 
-          closeTask.Wait(TimeSpan.FromSeconds(5));
+          try
+          {
+            // Wait for completion or timeout asynchronously, but since Dispose() is synchronous,
+            // we need to eventually block here, but with a clean timeout
+            if (!closeTask.Wait(TimeSpan.FromSeconds(5)))
+            {
+              _logger.Warn("WebSocket close handshake timed out");
+            }
+          }
+          catch (OperationCanceledException)
+          {
+            _logger.Warn("WebSocket close handshake was cancelled");
+          }
+          catch (AggregateException ex) when (ex.InnerExceptions.Any(e => e is OperationCanceledException))
+          {
+            _logger.Warn("WebSocket close handshake was cancelled");
+          }
+
+          // If it didn't close gracefully, abort
+          if (_webSocket.State != WebSocketState.Closed)
+          {
+            _logger.Warn("WebSocket didn't close gracefully, aborting");
+            _webSocket.Abort();
+          }
         }
       }
       catch (Exception ex)
       {
         _logger.Error("Error closing WebSocket connection: {Message}", ex.Message);
+
+        // Ensure we abort in case of errors
+        try { _webSocket.Abort(); } catch { /* Ignore any errors during abort */ }
       }
       finally
       {

@@ -38,7 +38,8 @@ namespace RulesEngine.Models
     [JsonPropertyName("subscription")]
     public Subscription? Subscription { get; set; }
 
-    private Mutex mu = new Mutex();
+    private readonly object _metricsLock = new object();
+
 
     public Trait? GetTraitByDefinitionId(string definitionId)
     {
@@ -57,23 +58,22 @@ namespace RulesEngine.Models
         Metrics = new List<CompanyMetric>();
       }
 
-      mu.WaitOne();
-
-      var existingMetricIndex = Metrics.FindIndex(m =>
-          m.EventSubtype == metric.EventSubtype &&
-          m.Period == metric.Period &&
-          m.MonthReset == metric.MonthReset);
-
-      if (existingMetricIndex != -1)
+      lock (_metricsLock)
       {
-        Metrics[existingMetricIndex] = metric;
-      }
-      else
-      {
-        Metrics.Add(metric);
-      }
+        var existingMetricIndex = Metrics.FindIndex(m =>
+            m.EventSubtype == metric.EventSubtype &&
+            m.Period == metric.Period &&
+            m.MonthReset == metric.MonthReset);
 
-      mu.ReleaseMutex();
+        if (existingMetricIndex != -1)
+        {
+          Metrics[existingMetricIndex] = metric;
+        }
+        else
+        {
+          Metrics.Add(metric);
+        }
+      }
     }
   }
 }
