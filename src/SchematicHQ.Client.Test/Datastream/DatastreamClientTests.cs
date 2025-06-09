@@ -102,7 +102,7 @@ namespace SchematicHQ.Client.Test.Datastream
             var dataStreamRequest = JsonSerializer.Deserialize<DataStreamBaseRequest>(sentMessage);
             Assert.That(dataStreamRequest?.Data.EntityType, Is.EqualTo(EntityType.Company));
         }
-        
+
         [Test]
         public async Task CheckFlagAsync_WhenUserAndCompanyProvided_BothAreRetrieved()
         {
@@ -111,7 +111,7 @@ namespace SchematicHQ.Client.Test.Datastream
 
             // Start the client to process the response
             _client.Start();
-            
+
             var companyResponse = new DataStreamResponse
             {
                 MessageType = MessageType.Full,
@@ -121,13 +121,13 @@ namespace SchematicHQ.Client.Test.Datastream
                     Id = "comp_123",
                     AccountId = "acc_123",
                     EnvironmentId = "env_123",
-                    Keys = new Dictionary<string, string> 
-                    { 
-                        { "id", "company-123" } 
+                    Keys = new Dictionary<string, string>
+                    {
+                        { "id", "company-123" }
                     }
                 }, _jsonOptions)).RootElement
             };
-            
+
             var userResponse = new DataStreamResponse
             {
                 MessageType = MessageType.Full,
@@ -137,42 +137,54 @@ namespace SchematicHQ.Client.Test.Datastream
                     Id = "user_456",
                     AccountId = "acc_123",
                     EnvironmentId = "env_123",
-                    Keys = new Dictionary<string, string> 
-                    { 
-                        { "id", "user-456" } 
+                    Keys = new Dictionary<string, string>
+                    {
+                        { "id", "user-456" }
                     }
                 }, _jsonOptions)).RootElement
             };
-            
 
-            
+
+
             var request = new CheckFlagRequestBody
             {
                 Company = new Dictionary<string, string> { { "id", "company-123" } },
                 User = new Dictionary<string, string> { { "id", "user-456" } }
             };
-            
+
             // Setup fake WebSocket responses
             _mockWebSocket.SetupToReceive(JsonSerializer.Serialize(companyResponse));
-            
+
             _mockWebSocket.SetupToReceive(JsonSerializer.Serialize(userResponse));
 
             // Act
             await _client.CheckFlagAsync(request, "new-event-name");
 
-            
+
             // Assert
             Assert.That(_mockWebSocket.SentMessages.Count, Is.EqualTo(2));
-            
-            // Verify the WebSocket messages sent were for company and user lookups
-            var firstMessage = Encoding.UTF8.GetString(_mockWebSocket.SentMessages[0]);
-            var secondMessage = Encoding.UTF8.GetString(_mockWebSocket.SentMessages[1]);
-            
-            var firstRequest = JsonSerializer.Deserialize<DataStreamBaseRequest>(firstMessage);
-            var secondRequest = JsonSerializer.Deserialize<DataStreamBaseRequest>(secondMessage);
-            
-            Assert.That(firstRequest?.Data.EntityType, Is.EqualTo(EntityType.Company));
-            Assert.That(secondRequest?.Data.EntityType, Is.EqualTo(EntityType.User));
+
+            // 2. Parse the sent messages
+            var sentRequests = _mockWebSocket.SentMessages
+                .Select(msg => JsonSerializer.Deserialize<DataStreamBaseRequest>(Encoding.UTF8.GetString(msg)))
+                .Where(req => req != null)
+                .ToList();
+
+            // 3. Check that we have one message for company and one for user (order-independent)
+            bool hasCompanyRequest = sentRequests.Any(req => req?.Data.EntityType == EntityType.Company);
+            bool hasUserRequest = sentRequests.Any(req => req?.Data.EntityType == EntityType.User);
+
+            Assert.That(hasCompanyRequest, Is.True, "A request for company data should have been sent");
+            Assert.That(hasUserRequest, Is.True, "A request for user data should have been sent");
+
+            // 4. Additional verification: check the keys in the sent messages match what we expect
+            var companyRequest = sentRequests.FirstOrDefault(req => req?.Data.EntityType == EntityType.Company);
+            var userRequest = sentRequests.FirstOrDefault(req => req?.Data.EntityType == EntityType.User);
+
+            Assert.That(companyRequest?.Data.Keys?["id"], Is.EqualTo("company-123"),
+                "Company request should include the correct ID");
+            Assert.That(userRequest?.Data.Keys?["id"], Is.EqualTo("user-456"),
+                "User request should include the correct ID");
         }
         
         [Test]
