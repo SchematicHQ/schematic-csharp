@@ -31,7 +31,9 @@ namespace SchematicHQ.Client.Datastream
                 _logger,
                 apiKey,
                 _connectionMonitor,
-                options.CacheTTL
+                options.CacheTTL,
+                null, // default websocket client
+                options
                 );
         }
 

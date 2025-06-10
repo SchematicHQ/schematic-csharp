@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using SchematicHQ.Client.Datastream;
+using SchematicHQ.Client.Cache;
 
 #nullable enable
 
@@ -71,19 +72,90 @@ public partial class Schematic
         );
         _eventBuffer.Start();
 
-        _flagCheckCacheProviders = _options.CacheProviders ?? new List<ICacheProvider<bool?>>
+        // Initialize cache providers based on configuration
+        if (_options.CacheProviders.Count > 0)
         {
-            new LocalCache<bool?>()
-        };
+            // Use explicitly provided cache providers
+            _flagCheckCacheProviders = _options.CacheProviders;
+        }
+        else if (_options.CacheConfiguration != null)
+        {
+            // Create cache providers based on configuration
+            _flagCheckCacheProviders = new List<ICacheProvider<bool?>>();
+            
+            switch (_options.CacheConfiguration.ProviderType)
+            {
+                case CacheProviderType.Redis:
+                    if (_options.CacheConfiguration.RedisConnectionStrings == null || 
+                        !_options.CacheConfiguration.RedisConnectionStrings.Any())
+                    {
+                        _logger.Warn("Redis connection string not provided, falling back to local cache");
+                        _flagCheckCacheProviders.Add(new LocalCache<bool?>());
+                    }
+                    else
+                    {
+                        RedisCache<bool?> redisCache = 
+                             new RedisCache<bool?>(
+                                _options.CacheConfiguration.RedisConnectionStrings,
+                                _options.CacheConfiguration.RedisKeyPrefix,
+                                _options.CacheConfiguration.CacheTtl,
+                                _options.CacheConfiguration.RedisDatabase
+                            );
+                        _flagCheckCacheProviders.Add(redisCache);
+                    }
+                    break;
+                    
+                case CacheProviderType.Local:
+                default:
+                    _flagCheckCacheProviders.Add(new LocalCache<bool?>(
+                        _options.CacheConfiguration.LocalCacheCapacity,
+                        _options.CacheConfiguration.CacheTtl
+                    ));
+                    break;
+            }
+        }
+        else
+        {
+            // Default to local cache
+            _flagCheckCacheProviders = new List<ICacheProvider<bool?>>
+            {
+                new LocalCache<bool?>()
+            };
+        }
 
         // Initialize datastream if enabled
         if (!_offline && _options.UseDatastream)
         {
+                // Create DatastreamOptions with cache settings from _options.CacheConfiguration
+    var datastreamOptions = _options.DatastreamOptions ?? new DatastreamOptions();
+            
+    // Apply cache settings from the main configuration
+    if (_options.CacheConfiguration != null)
+    {
+        // Set cache provider type based on main configuration
+        datastreamOptions.CacheProviderType = _options.CacheConfiguration.ProviderType == CacheProviderType.Redis
+            ? DatastreamCacheProviderType.Redis
+            : DatastreamCacheProviderType.Local;
+                
+        // Pass through the Redis settings if using Redis
+        if (datastreamOptions.CacheProviderType == DatastreamCacheProviderType.Redis)
+        {
+            datastreamOptions.RedisConnectionStrings = _options.CacheConfiguration.RedisConnectionStrings.ToList<string>();
+            datastreamOptions.RedisKeyPrefix = _options.CacheConfiguration.RedisKeyPrefix;
+            datastreamOptions.RedisDatabase = _options.CacheConfiguration.RedisDatabase;
+        }
+                
+        // Apply local cache settings
+        datastreamOptions.LocalCacheCapacity = _options.CacheConfiguration.LocalCacheCapacity;
+                
+        // Apply cache TTL
+        datastreamOptions.CacheTTL = _options.CacheConfiguration.CacheTtl;
+    }
             _datastreamClient = new DatastreamClientAdapter(
                 _options.BaseUrl, 
                 _logger,
                 apiKey,
-                _options.DatastreamOptions
+                datastreamOptions
             );
             _datastreamClient.Start();
             _datastreamConnected = true;

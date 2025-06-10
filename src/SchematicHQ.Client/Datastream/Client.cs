@@ -7,6 +7,7 @@ using Microsoft.Extensions.Options;
 using RulesEngine;
 using RulesEngine.Models;
 using SchematicHQ.Client;
+using SchematicHQ.Client.Cache;
 
 
 namespace SchematicHQ.Client.Datastream
@@ -58,13 +59,17 @@ namespace SchematicHQ.Client.Datastream
         string apiKey,
         TaskCompletionSource<bool> monitorSource,
         TimeSpan? cacheTtl = null,
-        IWebSocketClient? webSocket = null
+        IWebSocketClient? webSocket = null,
+        DatastreamOptions? options = null
     )
     {
       _logger = logger ?? throw new ArgumentNullException(nameof(logger));
       _apiKey = apiKey ?? throw new ArgumentNullException(nameof(apiKey));
       _monitorSource = monitorSource ?? throw new ArgumentNullException(nameof(monitorSource));
-      _cacheTtl = cacheTtl ?? TimeSpan.FromHours(24);
+      
+      // Use options if provided, otherwise use default values
+      options ??= new DatastreamOptions();
+      _cacheTtl = cacheTtl ?? options.CacheTTL ?? TimeSpan.FromHours(24);
 
       if (string.IsNullOrEmpty(baseUrl))
       {
@@ -74,9 +79,45 @@ namespace SchematicHQ.Client.Datastream
       _baseUrl = GetBaseUrl(baseUrl);
 
       // Initialize cache providers
-      _flagsCache = new LocalCache<Flag>(1000, TimeSpan.MaxValue); // Flags don't expire
-      _companyCache = new LocalCache<Company>(1000, _cacheTtl);
-      _userCache = new LocalCache<User>(1000, _cacheTtl);
+      
+      // Flags always use LocalCache with unlimited TTL regardless of configuration
+      _flagsCache = new LocalCache<Flag>(options.LocalCacheCapacity, TimeSpan.MaxValue); // Flags don't expire
+      
+      // Company and User caches use the configured provider type
+      if (options.CacheProviderType == DatastreamCacheProviderType.Redis && 
+          options.RedisConnectionStrings.Count > 0)
+      {
+        try
+        {
+          _logger.Info("Initializing Redis cache for Datastream company and user data");
+          // We need to use the Cache namespace version, but cast it to the Client namespace interface
+          _companyCache = (ICacheProvider<Company>)new Cache.RedisCache<Company>(
+              options.RedisConnectionStrings,
+              options.RedisKeyPrefix,
+              _cacheTtl,
+              options.RedisDatabase
+          );
+          
+          _userCache = (ICacheProvider<User>)new Cache.RedisCache<User>(
+              options.RedisConnectionStrings,
+              options.RedisKeyPrefix,
+              _cacheTtl,
+              options.RedisDatabase
+          );
+        }
+        catch (Exception ex)
+        {
+          _logger.Error("Failed to initialize Redis cache: {0}. Falling back to local cache.", ex.Message);
+          _companyCache = new LocalCache<Company>(options.LocalCacheCapacity, _cacheTtl);
+          _userCache = new LocalCache<User>(options.LocalCacheCapacity, _cacheTtl);
+        }
+      }
+      else
+      {
+        // Use local cache (default)
+        _companyCache = new LocalCache<Company>(options.LocalCacheCapacity, _cacheTtl);
+        _userCache = new LocalCache<User>(options.LocalCacheCapacity, _cacheTtl);
+      }
 
       _webSocket = webSocket ?? new StandardWebSocketClient();
     }

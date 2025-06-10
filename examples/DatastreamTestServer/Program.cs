@@ -1,5 +1,6 @@
 using Microsoft.Extensions.Options;
 using SchematicHQ.Client;
+using SchematicHQ.Client.Cache;
 using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -22,6 +23,17 @@ var options = new ClientOptions
         CacheTTL = TimeSpan.FromHours(24)
     }
 };
+
+options.WithRedisCache(
+    new List<string> { "localhost:6379" }, // Redis connection string
+    keyPrefix: "schematic-test:", // Optional key prefix
+    cacheTtl: TimeSpan.FromHours(24)// Optional cache TTL
+);
+
+options.WithHttpClient(new HttpClient
+{
+    BaseAddress = new Uri("http://localhost:8080")
+});
 
 Schematic schematic = new Schematic(apiKey, options);
 

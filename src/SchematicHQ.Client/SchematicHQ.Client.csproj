@@ -37,6 +37,7 @@
         <PackageReference Include="System.Text.Json" Version="9.0.5" />
         <PackageReference Include="System.Net.Http" Version="[4.3.4,)" />
         <PackageReference Include="System.Text.RegularExpressions" Version="[4.3.1,)" />
+        <PackageReference Include="StackExchange.Redis" Version="2.7.10" />
         <PackageReference Include="moq" Version="4.20.70" />
         <PackageReference Include="Moq.Contrib.HttpClient" Version="1.4.0" />
     </ItemGroup>

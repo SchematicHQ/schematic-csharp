@@ -31,6 +31,12 @@ namespace SchematicHQ.Client.Test.Datastream
                 Converters = { new JsonStringEnumConverter(JsonNamingPolicy.SnakeCaseLower, false) }
             };
         }
+
+        [TearDown]
+        public void TearDown()
+        {
+            _mockWebSocket?.SentMessages?.Clear();
+        }
         
         [Test]
         public async Task CheckFlagAsync_WhenFlagIsNotInCache_ReturnsFalse()
@@ -160,7 +166,6 @@ namespace SchematicHQ.Client.Test.Datastream
             // Act
             await _client.CheckFlagAsync(request, "new-event-name");
 
-
             // Assert
             Assert.That(_mockWebSocket.SentMessages.Count, Is.EqualTo(2));
 
@@ -243,47 +248,47 @@ namespace SchematicHQ.Client.Test.Datastream
         
         private void SetupFlagsResponse()
         {
-                        // Arrange - First set up flags
-    var mockFlags = new List<Flag>
-    {
-        new Flag
-        {
-            AccountId = "acc_123",
-            EnvironmentId = "env_123",
-            Id = "flag_123",
-            Key = "new-event-name",
-
-            DefaultValue = false,
-            Rules = new List<Rule>
+            // Arrange - First set up flags
+            var mockFlags = new List<Flag>
             {
-                new Rule
+                new Flag
                 {
                     AccountId = "acc_123",
                     EnvironmentId = "env_123",
-                    Id = "rule_123",
-                    Name = "Test Rule",
-                    Conditions = new List<Condition>(),
-                    Value = true
+                    Id = "flag_123",
+                    Key = "new-event-name",
+
+                    DefaultValue = false,
+                    Rules = new List<Rule>
+                    {
+                        new Rule
+                        {
+                            AccountId = "acc_123",
+                            EnvironmentId = "env_123",
+                            Id = "rule_123",
+                            Name = "Test Rule",
+                            Conditions = new List<Condition>(),
+                            Value = true
+                        }
+                    }
+                },
+                new Flag
+                {
+                    AccountId = "acc_123",
+                    EnvironmentId = "env_123",
+                    Id = "flag_456",
+                    Key = "another-feature",
+                    DefaultValue = true,
+                    Rules = new List<Rule>()
                 }
-            }
-        },
-        new Flag
-        {
-            AccountId = "acc_123",
-            EnvironmentId = "env_123",
-            Id = "flag_456",
-            Key = "another-feature",
-            DefaultValue = true,
-            Rules = new List<Rule>()
-        }
-    };
-            
-                var flagsResponse = new DataStreamResponse
-    {
-        MessageType = MessageType.Full,
-        EntityType = EntityType.Flags,
-        Data = JsonDocument.Parse(JsonSerializer.Serialize(mockFlags)).RootElement
-    };
+            };
+                    
+                        var flagsResponse = new DataStreamResponse
+            {
+                MessageType = MessageType.Full,
+                EntityType = EntityType.Flags,
+                Data = JsonDocument.Parse(JsonSerializer.Serialize(mockFlags)).RootElement
+            };
             
             _mockWebSocket.SetupToReceive(JsonSerializer.Serialize(flagsResponse));
         }

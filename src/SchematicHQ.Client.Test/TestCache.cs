@@ -1,5 +1,6 @@
 using NUnit.Framework;
 using System.Data.SqlTypes;
+using SchematicHQ.Client.Cache;
 
 #nullable enable
 
