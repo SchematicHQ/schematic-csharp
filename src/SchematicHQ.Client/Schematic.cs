@@ -190,7 +190,6 @@ public partial class Schematic
             catch (Exception ex)
             {
                 _logger.Error("Error checking flag via datastream: {0}", ex.Message);
-                Console.WriteLine(ex.StackTrace);
                 return GetFlagDefault(flagKey);
             }
         }
