@@ -1,6 +1,7 @@
 using System.Text;
 using System.Text.Json;
 using NUnit.Framework;
+using RulesEngine;
 using RulesEngine.Models;
 using RulesEngine.Utils;
 using SchematicHQ.Client.Datastream;
@@ -31,7 +32,7 @@ namespace SchematicHQ.Client.Test.Datastream
             var companyResponse = new DataStreamResponse
             {
                 MessageType = MessageType.Full,
-                EntityType = EntityType.Company,
+                EntityType = Client.Datastream.EntityType.Company,
                 Data = JsonDocument.Parse(JsonSerializer.Serialize(new Company
                 {
                     AccountId = "acc_123",
@@ -78,7 +79,7 @@ namespace SchematicHQ.Client.Test.Datastream
             var companyResponse = new DataStreamResponse
             {
                 MessageType = MessageType.Full,
-                EntityType = EntityType.Company,
+                EntityType = Client.Datastream.EntityType.Company,
                 Data = null
             };
             
@@ -118,7 +119,7 @@ namespace SchematicHQ.Client.Test.Datastream
             var companyResponse = new DataStreamResponse
             {
                 MessageType = MessageType.Full,
-                EntityType = EntityType.Company,
+                EntityType = Client.Datastream.EntityType.Company,
                 Data = JsonDocument.Parse(JsonSerializer.Serialize(new Company
                 {
                     Id = "comp_123",
@@ -139,7 +140,7 @@ namespace SchematicHQ.Client.Test.Datastream
             };
             
             // Act - Create multiple concurrent requests
-            var tasks = new List<Task<bool>>();
+            var tasks = new List<Task<CheckFlagResult>>();
             for (int i = 0; i < 3; i++)
             {
                 tasks.Add(_client.CheckFlagAsync(request, "test-flag"));

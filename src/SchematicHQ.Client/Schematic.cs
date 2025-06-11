@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using SchematicHQ.Client.Datastream;
 using SchematicHQ.Client.Cache;
+using SchematicHQ.Client.Core;
 
 #nullable enable
 
@@ -185,7 +186,26 @@ public partial class Schematic
         {
             try
             {
-                return await _datastreamClient.CheckFlag(company, user, flagKey);
+                var flagResult = await _datastreamClient.CheckFlag(company, user, flagKey);
+                // Submit flag check event for successful API evaluation
+                SubmitFlagCheckEvent(
+                    flagKey,
+                    flagResult.Value,
+                    company,
+                    user,
+                    new EventBodyFlagCheck
+                    {
+                        FlagKey = flagKey,
+                        Value = flagResult.Value,
+                        FlagId = flagResult.FlagId,
+                        RuleId = flagResult.RuleId,
+                        CompanyId = flagResult.CompanyId,
+                        UserId = flagResult.UserId,
+                        Reason = flagResult.Reason,
+                        Error = flagResult.Error?.Message
+                    });
+                return flagResult.Value;
+
             }
             catch (Exception ex)
             {
@@ -283,6 +303,43 @@ public partial class Schematic
             _logger.Error("Error enqueueing event: {0}", ex.Message);
         }
     }
+
+    /// <summary>
+/// Submit a flag check event to track analytics about flag usage
+/// </summary>
+private void SubmitFlagCheckEvent(
+    string flagKey, 
+    bool value, 
+    Dictionary<string, string>? company, 
+    Dictionary<string, string>? user,
+    EventBodyFlagCheck? body = null,
+    string? error = null)
+{
+    try
+    {
+        var eventBody = new EventBodyFlagCheck
+        {
+            FlagKey = flagKey,
+            Value = value,
+            Reason = body?.Reason ?? "",
+            FlagId = body?.FlagId,
+            RuleId = body?.RuleId,
+            CompanyId = body?.CompanyId,
+            UserId = body?.UserId,
+            Error = error,
+            ReqCompany = company,
+            ReqUser = user
+        };
+
+        _logger.Debug("Submitting flag check event: {0}", flagKey);
+        
+        EnqueueEvent(CreateEventRequestBodyEventType.FlagCheck, eventBody);
+    }
+    catch (Exception ex)
+    {
+        _logger.Error("Error submitting flag check event: {0}", ex.Message);
+    }
+}
 
     public int GetBufferWaitingEventCount()
     {

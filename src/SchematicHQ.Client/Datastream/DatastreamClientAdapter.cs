@@ -56,7 +56,7 @@ namespace SchematicHQ.Client.Datastream
         /// <summary>
         /// Check a feature flag via datastream
         /// </summary>
-        public Task<bool> CheckFlag(Dictionary<string, string>? company, Dictionary<string, string>? user, string flagKey)
+        public Task<CheckFlagResult> CheckFlag(Dictionary<string, string>? company, Dictionary<string, string>? user, string flagKey)
         {
             var request = new CheckFlagRequestBody
             {

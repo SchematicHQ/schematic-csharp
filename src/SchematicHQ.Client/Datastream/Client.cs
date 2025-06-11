@@ -4,6 +4,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using OneOf.Types;
 using RulesEngine;
 using RulesEngine.Models;
 using SchematicHQ.Client;
@@ -528,7 +529,7 @@ namespace SchematicHQ.Client.Datastream
       }
     }
 
-    public async Task<bool> CheckFlagAsync(CheckFlagRequestBody request, string flagKey, CancellationToken cancellationToken = default)
+    public async Task<CheckFlagResult> CheckFlagAsync(CheckFlagRequestBody request, string flagKey, CancellationToken cancellationToken = default)
     {
       try
       {
@@ -547,16 +548,31 @@ namespace SchematicHQ.Client.Datastream
         var flag = GetFlag(flagKey);
         if (flag == null)
         {
-          return false;
+          return new CheckFlagResult
+          {
+            Reason = "Flag not found",
+            FlagKey = flagKey,
+            Error = Errors.ErrorFlagNotFound,
+            Value = false,
+          };
         }
 
         var result = await FlagCheckService.CheckFlag(company, user, flag);
-        return result.Value;
+
+
+
+        return result;
       }
       catch (Exception ex)
       {
         _logger.Error("Error checking flag {0}: {1}", flagKey, ex.Message);
-        return false;
+        return new CheckFlagResult
+          {
+            Reason = "Error",
+            FlagKey = flagKey,
+            Error = ex,
+            Value = false,
+          };
       }
     }
 

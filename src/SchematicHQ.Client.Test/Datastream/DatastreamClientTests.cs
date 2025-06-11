@@ -54,7 +54,7 @@ namespace SchematicHQ.Client.Test.Datastream
             var result = await _client.CheckFlagAsync(request, "non-existent-flag");
             
             // Assert
-            Assert.That(result, Is.False);
+            Assert.That(result.Value, Is.False);
         }
         
         [Test]
@@ -100,7 +100,7 @@ namespace SchematicHQ.Client.Test.Datastream
             var result = await _client.CheckFlagAsync(request, "another-feature");
             
             // Assert
-            Assert.That(result, Is.True);
+            Assert.That(result.Value, Is.True);
             Assert.That(_mockWebSocket.SentMessages.Count, Is.EqualTo(1));
             
             // Verify the WebSocket message sent was for the company lookup
