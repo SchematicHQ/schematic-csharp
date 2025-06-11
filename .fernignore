@@ -2,14 +2,16 @@
 README.md
 
 examples/
+src/SchematicHQ.Client.Test/Datastream/
 src/SchematicHQ.Client.Test/TestCache.cs
 src/SchematicHQ.Client.Test/TestClient.cs
 src/SchematicHQ.Client.Test/TestCompaniesClient.cs
 src/SchematicHQ.Client.Test/TestEventBuffer.cs
 src/SchematicHQ.Client.Test/TestLogger.cs
 src/SchematicHQ.Client.Test/Webhooks/
-src/SchematicHQ.Client/Cache.cs
+src/SchematicHQ.Client/Cache/
 src/SchematicHQ.Client/Core/Public/ClientOptionsCustom.cs
+src/SchematicHQ.Client/Datastream
 src/SchematicHQ.Client/EventBuffer.cs
 src/SchematicHQ.Client/Logger.cs
 src/SchematicHQ.Client/Schematic.cs
