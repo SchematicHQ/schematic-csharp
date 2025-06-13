@@ -36,6 +36,12 @@ public record CountCompaniesRequest
     public bool? WithoutPlan { get; set; }
 
     /// <summary>
+    /// Filter companies that have a subscription
+    /// </summary>
+    [JsonIgnore]
+    public bool? WithSubscription { get; set; }
+
+    /// <summary>
     /// Page limit (default 100)
     /// </summary>
     [JsonIgnore]

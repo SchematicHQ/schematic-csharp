@@ -6,6 +6,12 @@ namespace SchematicHQ.Client;
 
 public record CompanyPlanWithBillingSubView
 {
+    [JsonPropertyName("added_on")]
+    public DateTime? AddedOn { get; set; }
+
+    [JsonPropertyName("billing_product_external_id")]
+    public string? BillingProductExternalId { get; set; }
+
     [JsonPropertyName("billing_product_id")]
     public string? BillingProductId { get; set; }
 
