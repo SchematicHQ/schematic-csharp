@@ -2,25 +2,28 @@ using System.Collections.Concurrent;
 
 #nullable enable
 
-namespace SchematicHQ.Client;
-
-    public interface ICacheProvider<T>
-    {
-        T? Get(string key);
-        void Set(string key, T val, TimeSpan? ttlOverride = null);
-    }
-
+namespace SchematicHQ.Client.Cache
+{
+    /// <summary>
+    /// A thread-safe in-memory cache implementation with LRU eviction policy
+    /// </summary>
+    /// <typeparam name="T">Type of values stored in the cache</typeparam>
     public class LocalCache<T> : ICacheProvider<T>
     {
         public const int DEFAULT_CACHE_CAPACITY = 1000;
         public static readonly TimeSpan DEFAULT_CACHE_TTL = TimeSpan.FromMilliseconds(5000); // 5000 milliseconds
-
+        public static readonly TimeSpan UNLIMITED_TTL = TimeSpan.MaxValue;
         private readonly ConcurrentDictionary<string, CachedItem<T>> _cache;
         private readonly LinkedList<string> _lruList;
         private readonly object _lock = new object();
         private readonly int _maxItems;
         private readonly TimeSpan _ttl;
 
+        /// <summary>
+        /// Creates a new LocalCache instance
+        /// </summary>
+        /// <param name="maxItems">Maximum number of items to cache</param>
+        /// <param name="ttl">Default time-to-live for cached items</param>
         public LocalCache(int maxItems = DEFAULT_CACHE_CAPACITY, TimeSpan? ttl = null)
         {
             _cache = new ConcurrentDictionary<string, CachedItem<T>>();
@@ -29,6 +32,7 @@ namespace SchematicHQ.Client;
             _ttl = ttl ?? DEFAULT_CACHE_TTL;
         }
 
+        /// <inheritdoc/>
         public T? Get(string key)
         {
             if (_maxItems == 0)
@@ -37,7 +41,7 @@ namespace SchematicHQ.Client;
             if (!_cache.TryGetValue(key, out var item))
                 return default;
 
-            if (DateTime.UtcNow > item.Expiration)
+            if (item.Expiration != DateTime.MaxValue && DateTime.UtcNow > item.Expiration)
             {
                 Remove(key);
                 return default;
@@ -52,13 +56,17 @@ namespace SchematicHQ.Client;
             return item.Value;
         }
 
+        /// <inheritdoc/>
         public void Set(string key, T val, TimeSpan? ttlOverride = null)
         {
             if (_maxItems == 0)
                 return;
 
             var ttl = ttlOverride ?? _ttl;
-            var expiration = DateTime.UtcNow.Add(ttl);
+            // Determine expiration time - use MaxValue for unlimited TTL
+            DateTime expiration = ttl == UNLIMITED_TTL
+                ? DateTime.MaxValue
+                : DateTime.UtcNow.Add(ttl);
 
             lock (_lock)
             {
@@ -88,6 +96,44 @@ namespace SchematicHQ.Client;
             }
         }
 
+        /// <inheritdoc/>
+        public bool Delete(string key)
+        {
+            if (_maxItems == 0)
+                return false;
+
+            Remove(key);
+            return true;
+        }
+
+        /// <inheritdoc/>
+        public void DeleteMissing(IEnumerable<string> keys)
+        {
+            if (_maxItems == 0)
+                return;
+
+            var keysSet = new HashSet<string>(keys);
+            var keysToRemove = new List<string>();
+
+            // Collect keys to remove (those not in the provided list)
+            lock (_lock)
+            {
+                foreach (var cacheKey in _cache.Keys)
+                {
+                    if (!keysSet.Contains(cacheKey))
+                    {
+                        keysToRemove.Add(cacheKey);
+                    }
+                }
+            }
+
+            // Remove keys outside of the lock to avoid deadlocks
+            foreach (var keyToRemove in keysToRemove)
+            {
+                Remove(keyToRemove);
+            }
+        }
+
         private void Remove(string key)
         {
             if (_cache.TryRemove(key, out var removedItem))
@@ -98,18 +144,22 @@ namespace SchematicHQ.Client;
                 }
             }
         }
-    }
 
-    public class CachedItem<T>
-    {
-        public T Value { get; set; }
-        public DateTime Expiration { get; set; }
-        public LinkedListNode<string> Node { get; }
-
-        public CachedItem(T value, DateTime expiration, LinkedListNode<string> node)
+        /// <summary>
+        /// Represents a cached item with its value, expiration time, and position in the LRU list
+        /// </summary>
+        private class CachedItem<TValue>
         {
-            Value = value;
-            Expiration = expiration;
-            Node = node;
+            public TValue Value { get; set; }
+            public DateTime Expiration { get; set; }
+            public LinkedListNode<string> Node { get; }
+
+            public CachedItem(TValue value, DateTime expiration, LinkedListNode<string> node)
+            {
+                Value = value;
+                Expiration = expiration;
+                Node = node;
+            }
         }
     }
+}

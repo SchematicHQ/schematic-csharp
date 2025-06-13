@@ -2,7 +2,11 @@ using OneOf;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
+using SchematicHQ.Client.Datastream;
+using SchematicHQ.Client.Cache;
+using SchematicHQ.Client.Core;
 
 #nullable enable
 
@@ -15,6 +19,8 @@ public partial class Schematic
     private readonly ISchematicLogger _logger;
     private readonly List<ICacheProvider<bool?>> _flagCheckCacheProviders;
     private readonly bool _offline;
+    private readonly DatastreamClientAdapter? _datastreamClient;
+    private bool _datastreamConnected;
     public readonly SchematicApi API;
 
     public AccesstokensClient Accesstokens { get; init; }
@@ -67,10 +73,94 @@ public partial class Schematic
         );
         _eventBuffer.Start();
 
-        _flagCheckCacheProviders = _options.CacheProviders ?? new List<ICacheProvider<bool?>>
+        // Initialize cache providers based on configuration
+        if (_options.CacheProviders.Count > 0)
         {
-            new LocalCache<bool?>()
-        };
+            // Use explicitly provided cache providers
+            _flagCheckCacheProviders = _options.CacheProviders;
+        }
+        else if (_options.CacheConfiguration != null)
+        {
+            // Create cache providers based on configuration
+            _flagCheckCacheProviders = new List<ICacheProvider<bool?>>();
+            
+            switch (_options.CacheConfiguration.ProviderType)
+            {
+                case CacheProviderType.Redis:
+                    if (_options.CacheConfiguration.RedisConnectionStrings == null || 
+                        !_options.CacheConfiguration.RedisConnectionStrings.Any())
+                    {
+                        _logger.Warn("Redis connection string not provided, falling back to local cache");
+                        _flagCheckCacheProviders.Add(new LocalCache<bool?>());
+                    }
+                    else
+                    {
+                        RedisCache<bool?> redisCache = 
+                             new RedisCache<bool?>(
+                                _options.CacheConfiguration.RedisConnectionStrings,
+                                _options.CacheConfiguration.RedisKeyPrefix,
+                                _options.CacheConfiguration.CacheTtl,
+                                _options.CacheConfiguration.RedisDatabase
+                            );
+                        _flagCheckCacheProviders.Add(redisCache);
+                    }
+                    break;
+                    
+                case CacheProviderType.Local:
+                default:
+                    _flagCheckCacheProviders.Add(new LocalCache<bool?>(
+                        _options.CacheConfiguration.LocalCacheCapacity,
+                        _options.CacheConfiguration.CacheTtl
+                    ));
+                    break;
+            }
+        }
+        else
+        {
+            // Default to local cache
+            _flagCheckCacheProviders = new List<ICacheProvider<bool?>>
+            {
+                new LocalCache<bool?>()
+            };
+        }
+
+        // Initialize datastream if enabled
+        if (!_offline && _options.UseDatastream)
+        {
+            // Create DatastreamOptions with cache settings from _options.CacheConfiguration
+            var datastreamOptions = _options.DatastreamOptions ?? new DatastreamOptions();
+   
+            // Apply cache settings from the main configuration
+            if (_options.CacheConfiguration != null)
+            {
+                // Set cache provider type based on main configuration
+                datastreamOptions.CacheProviderType = _options.CacheConfiguration.ProviderType == CacheProviderType.Redis
+                    ? DatastreamCacheProviderType.Redis
+                    : DatastreamCacheProviderType.Local;
+
+                // Pass through the Redis settings if using Redis
+                if (datastreamOptions.CacheProviderType == DatastreamCacheProviderType.Redis)
+                {
+                    datastreamOptions.RedisConnectionStrings = _options.CacheConfiguration.RedisConnectionStrings.ToList<string>();
+                    datastreamOptions.RedisKeyPrefix = _options.CacheConfiguration.RedisKeyPrefix;
+                    datastreamOptions.RedisDatabase = _options.CacheConfiguration.RedisDatabase;
+                }
+
+                // Apply local cache settings
+                datastreamOptions.LocalCacheCapacity = _options.CacheConfiguration.LocalCacheCapacity;
+
+                // Apply cache TTL
+                datastreamOptions.CacheTTL = _options.CacheConfiguration.CacheTtl;
+            }
+            _datastreamClient = new DatastreamClientAdapter(
+                _options.BaseUrl, 
+                _logger,
+                apiKey,
+                datastreamOptions
+            );
+            _datastreamClient.Start();
+            _datastreamConnected = true;
+        }
     }
 
     public async Task Shutdown()
@@ -79,14 +169,52 @@ public partial class Schematic
         {
             await _eventBuffer.Stop();
         }
+        
+        if (_datastreamClient != null)
+        {
+            _datastreamClient.Close();
+        }
     }
 
     public async Task<bool> CheckFlag(string flagKey, Dictionary<string, string>? company = null, Dictionary<string, string>? user = null)
     {
-
         if (_offline)
             return GetFlagDefault(flagKey);
 
+        // Use datastream if enabled and connected
+        if (_datastreamConnected && _datastreamClient != null)
+        {
+            try
+            {
+                var flagResult = await _datastreamClient.CheckFlag(company, user, flagKey);
+                // Submit flag check event for successful API evaluation
+                SubmitFlagCheckEvent(
+                    flagKey,
+                    flagResult.Value,
+                    company,
+                    user,
+                    new EventBodyFlagCheck
+                    {
+                        FlagKey = flagKey,
+                        Value = flagResult.Value,
+                        FlagId = flagResult.FlagId,
+                        RuleId = flagResult.RuleId,
+                        CompanyId = flagResult.CompanyId,
+                        UserId = flagResult.UserId,
+                        Reason = flagResult.Reason,
+                        Error = flagResult.Error?.Message
+                    });
+                return flagResult.Value;
+
+            }
+            catch (Exception ex)
+            {
+                _logger.Error("Error checking flag via datastream: {0}", ex.Message);
+                return GetFlagDefault(flagKey);
+            }
+        }
+
+        // Fall back to API request
         try
         {
             string cacheKey = flagKey;
@@ -175,6 +303,43 @@ public partial class Schematic
             _logger.Error("Error enqueueing event: {0}", ex.Message);
         }
     }
+
+    /// <summary>
+/// Submit a flag check event to track analytics about flag usage
+/// </summary>
+private void SubmitFlagCheckEvent(
+    string flagKey, 
+    bool value, 
+    Dictionary<string, string>? company, 
+    Dictionary<string, string>? user,
+    EventBodyFlagCheck? body = null,
+    string? error = null)
+{
+    try
+    {
+        var eventBody = new EventBodyFlagCheck
+        {
+            FlagKey = flagKey,
+            Value = value,
+            Reason = body?.Reason ?? "",
+            FlagId = body?.FlagId,
+            RuleId = body?.RuleId,
+            CompanyId = body?.CompanyId,
+            UserId = body?.UserId,
+            Error = error,
+            ReqCompany = company,
+            ReqUser = user
+        };
+
+        _logger.Debug("Submitting flag check event: {0}", flagKey);
+        
+        EnqueueEvent(CreateEventRequestBodyEventType.FlagCheck, eventBody);
+    }
+    catch (Exception ex)
+    {
+        _logger.Error("Error submitting flag check event: {0}", ex.Message);
+    }
+}
 
     public int GetBufferWaitingEventCount()
     {

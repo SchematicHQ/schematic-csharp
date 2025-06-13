@@ -6,6 +6,7 @@ using System.Text.Json;
 using System.Text;
 using OneOf;
 using SchematicHQ.Client.Core;
+using SchematicHQ.Client.Cache;
 
 namespace SchematicHQ.Client.Test
 {
