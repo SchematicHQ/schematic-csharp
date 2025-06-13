@@ -51,10 +51,5 @@
             <_Parameter1>SchematicHQ.Client.Test</_Parameter1>
         </AssemblyAttribute>
     </ItemGroup>
-
-    <ItemGroup>
-      <ProjectReference Include="..\SchematicHQ.RulesEngine\src\RulesEngine\RulesEngine.csproj" />
-    </ItemGroup>
-
     <Import Project="SchematicHQ.Client.Custom.props" Condition="Exists('SchematicHQ.Client.Custom.props')" />
 </Project>

@@ -17,5 +17,6 @@ src/SchematicHQ.Client/Datastream
 src/SchematicHQ.Client/EventBuffer.cs
 src/SchematicHQ.Client/Logger.cs
 src/SchematicHQ.Client/Schematic.cs
+src/SchematicHQ.Client/SchematicHQ.Client.Custom.props
 src/SchematicHQ.Client/Webhooks/WebhookUtils/
 src/SchematicHQ.RulesEngine
