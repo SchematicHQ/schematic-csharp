@@ -78,4 +78,16 @@ public enum UpdateWebhookRequestBodyRequestTypesItem
 
     [EnumMember(Value = "subscription.trial.ended")]
     SubscriptionTrialEnded,
+
+    [EnumMember(Value = "entitlement.limit.warning")]
+    EntitlementLimitWarning,
+
+    [EnumMember(Value = "entitlement.limit.reached")]
+    EntitlementLimitReached,
+
+    [EnumMember(Value = "entitlement.soft_limit.warning")]
+    EntitlementSoftLimitWarning,
+
+    [EnumMember(Value = "entitlement.soft_limit.reached")]
+    EntitlementSoftLimitReached,
 }

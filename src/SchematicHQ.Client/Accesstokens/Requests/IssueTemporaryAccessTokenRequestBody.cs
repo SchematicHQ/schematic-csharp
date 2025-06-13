@@ -9,7 +9,7 @@ public record IssueTemporaryAccessTokenRequestBody
     public Dictionary<string, string> Lookup { get; set; } = new Dictionary<string, string>();
 
     [JsonPropertyName("resource_type")]
-    public required string ResourceType { get; set; }
+    public string ResourceType { get; set; } = "company";
 
     /// <inheritdoc />
     public override string ToString()

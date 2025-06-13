@@ -134,6 +134,8 @@ public partial class PlangroupsClient
                         throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
                     case 403:
                         throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 404:
+                        throw new NotFoundError(JsonUtils.Deserialize<ApiError>(responseBody));
                     case 500:
                         throw new InternalServerError(
                             JsonUtils.Deserialize<ApiError>(responseBody)

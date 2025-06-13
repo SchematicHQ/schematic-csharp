@@ -6,8 +6,20 @@ namespace SchematicHQ.Client;
 
 public record UsageBasedEntitlementRequestBody
 {
+    [JsonPropertyName("currency")]
+    public string? Currency { get; set; }
+
     [JsonPropertyName("monthly_metered_price_id")]
     public string? MonthlyMeteredPriceId { get; set; }
+
+    [JsonPropertyName("monthly_unit_price")]
+    public int? MonthlyUnitPrice { get; set; }
+
+    [JsonPropertyName("monthly_unit_price_decimal")]
+    public string? MonthlyUnitPriceDecimal { get; set; }
+
+    [JsonPropertyName("overage_billing_product_id")]
+    public string? OverageBillingProductId { get; set; }
 
     [JsonPropertyName("price_behavior")]
     public string? PriceBehavior { get; set; }
@@ -17,6 +29,12 @@ public record UsageBasedEntitlementRequestBody
 
     [JsonPropertyName("yearly_metered_price_id")]
     public string? YearlyMeteredPriceId { get; set; }
+
+    [JsonPropertyName("yearly_unit_price")]
+    public int? YearlyUnitPrice { get; set; }
+
+    [JsonPropertyName("yearly_unit_price_decimal")]
+    public string? YearlyUnitPriceDecimal { get; set; }
 
     /// <summary>
     /// Additional properties received from the response, if any.

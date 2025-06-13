@@ -5,6 +5,9 @@ namespace SchematicHQ.Client;
 
 public record UpdateWebhookRequestBody
 {
+    [JsonPropertyName("entitlement_trigger_configs")]
+    public IEnumerable<EntitlementTriggerConfig>? EntitlementTriggerConfigs { get; set; }
+
     [JsonPropertyName("name")]
     public string? Name { get; set; }
 

@@ -12,7 +12,8 @@ public record ListEventsRequest
     public string? EventSubtype { get; set; }
 
     [JsonIgnore]
-    public IEnumerable<string> EventTypes { get; set; } = new List<string>();
+    public IEnumerable<ListEventsRequestEventTypesItem> EventTypes { get; set; } =
+        new List<ListEventsRequestEventTypesItem>();
 
     [JsonIgnore]
     public string? FlagId { get; set; }

@@ -24,6 +24,12 @@ public record ListBillingProductsRequest
     public bool? WithoutLinkedToPlan { get; set; }
 
     /// <summary>
+    /// Filter products that are one time charges
+    /// </summary>
+    [JsonIgnore]
+    public bool? WithOneTimeCharges { get; set; }
+
+    /// <summary>
     /// Filter products that have zero price for free subscription type
     /// </summary>
     [JsonIgnore]
@@ -34,6 +40,12 @@ public record ListBillingProductsRequest
     /// </summary>
     [JsonIgnore]
     public bool? WithPricesOnly { get; set; }
+
+    /// <summary>
+    /// Filter products that are active
+    /// </summary>
+    [JsonIgnore]
+    public bool? IsActive { get; set; }
 
     /// <summary>
     /// Page limit (default 100)

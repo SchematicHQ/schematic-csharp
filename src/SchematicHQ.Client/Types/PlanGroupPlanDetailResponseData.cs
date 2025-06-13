@@ -12,8 +12,14 @@ public record PlanGroupPlanDetailResponseData
     [JsonPropertyName("billing_product")]
     public BillingProductDetailResponseData? BillingProduct { get; set; }
 
+    [JsonPropertyName("charge_type")]
+    public required string ChargeType { get; set; }
+
     [JsonPropertyName("company_count")]
     public required int CompanyCount { get; set; }
+
+    [JsonPropertyName("controlled_by")]
+    public required string ControlledBy { get; set; }
 
     [JsonPropertyName("created_at")]
     public required DateTime CreatedAt { get; set; }
@@ -55,6 +61,9 @@ public record PlanGroupPlanDetailResponseData
 
     [JsonPropertyName("name")]
     public required string Name { get; set; }
+
+    [JsonPropertyName("one_time_price")]
+    public BillingPriceResponseData? OneTimePrice { get; set; }
 
     [JsonPropertyName("plan_type")]
     public required string PlanType { get; set; }

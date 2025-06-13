@@ -13,7 +13,7 @@ public record UpsertTraitRequestBody
     public int? Incr { get; set; }
 
     /// <summary>
-    /// Key/value pairs too identify a company or user
+    /// Key/value pairs to identify a company or user
     /// </summary>
     [JsonPropertyName("keys")]
     public Dictionary<string, string> Keys { get; set; } = new Dictionary<string, string>();

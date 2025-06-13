@@ -41,6 +41,10 @@ public partial class CompaniesClient
         {
             _query["without_plan"] = JsonUtils.Serialize(request.WithoutPlan.Value);
         }
+        if (request.WithSubscription != null)
+        {
+            _query["with_subscription"] = JsonUtils.Serialize(request.WithSubscription.Value);
+        }
         if (request.Limit != null)
         {
             _query["limit"] = request.Limit.Value.ToString();
@@ -87,6 +91,8 @@ public partial class CompaniesClient
                         throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
                     case 403:
                         throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 404:
+                        throw new NotFoundError(JsonUtils.Deserialize<ApiError>(responseBody));
                     case 500:
                         throw new InternalServerError(
                             JsonUtils.Deserialize<ApiError>(responseBody)
@@ -155,6 +161,8 @@ public partial class CompaniesClient
                         throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
                     case 403:
                         throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 404:
+                        throw new NotFoundError(JsonUtils.Deserialize<ApiError>(responseBody));
                     case 500:
                         throw new InternalServerError(
                             JsonUtils.Deserialize<ApiError>(responseBody)
@@ -289,6 +297,8 @@ public partial class CompaniesClient
                         throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
                     case 403:
                         throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 404:
+                        throw new NotFoundError(JsonUtils.Deserialize<ApiError>(responseBody));
                     case 500:
                         throw new InternalServerError(
                             JsonUtils.Deserialize<ApiError>(responseBody)
@@ -333,6 +343,10 @@ public partial class CompaniesClient
         if (request.WithoutPlan != null)
         {
             _query["without_plan"] = JsonUtils.Serialize(request.WithoutPlan.Value);
+        }
+        if (request.WithSubscription != null)
+        {
+            _query["with_subscription"] = JsonUtils.Serialize(request.WithSubscription.Value);
         }
         if (request.Limit != null)
         {
@@ -380,6 +394,8 @@ public partial class CompaniesClient
                         throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
                     case 403:
                         throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 404:
+                        throw new NotFoundError(JsonUtils.Deserialize<ApiError>(responseBody));
                     case 500:
                         throw new InternalServerError(
                             JsonUtils.Deserialize<ApiError>(responseBody)
@@ -448,6 +464,8 @@ public partial class CompaniesClient
                         throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
                     case 403:
                         throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 404:
+                        throw new NotFoundError(JsonUtils.Deserialize<ApiError>(responseBody));
                     case 500:
                         throw new InternalServerError(
                             JsonUtils.Deserialize<ApiError>(responseBody)
@@ -516,6 +534,8 @@ public partial class CompaniesClient
                         throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
                     case 403:
                         throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 404:
+                        throw new NotFoundError(JsonUtils.Deserialize<ApiError>(responseBody));
                     case 500:
                         throw new InternalServerError(
                             JsonUtils.Deserialize<ApiError>(responseBody)
@@ -536,16 +556,7 @@ public partial class CompaniesClient
 
     /// <example><code>
     /// await client.Companies.LookupCompanyAsync(
-    ///     new LookupCompanyRequest
-    ///     {
-    ///         Keys = new Dictionary&lt;string, object&gt;()
-    ///         {
-    ///             {
-    ///                 "keys",
-    ///                 new Dictionary&lt;object, object?&gt;() { { "key", "value" } }
-    ///             },
-    ///         },
-    ///     }
+    ///     new LookupCompanyRequest { Keys = new Dictionary&lt;string, string&gt;() { { "keys", "keys" } } }
     /// );
     /// </code></example>
     public async Task<LookupCompanyResponse> LookupCompanyAsync(
@@ -672,6 +683,8 @@ public partial class CompaniesClient
                         throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
                     case 403:
                         throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 404:
+                        throw new NotFoundError(JsonUtils.Deserialize<ApiError>(responseBody));
                     case 500:
                         throw new InternalServerError(
                             JsonUtils.Deserialize<ApiError>(responseBody)
@@ -754,6 +767,8 @@ public partial class CompaniesClient
                         throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
                     case 403:
                         throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 404:
+                        throw new NotFoundError(JsonUtils.Deserialize<ApiError>(responseBody));
                     case 500:
                         throw new InternalServerError(
                             JsonUtils.Deserialize<ApiError>(responseBody)
@@ -822,6 +837,8 @@ public partial class CompaniesClient
                         throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
                     case 403:
                         throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 404:
+                        throw new NotFoundError(JsonUtils.Deserialize<ApiError>(responseBody));
                     case 500:
                         throw new InternalServerError(
                             JsonUtils.Deserialize<ApiError>(responseBody)
@@ -889,6 +906,8 @@ public partial class CompaniesClient
                         throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
                     case 403:
                         throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 404:
+                        throw new NotFoundError(JsonUtils.Deserialize<ApiError>(responseBody));
                     case 500:
                         throw new InternalServerError(
                             JsonUtils.Deserialize<ApiError>(responseBody)
@@ -968,6 +987,8 @@ public partial class CompaniesClient
                         throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
                     case 403:
                         throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 404:
+                        throw new NotFoundError(JsonUtils.Deserialize<ApiError>(responseBody));
                     case 500:
                         throw new InternalServerError(
                             JsonUtils.Deserialize<ApiError>(responseBody)
@@ -1040,6 +1061,8 @@ public partial class CompaniesClient
                         throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
                     case 403:
                         throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 404:
+                        throw new NotFoundError(JsonUtils.Deserialize<ApiError>(responseBody));
                     case 500:
                         throw new InternalServerError(
                             JsonUtils.Deserialize<ApiError>(responseBody)
@@ -1123,6 +1146,8 @@ public partial class CompaniesClient
                         throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
                     case 403:
                         throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 404:
+                        throw new NotFoundError(JsonUtils.Deserialize<ApiError>(responseBody));
                     case 500:
                         throw new InternalServerError(
                             JsonUtils.Deserialize<ApiError>(responseBody)
@@ -1206,6 +1231,8 @@ public partial class CompaniesClient
                         throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
                     case 403:
                         throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 404:
+                        throw new NotFoundError(JsonUtils.Deserialize<ApiError>(responseBody));
                     case 500:
                         throw new InternalServerError(
                             JsonUtils.Deserialize<ApiError>(responseBody)
@@ -1293,6 +1320,8 @@ public partial class CompaniesClient
                         throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
                     case 403:
                         throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 404:
+                        throw new NotFoundError(JsonUtils.Deserialize<ApiError>(responseBody));
                     case 500:
                         throw new InternalServerError(
                             JsonUtils.Deserialize<ApiError>(responseBody)
@@ -1368,6 +1397,8 @@ public partial class CompaniesClient
                         throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
                     case 403:
                         throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 404:
+                        throw new NotFoundError(JsonUtils.Deserialize<ApiError>(responseBody));
                     case 500:
                         throw new InternalServerError(
                             JsonUtils.Deserialize<ApiError>(responseBody)
@@ -1600,6 +1631,8 @@ public partial class CompaniesClient
                         throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
                     case 403:
                         throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 404:
+                        throw new NotFoundError(JsonUtils.Deserialize<ApiError>(responseBody));
                     case 500:
                         throw new InternalServerError(
                             JsonUtils.Deserialize<ApiError>(responseBody)
@@ -1681,6 +1714,8 @@ public partial class CompaniesClient
                         throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
                     case 403:
                         throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 404:
+                        throw new NotFoundError(JsonUtils.Deserialize<ApiError>(responseBody));
                     case 500:
                         throw new InternalServerError(
                             JsonUtils.Deserialize<ApiError>(responseBody)
@@ -1753,6 +1788,8 @@ public partial class CompaniesClient
                         throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
                     case 403:
                         throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 404:
+                        throw new NotFoundError(JsonUtils.Deserialize<ApiError>(responseBody));
                     case 500:
                         throw new InternalServerError(
                             JsonUtils.Deserialize<ApiError>(responseBody)
@@ -1840,6 +1877,8 @@ public partial class CompaniesClient
                         throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
                     case 403:
                         throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 404:
+                        throw new NotFoundError(JsonUtils.Deserialize<ApiError>(responseBody));
                     case 500:
                         throw new InternalServerError(
                             JsonUtils.Deserialize<ApiError>(responseBody)
@@ -1860,11 +1899,7 @@ public partial class CompaniesClient
 
     /// <example><code>
     /// await client.Companies.UpsertUserAsync(
-    ///     new UpsertUserRequestBody
-    ///     {
-    ///         Company = new Dictionary&lt;string, string&gt;() { { "key", "value" } },
-    ///         Keys = new Dictionary&lt;string, string&gt;() { { "key", "value" } },
-    ///     }
+    ///     new UpsertUserRequestBody { Keys = new Dictionary&lt;string, string&gt;() { { "key", "value" } } }
     /// );
     /// </code></example>
     public async Task<UpsertUserResponse> UpsertUserAsync(
@@ -1912,6 +1947,8 @@ public partial class CompaniesClient
                         throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
                     case 403:
                         throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 404:
+                        throw new NotFoundError(JsonUtils.Deserialize<ApiError>(responseBody));
                     case 500:
                         throw new InternalServerError(
                             JsonUtils.Deserialize<ApiError>(responseBody)
@@ -2040,6 +2077,8 @@ public partial class CompaniesClient
                         throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
                     case 403:
                         throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 404:
+                        throw new NotFoundError(JsonUtils.Deserialize<ApiError>(responseBody));
                     case 500:
                         throw new InternalServerError(
                             JsonUtils.Deserialize<ApiError>(responseBody)
@@ -2127,6 +2166,8 @@ public partial class CompaniesClient
                         throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
                     case 403:
                         throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 404:
+                        throw new NotFoundError(JsonUtils.Deserialize<ApiError>(responseBody));
                     case 500:
                         throw new InternalServerError(
                             JsonUtils.Deserialize<ApiError>(responseBody)
@@ -2147,11 +2188,7 @@ public partial class CompaniesClient
 
     /// <example><code>
     /// await client.Companies.CreateUserAsync(
-    ///     new UpsertUserRequestBody
-    ///     {
-    ///         Company = new Dictionary&lt;string, string&gt;() { { "key", "value" } },
-    ///         Keys = new Dictionary&lt;string, string&gt;() { { "key", "value" } },
-    ///     }
+    ///     new UpsertUserRequestBody { Keys = new Dictionary&lt;string, string&gt;() { { "key", "value" } } }
     /// );
     /// </code></example>
     public async Task<CreateUserResponse> CreateUserAsync(
@@ -2199,6 +2236,8 @@ public partial class CompaniesClient
                         throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
                     case 403:
                         throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 404:
+                        throw new NotFoundError(JsonUtils.Deserialize<ApiError>(responseBody));
                     case 500:
                         throw new InternalServerError(
                             JsonUtils.Deserialize<ApiError>(responseBody)
@@ -2267,6 +2306,8 @@ public partial class CompaniesClient
                         throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
                     case 403:
                         throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 404:
+                        throw new NotFoundError(JsonUtils.Deserialize<ApiError>(responseBody));
                     case 500:
                         throw new InternalServerError(
                             JsonUtils.Deserialize<ApiError>(responseBody)
@@ -2287,16 +2328,7 @@ public partial class CompaniesClient
 
     /// <example><code>
     /// await client.Companies.LookupUserAsync(
-    ///     new LookupUserRequest
-    ///     {
-    ///         Keys = new Dictionary&lt;string, object&gt;()
-    ///         {
-    ///             {
-    ///                 "keys",
-    ///                 new Dictionary&lt;object, object?&gt;() { { "key", "value" } }
-    ///             },
-    ///         },
-    ///     }
+    ///     new LookupUserRequest { Keys = new Dictionary&lt;string, string&gt;() { { "keys", "keys" } } }
     /// );
     /// </code></example>
     public async Task<LookupUserResponse> LookupUserAsync(

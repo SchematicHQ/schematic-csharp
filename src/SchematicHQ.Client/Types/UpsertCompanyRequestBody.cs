@@ -12,6 +12,9 @@ public record UpsertCompanyRequestBody
     [JsonPropertyName("id")]
     public string? Id { get; set; }
 
+    /// <summary>
+    /// See [Key Management](https://docs.schematichq.com/developer_resources/key_management) for more information
+    /// </summary>
     [JsonPropertyName("keys")]
     public Dictionary<string, string> Keys { get; set; } = new Dictionary<string, string>();
 

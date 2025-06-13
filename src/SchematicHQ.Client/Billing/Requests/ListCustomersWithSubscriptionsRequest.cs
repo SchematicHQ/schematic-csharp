@@ -3,8 +3,11 @@ using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
 
-public record ListCustomersRequest
+public record ListCustomersWithSubscriptionsRequest
 {
+    [JsonIgnore]
+    public IEnumerable<string> CompanyIds { get; set; } = new List<string>();
+
     [JsonIgnore]
     public string? Name { get; set; }
 

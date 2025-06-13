@@ -15,6 +15,12 @@ public record BillingProductPlanResponseData
     [JsonPropertyName("billing_product_id")]
     public required string BillingProductId { get; set; }
 
+    [JsonPropertyName("charge_type")]
+    public required string ChargeType { get; set; }
+
+    [JsonPropertyName("controlled_by")]
+    public required string ControlledBy { get; set; }
+
     [JsonPropertyName("environment_id")]
     public required string EnvironmentId { get; set; }
 
@@ -23,6 +29,9 @@ public record BillingProductPlanResponseData
 
     [JsonPropertyName("monthly_price_id")]
     public string? MonthlyPriceId { get; set; }
+
+    [JsonPropertyName("one_time_price_id")]
+    public string? OneTimePriceId { get; set; }
 
     [JsonPropertyName("plan_id")]
     public required string PlanId { get; set; }

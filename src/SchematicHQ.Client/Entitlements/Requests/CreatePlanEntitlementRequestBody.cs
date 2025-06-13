@@ -5,6 +5,9 @@ namespace SchematicHQ.Client;
 
 public record CreatePlanEntitlementRequestBody
 {
+    [JsonPropertyName("currency")]
+    public string? Currency { get; set; }
+
     [JsonPropertyName("feature_id")]
     public required string FeatureId { get; set; }
 
@@ -16,6 +19,15 @@ public record CreatePlanEntitlementRequestBody
 
     [JsonPropertyName("monthly_metered_price_id")]
     public string? MonthlyMeteredPriceId { get; set; }
+
+    [JsonPropertyName("monthly_unit_price")]
+    public int? MonthlyUnitPrice { get; set; }
+
+    [JsonPropertyName("monthly_unit_price_decimal")]
+    public string? MonthlyUnitPriceDecimal { get; set; }
+
+    [JsonPropertyName("overage_billing_product_id")]
+    public string? OverageBillingProductId { get; set; }
 
     [JsonPropertyName("plan_id")]
     public required string PlanId { get; set; }
@@ -40,6 +52,12 @@ public record CreatePlanEntitlementRequestBody
 
     [JsonPropertyName("yearly_metered_price_id")]
     public string? YearlyMeteredPriceId { get; set; }
+
+    [JsonPropertyName("yearly_unit_price")]
+    public int? YearlyUnitPrice { get; set; }
+
+    [JsonPropertyName("yearly_unit_price_decimal")]
+    public string? YearlyUnitPriceDecimal { get; set; }
 
     /// <inheritdoc />
     public override string ToString()

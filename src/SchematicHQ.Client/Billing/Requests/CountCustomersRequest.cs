@@ -6,6 +6,9 @@ namespace SchematicHQ.Client;
 public record CountCustomersRequest
 {
     [JsonIgnore]
+    public IEnumerable<string> CompanyIds { get; set; } = new List<string>();
+
+    [JsonIgnore]
     public string? Name { get; set; }
 
     [JsonIgnore]

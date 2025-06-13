@@ -40,6 +40,12 @@ public record ListCompaniesParams
     public string? Q { get; set; }
 
     /// <summary>
+    /// Filter companies that have a subscription
+    /// </summary>
+    [JsonPropertyName("with_subscription")]
+    public bool? WithSubscription { get; set; }
+
+    /// <summary>
     /// Filter out companies that already have a company override for the specified feature ID
     /// </summary>
     [JsonPropertyName("without_feature_override_for")]

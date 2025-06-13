@@ -7,7 +7,7 @@ namespace SchematicHQ.Client;
 public record EventSummaryResponseData
 {
     [JsonPropertyName("company_count")]
-    public required int CompanyCount { get; set; }
+    public int? CompanyCount { get; set; }
 
     [JsonPropertyName("environment_id")]
     public required string EnvironmentId { get; set; }
@@ -22,7 +22,7 @@ public record EventSummaryResponseData
     public DateTime? LastSeenAt { get; set; }
 
     [JsonPropertyName("user_count")]
-    public required int UserCount { get; set; }
+    public int? UserCount { get; set; }
 
     /// <summary>
     /// Additional properties received from the response, if any.

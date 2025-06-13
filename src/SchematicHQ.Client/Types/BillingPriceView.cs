@@ -6,6 +6,9 @@ namespace SchematicHQ.Client;
 
 public record BillingPriceView
 {
+    [JsonPropertyName("billing_scheme")]
+    public required string BillingScheme { get; set; }
+
     [JsonPropertyName("created_at")]
     public required DateTime CreatedAt { get; set; }
 
@@ -21,17 +24,33 @@ public record BillingPriceView
     [JsonPropertyName("is_active")]
     public required bool IsActive { get; set; }
 
+    [JsonPropertyName("meter_event_name")]
+    public string? MeterEventName { get; set; }
+
+    [JsonPropertyName("meter_event_payload_key")]
+    public string? MeterEventPayloadKey { get; set; }
+
     [JsonPropertyName("meter_id")]
     public string? MeterId { get; set; }
 
+    [JsonPropertyName("package_size")]
+    public required int PackageSize { get; set; }
+
     [JsonPropertyName("price")]
     public required int Price { get; set; }
+
+    [JsonPropertyName("price_decimal")]
+    public string? PriceDecimal { get; set; }
 
     [JsonPropertyName("price_external_id")]
     public required string PriceExternalId { get; set; }
 
     [JsonPropertyName("price_id")]
     public required string PriceId { get; set; }
+
+    [JsonPropertyName("price_tier")]
+    public IEnumerable<BillingProductPriceTierResponseData> PriceTier { get; set; } =
+        new List<BillingProductPriceTierResponseData>();
 
     [JsonPropertyName("product_external_id")]
     public required string ProductExternalId { get; set; }

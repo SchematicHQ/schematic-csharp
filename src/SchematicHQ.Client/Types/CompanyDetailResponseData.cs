@@ -20,6 +20,9 @@ public record CompanyDetailResponseData
     [JsonPropertyName("created_at")]
     public required DateTime CreatedAt { get; set; }
 
+    [JsonPropertyName("default_payment_method")]
+    public PaymentMethodResponseData? DefaultPaymentMethod { get; set; }
+
     [JsonPropertyName("entity_traits")]
     public IEnumerable<EntityTraitDetailResponseData> EntityTraits { get; set; } =
         new List<EntityTraitDetailResponseData>();

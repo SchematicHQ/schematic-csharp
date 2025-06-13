@@ -54,6 +54,9 @@ public record PlanEntitlementResponseData
     [JsonPropertyName("updated_at")]
     public required DateTime UpdatedAt { get; set; }
 
+    [JsonPropertyName("usage_based_product")]
+    public BillingProductResponseData? UsageBasedProduct { get; set; }
+
     [JsonPropertyName("value_bool")]
     public bool? ValueBool { get; set; }
 

@@ -90,6 +90,8 @@ public partial class FeaturesClient
                         throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
                     case 403:
                         throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 404:
+                        throw new NotFoundError(JsonUtils.Deserialize<ApiError>(responseBody));
                     case 500:
                         throw new InternalServerError(
                             JsonUtils.Deserialize<ApiError>(responseBody)
@@ -184,6 +186,8 @@ public partial class FeaturesClient
                         throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
                     case 403:
                         throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 404:
+                        throw new NotFoundError(JsonUtils.Deserialize<ApiError>(responseBody));
                     case 500:
                         throw new InternalServerError(
                             JsonUtils.Deserialize<ApiError>(responseBody)
@@ -278,6 +282,8 @@ public partial class FeaturesClient
                         throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
                     case 403:
                         throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 404:
+                        throw new NotFoundError(JsonUtils.Deserialize<ApiError>(responseBody));
                     case 500:
                         throw new InternalServerError(
                             JsonUtils.Deserialize<ApiError>(responseBody)
@@ -372,6 +378,8 @@ public partial class FeaturesClient
                         throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
                     case 403:
                         throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 404:
+                        throw new NotFoundError(JsonUtils.Deserialize<ApiError>(responseBody));
                     case 500:
                         throw new InternalServerError(
                             JsonUtils.Deserialize<ApiError>(responseBody)
@@ -459,6 +467,8 @@ public partial class FeaturesClient
                         throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
                     case 403:
                         throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 404:
+                        throw new NotFoundError(JsonUtils.Deserialize<ApiError>(responseBody));
                     case 500:
                         throw new InternalServerError(
                             JsonUtils.Deserialize<ApiError>(responseBody)
@@ -532,6 +542,8 @@ public partial class FeaturesClient
                         throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
                     case 403:
                         throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 404:
+                        throw new NotFoundError(JsonUtils.Deserialize<ApiError>(responseBody));
                     case 500:
                         throw new InternalServerError(
                             JsonUtils.Deserialize<ApiError>(responseBody)
@@ -738,6 +750,8 @@ public partial class FeaturesClient
                         throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
                     case 403:
                         throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 404:
+                        throw new NotFoundError(JsonUtils.Deserialize<ApiError>(responseBody));
                     case 500:
                         throw new InternalServerError(
                             JsonUtils.Deserialize<ApiError>(responseBody)
@@ -825,6 +839,8 @@ public partial class FeaturesClient
                         throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
                     case 403:
                         throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 404:
+                        throw new NotFoundError(JsonUtils.Deserialize<ApiError>(responseBody));
                     case 500:
                         throw new InternalServerError(
                             JsonUtils.Deserialize<ApiError>(responseBody)
@@ -908,6 +924,8 @@ public partial class FeaturesClient
                         throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
                     case 403:
                         throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 404:
+                        throw new NotFoundError(JsonUtils.Deserialize<ApiError>(responseBody));
                     case 500:
                         throw new InternalServerError(
                             JsonUtils.Deserialize<ApiError>(responseBody)
@@ -932,7 +950,7 @@ public partial class FeaturesClient
     ///     {
     ///         DefaultValue = true,
     ///         Description = "description",
-    ///         FlagType = "flag_type",
+    ///         FlagType = "boolean",
     ///         Key = "key",
     ///         Name = "name",
     ///     }
@@ -983,6 +1001,8 @@ public partial class FeaturesClient
                         throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
                     case 403:
                         throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 404:
+                        throw new NotFoundError(JsonUtils.Deserialize<ApiError>(responseBody));
                     case 500:
                         throw new InternalServerError(
                             JsonUtils.Deserialize<ApiError>(responseBody)
@@ -1072,7 +1092,7 @@ public partial class FeaturesClient
     ///     {
     ///         DefaultValue = true,
     ///         Description = "description",
-    ///         FlagType = "flag_type",
+    ///         FlagType = "boolean",
     ///         Key = "key",
     ///         Name = "name",
     ///     }
@@ -1190,6 +1210,8 @@ public partial class FeaturesClient
                         throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
                     case 403:
                         throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 404:
+                        throw new NotFoundError(JsonUtils.Deserialize<ApiError>(responseBody));
                     case 500:
                         throw new InternalServerError(
                             JsonUtils.Deserialize<ApiError>(responseBody)
@@ -1371,6 +1393,8 @@ public partial class FeaturesClient
                         throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
                     case 403:
                         throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 404:
+                        throw new NotFoundError(JsonUtils.Deserialize<ApiError>(responseBody));
                     case 500:
                         throw new InternalServerError(
                             JsonUtils.Deserialize<ApiError>(responseBody)
@@ -1437,6 +1461,8 @@ public partial class FeaturesClient
                         throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
                     case 403:
                         throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 404:
+                        throw new NotFoundError(JsonUtils.Deserialize<ApiError>(responseBody));
                     case 500:
                         throw new InternalServerError(
                             JsonUtils.Deserialize<ApiError>(responseBody)
@@ -1520,6 +1546,8 @@ public partial class FeaturesClient
                         throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
                     case 403:
                         throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 404:
+                        throw new NotFoundError(JsonUtils.Deserialize<ApiError>(responseBody));
                     case 500:
                         throw new InternalServerError(
                             JsonUtils.Deserialize<ApiError>(responseBody)

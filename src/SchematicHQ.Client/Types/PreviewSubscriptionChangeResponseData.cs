@@ -15,6 +15,9 @@ public record PreviewSubscriptionChangeResponseData
     [JsonPropertyName("due_now")]
     public required int DueNow { get; set; }
 
+    [JsonPropertyName("finance")]
+    public PreviewSubscriptionFinanceResponseData? Finance { get; set; }
+
     [JsonPropertyName("new_charges")]
     public required int NewCharges { get; set; }
 
@@ -32,6 +35,10 @@ public record PreviewSubscriptionChangeResponseData
 
     [JsonPropertyName("trial_end")]
     public DateTime? TrialEnd { get; set; }
+
+    [JsonPropertyName("usage_violations")]
+    public IEnumerable<FeatureUsageResponseData> UsageViolations { get; set; } =
+        new List<FeatureUsageResponseData>();
 
     /// <summary>
     /// Additional properties received from the response, if any.

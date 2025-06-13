@@ -43,7 +43,7 @@ public record BillingCouponResponseData
     public required string Name { get; set; }
 
     [JsonPropertyName("percent_off")]
-    public int? PercentOff { get; set; }
+    public double? PercentOff { get; set; }
 
     [JsonPropertyName("times_redeemed")]
     public required int TimesRedeemed { get; set; }

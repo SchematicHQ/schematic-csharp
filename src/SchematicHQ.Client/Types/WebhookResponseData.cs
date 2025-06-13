@@ -9,6 +9,9 @@ public record WebhookResponseData
     [JsonPropertyName("created_at")]
     public required DateTime CreatedAt { get; set; }
 
+    [JsonPropertyName("entitlement_trigger_configs")]
+    public IEnumerable<EntitlementTriggerConfig>? EntitlementTriggerConfigs { get; set; }
+
     [JsonPropertyName("id")]
     public required string Id { get; set; }
 

@@ -9,7 +9,7 @@ public record LookupCompanyRequest
     /// Key/value pairs
     /// </summary>
     [JsonIgnore]
-    public object Keys { get; set; } = new Dictionary<string, object?>();
+    public Dictionary<string, string> Keys { get; set; } = new Dictionary<string, string>();
 
     /// <inheritdoc />
     public override string ToString()

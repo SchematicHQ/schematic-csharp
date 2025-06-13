@@ -6,6 +6,9 @@ namespace SchematicHQ.Client;
 
 public record BillingProductForSubscriptionResponseData
 {
+    [JsonPropertyName("billing_scheme")]
+    public required string BillingScheme { get; set; }
+
     [JsonPropertyName("created_at")]
     public required DateTime CreatedAt { get; set; }
 
@@ -30,14 +33,24 @@ public record BillingProductForSubscriptionResponseData
     [JsonPropertyName("name")]
     public required string Name { get; set; }
 
+    [JsonPropertyName("package_size")]
+    public required int PackageSize { get; set; }
+
     [JsonPropertyName("price")]
     public required int Price { get; set; }
+
+    [JsonPropertyName("price_decimal")]
+    public string? PriceDecimal { get; set; }
 
     [JsonPropertyName("price_external_id")]
     public required string PriceExternalId { get; set; }
 
     [JsonPropertyName("price_id")]
     public required string PriceId { get; set; }
+
+    [JsonPropertyName("price_tier")]
+    public IEnumerable<BillingProductPriceTierResponseData> PriceTier { get; set; } =
+        new List<BillingProductPriceTierResponseData>();
 
     [JsonPropertyName("quantity")]
     public required double Quantity { get; set; }
