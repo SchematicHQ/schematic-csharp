@@ -21,11 +21,17 @@ public record BillingProductResponseData
     [JsonPropertyName("external_id")]
     public required string ExternalId { get; set; }
 
+    [JsonPropertyName("is_active")]
+    public required bool IsActive { get; set; }
+
     [JsonPropertyName("name")]
     public required string Name { get; set; }
 
     [JsonPropertyName("price")]
     public required double Price { get; set; }
+
+    [JsonPropertyName("price_decimal")]
+    public string? PriceDecimal { get; set; }
 
     [JsonPropertyName("product_id")]
     public required string ProductId { get; set; }

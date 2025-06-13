@@ -4,31 +4,16 @@ using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
 
-/// <summary>
-/// Input parameters
-/// </summary>
-public record ListCustomersParams
+public record CreatePlanTraitResponse
 {
-    [JsonPropertyName("failed_to_import")]
-    public bool? FailedToImport { get; set; }
+    [JsonPropertyName("data")]
+    public required PlanTraitResponseData Data { get; set; }
 
     /// <summary>
-    /// Page limit (default 100)
+    /// Input parameters
     /// </summary>
-    [JsonPropertyName("limit")]
-    public int? Limit { get; set; }
-
-    [JsonPropertyName("name")]
-    public string? Name { get; set; }
-
-    /// <summary>
-    /// Page offset (default 0)
-    /// </summary>
-    [JsonPropertyName("offset")]
-    public int? Offset { get; set; }
-
-    [JsonPropertyName("q")]
-    public string? Q { get; set; }
+    [JsonPropertyName("params")]
+    public object Params { get; set; } = new Dictionary<string, object?>();
 
     /// <summary>
     /// Additional properties received from the response, if any.

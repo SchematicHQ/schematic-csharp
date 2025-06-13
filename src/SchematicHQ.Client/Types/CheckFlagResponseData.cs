@@ -34,6 +34,12 @@ public record CheckFlagResponseData
     public int? FeatureUsage { get; set; }
 
     /// <summary>
+    /// If an event-based numeric feature entitlement rule was matched, the event used to track its usage
+    /// </summary>
+    [JsonPropertyName("feature_usage_event")]
+    public string? FeatureUsageEvent { get; set; }
+
+    /// <summary>
     /// For event-based feature entitlement rules, the period over which usage is tracked (current_month, current_day, current_week, all_time)
     /// </summary>
     [JsonPropertyName("feature_usage_period")]
