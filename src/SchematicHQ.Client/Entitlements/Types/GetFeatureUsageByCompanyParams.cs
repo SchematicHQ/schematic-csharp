@@ -10,7 +10,7 @@ namespace SchematicHQ.Client;
 public record GetFeatureUsageByCompanyParams
 {
     [JsonPropertyName("keys")]
-    public object? Keys { get; set; }
+    public Dictionary<string, string>? Keys { get; set; }
 
     /// <summary>
     /// Additional properties received from the response, if any.
