@@ -78,6 +78,8 @@ public partial class BillingClient
                         throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
                     case 403:
                         throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 404:
+                        throw new NotFoundError(JsonUtils.Deserialize<ApiError>(responseBody));
                     case 500:
                         throw new InternalServerError(
                             JsonUtils.Deserialize<ApiError>(responseBody)
@@ -156,6 +158,8 @@ public partial class BillingClient
                         throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
                     case 403:
                         throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 404:
+                        throw new NotFoundError(JsonUtils.Deserialize<ApiError>(responseBody));
                     case 500:
                         throw new InternalServerError(
                             JsonUtils.Deserialize<ApiError>(responseBody)
@@ -231,6 +235,8 @@ public partial class BillingClient
                         throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
                     case 403:
                         throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 404:
+                        throw new NotFoundError(JsonUtils.Deserialize<ApiError>(responseBody));
                     case 500:
                         throw new InternalServerError(
                             JsonUtils.Deserialize<ApiError>(responseBody)
@@ -250,15 +256,18 @@ public partial class BillingClient
     }
 
     /// <example><code>
-    /// await client.Billing.ListCustomersAsync(new ListCustomersRequest());
+    /// await client.Billing.ListCustomersWithSubscriptionsAsync(
+    ///     new ListCustomersWithSubscriptionsRequest()
+    /// );
     /// </code></example>
-    public async Task<ListCustomersResponse> ListCustomersAsync(
-        ListCustomersRequest request,
+    public async Task<ListCustomersWithSubscriptionsResponse> ListCustomersWithSubscriptionsAsync(
+        ListCustomersWithSubscriptionsRequest request,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
     {
         var _query = new Dictionary<string, object>();
+        _query["company_ids"] = request.CompanyIds;
         if (request.Name != null)
         {
             _query["name"] = request.Name;
@@ -297,7 +306,7 @@ public partial class BillingClient
             var responseBody = await response.Raw.Content.ReadAsStringAsync();
             try
             {
-                return JsonUtils.Deserialize<ListCustomersResponse>(responseBody)!;
+                return JsonUtils.Deserialize<ListCustomersWithSubscriptionsResponse>(responseBody)!;
             }
             catch (JsonException e)
             {
@@ -317,6 +326,8 @@ public partial class BillingClient
                         throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
                     case 403:
                         throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 404:
+                        throw new NotFoundError(JsonUtils.Deserialize<ApiError>(responseBody));
                     case 500:
                         throw new InternalServerError(
                             JsonUtils.Deserialize<ApiError>(responseBody)
@@ -345,6 +356,7 @@ public partial class BillingClient
     )
     {
         var _query = new Dictionary<string, object>();
+        _query["company_ids"] = request.CompanyIds;
         if (request.Name != null)
         {
             _query["name"] = request.Name;
@@ -403,6 +415,8 @@ public partial class BillingClient
                         throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
                     case 403:
                         throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 404:
+                        throw new NotFoundError(JsonUtils.Deserialize<ApiError>(responseBody));
                     case 500:
                         throw new InternalServerError(
                             JsonUtils.Deserialize<ApiError>(responseBody)
@@ -488,6 +502,8 @@ public partial class BillingClient
                         throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
                     case 403:
                         throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 404:
+                        throw new NotFoundError(JsonUtils.Deserialize<ApiError>(responseBody));
                     case 500:
                         throw new InternalServerError(
                             JsonUtils.Deserialize<ApiError>(responseBody)
@@ -565,6 +581,8 @@ public partial class BillingClient
                         throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
                     case 403:
                         throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 404:
+                        throw new NotFoundError(JsonUtils.Deserialize<ApiError>(responseBody));
                     case 500:
                         throw new InternalServerError(
                             JsonUtils.Deserialize<ApiError>(responseBody)
@@ -643,6 +661,8 @@ public partial class BillingClient
                         throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
                     case 403:
                         throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 404:
+                        throw new NotFoundError(JsonUtils.Deserialize<ApiError>(responseBody));
                     case 500:
                         throw new InternalServerError(
                             JsonUtils.Deserialize<ApiError>(responseBody)
@@ -717,6 +737,8 @@ public partial class BillingClient
                         throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
                     case 403:
                         throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 404:
+                        throw new NotFoundError(JsonUtils.Deserialize<ApiError>(responseBody));
                     case 500:
                         throw new InternalServerError(
                             JsonUtils.Deserialize<ApiError>(responseBody)
@@ -798,6 +820,8 @@ public partial class BillingClient
                         throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
                     case 403:
                         throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 404:
+                        throw new NotFoundError(JsonUtils.Deserialize<ApiError>(responseBody));
                     case 500:
                         throw new InternalServerError(
                             JsonUtils.Deserialize<ApiError>(responseBody)
@@ -871,6 +895,8 @@ public partial class BillingClient
                         throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
                     case 403:
                         throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 404:
+                        throw new NotFoundError(JsonUtils.Deserialize<ApiError>(responseBody));
                     case 500:
                         throw new InternalServerError(
                             JsonUtils.Deserialize<ApiError>(responseBody)
@@ -962,6 +988,8 @@ public partial class BillingClient
                         throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
                     case 403:
                         throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 404:
+                        throw new NotFoundError(JsonUtils.Deserialize<ApiError>(responseBody));
                     case 500:
                         throw new InternalServerError(
                             JsonUtils.Deserialize<ApiError>(responseBody)
@@ -984,6 +1012,7 @@ public partial class BillingClient
     /// await client.Billing.UpsertBillingPriceAsync(
     ///     new CreateBillingPriceRequestBody
     ///     {
+    ///         BillingScheme = CreateBillingPriceRequestBodyBillingScheme.PerUnit,
     ///         Currency = "currency",
     ///         ExternalAccountId = "external_account_id",
     ///         Interval = "interval",
@@ -1044,6 +1073,8 @@ public partial class BillingClient
                         throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
                     case 403:
                         throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 404:
+                        throw new NotFoundError(JsonUtils.Deserialize<ApiError>(responseBody));
                     case 500:
                         throw new InternalServerError(
                             JsonUtils.Deserialize<ApiError>(responseBody)
@@ -1111,6 +1142,8 @@ public partial class BillingClient
                         throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
                     case 403:
                         throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 404:
+                        throw new NotFoundError(JsonUtils.Deserialize<ApiError>(responseBody));
                     case 500:
                         throw new InternalServerError(
                             JsonUtils.Deserialize<ApiError>(responseBody)
@@ -1158,6 +1191,10 @@ public partial class BillingClient
                 request.WithoutLinkedToPlan.Value
             );
         }
+        if (request.WithOneTimeCharges != null)
+        {
+            _query["with_one_time_charges"] = JsonUtils.Serialize(request.WithOneTimeCharges.Value);
+        }
         if (request.WithZeroPrice != null)
         {
             _query["with_zero_price"] = JsonUtils.Serialize(request.WithZeroPrice.Value);
@@ -1165,6 +1202,10 @@ public partial class BillingClient
         if (request.WithPricesOnly != null)
         {
             _query["with_prices_only"] = JsonUtils.Serialize(request.WithPricesOnly.Value);
+        }
+        if (request.IsActive != null)
+        {
+            _query["is_active"] = JsonUtils.Serialize(request.IsActive.Value);
         }
         if (request.Limit != null)
         {
@@ -1212,6 +1253,8 @@ public partial class BillingClient
                         throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
                     case 403:
                         throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 404:
+                        throw new NotFoundError(JsonUtils.Deserialize<ApiError>(responseBody));
                     case 500:
                         throw new InternalServerError(
                             JsonUtils.Deserialize<ApiError>(responseBody)
@@ -1279,6 +1322,8 @@ public partial class BillingClient
                         throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
                     case 403:
                         throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 404:
+                        throw new NotFoundError(JsonUtils.Deserialize<ApiError>(responseBody));
                     case 500:
                         throw new InternalServerError(
                             JsonUtils.Deserialize<ApiError>(responseBody)
@@ -1301,12 +1346,9 @@ public partial class BillingClient
     /// await client.Billing.UpsertBillingProductAsync(
     ///     new CreateBillingProductRequestBody
     ///     {
-    ///         Active = true,
-    ///         Currency = "currency",
     ///         ExternalId = "external_id",
     ///         Name = "name",
     ///         Price = 1.1,
-    ///         Quantity = 1,
     ///     }
     /// );
     /// </code></example>
@@ -1355,6 +1397,8 @@ public partial class BillingClient
                         throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
                     case 403:
                         throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 404:
+                        throw new NotFoundError(JsonUtils.Deserialize<ApiError>(responseBody));
                     case 500:
                         throw new InternalServerError(
                             JsonUtils.Deserialize<ApiError>(responseBody)
@@ -1402,6 +1446,10 @@ public partial class BillingClient
                 request.WithoutLinkedToPlan.Value
             );
         }
+        if (request.WithOneTimeCharges != null)
+        {
+            _query["with_one_time_charges"] = JsonUtils.Serialize(request.WithOneTimeCharges.Value);
+        }
         if (request.WithZeroPrice != null)
         {
             _query["with_zero_price"] = JsonUtils.Serialize(request.WithZeroPrice.Value);
@@ -1409,6 +1457,10 @@ public partial class BillingClient
         if (request.WithPricesOnly != null)
         {
             _query["with_prices_only"] = JsonUtils.Serialize(request.WithPricesOnly.Value);
+        }
+        if (request.IsActive != null)
+        {
+            _query["is_active"] = JsonUtils.Serialize(request.IsActive.Value);
         }
         if (request.Limit != null)
         {
@@ -1456,6 +1508,8 @@ public partial class BillingClient
                         throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
                     case 403:
                         throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 404:
+                        throw new NotFoundError(JsonUtils.Deserialize<ApiError>(responseBody));
                     case 500:
                         throw new InternalServerError(
                             JsonUtils.Deserialize<ApiError>(responseBody)
@@ -1503,6 +1557,10 @@ public partial class BillingClient
                 request.WithoutLinkedToPlan.Value
             );
         }
+        if (request.WithOneTimeCharges != null)
+        {
+            _query["with_one_time_charges"] = JsonUtils.Serialize(request.WithOneTimeCharges.Value);
+        }
         if (request.WithZeroPrice != null)
         {
             _query["with_zero_price"] = JsonUtils.Serialize(request.WithZeroPrice.Value);
@@ -1510,6 +1568,10 @@ public partial class BillingClient
         if (request.WithPricesOnly != null)
         {
             _query["with_prices_only"] = JsonUtils.Serialize(request.WithPricesOnly.Value);
+        }
+        if (request.IsActive != null)
+        {
+            _query["is_active"] = JsonUtils.Serialize(request.IsActive.Value);
         }
         if (request.Limit != null)
         {
@@ -1557,6 +1619,8 @@ public partial class BillingClient
                         throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
                     case 403:
                         throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 404:
+                        throw new NotFoundError(JsonUtils.Deserialize<ApiError>(responseBody));
                     case 500:
                         throw new InternalServerError(
                             JsonUtils.Deserialize<ApiError>(responseBody)
@@ -1656,6 +1720,8 @@ public partial class BillingClient
                         throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
                     case 403:
                         throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 404:
+                        throw new NotFoundError(JsonUtils.Deserialize<ApiError>(responseBody));
                     case 500:
                         throw new InternalServerError(
                             JsonUtils.Deserialize<ApiError>(responseBody)

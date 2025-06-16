@@ -15,7 +15,7 @@ public partial class SchematicApi
                 { "X-Fern-Language", "C#" },
                 { "X-Fern-SDK-Name", "SchematicHQ.Client" },
                 { "X-Fern-SDK-Version", Version.Current },
-                { "User-Agent", "SchematicHQ.Client/1.0.9" },
+                { "User-Agent", "SchematicHQ.Client/1.1.0" },
             }
         );
         clientOptions ??= new ClientOptions();
@@ -36,6 +36,7 @@ public partial class SchematicApi
         Plans = new PlansClient(_client);
         Components = new ComponentsClient(_client);
         Crm = new CrmClient(_client);
+        Dataexports = new DataexportsClient(_client);
         Events = new EventsClient(_client);
         Plangroups = new PlangroupsClient(_client);
         Accesstokens = new AccesstokensClient(_client);
@@ -59,6 +60,8 @@ public partial class SchematicApi
     public ComponentsClient Components { get; init; }
 
     public CrmClient Crm { get; init; }
+
+    public DataexportsClient Dataexports { get; init; }
 
     public EventsClient Events { get; init; }
 

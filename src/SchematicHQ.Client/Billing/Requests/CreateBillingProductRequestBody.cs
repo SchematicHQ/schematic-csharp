@@ -5,23 +5,17 @@ namespace SchematicHQ.Client;
 
 public record CreateBillingProductRequestBody
 {
-    [JsonPropertyName("active")]
-    public required bool Active { get; set; }
-
-    [JsonPropertyName("currency")]
-    public required string Currency { get; set; }
-
     [JsonPropertyName("external_id")]
     public required string ExternalId { get; set; }
+
+    [JsonPropertyName("is_active")]
+    public bool? IsActive { get; set; }
 
     [JsonPropertyName("name")]
     public required string Name { get; set; }
 
     [JsonPropertyName("price")]
     public required double Price { get; set; }
-
-    [JsonPropertyName("quantity")]
-    public required int Quantity { get; set; }
 
     /// <inheritdoc />
     public override string ToString()

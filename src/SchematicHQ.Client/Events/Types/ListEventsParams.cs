@@ -16,7 +16,7 @@ public record ListEventsParams
     public string? EventSubtype { get; set; }
 
     [JsonPropertyName("event_types")]
-    public IEnumerable<string>? EventTypes { get; set; }
+    public IEnumerable<ListEventsResponseParamsEventTypesItem>? EventTypes { get; set; }
 
     [JsonPropertyName("flag_id")]
     public string? FlagId { get; set; }

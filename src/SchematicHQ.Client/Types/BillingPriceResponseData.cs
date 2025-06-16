@@ -21,6 +21,12 @@ public record BillingPriceResponseData
     [JsonPropertyName("price")]
     public required int Price { get; set; }
 
+    [JsonPropertyName("price_decimal")]
+    public string? PriceDecimal { get; set; }
+
+    [JsonPropertyName("scheme")]
+    public required string Scheme { get; set; }
+
     /// <summary>
     /// Additional properties received from the response, if any.
     /// </summary>

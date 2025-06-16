@@ -21,7 +21,7 @@ public record CreateFeatureRequestBody
     public string? Icon { get; set; }
 
     [JsonPropertyName("lifecycle_phase")]
-    public string? LifecyclePhase { get; set; }
+    public CreateFeatureRequestBodyLifecyclePhase? LifecyclePhase { get; set; }
 
     [JsonPropertyName("maintainer_id")]
     public string? MaintainerId { get; set; }

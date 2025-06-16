@@ -13,6 +13,12 @@ public record CountBillingProductsParams
     public IEnumerable<string>? Ids { get; set; }
 
     /// <summary>
+    /// Filter products that are active
+    /// </summary>
+    [JsonPropertyName("is_active")]
+    public bool? IsActive { get; set; }
+
+    /// <summary>
     /// Page limit (default 100)
     /// </summary>
     [JsonPropertyName("limit")]
@@ -32,6 +38,12 @@ public record CountBillingProductsParams
 
     [JsonPropertyName("q")]
     public string? Q { get; set; }
+
+    /// <summary>
+    /// Filter products that are one time charges
+    /// </summary>
+    [JsonPropertyName("with_one_time_charges")]
+    public bool? WithOneTimeCharges { get; set; }
 
     /// <summary>
     /// Filter products that have prices

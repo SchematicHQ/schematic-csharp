@@ -16,7 +16,7 @@ public record CreateFlagRequestBody
     public string? FeatureId { get; set; }
 
     [JsonPropertyName("flag_type")]
-    public required string FlagType { get; set; }
+    public string FlagType { get; set; } = "boolean";
 
     [JsonPropertyName("key")]
     public required string Key { get; set; }
