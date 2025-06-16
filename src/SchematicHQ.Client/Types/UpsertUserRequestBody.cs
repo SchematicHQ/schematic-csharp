@@ -7,16 +7,28 @@ namespace SchematicHQ.Client;
 public record UpsertUserRequestBody
 {
     /// <summary>
-    /// Optionally specify company using key/value pairs
+    /// Optionally specify companies using array of key/value pairs
     /// </summary>
-    [JsonPropertyName("company")]
-    public Dictionary<string, string> Company { get; set; } = new Dictionary<string, string>();
+    [JsonPropertyName("companies")]
+    public IEnumerable<Dictionary<string, string>>? Companies { get; set; }
 
     /// <summary>
-    /// Optionally specify company using Schematic company ID
+    /// Add user to this company. Takes priority over companies. For exhaustive list of companies, use companies
+    /// </summary>
+    [JsonPropertyName("company")]
+    public Dictionary<string, string>? Company { get; set; }
+
+    /// <summary>
+    /// Add user to this company. Takes priority over company_ids. For exhaustive list of companies, use company_ids
     /// </summary>
     [JsonPropertyName("company_id")]
     public string? CompanyId { get; set; }
+
+    /// <summary>
+    /// Optionally specify companies using Schematic company ID
+    /// </summary>
+    [JsonPropertyName("company_ids")]
+    public IEnumerable<string>? CompanyIds { get; set; }
 
     /// <summary>
     /// If you know the Schematic ID, you can use that here instead of keys
@@ -24,6 +36,9 @@ public record UpsertUserRequestBody
     [JsonPropertyName("id")]
     public string? Id { get; set; }
 
+    /// <summary>
+    /// See [Key Management](https://docs.schematichq.com/developer_resources/key_management) for more information
+    /// </summary>
     [JsonPropertyName("keys")]
     public Dictionary<string, string> Keys { get; set; } = new Dictionary<string, string>();
 

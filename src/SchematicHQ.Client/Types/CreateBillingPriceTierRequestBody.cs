@@ -9,6 +9,9 @@ public record CreateBillingPriceTierRequestBody
     [JsonPropertyName("flat_amount")]
     public int? FlatAmount { get; set; }
 
+    [JsonPropertyName("per_unit_decimal")]
+    public string? PerUnitDecimal { get; set; }
+
     [JsonPropertyName("per_unit_price")]
     public int? PerUnitPrice { get; set; }
 

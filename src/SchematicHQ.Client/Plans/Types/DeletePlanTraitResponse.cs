@@ -4,20 +4,16 @@ using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
 
-public record ListCustomersResponse
+public record DeletePlanTraitResponse
 {
-    /// <summary>
-    /// The returned resources
-    /// </summary>
     [JsonPropertyName("data")]
-    public IEnumerable<BillingCustomerWithSubscriptionsResponseData> Data { get; set; } =
-        new List<BillingCustomerWithSubscriptionsResponseData>();
+    public required DeleteResponse Data { get; set; }
 
     /// <summary>
     /// Input parameters
     /// </summary>
     [JsonPropertyName("params")]
-    public required ListCustomersParams Params { get; set; }
+    public object Params { get; set; } = new Dictionary<string, object?>();
 
     /// <summary>
     /// Additional properties received from the response, if any.
