@@ -8,16 +8,16 @@ namespace SchematicHQ.Client.Datastream
   [JsonConverter(typeof(JsonStringEnumConverter))]
   public enum MessageType
   {
-    [JsonStringEnumMemberName("full")]
+    [JsonPropertyName("full")]
     Full,
 
-    [JsonStringEnumMemberName("partial")]
+    [JsonPropertyName("partial")]
     Partial,
 
-    [JsonStringEnumMemberName("delete")]
+    [JsonPropertyName("delete")]
     Delete,
 
-    [JsonStringEnumMemberName("error")]
+    [JsonPropertyName("error")]
     Error
   }
 
