@@ -9,6 +9,9 @@ namespace SchematicHQ.Client;
 /// </summary>
 public record CountCustomersParams
 {
+    [JsonPropertyName("company_ids")]
+    public IEnumerable<string>? CompanyIds { get; set; }
+
     [JsonPropertyName("failed_to_import")]
     public bool? FailedToImport { get; set; }
 

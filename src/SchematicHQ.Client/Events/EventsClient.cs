@@ -70,6 +70,8 @@ public partial class EventsClient
                         throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
                     case 403:
                         throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 404:
+                        throw new NotFoundError(JsonUtils.Deserialize<ApiError>(responseBody));
                     case 500:
                         throw new InternalServerError(
                             JsonUtils.Deserialize<ApiError>(responseBody)
@@ -149,6 +151,8 @@ public partial class EventsClient
                         throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
                     case 403:
                         throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 404:
+                        throw new NotFoundError(JsonUtils.Deserialize<ApiError>(responseBody));
                     case 500:
                         throw new InternalServerError(
                             JsonUtils.Deserialize<ApiError>(responseBody)
@@ -177,7 +181,7 @@ public partial class EventsClient
     )
     {
         var _query = new Dictionary<string, object>();
-        _query["event_types"] = request.EventTypes;
+        _query["event_types"] = request.EventTypes.Select(_value => _value.Stringify()).ToList();
         if (request.CompanyId != null)
         {
             _query["company_id"] = request.CompanyId;
@@ -240,6 +244,8 @@ public partial class EventsClient
                         throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
                     case 403:
                         throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 404:
+                        throw new NotFoundError(JsonUtils.Deserialize<ApiError>(responseBody));
                     case 500:
                         throw new InternalServerError(
                             JsonUtils.Deserialize<ApiError>(responseBody)
@@ -308,6 +314,8 @@ public partial class EventsClient
                         throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
                     case 403:
                         throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 404:
+                        throw new NotFoundError(JsonUtils.Deserialize<ApiError>(responseBody));
                     case 500:
                         throw new InternalServerError(
                             JsonUtils.Deserialize<ApiError>(responseBody)
