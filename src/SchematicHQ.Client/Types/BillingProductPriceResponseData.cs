@@ -6,6 +6,9 @@ namespace SchematicHQ.Client;
 
 public record BillingProductPriceResponseData
 {
+    [JsonPropertyName("billing_scheme")]
+    public required string BillingScheme { get; set; }
+
     [JsonPropertyName("created_at")]
     public required DateTime CreatedAt { get; set; }
 
@@ -24,8 +27,14 @@ public record BillingProductPriceResponseData
     [JsonPropertyName("meter_id")]
     public string? MeterId { get; set; }
 
+    [JsonPropertyName("package_size")]
+    public required int PackageSize { get; set; }
+
     [JsonPropertyName("price")]
     public required int Price { get; set; }
+
+    [JsonPropertyName("price_decimal")]
+    public string? PriceDecimal { get; set; }
 
     [JsonPropertyName("price_external_id")]
     public required string PriceExternalId { get; set; }
