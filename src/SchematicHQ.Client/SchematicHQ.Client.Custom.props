@@ -5,7 +5,7 @@ Configure additional MSBuild properties for your project in this file:
 -->
 <Project>
   <PropertyGroup>
-    <TargetFrameworks>net9.0;net8.0;</TargetFrameworks>
+    <TargetFrameworks>net8.0;</TargetFrameworks>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="StackExchange.Redis" Version="2.8.41" />
