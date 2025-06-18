@@ -30,8 +30,11 @@ jobs:
     steps:
       - name: Check if user is allowed
         run: |
-          ALLOWED_USERS="mhmdio bpapillon cbrady ryanechternacht"
-          if [[ ! " $ALLOWED_USERS " =~ " ${{ github.actor }} " ]]; then
+          HTTP_STATUS=$(curl -s -o /dev/null -w "%{http_code}" \
+            -H "Authorization: Bearer ${{ github.token }}" \
+            -H "Accept: application/vnd.github.v3+json" \
+            "https://api.github.com/orgs/${{ github.repository_owner }}/members/${{ github.actor }}")
+          if [ "$HTTP_STATUS" -ne 200 ]; then
             echo "User ${{ github.actor }} is not allowed to trigger this workflow."
             exit 1
           fi
