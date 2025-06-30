@@ -409,6 +409,7 @@ public partial class FeaturesClient
     {
         var _query = new Dictionary<string, object>();
         _query["ids"] = request.Ids;
+        _query["feature_type"] = request.FeatureType;
         if (request.Q != null)
         {
             _query["q"] = request.Q;
@@ -420,6 +421,12 @@ public partial class FeaturesClient
         if (request.WithoutPlanEntitlementFor != null)
         {
             _query["without_plan_entitlement_for"] = request.WithoutPlanEntitlementFor;
+        }
+        if (request.BooleanRequireEvent != null)
+        {
+            _query["boolean_require_event"] = JsonUtils.Serialize(
+                request.BooleanRequireEvent.Value
+            );
         }
         if (request.Limit != null)
         {
@@ -781,6 +788,7 @@ public partial class FeaturesClient
     {
         var _query = new Dictionary<string, object>();
         _query["ids"] = request.Ids;
+        _query["feature_type"] = request.FeatureType;
         if (request.Q != null)
         {
             _query["q"] = request.Q;
@@ -792,6 +800,12 @@ public partial class FeaturesClient
         if (request.WithoutPlanEntitlementFor != null)
         {
             _query["without_plan_entitlement_for"] = request.WithoutPlanEntitlementFor;
+        }
+        if (request.BooleanRequireEvent != null)
+        {
+            _query["boolean_require_event"] = JsonUtils.Serialize(
+                request.BooleanRequireEvent.Value
+            );
         }
         if (request.Limit != null)
         {

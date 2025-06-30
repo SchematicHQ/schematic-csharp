@@ -3,6 +3,7 @@ using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
 
+[Serializable]
 public record CreateCouponRequestBody
 {
     [JsonPropertyName("amount_off")]

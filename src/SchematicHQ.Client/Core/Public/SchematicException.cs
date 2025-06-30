@@ -1,5 +1,3 @@
-using System;
-
 namespace SchematicHQ.Client;
 
 /// <summary>

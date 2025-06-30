@@ -4,8 +4,13 @@ using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
 
-public record EventBodyTrack
+[Serializable]
+public record EventBodyTrack : IJsonOnDeserialized
 {
+    [JsonExtensionData]
+    private readonly IDictionary<string, JsonElement> _extensionData =
+        new Dictionary<string, JsonElement>();
+
     /// <summary>
     /// Key-value pairs to identify company associated with track event
     /// </summary>
@@ -28,7 +33,7 @@ public record EventBodyTrack
     /// A map of trait names to trait values
     /// </summary>
     [JsonPropertyName("traits")]
-    public object? Traits { get; set; }
+    public Dictionary<string, object?>? Traits { get; set; }
 
     /// <summary>
     /// Key-value pairs to identify user associated with track event
@@ -36,12 +41,11 @@ public record EventBodyTrack
     [JsonPropertyName("user")]
     public Dictionary<string, string>? User { get; set; }
 
-    /// <summary>
-    /// Additional properties received from the response, if any.
-    /// </summary>
-    [JsonExtensionData]
-    public IDictionary<string, JsonElement> AdditionalProperties { get; internal set; } =
-        new Dictionary<string, JsonElement>();
+    [JsonIgnore]
+    public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();
+
+    void IJsonOnDeserialized.OnDeserialized() =>
+        AdditionalProperties.CopyFromExtensionData(_extensionData);
 
     /// <inheritdoc />
     public override string ToString()

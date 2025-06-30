@@ -7,8 +7,13 @@ namespace SchematicHQ.Client;
 /// <summary>
 /// Input parameters
 /// </summary>
-public record CountBillingProductsParams
+[Serializable]
+public record CountBillingProductsParams : IJsonOnDeserialized
 {
+    [JsonExtensionData]
+    private readonly IDictionary<string, JsonElement> _extensionData =
+        new Dictionary<string, JsonElement>();
+
     [JsonPropertyName("ids")]
     public IEnumerable<string>? Ids { get; set; }
 
@@ -63,12 +68,11 @@ public record CountBillingProductsParams
     [JsonPropertyName("without_linked_to_plan")]
     public bool? WithoutLinkedToPlan { get; set; }
 
-    /// <summary>
-    /// Additional properties received from the response, if any.
-    /// </summary>
-    [JsonExtensionData]
-    public IDictionary<string, JsonElement> AdditionalProperties { get; internal set; } =
-        new Dictionary<string, JsonElement>();
+    [JsonIgnore]
+    public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();
+
+    void IJsonOnDeserialized.OnDeserialized() =>
+        AdditionalProperties.CopyFromExtensionData(_extensionData);
 
     /// <inheritdoc />
     public override string ToString()

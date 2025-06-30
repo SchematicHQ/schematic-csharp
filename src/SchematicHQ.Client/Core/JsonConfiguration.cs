@@ -1,3 +1,4 @@
+using global::System.Reflection;
 using global::System.Text.Json;
 using global::System.Text.Json.Nodes;
 using global::System.Text.Json.Serialization;
@@ -47,7 +48,6 @@ internal static partial class JsonOptions
                                 switch (jsonAccessAttribute.AccessType)
                                 {
                                     case JsonAccessType.ReadOnly:
-                                        propertyInfo.Get = null;
                                         propertyInfo.ShouldSerialize = (_, _) => false;
                                         break;
                                     case JsonAccessType.WriteOnly:
@@ -69,6 +69,30 @@ internal static partial class JsonOptions
                             if (jsonIgnoreAttribute is not null)
                             {
                                 propertyInfo.IsRequired = false;
+                            }
+                        }
+
+                        if (
+                            typeInfo.Kind == JsonTypeInfoKind.Object
+                            && typeInfo.Properties.All(prop => !prop.IsExtensionData)
+                        )
+                        {
+                            var extensionProp = typeInfo
+                                .Type.GetFields(BindingFlags.Instance | BindingFlags.NonPublic)
+                                .FirstOrDefault(prop =>
+                                    prop.GetCustomAttribute<JsonExtensionDataAttribute>() != null
+                                );
+
+                            if (extensionProp is not null)
+                            {
+                                var jsonPropertyInfo = typeInfo.CreateJsonPropertyInfo(
+                                    extensionProp.FieldType,
+                                    extensionProp.Name
+                                );
+                                jsonPropertyInfo.Get = extensionProp.GetValue;
+                                jsonPropertyInfo.Set = extensionProp.SetValue;
+                                jsonPropertyInfo.IsExtensionData = true;
+                                typeInfo.Properties.Add(jsonPropertyInfo);
                             }
                         }
                     },

@@ -3,6 +3,7 @@ using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
 
+[Serializable]
 public record CreateBillingSubscriptionsRequestBody
 {
     [JsonPropertyName("cancel_at")]
@@ -31,7 +32,7 @@ public record CreateBillingSubscriptionsRequestBody
     public string? Interval { get; set; }
 
     [JsonPropertyName("metadata")]
-    public object? Metadata { get; set; }
+    public Dictionary<string, object?>? Metadata { get; set; }
 
     [JsonPropertyName("period_end")]
     public int? PeriodEnd { get; set; }

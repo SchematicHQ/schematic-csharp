@@ -7,8 +7,13 @@ namespace SchematicHQ.Client;
 /// <summary>
 /// Input parameters
 /// </summary>
-public record CountCompanyOverridesParams
+[Serializable]
+public record CountCompanyOverridesParams : IJsonOnDeserialized
 {
+    [JsonExtensionData]
+    private readonly IDictionary<string, JsonElement> _extensionData =
+        new Dictionary<string, JsonElement>();
+
     /// <summary>
     /// Filter company overrides by a single company ID (starting with comp_)
     /// </summary>
@@ -63,12 +68,11 @@ public record CountCompanyOverridesParams
     [JsonPropertyName("without_expired")]
     public bool? WithoutExpired { get; set; }
 
-    /// <summary>
-    /// Additional properties received from the response, if any.
-    /// </summary>
-    [JsonExtensionData]
-    public IDictionary<string, JsonElement> AdditionalProperties { get; internal set; } =
-        new Dictionary<string, JsonElement>();
+    [JsonIgnore]
+    public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();
+
+    void IJsonOnDeserialized.OnDeserialized() =>
+        AdditionalProperties.CopyFromExtensionData(_extensionData);
 
     /// <inheritdoc />
     public override string ToString()

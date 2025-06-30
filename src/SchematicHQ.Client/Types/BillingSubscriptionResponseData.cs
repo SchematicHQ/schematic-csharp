@@ -4,8 +4,13 @@ using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
 
-public record BillingSubscriptionResponseData
+[Serializable]
+public record BillingSubscriptionResponseData : IJsonOnDeserialized
 {
+    [JsonExtensionData]
+    private readonly IDictionary<string, JsonElement> _extensionData =
+        new Dictionary<string, JsonElement>();
+
     [JsonPropertyName("cancel_at")]
     public int? CancelAt { get; set; }
 
@@ -37,7 +42,7 @@ public record BillingSubscriptionResponseData
     public required string Interval { get; set; }
 
     [JsonPropertyName("metadata")]
-    public object? Metadata { get; set; }
+    public Dictionary<string, object?>? Metadata { get; set; }
 
     [JsonPropertyName("period_end")]
     public required int PeriodEnd { get; set; }
@@ -60,12 +65,11 @@ public record BillingSubscriptionResponseData
     [JsonPropertyName("trial_end_setting")]
     public string? TrialEndSetting { get; set; }
 
-    /// <summary>
-    /// Additional properties received from the response, if any.
-    /// </summary>
-    [JsonExtensionData]
-    public IDictionary<string, JsonElement> AdditionalProperties { get; internal set; } =
-        new Dictionary<string, JsonElement>();
+    [JsonIgnore]
+    public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();
+
+    void IJsonOnDeserialized.OnDeserialized() =>
+        AdditionalProperties.CopyFromExtensionData(_extensionData);
 
     /// <inheritdoc />
     public override string ToString()

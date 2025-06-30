@@ -4,14 +4,23 @@ using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
 
-public record ChangeSubscriptionRequestBody
+[Serializable]
+public record ChangeSubscriptionRequestBody : IJsonOnDeserialized
 {
+    [JsonExtensionData]
+    private readonly IDictionary<string, JsonElement> _extensionData =
+        new Dictionary<string, JsonElement>();
+
     [JsonPropertyName("add_on_ids")]
     public IEnumerable<UpdateAddOnRequestBody> AddOnIds { get; set; } =
         new List<UpdateAddOnRequestBody>();
 
     [JsonPropertyName("coupon_external_id")]
     public string? CouponExternalId { get; set; }
+
+    [JsonPropertyName("credit_bundles")]
+    public IEnumerable<UpdateCreditBundleRequestBody> CreditBundles { get; set; } =
+        new List<UpdateCreditBundleRequestBody>();
 
     [JsonPropertyName("new_plan_id")]
     public required string NewPlanId { get; set; }
@@ -29,12 +38,14 @@ public record ChangeSubscriptionRequestBody
     [JsonPropertyName("promo_code")]
     public string? PromoCode { get; set; }
 
-    /// <summary>
-    /// Additional properties received from the response, if any.
-    /// </summary>
-    [JsonExtensionData]
-    public IDictionary<string, JsonElement> AdditionalProperties { get; internal set; } =
-        new Dictionary<string, JsonElement>();
+    [JsonPropertyName("skip_trial")]
+    public required bool SkipTrial { get; set; }
+
+    [JsonIgnore]
+    public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();
+
+    void IJsonOnDeserialized.OnDeserialized() =>
+        AdditionalProperties.CopyFromExtensionData(_extensionData);
 
     /// <inheritdoc />
     public override string ToString()

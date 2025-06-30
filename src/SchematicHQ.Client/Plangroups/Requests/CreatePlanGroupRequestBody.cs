@@ -3,8 +3,12 @@ using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
 
+[Serializable]
 public record CreatePlanGroupRequestBody
 {
+    [JsonPropertyName("add_on_compatibilities")]
+    public IEnumerable<CompatiblePlans>? AddOnCompatibilities { get; set; }
+
     [JsonPropertyName("add_on_ids")]
     public IEnumerable<string> AddOnIds { get; set; } = new List<string>();
 

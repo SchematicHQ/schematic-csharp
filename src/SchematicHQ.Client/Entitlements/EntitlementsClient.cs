@@ -1118,6 +1118,8 @@ public partial class EntitlementsClient
     ///     {
     ///         FeatureId = "feature_id",
     ///         PlanId = "plan_id",
+    ///         PriceTiers = new List&lt;CreatePriceTierRequestBody&gt;() { new CreatePriceTierRequestBody() },
+    ///         TierMode = "tier_mode",
     ///         ValueType = CreatePlanEntitlementRequestBodyValueType.Boolean,
     ///     }
     /// );
@@ -1259,6 +1261,8 @@ public partial class EntitlementsClient
     ///     "plan_entitlement_id",
     ///     new UpdatePlanEntitlementRequestBody
     ///     {
+    ///         PriceTiers = new List&lt;CreatePriceTierRequestBody&gt;() { new CreatePriceTierRequestBody() },
+    ///         TierMode = "tier_mode",
     ///         ValueType = UpdatePlanEntitlementRequestBodyValueType.Boolean,
     ///     }
     /// );

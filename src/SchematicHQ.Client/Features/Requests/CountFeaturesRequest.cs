@@ -3,6 +3,7 @@ using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
 
+[Serializable]
 public record CountFeaturesRequest
 {
     [JsonIgnore]
@@ -22,6 +23,18 @@ public record CountFeaturesRequest
     /// </summary>
     [JsonIgnore]
     public string? WithoutPlanEntitlementFor { get; set; }
+
+    /// <summary>
+    /// Filter by one or more feature types (boolean, event, trait)
+    /// </summary>
+    [JsonIgnore]
+    public IEnumerable<string> FeatureType { get; set; } = new List<string>();
+
+    /// <summary>
+    /// Only return boolean features if there is an associated event. Automatically includes boolean in the feature types filter.
+    /// </summary>
+    [JsonIgnore]
+    public bool? BooleanRequireEvent { get; set; }
 
     /// <summary>
     /// Page limit (default 100)

@@ -7,8 +7,13 @@ namespace SchematicHQ.Client;
 /// <summary>
 /// The requested resource
 /// </summary>
-public record CheckoutDataResponseData
+[Serializable]
+public record CheckoutDataResponseData : IJsonOnDeserialized
 {
+    [JsonExtensionData]
+    private readonly IDictionary<string, JsonElement> _extensionData =
+        new Dictionary<string, JsonElement>();
+
     [JsonPropertyName("active_add_ons")]
     public IEnumerable<PlanDetailResponseData> ActiveAddOns { get; set; } =
         new List<PlanDetailResponseData>();
@@ -20,11 +25,19 @@ public record CheckoutDataResponseData
     public IEnumerable<UsageBasedEntitlementResponseData> ActiveUsageBasedEntitlements { get; set; } =
         new List<UsageBasedEntitlementResponseData>();
 
+    [JsonPropertyName("available_credit_bundles")]
+    public IEnumerable<BillingCreditBundleResponseData> AvailableCreditBundles { get; set; } =
+        new List<BillingCreditBundleResponseData>();
+
     [JsonPropertyName("company")]
     public CompanyDetailResponseData? Company { get; set; }
 
     [JsonPropertyName("feature_usage")]
     public FeatureUsageDetailResponseData? FeatureUsage { get; set; }
+
+    [JsonPropertyName("selected_credit_bundles")]
+    public IEnumerable<CreditBundlePurchaseResponseData> SelectedCreditBundles { get; set; } =
+        new List<CreditBundlePurchaseResponseData>();
 
     [JsonPropertyName("selected_plan")]
     public PlanDetailResponseData? SelectedPlan { get; set; }
@@ -36,12 +49,11 @@ public record CheckoutDataResponseData
     [JsonPropertyName("subscription")]
     public CompanySubscriptionResponseData? Subscription { get; set; }
 
-    /// <summary>
-    /// Additional properties received from the response, if any.
-    /// </summary>
-    [JsonExtensionData]
-    public IDictionary<string, JsonElement> AdditionalProperties { get; internal set; } =
-        new Dictionary<string, JsonElement>();
+    [JsonIgnore]
+    public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();
+
+    void IJsonOnDeserialized.OnDeserialized() =>
+        AdditionalProperties.CopyFromExtensionData(_extensionData);
 
     /// <inheritdoc />
     public override string ToString()

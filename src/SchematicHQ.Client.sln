@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SchematicHQ.Client", "SchematicHQ.Client\SchematicHQ.Client.csproj", "{2F20077C-FD6B-42D2-8600-4FC255E929C8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SchematicHQ.Client", "SchematicHQ.Client\SchematicHQ.Client.csproj", "{47B34C03-03E6-4FFE-BEAF-86BB72C97D95}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SchematicHQ.Client.Test", "SchematicHQ.Client.Test\SchematicHQ.Client.Test.csproj", "{7E7D8F96-93C1-475B-9F7E-AE9379F22389}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SchematicHQ.Client.Test", "SchematicHQ.Client.Test\SchematicHQ.Client.Test.csproj", "{A698ED18-85B6-4BB1-BBEC-85E94C3E0D09}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -16,13 +16,13 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{2F20077C-FD6B-42D2-8600-4FC255E929C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2F20077C-FD6B-42D2-8600-4FC255E929C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2F20077C-FD6B-42D2-8600-4FC255E929C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2F20077C-FD6B-42D2-8600-4FC255E929C8}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7E7D8F96-93C1-475B-9F7E-AE9379F22389}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7E7D8F96-93C1-475B-9F7E-AE9379F22389}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7E7D8F96-93C1-475B-9F7E-AE9379F22389}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7E7D8F96-93C1-475B-9F7E-AE9379F22389}.Release|Any CPU.Build.0 = Release|Any CPU
+		{47B34C03-03E6-4FFE-BEAF-86BB72C97D95}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{47B34C03-03E6-4FFE-BEAF-86BB72C97D95}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{47B34C03-03E6-4FFE-BEAF-86BB72C97D95}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{47B34C03-03E6-4FFE-BEAF-86BB72C97D95}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A698ED18-85B6-4BB1-BBEC-85E94C3E0D09}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A698ED18-85B6-4BB1-BBEC-85E94C3E0D09}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A698ED18-85B6-4BB1-BBEC-85E94C3E0D09}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A698ED18-85B6-4BB1-BBEC-85E94C3E0D09}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

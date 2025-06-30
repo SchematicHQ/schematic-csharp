@@ -7,8 +7,13 @@ namespace SchematicHQ.Client;
 /// <summary>
 /// The returned resource
 /// </summary>
-public record PlanGroupDetailResponseData
+[Serializable]
+public record PlanGroupDetailResponseData : IJsonOnDeserialized
 {
+    [JsonExtensionData]
+    private readonly IDictionary<string, JsonElement> _extensionData =
+        new Dictionary<string, JsonElement>();
+
     [JsonPropertyName("add_ons")]
     public IEnumerable<PlanGroupPlanDetailResponseData> AddOns { get; set; } =
         new List<PlanGroupPlanDetailResponseData>();
@@ -42,12 +47,11 @@ public record PlanGroupDetailResponseData
     [JsonPropertyName("trial_payment_method_required")]
     public bool? TrialPaymentMethodRequired { get; set; }
 
-    /// <summary>
-    /// Additional properties received from the response, if any.
-    /// </summary>
-    [JsonExtensionData]
-    public IDictionary<string, JsonElement> AdditionalProperties { get; internal set; } =
-        new Dictionary<string, JsonElement>();
+    [JsonIgnore]
+    public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();
+
+    void IJsonOnDeserialized.OnDeserialized() =>
+        AdditionalProperties.CopyFromExtensionData(_extensionData);
 
     /// <inheritdoc />
     public override string ToString()

@@ -4,8 +4,13 @@ using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
 
-public record BillingMeterResponseData
+[Serializable]
+public record BillingMeterResponseData : IJsonOnDeserialized
 {
+    [JsonExtensionData]
+    private readonly IDictionary<string, JsonElement> _extensionData =
+        new Dictionary<string, JsonElement>();
+
     [JsonPropertyName("dispaly_name")]
     public required string DispalyName { get; set; }
 
@@ -21,12 +26,11 @@ public record BillingMeterResponseData
     [JsonPropertyName("id")]
     public required string Id { get; set; }
 
-    /// <summary>
-    /// Additional properties received from the response, if any.
-    /// </summary>
-    [JsonExtensionData]
-    public IDictionary<string, JsonElement> AdditionalProperties { get; internal set; } =
-        new Dictionary<string, JsonElement>();
+    [JsonIgnore]
+    public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();
+
+    void IJsonOnDeserialized.OnDeserialized() =>
+        AdditionalProperties.CopyFromExtensionData(_extensionData);
 
     /// <inheritdoc />
     public override string ToString()

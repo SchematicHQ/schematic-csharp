@@ -4,13 +4,18 @@ using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
 
-public record EventResponseData
+[Serializable]
+public record EventResponseData : IJsonOnDeserialized
 {
+    [JsonExtensionData]
+    private readonly IDictionary<string, JsonElement> _extensionData =
+        new Dictionary<string, JsonElement>();
+
     [JsonPropertyName("api_key")]
     public string? ApiKey { get; set; }
 
     [JsonPropertyName("body")]
-    public object Body { get; set; } = new Dictionary<string, object?>();
+    public Dictionary<string, object?> Body { get; set; } = new Dictionary<string, object?>();
 
     [JsonPropertyName("body_preview")]
     public required string BodyPreview { get; set; }
@@ -63,12 +68,11 @@ public record EventResponseData
     [JsonPropertyName("user_id")]
     public string? UserId { get; set; }
 
-    /// <summary>
-    /// Additional properties received from the response, if any.
-    /// </summary>
-    [JsonExtensionData]
-    public IDictionary<string, JsonElement> AdditionalProperties { get; internal set; } =
-        new Dictionary<string, JsonElement>();
+    [JsonIgnore]
+    public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();
+
+    void IJsonOnDeserialized.OnDeserialized() =>
+        AdditionalProperties.CopyFromExtensionData(_extensionData);
 
     /// <inheritdoc />
     public override string ToString()

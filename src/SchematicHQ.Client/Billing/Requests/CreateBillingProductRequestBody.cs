@@ -3,6 +3,7 @@ using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
 
+[Serializable]
 public record CreateBillingProductRequestBody
 {
     [JsonPropertyName("external_id")]

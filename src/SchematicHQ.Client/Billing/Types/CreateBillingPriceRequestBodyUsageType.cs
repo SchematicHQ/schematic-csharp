@@ -1,15 +1,67 @@
-using System.Runtime.Serialization;
 using System.Text.Json.Serialization;
 using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
 
-[JsonConverter(typeof(EnumSerializer<CreateBillingPriceRequestBodyUsageType>))]
-public enum CreateBillingPriceRequestBodyUsageType
+[JsonConverter(typeof(StringEnumSerializer<CreateBillingPriceRequestBodyUsageType>))]
+[Serializable]
+public readonly record struct CreateBillingPriceRequestBodyUsageType : IStringEnum
 {
-    [EnumMember(Value = "licensed")]
-    Licensed,
+    public static readonly CreateBillingPriceRequestBodyUsageType Licensed = new(Values.Licensed);
 
-    [EnumMember(Value = "metered")]
-    Metered,
+    public static readonly CreateBillingPriceRequestBodyUsageType Metered = new(Values.Metered);
+
+    public CreateBillingPriceRequestBodyUsageType(string value)
+    {
+        Value = value;
+    }
+
+    /// <summary>
+    /// The string value of the enum.
+    /// </summary>
+    public string Value { get; }
+
+    /// <summary>
+    /// Create a string enum with the given value.
+    /// </summary>
+    public static CreateBillingPriceRequestBodyUsageType FromCustom(string value)
+    {
+        return new CreateBillingPriceRequestBodyUsageType(value);
+    }
+
+    public bool Equals(string? other)
+    {
+        return Value.Equals(other);
+    }
+
+    /// <summary>
+    /// Returns the string value of the enum.
+    /// </summary>
+    public override string ToString()
+    {
+        return Value;
+    }
+
+    public static bool operator ==(CreateBillingPriceRequestBodyUsageType value1, string value2) =>
+        value1.Value.Equals(value2);
+
+    public static bool operator !=(CreateBillingPriceRequestBodyUsageType value1, string value2) =>
+        !value1.Value.Equals(value2);
+
+    public static explicit operator string(CreateBillingPriceRequestBodyUsageType value) =>
+        value.Value;
+
+    public static explicit operator CreateBillingPriceRequestBodyUsageType(string value) =>
+        new(value);
+
+    /// <summary>
+    /// Constant strings for enum values
+    /// </summary>
+    [Serializable]
+    public static class Values
+    {
+        public const string Licensed = "licensed";
+
+        public const string Metered = "metered";
+    }
 }

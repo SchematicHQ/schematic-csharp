@@ -23,12 +23,17 @@ public partial class CheckoutClient
     ///             new UpdateAddOnRequestBody { AddOnId = "add_on_id", PriceId = "price_id" },
     ///         },
     ///         CompanyId = "company_id",
+    ///         CreditBundles = new List&lt;UpdateCreditBundleRequestBody&gt;()
+    ///         {
+    ///             new UpdateCreditBundleRequestBody { BundleId = "bundle_id", Quantity = 1 },
+    ///         },
     ///         NewPlanId = "new_plan_id",
     ///         NewPriceId = "new_price_id",
     ///         PayInAdvance = new List&lt;UpdatePayInAdvanceRequestBody&gt;()
     ///         {
     ///             new UpdatePayInAdvanceRequestBody { PriceId = "price_id", Quantity = 1 },
     ///         },
+    ///         SkipTrial = true,
     ///     }
     /// );
     /// </code></example>
@@ -176,12 +181,17 @@ public partial class CheckoutClient
     ///             new UpdateAddOnRequestBody { AddOnId = "add_on_id", PriceId = "price_id" },
     ///         },
     ///         CompanyId = "company_id",
+    ///         CreditBundles = new List&lt;UpdateCreditBundleRequestBody&gt;()
+    ///         {
+    ///             new UpdateCreditBundleRequestBody { BundleId = "bundle_id", Quantity = 1 },
+    ///         },
     ///         NewPlanId = "new_plan_id",
     ///         NewPriceId = "new_price_id",
     ///         PayInAdvance = new List&lt;UpdatePayInAdvanceRequestBody&gt;()
     ///         {
     ///             new UpdatePayInAdvanceRequestBody { PriceId = "price_id", Quantity = 1 },
     ///         },
+    ///         SkipTrial = true,
     ///     }
     /// );
     /// </code></example>

@@ -3,6 +3,7 @@ using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
 
+[Serializable]
 public record CreatePaymentMethodRequestBody
 {
     [JsonPropertyName("account_last4")]

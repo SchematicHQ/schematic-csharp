@@ -7,8 +7,13 @@ namespace SchematicHQ.Client;
 /// <summary>
 /// Input parameters
 /// </summary>
-public record CountApiRequestsParams
+[Serializable]
+public record CountApiRequestsParams : IJsonOnDeserialized
 {
+    [JsonExtensionData]
+    private readonly IDictionary<string, JsonElement> _extensionData =
+        new Dictionary<string, JsonElement>();
+
     [JsonPropertyName("environment_id")]
     public string? EnvironmentId { get; set; }
 
@@ -30,12 +35,11 @@ public record CountApiRequestsParams
     [JsonPropertyName("request_type")]
     public string? RequestType { get; set; }
 
-    /// <summary>
-    /// Additional properties received from the response, if any.
-    /// </summary>
-    [JsonExtensionData]
-    public IDictionary<string, JsonElement> AdditionalProperties { get; internal set; } =
-        new Dictionary<string, JsonElement>();
+    [JsonIgnore]
+    public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();
+
+    void IJsonOnDeserialized.OnDeserialized() =>
+        AdditionalProperties.CopyFromExtensionData(_extensionData);
 
     /// <inheritdoc />
     public override string ToString()

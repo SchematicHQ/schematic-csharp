@@ -7,8 +7,25 @@ namespace SchematicHQ.Client;
 /// <summary>
 /// Input parameters
 /// </summary>
-public record CountFeaturesParams
+[Serializable]
+public record CountFeaturesParams : IJsonOnDeserialized
 {
+    [JsonExtensionData]
+    private readonly IDictionary<string, JsonElement> _extensionData =
+        new Dictionary<string, JsonElement>();
+
+    /// <summary>
+    /// Only return boolean features if there is an associated event. Automatically includes boolean in the feature types filter.
+    /// </summary>
+    [JsonPropertyName("boolean_require_event")]
+    public bool? BooleanRequireEvent { get; set; }
+
+    /// <summary>
+    /// Filter by one or more feature types (boolean, event, trait)
+    /// </summary>
+    [JsonPropertyName("feature_type")]
+    public IEnumerable<string>? FeatureType { get; set; }
+
     [JsonPropertyName("ids")]
     public IEnumerable<string>? Ids { get; set; }
 
@@ -39,12 +56,11 @@ public record CountFeaturesParams
     [JsonPropertyName("without_plan_entitlement_for")]
     public string? WithoutPlanEntitlementFor { get; set; }
 
-    /// <summary>
-    /// Additional properties received from the response, if any.
-    /// </summary>
-    [JsonExtensionData]
-    public IDictionary<string, JsonElement> AdditionalProperties { get; internal set; } =
-        new Dictionary<string, JsonElement>();
+    [JsonIgnore]
+    public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();
+
+    void IJsonOnDeserialized.OnDeserialized() =>
+        AdditionalProperties.CopyFromExtensionData(_extensionData);
 
     /// <inheritdoc />
     public override string ToString()
