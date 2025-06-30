@@ -15,7 +15,7 @@ public partial class SchematicApi
                 { "X-Fern-Language", "C#" },
                 { "X-Fern-SDK-Name", "SchematicHQ.Client" },
                 { "X-Fern-SDK-Version", Version.Current },
-                { "User-Agent", "SchematicHQ.Client/1.1.0" },
+                { "User-Agent", "SchematicHQ.Client/1.1.1" },
             }
         );
         clientOptions ??= new ClientOptions();
@@ -30,6 +30,7 @@ public partial class SchematicApi
         Accounts = new AccountsClient(_client);
         Features = new FeaturesClient(_client);
         Billing = new BillingClient(_client);
+        Credits = new CreditsClient(_client);
         Checkout = new CheckoutClient(_client);
         Companies = new CompaniesClient(_client);
         Entitlements = new EntitlementsClient(_client);
@@ -43,31 +44,33 @@ public partial class SchematicApi
         Webhooks = new WebhooksClient(_client);
     }
 
-    public AccountsClient Accounts { get; init; }
+    public AccountsClient Accounts { get; }
 
-    public FeaturesClient Features { get; init; }
+    public FeaturesClient Features { get; }
 
-    public BillingClient Billing { get; init; }
+    public BillingClient Billing { get; }
 
-    public CheckoutClient Checkout { get; init; }
+    public CreditsClient Credits { get; }
 
-    public CompaniesClient Companies { get; init; }
+    public CheckoutClient Checkout { get; }
 
-    public EntitlementsClient Entitlements { get; init; }
+    public CompaniesClient Companies { get; }
 
-    public PlansClient Plans { get; init; }
+    public EntitlementsClient Entitlements { get; }
 
-    public ComponentsClient Components { get; init; }
+    public PlansClient Plans { get; }
 
-    public CrmClient Crm { get; init; }
+    public ComponentsClient Components { get; }
 
-    public DataexportsClient Dataexports { get; init; }
+    public CrmClient Crm { get; }
 
-    public EventsClient Events { get; init; }
+    public DataexportsClient Dataexports { get; }
 
-    public PlangroupsClient Plangroups { get; init; }
+    public EventsClient Events { get; }
 
-    public AccesstokensClient Accesstokens { get; init; }
+    public PlangroupsClient Plangroups { get; }
 
-    public WebhooksClient Webhooks { get; init; }
+    public AccesstokensClient Accesstokens { get; }
+
+    public WebhooksClient Webhooks { get; }
 }

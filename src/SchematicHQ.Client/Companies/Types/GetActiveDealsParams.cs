@@ -7,8 +7,13 @@ namespace SchematicHQ.Client;
 /// <summary>
 /// Input parameters
 /// </summary>
-public record GetActiveDealsParams
+[Serializable]
+public record GetActiveDealsParams : IJsonOnDeserialized
 {
+    [JsonExtensionData]
+    private readonly IDictionary<string, JsonElement> _extensionData =
+        new Dictionary<string, JsonElement>();
+
     [JsonPropertyName("company_id")]
     public string? CompanyId { get; set; }
 
@@ -27,12 +32,11 @@ public record GetActiveDealsParams
     [JsonPropertyName("offset")]
     public int? Offset { get; set; }
 
-    /// <summary>
-    /// Additional properties received from the response, if any.
-    /// </summary>
-    [JsonExtensionData]
-    public IDictionary<string, JsonElement> AdditionalProperties { get; internal set; } =
-        new Dictionary<string, JsonElement>();
+    [JsonIgnore]
+    public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();
+
+    void IJsonOnDeserialized.OnDeserialized() =>
+        AdditionalProperties.CopyFromExtensionData(_extensionData);
 
     /// <inheritdoc />
     public override string ToString()

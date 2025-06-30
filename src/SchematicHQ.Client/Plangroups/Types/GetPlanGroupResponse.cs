@@ -4,8 +4,13 @@ using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
 
-public record GetPlanGroupResponse
+[Serializable]
+public record GetPlanGroupResponse : IJsonOnDeserialized
 {
+    [JsonExtensionData]
+    private readonly IDictionary<string, JsonElement> _extensionData =
+        new Dictionary<string, JsonElement>();
+
     [JsonPropertyName("data")]
     public required PlanGroupDetailResponseData Data { get; set; }
 
@@ -13,14 +18,13 @@ public record GetPlanGroupResponse
     /// Input parameters
     /// </summary>
     [JsonPropertyName("params")]
-    public object Params { get; set; } = new Dictionary<string, object?>();
+    public Dictionary<string, object?> Params { get; set; } = new Dictionary<string, object?>();
 
-    /// <summary>
-    /// Additional properties received from the response, if any.
-    /// </summary>
-    [JsonExtensionData]
-    public IDictionary<string, JsonElement> AdditionalProperties { get; internal set; } =
-        new Dictionary<string, JsonElement>();
+    [JsonIgnore]
+    public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();
+
+    void IJsonOnDeserialized.OnDeserialized() =>
+        AdditionalProperties.CopyFromExtensionData(_extensionData);
 
     /// <inheritdoc />
     public override string ToString()

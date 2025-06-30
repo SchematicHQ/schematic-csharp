@@ -1,15 +1,75 @@
-using System.Runtime.Serialization;
 using System.Text.Json.Serialization;
 using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
 
-[JsonConverter(typeof(EnumSerializer<ListBillingProductsResponseParamsPriceUsageType>))]
-public enum ListBillingProductsResponseParamsPriceUsageType
+[JsonConverter(typeof(StringEnumSerializer<ListBillingProductsResponseParamsPriceUsageType>))]
+[Serializable]
+public readonly record struct ListBillingProductsResponseParamsPriceUsageType : IStringEnum
 {
-    [EnumMember(Value = "licensed")]
-    Licensed,
+    public static readonly ListBillingProductsResponseParamsPriceUsageType Licensed = new(
+        Values.Licensed
+    );
 
-    [EnumMember(Value = "metered")]
-    Metered,
+    public static readonly ListBillingProductsResponseParamsPriceUsageType Metered = new(
+        Values.Metered
+    );
+
+    public ListBillingProductsResponseParamsPriceUsageType(string value)
+    {
+        Value = value;
+    }
+
+    /// <summary>
+    /// The string value of the enum.
+    /// </summary>
+    public string Value { get; }
+
+    /// <summary>
+    /// Create a string enum with the given value.
+    /// </summary>
+    public static ListBillingProductsResponseParamsPriceUsageType FromCustom(string value)
+    {
+        return new ListBillingProductsResponseParamsPriceUsageType(value);
+    }
+
+    public bool Equals(string? other)
+    {
+        return Value.Equals(other);
+    }
+
+    /// <summary>
+    /// Returns the string value of the enum.
+    /// </summary>
+    public override string ToString()
+    {
+        return Value;
+    }
+
+    public static bool operator ==(
+        ListBillingProductsResponseParamsPriceUsageType value1,
+        string value2
+    ) => value1.Value.Equals(value2);
+
+    public static bool operator !=(
+        ListBillingProductsResponseParamsPriceUsageType value1,
+        string value2
+    ) => !value1.Value.Equals(value2);
+
+    public static explicit operator string(ListBillingProductsResponseParamsPriceUsageType value) =>
+        value.Value;
+
+    public static explicit operator ListBillingProductsResponseParamsPriceUsageType(string value) =>
+        new(value);
+
+    /// <summary>
+    /// Constant strings for enum values
+    /// </summary>
+    [Serializable]
+    public static class Values
+    {
+        public const string Licensed = "licensed";
+
+        public const string Metered = "metered";
+    }
 }

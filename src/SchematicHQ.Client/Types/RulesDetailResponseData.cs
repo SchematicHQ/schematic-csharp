@@ -7,8 +7,13 @@ namespace SchematicHQ.Client;
 /// <summary>
 /// The updated resource
 /// </summary>
-public record RulesDetailResponseData
+[Serializable]
+public record RulesDetailResponseData : IJsonOnDeserialized
 {
+    [JsonExtensionData]
+    private readonly IDictionary<string, JsonElement> _extensionData =
+        new Dictionary<string, JsonElement>();
+
     [JsonPropertyName("flag")]
     public FlagResponseData? Flag { get; set; }
 
@@ -16,12 +21,11 @@ public record RulesDetailResponseData
     public IEnumerable<RuleDetailResponseData> Rules { get; set; } =
         new List<RuleDetailResponseData>();
 
-    /// <summary>
-    /// Additional properties received from the response, if any.
-    /// </summary>
-    [JsonExtensionData]
-    public IDictionary<string, JsonElement> AdditionalProperties { get; internal set; } =
-        new Dictionary<string, JsonElement>();
+    [JsonIgnore]
+    public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();
+
+    void IJsonOnDeserialized.OnDeserialized() =>
+        AdditionalProperties.CopyFromExtensionData(_extensionData);
 
     /// <inheritdoc />
     public override string ToString()

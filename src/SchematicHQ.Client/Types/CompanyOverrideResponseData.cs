@@ -7,8 +7,13 @@ namespace SchematicHQ.Client;
 /// <summary>
 /// The updated resource
 /// </summary>
-public record CompanyOverrideResponseData
+[Serializable]
+public record CompanyOverrideResponseData : IJsonOnDeserialized
 {
+    [JsonExtensionData]
+    private readonly IDictionary<string, JsonElement> _extensionData =
+        new Dictionary<string, JsonElement>();
+
     [JsonPropertyName("company")]
     public CompanyDetailResponseData? Company { get; set; }
 
@@ -63,12 +68,11 @@ public record CompanyOverrideResponseData
     [JsonPropertyName("value_type")]
     public required string ValueType { get; set; }
 
-    /// <summary>
-    /// Additional properties received from the response, if any.
-    /// </summary>
-    [JsonExtensionData]
-    public IDictionary<string, JsonElement> AdditionalProperties { get; internal set; } =
-        new Dictionary<string, JsonElement>();
+    [JsonIgnore]
+    public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();
+
+    void IJsonOnDeserialized.OnDeserialized() =>
+        AdditionalProperties.CopyFromExtensionData(_extensionData);
 
     /// <inheritdoc />
     public override string ToString()

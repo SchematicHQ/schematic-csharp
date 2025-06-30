@@ -3,6 +3,7 @@ using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
 
+[Serializable]
 public record CreateBillingPriceRequestBody
 {
     [JsonPropertyName("billing_scheme")]
@@ -42,8 +43,8 @@ public record CreateBillingPriceRequestBody
     [JsonPropertyName("product_external_id")]
     public required string ProductExternalId { get; set; }
 
-    [JsonPropertyName("tier_mode")]
-    public CreateBillingPriceRequestBodyTierMode? TierMode { get; set; }
+    [JsonPropertyName("tiers_mode")]
+    public CreateBillingPriceRequestBodyTiersMode? TiersMode { get; set; }
 
     [JsonPropertyName("usage_type")]
     public required CreateBillingPriceRequestBodyUsageType UsageType { get; set; }

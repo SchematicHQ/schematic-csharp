@@ -7,8 +7,13 @@ namespace SchematicHQ.Client;
 /// <summary>
 /// Input parameters
 /// </summary>
-public record SearchBillingPricesParams
+[Serializable]
+public record SearchBillingPricesParams : IJsonOnDeserialized
 {
+    [JsonExtensionData]
+    private readonly IDictionary<string, JsonElement> _extensionData =
+        new Dictionary<string, JsonElement>();
+
     [JsonPropertyName("ids")]
     public IEnumerable<string>? Ids { get; set; }
 
@@ -33,15 +38,17 @@ public record SearchBillingPricesParams
     [JsonPropertyName("q")]
     public string? Q { get; set; }
 
+    [JsonPropertyName("tiers_mode")]
+    public SearchBillingPricesResponseParamsTiersMode? TiersMode { get; set; }
+
     [JsonPropertyName("usage_type")]
     public SearchBillingPricesResponseParamsUsageType? UsageType { get; set; }
 
-    /// <summary>
-    /// Additional properties received from the response, if any.
-    /// </summary>
-    [JsonExtensionData]
-    public IDictionary<string, JsonElement> AdditionalProperties { get; internal set; } =
-        new Dictionary<string, JsonElement>();
+    [JsonIgnore]
+    public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();
+
+    void IJsonOnDeserialized.OnDeserialized() =>
+        AdditionalProperties.CopyFromExtensionData(_extensionData);
 
     /// <inheritdoc />
     public override string ToString()

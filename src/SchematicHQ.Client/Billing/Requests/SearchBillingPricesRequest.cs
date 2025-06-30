@@ -3,6 +3,7 @@ using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
 
+[Serializable]
 public record SearchBillingPricesRequest
 {
     [JsonIgnore]
@@ -19,6 +20,9 @@ public record SearchBillingPricesRequest
 
     [JsonIgnore]
     public int? Price { get; set; }
+
+    [JsonIgnore]
+    public SearchBillingPricesRequestTiersMode? TiersMode { get; set; }
 
     /// <summary>
     /// Page limit (default 100)

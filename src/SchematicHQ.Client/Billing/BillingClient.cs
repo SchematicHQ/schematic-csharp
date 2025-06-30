@@ -942,6 +942,10 @@ public partial class BillingClient
         {
             _query["price"] = request.Price.Value.ToString();
         }
+        if (request.TiersMode != null)
+        {
+            _query["tiers_mode"] = request.TiersMode.Value.Stringify();
+        }
         if (request.Limit != null)
         {
             _query["limit"] = request.Limit.Value.ToString();

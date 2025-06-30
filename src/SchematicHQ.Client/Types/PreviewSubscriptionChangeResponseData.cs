@@ -7,8 +7,13 @@ namespace SchematicHQ.Client;
 /// <summary>
 /// The requested resource
 /// </summary>
-public record PreviewSubscriptionChangeResponseData
+[Serializable]
+public record PreviewSubscriptionChangeResponseData : IJsonOnDeserialized
 {
+    [JsonExtensionData]
+    private readonly IDictionary<string, JsonElement> _extensionData =
+        new Dictionary<string, JsonElement>();
+
     [JsonPropertyName("amount_off")]
     public required int AmountOff { get; set; }
 
@@ -20,6 +25,9 @@ public record PreviewSubscriptionChangeResponseData
 
     [JsonPropertyName("new_charges")]
     public required int NewCharges { get; set; }
+
+    [JsonPropertyName("payment_method_required")]
+    public required bool PaymentMethodRequired { get; set; }
 
     [JsonPropertyName("percent_off")]
     public required double PercentOff { get; set; }
@@ -40,12 +48,11 @@ public record PreviewSubscriptionChangeResponseData
     public IEnumerable<FeatureUsageResponseData> UsageViolations { get; set; } =
         new List<FeatureUsageResponseData>();
 
-    /// <summary>
-    /// Additional properties received from the response, if any.
-    /// </summary>
-    [JsonExtensionData]
-    public IDictionary<string, JsonElement> AdditionalProperties { get; internal set; } =
-        new Dictionary<string, JsonElement>();
+    [JsonIgnore]
+    public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();
+
+    void IJsonOnDeserialized.OnDeserialized() =>
+        AdditionalProperties.CopyFromExtensionData(_extensionData);
 
     /// <inheritdoc />
     public override string ToString()

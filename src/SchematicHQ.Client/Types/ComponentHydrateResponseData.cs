@@ -4,8 +4,13 @@ using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
 
-public record ComponentHydrateResponseData
+[Serializable]
+public record ComponentHydrateResponseData : IJsonOnDeserialized
 {
+    [JsonExtensionData]
+    private readonly IDictionary<string, JsonElement> _extensionData =
+        new Dictionary<string, JsonElement>();
+
     [JsonPropertyName("active_add_ons")]
     public IEnumerable<CompanyPlanDetailResponseData> ActiveAddOns { get; set; } =
         new List<CompanyPlanDetailResponseData>();
@@ -17,6 +22,10 @@ public record ComponentHydrateResponseData
     [JsonPropertyName("active_usage_based_entitlements")]
     public IEnumerable<UsageBasedEntitlementResponseData> ActiveUsageBasedEntitlements { get; set; } =
         new List<UsageBasedEntitlementResponseData>();
+
+    [JsonPropertyName("add_on_compatibilities")]
+    public IEnumerable<CompatiblePlans> AddOnCompatibilities { get; set; } =
+        new List<CompatiblePlans>();
 
     [JsonPropertyName("capabilities")]
     public ComponentCapabilities? Capabilities { get; set; }
@@ -45,12 +54,11 @@ public record ComponentHydrateResponseData
     [JsonPropertyName("upcoming_invoice")]
     public InvoiceResponseData? UpcomingInvoice { get; set; }
 
-    /// <summary>
-    /// Additional properties received from the response, if any.
-    /// </summary>
-    [JsonExtensionData]
-    public IDictionary<string, JsonElement> AdditionalProperties { get; internal set; } =
-        new Dictionary<string, JsonElement>();
+    [JsonIgnore]
+    public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();
+
+    void IJsonOnDeserialized.OnDeserialized() =>
+        AdditionalProperties.CopyFromExtensionData(_extensionData);
 
     /// <inheritdoc />
     public override string ToString()

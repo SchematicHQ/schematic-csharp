@@ -3,6 +3,7 @@ using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
 
+[Serializable]
 public record UpdatePlanEntitlementRequestBody
 {
     [JsonPropertyName("currency")]
@@ -29,11 +30,21 @@ public record UpdatePlanEntitlementRequestBody
     [JsonPropertyName("price_behavior")]
     public string? PriceBehavior { get; set; }
 
+    [JsonPropertyName("price_tiers")]
+    public IEnumerable<CreatePriceTierRequestBody> PriceTiers { get; set; } =
+        new List<CreatePriceTierRequestBody>();
+
     [JsonPropertyName("soft_limit")]
     public int? SoftLimit { get; set; }
 
+    [JsonPropertyName("tier_mode")]
+    public required string TierMode { get; set; }
+
     [JsonPropertyName("value_bool")]
     public bool? ValueBool { get; set; }
+
+    [JsonPropertyName("value_credit_id")]
+    public string? ValueCreditId { get; set; }
 
     [JsonPropertyName("value_numeric")]
     public int? ValueNumeric { get; set; }

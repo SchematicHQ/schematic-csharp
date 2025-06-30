@@ -4,8 +4,13 @@ using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
 
-public record UsageBasedEntitlementRequestBody
+[Serializable]
+public record UsageBasedEntitlementRequestBody : IJsonOnDeserialized
 {
+    [JsonExtensionData]
+    private readonly IDictionary<string, JsonElement> _extensionData =
+        new Dictionary<string, JsonElement>();
+
     [JsonPropertyName("currency")]
     public string? Currency { get; set; }
 
@@ -24,8 +29,15 @@ public record UsageBasedEntitlementRequestBody
     [JsonPropertyName("price_behavior")]
     public string? PriceBehavior { get; set; }
 
+    [JsonPropertyName("price_tiers")]
+    public IEnumerable<CreatePriceTierRequestBody> PriceTiers { get; set; } =
+        new List<CreatePriceTierRequestBody>();
+
     [JsonPropertyName("soft_limit")]
     public int? SoftLimit { get; set; }
+
+    [JsonPropertyName("tier_mode")]
+    public required string TierMode { get; set; }
 
     [JsonPropertyName("yearly_metered_price_id")]
     public string? YearlyMeteredPriceId { get; set; }
@@ -36,12 +48,11 @@ public record UsageBasedEntitlementRequestBody
     [JsonPropertyName("yearly_unit_price_decimal")]
     public string? YearlyUnitPriceDecimal { get; set; }
 
-    /// <summary>
-    /// Additional properties received from the response, if any.
-    /// </summary>
-    [JsonExtensionData]
-    public IDictionary<string, JsonElement> AdditionalProperties { get; internal set; } =
-        new Dictionary<string, JsonElement>();
+    [JsonIgnore]
+    public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();
+
+    void IJsonOnDeserialized.OnDeserialized() =>
+        AdditionalProperties.CopyFromExtensionData(_extensionData);
 
     /// <inheritdoc />
     public override string ToString()
