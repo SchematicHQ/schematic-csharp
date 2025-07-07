@@ -6,6 +6,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 This is the official Schematic .NET client library for C#, supporting .NET Standard, .NET Core, and .NET Framework. It provides a convenient way to interact with the Schematic API for feature flags, user management, and analytics.
 
+Much of this repository is generated using [Fern](https//buildwithfern.com). All files that are not listed in the .fernignore file will be regenerated over. If you need to edit any files in this repo, please ensure they are in .fernignore, or add them; if you're editing a generated file, you likely want to create a new file instead and add it to .fernignore, so as to keep generated and non-generated code separate.
+
 ## Repository Structure
 
 - `src/` - Contains the source code for the library

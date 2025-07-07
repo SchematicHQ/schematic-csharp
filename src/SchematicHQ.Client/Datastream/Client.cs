@@ -86,25 +86,14 @@ namespace SchematicHQ.Client.Datastream
       
       // Company and User caches use the configured provider type
       if (options.CacheProviderType == DatastreamCacheProviderType.Redis && 
-          options.RedisConnectionStrings.Count > 0)
+          options.RedisConfig != null)
       {
         try
         {
           _logger.Info("Initializing Redis cache for Datastream company and user data");
           // We need to use the Cache namespace version, but cast it to the Client namespace interface
-          _companyCache = (ICacheProvider<Company>)new Cache.RedisCache<Company>(
-              options.RedisConnectionStrings,
-              options.RedisKeyPrefix,
-              _cacheTtl,
-              options.RedisDatabase
-          );
-          
-          _userCache = (ICacheProvider<User>)new Cache.RedisCache<User>(
-              options.RedisConnectionStrings,
-              options.RedisKeyPrefix,
-              _cacheTtl,
-              options.RedisDatabase
-          );
+          _companyCache = (ICacheProvider<Company>)new Cache.RedisCache<Company>(options.RedisConfig);
+          _userCache = (ICacheProvider<User>)new Cache.RedisCache<User>(options.RedisConfig);
         }
         catch (Exception ex)
         {
