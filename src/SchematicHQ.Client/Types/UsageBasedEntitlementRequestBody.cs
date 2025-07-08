@@ -11,6 +11,9 @@ public record UsageBasedEntitlementRequestBody : IJsonOnDeserialized
     private readonly IDictionary<string, JsonElement> _extensionData =
         new Dictionary<string, JsonElement>();
 
+    [JsonPropertyName("credit_consumption_rate")]
+    public double? CreditConsumptionRate { get; set; }
+
     [JsonPropertyName("currency")]
     public string? Currency { get; set; }
 
@@ -27,7 +30,7 @@ public record UsageBasedEntitlementRequestBody : IJsonOnDeserialized
     public string? OverageBillingProductId { get; set; }
 
     [JsonPropertyName("price_behavior")]
-    public string? PriceBehavior { get; set; }
+    public UsageBasedEntitlementRequestBodyPriceBehavior? PriceBehavior { get; set; }
 
     [JsonPropertyName("price_tiers")]
     public IEnumerable<CreatePriceTierRequestBody> PriceTiers { get; set; } =

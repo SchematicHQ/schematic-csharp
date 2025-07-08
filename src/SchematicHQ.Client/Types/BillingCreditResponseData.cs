@@ -35,20 +35,26 @@ public record BillingCreditResponseData : IJsonOnDeserialized
     [JsonPropertyName("id")]
     public required string Id { get; set; }
 
+    [JsonPropertyName("monthly_price")]
+    public BillingPriceResponseData? MonthlyPrice { get; set; }
+
     [JsonPropertyName("name")]
     public required string Name { get; set; }
 
     [JsonPropertyName("plural_name")]
     public string? PluralName { get; set; }
 
-    [JsonPropertyName("price_per_unit")]
-    public required int PricePerUnit { get; set; }
+    [JsonPropertyName("product")]
+    public BillingProductResponseData? Product { get; set; }
 
     [JsonPropertyName("singular_name")]
     public string? SingularName { get; set; }
 
     [JsonPropertyName("updated_at")]
     public required DateTime UpdatedAt { get; set; }
+
+    [JsonPropertyName("yearly_price")]
+    public BillingPriceResponseData? YearlyPrice { get; set; }
 
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();

@@ -97,7 +97,12 @@ public partial class CreditsClient
 
     /// <example><code>
     /// await client.Credits.CreateBillingCreditAsync(
-    ///     new CreateBillingCreditRequestBody { Description = "description", Name = "name" }
+    ///     new CreateBillingCreditRequestBody
+    ///     {
+    ///         Currency = "currency",
+    ///         Description = "description",
+    ///         Name = "name",
+    ///     }
     /// );
     /// </code></example>
     public async Task<CreateBillingCreditResponse> CreateBillingCreditAsync(
@@ -233,10 +238,14 @@ public partial class CreditsClient
     }
 
     /// <example><code>
-    /// await client.Credits.DeleteBillingCreditAsync("billing_id");
+    /// await client.Credits.UpdateBillingCreditAsync(
+    ///     "billing_id",
+    ///     new UpdateBillingCreditRequestBody { Description = "description", Name = "name" }
+    /// );
     /// </code></example>
-    public async Task<DeleteBillingCreditResponse> DeleteBillingCreditAsync(
+    public async Task<UpdateBillingCreditResponse> UpdateBillingCreditAsync(
         string billingId,
+        UpdateBillingCreditRequestBody request,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
@@ -246,11 +255,13 @@ public partial class CreditsClient
                 new JsonRequest
                 {
                     BaseUrl = _client.Options.BaseUrl,
-                    Method = HttpMethod.Delete,
+                    Method = HttpMethod.Put,
                     Path = string.Format(
                         "billing/credits/{0}",
                         ValueConvert.ToPathParameterString(billingId)
                     ),
+                    Body = request,
+                    ContentType = "application/json",
                     Options = options,
                 },
                 cancellationToken
@@ -261,7 +272,7 @@ public partial class CreditsClient
             var responseBody = await response.Raw.Content.ReadAsStringAsync();
             try
             {
-                return JsonUtils.Deserialize<DeleteBillingCreditResponse>(responseBody)!;
+                return JsonUtils.Deserialize<UpdateBillingCreditResponse>(responseBody)!;
             }
             catch (JsonException e)
             {
@@ -311,6 +322,7 @@ public partial class CreditsClient
     )
     {
         var _query = new Dictionary<string, object>();
+        _query["ids"] = request.Ids;
         if (request.CreditId != null)
         {
             _query["credit_id"] = request.CreditId;
@@ -391,7 +403,12 @@ public partial class CreditsClient
 
     /// <example><code>
     /// await client.Credits.CreateCreditBundleAsync(
-    ///     new CreateCreditBundleRequestBody { CreditId = "credit_id", PricePerUnit = 1 }
+    ///     new CreateCreditBundleRequestBody
+    ///     {
+    ///         CreditId = "credit_id",
+    ///         Currency = "currency",
+    ///         PricePerUnit = 1,
+    ///     }
     /// );
     /// </code></example>
     public async Task<CreateCreditBundleResponse> CreateCreditBundleAsync(
@@ -680,6 +697,7 @@ public partial class CreditsClient
     )
     {
         var _query = new Dictionary<string, object>();
+        _query["ids"] = request.Ids;
         if (request.CreditId != null)
         {
             _query["credit_id"] = request.CreditId;
@@ -800,6 +818,328 @@ public partial class CreditsClient
             try
             {
                 return JsonUtils.Deserialize<CountBillingCreditsResponse>(responseBody)!;
+            }
+            catch (JsonException e)
+            {
+                throw new SchematicException("Failed to deserialize response", e);
+            }
+        }
+
+        {
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            try
+            {
+                switch (response.StatusCode)
+                {
+                    case 400:
+                        throw new BadRequestError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 401:
+                        throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 403:
+                        throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 404:
+                        throw new NotFoundError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 500:
+                        throw new InternalServerError(
+                            JsonUtils.Deserialize<ApiError>(responseBody)
+                        );
+                }
+            }
+            catch (JsonException)
+            {
+                // unable to map error response, throwing generic error
+            }
+            throw new SchematicApiException(
+                $"Error with status code {response.StatusCode}",
+                response.StatusCode,
+                responseBody
+            );
+        }
+    }
+
+    /// <example><code>
+    /// await client.Credits.ZeroOutGrantAsync("billing_id", new ZeroOutGrantRequestBody());
+    /// </code></example>
+    public async Task<ZeroOutGrantResponse> ZeroOutGrantAsync(
+        string billingId,
+        ZeroOutGrantRequestBody request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        var response = await _client
+            .SendRequestAsync(
+                new JsonRequest
+                {
+                    BaseUrl = _client.Options.BaseUrl,
+                    Method = HttpMethod.Put,
+                    Path = string.Format(
+                        "billing/credits/grants/{0}/zero-out",
+                        ValueConvert.ToPathParameterString(billingId)
+                    ),
+                    Body = request,
+                    ContentType = "application/json",
+                    Options = options,
+                },
+                cancellationToken
+            )
+            .ConfigureAwait(false);
+        if (response.StatusCode is >= 200 and < 400)
+        {
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            try
+            {
+                return JsonUtils.Deserialize<ZeroOutGrantResponse>(responseBody)!;
+            }
+            catch (JsonException e)
+            {
+                throw new SchematicException("Failed to deserialize response", e);
+            }
+        }
+
+        {
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            try
+            {
+                switch (response.StatusCode)
+                {
+                    case 400:
+                        throw new BadRequestError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 401:
+                        throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 403:
+                        throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 404:
+                        throw new NotFoundError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 500:
+                        throw new InternalServerError(
+                            JsonUtils.Deserialize<ApiError>(responseBody)
+                        );
+                }
+            }
+            catch (JsonException)
+            {
+                // unable to map error response, throwing generic error
+            }
+            throw new SchematicApiException(
+                $"Error with status code {response.StatusCode}",
+                response.StatusCode,
+                responseBody
+            );
+        }
+    }
+
+    /// <example><code>
+    /// await client.Credits.ListCompanyGrantsAsync(new ListCompanyGrantsRequest());
+    /// </code></example>
+    public async Task<ListCompanyGrantsResponse> ListCompanyGrantsAsync(
+        ListCompanyGrantsRequest request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        var _query = new Dictionary<string, object>();
+        if (request.CompanyId != null)
+        {
+            _query["company_id"] = request.CompanyId;
+        }
+        if (request.Order != null)
+        {
+            _query["order"] = request.Order.Value.Stringify();
+        }
+        if (request.Dir != null)
+        {
+            _query["dir"] = request.Dir.Value.Stringify();
+        }
+        if (request.Limit != null)
+        {
+            _query["limit"] = request.Limit.Value.ToString();
+        }
+        if (request.Offset != null)
+        {
+            _query["offset"] = request.Offset.Value.ToString();
+        }
+        var response = await _client
+            .SendRequestAsync(
+                new JsonRequest
+                {
+                    BaseUrl = _client.Options.BaseUrl,
+                    Method = HttpMethod.Get,
+                    Path = "billing/credits/grants/company/list",
+                    Query = _query,
+                    Options = options,
+                },
+                cancellationToken
+            )
+            .ConfigureAwait(false);
+        if (response.StatusCode is >= 200 and < 400)
+        {
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            try
+            {
+                return JsonUtils.Deserialize<ListCompanyGrantsResponse>(responseBody)!;
+            }
+            catch (JsonException e)
+            {
+                throw new SchematicException("Failed to deserialize response", e);
+            }
+        }
+
+        {
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            try
+            {
+                switch (response.StatusCode)
+                {
+                    case 400:
+                        throw new BadRequestError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 401:
+                        throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 403:
+                        throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 404:
+                        throw new NotFoundError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 500:
+                        throw new InternalServerError(
+                            JsonUtils.Deserialize<ApiError>(responseBody)
+                        );
+                }
+            }
+            catch (JsonException)
+            {
+                // unable to map error response, throwing generic error
+            }
+            throw new SchematicApiException(
+                $"Error with status code {response.StatusCode}",
+                response.StatusCode,
+                responseBody
+            );
+        }
+    }
+
+    /// <example><code>
+    /// await client.Credits.CountBillingCreditsGrantsAsync(new CountBillingCreditsGrantsRequest());
+    /// </code></example>
+    public async Task<CountBillingCreditsGrantsResponse> CountBillingCreditsGrantsAsync(
+        CountBillingCreditsGrantsRequest request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        var _query = new Dictionary<string, object>();
+        _query["ids"] = request.Ids;
+        if (request.CreditId != null)
+        {
+            _query["credit_id"] = request.CreditId;
+        }
+        if (request.Limit != null)
+        {
+            _query["limit"] = request.Limit.Value.ToString();
+        }
+        if (request.Offset != null)
+        {
+            _query["offset"] = request.Offset.Value.ToString();
+        }
+        var response = await _client
+            .SendRequestAsync(
+                new JsonRequest
+                {
+                    BaseUrl = _client.Options.BaseUrl,
+                    Method = HttpMethod.Get,
+                    Path = "billing/credits/grants/count",
+                    Query = _query,
+                    Options = options,
+                },
+                cancellationToken
+            )
+            .ConfigureAwait(false);
+        if (response.StatusCode is >= 200 and < 400)
+        {
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            try
+            {
+                return JsonUtils.Deserialize<CountBillingCreditsGrantsResponse>(responseBody)!;
+            }
+            catch (JsonException e)
+            {
+                throw new SchematicException("Failed to deserialize response", e);
+            }
+        }
+
+        {
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            try
+            {
+                switch (response.StatusCode)
+                {
+                    case 400:
+                        throw new BadRequestError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 401:
+                        throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 403:
+                        throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 404:
+                        throw new NotFoundError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 500:
+                        throw new InternalServerError(
+                            JsonUtils.Deserialize<ApiError>(responseBody)
+                        );
+                }
+            }
+            catch (JsonException)
+            {
+                // unable to map error response, throwing generic error
+            }
+            throw new SchematicApiException(
+                $"Error with status code {response.StatusCode}",
+                response.StatusCode,
+                responseBody
+            );
+        }
+    }
+
+    /// <example><code>
+    /// await client.Credits.ListGrantsForCreditAsync(new ListGrantsForCreditRequest());
+    /// </code></example>
+    public async Task<ListGrantsForCreditResponse> ListGrantsForCreditAsync(
+        ListGrantsForCreditRequest request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        var _query = new Dictionary<string, object>();
+        _query["ids"] = request.Ids;
+        if (request.CreditId != null)
+        {
+            _query["credit_id"] = request.CreditId;
+        }
+        if (request.Limit != null)
+        {
+            _query["limit"] = request.Limit.Value.ToString();
+        }
+        if (request.Offset != null)
+        {
+            _query["offset"] = request.Offset.Value.ToString();
+        }
+        var response = await _client
+            .SendRequestAsync(
+                new JsonRequest
+                {
+                    BaseUrl = _client.Options.BaseUrl,
+                    Method = HttpMethod.Get,
+                    Path = "billing/credits/grants/list",
+                    Query = _query,
+                    Options = options,
+                },
+                cancellationToken
+            )
+            .ConfigureAwait(false);
+        if (response.StatusCode is >= 200 and < 400)
+        {
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            try
+            {
+                return JsonUtils.Deserialize<ListGrantsForCreditResponse>(responseBody)!;
             }
             catch (JsonException e)
             {
@@ -962,6 +1302,75 @@ public partial class CreditsClient
             try
             {
                 return JsonUtils.Deserialize<CreateBillingPlanCreditGrantResponse>(responseBody)!;
+            }
+            catch (JsonException e)
+            {
+                throw new SchematicException("Failed to deserialize response", e);
+            }
+        }
+
+        {
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            try
+            {
+                switch (response.StatusCode)
+                {
+                    case 400:
+                        throw new BadRequestError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 401:
+                        throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 403:
+                        throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 404:
+                        throw new NotFoundError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 500:
+                        throw new InternalServerError(
+                            JsonUtils.Deserialize<ApiError>(responseBody)
+                        );
+                }
+            }
+            catch (JsonException)
+            {
+                // unable to map error response, throwing generic error
+            }
+            throw new SchematicApiException(
+                $"Error with status code {response.StatusCode}",
+                response.StatusCode,
+                responseBody
+            );
+        }
+    }
+
+    /// <example><code>
+    /// await client.Credits.DeleteBillingPlanCreditGrantAsync("billing_id");
+    /// </code></example>
+    public async Task<DeleteBillingPlanCreditGrantResponse> DeleteBillingPlanCreditGrantAsync(
+        string billingId,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        var response = await _client
+            .SendRequestAsync(
+                new JsonRequest
+                {
+                    BaseUrl = _client.Options.BaseUrl,
+                    Method = HttpMethod.Delete,
+                    Path = string.Format(
+                        "billing/credits/plan-grants/{0}",
+                        ValueConvert.ToPathParameterString(billingId)
+                    ),
+                    Options = options,
+                },
+                cancellationToken
+            )
+            .ConfigureAwait(false);
+        if (response.StatusCode is >= 200 and < 400)
+        {
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            try
+            {
+                return JsonUtils.Deserialize<DeleteBillingPlanCreditGrantResponse>(responseBody)!;
             }
             catch (JsonException e)
             {

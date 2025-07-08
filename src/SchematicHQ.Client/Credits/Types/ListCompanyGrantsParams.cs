@@ -8,20 +8,17 @@ namespace SchematicHQ.Client;
 /// Input parameters
 /// </summary>
 [Serializable]
-public record ListCreditBundlesParams : IJsonOnDeserialized
+public record ListCompanyGrantsParams : IJsonOnDeserialized
 {
     [JsonExtensionData]
     private readonly IDictionary<string, JsonElement> _extensionData =
         new Dictionary<string, JsonElement>();
 
-    [JsonPropertyName("bundle_type")]
-    public string? BundleType { get; set; }
+    [JsonPropertyName("company_id")]
+    public string? CompanyId { get; set; }
 
-    [JsonPropertyName("credit_id")]
-    public string? CreditId { get; set; }
-
-    [JsonPropertyName("ids")]
-    public IEnumerable<string>? Ids { get; set; }
+    [JsonPropertyName("dir")]
+    public ListCompanyGrantsResponseParamsDir? Dir { get; set; }
 
     /// <summary>
     /// Page limit (default 100)
@@ -35,8 +32,8 @@ public record ListCreditBundlesParams : IJsonOnDeserialized
     [JsonPropertyName("offset")]
     public int? Offset { get; set; }
 
-    [JsonPropertyName("status")]
-    public ListCreditBundlesResponseParamsStatus? Status { get; set; }
+    [JsonPropertyName("order")]
+    public ListCompanyGrantsResponseParamsOrder? Order { get; set; }
 
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();

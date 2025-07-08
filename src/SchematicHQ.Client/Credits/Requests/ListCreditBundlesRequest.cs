@@ -7,6 +7,9 @@ namespace SchematicHQ.Client;
 public record ListCreditBundlesRequest
 {
     [JsonIgnore]
+    public IEnumerable<string> Ids { get; set; } = new List<string>();
+
+    [JsonIgnore]
     public string? CreditId { get; set; }
 
     [JsonIgnore]

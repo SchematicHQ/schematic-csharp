@@ -8,14 +8,11 @@ namespace SchematicHQ.Client;
 /// Input parameters
 /// </summary>
 [Serializable]
-public record ListCreditBundlesParams : IJsonOnDeserialized
+public record CountBillingCreditsGrantsParams : IJsonOnDeserialized
 {
     [JsonExtensionData]
     private readonly IDictionary<string, JsonElement> _extensionData =
         new Dictionary<string, JsonElement>();
-
-    [JsonPropertyName("bundle_type")]
-    public string? BundleType { get; set; }
 
     [JsonPropertyName("credit_id")]
     public string? CreditId { get; set; }
@@ -34,9 +31,6 @@ public record ListCreditBundlesParams : IJsonOnDeserialized
     /// </summary>
     [JsonPropertyName("offset")]
     public int? Offset { get; set; }
-
-    [JsonPropertyName("status")]
-    public ListCreditBundlesResponseParamsStatus? Status { get; set; }
 
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();

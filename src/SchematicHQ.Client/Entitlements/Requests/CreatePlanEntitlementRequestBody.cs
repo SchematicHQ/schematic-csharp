@@ -6,6 +6,9 @@ namespace SchematicHQ.Client;
 [Serializable]
 public record CreatePlanEntitlementRequestBody
 {
+    [JsonPropertyName("credit_consumption_rate")]
+    public double? CreditConsumptionRate { get; set; }
+
     [JsonPropertyName("currency")]
     public string? Currency { get; set; }
 
@@ -34,7 +37,7 @@ public record CreatePlanEntitlementRequestBody
     public required string PlanId { get; set; }
 
     [JsonPropertyName("price_behavior")]
-    public string? PriceBehavior { get; set; }
+    public CreatePlanEntitlementRequestBodyPriceBehavior? PriceBehavior { get; set; }
 
     [JsonPropertyName("price_tiers")]
     public IEnumerable<CreatePriceTierRequestBody> PriceTiers { get; set; } =

@@ -5,20 +5,24 @@ using SchematicHQ.Client.Core;
 namespace SchematicHQ.Client;
 
 [Serializable]
-public record DeleteBillingCreditResponse : IJsonOnDeserialized
+public record ListCompanyGrantsResponse : IJsonOnDeserialized
 {
     [JsonExtensionData]
     private readonly IDictionary<string, JsonElement> _extensionData =
         new Dictionary<string, JsonElement>();
 
+    /// <summary>
+    /// The returned resources
+    /// </summary>
     [JsonPropertyName("data")]
-    public required DeleteResponse Data { get; set; }
+    public IEnumerable<BillingCreditGrantResponseData> Data { get; set; } =
+        new List<BillingCreditGrantResponseData>();
 
     /// <summary>
     /// Input parameters
     /// </summary>
     [JsonPropertyName("params")]
-    public Dictionary<string, object?> Params { get; set; } = new Dictionary<string, object?>();
+    public required ListCompanyGrantsParams Params { get; set; }
 
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();

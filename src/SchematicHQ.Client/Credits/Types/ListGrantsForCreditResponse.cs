@@ -4,39 +4,25 @@ using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
 
-/// <summary>
-/// Input parameters
-/// </summary>
 [Serializable]
-public record ListCreditBundlesParams : IJsonOnDeserialized
+public record ListGrantsForCreditResponse : IJsonOnDeserialized
 {
     [JsonExtensionData]
     private readonly IDictionary<string, JsonElement> _extensionData =
         new Dictionary<string, JsonElement>();
 
-    [JsonPropertyName("bundle_type")]
-    public string? BundleType { get; set; }
-
-    [JsonPropertyName("credit_id")]
-    public string? CreditId { get; set; }
-
-    [JsonPropertyName("ids")]
-    public IEnumerable<string>? Ids { get; set; }
+    /// <summary>
+    /// The returned resources
+    /// </summary>
+    [JsonPropertyName("data")]
+    public IEnumerable<BillingCreditGrantResponseData> Data { get; set; } =
+        new List<BillingCreditGrantResponseData>();
 
     /// <summary>
-    /// Page limit (default 100)
+    /// Input parameters
     /// </summary>
-    [JsonPropertyName("limit")]
-    public int? Limit { get; set; }
-
-    /// <summary>
-    /// Page offset (default 0)
-    /// </summary>
-    [JsonPropertyName("offset")]
-    public int? Offset { get; set; }
-
-    [JsonPropertyName("status")]
-    public ListCreditBundlesResponseParamsStatus? Status { get; set; }
+    [JsonPropertyName("params")]
+    public required ListGrantsForCreditParams Params { get; set; }
 
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();
