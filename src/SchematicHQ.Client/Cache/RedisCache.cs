@@ -56,6 +56,22 @@ namespace SchematicHQ.Client.Cache
                 ServiceName = config.ServiceName
             };
 
+            // Apply cluster-specific configuration if provided
+            if (config is RedisCacheClusterConfig clusterConfig)
+            {
+                // Note: StackExchange.Redis handles cluster operations internally.
+                // Some cluster-specific behaviors in StackExchange.Redis:
+                // - MaxRedirects: Not directly configurable, handled internally (default is 16)
+                // - RouteByLatency: Use ResolveDns = true to enable latency-based routing
+                // - RouteRandomly: Not directly supported, load balancing is automatic
+
+                // Enable DNS resolution for better cluster node discovery
+                options.ResolveDns = clusterConfig.RouteByLatency;
+
+                // For Redis Cluster, we should not use proxy mode
+                options.Proxy = Proxy.None;
+            }
+
             // Add endpoints
             foreach (var endpoint in config.Endpoints)
             {

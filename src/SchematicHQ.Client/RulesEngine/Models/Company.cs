@@ -1,7 +1,7 @@
 using System.Diagnostics;
 using System.Text.Json.Serialization;
 
-namespace RulesEngine.Models
+namespace SchematicHQ.Client.RulesEngine.Models
 {
   public class Company
   {

@@ -5,8 +5,8 @@ using System.Text.Json.Serialization;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using OneOf.Types;
-using RulesEngine;
-using RulesEngine.Models;
+using SchematicHQ.Client.RulesEngine;
+using SchematicHQ.Client.RulesEngine.Models;
 using SchematicHQ.Client;
 using SchematicHQ.Client.Cache;
 

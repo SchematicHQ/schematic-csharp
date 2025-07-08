@@ -1,6 +1,6 @@
 using System.Text.Json;
 using NUnit.Framework;
-using RulesEngine.Models;
+using SchematicHQ.Client.RulesEngine.Models;
 using SchematicHQ.Client.Datastream;
 using SchematicHQ.Client.Test.Datastream.Mocks;
 

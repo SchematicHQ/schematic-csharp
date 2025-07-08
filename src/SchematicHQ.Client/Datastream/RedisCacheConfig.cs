@@ -100,22 +100,29 @@ namespace SchematicHQ.Client.Datastream
     }
 
     /// <summary>
-    /// Configuration for Redis Cluster
+    /// Configuration for Redis Cluster.
+    /// Note: StackExchange.Redis handles most cluster operations automatically.
+    /// These settings provide hints for optimization but have limited direct mapping.
     /// </summary>
     public class RedisCacheClusterConfig : RedisCacheConfig
     {
         /// <summary>
         /// Maximum number of redirects to follow (default: 10)
+        /// Note: StackExchange.Redis handles redirects internally (max 16).
+        /// This property is reserved for future use.
         /// </summary>
         public int MaxRedirects { get; set; } = 10;
 
         /// <summary>
-        /// Route commands by latency measurements
+        /// Route commands by latency measurements.
+        /// When true, enables DNS resolution for better node discovery.
         /// </summary>
         public bool RouteByLatency { get; set; } = false;
 
         /// <summary>
-        /// Route commands randomly between replicas
+        /// Route commands randomly between replicas.
+        /// Note: StackExchange.Redis handles load balancing automatically.
+        /// This property is reserved for future use.
         /// </summary>
         public bool RouteRandomly { get; set; } = false;
     }
