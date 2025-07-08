@@ -11,7 +11,7 @@ namespace SchematicHQ.Client.Cache
         /// In-memory local cache (default)
         /// </summary>
         Local,
-        
+
         /// <summary>
         /// Redis distributed cache
         /// </summary>
@@ -34,19 +34,9 @@ namespace SchematicHQ.Client.Cache
         public TimeSpan? CacheTtl { get; set; }
 
         /// <summary>
-        /// Redis connection string (required for Redis cache)
+        /// Redis cache configuration
         /// </summary>
-        public IEnumerable<string>? RedisConnectionStrings { get; set; }
-
-        /// <summary>
-        /// Redis key prefix
-        /// </summary>
-        public string? RedisKeyPrefix { get; set; }
-
-        /// <summary>
-        /// Redis database number
-        /// </summary>
-        public int RedisDatabase { get; set; } = 0;
+        public Datastream.RedisCacheConfig? RedisConfig { get; set; }
 
         /// <summary>
         /// Cache capacity for local cache

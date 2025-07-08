@@ -303,6 +303,93 @@ Schematic schematic = new Schematic("YOUR_API_KEY", options);
 ```
 ***Note about LocalCache:*** LocalCache implementation returns default value the type it is initiated with when it is a cache miss. Hence, when using with Schematic it is initiated with type (bool?) so that cache returns null when it is a miss
 
+### Redis Cache Configuration
+
+For distributed applications or when you need persistent caching across application restarts, you can use Redis as your cache provider:
+
+```csharp
+using SchematicHQ.Client;
+using SchematicHQ.Client.Cache;
+using SchematicHQ.Client.Datastream;
+
+var options = new ClientOptions
+{
+    CacheConfiguration = new CacheConfiguration
+    {
+        ProviderType = CacheProviderType.Redis,
+        RedisConfig = new RedisCacheConfig
+        {
+            // Required: Redis server endpoints
+            Endpoints = new List<string> { "redis.example.com:6379" },
+
+            // Optional: Authentication
+            Password = "your-redis-password",
+            Username = "default",  // For Redis 6.0+ ACL
+
+            // Optional: Connection settings
+            Ssl = true,
+            ConnectTimeout = 5000,  // milliseconds
+            ConnectRetry = 3,
+            AbortOnConnectFail = false,  // Continue if Redis is unavailable
+
+            // Optional: Cache settings
+            KeyPrefix = "schematic:",
+            Database = 0,
+            CacheTTL = TimeSpan.FromMinutes(5)
+        }
+    }
+};
+
+Schematic schematic = new Schematic("YOUR_API_KEY", options);
+```
+
+You can also use the fluent API for simpler Redis configuration:
+
+```csharp
+var options = new ClientOptions()
+    .WithRedisCache(new RedisCacheConfig
+    {
+        Endpoints = new List<string> { "redis.example.com:6379" },
+        Password = "secret",
+        Username = "default"  // For Redis 6.0+ ACL
+    });
+```
+
+#### Redis Cluster Configuration
+
+For Redis Cluster deployments, use the `RedisCacheClusterConfig` class:
+
+```csharp
+var options = new ClientOptions
+{
+    CacheConfiguration = new CacheConfiguration
+    {
+        ProviderType = CacheProviderType.Redis,
+        RedisConfig = new RedisCacheClusterConfig
+        {
+            // Multiple cluster nodes
+            Endpoints = new List<string>
+            {
+                "cluster1.example.com:6379",
+                "cluster2.example.com:6379",
+                "cluster3.example.com:6379"
+            },
+
+            // Authentication
+            Password = "cluster-password",
+            Username = "default",  // For Redis 6.0+ ACL
+
+            // Cluster optimization
+            RouteByLatency = true,  // Enable latency-based routing
+
+            // Other settings
+            ConnectTimeout = 10000,
+            AbortOnConnectFail = false
+        }
+    }
+};
+```
+
 You can also disable local caching entirely; bear in mind that, in this case, every flag check will result in a network request:
 
 ```csharp
@@ -478,20 +565,24 @@ var options = new ClientOptions
 {
     // Enable Datastream (required)
     UseDatastream = true,
-    
+
     // Configure Datastream-specific options
     DatastreamOptions = new DatastreamOptions()
         // Use Redis cache for better performance in distributed environments
-        .WithRedisCache(
-            connectionStrings: new List<string> 
-            { 
+        .WithRedisCache(new RedisCacheConfig
+        {
+            Endpoints = new List<string>
+            {
                 "redis-primary.example.com:6379",
                 "redis-replica.example.com:6379"
             },
-            keyPrefix: "my-app:",
-            cacheTtl: TimeSpan.FromMinutes(10),
-            database: 0
-        )
+            Password = "your-redis-password",  // Optional
+            Username = "default",  // Optional (Redis 6.0+ ACL)
+            KeyPrefix = "my-app:",
+            CacheTTL = TimeSpan.FromMinutes(10),
+            Database = 0,
+            Ssl = true  // Enable SSL if needed
+        })
         // Or use local cache for single-instance applications
         //.WithLocalCache(capacity: 10000, ttl: TimeSpan.FromMinutes(5))
 };
@@ -513,19 +604,27 @@ var options = new ClientOptions
 {
     // Enable Datastream
     UseDatastream = true,
-    
+
     // Create cache configuration with Redis settings (used by both main client and Datastream)
     CacheConfiguration = new CacheConfiguration
     {
         ProviderType = CacheProviderType.Redis,
-        RedisConnectionStrings = new List<string> 
-        { 
-            "redis-1.example.com:6379",
-            "redis-2.example.com:6379",
-            "redis-3.example.com:6379" 
-        },
-        RedisKeyPrefix = "prod:",
-        CacheTtl = TimeSpan.FromMinutes(10)
+        RedisConfig = new RedisCacheConfig
+        {
+            Endpoints = new List<string>
+            {
+                "redis-1.example.com:6379",
+                "redis-2.example.com:6379",
+                "redis-3.example.com:6379"
+            },
+            Password = "your-redis-password",  // Optional
+            Username = "default",              // Optional (Redis 6.0+)
+            KeyPrefix = "prod:",
+            CacheTTL = TimeSpan.FromMinutes(10),
+            Ssl = true,                       // Enable SSL if needed
+            ConnectTimeout = 5000,            // Connection timeout in ms
+            AbortOnConnectFail = false        // Continue if Redis is unavailable
+        }
     }
 };
 

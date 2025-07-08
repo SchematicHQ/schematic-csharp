@@ -1,5 +1,5 @@
 using Microsoft.Extensions.Logging;
-using RulesEngine;
+using SchematicHQ.Client.RulesEngine;
 using System;
 using System.Collections.Generic;
 using System.Threading;

@@ -1,7 +1,7 @@
 using System.Globalization;
 using System.Text.Json.Serialization;
 
-namespace RulesEngine.Utils
+namespace SchematicHQ.Client.RulesEngine.Utils
 {
   
   [JsonConverter(typeof(JsonStringEnumConverter))]

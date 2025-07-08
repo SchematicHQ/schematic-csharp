@@ -2,8 +2,8 @@ using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using NUnit.Framework;
-using RulesEngine.Models;
-using RulesEngine.Utils;
+using SchematicHQ.Client.RulesEngine.Models;
+using SchematicHQ.Client.RulesEngine.Utils;
 using SchematicHQ.Client.Datastream;
 using SchematicHQ.Client.Test.Datastream.Mocks;
 

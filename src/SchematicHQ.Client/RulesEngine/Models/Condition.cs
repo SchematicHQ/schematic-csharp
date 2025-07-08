@@ -1,7 +1,7 @@
-using RulesEngine.Utils;
+using SchematicHQ.Client.RulesEngine.Utils;
 using System.Text.Json.Serialization;
 
-namespace RulesEngine.Models
+namespace SchematicHQ.Client.RulesEngine.Models
 {
   public class Condition
   {

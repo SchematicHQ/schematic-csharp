@@ -1,7 +1,7 @@
 using System.Text.Json.Serialization;
 using System.Collections.Generic;
 
-namespace RulesEngine
+namespace SchematicHQ.Client.RulesEngine
 {
   [JsonConverter(typeof(JsonStringEnumConverter))]
   public enum ConditionType

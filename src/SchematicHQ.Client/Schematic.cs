@@ -83,29 +83,28 @@ public partial class Schematic
         {
             // Create cache providers based on configuration
             _flagCheckCacheProviders = new List<ICacheProvider<bool?>>();
-            
+
             switch (_options.CacheConfiguration.ProviderType)
             {
                 case CacheProviderType.Redis:
-                    if (_options.CacheConfiguration.RedisConnectionStrings == null || 
-                        !_options.CacheConfiguration.RedisConnectionStrings.Any())
+                    if (_options.CacheConfiguration.RedisConfig == null)
                     {
-                        _logger.Warn("Redis connection string not provided, falling back to local cache");
+                        _logger.Warn("Redis configuration not provided, falling back to local cache");
                         _flagCheckCacheProviders.Add(new LocalCache<bool?>());
                     }
                     else
                     {
-                        RedisCache<bool?> redisCache = 
-                             new RedisCache<bool?>(
-                                _options.CacheConfiguration.RedisConnectionStrings,
-                                _options.CacheConfiguration.RedisKeyPrefix,
-                                _options.CacheConfiguration.CacheTtl,
-                                _options.CacheConfiguration.RedisDatabase
-                            );
+                        // Ensure the config has the cache TTL set
+                        if (!_options.CacheConfiguration.RedisConfig.CacheTTL.HasValue && _options.CacheConfiguration.CacheTtl.HasValue)
+                        {
+                            _options.CacheConfiguration.RedisConfig.CacheTTL = _options.CacheConfiguration.CacheTtl;
+                        }
+
+                        RedisCache<bool?> redisCache = new RedisCache<bool?>(_options.CacheConfiguration.RedisConfig);
                         _flagCheckCacheProviders.Add(redisCache);
                     }
                     break;
-                    
+
                 case CacheProviderType.Local:
                 default:
                     _flagCheckCacheProviders.Add(new LocalCache<bool?>(
@@ -129,7 +128,7 @@ public partial class Schematic
         {
             // Create DatastreamOptions with cache settings from _options.CacheConfiguration
             var datastreamOptions = _options.DatastreamOptions ?? new DatastreamOptions();
-   
+
             // Apply cache settings from the main configuration
             if (_options.CacheConfiguration != null)
             {
@@ -141,9 +140,7 @@ public partial class Schematic
                 // Pass through the Redis settings if using Redis
                 if (datastreamOptions.CacheProviderType == DatastreamCacheProviderType.Redis)
                 {
-                    datastreamOptions.RedisConnectionStrings = _options.CacheConfiguration.RedisConnectionStrings.ToList<string>();
-                    datastreamOptions.RedisKeyPrefix = _options.CacheConfiguration.RedisKeyPrefix;
-                    datastreamOptions.RedisDatabase = _options.CacheConfiguration.RedisDatabase;
+                    datastreamOptions.RedisConfig = _options.CacheConfiguration.RedisConfig;
                 }
 
                 // Apply local cache settings
@@ -153,7 +150,7 @@ public partial class Schematic
                 datastreamOptions.CacheTTL = _options.CacheConfiguration.CacheTtl;
             }
             _datastreamClient = new DatastreamClientAdapter(
-                _options.BaseUrl, 
+                _options.BaseUrl,
                 _logger,
                 apiKey,
                 datastreamOptions
@@ -169,7 +166,7 @@ public partial class Schematic
         {
             await _eventBuffer.Stop();
         }
-        
+
         if (_datastreamClient != null)
         {
             _datastreamClient.Close();
@@ -308,9 +305,9 @@ public partial class Schematic
 /// Submit a flag check event to track analytics about flag usage
 /// </summary>
 private void SubmitFlagCheckEvent(
-    string flagKey, 
-    bool value, 
-    Dictionary<string, string>? company, 
+    string flagKey,
+    bool value,
+    Dictionary<string, string>? company,
     Dictionary<string, string>? user,
     EventBodyFlagCheck? body = null,
     string? error = null)
@@ -332,7 +329,7 @@ private void SubmitFlagCheckEvent(
         };
 
         _logger.Debug("Submitting flag check event: {0}", flagKey);
-        
+
         EnqueueEvent(CreateEventRequestBodyEventType.FlagCheck, eventBody);
     }
     catch (Exception ex)

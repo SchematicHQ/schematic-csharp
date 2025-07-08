@@ -9,6 +9,5 @@ Configure additional MSBuild properties for your project in this file:
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="StackExchange.Redis" Version="2.8.41" />
-    <ProjectReference Include="..\SchematicHQ.RulesEngine\src\RulesEngine\RulesEngine.csproj" />
   </ItemGroup>
 </Project>

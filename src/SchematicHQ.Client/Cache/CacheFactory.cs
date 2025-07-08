@@ -25,18 +25,11 @@ namespace SchematicHQ.Client.Cache
         /// Create a Redis cache
         /// </summary>
         /// <typeparam name="T">Type of values to cache</typeparam>
-        /// <param name="connectionString">Redis connection string</param>
-        /// <param name="keyPrefix">Prefix for Redis keys</param>
-        /// <param name="ttl">Time-to-live for cached items</param>
-        /// <param name="database">Redis database number</param>
+        /// <param name="config">Redis configuration</param>
         /// <returns>A new Redis cache instance</returns>
-        public static ICacheProvider<T> CreateRedisCache<T>(
-            IEnumerable<string> connectionStrings, 
-            string? keyPrefix = null, 
-            TimeSpan? ttl = null, 
-            int database = 0)
+        public static ICacheProvider<T> CreateRedisCache<T>(Datastream.RedisCacheConfig config)
         {
-            return new RedisCache<T>(connectionStrings, keyPrefix, ttl, database);
+            return new RedisCache<T>(config);
         }
     }
 }

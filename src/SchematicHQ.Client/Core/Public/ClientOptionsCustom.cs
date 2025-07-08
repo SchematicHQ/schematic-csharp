@@ -42,35 +42,42 @@ public static class ClientOptionsExtensions
             UseDatastream = options.UseDatastream,
         };
     }
-    
+
     /// <summary>
     /// Configure the client to use a Redis cache
     /// </summary>
     /// <param name="options">Client options</param>
-    /// <param name="connectionString">Redis connection string</param>
-    /// <param name="keyPrefix">Optional key prefix</param>
-    /// <param name="cacheTtl">Optional cache TTL</param>
-    /// <param name="database">Optional Redis database number</param>
+    /// <param name="redisConfig">Redis configuration</param>
     /// <returns>Updated client options</returns>
     public static ClientOptions WithRedisCache(
-        this ClientOptions options, 
-        IEnumerable<string> connectionStrings, 
-        string? keyPrefix = null, 
-        TimeSpan? cacheTtl = null, 
-        int database = 0)
+        this ClientOptions options,
+        Datastream.RedisCacheConfig redisConfig)
     {
         options.CacheConfiguration = new Cache.CacheConfiguration
         {
             ProviderType = Cache.CacheProviderType.Redis,
-            RedisConnectionStrings = connectionStrings,
-            RedisKeyPrefix = keyPrefix,
-            CacheTtl = cacheTtl,
-            RedisDatabase = database
+            RedisConfig = redisConfig,
+            CacheTtl = redisConfig.CacheTTL
         };
-        
+
         return options;
     }
-    
+
+    /// <summary>
+    /// Configure the client to use a Redis cache with configuration builder
+    /// </summary>
+    /// <param name="options">Client options</param>
+    /// <param name="configureRedis">Action to configure Redis settings</param>
+    /// <returns>Updated client options</returns>
+    public static ClientOptions WithRedisCache(
+        this ClientOptions options,
+        Action<Datastream.RedisCacheConfig> configureRedis)
+    {
+        var redisConfig = new Datastream.RedisCacheConfig();
+        configureRedis(redisConfig);
+        return WithRedisCache(options, redisConfig);
+    }
+
     /// <summary>
     /// Configure the client to use a local in-memory cache
     /// </summary>
@@ -79,8 +86,8 @@ public static class ClientOptionsExtensions
     /// <param name="ttl">Cache TTL</param>
     /// <returns>Updated client options</returns>
     public static ClientOptions WithLocalCache(
-        this ClientOptions options, 
-        int capacity = Cache.LocalCache<bool?>.DEFAULT_CACHE_CAPACITY, 
+        this ClientOptions options,
+        int capacity = Cache.LocalCache<bool?>.DEFAULT_CACHE_CAPACITY,
         TimeSpan? ttl = null)
     {
         options.CacheConfiguration = new Cache.CacheConfiguration
@@ -89,7 +96,7 @@ public static class ClientOptionsExtensions
             LocalCacheCapacity = capacity,
             CacheTtl = ttl
         };
-        
+
         return options;
     }
 }
