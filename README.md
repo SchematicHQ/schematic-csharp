@@ -320,7 +320,7 @@ var options = new ClientOptions
         RedisConfig = new RedisCacheConfig
         {
             // Required: Redis server endpoints
-            Endpoints = new List<string> { "localhost:6379" },
+            Endpoints = new List<string> { "redis.example.com:6379" },
 
             // Optional: Authentication
             Password = "your-redis-password",
@@ -350,7 +350,8 @@ var options = new ClientOptions()
     .WithRedisCache(new RedisCacheConfig
     {
         Endpoints = new List<string> { "redis.example.com:6379" },
-        Password = "secret"
+        Password = "secret",
+        Username = "default"  // For Redis 6.0+ ACL
     });
 ```
 
@@ -376,6 +377,7 @@ var options = new ClientOptions
 
             // Authentication
             Password = "cluster-password",
+            Username = "default",  // For Redis 6.0+ ACL
 
             // Cluster optimization
             RouteByLatency = true,  // Enable latency-based routing
@@ -575,6 +577,7 @@ var options = new ClientOptions
                 "redis-replica.example.com:6379"
             },
             Password = "your-redis-password",  // Optional
+            Username = "default",  // Optional (Redis 6.0+ ACL)
             KeyPrefix = "my-app:",
             CacheTTL = TimeSpan.FromMinutes(10),
             Database = 0,
