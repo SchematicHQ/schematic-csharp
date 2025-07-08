@@ -20,6 +20,9 @@ public record CountCreditBundlesParams : IJsonOnDeserialized
     [JsonPropertyName("credit_id")]
     public string? CreditId { get; set; }
 
+    [JsonPropertyName("ids")]
+    public IEnumerable<string>? Ids { get; set; }
+
     /// <summary>
     /// Page limit (default 100)
     /// </summary>

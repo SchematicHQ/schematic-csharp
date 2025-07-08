@@ -11,6 +11,9 @@ public record UsageBasedEntitlementResponseData : IJsonOnDeserialized
     private readonly IDictionary<string, JsonElement> _extensionData =
         new Dictionary<string, JsonElement>();
 
+    [JsonPropertyName("consumption_rate")]
+    public double? ConsumptionRate { get; set; }
+
     [JsonPropertyName("feature_id")]
     public required string FeatureId { get; set; }
 

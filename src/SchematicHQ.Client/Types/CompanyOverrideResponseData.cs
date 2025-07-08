@@ -20,6 +20,9 @@ public record CompanyOverrideResponseData : IJsonOnDeserialized
     [JsonPropertyName("company_id")]
     public required string CompanyId { get; set; }
 
+    [JsonPropertyName("consumption_rate")]
+    public double? ConsumptionRate { get; set; }
+
     [JsonPropertyName("created_at")]
     public required DateTime CreatedAt { get; set; }
 

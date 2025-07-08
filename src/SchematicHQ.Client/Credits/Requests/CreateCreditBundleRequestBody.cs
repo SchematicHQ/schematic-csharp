@@ -12,6 +12,9 @@ public record CreateCreditBundleRequestBody
     [JsonPropertyName("credit_id")]
     public required string CreditId { get; set; }
 
+    [JsonPropertyName("currency")]
+    public required string Currency { get; set; }
+
     [JsonPropertyName("expiry_type")]
     public CreateCreditBundleRequestBodyExpiryType? ExpiryType { get; set; }
 

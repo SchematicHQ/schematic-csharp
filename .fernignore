@@ -1,9 +1,11 @@
 # Specify files that shouldn't be modified by Fern
-README.md
+.claude/settings.json
 .github/CODEOWNERS
 .github/workflows/claude-code.yml
 CLAUDE.md
+README.md
 examples/
+src/SchematicHQ.Client.Test/Cache/
 src/SchematicHQ.Client.Test/Datastream/
 src/SchematicHQ.Client.Test/TestCache.cs
 src/SchematicHQ.Client.Test/TestClient.cs

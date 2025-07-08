@@ -4,19 +4,16 @@ using SchematicHQ.Client.Core;
 namespace SchematicHQ.Client;
 
 [Serializable]
-public record CountCreditBundlesRequest
+public record ListCompanyGrantsRequest
 {
     [JsonIgnore]
-    public IEnumerable<string> Ids { get; set; } = new List<string>();
+    public string? CompanyId { get; set; }
 
     [JsonIgnore]
-    public string? CreditId { get; set; }
+    public ListCompanyGrantsRequestOrder? Order { get; set; }
 
     [JsonIgnore]
-    public CountCreditBundlesRequestStatus? Status { get; set; }
-
-    [JsonIgnore]
-    public string? BundleType { get; set; }
+    public ListCompanyGrantsRequestDir? Dir { get; set; }
 
     /// <summary>
     /// Page limit (default 100)

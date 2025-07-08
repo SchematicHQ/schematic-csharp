@@ -17,9 +17,6 @@ public record FeatureUsageDataResponseData : IJsonOnDeserialized
     [JsonPropertyName("entitlement_value_type")]
     public required string EntitlementValueType { get; set; }
 
-    [JsonPropertyName("event_count")]
-    public int? EventCount { get; set; }
-
     [JsonPropertyName("feature_id")]
     public required string FeatureId { get; set; }
 
