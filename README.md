@@ -189,6 +189,69 @@ bool flagValue = await schematic.CheckFlag(
 );
 ```
 
+### OpenFeature Integration
+
+The Schematic .NET SDK includes built-in support for [OpenFeature](https://openfeature.dev/), allowing you to use Schematic's feature flags through the OpenFeature standard API.
+
+#### Using Schematic with OpenFeature
+
+```csharp
+using OpenFeature;
+using SchematicHQ.Client.OpenFeature;
+
+// Create and set the Schematic provider
+var provider = new SchematicProvider("YOUR_API_KEY");
+await Api.Instance.SetProviderAsync(provider);
+
+// Get the OpenFeature client
+var client = Api.Instance.GetClient();
+
+// Evaluate a boolean feature flag
+var isEnabled = await client.GetBooleanValue("your-flag-key", false);
+```
+
+#### OpenFeature Context
+
+The Schematic provider supports company and user context through OpenFeature's evaluation context:
+
+```csharp
+var context = EvaluationContext.Builder()
+    .Set("company", new Structure(new Dictionary<string, Value>
+    {
+        ["id"] = new Value("company-123"),
+        ["name"] = new Value("Acme Corp"),
+        ["plan"] = new Value("enterprise")
+    }))
+    .Set("user", new Structure(new Dictionary<string, Value>
+    {
+        ["id"] = new Value("user-456"),
+        ["email"] = new Value("user@example.com"),
+        ["role"] = new Value("admin")
+    }))
+    .Build();
+
+// Evaluate with context
+var isEnabled = await client.GetBooleanValue("your-flag-key", false, context);
+```
+
+#### Event Tracking with OpenFeature
+
+The provider includes a method to track events:
+
+```csharp
+var provider = (SchematicProvider)Api.Instance.GetProvider();
+
+await provider.TrackEventAsync(
+    "button_clicked",
+    context,
+    new Dictionary<string, object>
+    {
+        ["button_name"] = "submit",
+        ["page"] = "checkout"
+    }
+);
+```
+
 ## Webhook Verification
 
 Schematic can send webhooks to notify your application of events. To ensure the security of these webhooks, Schematic signs each request using HMAC-SHA256. The .NET SDK provides utility functions to verify these signatures.

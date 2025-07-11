@@ -8,6 +8,8 @@ This is the official Schematic .NET client library for C#, supporting .NET Stand
 
 Much of this repository is generated using [Fern](https//buildwithfern.com). All files that are not listed in the .fernignore file will be regenerated over. If you need to edit any files in this repo, please ensure they are in .fernignore, or add them; if you're editing a generated file, you likely want to create a new file instead and add it to .fernignore, so as to keep generated and non-generated code separate.
 
+If you need to extend the SchematicHQ.Client.csproj file in src/SchematicHQ.Client/, you can do this in teh custom props file: src/SchematicHQ.Client/SchematicHQ.Client.Custom.props. This will prevent your changes from being overwritten when the Fern code generation runs.
+
 ## Repository Structure
 
 - `src/` - Contains the source code for the library
