@@ -13,6 +13,7 @@ src/SchematicHQ.Client.Test/TestCompaniesClient.cs
 src/SchematicHQ.Client.Test/TestEventBuffer.cs
 src/SchematicHQ.Client.Test/TestLogger.cs
 src/SchematicHQ.Client.Test/Webhooks/
+src/SchematicHQ.Client.Test/OpenFeature/
 src/SchematicHQ.Client/Cache/
 src/SchematicHQ.Client/Core/Public/ClientOptionsCustom.cs
 src/SchematicHQ.Client/Datastream

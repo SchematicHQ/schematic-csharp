@@ -25,6 +25,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="WireMock.Net" Version="1.7.4" />
+    <PackageReference Include="OpenFeature" Version="1.5.1" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SchematicHQ.Client\SchematicHQ.Client.csproj" />
