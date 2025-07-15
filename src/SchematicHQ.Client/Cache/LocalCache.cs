@@ -22,6 +22,7 @@ namespace SchematicHQ.Client.Cache
         private readonly TimeSpan _ttl;
         private readonly Timer? _cleanupTimer;
         private bool _disposed = false;
+        private int _cleanupInProgress = 0; // Flag to track if cleanup is in progress
 
         /// <summary>
         /// Creates a new LocalCache instance with background cleanup
@@ -235,22 +236,37 @@ namespace SchematicHQ.Client.Cache
             if (_maxItems == 0 || _disposed)
                 return;
                 
-            var now = DateTime.UtcNow;
-            var keysToRemove = new List<string>();
-            
-            // First identify expired items without holding the lock
-            foreach (var pair in _cache)
+            // Check and set the cleanup in progress flag
+            if (Interlocked.Exchange(ref _cleanupInProgress, 1) == 1)
             {
-                if (pair.Value.Expiration != DateTime.MaxValue && now > pair.Value.Expiration)
-                {
-                    keysToRemove.Add(pair.Key);
-                }
+                // Another cleanup is already in progress
+                return;
             }
             
-            // Remove the expired items
-            foreach (var key in keysToRemove)
+            try
             {
-                Remove(key);
+                var now = DateTime.UtcNow;
+                var keysToRemove = new List<string>();
+                
+                // First identify expired items without holding the lock
+                foreach (var pair in _cache)
+                {
+                    if (pair.Value.Expiration != DateTime.MaxValue && now > pair.Value.Expiration)
+                    {
+                        keysToRemove.Add(pair.Key);
+                    }
+                }
+                
+                // Remove the expired items
+                foreach (var key in keysToRemove)
+                {
+                    Remove(key);
+                }
+            }
+            finally
+            {
+                // Reset the cleanup in progress flag
+                Interlocked.Exchange(ref _cleanupInProgress, 0);
             }
         }
         
