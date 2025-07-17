@@ -83,7 +83,7 @@ namespace SchematicHQ.Client.Datastream
             }
 
             // No timeout specified, check if the task has completed
-            return _connectionMonitor.Task.IsCompleted && _connectionMonitor.Task.Result;
+            return _connectionMonitor.Task.IsCompletedSuccessfully && _connectionMonitor.Task.Result;
         }
 
         /// <summary>
