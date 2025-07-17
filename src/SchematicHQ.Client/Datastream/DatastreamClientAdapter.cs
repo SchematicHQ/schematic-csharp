@@ -54,6 +54,39 @@ namespace SchematicHQ.Client.Datastream
         }
 
         /// <summary>
+        /// Get a task that completes when the datastream connection is established
+        /// </summary>
+        /// <param name="timeout">Optional timeout for the connection check</param>
+        /// <returns>A task that completes with true if connected, or false if timeout or not connected</returns>
+        public async Task<bool> IsConnectedAsync(TimeSpan? timeout = null)
+        {
+            // If timeout is specified, we'll wait at most that long for a connection
+            if (timeout.HasValue)
+            {
+                try
+                {
+                    // Create a cancellation token that expires after the timeout
+                    using var cts = new CancellationTokenSource(timeout.Value);
+                    // Wait for the connection monitor to complete or timeout
+                    return await _connectionMonitor.Task.WaitAsync(cts.Token).ConfigureAwait(false);
+                }
+                catch (OperationCanceledException)
+                {
+                    // Timeout occurred
+                    return false;
+                }
+                catch (Exception ex)
+                {
+                    _logger.Error($"Error checking datastream connection: {ex.Message}");
+                    return false;
+                }
+            }
+
+            // No timeout specified, check if the task has completed
+            return _connectionMonitor.Task.IsCompleted && _connectionMonitor.Task.Result;
+        }
+
+        /// <summary>
         /// Check a feature flag via datastream
         /// </summary>
         public Task<CheckFlagResult> CheckFlag(Dictionary<string, string>? company, Dictionary<string, string>? user, string flagKey)
@@ -77,9 +110,9 @@ namespace SchematicHQ.Client.Datastream
                 _logger = logger;
             }
 
-            public IDisposable? BeginScope<TState>(TState state)
+            public IDisposable BeginScope<TState>(TState state)
             {
-                return null;
+                return new NoopDisposable();
             }
 
             public bool IsEnabled(LogLevel logLevel)
@@ -87,7 +120,7 @@ namespace SchematicHQ.Client.Datastream
                 return true;
             }
 
-            public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter)
+            public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception? exception, Func<TState, Exception?, string> formatter)
             {
                 var message = formatter(state, exception);
 
@@ -111,6 +144,12 @@ namespace SchematicHQ.Client.Datastream
                         _logger.Info(message);
                         break;
                 }
+            }
+            
+            // A no-operation disposable class
+            private class NoopDisposable : IDisposable
+            {
+                public void Dispose() { }
             }
         }
     }
