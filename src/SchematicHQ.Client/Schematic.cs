@@ -316,7 +316,7 @@ public partial class Schematic
         }
     }
 
-    public void Identify(Dictionary<string, string> keys, EventBodyIdentifyCompany? company = null, string? name = null, Dictionary<string, object?>? traits = null)
+    public void Identify(Dictionary<string, string> keys, EventBodyIdentifyCompany? company = null, string? name = null, Dictionary<string, object>? traits = null)
     {
         EnqueueEvent(CreateEventRequestBodyEventType.Identify, new EventBodyIdentify
         {
@@ -327,7 +327,7 @@ public partial class Schematic
         });
     }
 
-    public void Track(string eventName, Dictionary<string, string>? company = null, Dictionary<string, string>? user = null, Dictionary<string, object?>? traits = null)
+    public void Track(string eventName, Dictionary<string, string>? company = null, Dictionary<string, string>? user = null, Dictionary<string, object>? traits = null)
     {
         EnqueueEvent(CreateEventRequestBodyEventType.Track, new EventBodyTrack
         {
