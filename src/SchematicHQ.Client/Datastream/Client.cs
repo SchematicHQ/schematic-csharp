@@ -19,11 +19,11 @@ namespace SchematicHQ.Client.Datastream
     private readonly string _apiKey;
     private readonly Uri _baseUrl;
     private readonly TimeSpan _cacheTtl;
-    private readonly TaskCompletionSource<bool> _monitorSource;
-
+private readonly Action<bool> _connectionStateCallback;
     private IWebSocketClient _webSocket;
     private readonly CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
     private readonly SemaphoreSlim _reconnectSemaphore = new SemaphoreSlim(1, 1);
+    private CancellationTokenSource _readCancellationSource = new CancellationTokenSource();
 
     // Cache providers
     private readonly ICacheProvider<Flag> _flagsCache;
@@ -58,7 +58,7 @@ namespace SchematicHQ.Client.Datastream
         string baseUrl,
         ISchematicLogger logger,
         string apiKey,
-        TaskCompletionSource<bool> monitorSource,
+        Action<bool> connectionStateCallback,
         TimeSpan? cacheTtl = null,
         IWebSocketClient? webSocket = null,
         DatastreamOptions? options = null
@@ -66,8 +66,8 @@ namespace SchematicHQ.Client.Datastream
     {
       _logger = logger ?? throw new ArgumentNullException(nameof(logger));
       _apiKey = apiKey ?? throw new ArgumentNullException(nameof(apiKey));
-      _monitorSource = monitorSource ?? throw new ArgumentNullException(nameof(monitorSource));
-      
+      _connectionStateCallback = connectionStateCallback ?? throw new ArgumentNullException(nameof(connectionStateCallback));
+
       // Use options if provided, otherwise use default values
       options ??= new DatastreamOptions();
       _cacheTtl = cacheTtl ?? options.CacheTTL ?? TimeSpan.FromHours(24);
@@ -80,12 +80,12 @@ namespace SchematicHQ.Client.Datastream
       _baseUrl = GetBaseUrl(baseUrl);
 
       // Initialize cache providers
-      
+
       // Flags always use LocalCache with unlimited TTL regardless of configuration
       _flagsCache = new LocalCache<Flag>(options.LocalCacheCapacity, TimeSpan.MaxValue); // Flags don't expire
-      
+
       // Company and User caches use the configured provider type
-      if (options.CacheProviderType == DatastreamCacheProviderType.Redis && 
+      if (options.CacheProviderType == DatastreamCacheProviderType.Redis &&
           options.RedisConfig != null)
       {
         try
@@ -141,17 +141,23 @@ namespace SchematicHQ.Client.Datastream
         try
         {
           await _reconnectSemaphore.WaitAsync();
+          if (_readCancellationSource.IsCancellationRequested)
+          {
+            _readCancellationSource.Dispose();
+            _readCancellationSource = new CancellationTokenSource();
+          }
+          _webSocket.Options.SetRequestHeader("X-Schematic-Api-Key", _apiKey);
+          _webSocket.Options.KeepAliveInterval = PingPeriod; // Set keep-alive interval
+
           try
           {
-            _webSocket.Options.SetRequestHeader("X-Schematic-Api-Key", _apiKey);
-            _webSocket.Options.KeepAliveInterval = PingPeriod; // Set keep-alive interval
 
             await _webSocket.ConnectAsync(_baseUrl, _cancellationTokenSource.Token);
             _logger.Info("Connected to Schematic WebSocket");
             attempts = 0;
 
-            // Signal monitor that we're connected
-            _monitorSource.TrySetResult(true);
+            // Signal connection state
+            _connectionStateCallback(true);
 
             // Start reading messages
             var readTask = ReadMessagesAsync();
@@ -169,21 +175,53 @@ namespace SchematicHQ.Client.Datastream
 
             // Wait for the read task to complete, which happens on disconnection
             await readTask;
+
+            _readCancellationSource.Token.ThrowIfCancellationRequested();
+          }
+          catch (Exception connectEx)
+          {
+            // Handle connection errors specifically
+            _logger.Error("Failed to connect to WebSocket: {0}", connectEx.Message);
+            // Don't rethrow - allow the outer exception handler to handle retries
+            throw;
           }
           finally
           {
-            _reconnectSemaphore.Release();
+            // Ensure connection is closed before reconnecting
+            if (_webSocket.State == WebSocketState.Open)
+            {
+              try
+              {
+                await _webSocket.CloseAsync(
+                    WebSocketCloseStatus.NormalClosure,
+                    "Reconnecting",
+                    CancellationToken.None
+                );
+              }
+              catch (Exception ex)
+              {
+                _logger.Error("Error closing WebSocket: {0}", ex.Message);
+                _webSocket.Abort();
+              }
+            }
           }
         }
-        catch (Exception ex)
+        catch (Exception connectionEx)
         {
-          _logger.Error("WebSocket connection error: {Message}", ex.Message);
+          _reconnectSemaphore.Release();
+          _logger.Error("WebSocket connection error: {0}", connectionEx.Message);
           attempts++;
-          _monitorSource.TrySetResult(false);
+          _connectionStateCallback(false);
+
+          if (_webSocket != null)
+          {
+            try { _webSocket.Dispose(); } catch { /* ignore */ }
+          }
+          _webSocket = new StandardWebSocketClient();
 
           if (attempts >= MaxReconnectAttempts)
           {
-            _logger.Error("Unable to connect to server after {Attempts} attempts", MaxReconnectAttempts);
+            _logger.Error("Unable to connect to server after {0} attempts", MaxReconnectAttempts);
             return;
           }
 
@@ -224,48 +262,70 @@ namespace SchematicHQ.Client.Datastream
         while (_webSocket.State == WebSocketState.Open && !_cancellationTokenSource.Token.IsCancellationRequested)
         {
           WebSocketReceiveResult result;
-          do
+          try
           {
-            result = await _webSocket.ReceiveAsync(
-                new ArraySegment<byte>(buffer),
-                _cancellationTokenSource.Token);
-
-            if (result.MessageType == WebSocketMessageType.Close)
+            do
             {
-              return;
-            }
+              result = await _webSocket.ReceiveAsync(
+                  new ArraySegment<byte>(buffer),
+                  _cancellationTokenSource.Token);
 
-            receiveBuffer.AddRange(new ArraySegment<byte>(buffer, 0, result.Count));
+              if (result.MessageType == WebSocketMessageType.Close)
+              {
+                return;
+              }
+
+              receiveBuffer.AddRange(new ArraySegment<byte>(buffer, 0, result.Count));
+            }
+            while (!result.EndOfMessage);
+
+            if (result.MessageType == WebSocketMessageType.Text)
+            {
+              var buffArray = receiveBuffer.ToArray();
+              var message = Encoding.UTF8.GetString(buffArray);
+              receiveBuffer.Clear();
+
+              if (string.IsNullOrEmpty(message))
+              {
+                _logger.Debug("Received empty message from WebSocket");
+                return; // Trigger reconnection
+              }
+
+              try
+              {
+                var response = JsonSerializer.Deserialize<DataStreamResponse>(message);
+                HandleMessageResponse(response);
+              }
+              catch (Exception ex)
+              {
+                _logger.Error("Failed to process WebSocket message: {0}", ex.Message);
+              }
+            }
           }
-          while (!result.EndOfMessage);
-
-          if (result.MessageType == WebSocketMessageType.Text)
-          {
-            var buffArray = receiveBuffer.ToArray();
-            var message = Encoding.UTF8.GetString(buffArray);
-            receiveBuffer.Clear();
-
-            if (string.IsNullOrEmpty(message))
+          catch (OperationCanceledException)
             {
-              _logger.Debug("Received empty message from WebSocket");
-              return; // Trigger reconnection
-            }
-
-            try
-            {
-              var response = JsonSerializer.Deserialize<DataStreamResponse>(message);
-              HandleMessageResponse(response);
+                _logger.Info("WebSocket read operation was cancelled");
+                return;
             }
             catch (Exception ex)
             {
-              _logger.Error("Failed to process WebSocket message: {0}", ex.Message);
+                _logger.Error("Error reading from WebSocket: {0}", ex.Message);
+                return; // Exit and trigger reconnection
             }
-          }
         }
       }
       catch (Exception ex)
       {
-        _logger.Error("Error reading WebSocket messages: {0}", ex.Message);
+          _logger.Error("Fatal error in ReadMessagesAsync: {0}", ex.Message);
+      }
+      finally
+      {
+          // Signal that reconnection should happen
+          if (!_cancellationTokenSource.IsCancellationRequested)
+          {
+              _logger.Info("Signaling for WebSocket reconnection");
+              _readCancellationSource.Cancel();
+          }
       }
     }
 
@@ -510,7 +570,7 @@ namespace SchematicHQ.Client.Datastream
         var jsonString = response.Data.ToString() ?? string.Empty;
         var error = JsonSerializer.Deserialize<DataStreamError>(jsonString);
         if (error != null && !string.IsNullOrEmpty(error.Error))
-          _logger.Error("Received error from server: {Error}", error.Error);
+          _logger.Error("Received error from server: {0}", error.Error);
       }
       catch (Exception ex)
       {
@@ -556,12 +616,12 @@ namespace SchematicHQ.Client.Datastream
       {
         _logger.Error("Error checking flag {0}: {1}", flagKey, ex.Message);
         return new CheckFlagResult
-          {
-            Reason = "Error",
-            FlagKey = flagKey,
-            Error = ex,
-            Value = false,
-          };
+        {
+          Reason = "Error",
+          FlagKey = flagKey,
+          Error = ex,
+          Value = false,
+        };
       }
     }
 
@@ -904,7 +964,7 @@ namespace SchematicHQ.Client.Datastream
       }
       catch (Exception ex)
       {
-        _logger.Error("Error closing WebSocket connection: {Message}", ex.Message);
+        _logger.Error("Error closing WebSocket connection: {0}", ex.Message);
 
         // Ensure we abort in case of errors
         try { _webSocket.Abort(); } catch { /* Ignore any errors during abort */ }
@@ -914,6 +974,7 @@ namespace SchematicHQ.Client.Datastream
         _webSocket.Dispose();
         _reconnectSemaphore.Dispose();
         _cancellationTokenSource.Dispose();
+        _readCancellationSource.Dispose();
       }
     }
   }

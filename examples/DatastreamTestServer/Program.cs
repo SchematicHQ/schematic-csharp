@@ -16,11 +16,11 @@ string apiKey = Environment.GetEnvironmentVariable("SCHEMATIC_API_KEY") ??
 
 var options = new ClientOptions
 {
-    BaseUrl = "http://localhost:8080",
+    BaseUrl = "https://datastream.schematichq.com",
     UseDatastream = true,
     DatastreamOptions = new SchematicHQ.Client.Datastream.DatastreamOptions
     {
-        CacheTTL = TimeSpan.FromHours(24)
+        CacheTTL = TimeSpan.FromMilliseconds(5000),
     }
 };
 
@@ -29,11 +29,6 @@ options.WithRedisCache(
     keyPrefix: "schematic-test:", // Optional key prefix
     cacheTtl: TimeSpan.FromHours(24)// Optional cache TTL
 );
-
-options.WithHttpClient(new HttpClient
-{
-    BaseAddress = new Uri("http://localhost:8080")
-});
 
 Schematic schematic = new Schematic(apiKey, options);
 

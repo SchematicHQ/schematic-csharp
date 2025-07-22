@@ -178,8 +178,8 @@ public partial class Schematic
                 {
                     try
                     {
-                        // Check connection status every 5 seconds
-                        var isConnected = await _datastreamClient.IsConnectedAsync(TimeSpan.FromMilliseconds(200));
+                        // Check connection status every 2 seconds
+                        var isConnected = await _datastreamClient.IsConnectedAsync(TimeSpan.FromMilliseconds(2000));
                         if (_datastreamConnected != isConnected)
                         {
                             _datastreamConnected = isConnected;

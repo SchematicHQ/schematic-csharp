@@ -16,8 +16,10 @@ namespace SchematicHQ.Client.Datastream
     public class DatastreamClientAdapter
     {
         private readonly DatastreamClient _client;
-        private readonly TaskCompletionSource<bool> _connectionMonitor;
         private readonly ISchematicLogger _logger;
+
+        private readonly ConnectionStateTracker _connectionTracker = new ConnectionStateTracker();
+
 
         /// <summary>
         /// Creates a new datastream client adapter
@@ -25,12 +27,11 @@ namespace SchematicHQ.Client.Datastream
         public DatastreamClientAdapter(string baseUrl, ISchematicLogger logger, string apiKey, DatastreamOptions options)
         {
             _logger = logger;
-            _connectionMonitor = new TaskCompletionSource<bool>();
             _client = new DatastreamClient(
                 baseUrl,
                 _logger,
                 apiKey,
-                _connectionMonitor,
+                _connectionTracker.UpdateConnectionState, // callback to update connection state
                 options.CacheTTL,
                 null, // default websocket client
                 options
@@ -60,15 +61,13 @@ namespace SchematicHQ.Client.Datastream
         /// <returns>A task that completes with true if connected, or false if timeout or not connected</returns>
         public async Task<bool> IsConnectedAsync(TimeSpan? timeout = null)
         {
-            // If timeout is specified, we'll wait at most that long for a connection
             if (timeout.HasValue)
             {
                 try
                 {
-                    // Create a cancellation token that expires after the timeout
-                    using var cts = new CancellationTokenSource(timeout.Value);
-                    // Wait for the connection monitor to complete or timeout
-                    return await _connectionMonitor.Task.WaitAsync(cts.Token).ConfigureAwait(false);
+                    bool isConnected = await _connectionTracker.WaitForConnectionAsync(timeout.Value);
+                    _logger.Debug($"Datastream connection state checked: {isConnected}");
+                    return isConnected;
                 }
                 catch (OperationCanceledException)
                 {
@@ -82,8 +81,8 @@ namespace SchematicHQ.Client.Datastream
                 }
             }
 
-            // No timeout specified, check if the task has completed
-            return _connectionMonitor.Task.IsCompletedSuccessfully && _connectionMonitor.Task.Result;
+            // No timeout - just return current state
+            return _connectionTracker.IsConnected;
         }
 
         /// <summary>
@@ -98,6 +97,102 @@ namespace SchematicHQ.Client.Datastream
             };
 
             return _client.CheckFlagAsync(request, flagKey);
+        }
+        
+        private class ConnectionStateTracker
+        {
+            private bool _isConnected = false;
+            private readonly SemaphoreSlim _stateLock = new SemaphoreSlim(1, 1);
+            private TaskCompletionSource<bool>? _waitTask = null;
+
+            /// <summary>
+            /// Gets the current connection state
+            /// </summary>
+            public bool IsConnected => _isConnected;
+
+            /// <summary>
+            /// Update the connection state
+            /// </summary>
+            public void UpdateConnectionState(bool connected)
+            {
+                _stateLock.Wait();
+                try
+                {
+                    if (_isConnected != connected)
+                    {
+                        _isConnected = connected;
+                        
+                        // If we have a waiting task and we're now connected, complete it
+                        if (connected && _waitTask != null && !_waitTask.Task.IsCompleted)
+                        {
+                            _waitTask.TrySetResult(true);
+                        }
+                    }
+                }
+                finally
+                {
+                    _stateLock.Release();
+                }
+            }
+
+            /// <summary>
+            /// Wait for the connection to be established or timeout
+            /// </summary>
+            public async Task<bool> WaitForConnectionAsync(TimeSpan timeout)
+            {
+                // Fast path - already connected
+                if (_isConnected)
+                {
+                    return true;
+                }
+
+                // Create a task to wait for connection
+                TaskCompletionSource<bool> waitTask = new TaskCompletionSource<bool>();
+                
+                await _stateLock.WaitAsync();
+                try
+                {
+                    // Check again under lock - might have connected
+                    if (_isConnected)
+                    {
+                        return true;
+                    }
+                    
+                    // Set the wait task
+                    _waitTask = waitTask;
+                }
+                finally
+                {
+                    _stateLock.Release();
+                }
+
+                // Wait with timeout
+                using var cts = new CancellationTokenSource(timeout);
+                var completionTask = await Task.WhenAny(
+                    waitTask.Task,
+                    Task.Delay(Timeout.Infinite, cts.Token)
+                );
+
+                // If we get here with cancellation, it was a timeout
+                if (cts.IsCancellationRequested)
+                {
+                    await _stateLock.WaitAsync();
+                    try
+                    {
+                        if (_waitTask == waitTask)
+                        {
+                            _waitTask = null;
+                        }
+                    }
+                    finally
+                    {
+                        _stateLock.Release();
+                    }
+                    return false;
+                }
+
+                return true;
+            }
         }
 
         // Adapter to convert ISchematicLogger to ILogger for the DatastreamClient
@@ -145,7 +240,7 @@ namespace SchematicHQ.Client.Datastream
                         break;
                 }
             }
-            
+
             // A no-operation disposable class
             private class NoopDisposable : IDisposable
             {
