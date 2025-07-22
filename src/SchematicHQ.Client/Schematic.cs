@@ -21,6 +21,7 @@ public partial class Schematic
     private readonly bool _offline;
     private readonly DatastreamClientAdapter? _datastreamClient;
     private bool _datastreamConnected;
+    private bool _disposed;
     public readonly SchematicApi API;
 
     public AccesstokensClient Accesstokens { get; init; }
@@ -157,11 +158,60 @@ public partial class Schematic
             );
             _datastreamClient.Start();
             _datastreamConnected = true;
+
+            // Start a background task to monitor connection status
+            StartConnectionMonitoring();
         }
+    }
+
+    private void StartConnectionMonitoring()
+    {
+        if (_datastreamClient == null)
+            return;
+
+        // Start a background task that periodically checks the connection status
+        Task.Run(async () =>
+        {
+            try
+            {
+                while (!_disposed)
+                {
+                    try
+                    {
+                        // Check connection status every 2 seconds
+                        var isConnected = await _datastreamClient.IsConnectedAsync(TimeSpan.FromMilliseconds(2000));
+                        if (_datastreamConnected != isConnected)
+                        {
+                            _datastreamConnected = isConnected;
+                            if (isConnected)
+                            {
+                                _logger.Info("Datastream connection established");
+                            }
+                            else
+                            {
+                                _logger.Warn("Datastream connection lost, falling back to API");
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.Error($"Error monitoring datastream connection: {ex.Message}");
+                    }
+
+                    await Task.Delay(TimeSpan.FromSeconds(5));
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.Error($"Connection monitoring stopped: {ex.Message}");
+            }
+        });
     }
 
     public async Task Shutdown()
     {
+        _disposed = true;
+        
         if (_eventBuffer != null)
         {
             await _eventBuffer.Stop();
@@ -179,35 +229,43 @@ public partial class Schematic
             return GetFlagDefault(flagKey);
 
         // Use datastream if enabled and connected
-        if (_datastreamConnected && _datastreamClient != null)
+        if (_datastreamClient != null)
         {
-            try
+            bool isConnected = _datastreamConnected;
+            
+            if (isConnected)
             {
-                var flagResult = await _datastreamClient.CheckFlag(company, user, flagKey);
-                // Submit flag check event for successful API evaluation
-                SubmitFlagCheckEvent(
-                    flagKey,
-                    flagResult.Value,
-                    company,
-                    user,
-                    new EventBodyFlagCheck
-                    {
-                        FlagKey = flagKey,
-                        Value = flagResult.Value,
-                        FlagId = flagResult.FlagId,
-                        RuleId = flagResult.RuleId,
-                        CompanyId = flagResult.CompanyId,
-                        UserId = flagResult.UserId,
-                        Reason = flagResult.Reason,
-                        Error = flagResult.Error?.Message
-                    });
-                return flagResult.Value;
-
+                try
+                {
+                    var flagResult = await _datastreamClient.CheckFlag(company, user, flagKey);
+                    // Submit flag check event for successful API evaluation
+                    SubmitFlagCheckEvent(
+                        flagKey,
+                        flagResult.Value,
+                        company,
+                        user,
+                        new EventBodyFlagCheck
+                        {
+                            FlagKey = flagKey,
+                            Value = flagResult.Value,
+                            FlagId = flagResult.FlagId,
+                            RuleId = flagResult.RuleId,
+                            CompanyId = flagResult.CompanyId,
+                            UserId = flagResult.UserId,
+                            Reason = flagResult.Reason,
+                            Error = flagResult.Error?.Message
+                        });
+                    return flagResult.Value;
+                }
+                catch (Exception ex)
+                {
+                    _logger.Error("Error checking flag via datastream: {0}", ex.Message);
+                    // Fall through to API-based flag check
+                }
             }
-            catch (Exception ex)
+            else
             {
-                _logger.Error("Error checking flag via datastream: {0}", ex.Message);
-                return GetFlagDefault(flagKey);
+                _logger.Debug("Datastream not connected, falling back to API for flag check: {0}", flagKey);
             }
         }
 
@@ -258,7 +316,7 @@ public partial class Schematic
         }
     }
 
-    public void Identify(Dictionary<string, string> keys, EventBodyIdentifyCompany? company = null, string? name = null, Dictionary<string, object>? traits = null)
+    public void Identify(Dictionary<string, string> keys, EventBodyIdentifyCompany? company = null, string? name = null, Dictionary<string, object?>? traits = null)
     {
         EnqueueEvent(CreateEventRequestBodyEventType.Identify, new EventBodyIdentify
         {
@@ -269,7 +327,7 @@ public partial class Schematic
         });
     }
 
-    public void Track(string eventName, Dictionary<string, string>? company = null, Dictionary<string, string>? user = null, Dictionary<string, object>? traits = null)
+    public void Track(string eventName, Dictionary<string, string>? company = null, Dictionary<string, string>? user = null, Dictionary<string, object?>? traits = null)
     {
         EnqueueEvent(CreateEventRequestBodyEventType.Track, new EventBodyTrack
         {

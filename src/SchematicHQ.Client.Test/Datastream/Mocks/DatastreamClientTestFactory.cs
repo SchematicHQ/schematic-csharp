@@ -15,7 +15,7 @@ namespace SchematicHQ.Client.Test.Datastream.Mocks
             var mockWebSocket = new MockWebSocket();
             mockWebSocket.SetState(WebSocketState.Open);
             
-            var monitorSource = new TaskCompletionSource<bool>();
+            var monitorSource = new Action<bool>(isConnected =>{});
             var client = new DatastreamClient("wss://test.example.com", logger, apiKey, monitorSource, cacheTtl, mockWebSocket);
             
             return (client, mockWebSocket, logger);

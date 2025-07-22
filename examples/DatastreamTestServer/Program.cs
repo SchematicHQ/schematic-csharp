@@ -14,26 +14,27 @@ var app = builder.Build();
 string apiKey = Environment.GetEnvironmentVariable("SCHEMATIC_API_KEY") ?? 
     throw new InvalidOperationException("SCHEMATIC_API_KEY environment variable is not set");
 
+var redisConfig = new SchematicHQ.Client.Datastream.RedisCacheConfig
+{
+    Endpoints = new List<string> { "localhost:6379" }, // Replace with your Redis connection string
+    KeyPrefix = "schematic-test:", // Optional key prefix
+};
+
 var options = new ClientOptions
 {
-    BaseUrl = "http://localhost:8080",
+    BaseUrl = "https://datastream.schematichq.com",
     UseDatastream = true,
     DatastreamOptions = new SchematicHQ.Client.Datastream.DatastreamOptions
     {
-        CacheTTL = TimeSpan.FromHours(24)
+        CacheTTL = TimeSpan.FromMilliseconds(5000),
+        RedisConfig = redisConfig
     }
 };
 
 options.WithRedisCache(
-    new List<string> { "localhost:6379" }, // Redis connection string
-    keyPrefix: "schematic-test:", // Optional key prefix
-    cacheTtl: TimeSpan.FromHours(24)// Optional cache TTL
+    redisConfig
 );
 
-options.WithHttpClient(new HttpClient
-{
-    BaseAddress = new Uri("http://localhost:8080")
-});
 
 Schematic schematic = new Schematic(apiKey, options);
 
