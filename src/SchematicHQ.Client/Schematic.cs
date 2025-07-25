@@ -130,15 +130,15 @@ public partial class Schematic
             // Create DatastreamOptions with cache settings from _options.CacheConfiguration
             var datastreamOptions = _options.DatastreamOptions ?? new DatastreamOptions();
 
-            // Apply cache settings from the main configuration
-            if (_options.CacheConfiguration != null)
+            // Apply cache settings from the main configuration if not set in DatastreamOptions
+            if (_options.CacheConfiguration != null && datastreamOptions.RedisConfig == null)
             {
                 // Set cache provider type based on main configuration
                 datastreamOptions.CacheProviderType = _options.CacheConfiguration.ProviderType == CacheProviderType.Redis
                     ? DatastreamCacheProviderType.Redis
                     : DatastreamCacheProviderType.Local;
 
-                // Pass through the Redis settings if using Redis
+                // Pass through the Redis settings if using Redis unless explicitly set in DatastreamOptions
                 if (datastreamOptions.CacheProviderType == DatastreamCacheProviderType.Redis)
                 {
                     datastreamOptions.RedisConfig = _options.CacheConfiguration.RedisConfig;
@@ -147,8 +147,8 @@ public partial class Schematic
                 // Apply local cache settings
                 datastreamOptions.LocalCacheCapacity = _options.CacheConfiguration.LocalCacheCapacity;
 
-                // Apply cache TTL
-                datastreamOptions.CacheTTL = _options.CacheConfiguration.CacheTtl;
+                // Apply cache TTL if not set in DatastreamOptions
+                datastreamOptions.CacheTTL = datastreamOptions.CacheTTL ?? _options.CacheConfiguration.CacheTtl;
             }
             _datastreamClient = new DatastreamClientAdapter(
                 _options.BaseUrl,

@@ -66,7 +66,6 @@ namespace SchematicHQ.Client.Datastream
                 try
                 {
                     bool isConnected = await _connectionTracker.WaitForConnectionAsync(timeout.Value);
-                    _logger.Debug($"Datastream connection state checked: {isConnected}");
                     return isConnected;
                 }
                 catch (OperationCanceledException)
