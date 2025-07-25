@@ -23,4 +23,5 @@ src/SchematicHQ.Client/RulesEngine/
 src/SchematicHQ.Client/Schematic.cs
 src/SchematicHQ.Client/SchematicHQ.Client.Custom.props
 src/SchematicHQ.Client/Webhooks/WebhookUtils/
+src/SchematicHQ.Client/OpenFeature/
 src/SchematicHQ.RulesEngine
