@@ -89,11 +89,11 @@ private readonly Action<bool> _connectionStateCallback;
           options.RedisConfig != null)
       {
         try
-        {
+        {   
           _logger.Info("Initializing Redis cache for Datastream company and user data");
           // We need to use the Cache namespace version, but cast it to the Client namespace interface
-          _companyCache = (ICacheProvider<Company>)new Cache.RedisCache<Company>(options.RedisConfig);
-          _userCache = (ICacheProvider<User>)new Cache.RedisCache<User>(options.RedisConfig);
+          _companyCache = new RedisCache<Company>(options.RedisConfig);
+          _userCache = new RedisCache<User>(options.RedisConfig);
         }
         catch (Exception ex)
         {
