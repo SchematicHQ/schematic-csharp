@@ -89,6 +89,8 @@ namespace SchematicHQ.Client.RulesEngine
                     return await CheckBillingProductCondition(company, condition, cancellationToken);
                 case ConditionType.CrmProduct:
                     return await CheckCrmProductCondition(company, condition, cancellationToken);
+                case ConditionType.Credit:
+                    return await CheckCreditBalanceCondition(company, condition, cancellationToken);
                 default:
                     return false;
             }
@@ -160,6 +162,28 @@ namespace SchematicHQ.Client.RulesEngine
             }
 
             return Task.FromResult(resourceMatch);
+        }
+
+        private Task<bool> CheckCreditBalanceCondition(Company? company, Condition condition, CancellationToken cancellationToken)
+        {
+            if (condition.ConditionType != ConditionType.Credit || company == null || string.IsNullOrEmpty(condition.CreditId))
+            {
+                return Task.FromResult(false);
+            }
+
+            double consumptionCost = 1.0;
+            if (condition.ConsumptionRate.HasValue)
+            {
+                consumptionCost = condition.ConsumptionRate.Value;
+            }
+
+            double creditBalance = 0.0;
+            if (company.CreditBalances != null && company.CreditBalances.TryGetValue(condition.CreditId, out double balance))
+            {
+                creditBalance = balance;
+            }
+
+            return Task.FromResult(creditBalance >= consumptionCost);
         }
 
         private Task<bool> CheckPlanCondition(Company? company, Condition condition, CancellationToken cancellationToken)

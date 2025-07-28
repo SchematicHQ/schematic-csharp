@@ -69,7 +69,7 @@ namespace SchematicHQ.Client.Test.Datastream
             var companyResponse = new DataStreamResponse
             {
                 MessageType = MessageType.Full,
-                EntityType = EntityType.Company,
+                EntityType = SchematicHQ.Client.Datastream.EntityType.Company,
                 Data = JsonDocument.Parse(JsonSerializer.Serialize(new Company
                 {
                     Id = "comp_123",
@@ -81,7 +81,8 @@ namespace SchematicHQ.Client.Test.Datastream
                     },
                     Traits = new List<Trait>
                     {
-                        new Trait { Value = "pro", TraitDefinition = new TraitDefinition { Id = "trait_123", ComparableType = ComparableType.String, EntityType = RulesEngine.EntityType.Company } }                    }
+                        new Trait { Value = "pro", TraitDefinition = new TraitDefinition { Id = "trait_123", ComparableType = ComparableType.String, EntityType = SchematicHQ.Client.RulesEngine.EntityType.Company } }
+                    }
                 }, _jsonOptions)).RootElement
             };
             
@@ -106,7 +107,7 @@ namespace SchematicHQ.Client.Test.Datastream
             // Verify the WebSocket message sent was for the company lookup
             var sentMessage = Encoding.UTF8.GetString(_mockWebSocket.SentMessages[0]);
             var dataStreamRequest = JsonSerializer.Deserialize<DataStreamBaseRequest>(sentMessage);
-            Assert.That(dataStreamRequest?.Data.EntityType, Is.EqualTo(EntityType.Company));
+            Assert.That(dataStreamRequest?.Data.EntityType, Is.EqualTo(SchematicHQ.Client.Datastream.EntityType.Company));
         }
         
         [Test]
@@ -118,7 +119,7 @@ namespace SchematicHQ.Client.Test.Datastream
             var companyResponse = new DataStreamResponse
             {
                 MessageType = MessageType.Full,
-                EntityType = EntityType.Company,
+                EntityType = SchematicHQ.Client.Datastream.EntityType.Company,
                 Data = JsonDocument.Parse(JsonSerializer.Serialize(new Company
                 {
                     Id = "comp_123",
@@ -203,7 +204,7 @@ namespace SchematicHQ.Client.Test.Datastream
                         var flagsResponse = new DataStreamResponse
             {
                 MessageType = MessageType.Full,
-                EntityType = EntityType.Flags,
+                EntityType = SchematicHQ.Client.Datastream.EntityType.Flags,
                 Data = JsonDocument.Parse(JsonSerializer.Serialize(mockFlags)).RootElement
             };
             

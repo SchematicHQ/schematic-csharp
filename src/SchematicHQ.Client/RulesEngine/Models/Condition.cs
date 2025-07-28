@@ -16,6 +16,10 @@ namespace SchematicHQ.Client.RulesEngine.Models
     
     [JsonPropertyName("condition_type")]
     public ConditionType ConditionType { get; set; }
+    [JsonPropertyName("consumption_rate")]
+    public double? ConsumptionRate { get; set; }
+    [JsonPropertyName("credit_id")]
+    public string? CreditId { get; set; }
     
     [JsonPropertyName("operator")]
     public ComparableOperator Operator { get; set; }
