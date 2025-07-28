@@ -1,4 +1,3 @@
-using System.Data;
 using SchematicHQ.Client.RulesEngine.Models;
 
 namespace SchematicHQ.Client.RulesEngine
@@ -45,7 +44,8 @@ namespace SchematicHQ.Client.RulesEngine
       var periodStart = company.Subscription.PeriodStart;
       var periodEnd = company.Subscription.PeriodEnd;
 
-      // If the start period is in the future, use the first day of the current month
+      // If the start period is in the future, the metric period is from the start of the current calendar month until either
+      // the end of the current calendar month or the start of the billing period, whichever comes first
       if (periodStart > now)
       {
         DateTime? startOfNextMonth = GetCurrentMetricPeriodStartForCalendarMetricPeriod(MetricPeriod.CurrentMonth);
@@ -56,7 +56,7 @@ namespace SchematicHQ.Client.RulesEngine
         return periodStart;
       }
 
-      // Find the most recent occurrence of the subscription day in the current or previous months
+      // Month metric period will reset on the same day/hour/minute/second as the subscription started every month; get that timestamp for the current month
       var currentPeriodStart = new DateTime(
           now.Year,
           now.Month,
@@ -67,7 +67,7 @@ namespace SchematicHQ.Client.RulesEngine
           periodStart.Millisecond,
           DateTimeKind.Utc);
 
-      // If the calculated date is in the future or exactly now, we need to go back one month
+      // If we've already passed this month's reset date, move to next month
       if (currentPeriodStart < now)
       {
         currentPeriodStart = currentPeriodStart.AddMonths(1);
@@ -88,8 +88,7 @@ namespace SchematicHQ.Client.RulesEngine
         }
       }
 
-      // If the calculated current period start is before the subscription start date,
-      // then the subscription start date is the current period start
+      // If the next reset is after the end of the billing period, use the end of the billing period instead
       if (currentPeriodStart > periodEnd)
       {
         return periodEnd;
