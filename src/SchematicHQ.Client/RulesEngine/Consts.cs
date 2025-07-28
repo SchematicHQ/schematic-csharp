@@ -11,6 +11,9 @@ namespace SchematicHQ.Client.RulesEngine
     
     [JsonPropertyName("billing_product")]
     BillingProduct,
+
+    [JsonPropertyName("credit")]
+    Credit,
     
     [JsonPropertyName("company")]
     Company,

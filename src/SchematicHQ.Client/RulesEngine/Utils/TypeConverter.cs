@@ -14,7 +14,7 @@ namespace SchematicHQ.Client.RulesEngine.Utils
     Int,
     
     [JsonPropertyName("bool")]
-    Boolean,
+    Bool,
     
     [JsonPropertyName("date")]
     Date
@@ -56,7 +56,7 @@ namespace SchematicHQ.Client.RulesEngine.Utils
           return CompareString(a, b, op);
         case ComparableType.Int:
           return CompareInt64(StringToInt64(a), StringToInt64(b), op);
-        case ComparableType.Boolean:
+        case ComparableType.Bool:
           return CompareBool(StringToBool(a), StringToBool(b), op);
         case ComparableType.Date:
           var dateA = StringToDate(a);

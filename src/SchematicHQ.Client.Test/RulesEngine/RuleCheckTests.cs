@@ -340,5 +340,140 @@ namespace SchematicHQ.Client.Test.RulesEngine
       Assert.That(result, Is.Not.Null);
       Assert.That(result.Match, Is.False);
     }
+
+    [Test]
+    public async Task Rule_Matches_WithSufficientCreditBalance()
+    {
+      // Arrange
+      var svc = RuleCheckService.NewRuleCheckService();
+      
+      // Create a company with a credit balance
+      var company = TestHelpers.CreateTestCompany();
+      var creditId = "test-credit-id";
+      company.CreditBalances = new Dictionary<string, double>
+      {
+          { creditId, 100.0 } // Set a credit balance of 100.0
+      };
+      
+      // Create a rule with a credit condition
+      var rule = TestHelpers.CreateTestRule();
+      rule.Conditions ??= new List<Condition>();
+      var condition = TestHelpers.CreateTestCondition(ConditionType.Credit);
+      condition.CreditId = creditId;
+      condition.ConsumptionRate = 50.0; // Consumption rate less than the balance
+      rule.Conditions.Add(condition);
+
+      // Act
+      var result = await svc.Check(new CheckScope
+      {
+        Company = company,
+        Rule = rule
+      });
+
+      // Assert
+      Assert.That(result, Is.Not.Null);
+      Assert.That(result.Match, Is.True);
+    }
+
+    [Test]
+    public async Task Rule_DoesNotMatch_WithInsufficientCreditBalance()
+    {
+      // Arrange
+      var svc = RuleCheckService.NewRuleCheckService();
+      
+      // Create a company with a credit balance
+      var company = TestHelpers.CreateTestCompany();
+      var creditId = "test-credit-id";
+      company.CreditBalances = new Dictionary<string, double>
+      {
+          { creditId, 20.0 } // Set a credit balance of 20.0
+      };
+      
+      // Create a rule with a credit condition
+      var rule = TestHelpers.CreateTestRule();
+      rule.Conditions ??= new List<Condition>();
+      var condition = TestHelpers.CreateTestCondition(ConditionType.Credit);
+      condition.CreditId = creditId;
+      condition.ConsumptionRate = 50.0; // Consumption rate more than the balance
+      rule.Conditions.Add(condition);
+
+      // Act
+      var result = await svc.Check(new CheckScope
+      {
+        Company = company,
+        Rule = rule
+      });
+
+      // Assert
+      Assert.That(result, Is.Not.Null);
+      Assert.That(result.Match, Is.False);
+    }
+
+    [Test]
+    public async Task Rule_Matches_WithDefaultConsumptionRate()
+    {
+      // Arrange
+      var svc = RuleCheckService.NewRuleCheckService();
+      
+      // Create a company with a credit balance
+      var company = TestHelpers.CreateTestCompany();
+      var creditId = "test-credit-id";
+      company.CreditBalances = new Dictionary<string, double>
+      {
+          { creditId, 2.0 } // Set a credit balance of 2.0
+      };
+      
+      // Create a rule with a credit condition
+      var rule = TestHelpers.CreateTestRule();
+      rule.Conditions ??= new List<Condition>();
+      var condition = TestHelpers.CreateTestCondition(ConditionType.Credit);
+      condition.CreditId = creditId;
+      condition.ConsumptionRate = null; // Default consumption rate is 1.0
+      rule.Conditions.Add(condition);
+
+      // Act
+      var result = await svc.Check(new CheckScope
+      {
+        Company = company,
+        Rule = rule
+      });
+
+      // Assert
+      Assert.That(result, Is.Not.Null);
+      Assert.That(result.Match, Is.True);
+    }
+
+    [Test]
+    public async Task Rule_DoesNotMatch_WithNonExistentCreditId()
+    {
+      // Arrange
+      var svc = RuleCheckService.NewRuleCheckService();
+      
+      // Create a company with a credit balance
+      var company = TestHelpers.CreateTestCompany();
+      company.CreditBalances = new Dictionary<string, double>
+      {
+          { "existing-credit-id", 100.0 }
+      };
+      
+      // Create a rule with a credit condition for a different credit ID
+      var rule = TestHelpers.CreateTestRule();
+      rule.Conditions ??= new List<Condition>();
+      var condition = TestHelpers.CreateTestCondition(ConditionType.Credit);
+      condition.CreditId = "non-existent-credit-id"; // Different from the one in company
+      condition.ConsumptionRate = 1.0;
+      rule.Conditions.Add(condition);
+
+      // Act
+      var result = await svc.Check(new CheckScope
+      {
+        Company = company,
+        Rule = rule
+      });
+
+      // Assert
+      Assert.That(result, Is.Not.Null);
+      Assert.That(result.Match, Is.False);
+    }
   }
 }
