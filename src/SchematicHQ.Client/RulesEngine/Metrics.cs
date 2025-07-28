@@ -1,3 +1,4 @@
+using System.Data;
 using SchematicHQ.Client.RulesEngine.Models;
 
 namespace SchematicHQ.Client.RulesEngine
@@ -42,11 +43,17 @@ namespace SchematicHQ.Client.RulesEngine
 
       var now = DateTime.UtcNow;
       var periodStart = company.Subscription.PeriodStart;
+      var periodEnd = company.Subscription.PeriodEnd;
 
       // If the start period is in the future, use the first day of the current month
       if (periodStart > now)
       {
-        return GetCurrentMetricPeriodStartForCalendarMetricPeriod(MetricPeriod.CurrentMonth);
+        DateTime? startOfNextMonth = GetCurrentMetricPeriodStartForCalendarMetricPeriod(MetricPeriod.CurrentMonth);
+        if (periodStart > startOfNextMonth)
+        {
+          return startOfNextMonth;
+        }
+        return periodStart;
       }
 
       // Find the most recent occurrence of the subscription day in the current or previous months
@@ -61,9 +68,9 @@ namespace SchematicHQ.Client.RulesEngine
           DateTimeKind.Utc);
 
       // If the calculated date is in the future or exactly now, we need to go back one month
-      if (currentPeriodStart > now)
+      if (currentPeriodStart < now)
       {
-        currentPeriodStart = currentPeriodStart.AddMonths(-1);
+        currentPeriodStart = currentPeriodStart.AddMonths(1);
 
         // Handle day adjustment when going back from 30/31 to a month with fewer days
         var daysInMonth = DateTime.DaysInMonth(currentPeriodStart.Year, currentPeriodStart.Month);
@@ -83,9 +90,9 @@ namespace SchematicHQ.Client.RulesEngine
 
       // If the calculated current period start is before the subscription start date,
       // then the subscription start date is the current period start
-      if (currentPeriodStart < periodStart)
+      if (currentPeriodStart > periodEnd)
       {
-        return periodStart;
+        return periodEnd;
       }
 
       return currentPeriodStart;
