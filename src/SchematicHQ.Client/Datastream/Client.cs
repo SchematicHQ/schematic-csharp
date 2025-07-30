@@ -44,6 +44,7 @@ private readonly Action<bool> _connectionStateCallback;
     private static readonly TimeSpan PongWait = TimeSpan.FromSeconds(30); // 30 seconds wait for Pong
     private static readonly TimeSpan PingPeriod = PongWait * .9; // 90% of PongWait
     private static readonly TimeSpan ResourceTimeout = TimeSpan.FromSeconds(2);
+    private static readonly TimeSpan MaxCacheTTL = TimeSpan.FromDays(30); // Maximum TTL for cache items
 
     // Cache key prefixes
     private const string CacheKeyPrefix = "schematic";
@@ -80,26 +81,33 @@ private readonly Action<bool> _connectionStateCallback;
       _baseUrl = GetBaseUrl(baseUrl);
 
       // Initialize cache providers
-
-      // Flags always use LocalCache with unlimited TTL regardless of configuration
-      _flagsCache = new LocalCache<Flag>(options.LocalCacheCapacity, TimeSpan.MaxValue); // Flags don't expire
+      // Use the greater value between the configured TTL and the default maximum TTL
+      var flagTTL = MaxCacheTTL;
+      if (_cacheTtl > MaxCacheTTL)
+      {
+        flagTTL = _cacheTtl;
+      }
 
       // Company and User caches use the configured provider type
       if (options.CacheProviderType == DatastreamCacheProviderType.Redis &&
           options.RedisConfig != null)
       {
         try
-        {   
-          _logger.Info("Initializing Redis cache for Datastream company and user data");
+        {
+          _logger.Info("Initializing Redis cache for Datastream company, user and flag data");
           // We need to use the Cache namespace version, but cast it to the Client namespace interface
           _companyCache = new RedisCache<Company>(options.RedisConfig);
           _userCache = new RedisCache<User>(options.RedisConfig);
+          var flagConfig = options.RedisConfig;
+          flagConfig.CacheTTL = flagTTL; // Set TTL for flags cache
+          _flagsCache = new RedisCache<Flag>(flagConfig);
         }
         catch (Exception ex)
         {
           _logger.Error("Failed to initialize Redis cache: {0}. Falling back to local cache.", ex.Message);
           _companyCache = new LocalCache<Company>(options.LocalCacheCapacity, _cacheTtl);
           _userCache = new LocalCache<User>(options.LocalCacheCapacity, _cacheTtl);
+          _flagsCache = new LocalCache<Flag>(options.LocalCacheCapacity, flagTTL);
         }
       }
       else
@@ -107,6 +115,7 @@ private readonly Action<bool> _connectionStateCallback;
         // Use local cache (default)
         _companyCache = new LocalCache<Company>(options.LocalCacheCapacity, _cacheTtl);
         _userCache = new LocalCache<User>(options.LocalCacheCapacity, _cacheTtl);
+        _flagsCache = new LocalCache<Flag>(options.LocalCacheCapacity, flagTTL);
       }
 
       _webSocket = webSocket ?? new StandardWebSocketClient();
