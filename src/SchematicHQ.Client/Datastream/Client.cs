@@ -7,6 +7,7 @@ using Microsoft.Extensions.Options;
 using OneOf.Types;
 using SchematicHQ.Client.RulesEngine;
 using SchematicHQ.Client.RulesEngine.Models;
+using SchematicHQ.Client.RulesEngine.Utils;
 using SchematicHQ.Client;
 using SchematicHQ.Client.Cache;
 
@@ -934,12 +935,14 @@ private readonly Action<bool> _connectionStateCallback;
 
     private string FlagCacheKey(string key)
     {
-      return $"{CacheKeyPrefix}:{CacheKeyPrefixFlags}:{key}";
+        var schemaVersion = SchemaVersionGenerator.GetSchemaVersion<Flag>();
+        return $"{CacheKeyPrefix}:{CacheKeyPrefixFlags}:{schemaVersion}:{key}";
     }
 
     private string ResourceKeyToCacheKey<T>(string resourceType, string key, string value)
     {
-      return $"{CacheKeyPrefix}:{resourceType}:{key}:{value}";
+      var schemaVersion = SchemaVersionGenerator.GetSchemaVersion<T>();
+      return $"{CacheKeyPrefix}:{resourceType}:{schemaVersion}:{key}:{value}";
     }
 
     public void Dispose()
