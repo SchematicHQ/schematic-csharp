@@ -7,6 +7,7 @@ using Microsoft.Extensions.Options;
 using OneOf.Types;
 using SchematicHQ.Client.RulesEngine;
 using SchematicHQ.Client.RulesEngine.Models;
+using SchematicHQ.Client.RulesEngine.Utils;
 using SchematicHQ.Client;
 using SchematicHQ.Client.Cache;
 
@@ -451,7 +452,7 @@ private readonly Action<bool> _connectionStateCallback;
           // Handle deletion by removing company from cache
           foreach (var key in company.Keys)
           {
-            var cacheKey = ResourceKeyToCacheKey(CacheKeyPrefixCompany, key.Key, key.Value);
+            var cacheKey = ResourceKeyToCacheKey<Company>(CacheKeyPrefixCompany, key.Key, key.Value);
             _companyCache.Delete(cacheKey);
           }
 
@@ -460,7 +461,7 @@ private readonly Action<bool> _connectionStateCallback;
 
         foreach (var key in company.Keys)
         {
-          var cacheKey = ResourceKeyToCacheKey(CacheKeyPrefixCompany, key.Key, key.Value);
+          var cacheKey = ResourceKeyToCacheKey<Company>(CacheKeyPrefixCompany, key.Key, key.Value);
           _companyCache.Set(cacheKey, company);
         }
 
@@ -471,7 +472,7 @@ private readonly Action<bool> _connectionStateCallback;
         {
           foreach (var key in company.Keys)
           {
-            var cacheKey = ResourceKeyToCacheKey(CacheKeyPrefixCompany, key.Key, key.Value);
+            var cacheKey = ResourceKeyToCacheKey<Company>(CacheKeyPrefixCompany, key.Key, key.Value);
             if (_pendingCompanyRequests.TryGetValue(cacheKey, out var channels))
             {
               channelsToNotify.AddRange(channels);
@@ -524,7 +525,7 @@ private readonly Action<bool> _connectionStateCallback;
           // Handle deletion by removing user from cache
           foreach (var key in user.Keys)
           {
-            var cacheKey = ResourceKeyToCacheKey(CacheKeyPrefixUser, key.Key, key.Value);
+            var cacheKey = ResourceKeyToCacheKey<User>(CacheKeyPrefixUser, key.Key, key.Value);
             _userCache.Delete(cacheKey);
             _logger.Debug("Deleted user from cache with key: {0}", cacheKey);
           }
@@ -533,7 +534,7 @@ private readonly Action<bool> _connectionStateCallback;
 
         foreach (var key in user.Keys)
         {
-          var cacheKey = ResourceKeyToCacheKey(CacheKeyPrefixUser, key.Key, key.Value);
+          var cacheKey = ResourceKeyToCacheKey<User>(CacheKeyPrefixUser, key.Key, key.Value);
           _userCache.Set(cacheKey, user);
         }
 
@@ -544,7 +545,7 @@ private readonly Action<bool> _connectionStateCallback;
         {
           foreach (var key in user.Keys)
           {
-            var cacheKey = ResourceKeyToCacheKey(CacheKeyPrefixUser, key.Key, key.Value);
+            var cacheKey = ResourceKeyToCacheKey<User>(CacheKeyPrefixUser, key.Key, key.Value);
             if (_pendingUserRequests.TryGetValue(cacheKey, out var channels))
             {
               channelsToNotify.AddRange(channels);
@@ -650,7 +651,7 @@ private readonly Action<bool> _connectionStateCallback;
       {
         foreach (var key in keys)
         {
-          var cacheKey = ResourceKeyToCacheKey(CacheKeyPrefixCompany, key.Key, key.Value);
+          var cacheKey = ResourceKeyToCacheKey<Company>(CacheKeyPrefixCompany, key.Key, key.Value);
           cacheKeys.Add(cacheKey);
 
           if (_pendingCompanyRequests.TryGetValue(cacheKey, out var existingChannels))
@@ -717,7 +718,7 @@ private readonly Action<bool> _connectionStateCallback;
       {
         foreach (var key in keys)
         {
-          var cacheKey = ResourceKeyToCacheKey(CacheKeyPrefixUser, key.Key, key.Value);
+          var cacheKey = ResourceKeyToCacheKey<User>(CacheKeyPrefixUser, key.Key, key.Value);
           cacheKeys.Add(cacheKey);
 
           if (_pendingUserRequests.TryGetValue(cacheKey, out var existingChannels))
@@ -831,7 +832,7 @@ private readonly Action<bool> _connectionStateCallback;
     {
       foreach (var key in keys)
       {
-        var cacheKey = ResourceKeyToCacheKey(CacheKeyPrefixCompany, key.Key, key.Value);
+        var cacheKey = ResourceKeyToCacheKey<Company>(CacheKeyPrefixCompany, key.Key, key.Value);
         var company = _companyCache.Get(cacheKey);
         if (company != null)
         {
@@ -845,7 +846,7 @@ private readonly Action<bool> _connectionStateCallback;
     {
       foreach (var key in keys)
       {
-        var cacheKey = ResourceKeyToCacheKey(CacheKeyPrefixUser, key.Key, key.Value);
+        var cacheKey = ResourceKeyToCacheKey<User>(CacheKeyPrefixUser, key.Key, key.Value);
         var user = _userCache.Get(cacheKey);
         if (user != null)
         {
@@ -920,12 +921,14 @@ private readonly Action<bool> _connectionStateCallback;
 
     private string FlagCacheKey(string key)
     {
-      return $"{CacheKeyPrefix}:{CacheKeyPrefixFlags}:{key}";
+        var schemaVersion = SchemaVersionGenerator.GetSchemaVersion<Flag>();
+        return $"{CacheKeyPrefix}:{CacheKeyPrefixFlags}:{schemaVersion}:{key}";
     }
 
-    private string ResourceKeyToCacheKey(string resourceType, string key, string value)
+    private string ResourceKeyToCacheKey<T>(string resourceType, string key, string value)
     {
-      return $"{CacheKeyPrefix}:{resourceType}:{key}:{value}";
+      var schemaVersion = SchemaVersionGenerator.GetSchemaVersion<T>();
+      return $"{CacheKeyPrefix}:{resourceType}:{schemaVersion}:{key}:{value}";
     }
 
     public void Dispose()
