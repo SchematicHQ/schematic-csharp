@@ -150,6 +150,7 @@ public partial class Schematic
                 // Apply cache TTL if not set in DatastreamOptions
                 datastreamOptions.CacheTTL = datastreamOptions.CacheTTL ?? _options.CacheConfiguration.CacheTtl;
             }
+
             _datastreamClient = new DatastreamClientAdapter(
                 _options.BaseUrl,
                 _logger,
@@ -228,92 +229,123 @@ public partial class Schematic
         if (_offline)
             return GetFlagDefault(flagKey);
 
-        // Use datastream if enabled and connected
+        // Try datastream first if enabled
         if (_datastreamClient != null)
         {
-            bool isConnected = _datastreamConnected;
-            
-            if (isConnected)
+            try
             {
-                try
+                var request = new CheckFlagRequestBody
                 {
-                    var flagResult = await _datastreamClient.CheckFlag(company, user, flagKey);
-                    // Submit flag check event for successful API evaluation
-                    SubmitFlagCheckEvent(
-                        flagKey,
-                        flagResult.Value,
-                        company,
-                        user,
-                        new EventBodyFlagCheck
-                        {
-                            FlagKey = flagKey,
-                            Value = flagResult.Value,
-                            FlagId = flagResult.FlagId,
-                            RuleId = flagResult.RuleId,
-                            CompanyId = flagResult.CompanyId,
-                            UserId = flagResult.UserId,
-                            Reason = flagResult.Reason,
-                            Error = flagResult.Error?.Message
-                        });
-                    return flagResult.Value;
-                }
-                catch (Exception ex)
-                {
-                    _logger.Error("Error checking flag via datastream: {0}", ex.Message);
-                    // Fall through to API-based flag check
-                }
+                    Company = company,
+                    User = user
+                };
+                var flagResult = await _datastreamClient.CheckFlag(request, flagKey);
+                // Let the datastream client handle all the resource fetching logic internally
+
+                // Submit flag check event for successful datastream evaluation
+                SubmitFlagCheckEvent(
+                    flagKey,
+                    flagResult.Value,
+                    company,
+                    user,
+                    new EventBodyFlagCheck
+                    {
+                        FlagKey = flagKey,
+                        Value = flagResult.Value,
+                        FlagId = flagResult.FlagId,
+                        RuleId = flagResult.RuleId,
+                        CompanyId = flagResult.CompanyId,
+                        UserId = flagResult.UserId,
+                        Reason = flagResult.Reason,
+                        Error = flagResult.Error?.Message
+                    });
+                return flagResult.Value;
             }
-            else
+            catch (Exception ex)
             {
-                _logger.Debug("Datastream not connected, falling back to API for flag check: {0}", flagKey);
+                _logger.Error("Error during datastream flag check: {0}. Falling back to API.", ex.Message);
             }
         }
 
         // Fall back to API request
-        try
+        return await CheckFlagApi(flagKey, company, user);
+    }
+
+    private async Task<bool> CheckFlagApi(string flagKey, Dictionary<string, string>? company, Dictionary<string, string>? user)
+  {
+    try
+    {
+      string cacheKey = BuildFlagCacheKey(flagKey, company, user);
+
+      // Check cache first
+      foreach (var provider in _flagCheckCacheProviders)
+      {
+        if (provider.Get(cacheKey) is bool cachedValue)
+          return cachedValue;
+      }
+
+      // Make API request
+      var requestBody = new CheckFlagRequestBody
+      {
+        Company = company,
+        User = user
+      };
+
+      var response = await API.Features.CheckFlagAsync(flagKey, requestBody);
+
+      if (response == null)
+      {
+        return GetFlagDefault(flagKey);
+      }
+
+      // Cache the result
+      foreach (var provider in _flagCheckCacheProviders)
+      {
+        provider.Set(cacheKey, response.Data.Value);
+      }
+
+      // Submit flag check event
+      SubmitFlagCheckEvent(
+          flagKey,
+          response.Data.Value,
+          company,
+          user,
+          new EventBodyFlagCheck
+          {
+            FlagKey = flagKey,
+            Value = response.Data.Value,
+            FlagId = response.Data.FlagId,
+            RuleId = response.Data.RuleId,
+            CompanyId = response.Data.CompanyId,
+            UserId = response.Data.UserId,
+            Reason = response.Data.Reason
+          });
+
+      return response.Data.Value;
+    }
+    catch (Exception ex)
+    {
+      _logger.Error("Error checking flag via API: {0}", ex.Message);
+      return GetFlagDefault(flagKey);
+    }
+  }
+
+    // Helper method to build consistent cache keys
+    private string BuildFlagCacheKey(string flagKey, Dictionary<string, string>? company, Dictionary<string, string>? user)
+    {
+        string cacheKey = flagKey;
+
+        if (company != null && company.Count > 0)
         {
-            string cacheKey = flagKey;
-             if (company != null && company.Count > 0)
-            {
-                cacheKey += ":c-" + string.Join(";", company.Select(kvp => $"{kvp.Key}={kvp.Value}"));
-            }
-
-            if (user != null && user.Count > 0)
-            {
-                cacheKey += ":u-" + string.Join(";", user.Select(kvp => $"{kvp.Key}={kvp.Value}"));
-            }
-
-            foreach (var provider in _flagCheckCacheProviders)
-            {
-                if (provider.Get(cacheKey) is bool cachedValue)
-                    return cachedValue;
-            }
-            var requestBody = new CheckFlagRequestBody
-            {
-                Company = company,
-                User = user
-            };
-
-            var response = await API.Features.CheckFlagAsync(flagKey, requestBody);
-
-            if (response == null){
-
-                return GetFlagDefault(flagKey);
-            }
-
-            foreach (var provider in _flagCheckCacheProviders)
-            {
-                provider.Set(cacheKey, response.Data.Value);
-            }
-
-            return response.Data.Value;
+            cacheKey += ":c-" + string.Join(";", company.Select(kvp => $"{kvp.Key}={kvp.Value}"));
         }
-        catch (Exception ex)
+
+        if (user != null && user.Count > 0)
         {
-            _logger.Error("Error checking flag: {0}", ex.Message);
-
-            return GetFlagDefault(flagKey);
+            cacheKey += ":u-" + string.Join(";", user.Select(kvp => $"{kvp.Key}={kvp.Value}"));
         }
+
+        return cacheKey;
     }
 
     public void Identify(Dictionary<string, string> keys, EventBodyIdentifyCompany? company = null, string? name = null, Dictionary<string, object?>? traits = null)

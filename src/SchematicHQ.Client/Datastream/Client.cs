@@ -10,6 +10,7 @@ using SchematicHQ.Client.RulesEngine.Models;
 using SchematicHQ.Client.RulesEngine.Utils;
 using SchematicHQ.Client;
 using SchematicHQ.Client.Cache;
+using System.Threading.Tasks;
 
 
 namespace SchematicHQ.Client.Datastream
@@ -20,7 +21,7 @@ namespace SchematicHQ.Client.Datastream
     private readonly string _apiKey;
     private readonly Uri _baseUrl;
     private readonly TimeSpan _cacheTtl;
-private readonly Action<bool> _connectionStateCallback;
+    private readonly Action<bool> _connectionStateCallback;
     private IWebSocketClient _webSocket;
     private readonly CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
     private readonly SemaphoreSlim _reconnectSemaphore = new SemaphoreSlim(1, 1);
@@ -249,8 +250,8 @@ private readonly Action<bool> _connectionStateCallback;
       {
         jitterMs = _jitterRandom.Next((int)MinReconnectDelay.TotalMilliseconds);
       }
-    
-    var jitter = TimeSpan.FromMilliseconds(jitterMs);
+
+      var jitter = TimeSpan.FromMilliseconds(jitterMs);
 
       // Exponential backoff with a cap
       var delay = TimeSpan.FromMilliseconds(Math.Pow(2, attempt - 1) * MinReconnectDelay.TotalMilliseconds) + jitter;
@@ -313,29 +314,29 @@ private readonly Action<bool> _connectionStateCallback;
             }
           }
           catch (OperationCanceledException)
-            {
-                _logger.Info("WebSocket read operation was cancelled");
-                return;
-            }
-            catch (Exception ex)
-            {
-                _logger.Error("Error reading from WebSocket: {0}", ex.Message);
-                return; // Exit and trigger reconnection
-            }
+          {
+            _logger.Info("WebSocket read operation was cancelled");
+            return;
+          }
+          catch (Exception ex)
+          {
+            _logger.Error("Error reading from WebSocket: {0}", ex.Message);
+            return; // Exit and trigger reconnection
+          }
         }
       }
       catch (Exception ex)
       {
-          _logger.Error("Fatal error in ReadMessagesAsync: {0}", ex.Message);
+        _logger.Error("Fatal error in ReadMessagesAsync: {0}", ex.Message);
       }
       finally
       {
-          // Signal that reconnection should happen
-          if (!_cancellationTokenSource.IsCancellationRequested)
-          {
-              _logger.Info("Signaling for WebSocket reconnection");
-              _readCancellationSource.Cancel();
-          }
+        // Signal that reconnection should happen
+        if (!_cancellationTokenSource.IsCancellationRequested)
+        {
+          _logger.Info("Signaling for WebSocket reconnection");
+          _readCancellationSource.Cancel();
+        }
       }
     }
 
@@ -602,60 +603,28 @@ private readonly Action<bool> _connectionStateCallback;
       }
     }
 
-    public async Task<CheckFlagResult> CheckFlagAsync(CheckFlagRequestBody request, string flagKey, CancellationToken cancellationToken = default)
+    internal async Task<CheckFlagResult> CheckFlag(Company? company, User? user, Flag flag, CancellationToken cancellationToken = default)
     {
       try
       {
-        Company? company = null;
-        if (request.Company != null)
-        {
-          company = await GetCompanyAsync(request.Company, cancellationToken);
-        }
-
-        User? user = null;
-        if (request.User != null)
-        {
-          user = await GetUserAsync(request.User, cancellationToken);
-        }
-
-        var flag = GetFlag(flagKey);
-        if (flag == null)
-        {
-          return new CheckFlagResult
-          {
-            Reason = "Flag not found",
-            FlagKey = flagKey,
-            Error = Errors.ErrorFlagNotFound,
-            Value = false,
-          };
-        }
-
         var result = await FlagCheckService.CheckFlag(company, user, flag);
-
-
-
         return result;
       }
       catch (Exception ex)
       {
-        _logger.Error("Error checking flag {0}: {1}", flagKey, ex.Message);
+        _logger.Error("Error checking flag {0}: {1}", flag.Key, ex.Message);
         return new CheckFlagResult
         {
           Reason = "Error",
-          FlagKey = flagKey,
+          FlagKey = flag.Key,
           Error = ex,
           Value = false,
         };
       }
     }
 
-    private async Task<Company?> GetCompanyAsync(Dictionary<string, string> keys, CancellationToken cancellationToken)
+    internal async Task<Company> GetCompanyAsync(Dictionary<string, string> keys, CancellationToken cancellationToken)
     {
-      var company = GetCompanyFromCache(keys);
-      if (company != null)
-      {
-        return company;
-      }
 
       var waitTask = new TaskCompletionSource<Company?>();
       var cacheKeys = new List<string>();
@@ -716,13 +685,9 @@ private readonly Action<bool> _connectionStateCallback;
       }
     }
 
-    private async Task<User?> GetUserAsync(Dictionary<string, string> keys, CancellationToken cancellationToken)
+    internal async Task<User> GetUserAsync(Dictionary<string, string> keys, CancellationToken cancellationToken)
     {
-      var user = GetUserFromCache(keys);
-      if (user != null)
-      {
-        return user;
-      }
+
 
       var waitTask = new TaskCompletionSource<User?>();
       var cacheKeys = new List<string>();
@@ -794,7 +759,8 @@ private readonly Action<bool> _connectionStateCallback;
         {
           // If there is a pending request, use that
           return;
-        }else if (_webSocket.State != WebSocketState.Open)
+        }
+        else if (_webSocket.State != WebSocketState.Open)
         {
           _logger.Warn("WebSocket is not open, cannot request flags data");
           return;
@@ -836,13 +802,13 @@ private readonly Action<bool> _connectionStateCallback;
       }
     }
 
-    private Flag? GetFlag(string key)
+    internal Flag? GetFlag(string key)
     {
       var flag = _flagsCache.Get(FlagCacheKey(key));
       return flag;
     }
 
-    private Company? GetCompanyFromCache(Dictionary<string, string> keys)
+    internal Company? GetCompanyFromCache(Dictionary<string, string> keys)
     {
       foreach (var key in keys)
       {
@@ -856,7 +822,7 @@ private readonly Action<bool> _connectionStateCallback;
       return null;
     }
 
-    private User? GetUserFromCache(Dictionary<string, string> keys)
+    internal User? GetUserFromCache(Dictionary<string, string> keys)
     {
       foreach (var key in keys)
       {

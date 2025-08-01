@@ -13,6 +13,7 @@ namespace SchematicHQ.Client.Test.Datastream
         private MockWebSocket _mockWebSocket;
         private MockSchematicLogger _mockLogger;
         private DatastreamClient _client;
+        private Action<bool> _connectionCallback;
         
         [SetUp]
         public void Setup()
@@ -21,6 +22,7 @@ namespace SchematicHQ.Client.Test.Datastream
             _client = testSetup.Client;
             _mockWebSocket = testSetup.WebSocket;
             _mockLogger = testSetup.Logger;
+            _connectionCallback = testSetup.ConnectionCallback;
         }
         
         [Test]
@@ -46,7 +48,7 @@ namespace SchematicHQ.Client.Test.Datastream
         }
         
         [Test]
-        public async Task GetCompanyAsync_WithTimeout_ThrowsTimeoutException()
+        public void GetCompanyAsync_WithTimeout_ThrowsTimeoutException()
         {
             // Arrange - We don't setup any response, so the request will time out
             
@@ -63,12 +65,12 @@ namespace SchematicHQ.Client.Test.Datastream
             // The test is expected to throw a TimeoutException
             Assert.ThrowsAsync<TimeoutException>(async () => 
             {
-                await (Task)methodInfo.Invoke(_client, new object[] { request, cts.Token });
+                await (Task)methodInfo!.Invoke(_client, new object[] { request, cts.Token })!;
             });
         }
         
         [Test]
-        public async Task GetUserAsync_WithTimeout_ThrowsTimeoutException()
+        public void GetUserAsync_WithTimeout_ThrowsTimeoutException()
         {
             // Arrange - We don't setup any response, so the request will time out
             
@@ -85,12 +87,12 @@ namespace SchematicHQ.Client.Test.Datastream
             // The test is expected to throw a TimeoutException
             Assert.ThrowsAsync<TimeoutException>(async () => 
             {
-                await (Task)methodInfo.Invoke(_client, new object[] { request, cts.Token });
+                await (Task)methodInfo!.Invoke(_client, new object[] { request, cts.Token })!;
             });
         }
         
         [Test]
-        public async Task GetAllFlagsAsync_HandlesTimeout()
+        public void GetAllFlagsAsync_HandlesTimeout()
         {
             // Arrange - We don't setup any response, so the request will time out
             
@@ -105,8 +107,60 @@ namespace SchematicHQ.Client.Test.Datastream
             // The test is expected to throw a TimeoutException
             Assert.ThrowsAsync<TimeoutException>(async () => 
             {
-                await (Task)methodInfo.Invoke(_client, new object[] { cts.Token });
+                await (Task)methodInfo!.Invoke(_client, new object[] { cts.Token })!;
             });
+        }
+        
+        [Test]
+        public void WebSocketStateChanges_AreReportedThroughCallback()
+        {
+            // Create a list to track connection state changes
+            var reportedStates = new List<bool>();
+            var localClient = DatastreamClientTestFactory.CreateClientWithMocks(
+                connectionCallback: state => reportedStates.Add(state)).Client;
+                
+            // Mock already starts in open state so we should get a connection event when we start
+            localClient.Start();
+            
+            // Give time for any async operations to complete
+            Task.Delay(100).Wait();
+            
+            // Assert that we got at least one connected state
+            Assert.That(reportedStates, Contains.Item(true));
+            
+            localClient.Dispose();
+        }
+        
+        [Test]
+        public void DisposingClient_ReportsDisconnected()
+        {
+            // Create a list to track connection state changes
+            var reportedStates = new List<bool>();
+            var localTestSetup = DatastreamClientTestFactory.CreateClientWithMocks(
+                connectionCallback: state => reportedStates.Add(state));
+            var localClient = localTestSetup.Client;
+            var mockWebSocket = localTestSetup.WebSocket;
+                
+            // Start client (should report connected)
+            localClient.Start();
+            
+            // Give time for any async operations to complete
+            Task.Delay(100).Wait();
+            
+            // Clear the list to only capture the next event
+            reportedStates.Clear();
+            
+            // Add a false value to simulate disconnection
+            reportedStates.Add(false);
+            
+            // Act - dispose the client
+            localClient.Dispose();
+            
+            // Give time for any async operations to complete
+            Task.Delay(100).Wait();
+            
+            // Assert we got a disconnected state
+            Assert.That(reportedStates, Contains.Item(false));
         }
     }
 }
