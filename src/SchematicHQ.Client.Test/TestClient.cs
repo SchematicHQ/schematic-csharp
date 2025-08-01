@@ -159,7 +159,7 @@ namespace SchematicHQ.Client.Test
 
             // Assert
             Assert.That(result, Is.True); // default is true for the test flag
-            _logger.Verify(logger => logger.Error("Error checking flag: {0}", It.IsAny<string>()), Times.Once);
+            _logger.Verify(logger => logger.Error("Error checking flag via API: {0}", It.IsAny<string>()), Times.Once);
         }
 
         [Test]
