@@ -674,7 +674,6 @@ namespace SchematicHQ.Client.Datastream
     internal async Task<User> GetUserAsync(Dictionary<string, string> keys, CancellationToken cancellationToken)
     {
 
-
       var waitTask = new TaskCompletionSource<User>();
       var cacheKeys = new List<string>();
       bool shouldSendRequest = true;
