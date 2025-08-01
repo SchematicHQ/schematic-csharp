@@ -35,6 +35,6 @@ public static class SchemaVersionGenerator
     var hash = sha.ComputeHash(bytes);
 
     // Return first 8 characters of the hash as hex string
-    return BitConverter.ToString(hash).Replace("-", "").Substring(0, 8);
+    return Convert.ToHexString(hash.AsSpan(0, 4));
   }
 }
