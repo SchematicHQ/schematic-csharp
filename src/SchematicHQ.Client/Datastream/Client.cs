@@ -132,11 +132,39 @@ namespace SchematicHQ.Client.Datastream
     {
       var uri = new Uri(baseUrl);
 
-      string scheme = uri.Scheme == "https" ? "wss" : "ws";
+      string newHost;
+
+      // Handle special cases
+      if (uri.Host == "localhost" || uri.HostNameType == UriHostNameType.IPv4 || uri.HostNameType == UriHostNameType.IPv6)
+      {
+        // For localhost or IP addresses, use as-is and don't add subdomain
+        newHost = uri.Host;
+      }
+      else
+      {
+        // Extract the domain parts
+        string[] hostParts = uri.Host.Split('.');
+        string rootDomain;
+
+        // Handle different domain formats
+        if (hostParts.Length >= 2)
+        {
+          // Take the last two parts (example.com)
+          rootDomain = string.Join(".", hostParts.Skip(Math.Max(0, hostParts.Length - 2)).Take(2));
+        }
+        else
+        {
+          rootDomain = uri.Host;
+        }
+
+        // Create new host with datastream subdomain
+        newHost = $"datastream.{rootDomain}";
+      }
 
       var builder = new UriBuilder(uri)
       {
-        Scheme = scheme,
+        Host = newHost,
+        Scheme = uri.Scheme == "https" ? "wss" : "ws",
         Path = "/datastream"
       };
 
@@ -901,8 +929,8 @@ namespace SchematicHQ.Client.Datastream
 
     private string FlagCacheKey(string key)
     {
-        var schemaVersion = SchemaVersionGenerator.GetSchemaVersion<Flag>();
-        return $"{CacheKeyPrefix}:{CacheKeyPrefixFlags}:{schemaVersion}:{key}";
+      var schemaVersion = SchemaVersionGenerator.GetSchemaVersion<Flag>();
+      return $"{CacheKeyPrefix}:{CacheKeyPrefixFlags}:{schemaVersion}:{key}";
     }
 
     private string ResourceKeyToCacheKey<T>(string resourceType, string key, string value)
