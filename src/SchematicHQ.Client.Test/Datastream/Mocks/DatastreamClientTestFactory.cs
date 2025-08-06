@@ -9,16 +9,17 @@ namespace SchematicHQ.Client.Test.Datastream.Mocks
     /// </summary>
     public class DatastreamClientTestFactory
     {
-        public static (DatastreamClient Client, MockWebSocket WebSocket, MockSchematicLogger Logger) CreateClientWithMocks(string apiKey = "test-api-key", TimeSpan? cacheTtl = null)
+        public static (DatastreamClient Client, MockWebSocket WebSocket, MockSchematicLogger Logger, Action<bool> ConnectionCallback) 
+            CreateClientWithMocks(string apiKey = "test-api-key", TimeSpan? cacheTtl = null, Action<bool>? connectionCallback = null)
         {
             var logger = new MockSchematicLogger();
             var mockWebSocket = new MockWebSocket();
             mockWebSocket.SetState(WebSocketState.Open);
             
-            var monitorSource = new Action<bool>(isConnected =>{});
-            var client = new DatastreamClient("wss://test.example.com", logger, apiKey, monitorSource, cacheTtl, mockWebSocket);
+            var monitorCallback = connectionCallback ?? (isConnected => {});
+            var client = new DatastreamClient("wss://test.example.com", logger, apiKey, monitorCallback, cacheTtl, mockWebSocket);
             
-            return (client, mockWebSocket, logger);
+            return (client, mockWebSocket, logger, monitorCallback);
         }
     }
 }

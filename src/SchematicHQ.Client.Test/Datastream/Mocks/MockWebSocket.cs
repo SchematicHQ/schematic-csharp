@@ -19,6 +19,7 @@ namespace SchematicHQ.Client.Test.Datastream.Mocks
         
         public List<byte[]> SentMessages { get; } = new();
         public Action<ArraySegment<byte>, WebSocketMessageType, bool, CancellationToken>? OnSendAsync { get; set; }
+        public Func<ArraySegment<byte>, CancellationToken, Task<WebSocketReceiveResult>>? OnReceiveAsync { get; set; }
 
         public void SetupToReceive(string message)
         {
@@ -28,6 +29,35 @@ namespace SchematicHQ.Client.Test.Datastream.Mocks
                 bytes.Length,
                 WebSocketMessageType.Text,
                 true));
+        }
+        
+        public void SetupToReceiveWithDelay(string message, int delayMs)
+        {
+            // Store the original message and setup a delayed response
+            var bytes = Encoding.UTF8.GetBytes(message);
+            
+            OnReceiveAsync = async (buffer, token) => {
+                // Introduce the delay
+                await Task.Delay(delayMs, token);
+                
+                // Copy the message to the buffer
+                Array.Copy(bytes, 0, buffer.Array!, buffer.Offset, Math.Min(bytes.Length, buffer.Count));
+                
+                // Clear the custom handler so future calls use the default implementation
+                OnReceiveAsync = null;
+                
+                // Add the message to the queue for subsequent requests
+                _messagesToSend.Enqueue(bytes);
+                _receiveResults.Enqueue(new WebSocketReceiveResult(
+                    bytes.Length,
+                    WebSocketMessageType.Text,
+                    true));
+                
+                return new WebSocketReceiveResult(
+                    bytes.Length,
+                    WebSocketMessageType.Text,
+                    true);
+            };
         }
 
         public void SetupToReceiveBinary(byte[] data)
@@ -82,8 +112,15 @@ namespace SchematicHQ.Client.Test.Datastream.Mocks
             _state = WebSocketState.Aborted;
         }
 
-        public Task<WebSocketReceiveResult> ReceiveAsync(ArraySegment<byte> buffer, CancellationToken cancellationToken)
+        public async Task<WebSocketReceiveResult> ReceiveAsync(ArraySegment<byte> buffer, CancellationToken cancellationToken)
         {
+            // If we have a custom receive handler, use it
+            if (OnReceiveAsync != null)
+            {
+                var customResult = await OnReceiveAsync(buffer, cancellationToken);
+                return customResult;
+            }
+            
             if (_messagesToSend.Count == 0)
             {
                 throw new WebSocketException("Connection closed");
@@ -93,7 +130,7 @@ namespace SchematicHQ.Client.Test.Datastream.Mocks
             var result = _receiveResults.Dequeue();
 
             Array.Copy(message, 0, buffer.Array!, buffer.Offset, Math.Min(message.Length, buffer.Count));
-            return Task.FromResult(result);
+            return result;
         }
 
         public Task SendAsync(ArraySegment<byte> buffer, WebSocketMessageType messageType, bool endOfMessage, CancellationToken cancellationToken)
