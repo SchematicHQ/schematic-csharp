@@ -427,6 +427,11 @@ namespace SchematicHQ.Client.Datastream
 
         foreach (var flag in flags)
         {
+          if (string.IsNullOrEmpty(flag.Key))
+          {
+            _logger.Debug("Flag key is null, skipping flag: {0}", flag.Id);
+            continue;
+          }
           var cacheKey = FlagCacheKey(flag.Key);
           _flagsCache.Set(cacheKey, flag);
           cacheKeys.Add(cacheKey);

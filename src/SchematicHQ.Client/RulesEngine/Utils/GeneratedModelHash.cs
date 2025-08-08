@@ -1,5 +1,5 @@
 // Auto-generated code - do not modify
-// Generated on Fri Aug  8 10:28:08 MDT 2025
+// Generated on Fri Aug  8 10:37:20 MDT 2025
 
 namespace SchematicHQ.Client.RulesEngine.Utils
 {
@@ -14,6 +14,6 @@ namespace SchematicHQ.Client.RulesEngine.Utils
         /// <summary>
         /// The timestamp when this hash was generated
         /// </summary>
-        public static readonly System.DateTime GeneratedAt = new System.DateTime(638902672870000000L, System.DateTimeKind.Utc);
+        public static readonly System.DateTime GeneratedAt = new System.DateTime(638902678400000000L, System.DateTimeKind.Utc);
     }
 }
