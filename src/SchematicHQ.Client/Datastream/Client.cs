@@ -31,8 +31,8 @@ private readonly Action<bool> _connectionStateCallback;
     private readonly ICacheProvider<User> _userCache;
 
     // Pending request tracking
-    private readonly Dictionary<string, List<TaskCompletionSource<Company>>> _pendingCompanyRequests = new Dictionary<string, List<TaskCompletionSource<Company>>>();
-    private readonly Dictionary<string, List<TaskCompletionSource<User>>> _pendingUserRequests = new Dictionary<string, List<TaskCompletionSource<User>>>();
+    private readonly Dictionary<string, List<TaskCompletionSource<Company?>>> _pendingCompanyRequests = new Dictionary<string, List<TaskCompletionSource<Company?>>>();
+    private readonly Dictionary<string, List<TaskCompletionSource<User?>>> _pendingUserRequests = new Dictionary<string, List<TaskCompletionSource<User?>>>();
     private TaskCompletionSource<bool>? _pendingFlagRequest;
     private readonly object _pendingRequestsLock = new object();
 
@@ -409,6 +409,34 @@ private readonly Action<bool> _connectionStateCallback;
       }
     }
 
+    /// <summary>
+    /// Helper method to notify pending requests with a success result
+    /// </summary>
+    private void NotifyPendingRequests<T>(T? entity, IDictionary<string, string> keys, string cacheKeyPrefix,
+      Dictionary<string, List<TaskCompletionSource<T?>>> pendingRequests) where T : class
+    {
+      List<TaskCompletionSource<T?>> channelsToNotify = new List<TaskCompletionSource<T?>>();
+
+      lock (_pendingRequestsLock)
+      {
+        foreach (var key in keys)
+        {
+          var cacheKey = ResourceKeyToCacheKey<T>(cacheKeyPrefix, key.Key, key.Value);
+          if (pendingRequests.TryGetValue(cacheKey, out var channels))
+          {
+            channelsToNotify.AddRange(channels);
+            pendingRequests.Remove(cacheKey);
+          }
+        }
+      }
+      
+      // Notify outside the lock
+      foreach (var channel in channelsToNotify)
+      {
+        channel.TrySetResult(entity);
+      }
+    }
+    
     private void HandleCompanyMessage(DataStreamResponse response)
     {
       try
@@ -423,9 +451,9 @@ private readonly Action<bool> _connectionStateCallback;
         {
           PropertyNameCaseInsensitive = true,
           Converters = {
-        new JsonStringEnumConverter(JsonNamingPolicy.SnakeCaseLower, false),
-        new EntityTypeConverter()
-    }
+            new JsonStringEnumConverter(JsonNamingPolicy.SnakeCaseLower, false),
+            new EntityTypeConverter()
+          }
         };
 
         var jsonString = response.Data.ToString() ?? string.Empty;
@@ -442,40 +470,22 @@ private readonly Action<bool> _connectionStateCallback;
           // Handle deletion by removing company from cache
           foreach (var key in company.Keys)
           {
-            var cacheKey = ResourceKeyToCacheKey(CacheKeyPrefixCompany, key.Key, key.Value);
+            var cacheKey = ResourceKeyToCacheKey<Company>(CacheKeyPrefixCompany, key.Key, key.Value);
             _companyCache.Delete(cacheKey);
           }
 
           return;
         }
 
+        // Update cache
         foreach (var key in company.Keys)
         {
-          var cacheKey = ResourceKeyToCacheKey(CacheKeyPrefixCompany, key.Key, key.Value);
+          var cacheKey = ResourceKeyToCacheKey<Company>(CacheKeyPrefixCompany, key.Key, key.Value);
           _companyCache.Set(cacheKey, company);
         }
 
-        // Notify any pending requests
-        List<TaskCompletionSource<Company>> channelsToNotify = new List<TaskCompletionSource<Company>>();
-
-        lock (_pendingRequestsLock)
-        {
-          foreach (var key in company.Keys)
-          {
-            var cacheKey = ResourceKeyToCacheKey(CacheKeyPrefixCompany, key.Key, key.Value);
-            if (_pendingCompanyRequests.TryGetValue(cacheKey, out var channels))
-            {
-              channelsToNotify.AddRange(channels);
-              _pendingCompanyRequests.Remove(cacheKey);
-            }
-          }
-        }
-
-        // Notify outside the lock
-        foreach (var channel in channelsToNotify)
-        {
-          channel.TrySetResult(company);
-        }
+        // Notify pending requests
+        NotifyPendingRequests(company, company.Keys, CacheKeyPrefixCompany, _pendingCompanyRequests);
       }
       catch (Exception ex)
       {
@@ -515,40 +525,22 @@ private readonly Action<bool> _connectionStateCallback;
           // Handle deletion by removing user from cache
           foreach (var key in user.Keys)
           {
-            var cacheKey = ResourceKeyToCacheKey(CacheKeyPrefixUser, key.Key, key.Value);
+            var cacheKey = ResourceKeyToCacheKey<User>(CacheKeyPrefixUser, key.Key, key.Value);
             _userCache.Delete(cacheKey);
             _logger.Debug("Deleted user from cache with key: {0}", cacheKey);
           }
           return;
         }
 
+        // Update cache
         foreach (var key in user.Keys)
         {
-          var cacheKey = ResourceKeyToCacheKey(CacheKeyPrefixUser, key.Key, key.Value);
+          var cacheKey = ResourceKeyToCacheKey<User>(CacheKeyPrefixUser, key.Key, key.Value);
           _userCache.Set(cacheKey, user);
         }
 
-        // Notify any pending requests
-        List<TaskCompletionSource<User>> channelsToNotify = new List<TaskCompletionSource<User>>();
-
-        lock (_pendingRequestsLock)
-        {
-          foreach (var key in user.Keys)
-          {
-            var cacheKey = ResourceKeyToCacheKey(CacheKeyPrefixUser, key.Key, key.Value);
-            if (_pendingUserRequests.TryGetValue(cacheKey, out var channels))
-            {
-              channelsToNotify.AddRange(channels);
-              _pendingUserRequests.Remove(cacheKey);
-            }
-          }
-        }
-
-        // Notify outside the lock
-        foreach (var channel in channelsToNotify)
-        {
-          channel.TrySetResult(user);
-        }
+        // Notify pending requests
+        NotifyPendingRequests(user, user.Keys, CacheKeyPrefixUser, _pendingUserRequests);
       }
       catch (Exception ex)
       {
@@ -569,8 +561,30 @@ private readonly Action<bool> _connectionStateCallback;
         // Deserialize the error message
         var jsonString = response.Data.ToString() ?? string.Empty;
         var error = JsonSerializer.Deserialize<DataStreamError>(jsonString);
-        if (error != null && !string.IsNullOrEmpty(error.Error))
-          _logger.Error("Received error from server: {0}", error.Error);
+        if (error != null)
+        {
+          if (!string.IsNullOrEmpty(error.Error))
+          {
+            _logger.Error("Received error from server: {0}", error.Error);
+          }
+          
+          // Check if we have keys and entity type in the error response
+          if (error.Keys != null && error.Keys.Count > 0 && error.EntityType.HasValue)
+          {
+            switch (error.EntityType.Value)
+            {
+              case EntityType.Company:
+                NotifyPendingRequests<Company>(null, error.Keys, CacheKeyPrefixCompany, _pendingCompanyRequests);
+                break;
+              case EntityType.User:
+                NotifyPendingRequests<User>(null, error.Keys, CacheKeyPrefixUser, _pendingUserRequests);
+                break;
+              default:
+                _logger.Warn("Received error for unsupported entity type: {0}", error.EntityType.Value);
+                break;
+            }
+          }
+        }
       }
       catch (Exception ex)
       {
@@ -625,7 +639,7 @@ private readonly Action<bool> _connectionStateCallback;
       }
     }
 
-    private async Task<Company> GetCompanyAsync(Dictionary<string, string> keys, CancellationToken cancellationToken)
+    private async Task<Company?> GetCompanyAsync(Dictionary<string, string> keys, CancellationToken cancellationToken)
     {
       var company = GetCompanyFromCache(keys);
       if (company != null)
@@ -633,7 +647,7 @@ private readonly Action<bool> _connectionStateCallback;
         return company;
       }
 
-      var waitTask = new TaskCompletionSource<Company>();
+      var waitTask = new TaskCompletionSource<Company?>();
       var cacheKeys = new List<string>();
       bool shouldSendRequest = true;
 
@@ -641,7 +655,7 @@ private readonly Action<bool> _connectionStateCallback;
       {
         foreach (var key in keys)
         {
-          var cacheKey = ResourceKeyToCacheKey(CacheKeyPrefixCompany, key.Key, key.Value);
+          var cacheKey = ResourceKeyToCacheKey<Company>(CacheKeyPrefixCompany, key.Key, key.Value);
           cacheKeys.Add(cacheKey);
 
           if (_pendingCompanyRequests.TryGetValue(cacheKey, out var existingChannels))
@@ -651,7 +665,7 @@ private readonly Action<bool> _connectionStateCallback;
           }
           else
           {
-            _pendingCompanyRequests[cacheKey] = new List<TaskCompletionSource<Company>> { waitTask };
+            _pendingCompanyRequests[cacheKey] = new List<TaskCompletionSource<Company?>> { waitTask };
           }
         }
       }
@@ -692,7 +706,7 @@ private readonly Action<bool> _connectionStateCallback;
       }
     }
 
-    private async Task<User> GetUserAsync(Dictionary<string, string> keys, CancellationToken cancellationToken)
+    private async Task<User?> GetUserAsync(Dictionary<string, string> keys, CancellationToken cancellationToken)
     {
       var user = GetUserFromCache(keys);
       if (user != null)
@@ -700,7 +714,7 @@ private readonly Action<bool> _connectionStateCallback;
         return user;
       }
 
-      var waitTask = new TaskCompletionSource<User>();
+      var waitTask = new TaskCompletionSource<User?>();
       var cacheKeys = new List<string>();
       bool shouldSendRequest = true;
 
@@ -708,7 +722,7 @@ private readonly Action<bool> _connectionStateCallback;
       {
         foreach (var key in keys)
         {
-          var cacheKey = ResourceKeyToCacheKey(CacheKeyPrefixUser, key.Key, key.Value);
+          var cacheKey = ResourceKeyToCacheKey<User>(CacheKeyPrefixUser, key.Key, key.Value);
           cacheKeys.Add(cacheKey);
 
           if (_pendingUserRequests.TryGetValue(cacheKey, out var existingChannels))
@@ -718,7 +732,7 @@ private readonly Action<bool> _connectionStateCallback;
           }
           else
           {
-            _pendingUserRequests[cacheKey] = new List<TaskCompletionSource<User>> { waitTask };
+            _pendingUserRequests[cacheKey] = new List<TaskCompletionSource<User?>> { waitTask };
           }
         }
       }
@@ -822,7 +836,7 @@ private readonly Action<bool> _connectionStateCallback;
     {
       foreach (var key in keys)
       {
-        var cacheKey = ResourceKeyToCacheKey(CacheKeyPrefixCompany, key.Key, key.Value);
+        var cacheKey = ResourceKeyToCacheKey<Company>(CacheKeyPrefixCompany, key.Key, key.Value);
         var company = _companyCache.Get(cacheKey);
         if (company != null)
         {
@@ -836,7 +850,7 @@ private readonly Action<bool> _connectionStateCallback;
     {
       foreach (var key in keys)
       {
-        var cacheKey = ResourceKeyToCacheKey(CacheKeyPrefixUser, key.Key, key.Value);
+        var cacheKey = ResourceKeyToCacheKey<User>(CacheKeyPrefixUser, key.Key, key.Value);
         var user = _userCache.Get(cacheKey);
         if (user != null)
         {
@@ -848,7 +862,7 @@ private readonly Action<bool> _connectionStateCallback;
     }
 
 
-    private void CleanupPendingCompanyRequests(List<string> cacheKeys, TaskCompletionSource<Company> waitTask)
+    private void CleanupPendingCompanyRequests(List<string> cacheKeys, TaskCompletionSource<Company?> waitTask)
     {
       lock (_pendingRequestsLock)
       {
@@ -866,7 +880,7 @@ private readonly Action<bool> _connectionStateCallback;
       }
     }
 
-    private void CleanupPendingUserRequests(List<string> cacheKeys, TaskCompletionSource<User> waitTask)
+    private void CleanupPendingUserRequests(List<string> cacheKeys, TaskCompletionSource<User?> waitTask)
     {
       lock (_pendingRequestsLock)
       {
@@ -914,7 +928,7 @@ private readonly Action<bool> _connectionStateCallback;
       return $"{CacheKeyPrefix}:{CacheKeyPrefixFlags}:{key}";
     }
 
-    private string ResourceKeyToCacheKey(string resourceType, string key, string value)
+    private string ResourceKeyToCacheKey<T>(string resourceType, string key, string value)
     {
       return $"{CacheKeyPrefix}:{resourceType}:{key}:{value}";
     }
