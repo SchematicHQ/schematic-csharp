@@ -79,6 +79,10 @@ namespace SchematicHQ.Client.Datastream
   {
     [JsonPropertyName("error")]
     public string? Error { get; set; }
+    [JsonPropertyName("keys")]
+    public Dictionary<string, string>? Keys { get; set; }
+    [JsonPropertyName("entity_type")]
+    public EntityType? EntityType { get; set; }
   }
 
 }
