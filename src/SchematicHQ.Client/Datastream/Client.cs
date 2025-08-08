@@ -427,6 +427,11 @@ namespace SchematicHQ.Client.Datastream
 
         foreach (var flag in flags)
         {
+          if (string.IsNullOrEmpty(flag.Key))
+          {
+            _logger.Debug("Flag key is null, skipping flag: {0}", flag.Id);
+            continue;
+          }
           var cacheKey = FlagCacheKey(flag.Key);
           _flagsCache.Set(cacheKey, flag);
           cacheKeys.Add(cacheKey);
@@ -651,7 +656,7 @@ namespace SchematicHQ.Client.Datastream
       }
     }
 
-    internal async Task<Company> GetCompanyAsync(Dictionary<string, string> keys, CancellationToken cancellationToken)
+    internal async Task<Company?> GetCompanyAsync(Dictionary<string, string> keys, CancellationToken cancellationToken)
     {
 
       var waitTask = new TaskCompletionSource<Company?>();
@@ -713,7 +718,7 @@ namespace SchematicHQ.Client.Datastream
       }
     }
 
-    internal async Task<User> GetUserAsync(Dictionary<string, string> keys, CancellationToken cancellationToken)
+    internal async Task<User?> GetUserAsync(Dictionary<string, string> keys, CancellationToken cancellationToken)
     {
 
 
