@@ -929,13 +929,13 @@ namespace SchematicHQ.Client.Datastream
 
     private string FlagCacheKey(string key)
     {
-      var schemaVersion = SchemaVersionGenerator.GetSchemaVersion<Flag>();
+      var schemaVersion = SchemaVersionGenerator.GetGlobalSchemaVersion();
       return $"{CacheKeyPrefix}:{CacheKeyPrefixFlags}:{schemaVersion}:{key}";
     }
 
     private string ResourceKeyToCacheKey<T>(string resourceType, string key, string value)
     {
-      var schemaVersion = SchemaVersionGenerator.GetSchemaVersion<T>();
+      var schemaVersion = SchemaVersionGenerator.GetGlobalSchemaVersion();
       return $"{CacheKeyPrefix}:{resourceType}:{schemaVersion}:{key}:{value}";
     }
 
