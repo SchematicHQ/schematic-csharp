@@ -113,9 +113,13 @@ namespace SchematicHQ.Client.Test
             }
 
             Assert.That(cacheHitsIndices.Count, Is.EqualTo(cacheCapacity));
+            // In a concurrent environment with LRU eviction, we expect 
+            // the cache to contain items from different thread ranges,
+            // not just a contiguous block of items from a single thread
             Assert.That(
-                cacheHitsIndices[cacheCapacity - 1] - cacheHitsIndices[0] + 1,
-                Is.Not.EqualTo(cacheCapacity)
+                cacheHitsIndices.Max() - cacheHitsIndices.Min() + 1,
+                Is.GreaterThan(cacheCapacity),
+                "Expected non-contiguous cache items due to concurrent access"
             );
         }
 
