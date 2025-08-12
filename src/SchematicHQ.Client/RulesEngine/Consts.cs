@@ -44,23 +44,16 @@ namespace SchematicHQ.Client.RulesEngine
     User
   }
 
-  [JsonConverter(typeof(JsonStringEnumConverter))]
-  public enum MetricPeriod
+  [JsonConverter(typeof(SchematicHQ.Client.RulesEngine.SnakeCaseEnumConverter<MetricPeriod>))]
+    public enum MetricPeriod
   {
-    [JsonPropertyName("all_time")]
     AllTime,
-    
-    [JsonPropertyName("current_day")]
     CurrentDay,
-    
-    [JsonPropertyName("current_month")]
     CurrentMonth,
-    
-    [JsonPropertyName("current_week")]
     CurrentWeek
   }
 
-  [JsonConverter(typeof(JsonStringEnumConverter))]
+  [JsonConverter(typeof(SchematicHQ.Client.RulesEngine.SnakeCaseEnumConverter<MetricPeriodMonthReset>))]
   public enum MetricPeriodMonthReset
   {
     [JsonPropertyName("first_of_month")]

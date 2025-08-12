@@ -867,7 +867,161 @@ namespace SchematicHQ.Client.Datastream
         }
       }
       return null;
+    }
+    
+    /// <summary>
+    /// Updates company metrics based on an event tracking request.
+    /// This method retrieves the company from cache, updates the metric value
+    /// for the matching event type, and then recaches the updated company data.
+    /// </summary>
+    /// <param name="eventBody">The event tracking request containing company keys and event details</param>
+    /// <returns>Boolean indicating if the metrics were successfully updated</returns>
+    public bool UpdateCompanyMetrics(EventBodyTrack eventBody)
+    {
+        if (eventBody == null)
+        {
+            _logger.Error("Event body cannot be null");
+            return false;
+        }
 
+        if (eventBody.Company == null || eventBody.Company.Count == 0)
+        {
+            _logger.Error("No keys provided for company lookup");
+            return false;
+        }
+
+        // Get company from cache
+        var company = GetCompanyFromCache(eventBody.Company);
+        if (company == null)
+        {
+            return false;
+        }
+
+        // Create a deep copy of the company to avoid modifying the cached object directly
+        var companyCopy = DeepCopyCompany(company);
+        if (companyCopy == null)
+        {
+            _logger.Error("Failed to create deep copy of company");
+            return false;
+        }
+
+        // Update the metric value if it matches the event
+        bool metricUpdated = false;
+        foreach (var metric in companyCopy.Metrics)
+        {
+            if (metric != null && metric.EventSubtype == eventBody.Event)
+            {
+                int quantity = eventBody.Quantity ?? 0;
+                metric.Value += quantity;
+                metricUpdated = true;
+            }
+        }
+
+        if (!metricUpdated)
+        {
+            _logger.Debug($"No matching metric found for event {eventBody.Event}");
+            return false;
+        }
+
+        // Cache the updated company for all keys
+        bool cacheSuccess = true;
+        foreach (var key in companyCopy.Keys)
+        {
+            try
+            {
+                var cacheKey = ResourceKeyToCacheKey<Company>(CacheKeyPrefixCompany, key.Key, key.Value);
+                _companyCache.Set(cacheKey, companyCopy);
+            }
+            catch (Exception ex)
+            {
+                _logger.Warn($"Failed to cache company metric for key '{key.Key}': {ex.Message}");
+                cacheSuccess = false;
+            }
+        }
+
+        return cacheSuccess;
+    }
+
+    /// <summary>
+    /// Creates a complete deep copy of a Company object and all its nested fields.
+    /// This ensures that modifying the returned company won't affect the original cached object.
+    /// </summary>
+    /// <param name="company">The company to copy</param>
+    /// <returns>A new independent copy of the company</returns>
+    private Company? DeepCopyCompany(Company? company)
+    {
+        if (company == null)
+        {
+            return null;
+        }
+
+        // Create a new company instance
+        var companyCopy = new Company
+        {
+            Id = company.Id,
+            AccountId = company.AccountId,
+            EnvironmentId = company.EnvironmentId,
+            BasePlanId = company.BasePlanId,
+            BillingProductIds = new List<string>(company.BillingProductIds),
+            CrmProductIds = new List<string>(company.CrmProductIds),
+            PlanIds = new List<string>(company.PlanIds),
+            Subscription = company.Subscription, // Shallow copy as we don't modify it
+            Keys = new Dictionary<string, string>(),
+            Metrics = new List<CompanyMetric>(),
+            Traits = new List<Trait>()
+        };
+
+        // Copy the keys dictionary
+        foreach (var key in company.Keys)
+        {
+            companyCopy.Keys[key.Key] = key.Value;
+        }
+
+        // Deep copy metrics
+        foreach (var metric in company.Metrics)
+        {
+            if (metric == null)
+            {
+                // Skip null metrics
+                continue;
+            }
+
+            var metricCopy = new CompanyMetric
+            {
+                AccountId = metric.AccountId,
+                EnvironmentId = metric.EnvironmentId,
+                CompanyId = metric.CompanyId,
+                EventSubtype = metric.EventSubtype,
+                Period = metric.Period,
+                MonthReset = metric.MonthReset,
+                Value = metric.Value,
+                CreatedAt = metric.CreatedAt,
+                ValidUntil = metric.ValidUntil
+            };
+
+            companyCopy.Metrics.Add(metricCopy);
+        }
+
+        // Copy traits
+        foreach (var trait in company.Traits)
+        {
+            if (trait == null)
+            {
+                // Skip null traits
+                continue;
+            }
+            
+            // Create a new trait instance
+            var traitCopy = new Trait
+            {
+                Value = trait.Value,
+                TraitDefinition = trait.TraitDefinition
+            };
+            
+            companyCopy.Traits.Add(traitCopy);
+        }
+
+        return companyCopy;
     }
 
 
