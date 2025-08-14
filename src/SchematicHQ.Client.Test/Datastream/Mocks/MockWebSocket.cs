@@ -17,6 +17,9 @@ namespace SchematicHQ.Client.Test.Datastream.Mocks
         public string? CloseStatusDescription => null;
         public IWebSocketOptions Options => _options;
         
+        // Dictionary to store cached company JSON strings by company ID for testing
+        public Dictionary<string, string> CachedCompanies { get; } = new();
+        
         public List<byte[]> SentMessages { get; } = new();
         public Action<ArraySegment<byte>, WebSocketMessageType, bool, CancellationToken>? OnSendAsync { get; set; }
         public Func<ArraySegment<byte>, CancellationToken, Task<WebSocketReceiveResult>>? OnReceiveAsync { get; set; }
@@ -67,6 +70,19 @@ namespace SchematicHQ.Client.Test.Datastream.Mocks
                 data.Length,
                 WebSocketMessageType.Binary,
                 true));
+        }
+        
+        // Method to simulate receiving a message from the server
+        public void SendToClient(string message)
+        {
+            SetupToReceive(message);
+            
+            // If the client has registered an OnMessage handler, immediately process the message
+            if (_state == WebSocketState.Open)
+            {
+                var task = ReceiveAsync(new ArraySegment<byte>(new byte[4096]), CancellationToken.None);
+                task.Wait();
+            }
         }
 
         public void SetupToReceiveClose()
