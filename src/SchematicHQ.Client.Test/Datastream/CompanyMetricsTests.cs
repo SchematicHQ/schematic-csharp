@@ -36,7 +36,7 @@ namespace SchematicHQ.Client.Test.Datastream
         public void Setup()
         {
             // Create the test client and cache
-            var (client, _, _) = DatastreamClientTestFactory.CreateClientWithMocks();
+            var (client, _, _, _) = DatastreamClientTestFactory.CreateClientWithMocks();
             _client = client;
             // Use reflection to get the private _companyCache field
             var cacheField = typeof(DatastreamClient).GetField("_companyCache", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
