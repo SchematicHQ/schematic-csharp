@@ -359,15 +359,36 @@ public partial class Schematic
         });
     }
 
-    public void Track(string eventName, Dictionary<string, string>? company = null, Dictionary<string, string>? user = null, Dictionary<string, object?>? traits = null)
+    public void Track(string eventName, Dictionary<string, string>? company = null, Dictionary<string, string>? user = null, Dictionary<string, object?>? traits = null, int? quantity = null)
     {
-        EnqueueEvent(CreateEventRequestBodyEventType.Track, new EventBodyTrack
+        var eventBody = new EventBodyTrack
         {
             Company = company,
             Event = eventName,
             Traits = traits,
-            User = user
-        });
+            User = user,
+            Quantity = quantity
+        };
+        
+        EnqueueEvent(CreateEventRequestBodyEventType.Track, eventBody);
+        
+        // Update company metrics in datastream if available and connected
+        if (company != null && _datastreamClient != null && _datastreamConnected)
+        {
+            try
+            {
+                // If metrics updating is available in the datastream client
+                var success = _datastreamClient.UpdateCompanyMetrics(eventBody);
+                if (!success)
+                {
+                    _logger.Debug("Failed to update company metrics through datastream client");
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.Error($"Error updating company metrics: {ex.Message}");
+            }
+        }
     }
 
     private void EnqueueEvent(CreateEventRequestBodyEventType eventType, OneOf<EventBodyTrack, EventBodyFlagCheck, EventBodyIdentify> body)

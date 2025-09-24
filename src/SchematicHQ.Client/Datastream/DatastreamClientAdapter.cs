@@ -40,6 +40,18 @@ namespace SchematicHQ.Client.Datastream
     }
 
     /// <summary>
+    /// Updates company metrics based on an event tracking request.
+    /// This method forwards the request to the datastream client to update the metric value
+    /// for the matching event type.
+    /// </summary>
+    /// <param name="eventBody">The event tracking request containing company keys and event details</param>
+    /// <returns>Boolean indicating if the metrics were successfully updated</returns>
+    public bool UpdateCompanyMetrics(EventBodyTrack eventBody)
+    {
+      return _client.UpdateCompanyMetrics(eventBody);
+    }
+
+    /// <summary>
     /// Start the datastream client
     /// </summary>
     public void Start()

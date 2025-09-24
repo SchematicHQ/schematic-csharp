@@ -2,6 +2,7 @@ using System.Net.WebSockets;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using System.Collections.Concurrent;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using OneOf.Types;
@@ -37,6 +38,12 @@ namespace SchematicHQ.Client.Datastream
     private readonly Dictionary<string, List<TaskCompletionSource<User?>>> _pendingUserRequests = new Dictionary<string, List<TaskCompletionSource<User?>>>();
     private TaskCompletionSource<bool>? _pendingFlagRequest;
     private readonly object _pendingRequestsLock = new object();
+
+    // Company update locking - per-company locks to prevent concurrent modifications
+    private readonly ConcurrentDictionary<string, SemaphoreSlim> _companyUpdateLocks = new ConcurrentDictionary<string, SemaphoreSlim>();
+    private readonly object _companyLockCleanupLock = new object();
+    private int _lockCleanupCounter = 0;
+    private const int LOCK_CLEANUP_THRESHOLD = 100; // Clean up every 100 operations
 
     // Constants
     private const string DefaultBaseUrl = "wss://datastream.schematichq.com";
@@ -481,7 +488,7 @@ namespace SchematicHQ.Client.Datastream
       }
     }
     
-    private void HandleCompanyMessage(DataStreamResponse response)
+    private async void HandleCompanyMessage(DataStreamResponse response)
     {
       try
       {
@@ -509,27 +516,52 @@ namespace SchematicHQ.Client.Datastream
           return;
         }
 
-        if (response.MessageType == MessageType.Delete)
+        // Get the company-specific lock to coordinate with UpdateCompanyMetrics
+        var companyLock = GetCompanyLock(company.Keys);
+        
+        try
         {
-          // Handle deletion by removing company from cache
-          foreach (var key in company.Keys)
+          // Wait for the lock with a reasonable timeout
+          if (!await companyLock.WaitAsync(TimeSpan.FromSeconds(5)))
           {
-            var cacheKey = ResourceKeyToCacheKey<Company>(CacheKeyPrefixCompany, key.Key, key.Value);
-            _companyCache.Delete(cacheKey);
+            _logger.Warn("Timeout waiting for company lock during WebSocket update");
+            return;
           }
 
-          return;
-        }
+          try
+          {
+            if (response.MessageType == MessageType.Delete)
+            {
+              // Handle deletion by removing company from cache
+              foreach (var key in company.Keys)
+              {
+                var cacheKey = ResourceKeyToCacheKey<Company>(CacheKeyPrefixCompany, key.Key, key.Value);
+                _companyCache.Delete(cacheKey);
+              }
 
-        // Update cache
-        foreach (var key in company.Keys)
+              return;
+            }
+
+            // Update cache (inside the lock to prevent race conditions)
+            foreach (var key in company.Keys)
+            {
+              var cacheKey = ResourceKeyToCacheKey<Company>(CacheKeyPrefixCompany, key.Key, key.Value);
+              _companyCache.Set(cacheKey, company);
+            }
+
+            // Notify pending requests
+            NotifyPendingRequests(company, company.Keys, CacheKeyPrefixCompany, _pendingCompanyRequests);
+          }
+          finally
+          {
+            // Always release the lock
+            companyLock.Release();
+          }
+        }
+        catch (Exception lockEx)
         {
-          var cacheKey = ResourceKeyToCacheKey<Company>(CacheKeyPrefixCompany, key.Key, key.Value);
-          _companyCache.Set(cacheKey, company);
+          _logger.Error($"Error during locked company update: {lockEx.Message}");
         }
-
-        // Notify pending requests
-        NotifyPendingRequests(company, company.Keys, CacheKeyPrefixCompany, _pendingCompanyRequests);
       }
       catch (Exception ex)
       {
@@ -867,7 +899,211 @@ namespace SchematicHQ.Client.Datastream
         }
       }
       return null;
+    }
+    
+    /// <summary>
+    /// Updates company metrics based on a tracked event. This method retrieves the company
+    /// from cache, creates a deep copy, increments the metric value if there's a metric matching 
+    /// for the matching event type, and then recaches the updated company data.
+    /// Uses per-company locking to prevent concurrent modifications.
+    /// </summary>
+    /// <param name="eventBody">The event tracking request containing company keys and event details</param>
+    /// <returns>Boolean indicating if the metrics were successfully updated</returns>
+    public async Task<bool> UpdateCompanyMetricsAsync(EventBodyTrack eventBody)
+    {
+        if (eventBody == null)
+        {
+            _logger.Error("Event body cannot be null");
+            return false;
+        }
 
+        if (eventBody.Company == null || eventBody.Company.Count == 0)
+        {
+            _logger.Error("No keys provided for company lookup");
+            return false;
+        }
+
+        // Get the company-specific lock to prevent concurrent modifications
+        var companyLock = GetCompanyLock(eventBody.Company);
+        
+        try
+        {
+            // Wait for the lock with a reasonable timeout to prevent deadlocks
+            if (!await companyLock.WaitAsync(TimeSpan.FromSeconds(5)))
+            {
+                _logger.Warn("Timeout waiting for company lock during metrics update");
+                return false;
+            }
+
+            try
+            {
+                // Get company from cache (inside the lock to ensure consistency)
+                var company = GetCompanyFromCache(eventBody.Company);
+                if (company == null)
+                {
+                    return false;
+                }
+
+                // Create a deep copy of the company to avoid modifying the cached object directly
+                var companyCopy = DeepCopyCompany(company);
+                if (companyCopy == null)
+                {
+                    _logger.Error("Failed to create deep copy of company");
+                    return false;
+                }
+
+                // Update the metric value if it matches the event
+                bool metricUpdated = false;
+                foreach (var metric in companyCopy.Metrics)
+                {
+                    if (metric != null && metric.EventSubtype == eventBody.Event)
+                    {
+                        int quantity = eventBody.Quantity ?? 0;
+                        metric.Value += quantity;
+                        metricUpdated = true;
+                    }
+                }
+
+                if (!metricUpdated)
+                {
+                    _logger.Debug($"No matching metric found for event {eventBody.Event}");
+                    return false;
+                }
+
+                // Cache the updated company for all keys (still inside the lock)
+                bool cacheSuccess = true;
+                foreach (var key in companyCopy.Keys)
+                {
+                    try
+                    {
+                        var cacheKey = ResourceKeyToCacheKey<Company>(CacheKeyPrefixCompany, key.Key, key.Value);
+                        _companyCache.Set(cacheKey, companyCopy);
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.Warn($"Failed to cache company metric for key '{key.Key}': {ex.Message}");
+                        cacheSuccess = false;
+                    }
+                }
+
+                return cacheSuccess;
+            }
+            finally
+            {
+                // Always release the lock
+                companyLock.Release();
+            }
+        }
+        catch (Exception ex)
+        {
+            _logger.Error($"Error during company metrics update: {ex.Message}");
+            return false;
+        }
+    }
+
+    /// <summary>
+    /// Synchronous version of UpdateCompanyMetricsAsync for backward compatibility.
+    /// Uses per-company locking to prevent concurrent modifications.
+    /// </summary>
+    /// <param name="eventBody">The event tracking request containing company keys and event details</param>
+    /// <returns>Boolean indicating if the metrics were successfully updated</returns>
+    public bool UpdateCompanyMetrics(EventBodyTrack eventBody)
+    {
+        try
+        {
+            return UpdateCompanyMetricsAsync(eventBody).GetAwaiter().GetResult();
+        }
+        catch (Exception ex)
+        {
+            _logger.Error($"Error in synchronous company metrics update: {ex.Message}");
+            return false;
+        }
+    }    /// <summary>
+    /// Creates a complete deep copy of a Company object and all its nested fields.
+    /// This ensures that modifying the returned company won't affect the original cached object.
+    /// All nested objects including Subscription, Metrics, and Traits are deep copied.
+    /// </summary>
+    /// <param name="company">The company to copy</param>
+    /// <returns>A new independent copy of the company</returns>
+    private Company? DeepCopyCompany(Company? company)
+    {
+        if (company == null)
+        {
+            return null;
+        }
+
+        // Create a new company instance
+        var companyCopy = new Company
+        {
+            Id = company.Id,
+            AccountId = company.AccountId,
+            EnvironmentId = company.EnvironmentId,
+            BasePlanId = company.BasePlanId,
+            BillingProductIds = new List<string>(company.BillingProductIds),
+            CrmProductIds = new List<string>(company.CrmProductIds),
+            PlanIds = new List<string>(company.PlanIds),
+            Subscription = company.Subscription != null ? new Subscription
+            {
+                Id = company.Subscription.Id,
+                PeriodStart = company.Subscription.PeriodStart,
+                PeriodEnd = company.Subscription.PeriodEnd
+            } : null,
+            Keys = new Dictionary<string, string>(),
+            Metrics = new List<CompanyMetric>(),
+            Traits = new List<Trait>()
+        };
+
+        // Copy the keys dictionary
+        foreach (var key in company.Keys)
+        {
+            companyCopy.Keys[key.Key] = key.Value;
+        }
+
+        // Deep copy metrics
+        foreach (var metric in company.Metrics)
+        {
+            if (metric == null)
+            {
+                // Skip null metrics
+                continue;
+            }
+
+            var metricCopy = new CompanyMetric
+            {
+                AccountId = metric.AccountId,
+                EnvironmentId = metric.EnvironmentId,
+                CompanyId = metric.CompanyId,
+                EventSubtype = metric.EventSubtype,
+                Period = metric.Period,
+                MonthReset = metric.MonthReset,
+                Value = metric.Value,
+                CreatedAt = metric.CreatedAt,
+                ValidUntil = metric.ValidUntil
+            };
+
+            companyCopy.Metrics.Add(metricCopy);
+        }
+
+        // Copy traits
+        foreach (var trait in company.Traits)
+        {
+            if (trait == null)
+            {
+                // Skip null traits
+                continue;
+            }
+            
+            // Create a new trait instance
+            var traitCopy = new Trait
+            {
+                Value = trait.Value,
+                TraitDefinition = trait.TraitDefinition
+            };
+            
+            companyCopy.Traits.Add(traitCopy);
+        }
+
+        return companyCopy;
     }
 
 
@@ -944,6 +1180,74 @@ namespace SchematicHQ.Client.Datastream
       return $"{CacheKeyPrefix}:{resourceType}:{schemaVersion}:{key}:{value}";
     }
 
+    /// <summary>
+    /// Gets or creates a per-company lock for synchronizing updates to company data.
+    /// This ensures that concurrent modifications to the same company are serialized.
+    /// </summary>
+    /// <param name="companyKeys">The company's keys to generate a unique lock identifier</param>
+    /// <returns>A SemaphoreSlim for the specific company</returns>
+    private SemaphoreSlim GetCompanyLock(IDictionary<string, string> companyKeys)
+    {
+      // Create a deterministic key based on all company keys
+      var sortedKeys = companyKeys.OrderBy(kvp => kvp.Key).ToList();
+      var lockKey = string.Join("|", sortedKeys.Select(kvp => $"{kvp.Key}:{kvp.Value}"));
+      
+      // Periodic cleanup to prevent memory leaks
+      if (Interlocked.Increment(ref _lockCleanupCounter) % LOCK_CLEANUP_THRESHOLD == 0)
+      {
+        Task.Run(CleanupUnusedCompanyLocks); // Run cleanup in background
+      }
+      
+      return _companyUpdateLocks.GetOrAdd(lockKey, _ => new SemaphoreSlim(1, 1));
+    }
+
+    /// <summary>
+    /// Attempts to clean up unused company locks to prevent memory leaks.
+    /// This should be called periodically or when the number of locks grows too large.
+    /// </summary>
+    private void CleanupUnusedCompanyLocks()
+    {
+      lock (_companyLockCleanupLock)
+      {
+        var locksToRemove = new List<string>();
+        
+        foreach (var kvp in _companyUpdateLocks)
+        {
+          var semaphore = kvp.Value;
+          // If the semaphore has no waiters and is currently available, it's likely unused
+          if (semaphore.CurrentCount == 1)
+          {
+            // Try to acquire the lock briefly to ensure it's really unused
+            if (semaphore.Wait(0)) // Non-blocking wait
+            {
+              try
+              {
+                locksToRemove.Add(kvp.Key);
+              }
+              finally
+              {
+                semaphore.Release();
+              }
+            }
+          }
+        }
+        
+        // Remove unused locks
+        foreach (var key in locksToRemove)
+        {
+          if (_companyUpdateLocks.TryRemove(key, out var removedSemaphore))
+          {
+            removedSemaphore.Dispose();
+          }
+        }
+        
+        if (locksToRemove.Count > 0)
+        {
+          _logger.Debug($"Cleaned up {locksToRemove.Count} unused company locks");
+        }
+      }
+    }
+
     public void Dispose()
     {
       _cancellationTokenSource.Cancel();
@@ -1000,6 +1304,13 @@ namespace SchematicHQ.Client.Datastream
         _reconnectSemaphore.Dispose();
         _cancellationTokenSource.Dispose();
         _readCancellationSource.Dispose();
+        
+        // Clean up company locks
+        foreach (var lockEntry in _companyUpdateLocks)
+        {
+          lockEntry.Value.Dispose();
+        }
+        _companyUpdateLocks.Clear();
       }
     }
   }

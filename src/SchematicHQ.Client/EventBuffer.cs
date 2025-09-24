@@ -233,7 +233,7 @@ public class EventBuffer<T> : IEventBuffer<T>
             // After all retries, if still not successful, log the error
             if (!success)
             {
-                _logger.Error("Event batch submission failed after {0} retries: {1}", MaxRetries, lastException?.Message);
+                _logger.Error("Event batch submission failed after {0} retries: {1}", MaxRetries, lastException?.Message ?? "Unknown error");
             }
             else if (retryCount > 0)
             {
@@ -244,11 +244,28 @@ public class EventBuffer<T> : IEventBuffer<T>
 
     public async Task Stop()
     {
-        if (!_isRunning) return;
+        bool needsFlush = false;
+        
+        lock (_runningLock)
+        {
+            if (!_isRunning) return;
+            needsFlush = true;
+        }
 
         try
         {
-            await Flush();
+            if (needsFlush)
+            {
+                try
+                {
+                    await Flush();
+                }
+                catch (InvalidOperationException)
+                {
+                    // Another thread might have changed the state between our check and the flush
+                    // Just continue with shutdown
+                }
+            }
 
             lock (_runningLock)
             {
