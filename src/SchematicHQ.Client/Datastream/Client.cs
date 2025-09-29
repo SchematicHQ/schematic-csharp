@@ -396,6 +396,9 @@ namespace SchematicHQ.Client.Datastream
         case EntityType.Flags:
           HandleFlagsMessage(message);
           break;
+        case EntityType.Flag:
+          HandleFlagMessage(message);
+          break;
         case EntityType.User:
           HandleUserMessage(message);
           break;
@@ -457,6 +460,89 @@ namespace SchematicHQ.Client.Datastream
       catch (Exception ex)
       {
         _logger.Error("Failed to handle flags message: {0}", ex.Message);
+      }
+    }
+
+    private void HandleFlagMessage(DataStreamResponse response)
+    {
+      try
+      {
+        if (response.Data == null)
+        {
+          _logger.Warn("Received empty flag data");
+          return;
+        }
+
+        var options = new JsonSerializerOptions
+        {
+          PropertyNameCaseInsensitive = true,
+          // This REPLACES the existing converter with one that has the right settings
+          Converters = { new JsonStringEnumConverter(JsonNamingPolicy.SnakeCaseLower, false) }
+        };
+
+        var jsonString = response.Data.ToString() ?? string.Empty;
+
+        if (response.MessageType == MessageType.Delete)
+        {
+          // Handle single flag deletion
+          var deleteData = JsonSerializer.Deserialize<dynamic>(jsonString, options);
+          string? flagKey = null;
+
+          // Try to extract the flag key from the delete message
+          if (deleteData != null)
+          {
+            var deleteDict = JsonSerializer.Deserialize<Dictionary<string, object>>(jsonString, options);
+            if (deleteDict != null)
+            {
+              if (deleteDict.TryGetValue("key", out var keyValue))
+              {
+                flagKey = keyValue?.ToString();
+              }
+              else if (deleteDict.TryGetValue("id", out var idValue))
+              {
+                flagKey = idValue?.ToString();
+              }
+            }
+          }
+
+          if (!string.IsNullOrEmpty(flagKey))
+          {
+            var deleteCacheKey = FlagCacheKey(flagKey);
+            _flagsCache.Delete(deleteCacheKey);
+            _logger.Debug("Deleted single flag from cache: {0}", flagKey);
+          }
+          else
+          {
+            _logger.Warn("Could not extract flag key from delete message");
+          }
+
+          return;
+        }
+
+        // Handle single flag creation/update
+        var flag = JsonSerializer.Deserialize<Flag>(jsonString, options);
+
+        if (flag == null)
+        {
+          _logger.Warn("Received null flag data");
+          return;
+        }
+
+        if (string.IsNullOrEmpty(flag.Key))
+        {
+          _logger.Debug("Flag key is null, skipping flag: {0}", flag.Id);
+          return;
+        }
+
+        var cacheKey = FlagCacheKey(flag.Key);
+        _flagsCache.Set(cacheKey, flag);
+        _logger.Debug("Cached single flag: {0}", flag.Key);
+
+        // Note: Unlike bulk flags processing, we do NOT call DeleteMissing for single flag updates
+      }
+      catch (Exception ex)
+      {
+        _logger.Error("Failed to handle single flag message: {0}", ex.Message);
       }
     }
 

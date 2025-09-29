@@ -29,6 +29,8 @@ namespace SchematicHQ.Client.Datastream
     Company,
     [JsonStringEnumMemberName("rulesengine.Flags")]
     Flags,
+    [JsonStringEnumMemberName("rulesengine.Flag")]
+    Flag,
     [JsonStringEnumMemberName("rulesengine.User")]
     User
   }
