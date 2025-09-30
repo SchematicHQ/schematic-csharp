@@ -33,6 +33,14 @@ public record PlanGroupDetailResponseData : IJsonOnDeserialized
     [JsonPropertyName("id")]
     public required string Id { get; set; }
 
+    [JsonPropertyName("ordered_add_on_list")]
+    public IEnumerable<PlanGroupPlanEntitlementsOrder> OrderedAddOnList { get; set; } =
+        new List<PlanGroupPlanEntitlementsOrder>();
+
+    [JsonPropertyName("ordered_bundle_list")]
+    public IEnumerable<PlanGroupBundleOrder> OrderedBundleList { get; set; } =
+        new List<PlanGroupBundleOrder>();
+
     [JsonPropertyName("ordered_plan_list")]
     public IEnumerable<PlanGroupPlanEntitlementsOrder> OrderedPlanList { get; set; } =
         new List<PlanGroupPlanEntitlementsOrder>();
@@ -40,6 +48,9 @@ public record PlanGroupDetailResponseData : IJsonOnDeserialized
     [JsonPropertyName("plans")]
     public IEnumerable<PlanGroupPlanDetailResponseData> Plans { get; set; } =
         new List<PlanGroupPlanDetailResponseData>();
+
+    [JsonPropertyName("show_period_toggle")]
+    public required bool ShowPeriodToggle { get; set; }
 
     [JsonPropertyName("trial_days")]
     public int? TrialDays { get; set; }

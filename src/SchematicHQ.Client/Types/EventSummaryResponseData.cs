@@ -12,7 +12,7 @@ public record EventSummaryResponseData : IJsonOnDeserialized
         new Dictionary<string, JsonElement>();
 
     [JsonPropertyName("company_count")]
-    public int? CompanyCount { get; set; }
+    public required int CompanyCount { get; set; }
 
     [JsonPropertyName("environment_id")]
     public required string EnvironmentId { get; set; }
@@ -27,7 +27,7 @@ public record EventSummaryResponseData : IJsonOnDeserialized
     public DateTime? LastSeenAt { get; set; }
 
     [JsonPropertyName("user_count")]
-    public int? UserCount { get; set; }
+    public required int UserCount { get; set; }
 
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();

@@ -14,6 +14,9 @@ public record WebhookResponseData : IJsonOnDeserialized
     [JsonPropertyName("created_at")]
     public required DateTime CreatedAt { get; set; }
 
+    [JsonPropertyName("credit_trigger_configs")]
+    public IEnumerable<CreditTriggerConfig>? CreditTriggerConfigs { get; set; }
+
     [JsonPropertyName("entitlement_trigger_configs")]
     public IEnumerable<EntitlementTriggerConfig>? EntitlementTriggerConfigs { get; set; }
 

@@ -6,6 +6,9 @@ namespace SchematicHQ.Client;
 [Serializable]
 public record CreatePlanEntitlementRequestBody
 {
+    [JsonPropertyName("billing_product_id")]
+    public string? BillingProductId { get; set; }
+
     [JsonPropertyName("credit_consumption_rate")]
     public double? CreditConsumptionRate { get; set; }
 
@@ -24,6 +27,9 @@ public record CreatePlanEntitlementRequestBody
     [JsonPropertyName("monthly_metered_price_id")]
     public string? MonthlyMeteredPriceId { get; set; }
 
+    [JsonPropertyName("monthly_price_tiers")]
+    public IEnumerable<CreatePriceTierRequestBody>? MonthlyPriceTiers { get; set; }
+
     [JsonPropertyName("monthly_unit_price")]
     public int? MonthlyUnitPrice { get; set; }
 
@@ -39,15 +45,17 @@ public record CreatePlanEntitlementRequestBody
     [JsonPropertyName("price_behavior")]
     public CreatePlanEntitlementRequestBodyPriceBehavior? PriceBehavior { get; set; }
 
+    /// <summary>
+    /// Use MonthlyPriceTiers or YearlyPriceTiers instead
+    /// </summary>
     [JsonPropertyName("price_tiers")]
-    public IEnumerable<CreatePriceTierRequestBody> PriceTiers { get; set; } =
-        new List<CreatePriceTierRequestBody>();
+    public IEnumerable<CreatePriceTierRequestBody>? PriceTiers { get; set; }
 
     [JsonPropertyName("soft_limit")]
     public int? SoftLimit { get; set; }
 
     [JsonPropertyName("tier_mode")]
-    public required string TierMode { get; set; }
+    public string? TierMode { get; set; }
 
     [JsonPropertyName("value_bool")]
     public bool? ValueBool { get; set; }
@@ -66,6 +74,9 @@ public record CreatePlanEntitlementRequestBody
 
     [JsonPropertyName("yearly_metered_price_id")]
     public string? YearlyMeteredPriceId { get; set; }
+
+    [JsonPropertyName("yearly_price_tiers")]
+    public IEnumerable<CreatePriceTierRequestBody>? YearlyPriceTiers { get; set; }
 
     [JsonPropertyName("yearly_unit_price")]
     public int? YearlyUnitPrice { get; set; }

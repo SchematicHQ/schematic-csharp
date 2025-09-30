@@ -13,6 +13,9 @@ public record CountBillingPlanCreditGrantsRequest
     public string? PlanId { get; set; }
 
     [JsonIgnore]
+    public IEnumerable<string> PlanIds { get; set; } = new List<string>();
+
+    [JsonIgnore]
     public IEnumerable<string> Ids { get; set; } = new List<string>();
 
     /// <summary>

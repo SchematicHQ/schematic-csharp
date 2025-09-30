@@ -82,10 +82,19 @@ public partial class PlangroupsClient
     ///     new CreatePlanGroupRequestBody
     ///     {
     ///         AddOnIds = new List&lt;string&gt;() { "add_on_ids" },
+    ///         OrderedAddOns = new List&lt;OrderedPlansInGroup&gt;()
+    ///         {
+    ///             new OrderedPlansInGroup { PlanId = "plan_id" },
+    ///         },
+    ///         OrderedBundleList = new List&lt;PlanGroupBundleOrder&gt;()
+    ///         {
+    ///             new PlanGroupBundleOrder { BundleId = "bundleId" },
+    ///         },
     ///         OrderedPlans = new List&lt;OrderedPlansInGroup&gt;()
     ///         {
     ///             new OrderedPlansInGroup { PlanId = "plan_id" },
     ///         },
+    ///         ShowPeriodToggle = true,
     ///     }
     /// );
     /// </code></example>
@@ -160,10 +169,19 @@ public partial class PlangroupsClient
     ///     new UpdatePlanGroupRequestBody
     ///     {
     ///         AddOnIds = new List&lt;string&gt;() { "add_on_ids" },
+    ///         OrderedAddOns = new List&lt;OrderedPlansInGroup&gt;()
+    ///         {
+    ///             new OrderedPlansInGroup { PlanId = "plan_id" },
+    ///         },
+    ///         OrderedBundleList = new List&lt;PlanGroupBundleOrder&gt;()
+    ///         {
+    ///             new PlanGroupBundleOrder { BundleId = "bundleId" },
+    ///         },
     ///         OrderedPlans = new List&lt;OrderedPlansInGroup&gt;()
     ///         {
     ///             new OrderedPlansInGroup { PlanId = "plan_id" },
     ///         },
+    ///         ShowPeriodToggle = true,
     ///     }
     /// );
     /// </code></example>

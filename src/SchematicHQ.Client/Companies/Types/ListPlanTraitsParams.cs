@@ -35,6 +35,9 @@ public record ListPlanTraitsParams : IJsonOnDeserialized
     [JsonPropertyName("trait_id")]
     public string? TraitId { get; set; }
 
+    [JsonPropertyName("trait_ids")]
+    public IEnumerable<string>? TraitIds { get; set; }
+
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();
 

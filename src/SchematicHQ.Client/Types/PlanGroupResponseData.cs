@@ -27,8 +27,15 @@ public record PlanGroupResponseData : IJsonOnDeserialized
     [JsonPropertyName("id")]
     public required string Id { get; set; }
 
+    [JsonPropertyName("ordered_add_on_ids")]
+    public IEnumerable<OrderedPlansInGroup> OrderedAddOnIds { get; set; } =
+        new List<OrderedPlansInGroup>();
+
     [JsonPropertyName("plan_ids")]
     public IEnumerable<OrderedPlansInGroup> PlanIds { get; set; } = new List<OrderedPlansInGroup>();
+
+    [JsonPropertyName("show_period_toggle")]
+    public required bool ShowPeriodToggle { get; set; }
 
     [JsonPropertyName("trial_days")]
     public int? TrialDays { get; set; }

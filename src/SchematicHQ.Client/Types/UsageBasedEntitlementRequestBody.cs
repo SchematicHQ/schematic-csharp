@@ -11,14 +11,17 @@ public record UsageBasedEntitlementRequestBody : IJsonOnDeserialized
     private readonly IDictionary<string, JsonElement> _extensionData =
         new Dictionary<string, JsonElement>();
 
-    [JsonPropertyName("credit_consumption_rate")]
-    public double? CreditConsumptionRate { get; set; }
+    [JsonPropertyName("billing_product_id")]
+    public string? BillingProductId { get; set; }
 
     [JsonPropertyName("currency")]
     public string? Currency { get; set; }
 
     [JsonPropertyName("monthly_metered_price_id")]
     public string? MonthlyMeteredPriceId { get; set; }
+
+    [JsonPropertyName("monthly_price_tiers")]
+    public IEnumerable<CreatePriceTierRequestBody>? MonthlyPriceTiers { get; set; }
 
     [JsonPropertyName("monthly_unit_price")]
     public int? MonthlyUnitPrice { get; set; }
@@ -32,18 +35,23 @@ public record UsageBasedEntitlementRequestBody : IJsonOnDeserialized
     [JsonPropertyName("price_behavior")]
     public UsageBasedEntitlementRequestBodyPriceBehavior? PriceBehavior { get; set; }
 
+    /// <summary>
+    /// Use MonthlyPriceTiers or YearlyPriceTiers instead
+    /// </summary>
     [JsonPropertyName("price_tiers")]
-    public IEnumerable<CreatePriceTierRequestBody> PriceTiers { get; set; } =
-        new List<CreatePriceTierRequestBody>();
+    public IEnumerable<CreatePriceTierRequestBody>? PriceTiers { get; set; }
 
     [JsonPropertyName("soft_limit")]
     public int? SoftLimit { get; set; }
 
     [JsonPropertyName("tier_mode")]
-    public required string TierMode { get; set; }
+    public string? TierMode { get; set; }
 
     [JsonPropertyName("yearly_metered_price_id")]
     public string? YearlyMeteredPriceId { get; set; }
+
+    [JsonPropertyName("yearly_price_tiers")]
+    public IEnumerable<CreatePriceTierRequestBody>? YearlyPriceTiers { get; set; }
 
     [JsonPropertyName("yearly_unit_price")]
     public int? YearlyUnitPrice { get; set; }

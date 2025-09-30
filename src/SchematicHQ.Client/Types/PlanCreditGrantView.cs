@@ -5,47 +5,47 @@ using SchematicHQ.Client.Core;
 namespace SchematicHQ.Client;
 
 [Serializable]
-public record BillingCreditResponseData : IJsonOnDeserialized
+public record PlanCreditGrantView : IJsonOnDeserialized
 {
     [JsonExtensionData]
     private readonly IDictionary<string, JsonElement> _extensionData =
         new Dictionary<string, JsonElement>();
 
-    [JsonPropertyName("burn_strategy")]
-    public required string BurnStrategy { get; set; }
-
     [JsonPropertyName("created_at")]
     public required DateTime CreatedAt { get; set; }
 
-    [JsonPropertyName("default_expiry_unit")]
-    public required string DefaultExpiryUnit { get; set; }
+    [JsonPropertyName("credit_amount")]
+    public required int CreditAmount { get; set; }
 
-    [JsonPropertyName("default_expiry_unit_count")]
-    public int? DefaultExpiryUnitCount { get; set; }
+    [JsonPropertyName("credit_description")]
+    public required string CreditDescription { get; set; }
 
-    [JsonPropertyName("default_rollover_policy")]
-    public required string DefaultRolloverPolicy { get; set; }
+    [JsonPropertyName("credit_icon")]
+    public string? CreditIcon { get; set; }
 
-    [JsonPropertyName("description")]
-    public required string Description { get; set; }
+    [JsonPropertyName("credit_id")]
+    public required string CreditId { get; set; }
 
-    [JsonPropertyName("icon")]
-    public string? Icon { get; set; }
+    [JsonPropertyName("credit_name")]
+    public required string CreditName { get; set; }
 
     [JsonPropertyName("id")]
     public required string Id { get; set; }
 
-    [JsonPropertyName("name")]
-    public required string Name { get; set; }
+    [JsonPropertyName("plan_id")]
+    public required string PlanId { get; set; }
+
+    [JsonPropertyName("plan_name")]
+    public required string PlanName { get; set; }
 
     [JsonPropertyName("plural_name")]
     public string? PluralName { get; set; }
 
-    [JsonPropertyName("price")]
-    public BillingPriceResponseData? Price { get; set; }
+    [JsonPropertyName("reset_cadence")]
+    public required string ResetCadence { get; set; }
 
-    [JsonPropertyName("product")]
-    public BillingProductResponseData? Product { get; set; }
+    [JsonPropertyName("reset_start")]
+    public required string ResetStart { get; set; }
 
     [JsonPropertyName("singular_name")]
     public string? SingularName { get; set; }
