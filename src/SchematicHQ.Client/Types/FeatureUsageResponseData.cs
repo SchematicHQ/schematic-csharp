@@ -29,6 +29,9 @@ public record FeatureUsageResponseData : IJsonOnDeserialized
     [JsonPropertyName("allocation_type")]
     public required FeatureUsageResponseDataAllocationType AllocationType { get; set; }
 
+    [JsonPropertyName("company_override")]
+    public CompanyOverrideResponseData? CompanyOverride { get; set; }
+
     [JsonPropertyName("entitlement_expiration_date")]
     public DateTime? EntitlementExpirationDate { get; set; }
 
@@ -64,6 +67,9 @@ public record FeatureUsageResponseData : IJsonOnDeserialized
 
     [JsonPropertyName("plan")]
     public PlanResponseData? Plan { get; set; }
+
+    [JsonPropertyName("plan_entitlement")]
+    public PlanEntitlementResponseData? PlanEntitlement { get; set; }
 
     [JsonPropertyName("price_behavior")]
     public string? PriceBehavior { get; set; }

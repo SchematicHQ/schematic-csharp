@@ -61,6 +61,10 @@ public record CompanyPlanDetailResponseData : IJsonOnDeserialized
     [JsonPropertyName("id")]
     public required string Id { get; set; }
 
+    [JsonPropertyName("included_credit_grants")]
+    public IEnumerable<PlanCreditGrantView> IncludedCreditGrants { get; set; } =
+        new List<PlanCreditGrantView>();
+
     [JsonPropertyName("is_custom")]
     public required bool IsCustom { get; set; }
 

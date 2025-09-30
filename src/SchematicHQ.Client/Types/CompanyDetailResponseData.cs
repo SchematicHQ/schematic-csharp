@@ -15,6 +15,9 @@ public record CompanyDetailResponseData : IJsonOnDeserialized
     public IEnumerable<CompanyPlanWithBillingSubView> AddOns { get; set; } =
         new List<CompanyPlanWithBillingSubView>();
 
+    [JsonPropertyName("billing_credit_balances")]
+    public Dictionary<string, double>? BillingCreditBalances { get; set; }
+
     [JsonPropertyName("billing_subscription")]
     public BillingSubscriptionView? BillingSubscription { get; set; }
 

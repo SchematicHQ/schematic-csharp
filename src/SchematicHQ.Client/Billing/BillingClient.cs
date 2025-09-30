@@ -437,7 +437,11 @@ public partial class BillingClient
 
     /// <example><code>
     /// await client.Billing.ListInvoicesAsync(
-    ///     new ListInvoicesRequest { CustomerExternalId = "customer_external_id" }
+    ///     new ListInvoicesRequest
+    ///     {
+    ///         CustomerExternalId = "customer_external_id",
+    ///         SubscriptionExternalId = "subscription_external_id",
+    ///     }
     /// );
     /// </code></example>
     public async Task<ListInvoicesResponse> ListInvoicesAsync(
@@ -448,13 +452,10 @@ public partial class BillingClient
     {
         var _query = new Dictionary<string, object>();
         _query["customer_external_id"] = request.CustomerExternalId;
+        _query["subscription_external_id"] = request.SubscriptionExternalId;
         if (request.CompanyId != null)
         {
             _query["company_id"] = request.CompanyId;
-        }
-        if (request.SubscriptionExternalId != null)
-        {
-            _query["subscription_external_id"] = request.SubscriptionExternalId;
         }
         if (request.Limit != null)
         {

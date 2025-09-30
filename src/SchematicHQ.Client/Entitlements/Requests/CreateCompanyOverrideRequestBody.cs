@@ -9,6 +9,9 @@ public record CreateCompanyOverrideRequestBody
     [JsonPropertyName("company_id")]
     public required string CompanyId { get; set; }
 
+    [JsonPropertyName("credit_consumption_rate")]
+    public double? CreditConsumptionRate { get; set; }
+
     [JsonPropertyName("expiration_date")]
     public DateTime? ExpirationDate { get; set; }
 

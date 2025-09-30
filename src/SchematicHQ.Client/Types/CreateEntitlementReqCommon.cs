@@ -11,6 +11,9 @@ public record CreateEntitlementReqCommon : IJsonOnDeserialized
     private readonly IDictionary<string, JsonElement> _extensionData =
         new Dictionary<string, JsonElement>();
 
+    [JsonPropertyName("credit_consumption_rate")]
+    public double? CreditConsumptionRate { get; set; }
+
     [JsonPropertyName("feature_id")]
     public required string FeatureId { get; set; }
 

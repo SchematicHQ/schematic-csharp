@@ -29,6 +29,9 @@ public record PlanTraitResponseData : IJsonOnDeserialized
     [JsonPropertyName("plan_id")]
     public required string PlanId { get; set; }
 
+    [JsonPropertyName("plan_type")]
+    public required string PlanType { get; set; }
+
     [JsonPropertyName("trait_id")]
     public required string TraitId { get; set; }
 

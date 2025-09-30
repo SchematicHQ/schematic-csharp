@@ -13,7 +13,7 @@ public record ListInvoicesRequest
     public required string CustomerExternalId { get; set; }
 
     [JsonIgnore]
-    public string? SubscriptionExternalId { get; set; }
+    public required string SubscriptionExternalId { get; set; }
 
     /// <summary>
     /// Page limit (default 100)

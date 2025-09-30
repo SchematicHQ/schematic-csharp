@@ -5,7 +5,7 @@ using SchematicHQ.Client.Core;
 namespace SchematicHQ.Client;
 
 [Serializable]
-public record BillingCreditBundleResponseData : IJsonOnDeserialized
+public record BillingCreditBundleView : IJsonOnDeserialized
 {
     [JsonExtensionData]
     private readonly IDictionary<string, JsonElement> _extensionData =
@@ -51,7 +51,7 @@ public record BillingCreditBundleResponseData : IJsonOnDeserialized
     public string? PluralName { get; set; }
 
     [JsonPropertyName("price")]
-    public BillingPriceResponseData? Price { get; set; }
+    public BillingProductPriceResponseData? Price { get; set; }
 
     [JsonPropertyName("quantity")]
     public int? Quantity { get; set; }
@@ -63,7 +63,7 @@ public record BillingCreditBundleResponseData : IJsonOnDeserialized
     public required string Status { get; set; }
 
     [JsonPropertyName("unit_price")]
-    public BillingPriceResponseData? UnitPrice { get; set; }
+    public BillingProductPriceResponseData? UnitPrice { get; set; }
 
     [JsonPropertyName("updated_at")]
     public required DateTime UpdatedAt { get; set; }

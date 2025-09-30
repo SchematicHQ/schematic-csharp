@@ -15,6 +15,9 @@ public record CountPlanTraitsRequest
     [JsonIgnore]
     public string? TraitId { get; set; }
 
+    [JsonIgnore]
+    public IEnumerable<string> TraitIds { get; set; } = new List<string>();
+
     /// <summary>
     /// Page limit (default 100)
     /// </summary>

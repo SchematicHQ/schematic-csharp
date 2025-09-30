@@ -36,11 +36,22 @@ public record ComponentHydrateResponseData : IJsonOnDeserialized
     [JsonPropertyName("component")]
     public ComponentResponseData? Component { get; set; }
 
+    [JsonPropertyName("credit_bundles")]
+    public IEnumerable<BillingCreditBundleView> CreditBundles { get; set; } =
+        new List<BillingCreditBundleView>();
+
+    [JsonPropertyName("credit_grants")]
+    public IEnumerable<CreditCompanyGrantView> CreditGrants { get; set; } =
+        new List<CreditCompanyGrantView>();
+
     [JsonPropertyName("default_plan")]
     public PlanDetailResponseData? DefaultPlan { get; set; }
 
     [JsonPropertyName("feature_usage")]
     public FeatureUsageDetailResponseData? FeatureUsage { get; set; }
+
+    [JsonPropertyName("show_period_toggle")]
+    public required bool ShowPeriodToggle { get; set; }
 
     [JsonPropertyName("stripe_embed")]
     public StripeEmbedInfo? StripeEmbed { get; set; }

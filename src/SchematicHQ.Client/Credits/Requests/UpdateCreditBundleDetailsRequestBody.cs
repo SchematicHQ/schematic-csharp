@@ -4,25 +4,13 @@ using SchematicHQ.Client.Core;
 namespace SchematicHQ.Client;
 
 [Serializable]
-public record CreateCreditBundleRequestBody
+public record UpdateCreditBundleDetailsRequestBody
 {
     [JsonPropertyName("bundle_name")]
     public required string BundleName { get; set; }
 
-    [JsonPropertyName("bundle_type")]
-    public string? BundleType { get; set; }
-
-    [JsonPropertyName("credit_id")]
-    public required string CreditId { get; set; }
-
-    [JsonPropertyName("currency")]
-    public required string Currency { get; set; }
-
     [JsonPropertyName("expiry_type")]
-    public CreateCreditBundleRequestBodyExpiryType? ExpiryType { get; set; }
-
-    [JsonPropertyName("expiry_unit")]
-    public string? ExpiryUnit { get; set; }
+    public UpdateCreditBundleDetailsRequestBodyExpiryType? ExpiryType { get; set; }
 
     [JsonPropertyName("expiry_unit_count")]
     public int? ExpiryUnitCount { get; set; }
@@ -37,7 +25,7 @@ public record CreateCreditBundleRequestBody
     public int? Quantity { get; set; }
 
     [JsonPropertyName("status")]
-    public CreateCreditBundleRequestBodyStatus? Status { get; set; }
+    public UpdateCreditBundleDetailsRequestBodyStatus? Status { get; set; }
 
     /// <inheritdoc />
     public override string ToString()

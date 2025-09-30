@@ -21,6 +21,18 @@ public record CreateOrUpdateConditionRequestBody : IJsonOnDeserialized
     public required CreateOrUpdateConditionRequestBodyConditionType ConditionType { get; set; }
 
     /// <summary>
+    /// Cost of credit to use to measure this condition
+    /// </summary>
+    [JsonPropertyName("credit_cost")]
+    public double? CreditCost { get; set; }
+
+    /// <summary>
+    /// ID of credit to use to measure this condition
+    /// </summary>
+    [JsonPropertyName("credit_id")]
+    public string? CreditId { get; set; }
+
+    /// <summary>
     /// Name of track event type used to measure this condition
     /// </summary>
     [JsonPropertyName("event_subtype")]

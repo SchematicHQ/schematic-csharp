@@ -35,6 +35,9 @@ public record CountBillingPlanCreditGrantsParams : IJsonOnDeserialized
     [JsonPropertyName("plan_id")]
     public string? PlanId { get; set; }
 
+    [JsonPropertyName("plan_ids")]
+    public IEnumerable<string>? PlanIds { get; set; }
+
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();
 

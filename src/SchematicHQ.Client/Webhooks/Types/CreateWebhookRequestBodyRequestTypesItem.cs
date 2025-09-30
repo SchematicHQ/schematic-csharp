@@ -115,6 +115,14 @@ public readonly record struct CreateWebhookRequestBodyRequestTypesItem : IString
     public static readonly CreateWebhookRequestBodyRequestTypesItem EntitlementSoftLimitReached =
         new(Values.EntitlementSoftLimitReached);
 
+    public static readonly CreateWebhookRequestBodyRequestTypesItem CreditLimitWarning = new(
+        Values.CreditLimitWarning
+    );
+
+    public static readonly CreateWebhookRequestBodyRequestTypesItem CreditLimitReached = new(
+        Values.CreditLimitReached
+    );
+
     public CreateWebhookRequestBodyRequestTypesItem(string value)
     {
         Value = value;
@@ -223,5 +231,9 @@ public readonly record struct CreateWebhookRequestBodyRequestTypesItem : IString
         public const string EntitlementSoftLimitWarning = "entitlement.soft_limit.warning";
 
         public const string EntitlementSoftLimitReached = "entitlement.soft_limit.reached";
+
+        public const string CreditLimitWarning = "credit.limit.warning";
+
+        public const string CreditLimitReached = "credit.limit.reached";
     }
 }

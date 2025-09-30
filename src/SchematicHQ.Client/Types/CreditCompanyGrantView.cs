@@ -5,11 +5,17 @@ using SchematicHQ.Client.Core;
 namespace SchematicHQ.Client;
 
 [Serializable]
-public record BillingCreditGrantResponseData : IJsonOnDeserialized
+public record CreditCompanyGrantView : IJsonOnDeserialized
 {
     [JsonExtensionData]
     private readonly IDictionary<string, JsonElement> _extensionData =
         new Dictionary<string, JsonElement>();
+
+    [JsonPropertyName("billing_credit_bundle_id")]
+    public string? BillingCreditBundleId { get; set; }
+
+    [JsonPropertyName("billing_credit_id")]
+    public required string BillingCreditId { get; set; }
 
     [JsonPropertyName("company_id")]
     public required string CompanyId { get; set; }
@@ -19,6 +25,9 @@ public record BillingCreditGrantResponseData : IJsonOnDeserialized
 
     [JsonPropertyName("created_at")]
     public required DateTime CreatedAt { get; set; }
+
+    [JsonPropertyName("credit_description")]
+    public required string CreditDescription { get; set; }
 
     [JsonPropertyName("credit_icon")]
     public string? CreditIcon { get; set; }
@@ -41,8 +50,11 @@ public record BillingCreditGrantResponseData : IJsonOnDeserialized
     [JsonPropertyName("plan_name")]
     public string? PlanName { get; set; }
 
+    [JsonPropertyName("plural_name")]
+    public string? PluralName { get; set; }
+
     [JsonPropertyName("price")]
-    public BillingPriceResponseData? Price { get; set; }
+    public BillingProductPriceResponseData? Price { get; set; }
 
     [JsonPropertyName("quantity")]
     public required int Quantity { get; set; }
@@ -52,6 +64,9 @@ public record BillingCreditGrantResponseData : IJsonOnDeserialized
 
     [JsonPropertyName("quantity_used")]
     public required double QuantityUsed { get; set; }
+
+    [JsonPropertyName("singular_name")]
+    public string? SingularName { get; set; }
 
     [JsonPropertyName("source_label")]
     public required string SourceLabel { get; set; }

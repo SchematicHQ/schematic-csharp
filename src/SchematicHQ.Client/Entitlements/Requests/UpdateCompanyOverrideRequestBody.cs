@@ -6,6 +6,9 @@ namespace SchematicHQ.Client;
 [Serializable]
 public record UpdateCompanyOverrideRequestBody
 {
+    [JsonPropertyName("credit_consumption_rate")]
+    public double? CreditConsumptionRate { get; set; }
+
     [JsonPropertyName("expiration_date")]
     public DateTime? ExpirationDate { get; set; }
 
