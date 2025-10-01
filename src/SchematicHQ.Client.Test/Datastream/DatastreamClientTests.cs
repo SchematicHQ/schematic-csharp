@@ -169,7 +169,7 @@ namespace SchematicHQ.Client.Test.Datastream
         }
         
         [Test]
-        public void CachedResources_AreReusedWithoutWebSocketRequests()
+        public async Task CachedResources_AreReusedWithoutWebSocketRequests()
         {
             // Arrange
             SetupFlagsResponse();
@@ -220,7 +220,12 @@ namespace SchematicHQ.Client.Test.Datastream
             
             // Act - First request should fetch from WebSocket
             adapter.CheckFlag(request, "new-event-name").GetAwaiter().GetResult();
+            
+            // Wait a bit to ensure any async WebSocket operations complete
+            await Task.Delay(50);
+            
             int initialRequestCount = _mockWebSocket.SentMessages.Count;
+            Assert.That(initialRequestCount, Is.GreaterThan(0), "First request should generate at least one WebSocket message");
             
             // Clear sent messages to track new ones
             _mockWebSocket.SentMessages.Clear();
@@ -228,8 +233,11 @@ namespace SchematicHQ.Client.Test.Datastream
             // Act - Second request should use cache
             adapter.CheckFlag(request, "new-event-name").GetAwaiter().GetResult();
             
-            // Assert
-            Assert.That(_mockWebSocket.SentMessages.Count, Is.EqualTo(initialRequestCount), "No new WebSocket messages should be sent when using cached data");
+            // Wait a bit to ensure any async WebSocket operations complete
+            await Task.Delay(50);
+            
+            // Assert - No new messages should be sent when using cached data
+            Assert.That(_mockWebSocket.SentMessages.Count, Is.EqualTo(0), "No new WebSocket messages should be sent when using cached data");
         }
         
         [Test]
