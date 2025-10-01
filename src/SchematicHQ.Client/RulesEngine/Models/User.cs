@@ -19,5 +19,8 @@ namespace SchematicHQ.Client.RulesEngine.Models
         [JsonPropertyName("traits")]
         public List<Trait> Traits { get; set; } = new List<Trait>();
 
+        [JsonPropertyName("rules")]
+        public List<Rule> Rules { get; set; } = new List<Rule>();
+
     }
 }

@@ -267,7 +267,7 @@ namespace SchematicHQ.Client.RulesEngine
             var traitDef = condition.TraitDefinition;
             Trait? trait;
             Trait? comparisonTrait;
-            
+
             if (traitDef.EntityType == EntityType.Company && company != null)
             {
                 trait = FindTrait(traitDef, company.Traits);
@@ -308,12 +308,12 @@ namespace SchematicHQ.Client.RulesEngine
         {
             string leftVal = "";
             string rightVal = condition.TraitValue ?? "";
-            
+
             if (trait != null)
             {
                 leftVal = trait.Value;
             }
-            
+
             if (comparisonTrait != null)
             {
                 rightVal = comparisonTrait.Value;
