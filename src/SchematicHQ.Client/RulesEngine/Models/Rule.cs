@@ -30,5 +30,8 @@ namespace SchematicHQ.Client.RulesEngine.Models
 
     [JsonPropertyName("value")]
     public bool Value { get; set; }
+
+    [JsonPropertyName("flag_id")]
+    public string? FlagID { get; set; }
   }
 }

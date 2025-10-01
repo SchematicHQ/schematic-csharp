@@ -162,10 +162,15 @@ namespace SchematicHQ.Client.RulesEngine
             if (user != null)
             {
                 resp.UserId = user.Id;
-            }  
+            }
 
-            var companyRules = company?.Rules;
-            var userRules = user?.Rules;
+            // Filter company and user rules to only include those for this flag
+            var companyRules = company?.Rules?
+                .Where(r => r?.FlagID != null && r.FlagID == flag.Id)
+                .ToList();
+            var userRules = user?.Rules?
+                .Where(r => r?.FlagID != null && r.FlagID == flag.Id)
+                .ToList();
 
             var ruleChecker = RuleCheckService.NewRuleCheckService();
             foreach (var group in GroupRulesByPriority(flag.Rules, companyRules, userRules))
