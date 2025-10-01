@@ -241,7 +241,14 @@ public partial class CrmClient
     }
 
     /// <example><code>
-    /// await client.Crm.ListCrmProductsAsync(new ListCrmProductsRequest());
+    /// await client.Crm.ListCrmProductsAsync(
+    ///     new ListCrmProductsRequest
+    ///     {
+    ///         Name = "name",
+    ///         Limit = 1,
+    ///         Offset = 1,
+    ///     }
+    /// );
     /// </code></example>
     public async Task<ListCrmProductsResponse> ListCrmProductsAsync(
         ListCrmProductsRequest request,

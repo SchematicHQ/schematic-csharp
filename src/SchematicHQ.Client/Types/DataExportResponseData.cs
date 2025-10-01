@@ -4,9 +4,6 @@ using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
 
-/// <summary>
-/// The created resource
-/// </summary>
 [Serializable]
 public record DataExportResponseData : IJsonOnDeserialized
 {

@@ -90,6 +90,9 @@ public partial class DataexportsClient
         }
     }
 
+    /// <example><code>
+    /// await client.Dataexports.GetDataExportArtifactAsync("data_export_id");
+    /// </code></example>
     public async global::System.Threading.Tasks.Task GetDataExportArtifactAsync(
         string dataExportId,
         RequestOptions? options = null,

@@ -11,6 +11,9 @@ public record BillingProductPricing : IJsonOnDeserialized
     private readonly IDictionary<string, JsonElement> _extensionData =
         new Dictionary<string, JsonElement>();
 
+    [JsonPropertyName("billing_threshold")]
+    public int? BillingThreshold { get; set; }
+
     [JsonPropertyName("currency")]
     public required string Currency { get; set; }
 
@@ -37,6 +40,9 @@ public record BillingProductPricing : IJsonOnDeserialized
 
     [JsonPropertyName("quantity")]
     public required int Quantity { get; set; }
+
+    [JsonPropertyName("subscription_item_external_id")]
+    public string? SubscriptionItemExternalId { get; set; }
 
     [JsonPropertyName("usage_type")]
     public required BillingProductPricingUsageType UsageType { get; set; }

@@ -3,19 +3,19 @@ using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
 
-[JsonConverter(typeof(StringEnumSerializer<CreateBillingSubscriptionsRequestBodyTrialEndSetting>))]
+[JsonConverter(typeof(StringEnumSerializer<CreateBillingSubscriptionRequestBodyTrialEndSetting>))]
 [Serializable]
-public readonly record struct CreateBillingSubscriptionsRequestBodyTrialEndSetting : IStringEnum
+public readonly record struct CreateBillingSubscriptionRequestBodyTrialEndSetting : IStringEnum
 {
-    public static readonly CreateBillingSubscriptionsRequestBodyTrialEndSetting Subscribe = new(
+    public static readonly CreateBillingSubscriptionRequestBodyTrialEndSetting Subscribe = new(
         Values.Subscribe
     );
 
-    public static readonly CreateBillingSubscriptionsRequestBodyTrialEndSetting Cancel = new(
+    public static readonly CreateBillingSubscriptionRequestBodyTrialEndSetting Cancel = new(
         Values.Cancel
     );
 
-    public CreateBillingSubscriptionsRequestBodyTrialEndSetting(string value)
+    public CreateBillingSubscriptionRequestBodyTrialEndSetting(string value)
     {
         Value = value;
     }
@@ -28,9 +28,9 @@ public readonly record struct CreateBillingSubscriptionsRequestBodyTrialEndSetti
     /// <summary>
     /// Create a string enum with the given value.
     /// </summary>
-    public static CreateBillingSubscriptionsRequestBodyTrialEndSetting FromCustom(string value)
+    public static CreateBillingSubscriptionRequestBodyTrialEndSetting FromCustom(string value)
     {
-        return new CreateBillingSubscriptionsRequestBodyTrialEndSetting(value);
+        return new CreateBillingSubscriptionRequestBodyTrialEndSetting(value);
     }
 
     public bool Equals(string? other)
@@ -47,20 +47,20 @@ public readonly record struct CreateBillingSubscriptionsRequestBodyTrialEndSetti
     }
 
     public static bool operator ==(
-        CreateBillingSubscriptionsRequestBodyTrialEndSetting value1,
+        CreateBillingSubscriptionRequestBodyTrialEndSetting value1,
         string value2
     ) => value1.Value.Equals(value2);
 
     public static bool operator !=(
-        CreateBillingSubscriptionsRequestBodyTrialEndSetting value1,
+        CreateBillingSubscriptionRequestBodyTrialEndSetting value1,
         string value2
     ) => !value1.Value.Equals(value2);
 
     public static explicit operator string(
-        CreateBillingSubscriptionsRequestBodyTrialEndSetting value
+        CreateBillingSubscriptionRequestBodyTrialEndSetting value
     ) => value.Value;
 
-    public static explicit operator CreateBillingSubscriptionsRequestBodyTrialEndSetting(
+    public static explicit operator CreateBillingSubscriptionRequestBodyTrialEndSetting(
         string value
     ) => new(value);
 

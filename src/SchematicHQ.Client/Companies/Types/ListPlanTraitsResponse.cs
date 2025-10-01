@@ -11,9 +11,6 @@ public record ListPlanTraitsResponse : IJsonOnDeserialized
     private readonly IDictionary<string, JsonElement> _extensionData =
         new Dictionary<string, JsonElement>();
 
-    /// <summary>
-    /// The returned resources
-    /// </summary>
     [JsonPropertyName("data")]
     public IEnumerable<PlanTraitResponseData> Data { get; set; } =
         new List<PlanTraitResponseData>();

@@ -15,7 +15,18 @@ public partial class CompaniesClient
     }
 
     /// <example><code>
-    /// await client.Companies.ListCompaniesAsync(new ListCompaniesRequest());
+    /// await client.Companies.ListCompaniesAsync(
+    ///     new ListCompaniesRequest
+    ///     {
+    ///         PlanId = "plan_id",
+    ///         Q = "q",
+    ///         WithoutFeatureOverrideFor = "without_feature_override_for",
+    ///         WithoutPlan = true,
+    ///         WithSubscription = true,
+    ///         Limit = 1,
+    ///         Offset = 1,
+    ///     }
+    /// );
     /// </code></example>
     public async Task<ListCompaniesResponse> ListCompaniesAsync(
         ListCompaniesRequest request,
@@ -318,7 +329,18 @@ public partial class CompaniesClient
     }
 
     /// <example><code>
-    /// await client.Companies.CountCompaniesAsync(new CountCompaniesRequest());
+    /// await client.Companies.CountCompaniesAsync(
+    ///     new CountCompaniesRequest
+    ///     {
+    ///         PlanId = "plan_id",
+    ///         Q = "q",
+    ///         WithoutFeatureOverrideFor = "without_feature_override_for",
+    ///         WithoutPlan = true,
+    ///         WithSubscription = true,
+    ///         Limit = 1,
+    ///         Offset = 1,
+    ///     }
+    /// );
     /// </code></example>
     public async Task<CountCompaniesResponse> CountCompaniesAsync(
         CountCompaniesRequest request,
@@ -416,7 +438,17 @@ public partial class CompaniesClient
 
     /// <example><code>
     /// await client.Companies.CountCompaniesForAdvancedFilterAsync(
-    ///     new CountCompaniesForAdvancedFilterRequest()
+    ///     new CountCompaniesForAdvancedFilterRequest
+    ///     {
+    ///         MonetizedSubscriptions = true,
+    ///         Q = "q",
+    ///         WithoutPlan = true,
+    ///         WithoutSubscription = true,
+    ///         SortOrderColumn = "sort_order_column",
+    ///         SortOrderDirection = CountCompaniesForAdvancedFilterRequestSortOrderDirection.Asc,
+    ///         Limit = 1,
+    ///         Offset = 1,
+    ///     }
     /// );
     /// </code></example>
     public async Task<CountCompaniesForAdvancedFilterResponse> CountCompaniesForAdvancedFilterAsync(
@@ -429,6 +461,7 @@ public partial class CompaniesClient
         _query["ids"] = request.Ids;
         _query["plan_ids"] = request.PlanIds;
         _query["feature_ids"] = request.FeatureIds;
+        _query["credit_type_ids"] = request.CreditTypeIds;
         _query["subscription_statuses"] = request.SubscriptionStatuses;
         _query["subscription_types"] = request.SubscriptionTypes;
         _query["display_properties"] = request.DisplayProperties;
@@ -668,7 +701,17 @@ public partial class CompaniesClient
 
     /// <example><code>
     /// await client.Companies.ListCompaniesForAdvancedFilterAsync(
-    ///     new ListCompaniesForAdvancedFilterRequest()
+    ///     new ListCompaniesForAdvancedFilterRequest
+    ///     {
+    ///         MonetizedSubscriptions = true,
+    ///         Q = "q",
+    ///         WithoutPlan = true,
+    ///         WithoutSubscription = true,
+    ///         SortOrderColumn = "sort_order_column",
+    ///         SortOrderDirection = ListCompaniesForAdvancedFilterRequestSortOrderDirection.Asc,
+    ///         Limit = 1,
+    ///         Offset = 1,
+    ///     }
     /// );
     /// </code></example>
     public async Task<ListCompaniesForAdvancedFilterResponse> ListCompaniesForAdvancedFilterAsync(
@@ -681,6 +724,7 @@ public partial class CompaniesClient
         _query["ids"] = request.Ids;
         _query["plan_ids"] = request.PlanIds;
         _query["feature_ids"] = request.FeatureIds;
+        _query["credit_type_ids"] = request.CreditTypeIds;
         _query["subscription_statuses"] = request.SubscriptionStatuses;
         _query["subscription_types"] = request.SubscriptionTypes;
         _query["display_properties"] = request.DisplayProperties;
@@ -847,7 +891,13 @@ public partial class CompaniesClient
 
     /// <example><code>
     /// await client.Companies.GetActiveDealsAsync(
-    ///     new GetActiveDealsRequest { CompanyId = "company_id", DealStage = "deal_stage" }
+    ///     new GetActiveDealsRequest
+    ///     {
+    ///         CompanyId = "company_id",
+    ///         DealStage = "deal_stage",
+    ///         Limit = 1,
+    ///         Offset = 1,
+    ///     }
     /// );
     /// </code></example>
     public async Task<GetActiveDealsResponse> GetActiveDealsAsync(
@@ -926,7 +976,15 @@ public partial class CompaniesClient
     }
 
     /// <example><code>
-    /// await client.Companies.ListCompanyMembershipsAsync(new ListCompanyMembershipsRequest());
+    /// await client.Companies.ListCompanyMembershipsAsync(
+    ///     new ListCompanyMembershipsRequest
+    ///     {
+    ///         CompanyId = "company_id",
+    ///         UserId = "user_id",
+    ///         Limit = 1,
+    ///         Offset = 1,
+    ///     }
+    /// );
     /// </code></example>
     public async Task<ListCompanyMembershipsResponse> ListCompanyMembershipsAsync(
         ListCompanyMembershipsRequest request,
@@ -1149,7 +1207,14 @@ public partial class CompaniesClient
     }
 
     /// <example><code>
-    /// await client.Companies.GetActiveCompanySubscriptionAsync(new GetActiveCompanySubscriptionRequest());
+    /// await client.Companies.GetActiveCompanySubscriptionAsync(
+    ///     new GetActiveCompanySubscriptionRequest
+    ///     {
+    ///         CompanyId = "company_id",
+    ///         Limit = 1,
+    ///         Offset = 1,
+    ///     }
+    /// );
     /// </code></example>
     public async Task<GetActiveCompanySubscriptionResponse> GetActiveCompanySubscriptionAsync(
         GetActiveCompanySubscriptionRequest request,
@@ -1304,7 +1369,15 @@ public partial class CompaniesClient
     }
 
     /// <example><code>
-    /// await client.Companies.ListEntityKeyDefinitionsAsync(new ListEntityKeyDefinitionsRequest());
+    /// await client.Companies.ListEntityKeyDefinitionsAsync(
+    ///     new ListEntityKeyDefinitionsRequest
+    ///     {
+    ///         EntityType = ListEntityKeyDefinitionsRequestEntityType.Company,
+    ///         Q = "q",
+    ///         Limit = 1,
+    ///         Offset = 1,
+    ///     }
+    /// );
     /// </code></example>
     public async Task<ListEntityKeyDefinitionsResponse> ListEntityKeyDefinitionsAsync(
         ListEntityKeyDefinitionsRequest request,
@@ -1389,7 +1462,15 @@ public partial class CompaniesClient
     }
 
     /// <example><code>
-    /// await client.Companies.CountEntityKeyDefinitionsAsync(new CountEntityKeyDefinitionsRequest());
+    /// await client.Companies.CountEntityKeyDefinitionsAsync(
+    ///     new CountEntityKeyDefinitionsRequest
+    ///     {
+    ///         EntityType = CountEntityKeyDefinitionsRequestEntityType.Company,
+    ///         Q = "q",
+    ///         Limit = 1,
+    ///         Offset = 1,
+    ///     }
+    /// );
     /// </code></example>
     public async Task<CountEntityKeyDefinitionsResponse> CountEntityKeyDefinitionsAsync(
         CountEntityKeyDefinitionsRequest request,
@@ -1474,7 +1555,16 @@ public partial class CompaniesClient
     }
 
     /// <example><code>
-    /// await client.Companies.ListEntityTraitDefinitionsAsync(new ListEntityTraitDefinitionsRequest());
+    /// await client.Companies.ListEntityTraitDefinitionsAsync(
+    ///     new ListEntityTraitDefinitionsRequest
+    ///     {
+    ///         EntityType = ListEntityTraitDefinitionsRequestEntityType.Company,
+    ///         Q = "q",
+    ///         TraitType = ListEntityTraitDefinitionsRequestTraitType.Boolean,
+    ///         Limit = 1,
+    ///         Offset = 1,
+    ///     }
+    /// );
     /// </code></example>
     public async Task<ListEntityTraitDefinitionsResponse> ListEntityTraitDefinitionsAsync(
         ListEntityTraitDefinitionsRequest request,
@@ -1785,7 +1875,16 @@ public partial class CompaniesClient
     }
 
     /// <example><code>
-    /// await client.Companies.CountEntityTraitDefinitionsAsync(new CountEntityTraitDefinitionsRequest());
+    /// await client.Companies.CountEntityTraitDefinitionsAsync(
+    ///     new CountEntityTraitDefinitionsRequest
+    ///     {
+    ///         EntityType = CountEntityTraitDefinitionsRequestEntityType.Company,
+    ///         Q = "q",
+    ///         TraitType = CountEntityTraitDefinitionsRequestTraitType.Boolean,
+    ///         Limit = 1,
+    ///         Offset = 1,
+    ///     }
+    /// );
     /// </code></example>
     public async Task<CountEntityTraitDefinitionsResponse> CountEntityTraitDefinitionsAsync(
         CountEntityTraitDefinitionsRequest request,
@@ -1875,7 +1974,13 @@ public partial class CompaniesClient
 
     /// <example><code>
     /// await client.Companies.GetEntityTraitValuesAsync(
-    ///     new GetEntityTraitValuesRequest { DefinitionId = "definition_id" }
+    ///     new GetEntityTraitValuesRequest
+    ///     {
+    ///         DefinitionId = "definition_id",
+    ///         Q = "q",
+    ///         Limit = 1,
+    ///         Offset = 1,
+    ///     }
     /// );
     /// </code></example>
     public async Task<GetEntityTraitValuesResponse> GetEntityTraitValuesAsync(
@@ -1957,7 +2062,15 @@ public partial class CompaniesClient
     }
 
     /// <example><code>
-    /// await client.Companies.ListPlanTraitsAsync(new ListPlanTraitsRequest());
+    /// await client.Companies.ListPlanTraitsAsync(
+    ///     new ListPlanTraitsRequest
+    ///     {
+    ///         PlanId = "plan_id",
+    ///         TraitId = "trait_id",
+    ///         Limit = 1,
+    ///         Offset = 1,
+    ///     }
+    /// );
     /// </code></example>
     public async Task<ListPlanTraitsResponse> ListPlanTraitsAsync(
         ListPlanTraitsRequest request,
@@ -2329,7 +2442,96 @@ public partial class CompaniesClient
     }
 
     /// <example><code>
-    /// await client.Companies.CountPlanTraitsAsync(new CountPlanTraitsRequest());
+    /// await client.Companies.UpdatePlanTraitsBulkAsync(
+    ///     new UpdatePlanTraitBulkRequestBody
+    ///     {
+    ///         PlanId = "plan_id",
+    ///         Traits = new List&lt;UpdatePlanTraitTraitRequestBody&gt;()
+    ///         {
+    ///             new UpdatePlanTraitTraitRequestBody
+    ///             {
+    ///                 TraitId = "trait_id",
+    ///                 TraitValue = "trait_value",
+    ///             },
+    ///         },
+    ///     }
+    /// );
+    /// </code></example>
+    public async Task<UpdatePlanTraitsBulkResponse> UpdatePlanTraitsBulkAsync(
+        UpdatePlanTraitBulkRequestBody request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        var response = await _client
+            .SendRequestAsync(
+                new JsonRequest
+                {
+                    BaseUrl = _client.Options.BaseUrl,
+                    Method = HttpMethod.Post,
+                    Path = "plan-traits/bulk",
+                    Body = request,
+                    ContentType = "application/json",
+                    Options = options,
+                },
+                cancellationToken
+            )
+            .ConfigureAwait(false);
+        if (response.StatusCode is >= 200 and < 400)
+        {
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            try
+            {
+                return JsonUtils.Deserialize<UpdatePlanTraitsBulkResponse>(responseBody)!;
+            }
+            catch (JsonException e)
+            {
+                throw new SchematicException("Failed to deserialize response", e);
+            }
+        }
+
+        {
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            try
+            {
+                switch (response.StatusCode)
+                {
+                    case 400:
+                        throw new BadRequestError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 401:
+                        throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 403:
+                        throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 404:
+                        throw new NotFoundError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 500:
+                        throw new InternalServerError(
+                            JsonUtils.Deserialize<ApiError>(responseBody)
+                        );
+                }
+            }
+            catch (JsonException)
+            {
+                // unable to map error response, throwing generic error
+            }
+            throw new SchematicApiException(
+                $"Error with status code {response.StatusCode}",
+                response.StatusCode,
+                responseBody
+            );
+        }
+    }
+
+    /// <example><code>
+    /// await client.Companies.CountPlanTraitsAsync(
+    ///     new CountPlanTraitsRequest
+    ///     {
+    ///         PlanId = "plan_id",
+    ///         TraitId = "trait_id",
+    ///         Limit = 1,
+    ///         Offset = 1,
+    ///     }
+    /// );
     /// </code></example>
     public async Task<CountPlanTraitsResponse> CountPlanTraitsAsync(
         CountPlanTraitsRequest request,
@@ -2489,7 +2691,16 @@ public partial class CompaniesClient
     }
 
     /// <example><code>
-    /// await client.Companies.ListUsersAsync(new ListUsersRequest());
+    /// await client.Companies.ListUsersAsync(
+    ///     new ListUsersRequest
+    ///     {
+    ///         CompanyId = "company_id",
+    ///         PlanId = "plan_id",
+    ///         Q = "q",
+    ///         Limit = 1,
+    ///         Offset = 1,
+    ///     }
+    /// );
     /// </code></example>
     public async Task<ListUsersResponse> ListUsersAsync(
         ListUsersRequest request,
@@ -2778,7 +2989,16 @@ public partial class CompaniesClient
     }
 
     /// <example><code>
-    /// await client.Companies.CountUsersAsync(new CountUsersRequest());
+    /// await client.Companies.CountUsersAsync(
+    ///     new CountUsersRequest
+    ///     {
+    ///         CompanyId = "company_id",
+    ///         PlanId = "plan_id",
+    ///         Q = "q",
+    ///         Limit = 1,
+    ///         Offset = 1,
+    ///     }
+    /// );
     /// </code></example>
     public async Task<CountUsersResponse> CountUsersAsync(
         CountUsersRequest request,

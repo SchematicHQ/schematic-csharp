@@ -12,6 +12,9 @@ public record UpdateCreditBundleDetailsRequestBody
     [JsonPropertyName("expiry_type")]
     public UpdateCreditBundleDetailsRequestBodyExpiryType? ExpiryType { get; set; }
 
+    [JsonPropertyName("expiry_unit")]
+    public UpdateCreditBundleDetailsRequestBodyExpiryUnit? ExpiryUnit { get; set; }
+
     [JsonPropertyName("expiry_unit_count")]
     public int? ExpiryUnitCount { get; set; }
 

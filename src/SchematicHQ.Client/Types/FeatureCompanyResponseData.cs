@@ -32,6 +32,15 @@ public record FeatureCompanyResponseData : IJsonOnDeserialized
     [JsonPropertyName("company")]
     public CompanyDetailResponseData? Company { get; set; }
 
+    /// <summary>
+    /// Rate at which credits are consumed per unit of usage for credit-based features.
+    /// </summary>
+    [JsonPropertyName("credit_consumption_rate")]
+    public double? CreditConsumptionRate { get; set; }
+
+    [JsonPropertyName("credit_usage")]
+    public CreditUsage? CreditUsage { get; set; }
+
     [JsonPropertyName("entitlement_expiration_date")]
     public DateTime? EntitlementExpirationDate { get; set; }
 

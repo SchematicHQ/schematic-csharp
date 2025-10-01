@@ -14,6 +14,9 @@ public record BillingProductForSubscriptionResponseData : IJsonOnDeserialized
     [JsonPropertyName("billing_scheme")]
     public required string BillingScheme { get; set; }
 
+    [JsonPropertyName("billing_threshold")]
+    public int? BillingThreshold { get; set; }
+
     [JsonPropertyName("created_at")]
     public required DateTime CreatedAt { get; set; }
 
@@ -62,6 +65,9 @@ public record BillingProductForSubscriptionResponseData : IJsonOnDeserialized
 
     [JsonPropertyName("subscription_id")]
     public required string SubscriptionId { get; set; }
+
+    [JsonPropertyName("subscription_item_external_id")]
+    public string? SubscriptionItemExternalId { get; set; }
 
     [JsonPropertyName("updated_at")]
     public required DateTime UpdatedAt { get; set; }

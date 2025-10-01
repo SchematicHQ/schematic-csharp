@@ -17,8 +17,11 @@ public record BillingProductResponseData : IJsonOnDeserialized
     [JsonPropertyName("created_at")]
     public required DateTime CreatedAt { get; set; }
 
+    /// <summary>
+    /// Deprecated; currencies are associated with prices, not products
+    /// </summary>
     [JsonPropertyName("currency")]
-    public required string Currency { get; set; }
+    public string? Currency { get; set; }
 
     [JsonPropertyName("environment_id")]
     public required string EnvironmentId { get; set; }

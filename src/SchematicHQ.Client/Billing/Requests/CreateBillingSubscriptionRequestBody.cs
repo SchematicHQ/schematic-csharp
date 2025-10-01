@@ -4,7 +4,7 @@ using SchematicHQ.Client.Core;
 namespace SchematicHQ.Client;
 
 [Serializable]
-public record CreateBillingSubscriptionsRequestBody
+public record CreateBillingSubscriptionRequestBody
 {
     [JsonPropertyName("cancel_at")]
     public int? CancelAt { get; set; }
@@ -57,7 +57,7 @@ public record CreateBillingSubscriptionsRequestBody
     public int? TrialEnd { get; set; }
 
     [JsonPropertyName("trial_end_setting")]
-    public CreateBillingSubscriptionsRequestBodyTrialEndSetting? TrialEndSetting { get; set; }
+    public CreateBillingSubscriptionRequestBodyTrialEndSetting? TrialEndSetting { get; set; }
 
     /// <inheritdoc />
     public override string ToString()

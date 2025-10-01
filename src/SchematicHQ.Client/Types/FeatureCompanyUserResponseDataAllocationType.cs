@@ -21,6 +21,10 @@ public readonly record struct FeatureCompanyUserResponseDataAllocationType : ISt
         Values.Unlimited
     );
 
+    public static readonly FeatureCompanyUserResponseDataAllocationType Unknown = new(
+        Values.Unknown
+    );
+
     public FeatureCompanyUserResponseDataAllocationType(string value)
     {
         Value = value;
@@ -81,5 +85,7 @@ public readonly record struct FeatureCompanyUserResponseDataAllocationType : ISt
         public const string Trait = "trait";
 
         public const string Unlimited = "unlimited";
+
+        public const string Unknown = "unknown";
     }
 }

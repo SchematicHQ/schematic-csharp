@@ -4,9 +4,6 @@ using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
 
-/// <summary>
-/// The updated resource
-/// </summary>
 [Serializable]
 public record PlanTraitResponseData : IJsonOnDeserialized
 {

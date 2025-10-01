@@ -32,6 +32,15 @@ public record PreviewSubscriptionFinanceResponseData : IJsonOnDeserialized
     [JsonPropertyName("proration")]
     public required int Proration { get; set; }
 
+    [JsonPropertyName("tax_amount")]
+    public int? TaxAmount { get; set; }
+
+    [JsonPropertyName("tax_display_name")]
+    public string? TaxDisplayName { get; set; }
+
+    [JsonPropertyName("tax_require_billing_details")]
+    public required bool TaxRequireBillingDetails { get; set; }
+
     [JsonPropertyName("trial_end")]
     public DateTime? TrialEnd { get; set; }
 

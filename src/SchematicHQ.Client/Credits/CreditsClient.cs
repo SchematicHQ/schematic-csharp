@@ -15,7 +15,14 @@ public partial class CreditsClient
     }
 
     /// <example><code>
-    /// await client.Credits.ListBillingCreditsAsync(new ListBillingCreditsRequest());
+    /// await client.Credits.ListBillingCreditsAsync(
+    ///     new ListBillingCreditsRequest
+    ///     {
+    ///         Name = "name",
+    ///         Limit = 1,
+    ///         Offset = 1,
+    ///     }
+    /// );
     /// </code></example>
     public async Task<ListBillingCreditsResponse> ListBillingCreditsAsync(
         ListBillingCreditsRequest request,
@@ -382,7 +389,16 @@ public partial class CreditsClient
     }
 
     /// <example><code>
-    /// await client.Credits.ListCreditBundlesAsync(new ListCreditBundlesRequest());
+    /// await client.Credits.ListCreditBundlesAsync(
+    ///     new ListCreditBundlesRequest
+    ///     {
+    ///         CreditId = "credit_id",
+    ///         Status = ListCreditBundlesRequestStatus.Active,
+    ///         BundleType = "fixed",
+    ///         Limit = 1,
+    ///         Offset = 1,
+    ///     }
+    /// );
     /// </code></example>
     public async Task<ListCreditBundlesResponse> ListCreditBundlesAsync(
         ListCreditBundlesRequest request,
@@ -758,7 +774,16 @@ public partial class CreditsClient
     }
 
     /// <example><code>
-    /// await client.Credits.CountCreditBundlesAsync(new CountCreditBundlesRequest());
+    /// await client.Credits.CountCreditBundlesAsync(
+    ///     new CountCreditBundlesRequest
+    ///     {
+    ///         CreditId = "credit_id",
+    ///         Status = CountCreditBundlesRequestStatus.Active,
+    ///         BundleType = "fixed",
+    ///         Limit = 1,
+    ///         Offset = 1,
+    ///     }
+    /// );
     /// </code></example>
     public async Task<CountCreditBundlesResponse> CountCreditBundlesAsync(
         CountCreditBundlesRequest request,
@@ -847,7 +872,14 @@ public partial class CreditsClient
     }
 
     /// <example><code>
-    /// await client.Credits.CountBillingCreditsAsync(new CountBillingCreditsRequest());
+    /// await client.Credits.CountBillingCreditsAsync(
+    ///     new CountBillingCreditsRequest
+    ///     {
+    ///         Name = "name",
+    ///         Limit = 1,
+    ///         Offset = 1,
+    ///     }
+    /// );
     /// </code></example>
     public async Task<CountBillingCreditsResponse> CountBillingCreditsAsync(
         CountBillingCreditsRequest request,
@@ -1076,7 +1108,16 @@ public partial class CreditsClient
     }
 
     /// <example><code>
-    /// await client.Credits.ListCompanyGrantsAsync(new ListCompanyGrantsRequest());
+    /// await client.Credits.ListCompanyGrantsAsync(
+    ///     new ListCompanyGrantsRequest
+    ///     {
+    ///         CompanyId = "company_id",
+    ///         Order = ListCompanyGrantsRequestOrder.CreatedAt,
+    ///         Dir = ListCompanyGrantsRequestDir.Asc,
+    ///         Limit = 1,
+    ///         Offset = 1,
+    ///     }
+    /// );
     /// </code></example>
     public async Task<ListCompanyGrantsResponse> ListCompanyGrantsAsync(
         ListCompanyGrantsRequest request,
@@ -1164,7 +1205,14 @@ public partial class CreditsClient
     }
 
     /// <example><code>
-    /// await client.Credits.CountBillingCreditsGrantsAsync(new CountBillingCreditsGrantsRequest());
+    /// await client.Credits.CountBillingCreditsGrantsAsync(
+    ///     new CountBillingCreditsGrantsRequest
+    ///     {
+    ///         CreditId = "credit_id",
+    ///         Limit = 1,
+    ///         Offset = 1,
+    ///     }
+    /// );
     /// </code></example>
     public async Task<CountBillingCreditsGrantsResponse> CountBillingCreditsGrantsAsync(
         CountBillingCreditsGrantsRequest request,
@@ -1245,7 +1293,14 @@ public partial class CreditsClient
     }
 
     /// <example><code>
-    /// await client.Credits.ListGrantsForCreditAsync(new ListGrantsForCreditRequest());
+    /// await client.Credits.ListGrantsForCreditAsync(
+    ///     new ListGrantsForCreditRequest
+    ///     {
+    ///         CreditId = "credit_id",
+    ///         Limit = 1,
+    ///         Offset = 1,
+    ///     }
+    /// );
     /// </code></example>
     public async Task<ListGrantsForCreditResponse> ListGrantsForCreditAsync(
         ListGrantsForCreditRequest request,
@@ -1326,7 +1381,15 @@ public partial class CreditsClient
     }
 
     /// <example><code>
-    /// await client.Credits.ListBillingPlanCreditGrantsAsync(new ListBillingPlanCreditGrantsRequest());
+    /// await client.Credits.ListBillingPlanCreditGrantsAsync(
+    ///     new ListBillingPlanCreditGrantsRequest
+    ///     {
+    ///         CreditId = "credit_id",
+    ///         PlanId = "plan_id",
+    ///         Limit = 1,
+    ///         Offset = 1,
+    ///     }
+    /// );
     /// </code></example>
     public async Task<ListBillingPlanCreditGrantsResponse> ListBillingPlanCreditGrantsAsync(
         ListBillingPlanCreditGrantsRequest request,
@@ -1558,7 +1621,15 @@ public partial class CreditsClient
     }
 
     /// <example><code>
-    /// await client.Credits.CountBillingPlanCreditGrantsAsync(new CountBillingPlanCreditGrantsRequest());
+    /// await client.Credits.CountBillingPlanCreditGrantsAsync(
+    ///     new CountBillingPlanCreditGrantsRequest
+    ///     {
+    ///         CreditId = "credit_id",
+    ///         PlanId = "plan_id",
+    ///         Limit = 1,
+    ///         Offset = 1,
+    ///     }
+    /// );
     /// </code></example>
     public async Task<CountBillingPlanCreditGrantsResponse> CountBillingPlanCreditGrantsAsync(
         CountBillingPlanCreditGrantsRequest request,

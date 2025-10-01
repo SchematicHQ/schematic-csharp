@@ -11,6 +11,9 @@ public record PlanEntitlementResponseData : IJsonOnDeserialized
     private readonly IDictionary<string, JsonElement> _extensionData =
         new Dictionary<string, JsonElement>();
 
+    [JsonPropertyName("billing_threshold")]
+    public int? BillingThreshold { get; set; }
+
     [JsonPropertyName("consumption_rate")]
     public double? ConsumptionRate { get; set; }
 

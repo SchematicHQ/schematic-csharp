@@ -4,9 +4,6 @@ using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
 
-/// <summary>
-/// The requested resource
-/// </summary>
 [Serializable]
 public record PreviewSubscriptionChangeResponseData : IJsonOnDeserialized
 {

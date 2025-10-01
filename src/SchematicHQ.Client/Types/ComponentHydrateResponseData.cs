@@ -30,6 +30,9 @@ public record ComponentHydrateResponseData : IJsonOnDeserialized
     [JsonPropertyName("capabilities")]
     public ComponentCapabilities? Capabilities { get; set; }
 
+    [JsonPropertyName("checkout_settings")]
+    public required ComponentCheckoutSettings CheckoutSettings { get; set; }
+
     [JsonPropertyName("company")]
     public CompanyDetailResponseData? Company { get; set; }
 
@@ -50,8 +53,17 @@ public record ComponentHydrateResponseData : IJsonOnDeserialized
     [JsonPropertyName("feature_usage")]
     public FeatureUsageDetailResponseData? FeatureUsage { get; set; }
 
+    [JsonPropertyName("post_trial_plan")]
+    public PlanDetailResponseData? PostTrialPlan { get; set; }
+
+    [JsonPropertyName("show_credits")]
+    public required bool ShowCredits { get; set; }
+
     [JsonPropertyName("show_period_toggle")]
     public required bool ShowPeriodToggle { get; set; }
+
+    [JsonPropertyName("show_zero_price_as_free")]
+    public required bool ShowZeroPriceAsFree { get; set; }
 
     [JsonPropertyName("stripe_embed")]
     public StripeEmbedInfo? StripeEmbed { get; set; }

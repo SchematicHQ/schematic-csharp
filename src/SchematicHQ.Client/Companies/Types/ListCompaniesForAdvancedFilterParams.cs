@@ -15,7 +15,13 @@ public record ListCompaniesForAdvancedFilterParams : IJsonOnDeserialized
         new Dictionary<string, JsonElement>();
 
     /// <summary>
-    /// Select the display columns to return (e.g. plan, subscription, users, last_seen)
+    /// Filter companies by one or more credit type IDs (each ID starts with bcrd_)
+    /// </summary>
+    [JsonPropertyName("credit_type_ids")]
+    public IEnumerable<string>? CreditTypeIds { get; set; }
+
+    /// <summary>
+    /// Select the display columns to return (e.g. plan, subscription, users, last_seen_at)
     /// </summary>
     [JsonPropertyName("display_properties")]
     public IEnumerable<string>? DisplayProperties { get; set; }

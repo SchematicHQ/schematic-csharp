@@ -7,11 +7,21 @@ namespace SchematicHQ.Client;
 [Serializable]
 public readonly record struct CreateCreditBundleRequestBodyExpiryType : IStringEnum
 {
-    public static readonly CreateCreditBundleRequestBodyExpiryType DaysFromPurchase = new(
-        Values.DaysFromPurchase
-    );
+    public static readonly CreateCreditBundleRequestBodyExpiryType Duration = new(Values.Duration);
 
     public static readonly CreateCreditBundleRequestBodyExpiryType NoExpiry = new(Values.NoExpiry);
+
+    public static readonly CreateCreditBundleRequestBodyExpiryType EndOfTrial = new(
+        Values.EndOfTrial
+    );
+
+    public static readonly CreateCreditBundleRequestBodyExpiryType EndOfBillingPeriod = new(
+        Values.EndOfBillingPeriod
+    );
+
+    public static readonly CreateCreditBundleRequestBodyExpiryType EndOfNextBillingPeriod = new(
+        Values.EndOfNextBillingPeriod
+    );
 
     public CreateCreditBundleRequestBodyExpiryType(string value)
     {
@@ -62,8 +72,14 @@ public readonly record struct CreateCreditBundleRequestBodyExpiryType : IStringE
     [Serializable]
     public static class Values
     {
-        public const string DaysFromPurchase = "days_from_purchase";
+        public const string Duration = "duration";
 
         public const string NoExpiry = "no_expiry";
+
+        public const string EndOfTrial = "end_of_trial";
+
+        public const string EndOfBillingPeriod = "end_of_billing_period";
+
+        public const string EndOfNextBillingPeriod = "end_of_next_billing_period";
     }
 }

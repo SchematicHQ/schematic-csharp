@@ -95,6 +95,10 @@ public record CompanyPlanDetailResponseData : IJsonOnDeserialized
     [JsonPropertyName("updated_at")]
     public required DateTime UpdatedAt { get; set; }
 
+    [JsonPropertyName("usage_violations")]
+    public IEnumerable<FeatureUsageResponseData> UsageViolations { get; set; } =
+        new List<FeatureUsageResponseData>();
+
     [JsonPropertyName("valid")]
     public required bool Valid { get; set; }
 

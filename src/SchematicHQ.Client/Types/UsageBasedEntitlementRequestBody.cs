@@ -14,6 +14,9 @@ public record UsageBasedEntitlementRequestBody : IJsonOnDeserialized
     [JsonPropertyName("billing_product_id")]
     public string? BillingProductId { get; set; }
 
+    [JsonPropertyName("billing_threshold")]
+    public int? BillingThreshold { get; set; }
+
     [JsonPropertyName("currency")]
     public string? Currency { get; set; }
 

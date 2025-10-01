@@ -22,7 +22,7 @@ public record CreateCreditBundleRequestBody
     public CreateCreditBundleRequestBodyExpiryType? ExpiryType { get; set; }
 
     [JsonPropertyName("expiry_unit")]
-    public string? ExpiryUnit { get; set; }
+    public CreateCreditBundleRequestBodyExpiryUnit? ExpiryUnit { get; set; }
 
     [JsonPropertyName("expiry_unit_count")]
     public int? ExpiryUnitCount { get; set; }

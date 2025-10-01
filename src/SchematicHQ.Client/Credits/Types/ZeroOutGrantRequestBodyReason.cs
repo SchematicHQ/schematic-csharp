@@ -15,6 +15,8 @@ public readonly record struct ZeroOutGrantRequestBodyReason : IStringEnum
         Values.PlanPeriodReset
     );
 
+    public static readonly ZeroOutGrantRequestBodyReason Expired = new(Values.Expired);
+
     public ZeroOutGrantRequestBodyReason(string value)
     {
         Value = value;
@@ -67,5 +69,7 @@ public readonly record struct ZeroOutGrantRequestBodyReason : IStringEnum
         public const string Manual = "manual";
 
         public const string PlanPeriodReset = "plan_period_reset";
+
+        public const string Expired = "expired";
     }
 }

@@ -7,13 +7,24 @@ namespace SchematicHQ.Client;
 [Serializable]
 public readonly record struct UpdateCreditBundleDetailsRequestBodyExpiryType : IStringEnum
 {
-    public static readonly UpdateCreditBundleDetailsRequestBodyExpiryType DaysFromPurchase = new(
-        Values.DaysFromPurchase
+    public static readonly UpdateCreditBundleDetailsRequestBodyExpiryType Duration = new(
+        Values.Duration
     );
 
     public static readonly UpdateCreditBundleDetailsRequestBodyExpiryType NoExpiry = new(
         Values.NoExpiry
     );
+
+    public static readonly UpdateCreditBundleDetailsRequestBodyExpiryType EndOfTrial = new(
+        Values.EndOfTrial
+    );
+
+    public static readonly UpdateCreditBundleDetailsRequestBodyExpiryType EndOfBillingPeriod = new(
+        Values.EndOfBillingPeriod
+    );
+
+    public static readonly UpdateCreditBundleDetailsRequestBodyExpiryType EndOfNextBillingPeriod =
+        new(Values.EndOfNextBillingPeriod);
 
     public UpdateCreditBundleDetailsRequestBodyExpiryType(string value)
     {
@@ -68,8 +79,14 @@ public readonly record struct UpdateCreditBundleDetailsRequestBodyExpiryType : I
     [Serializable]
     public static class Values
     {
-        public const string DaysFromPurchase = "days_from_purchase";
+        public const string Duration = "duration";
 
         public const string NoExpiry = "no_expiry";
+
+        public const string EndOfTrial = "end_of_trial";
+
+        public const string EndOfBillingPeriod = "end_of_billing_period";
+
+        public const string EndOfNextBillingPeriod = "end_of_next_billing_period";
     }
 }

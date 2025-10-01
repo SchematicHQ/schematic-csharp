@@ -399,7 +399,17 @@ public partial class FeaturesClient
     }
 
     /// <example><code>
-    /// await client.Features.ListFeaturesAsync(new ListFeaturesRequest());
+    /// await client.Features.ListFeaturesAsync(
+    ///     new ListFeaturesRequest
+    ///     {
+    ///         Q = "q",
+    ///         WithoutCompanyOverrideFor = "without_company_override_for",
+    ///         WithoutPlanEntitlementFor = "without_plan_entitlement_for",
+    ///         BooleanRequireEvent = true,
+    ///         Limit = 1,
+    ///         Offset = 1,
+    ///     }
+    /// );
     /// </code></example>
     public async Task<ListFeaturesResponse> ListFeaturesAsync(
         ListFeaturesRequest request,
@@ -778,7 +788,17 @@ public partial class FeaturesClient
     }
 
     /// <example><code>
-    /// await client.Features.CountFeaturesAsync(new CountFeaturesRequest());
+    /// await client.Features.CountFeaturesAsync(
+    ///     new CountFeaturesRequest
+    ///     {
+    ///         Q = "q",
+    ///         WithoutCompanyOverrideFor = "without_company_override_for",
+    ///         WithoutPlanEntitlementFor = "without_plan_entitlement_for",
+    ///         BooleanRequireEvent = true,
+    ///         Limit = 1,
+    ///         Offset = 1,
+    ///     }
+    /// );
     /// </code></example>
     public async Task<CountFeaturesResponse> CountFeaturesAsync(
         CountFeaturesRequest request,
@@ -874,7 +894,15 @@ public partial class FeaturesClient
     }
 
     /// <example><code>
-    /// await client.Features.ListFlagsAsync(new ListFlagsRequest());
+    /// await client.Features.ListFlagsAsync(
+    ///     new ListFlagsRequest
+    ///     {
+    ///         FeatureId = "feature_id",
+    ///         Q = "q",
+    ///         Limit = 1,
+    ///         Offset = 1,
+    ///     }
+    /// );
     /// </code></example>
     public async Task<ListFlagsResponse> ListFlagsAsync(
         ListFlagsRequest request,
@@ -1496,7 +1524,15 @@ public partial class FeaturesClient
     }
 
     /// <example><code>
-    /// await client.Features.CountFlagsAsync(new CountFlagsRequest());
+    /// await client.Features.CountFlagsAsync(
+    ///     new CountFlagsRequest
+    ///     {
+    ///         FeatureId = "feature_id",
+    ///         Q = "q",
+    ///         Limit = 1,
+    ///         Offset = 1,
+    ///     }
+    /// );
     /// </code></example>
     public async Task<CountFlagsResponse> CountFlagsAsync(
         CountFlagsRequest request,

@@ -91,7 +91,14 @@ public partial class EventsClient
     }
 
     /// <example><code>
-    /// await client.Events.GetEventSummariesAsync(new GetEventSummariesRequest());
+    /// await client.Events.GetEventSummariesAsync(
+    ///     new GetEventSummariesRequest
+    ///     {
+    ///         Q = "q",
+    ///         Limit = 1,
+    ///         Offset = 1,
+    ///     }
+    /// );
     /// </code></example>
     public async Task<GetEventSummariesResponse> GetEventSummariesAsync(
         GetEventSummariesRequest request,
@@ -172,7 +179,17 @@ public partial class EventsClient
     }
 
     /// <example><code>
-    /// await client.Events.ListEventsAsync(new ListEventsRequest());
+    /// await client.Events.ListEventsAsync(
+    ///     new ListEventsRequest
+    ///     {
+    ///         CompanyId = "company_id",
+    ///         EventSubtype = "event_subtype",
+    ///         FlagId = "flag_id",
+    ///         UserId = "user_id",
+    ///         Limit = 1,
+    ///         Offset = 1,
+    ///     }
+    /// );
     /// </code></example>
     public async Task<ListEventsResponse> ListEventsAsync(
         ListEventsRequest request,

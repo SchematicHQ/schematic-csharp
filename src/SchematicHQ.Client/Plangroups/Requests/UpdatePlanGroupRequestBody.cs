@@ -15,6 +15,15 @@ public record UpdatePlanGroupRequestBody
     [JsonPropertyName("add_on_ids")]
     public IEnumerable<string> AddOnIds { get; set; } = new List<string>();
 
+    [JsonPropertyName("checkout_collect_address")]
+    public required bool CheckoutCollectAddress { get; set; }
+
+    [JsonPropertyName("checkout_collect_email")]
+    public required bool CheckoutCollectEmail { get; set; }
+
+    [JsonPropertyName("checkout_collect_phone")]
+    public required bool CheckoutCollectPhone { get; set; }
+
     [JsonPropertyName("custom_plan_config")]
     public CustomPlanConfig? CustomPlanConfig { get; set; }
 
@@ -23,6 +32,18 @@ public record UpdatePlanGroupRequestBody
 
     [JsonPropertyName("default_plan_id")]
     public string? DefaultPlanId { get; set; }
+
+    [JsonPropertyName("enable_tax_collection")]
+    public required bool EnableTaxCollection { get; set; }
+
+    [JsonPropertyName("fallback_plan_id")]
+    public string? FallbackPlanId { get; set; }
+
+    [JsonPropertyName("initial_plan_id")]
+    public string? InitialPlanId { get; set; }
+
+    [JsonPropertyName("initial_plan_price_id")]
+    public string? InitialPlanPriceId { get; set; }
 
     [JsonPropertyName("ordered_add_ons")]
     public IEnumerable<OrderedPlansInGroup> OrderedAddOns { get; set; } =
@@ -36,11 +57,23 @@ public record UpdatePlanGroupRequestBody
     public IEnumerable<OrderedPlansInGroup> OrderedPlans { get; set; } =
         new List<OrderedPlansInGroup>();
 
+    [JsonPropertyName("show_credits")]
+    public required bool ShowCredits { get; set; }
+
     [JsonPropertyName("show_period_toggle")]
     public required bool ShowPeriodToggle { get; set; }
 
+    [JsonPropertyName("show_zero_price_as_free")]
+    public required bool ShowZeroPriceAsFree { get; set; }
+
     [JsonPropertyName("trial_days")]
     public int? TrialDays { get; set; }
+
+    [JsonPropertyName("trial_expiry_plan_id")]
+    public string? TrialExpiryPlanId { get; set; }
+
+    [JsonPropertyName("trial_expiry_plan_price_id")]
+    public string? TrialExpiryPlanPriceId { get; set; }
 
     [JsonPropertyName("trial_payment_method_required")]
     public bool? TrialPaymentMethodRequired { get; set; }

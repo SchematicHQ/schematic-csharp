@@ -18,6 +18,24 @@ public record ListPlansParams : IJsonOnDeserialized
     public string? CompanyId { get; set; }
 
     /// <summary>
+    /// Filter for plans valid as fallback plans (not linked to billing)
+    /// </summary>
+    [JsonPropertyName("for_fallback_plan")]
+    public bool? ForFallbackPlan { get; set; }
+
+    /// <summary>
+    /// Filter for plans valid as initial plans (not linked to billing, free, or auto-cancelling trial)
+    /// </summary>
+    [JsonPropertyName("for_initial_plan")]
+    public bool? ForInitialPlan { get; set; }
+
+    /// <summary>
+    /// Filter for plans valid as trial expiry plans (not linked to billing or free)
+    /// </summary>
+    [JsonPropertyName("for_trial_expiry_plan")]
+    public bool? ForTrialExpiryPlan { get; set; }
+
+    /// <summary>
     /// Filter out plans that do not have a billing product ID
     /// </summary>
     [JsonPropertyName("has_product_id")]
@@ -46,6 +64,12 @@ public record ListPlansParams : IJsonOnDeserialized
 
     [JsonPropertyName("q")]
     public string? Q { get; set; }
+
+    /// <summary>
+    /// Filter for plans that require a payment method (inverse of ForInitialPlan)
+    /// </summary>
+    [JsonPropertyName("requires_payment_method")]
+    public bool? RequiresPaymentMethod { get; set; }
 
     /// <summary>
     /// Filter out plans that already have a plan entitlement for the specified feature ID

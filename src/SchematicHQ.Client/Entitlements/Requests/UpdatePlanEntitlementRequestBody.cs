@@ -9,6 +9,9 @@ public record UpdatePlanEntitlementRequestBody
     [JsonPropertyName("billing_product_id")]
     public string? BillingProductId { get; set; }
 
+    [JsonPropertyName("billing_threshold")]
+    public int? BillingThreshold { get; set; }
+
     [JsonPropertyName("credit_consumption_rate")]
     public double? CreditConsumptionRate { get; set; }
 
