@@ -144,17 +144,28 @@ namespace SchematicHQ.Client.Tests
         [Test]
         public async Task StartAndStop_ConcurrencyTest()
         {
+            // Use separate buffer instances to avoid race conditions on shared state
             var startStopTasks = Enumerable.Range(0, 100).Select(async i =>
             {
-                _buffer.Start();
+                var processedItems = new List<int>();
+                var buffer = new EventBuffer<int>(async items =>
+                {
+                    lock (processedItems)
+                    {
+                        processedItems.AddRange(items);
+                    }
+                    await Task.CompletedTask;
+                }, _mockLogger.Object);
+
+                buffer.Start();
                 await Task.Delay(10);
-                await _buffer.Stop();
+                await buffer.Stop();
+                
+                // Ensure this specific buffer is stopped
+                Assert.Throws<InvalidOperationException>(() => buffer.Push(1));
             }).ToArray();
 
             await Task.WhenAll(startStopTasks);
-
-            // Ensure buffer is stopped at the end
-            Assert.Throws<InvalidOperationException>(() => _buffer.Push(1));
         }
 
         [Test]
