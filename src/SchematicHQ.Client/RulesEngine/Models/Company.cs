@@ -40,6 +40,9 @@ namespace SchematicHQ.Client.RulesEngine.Models
     [JsonPropertyName("subscription")]
     public Subscription? Subscription { get; set; }
 
+    [JsonPropertyName("rules")]
+    public List<Rule> Rules { get; set; } = new List<Rule>();
+
     private readonly object _metricsLock = new object();
 
 

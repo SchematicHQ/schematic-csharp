@@ -342,5 +342,297 @@ namespace SchematicHQ.Client.Test.RulesEngine
             Assert.That(result.Value, Is.EqualTo(flag.DefaultValue));
             Assert.That(result.Reason, Is.EqualTo(FlagCheckService.ReasonNoRulesMatched));
         }
+
+        [Test]
+        public async Task CompanyProvidedRule_IsEvaluatedAlongWithFlagRules()
+        {
+            // Arrange
+            var company = TestHelpers.CreateTestCompany();
+            var flag = TestHelpers.CreateTestFlag();
+            flag.DefaultValue = false;
+
+            // Create a company-provided rule that matches
+            var companyRule = TestHelpers.CreateTestRule();
+            companyRule.Value = true;
+            var condition = TestHelpers.CreateTestCondition(ConditionType.Company);
+            condition.ResourceIds = new List<string> { company.Id };
+            companyRule.Conditions = new List<Condition> { condition };
+
+            company.Rules = new List<Rule> { companyRule };
+
+            // Act
+            var result = await FlagCheckService.CheckFlag(company, null, flag);
+
+            // Assert
+            Assert.That(result.Value, Is.True);
+            Assert.That(result.RuleId, Is.EqualTo(companyRule.Id));
+        }
+
+        [Test]
+        public async Task CompanyProvidedRule_RespectsPriorityOrdering()
+        {
+            // Arrange
+            var company = TestHelpers.CreateTestCompany();
+            var flag = TestHelpers.CreateTestFlag();
+
+            // Create flag rule with lower priority
+            var flagRule = TestHelpers.CreateTestRule();
+            flagRule.Priority = 2;
+            flagRule.Value = false;
+            var condition1 = TestHelpers.CreateTestCondition(ConditionType.Company);
+            condition1.ResourceIds = new List<string> { company.Id };
+            flagRule.Conditions = new List<Condition> { condition1 };
+
+            // Create company rule with higher priority
+            var companyRule = TestHelpers.CreateTestRule();
+            companyRule.Priority = 1;
+            companyRule.Value = true;
+            var condition2 = TestHelpers.CreateTestCondition(ConditionType.Company);
+            condition2.ResourceIds = new List<string> { company.Id };
+            companyRule.Conditions = new List<Condition> { condition2 };
+
+            flag.Rules = new List<Rule> { flagRule };
+            company.Rules = new List<Rule> { companyRule };
+
+            // Act
+            var result = await FlagCheckService.CheckFlag(company, null, flag);
+
+            // Assert
+            Assert.That(result.Value, Is.True);
+            Assert.That(result.RuleId, Is.EqualTo(companyRule.Id));
+        }
+
+        [Test]
+        public async Task CompanyProvidedRule_WithGlobalOverrideTakesPrecedence()
+        {
+            // Arrange
+            var company = TestHelpers.CreateTestCompany();
+            var flag = TestHelpers.CreateTestFlag();
+
+            // Create standard flag rule
+            var flagRule = TestHelpers.CreateTestRule();
+            flagRule.Value = false;
+            var condition1 = TestHelpers.CreateTestCondition(ConditionType.Company);
+            condition1.ResourceIds = new List<string> { company.Id };
+            flagRule.Conditions = new List<Condition> { condition1 };
+
+            // Create company rule with global override
+            var companyRule = TestHelpers.CreateTestRule();
+            companyRule.RuleType = RuleType.GlobalOverride;
+            companyRule.Value = true;
+
+            flag.Rules = new List<Rule> { flagRule };
+            company.Rules = new List<Rule> { companyRule };
+
+            // Act
+            var result = await FlagCheckService.CheckFlag(company, null, flag);
+
+            // Assert
+            Assert.That(result.Value, Is.True);
+            Assert.That(result.RuleId, Is.EqualTo(companyRule.Id));
+        }
+
+        [Test]
+        public async Task MultipleCompanyProvidedRules_AreAllEvaluated()
+        {
+            // Arrange
+            var company = TestHelpers.CreateTestCompany();
+            var flag = TestHelpers.CreateTestFlag();
+            flag.DefaultValue = false;
+
+            // Create two company rules, only one matches
+            var companyRule1 = TestHelpers.CreateTestRule();
+            companyRule1.Priority = 1;
+            companyRule1.Value = true;
+            var condition1 = TestHelpers.CreateTestCondition(ConditionType.Company);
+            condition1.ResourceIds = new List<string> { "non-matching-id" };
+            companyRule1.Conditions = new List<Condition> { condition1 };
+
+            var companyRule2 = TestHelpers.CreateTestRule();
+            companyRule2.Priority = 2;
+            companyRule2.Value = true;
+            var condition2 = TestHelpers.CreateTestCondition(ConditionType.Company);
+            condition2.ResourceIds = new List<string> { company.Id };
+            companyRule2.Conditions = new List<Condition> { condition2 };
+
+            company.Rules = new List<Rule> { companyRule1, companyRule2 };
+
+            // Act
+            var result = await FlagCheckService.CheckFlag(company, null, flag);
+
+            // Assert
+            Assert.That(result.Value, Is.True);
+            Assert.That(result.RuleId, Is.EqualTo(companyRule2.Id));
+        }
+
+        [Test]
+        public async Task UserProvidedRule_IsEvaluatedAlongWithFlagRules()
+        {
+            // Arrange
+            var user = TestHelpers.CreateTestUser();
+            var flag = TestHelpers.CreateTestFlag();
+            flag.DefaultValue = false;
+
+            // Create a user-provided rule that matches
+            var userRule = TestHelpers.CreateTestRule();
+            userRule.Value = true;
+            var condition = TestHelpers.CreateTestCondition(ConditionType.User);
+            condition.ResourceIds = new List<string> { user.Id };
+            userRule.Conditions = new List<Condition> { condition };
+
+            user.Rules = new List<Rule> { userRule };
+
+            // Act
+            var result = await FlagCheckService.CheckFlag(null, user, flag);
+
+            // Assert
+            Assert.That(result.Value, Is.True);
+            Assert.That(result.RuleId, Is.EqualTo(userRule.Id));
+        }
+
+        [Test]
+        public async Task UserProvidedRule_RespectsPriorityOrdering()
+        {
+            // Arrange
+            var user = TestHelpers.CreateTestUser();
+            var flag = TestHelpers.CreateTestFlag();
+
+            // Create flag rule with lower priority
+            var flagRule = TestHelpers.CreateTestRule();
+            flagRule.Priority = 2;
+            flagRule.Value = false;
+            var condition1 = TestHelpers.CreateTestCondition(ConditionType.User);
+            condition1.ResourceIds = new List<string> { user.Id };
+            flagRule.Conditions = new List<Condition> { condition1 };
+
+            // Create user rule with higher priority
+            var userRule = TestHelpers.CreateTestRule();
+            userRule.Priority = 1;
+            userRule.Value = true;
+            var condition2 = TestHelpers.CreateTestCondition(ConditionType.User);
+            condition2.ResourceIds = new List<string> { user.Id };
+            userRule.Conditions = new List<Condition> { condition2 };
+
+            flag.Rules = new List<Rule> { flagRule };
+            user.Rules = new List<Rule> { userRule };
+
+            // Act
+            var result = await FlagCheckService.CheckFlag(null, user, flag);
+
+            // Assert
+            Assert.That(result.Value, Is.True);
+            Assert.That(result.RuleId, Is.EqualTo(userRule.Id));
+        }
+
+        [Test]
+        public async Task UserProvidedRule_WithGlobalOverrideTakesPrecedence()
+        {
+            // Arrange
+            var user = TestHelpers.CreateTestUser();
+            var flag = TestHelpers.CreateTestFlag();
+
+            // Create standard flag rule
+            var flagRule = TestHelpers.CreateTestRule();
+            flagRule.Value = false;
+            var condition1 = TestHelpers.CreateTestCondition(ConditionType.User);
+            condition1.ResourceIds = new List<string> { user.Id };
+            flagRule.Conditions = new List<Condition> { condition1 };
+
+            // Create user rule with global override
+            var userRule = TestHelpers.CreateTestRule();
+            userRule.RuleType = RuleType.GlobalOverride;
+            userRule.Value = true;
+
+            flag.Rules = new List<Rule> { flagRule };
+            user.Rules = new List<Rule> { userRule };
+
+            // Act
+            var result = await FlagCheckService.CheckFlag(null, user, flag);
+
+            // Assert
+            Assert.That(result.Value, Is.True);
+            Assert.That(result.RuleId, Is.EqualTo(userRule.Id));
+        }
+
+        [Test]
+        public async Task BothCompanyAndUserRules_AreEvaluated()
+        {
+            // Arrange
+            var company = TestHelpers.CreateTestCompany();
+            var user = TestHelpers.CreateTestUser();
+            var flag = TestHelpers.CreateTestFlag();
+            flag.DefaultValue = false;
+
+            // Create company rule that doesn't match
+            var companyRule = TestHelpers.CreateTestRule();
+            companyRule.Priority = 1;
+            companyRule.Value = true;
+            var condition1 = TestHelpers.CreateTestCondition(ConditionType.Company);
+            condition1.ResourceIds = new List<string> { "non-matching-id" };
+            companyRule.Conditions = new List<Condition> { condition1 };
+
+            // Create user rule that matches
+            var userRule = TestHelpers.CreateTestRule();
+            userRule.Priority = 2;
+            userRule.Value = true;
+            var condition2 = TestHelpers.CreateTestCondition(ConditionType.User);
+            condition2.ResourceIds = new List<string> { user.Id };
+            userRule.Conditions = new List<Condition> { condition2 };
+
+            company.Rules = new List<Rule> { companyRule };
+            user.Rules = new List<Rule> { userRule };
+
+            // Act
+            var result = await FlagCheckService.CheckFlag(company, user, flag);
+
+            // Assert
+            Assert.That(result.Value, Is.True);
+            Assert.That(result.RuleId, Is.EqualTo(userRule.Id));
+        }
+
+        [Test]
+        public async Task AllThreeRuleSources_EvaluatedWithCorrectPriority()
+        {
+            // Arrange
+            var company = TestHelpers.CreateTestCompany();
+            var user = TestHelpers.CreateTestUser();
+            var flag = TestHelpers.CreateTestFlag();
+            flag.DefaultValue = false;
+
+            // Create rules from all three sources - all matching their respective conditions
+            var flagRule = TestHelpers.CreateTestRule();
+            flagRule.Priority = 2;
+            flagRule.Value = true;
+            var condition1 = TestHelpers.CreateTestCondition(ConditionType.Company);
+            condition1.ResourceIds = new List<string> { company.Id };
+            flagRule.Conditions = new List<Condition> { condition1 };
+
+            var companyRule = TestHelpers.CreateTestRule();
+            companyRule.Priority = 3;
+            companyRule.Value = true;
+            var condition2 = TestHelpers.CreateTestCondition(ConditionType.Company);
+            condition2.ResourceIds = new List<string> { company.Id };
+            companyRule.Conditions = new List<Condition> { condition2 };
+
+            var userRule = TestHelpers.CreateTestRule();
+            userRule.Priority = 1; // Highest priority
+            userRule.Value = true;
+            var condition3 = TestHelpers.CreateTestCondition(ConditionType.User);
+            condition3.ResourceIds = new List<string> { user.Id };
+            userRule.Conditions = new List<Condition> { condition3 };
+
+            flag.Rules = new List<Rule> { flagRule };
+            company.Rules = new List<Rule> { companyRule };
+            user.Rules = new List<Rule> { userRule };
+
+            // Act
+            var result = await FlagCheckService.CheckFlag(company, user, flag);
+
+            // Assert
+            Assert.That(result.Value, Is.True);
+            Assert.That(result.RuleId, Is.Not.Null);
+            // Should match the user rule since it has highest priority (lowest number)
+            Assert.That(result.RuleId, Is.EqualTo(userRule.Id));
+        }
     }
 }

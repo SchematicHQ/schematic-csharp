@@ -164,8 +164,11 @@ namespace SchematicHQ.Client.RulesEngine
                 resp.UserId = user.Id;
             }  
 
+            var companyRules = company?.Rules;
+            var userRules = user?.Rules;
+
             var ruleChecker = RuleCheckService.NewRuleCheckService();
-            foreach (var group in GroupRulesByPriority(flag.Rules))
+            foreach (var group in GroupRulesByPriority(flag.Rules, companyRules, userRules))
             {
                 foreach (var rule in group)
                 {
@@ -208,15 +211,24 @@ namespace SchematicHQ.Client.RulesEngine
             return resp;
         }
 
-        public static List<List<Rule>> GroupRulesByPriority(List<Rule> rules)
+        public static List<List<Rule>> GroupRulesByPriority(params List<Rule>?[] ruleSlices)
         {
-            if (rules == null || rules.Count == 0)
+            var allRules = new List<Rule>();
+            foreach (var rules in ruleSlices)
+            {
+                if (rules != null && rules.Count > 0)
+                {
+                    allRules.AddRange(rules);
+                }
+            }
+
+            if (allRules.Count == 0)
             {
                 return new List<List<Rule>>();
             }
 
             // Group rules by their type
-            var grouped = rules.GroupBy(rule => rule.RuleType)
+            var grouped = allRules.GroupBy(rule => rule.RuleType)
                 .ToDictionary(g => g.Key, g => g.ToList());
 
             // Prioritize rules within each type group
