@@ -327,7 +327,24 @@ public partial class PlansClient
     }
 
     /// <example><code>
-    /// await client.Plans.ListPlansAsync(new ListPlansRequest());
+    /// await client.Plans.ListPlansAsync(
+    ///     new ListPlansRequest
+    ///     {
+    ///         CompanyId = "company_id",
+    ///         ForFallbackPlan = true,
+    ///         ForInitialPlan = true,
+    ///         ForTrialExpiryPlan = true,
+    ///         HasProductId = true,
+    ///         PlanType = ListPlansRequestPlanType.Plan,
+    ///         Q = "q",
+    ///         RequiresPaymentMethod = true,
+    ///         WithoutEntitlementFor = "without_entitlement_for",
+    ///         WithoutProductId = true,
+    ///         WithoutPaidProductId = true,
+    ///         Limit = 1,
+    ///         Offset = 1,
+    ///     }
+    /// );
     /// </code></example>
     public async Task<ListPlansResponse> ListPlansAsync(
         ListPlansRequest request,
@@ -341,6 +358,18 @@ public partial class PlansClient
         {
             _query["company_id"] = request.CompanyId;
         }
+        if (request.ForFallbackPlan != null)
+        {
+            _query["for_fallback_plan"] = JsonUtils.Serialize(request.ForFallbackPlan.Value);
+        }
+        if (request.ForInitialPlan != null)
+        {
+            _query["for_initial_plan"] = JsonUtils.Serialize(request.ForInitialPlan.Value);
+        }
+        if (request.ForTrialExpiryPlan != null)
+        {
+            _query["for_trial_expiry_plan"] = JsonUtils.Serialize(request.ForTrialExpiryPlan.Value);
+        }
         if (request.HasProductId != null)
         {
             _query["has_product_id"] = JsonUtils.Serialize(request.HasProductId.Value);
@@ -352,6 +381,12 @@ public partial class PlansClient
         if (request.Q != null)
         {
             _query["q"] = request.Q;
+        }
+        if (request.RequiresPaymentMethod != null)
+        {
+            _query["requires_payment_method"] = JsonUtils.Serialize(
+                request.RequiresPaymentMethod.Value
+            );
         }
         if (request.WithoutEntitlementFor != null)
         {
@@ -787,7 +822,24 @@ public partial class PlansClient
     }
 
     /// <example><code>
-    /// await client.Plans.CountPlansAsync(new CountPlansRequest());
+    /// await client.Plans.CountPlansAsync(
+    ///     new CountPlansRequest
+    ///     {
+    ///         CompanyId = "company_id",
+    ///         ForFallbackPlan = true,
+    ///         ForInitialPlan = true,
+    ///         ForTrialExpiryPlan = true,
+    ///         HasProductId = true,
+    ///         PlanType = CountPlansRequestPlanType.Plan,
+    ///         Q = "q",
+    ///         RequiresPaymentMethod = true,
+    ///         WithoutEntitlementFor = "without_entitlement_for",
+    ///         WithoutProductId = true,
+    ///         WithoutPaidProductId = true,
+    ///         Limit = 1,
+    ///         Offset = 1,
+    ///     }
+    /// );
     /// </code></example>
     public async Task<CountPlansResponse> CountPlansAsync(
         CountPlansRequest request,
@@ -801,6 +853,18 @@ public partial class PlansClient
         {
             _query["company_id"] = request.CompanyId;
         }
+        if (request.ForFallbackPlan != null)
+        {
+            _query["for_fallback_plan"] = JsonUtils.Serialize(request.ForFallbackPlan.Value);
+        }
+        if (request.ForInitialPlan != null)
+        {
+            _query["for_initial_plan"] = JsonUtils.Serialize(request.ForInitialPlan.Value);
+        }
+        if (request.ForTrialExpiryPlan != null)
+        {
+            _query["for_trial_expiry_plan"] = JsonUtils.Serialize(request.ForTrialExpiryPlan.Value);
+        }
         if (request.HasProductId != null)
         {
             _query["has_product_id"] = JsonUtils.Serialize(request.HasProductId.Value);
@@ -812,6 +876,12 @@ public partial class PlansClient
         if (request.Q != null)
         {
             _query["q"] = request.Q;
+        }
+        if (request.RequiresPaymentMethod != null)
+        {
+            _query["requires_payment_method"] = JsonUtils.Serialize(
+                request.RequiresPaymentMethod.Value
+            );
         }
         if (request.WithoutEntitlementFor != null)
         {
@@ -854,6 +924,75 @@ public partial class PlansClient
             try
             {
                 return JsonUtils.Deserialize<CountPlansResponse>(responseBody)!;
+            }
+            catch (JsonException e)
+            {
+                throw new SchematicException("Failed to deserialize response", e);
+            }
+        }
+
+        {
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            try
+            {
+                switch (response.StatusCode)
+                {
+                    case 400:
+                        throw new BadRequestError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 401:
+                        throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 403:
+                        throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 404:
+                        throw new NotFoundError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 500:
+                        throw new InternalServerError(
+                            JsonUtils.Deserialize<ApiError>(responseBody)
+                        );
+                }
+            }
+            catch (JsonException)
+            {
+                // unable to map error response, throwing generic error
+            }
+            throw new SchematicApiException(
+                $"Error with status code {response.StatusCode}",
+                response.StatusCode,
+                responseBody
+            );
+        }
+    }
+
+    /// <example><code>
+    /// await client.Plans.ListPlanIssuesAsync(new ListPlanIssuesRequest { PlanId = "plan_id" });
+    /// </code></example>
+    public async Task<ListPlanIssuesResponse> ListPlanIssuesAsync(
+        ListPlanIssuesRequest request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        var _query = new Dictionary<string, object>();
+        _query["plan_id"] = request.PlanId;
+        var response = await _client
+            .SendRequestAsync(
+                new JsonRequest
+                {
+                    BaseUrl = _client.Options.BaseUrl,
+                    Method = HttpMethod.Get,
+                    Path = "plans/issues",
+                    Query = _query,
+                    Options = options,
+                },
+                cancellationToken
+            )
+            .ConfigureAwait(false);
+        if (response.StatusCode is >= 200 and < 400)
+        {
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            try
+            {
+                return JsonUtils.Deserialize<ListPlanIssuesResponse>(responseBody)!;
             }
             catch (JsonException e)
             {

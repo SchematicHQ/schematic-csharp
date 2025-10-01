@@ -41,6 +41,9 @@ public record BillingCreditBundleView : IJsonOnDeserialized
     [JsonPropertyName("expiry_unit_count")]
     public int? ExpiryUnitCount { get; set; }
 
+    [JsonPropertyName("has_grants")]
+    public required bool HasGrants { get; set; }
+
     [JsonPropertyName("id")]
     public required string Id { get; set; }
 

@@ -4,9 +4,6 @@ using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
 
-/// <summary>
-/// The created resource
-/// </summary>
 [Serializable]
 public record CountResponse : IJsonOnDeserialized
 {
@@ -14,8 +11,11 @@ public record CountResponse : IJsonOnDeserialized
     private readonly IDictionary<string, JsonElement> _extensionData =
         new Dictionary<string, JsonElement>();
 
+    /// <summary>
+    /// The number of resources
+    /// </summary>
     [JsonPropertyName("count")]
-    public required int Count { get; set; }
+    public int? Count { get; set; }
 
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();

@@ -15,7 +15,15 @@ public partial class AccountsClient
     }
 
     /// <example><code>
-    /// await client.Accounts.ListApiKeysAsync(new ListApiKeysRequest { RequireEnvironment = true });
+    /// await client.Accounts.ListApiKeysAsync(
+    ///     new ListApiKeysRequest
+    ///     {
+    ///         EnvironmentId = "environment_id",
+    ///         RequireEnvironment = true,
+    ///         Limit = 1,
+    ///         Offset = 1,
+    ///     }
+    /// );
     /// </code></example>
     public async Task<ListApiKeysResponse> ListApiKeysAsync(
         ListApiKeysRequest request,
@@ -372,7 +380,15 @@ public partial class AccountsClient
     }
 
     /// <example><code>
-    /// await client.Accounts.CountApiKeysAsync(new CountApiKeysRequest { RequireEnvironment = true });
+    /// await client.Accounts.CountApiKeysAsync(
+    ///     new CountApiKeysRequest
+    ///     {
+    ///         EnvironmentId = "environment_id",
+    ///         RequireEnvironment = true,
+    ///         Limit = 1,
+    ///         Offset = 1,
+    ///     }
+    /// );
     /// </code></example>
     public async Task<CountApiKeysResponse> CountApiKeysAsync(
         CountApiKeysRequest request,
@@ -453,7 +469,16 @@ public partial class AccountsClient
     }
 
     /// <example><code>
-    /// await client.Accounts.ListApiRequestsAsync(new ListApiRequestsRequest());
+    /// await client.Accounts.ListApiRequestsAsync(
+    ///     new ListApiRequestsRequest
+    ///     {
+    ///         Q = "q",
+    ///         RequestType = "request_type",
+    ///         EnvironmentId = "environment_id",
+    ///         Limit = 1,
+    ///         Offset = 1,
+    ///     }
+    /// );
     /// </code></example>
     public async Task<ListApiRequestsResponse> ListApiRequestsAsync(
         ListApiRequestsRequest request,
@@ -608,7 +633,16 @@ public partial class AccountsClient
     }
 
     /// <example><code>
-    /// await client.Accounts.CountApiRequestsAsync(new CountApiRequestsRequest());
+    /// await client.Accounts.CountApiRequestsAsync(
+    ///     new CountApiRequestsRequest
+    ///     {
+    ///         Q = "q",
+    ///         RequestType = "request_type",
+    ///         EnvironmentId = "environment_id",
+    ///         Limit = 1,
+    ///         Offset = 1,
+    ///     }
+    /// );
     /// </code></example>
     public async Task<CountApiRequestsResponse> CountApiRequestsAsync(
         CountApiRequestsRequest request,
@@ -696,7 +730,7 @@ public partial class AccountsClient
     }
 
     /// <example><code>
-    /// await client.Accounts.ListEnvironmentsAsync(new ListEnvironmentsRequest());
+    /// await client.Accounts.ListEnvironmentsAsync(new ListEnvironmentsRequest { Limit = 1, Offset = 1 });
     /// </code></example>
     public async Task<ListEnvironmentsResponse> ListEnvironmentsAsync(
         ListEnvironmentsRequest request,

@@ -15,7 +15,17 @@ public partial class EntitlementsClient
     }
 
     /// <example><code>
-    /// await client.Entitlements.ListCompanyOverridesAsync(new ListCompanyOverridesRequest());
+    /// await client.Entitlements.ListCompanyOverridesAsync(
+    ///     new ListCompanyOverridesRequest
+    ///     {
+    ///         CompanyId = "company_id",
+    ///         FeatureId = "feature_id",
+    ///         WithoutExpired = true,
+    ///         Q = "q",
+    ///         Limit = 1,
+    ///         Offset = 1,
+    ///     }
+    /// );
     /// </code></example>
     public async Task<ListCompanyOverridesResponse> ListCompanyOverridesAsync(
         ListCompanyOverridesRequest request,
@@ -399,7 +409,17 @@ public partial class EntitlementsClient
     }
 
     /// <example><code>
-    /// await client.Entitlements.CountCompanyOverridesAsync(new CountCompanyOverridesRequest());
+    /// await client.Entitlements.CountCompanyOverridesAsync(
+    ///     new CountCompanyOverridesRequest
+    ///     {
+    ///         CompanyId = "company_id",
+    ///         FeatureId = "feature_id",
+    ///         WithoutExpired = true,
+    ///         Q = "q",
+    ///         Limit = 1,
+    ///         Offset = 1,
+    ///     }
+    /// );
     /// </code></example>
     public async Task<CountCompanyOverridesResponse> CountCompanyOverridesAsync(
         CountCompanyOverridesRequest request,
@@ -495,7 +515,13 @@ public partial class EntitlementsClient
 
     /// <example><code>
     /// await client.Entitlements.ListFeatureCompaniesAsync(
-    ///     new ListFeatureCompaniesRequest { FeatureId = "feature_id" }
+    ///     new ListFeatureCompaniesRequest
+    ///     {
+    ///         FeatureId = "feature_id",
+    ///         Q = "q",
+    ///         Limit = 1,
+    ///         Offset = 1,
+    ///     }
     /// );
     /// </code></example>
     public async Task<ListFeatureCompaniesResponse> ListFeatureCompaniesAsync(
@@ -578,7 +604,13 @@ public partial class EntitlementsClient
 
     /// <example><code>
     /// await client.Entitlements.CountFeatureCompaniesAsync(
-    ///     new CountFeatureCompaniesRequest { FeatureId = "feature_id" }
+    ///     new CountFeatureCompaniesRequest
+    ///     {
+    ///         FeatureId = "feature_id",
+    ///         Q = "q",
+    ///         Limit = 1,
+    ///         Offset = 1,
+    ///     }
     /// );
     /// </code></example>
     public async Task<CountFeatureCompaniesResponse> CountFeatureCompaniesAsync(
@@ -660,7 +692,16 @@ public partial class EntitlementsClient
     }
 
     /// <example><code>
-    /// await client.Entitlements.ListFeatureUsageAsync(new ListFeatureUsageRequest());
+    /// await client.Entitlements.ListFeatureUsageAsync(
+    ///     new ListFeatureUsageRequest
+    ///     {
+    ///         CompanyId = "company_id",
+    ///         Q = "q",
+    ///         WithoutNegativeEntitlements = true,
+    ///         Limit = 1,
+    ///         Offset = 1,
+    ///     }
+    /// );
     /// </code></example>
     public async Task<ListFeatureUsageResponse> ListFeatureUsageAsync(
         ListFeatureUsageRequest request,
@@ -755,7 +796,16 @@ public partial class EntitlementsClient
     }
 
     /// <example><code>
-    /// await client.Entitlements.CountFeatureUsageAsync(new CountFeatureUsageRequest());
+    /// await client.Entitlements.CountFeatureUsageAsync(
+    ///     new CountFeatureUsageRequest
+    ///     {
+    ///         CompanyId = "company_id",
+    ///         Q = "q",
+    ///         WithoutNegativeEntitlements = true,
+    ///         Limit = 1,
+    ///         Offset = 1,
+    ///     }
+    /// );
     /// </code></example>
     public async Task<CountFeatureUsageResponse> CountFeatureUsageAsync(
         CountFeatureUsageRequest request,
@@ -851,7 +901,13 @@ public partial class EntitlementsClient
 
     /// <example><code>
     /// await client.Entitlements.ListFeatureUsersAsync(
-    ///     new ListFeatureUsersRequest { FeatureId = "feature_id" }
+    ///     new ListFeatureUsersRequest
+    ///     {
+    ///         FeatureId = "feature_id",
+    ///         Q = "q",
+    ///         Limit = 1,
+    ///         Offset = 1,
+    ///     }
     /// );
     /// </code></example>
     public async Task<ListFeatureUsersResponse> ListFeatureUsersAsync(
@@ -934,7 +990,13 @@ public partial class EntitlementsClient
 
     /// <example><code>
     /// await client.Entitlements.CountFeatureUsersAsync(
-    ///     new CountFeatureUsersRequest { FeatureId = "feature_id" }
+    ///     new CountFeatureUsersRequest
+    ///     {
+    ///         FeatureId = "feature_id",
+    ///         Q = "q",
+    ///         Limit = 1,
+    ///         Offset = 1,
+    ///     }
     /// );
     /// </code></example>
     public async Task<CountFeatureUsersResponse> CountFeatureUsersAsync(
@@ -1016,7 +1078,17 @@ public partial class EntitlementsClient
     }
 
     /// <example><code>
-    /// await client.Entitlements.ListPlanEntitlementsAsync(new ListPlanEntitlementsRequest());
+    /// await client.Entitlements.ListPlanEntitlementsAsync(
+    ///     new ListPlanEntitlementsRequest
+    ///     {
+    ///         FeatureId = "feature_id",
+    ///         PlanId = "plan_id",
+    ///         Q = "q",
+    ///         WithMeteredProducts = true,
+    ///         Limit = 1,
+    ///         Offset = 1,
+    ///     }
+    /// );
     /// </code></example>
     public async Task<ListPlanEntitlementsResponse> ListPlanEntitlementsAsync(
         ListPlanEntitlementsRequest request,
@@ -1402,7 +1474,17 @@ public partial class EntitlementsClient
     }
 
     /// <example><code>
-    /// await client.Entitlements.CountPlanEntitlementsAsync(new CountPlanEntitlementsRequest());
+    /// await client.Entitlements.CountPlanEntitlementsAsync(
+    ///     new CountPlanEntitlementsRequest
+    ///     {
+    ///         FeatureId = "feature_id",
+    ///         PlanId = "plan_id",
+    ///         Q = "q",
+    ///         WithMeteredProducts = true,
+    ///         Limit = 1,
+    ///         Offset = 1,
+    ///     }
+    /// );
     /// </code></example>
     public async Task<CountPlanEntitlementsResponse> CountPlanEntitlementsAsync(
         CountPlanEntitlementsRequest request,

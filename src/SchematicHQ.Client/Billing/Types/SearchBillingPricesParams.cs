@@ -14,6 +14,18 @@ public record SearchBillingPricesParams : IJsonOnDeserialized
     private readonly IDictionary<string, JsonElement> _extensionData =
         new Dictionary<string, JsonElement>();
 
+    /// <summary>
+    /// Filter for prices valid for initial plans (free prices only)
+    /// </summary>
+    [JsonPropertyName("for_initial_plan")]
+    public bool? ForInitialPlan { get; set; }
+
+    /// <summary>
+    /// Filter for prices valid for trial expiry plans (free prices only)
+    /// </summary>
+    [JsonPropertyName("for_trial_expiry_plan")]
+    public bool? ForTrialExpiryPlan { get; set; }
+
     [JsonPropertyName("ids")]
     public IEnumerable<string>? Ids { get; set; }
 
@@ -35,8 +47,17 @@ public record SearchBillingPricesParams : IJsonOnDeserialized
     [JsonPropertyName("price")]
     public int? Price { get; set; }
 
+    [JsonPropertyName("product_id")]
+    public string? ProductId { get; set; }
+
     [JsonPropertyName("q")]
     public string? Q { get; set; }
+
+    /// <summary>
+    /// Filter for prices that require a payment method (inverse of ForInitialPlan)
+    /// </summary>
+    [JsonPropertyName("requires_payment_method")]
+    public bool? RequiresPaymentMethod { get; set; }
 
     [JsonPropertyName("tiers_mode")]
     public SearchBillingPricesResponseParamsTiersMode? TiersMode { get; set; }

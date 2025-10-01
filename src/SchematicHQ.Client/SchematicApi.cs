@@ -6,7 +6,7 @@ public partial class SchematicApi
 {
     private readonly RawClient _client;
 
-    public SchematicApi(string? apiKey = null, ClientOptions? clientOptions = null)
+    public SchematicApi(string apiKey, ClientOptions? clientOptions = null)
     {
         var defaultHeaders = new Headers(
             new Dictionary<string, string>()
@@ -15,7 +15,7 @@ public partial class SchematicApi
                 { "X-Fern-Language", "C#" },
                 { "X-Fern-SDK-Name", "SchematicHQ.Client" },
                 { "X-Fern-SDK-Version", Version.Current },
-                { "User-Agent", "SchematicHQ.Client/1.2.1" },
+                { "User-Agent", "SchematicHQ.Client/1.2.2" },
             }
         );
         clientOptions ??= new ClientOptions();

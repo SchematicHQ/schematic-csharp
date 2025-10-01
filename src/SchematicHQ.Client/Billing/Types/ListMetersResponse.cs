@@ -11,9 +11,6 @@ public record ListMetersResponse : IJsonOnDeserialized
     private readonly IDictionary<string, JsonElement> _extensionData =
         new Dictionary<string, JsonElement>();
 
-    /// <summary>
-    /// The returned resources
-    /// </summary>
     [JsonPropertyName("data")]
     public IEnumerable<BillingMeterResponseData> Data { get; set; } =
         new List<BillingMeterResponseData>();

@@ -18,6 +18,9 @@ public record UpdateCompanyOverrideRequestBody
     [JsonPropertyName("metric_period_month_reset")]
     public UpdateCompanyOverrideRequestBodyMetricPeriodMonthReset? MetricPeriodMonthReset { get; set; }
 
+    [JsonPropertyName("note")]
+    public string? Note { get; set; }
+
     [JsonPropertyName("value_bool")]
     public bool? ValueBool { get; set; }
 

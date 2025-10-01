@@ -11,6 +11,12 @@ public record FeatureUsageDataResponseData : IJsonOnDeserialized
     private readonly IDictionary<string, JsonElement> _extensionData =
         new Dictionary<string, JsonElement>();
 
+    [JsonPropertyName("credit_type_id")]
+    public string? CreditTypeId { get; set; }
+
+    [JsonPropertyName("credit_usage")]
+    public CreditUsageResponseData? CreditUsage { get; set; }
+
     [JsonPropertyName("entitlement_source")]
     public required string EntitlementSource { get; set; }
 
@@ -32,11 +38,26 @@ public record FeatureUsageDataResponseData : IJsonOnDeserialized
     [JsonPropertyName("has_access")]
     public required bool HasAccess { get; set; }
 
+    [JsonPropertyName("metric_reset_at")]
+    public DateTime? MetricResetAt { get; set; }
+
+    [JsonPropertyName("monthly_usage_based_price")]
+    public BillingPriceView? MonthlyUsageBasedPrice { get; set; }
+
+    [JsonPropertyName("price_behavior")]
+    public string? PriceBehavior { get; set; }
+
     [JsonPropertyName("soft_limit")]
     public required string SoftLimit { get; set; }
 
     [JsonPropertyName("usage")]
     public required string Usage { get; set; }
+
+    [JsonPropertyName("value_numeric")]
+    public int? ValueNumeric { get; set; }
+
+    [JsonPropertyName("yearly_usage_based_price")]
+    public BillingPriceView? YearlyUsageBasedPrice { get; set; }
 
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();

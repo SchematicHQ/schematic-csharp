@@ -15,7 +15,15 @@ public partial class WebhooksClient
     }
 
     /// <example><code>
-    /// await client.Webhooks.ListWebhookEventsAsync(new ListWebhookEventsRequest());
+    /// await client.Webhooks.ListWebhookEventsAsync(
+    ///     new ListWebhookEventsRequest
+    ///     {
+    ///         Q = "q",
+    ///         WebhookId = "webhook_id",
+    ///         Limit = 1,
+    ///         Offset = 1,
+    ///     }
+    /// );
     /// </code></example>
     public async Task<ListWebhookEventsResponse> ListWebhookEventsAsync(
         ListWebhookEventsRequest request,
@@ -167,7 +175,15 @@ public partial class WebhooksClient
     }
 
     /// <example><code>
-    /// await client.Webhooks.CountWebhookEventsAsync(new CountWebhookEventsRequest());
+    /// await client.Webhooks.CountWebhookEventsAsync(
+    ///     new CountWebhookEventsRequest
+    ///     {
+    ///         Q = "q",
+    ///         WebhookId = "webhook_id",
+    ///         Limit = 1,
+    ///         Offset = 1,
+    ///     }
+    /// );
     /// </code></example>
     public async Task<CountWebhookEventsResponse> CountWebhookEventsAsync(
         CountWebhookEventsRequest request,
@@ -252,7 +268,14 @@ public partial class WebhooksClient
     }
 
     /// <example><code>
-    /// await client.Webhooks.ListWebhooksAsync(new ListWebhooksRequest());
+    /// await client.Webhooks.ListWebhooksAsync(
+    ///     new ListWebhooksRequest
+    ///     {
+    ///         Q = "q",
+    ///         Limit = 1,
+    ///         Offset = 1,
+    ///     }
+    /// );
     /// </code></example>
     public async Task<ListWebhooksResponse> ListWebhooksAsync(
         ListWebhooksRequest request,
@@ -618,7 +641,14 @@ public partial class WebhooksClient
     }
 
     /// <example><code>
-    /// await client.Webhooks.CountWebhooksAsync(new CountWebhooksRequest());
+    /// await client.Webhooks.CountWebhooksAsync(
+    ///     new CountWebhooksRequest
+    ///     {
+    ///         Q = "q",
+    ///         Limit = 1,
+    ///         Offset = 1,
+    ///     }
+    /// );
     /// </code></example>
     public async Task<CountWebhooksResponse> CountWebhooksAsync(
         CountWebhooksRequest request,

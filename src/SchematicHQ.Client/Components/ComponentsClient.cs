@@ -15,7 +15,14 @@ public partial class ComponentsClient
     }
 
     /// <example><code>
-    /// await client.Components.ListComponentsAsync(new ListComponentsRequest());
+    /// await client.Components.ListComponentsAsync(
+    ///     new ListComponentsRequest
+    ///     {
+    ///         Q = "q",
+    ///         Limit = 1,
+    ///         Offset = 1,
+    ///     }
+    /// );
     /// </code></example>
     public async Task<ListComponentsResponse> ListComponentsAsync(
         ListComponentsRequest request,
@@ -377,7 +384,14 @@ public partial class ComponentsClient
     }
 
     /// <example><code>
-    /// await client.Components.CountComponentsAsync(new CountComponentsRequest());
+    /// await client.Components.CountComponentsAsync(
+    ///     new CountComponentsRequest
+    ///     {
+    ///         Q = "q",
+    ///         Limit = 1,
+    ///         Offset = 1,
+    ///     }
+    /// );
     /// </code></example>
     public async Task<CountComponentsResponse> CountComponentsAsync(
         CountComponentsRequest request,
@@ -457,7 +471,9 @@ public partial class ComponentsClient
     }
 
     /// <example><code>
-    /// await client.Components.PreviewComponentDataAsync(new PreviewComponentDataRequest());
+    /// await client.Components.PreviewComponentDataAsync(
+    ///     new PreviewComponentDataRequest { CompanyId = "company_id", ComponentId = "component_id" }
+    /// );
     /// </code></example>
     public async Task<PreviewComponentDataResponse> PreviewComponentDataAsync(
         PreviewComponentDataRequest request,

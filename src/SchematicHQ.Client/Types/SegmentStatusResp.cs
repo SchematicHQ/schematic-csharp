@@ -4,9 +4,6 @@ using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
 
-/// <summary>
-/// The returned resource
-/// </summary>
 [Serializable]
 public record SegmentStatusResp : IJsonOnDeserialized
 {

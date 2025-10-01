@@ -44,6 +44,10 @@ public record CompanyOverrideResponseData : IJsonOnDeserialized
     [JsonPropertyName("metric_period_month_reset")]
     public string? MetricPeriodMonthReset { get; set; }
 
+    [JsonPropertyName("notes")]
+    public IEnumerable<CompanyOverrideNoteResponseData> Notes { get; set; } =
+        new List<CompanyOverrideNoteResponseData>();
+
     [JsonPropertyName("rule_id")]
     public string? RuleId { get; set; }
 

@@ -12,6 +12,15 @@ public record CreateBillingPlanCreditGrantRequestBody
     [JsonPropertyName("credit_id")]
     public required string CreditId { get; set; }
 
+    [JsonPropertyName("expiry_type")]
+    public CreateBillingPlanCreditGrantRequestBodyExpiryType? ExpiryType { get; set; }
+
+    [JsonPropertyName("expiry_unit")]
+    public CreateBillingPlanCreditGrantRequestBodyExpiryUnit? ExpiryUnit { get; set; }
+
+    [JsonPropertyName("expiry_unit_count")]
+    public int? ExpiryUnitCount { get; set; }
+
     [JsonPropertyName("plan_id")]
     public required string PlanId { get; set; }
 
@@ -20,6 +29,9 @@ public record CreateBillingPlanCreditGrantRequestBody
 
     [JsonPropertyName("reset_start")]
     public required CreateBillingPlanCreditGrantRequestBodyResetStart ResetStart { get; set; }
+
+    [JsonPropertyName("reset_type")]
+    public CreateBillingPlanCreditGrantRequestBodyResetType? ResetType { get; set; }
 
     /// <inheritdoc />
     public override string ToString()

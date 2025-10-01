@@ -10,6 +10,24 @@ public record ListPlansRequest
     public string? CompanyId { get; set; }
 
     /// <summary>
+    /// Filter for plans valid as fallback plans (not linked to billing)
+    /// </summary>
+    [JsonIgnore]
+    public bool? ForFallbackPlan { get; set; }
+
+    /// <summary>
+    /// Filter for plans valid as initial plans (not linked to billing, free, or auto-cancelling trial)
+    /// </summary>
+    [JsonIgnore]
+    public bool? ForInitialPlan { get; set; }
+
+    /// <summary>
+    /// Filter for plans valid as trial expiry plans (not linked to billing or free)
+    /// </summary>
+    [JsonIgnore]
+    public bool? ForTrialExpiryPlan { get; set; }
+
+    /// <summary>
     /// Filter out plans that do not have a billing product ID
     /// </summary>
     [JsonIgnore]
@@ -26,6 +44,12 @@ public record ListPlansRequest
 
     [JsonIgnore]
     public string? Q { get; set; }
+
+    /// <summary>
+    /// Filter for plans that require a payment method (inverse of ForInitialPlan)
+    /// </summary>
+    [JsonIgnore]
+    public bool? RequiresPaymentMethod { get; set; }
 
     /// <summary>
     /// Filter out plans that already have a plan entitlement for the specified feature ID

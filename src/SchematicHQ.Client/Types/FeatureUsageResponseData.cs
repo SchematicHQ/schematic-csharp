@@ -32,11 +32,50 @@ public record FeatureUsageResponseData : IJsonOnDeserialized
     [JsonPropertyName("company_override")]
     public CompanyOverrideResponseData? CompanyOverride { get; set; }
 
+    /// <summary>
+    /// The rate at which credits are consumed per unit of usage
+    /// </summary>
+    [JsonPropertyName("credit_consumption_rate")]
+    public double? CreditConsumptionRate { get; set; }
+
+    [JsonPropertyName("credit_grant_counts")]
+    public Dictionary<string, double>? CreditGrantCounts { get; set; }
+
+    [JsonPropertyName("credit_grant_details")]
+    public IEnumerable<CreditGrantDetail>? CreditGrantDetails { get; set; }
+
+    /// <summary>
+    /// Reason for the credit grant
+    /// </summary>
+    [JsonPropertyName("credit_grant_reason")]
+    public FeatureUsageResponseDataCreditGrantReason? CreditGrantReason { get; set; }
+
+    [JsonPropertyName("credit_remaining")]
+    public double? CreditRemaining { get; set; }
+
+    [JsonPropertyName("credit_total")]
+    public double? CreditTotal { get; set; }
+
+    /// <summary>
+    /// Icon identifier for the credit type
+    /// </summary>
+    [JsonPropertyName("credit_type_icon")]
+    public string? CreditTypeIcon { get; set; }
+
+    [JsonPropertyName("credit_used")]
+    public double? CreditUsed { get; set; }
+
     [JsonPropertyName("entitlement_expiration_date")]
     public DateTime? EntitlementExpirationDate { get; set; }
 
     [JsonPropertyName("entitlement_id")]
     public required string EntitlementId { get; set; }
+
+    /// <summary>
+    /// Source of the entitlement (plan or company_override)
+    /// </summary>
+    [JsonPropertyName("entitlement_source")]
+    public string? EntitlementSource { get; set; }
 
     [JsonPropertyName("entitlement_type")]
     public required string EntitlementType { get; set; }

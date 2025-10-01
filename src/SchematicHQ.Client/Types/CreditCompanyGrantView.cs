@@ -38,6 +38,15 @@ public record CreditCompanyGrantView : IJsonOnDeserialized
     [JsonPropertyName("expires_at")]
     public DateTime? ExpiresAt { get; set; }
 
+    [JsonPropertyName("expiry_type")]
+    public string? ExpiryType { get; set; }
+
+    [JsonPropertyName("expiry_unit")]
+    public string? ExpiryUnit { get; set; }
+
+    [JsonPropertyName("expiry_unit_count")]
+    public int? ExpiryUnitCount { get; set; }
+
     [JsonPropertyName("grant_reason")]
     public required string GrantReason { get; set; }
 

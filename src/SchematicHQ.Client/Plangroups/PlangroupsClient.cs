@@ -82,6 +82,10 @@ public partial class PlangroupsClient
     ///     new CreatePlanGroupRequestBody
     ///     {
     ///         AddOnIds = new List&lt;string&gt;() { "add_on_ids" },
+    ///         CheckoutCollectAddress = true,
+    ///         CheckoutCollectEmail = true,
+    ///         CheckoutCollectPhone = true,
+    ///         EnableTaxCollection = true,
     ///         OrderedAddOns = new List&lt;OrderedPlansInGroup&gt;()
     ///         {
     ///             new OrderedPlansInGroup { PlanId = "plan_id" },
@@ -94,7 +98,9 @@ public partial class PlangroupsClient
     ///         {
     ///             new OrderedPlansInGroup { PlanId = "plan_id" },
     ///         },
+    ///         ShowCredits = true,
     ///         ShowPeriodToggle = true,
+    ///         ShowZeroPriceAsFree = true,
     ///     }
     /// );
     /// </code></example>
@@ -169,6 +175,10 @@ public partial class PlangroupsClient
     ///     new UpdatePlanGroupRequestBody
     ///     {
     ///         AddOnIds = new List&lt;string&gt;() { "add_on_ids" },
+    ///         CheckoutCollectAddress = true,
+    ///         CheckoutCollectEmail = true,
+    ///         CheckoutCollectPhone = true,
+    ///         EnableTaxCollection = true,
     ///         OrderedAddOns = new List&lt;OrderedPlansInGroup&gt;()
     ///         {
     ///             new OrderedPlansInGroup { PlanId = "plan_id" },
@@ -181,7 +191,9 @@ public partial class PlangroupsClient
     ///         {
     ///             new OrderedPlansInGroup { PlanId = "plan_id" },
     ///         },
+    ///         ShowCredits = true,
     ///         ShowPeriodToggle = true,
+    ///         ShowZeroPriceAsFree = true,
     ///     }
     /// );
     /// </code></example>

@@ -24,6 +24,9 @@ public record CreateCompanyOverrideRequestBody
     [JsonPropertyName("metric_period_month_reset")]
     public CreateCompanyOverrideRequestBodyMetricPeriodMonthReset? MetricPeriodMonthReset { get; set; }
 
+    [JsonPropertyName("note")]
+    public string? Note { get; set; }
+
     [JsonPropertyName("value_bool")]
     public bool? ValueBool { get; set; }
 

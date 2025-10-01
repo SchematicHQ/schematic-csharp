@@ -25,6 +25,12 @@ public record CountCompaniesForAdvancedFilterRequest
     public IEnumerable<string> FeatureIds { get; set; } = new List<string>();
 
     /// <summary>
+    /// Filter companies by one or more credit type IDs (each ID starts with bcrd_)
+    /// </summary>
+    [JsonIgnore]
+    public IEnumerable<string> CreditTypeIds { get; set; } = new List<string>();
+
+    /// <summary>
     /// Filter companies by one or more subscription statuses (active, canceled, expired, incomplete, incomplete_expired, past_due, paused, trialing, unpaid)
     /// </summary>
     [JsonIgnore]
@@ -73,7 +79,7 @@ public record CountCompaniesForAdvancedFilterRequest
     public CountCompaniesForAdvancedFilterRequestSortOrderDirection? SortOrderDirection { get; set; }
 
     /// <summary>
-    /// Select the display columns to return (e.g. plan, subscription, users, last_seen)
+    /// Select the display columns to return (e.g. plan, subscription, users, last_seen_at)
     /// </summary>
     [JsonIgnore]
     public IEnumerable<string> DisplayProperties { get; set; } = new List<string>();
