@@ -332,21 +332,18 @@ public partial class Schematic
                 return GetFlagDefault(flagKey);
             }
 
-            // Cache the result asynchronously
-            _ = Task.Run(() =>
+            // Cache the result
+            foreach (var provider in _flagCheckCacheProviders)
             {
-                foreach (var provider in _flagCheckCacheProviders)
+                try
                 {
-                    try
-                    {
-                        provider.Set(cacheKey, response.Data.Value);
-                    }
-                    catch (Exception cacheEx)
-                    {
-                        _logger.Error("Error caching flag result: {0}", cacheEx.Message);
-                    }
+                    provider.Set(cacheKey, response.Data.Value);
                 }
-            });
+                catch (Exception cacheEx)
+                {
+                    _logger.Error("Error caching flag result: {0}", cacheEx.Message);
+                }
+            }
 
             return response.Data.Value;
         }
