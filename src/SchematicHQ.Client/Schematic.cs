@@ -20,6 +20,7 @@ public partial class Schematic
     private readonly List<ICacheProvider<bool?>> _flagCheckCacheProviders;
     private readonly bool _offline;
     private readonly DatastreamClientAdapter? _datastreamClient;
+    private readonly bool _replicatorMode;
     private bool _datastreamConnected;
     private bool _disposed;
     public readonly SchematicApi API;
@@ -42,7 +43,14 @@ public partial class Schematic
     {
         _options = options ?? new ClientOptions();
         _offline = _options.Offline;
+        _replicatorMode = _options.ReplicatorMode;
         _logger = _options.Logger ?? new ConsoleLogger();
+
+        // Validate replicator mode configuration
+        if (_replicatorMode && string.IsNullOrWhiteSpace(_options.ReplicatorHealthUrl))
+        {
+            throw new ArgumentException("ReplicatorHealthUrl is required when ReplicatorMode is enabled");
+        }
 
         var httpClient = _offline ? new HttpClient(new OfflineHttpMessageHandler()) : _options.HttpClient;
         API = new SchematicApi(apiKey, _options.WithHttpClient(httpClient));
@@ -124,8 +132,8 @@ public partial class Schematic
             };
         }
 
-        // Initialize datastream if enabled
-        if (!_offline && _options.UseDatastream)
+        // Initialize datastream if enabled or in replicator mode (for cache access)
+        if (!_offline && (_options.UseDatastream || _replicatorMode))
         {
             // Create DatastreamOptions with cache settings from _options.CacheConfiguration
             var datastreamOptions = _options.DatastreamOptions ?? new DatastreamOptions();
@@ -155,13 +163,25 @@ public partial class Schematic
                 _options.BaseUrl,
                 _logger,
                 apiKey,
-                datastreamOptions
+                datastreamOptions,
+                _replicatorMode,
+                _options.ReplicatorHealthUrl
             );
-            _datastreamClient.Start();
-            _datastreamConnected = true;
 
-            // Start a background task to monitor connection status
-            StartConnectionMonitoring();
+            if (!_replicatorMode)
+            {
+                // Only start WebSocket connections when not in replicator mode
+                _datastreamClient.Start();
+                _datastreamConnected = true;
+
+                // Start a background task to monitor connection status
+                StartConnectionMonitoring();
+            }
+            else
+            {
+                _datastreamConnected = false;
+                _logger.Info("Replicator mode enabled - datastream client created for cache access only");
+            }
         }
     }
 
@@ -232,6 +252,13 @@ public partial class Schematic
         // Try datastream first if enabled
         if (_datastreamClient != null)
         {
+            // In replicator mode, check if replicator is ready before using datastream
+            if (_replicatorMode && !_datastreamClient.IsReplicatorReady())
+            {
+                _logger.Debug("Replicator mode enabled but replicator not ready, falling back to API");
+                return await CheckFlagApi(flagKey, company, user);
+            }
+
             try
             {
                 var request = new CheckFlagRequestBody
@@ -240,7 +267,6 @@ public partial class Schematic
                     User = user
                 };
                 var flagResult = await _datastreamClient.CheckFlag(request, flagKey);
-                // Let the datastream client handle all the resource fetching logic internally
 
                 // Submit flag check event for successful datastream evaluation
                 SubmitFlagCheckEvent(
@@ -263,7 +289,9 @@ public partial class Schematic
             }
             catch (Exception ex)
             {
-                _logger.Error("Error during datastream flag check: {0}. Falling back to API.", ex.Message);
+                // Fall back to API if datastream fails
+                _logger.Debug("Datastream flag check failed ({0}), falling back to API", ex.Message);
+                return await CheckFlagApi(flagKey, company, user);
             }
         }
 
@@ -272,63 +300,62 @@ public partial class Schematic
     }
 
     private async Task<bool> CheckFlagApi(string flagKey, Dictionary<string, string>? company, Dictionary<string, string>? user)
-  {
-    try
     {
-      string cacheKey = BuildFlagCacheKey(flagKey, company, user);
+        try
+        {
+            // If null, check flag with empty context
+            var requestBody = new CheckFlagRequestBody
+            {
+                Company = company ?? new Dictionary<string, string>(),
+                User = user ?? new Dictionary<string, string>()
+            };
 
-      // Check cache first
-      foreach (var provider in _flagCheckCacheProviders)
-      {
-        if (provider.Get(cacheKey) is bool cachedValue)
-          return cachedValue;
-      }
+            string cacheKey = BuildFlagCacheKey(flagKey, company, user);
 
-      // Make API request
-      var requestBody = new CheckFlagRequestBody
-      {
-        Company = company,
-        User = user
-      };
+            // Check cache first
+            foreach (var provider in _flagCheckCacheProviders)
+            {
+                if (provider.Get(cacheKey) is bool cachedValue)
+                {
+                    // Submit flag check event for cached value
+                    SubmitFlagCheckEventForValue(flagKey, cachedValue, company, user, "cache");
+                    return cachedValue;
+                }
+            }
 
-      var response = await API.Features.CheckFlagAsync(flagKey, requestBody);
+            // Make API request
+            var response = await API.Features.CheckFlagAsync(flagKey, requestBody);
 
-      if (response == null)
-      {
-        return GetFlagDefault(flagKey);
-      }
+            if (response == null)
+            {
+                // If the client was not initialized with an API key, we'll have a no-op here which returns an empty response
+                return GetFlagDefault(flagKey);
+            }
 
-      // Cache the result
-      foreach (var provider in _flagCheckCacheProviders)
-      {
-        provider.Set(cacheKey, response.Data.Value);
-      }
+            // Cache the result asynchronously
+            _ = Task.Run(() =>
+            {
+                foreach (var provider in _flagCheckCacheProviders)
+                {
+                    try
+                    {
+                        provider.Set(cacheKey, response.Data.Value);
+                    }
+                    catch (Exception cacheEx)
+                    {
+                        _logger.Error("Error caching flag result: {0}", cacheEx.Message);
+                    }
+                }
+            });
 
-      // Submit flag check event
-      SubmitFlagCheckEvent(
-          flagKey,
-          response.Data.Value,
-          company,
-          user,
-          new EventBodyFlagCheck
-          {
-            FlagKey = flagKey,
-            Value = response.Data.Value,
-            FlagId = response.Data.FlagId,
-            RuleId = response.Data.RuleId,
-            CompanyId = response.Data.CompanyId,
-            UserId = response.Data.UserId,
-            Reason = response.Data.Reason
-          });
-
-      return response.Data.Value;
+            return response.Data.Value;
+        }
+        catch (Exception ex)
+        {
+            _logger.Error("Error checking flag via API: {0}", ex.Message);
+            return GetFlagDefault(flagKey);
+        }
     }
-    catch (Exception ex)
-    {
-      _logger.Error("Error checking flag via API: {0}", ex.Message);
-      return GetFlagDefault(flagKey);
-    }
-  }
 
     // Helper method to build consistent cache keys
     private string BuildFlagCacheKey(string flagKey, Dictionary<string, string>? company, Dictionary<string, string>? user)
@@ -373,20 +400,19 @@ public partial class Schematic
         EnqueueEvent(CreateEventRequestBodyEventType.Track, eventBody);
         
         // Update company metrics in datastream if available and connected
-        if (company != null && _datastreamClient != null && _datastreamConnected)
+        if (company != null && UseDatastream() && _datastreamClient != null && _datastreamConnected)
         {
             try
             {
-                // If metrics updating is available in the datastream client
                 var success = _datastreamClient.UpdateCompanyMetrics(eventBody);
                 if (!success)
                 {
-                    _logger.Debug("Failed to update company metrics through datastream client");
+                    _logger.Error("Failed to update company metrics: datastream update failed");
                 }
             }
             catch (Exception ex)
             {
-                _logger.Error($"Error updating company metrics: {ex.Message}");
+                _logger.Error("Failed to update company metrics: {0}", ex.Message);
             }
         }
     }
@@ -449,9 +475,54 @@ private void SubmitFlagCheckEvent(
     }
 }
 
+    // Helper method to submit flag check event for cached/simplified values
+    private void SubmitFlagCheckEventForValue(
+        string flagKey,
+        bool value,
+        Dictionary<string, string>? company,
+        Dictionary<string, string>? user,
+        string reason)
+    {
+        SubmitFlagCheckEvent(
+            flagKey,
+            value,
+            company,
+            user,
+            new EventBodyFlagCheck
+            {
+                FlagKey = flagKey,
+                Value = value,
+                Reason = reason
+            });
+    }
+
     public int GetBufferWaitingEventCount()
     {
         return this._eventBuffer.GetEventCount();
+    }
+
+    /// <summary>
+    /// Gets whether the external replicator is healthy (only valid in replicator mode)
+    /// </summary>
+    public bool IsReplicatorHealthy()
+    {
+        return _datastreamClient?.IsReplicatorReady() == true;
+    }
+
+    /// <summary>
+    /// Gets whether the client is running in replicator mode
+    /// </summary>
+    public bool IsReplicatorMode()
+    {
+        return _replicatorMode;
+    }
+
+    /// <summary>
+    /// Gets whether the client is using datastream
+    /// </summary>
+    private bool UseDatastream()
+    {
+        return _datastreamClient != null;
     }
 
     private bool GetFlagDefault(string flagKey)
