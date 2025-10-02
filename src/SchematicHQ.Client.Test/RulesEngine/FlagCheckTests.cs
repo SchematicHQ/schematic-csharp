@@ -353,6 +353,7 @@ namespace SchematicHQ.Client.Test.RulesEngine
 
             // Create a company-provided rule that matches
             var companyRule = TestHelpers.CreateTestRule();
+            companyRule.FlagID = flag.Id;
             companyRule.Value = true;
             var condition = TestHelpers.CreateTestCondition(ConditionType.Company);
             condition.ResourceIds = new List<string> { company.Id };
@@ -385,6 +386,7 @@ namespace SchematicHQ.Client.Test.RulesEngine
 
             // Create company rule with higher priority
             var companyRule = TestHelpers.CreateTestRule();
+            companyRule.FlagID = flag.Id;
             companyRule.Priority = 1;
             companyRule.Value = true;
             var condition2 = TestHelpers.CreateTestCondition(ConditionType.Company);
@@ -418,6 +420,7 @@ namespace SchematicHQ.Client.Test.RulesEngine
 
             // Create company rule with global override
             var companyRule = TestHelpers.CreateTestRule();
+            companyRule.FlagID = flag.Id;
             companyRule.RuleType = RuleType.GlobalOverride;
             companyRule.Value = true;
 
@@ -442,6 +445,7 @@ namespace SchematicHQ.Client.Test.RulesEngine
 
             // Create two company rules, only one matches
             var companyRule1 = TestHelpers.CreateTestRule();
+            companyRule1.FlagID = flag.Id;
             companyRule1.Priority = 1;
             companyRule1.Value = true;
             var condition1 = TestHelpers.CreateTestCondition(ConditionType.Company);
@@ -449,6 +453,7 @@ namespace SchematicHQ.Client.Test.RulesEngine
             companyRule1.Conditions = new List<Condition> { condition1 };
 
             var companyRule2 = TestHelpers.CreateTestRule();
+            companyRule2.FlagID = flag.Id;
             companyRule2.Priority = 2;
             companyRule2.Value = true;
             var condition2 = TestHelpers.CreateTestCondition(ConditionType.Company);
@@ -475,6 +480,7 @@ namespace SchematicHQ.Client.Test.RulesEngine
 
             // Create a user-provided rule that matches
             var userRule = TestHelpers.CreateTestRule();
+            userRule.FlagID = flag.Id;
             userRule.Value = true;
             var condition = TestHelpers.CreateTestCondition(ConditionType.User);
             condition.ResourceIds = new List<string> { user.Id };
@@ -507,6 +513,7 @@ namespace SchematicHQ.Client.Test.RulesEngine
 
             // Create user rule with higher priority
             var userRule = TestHelpers.CreateTestRule();
+            userRule.FlagID = flag.Id;
             userRule.Priority = 1;
             userRule.Value = true;
             var condition2 = TestHelpers.CreateTestCondition(ConditionType.User);
@@ -540,6 +547,7 @@ namespace SchematicHQ.Client.Test.RulesEngine
 
             // Create user rule with global override
             var userRule = TestHelpers.CreateTestRule();
+            userRule.FlagID = flag.Id;
             userRule.RuleType = RuleType.GlobalOverride;
             userRule.Value = true;
 
@@ -565,6 +573,7 @@ namespace SchematicHQ.Client.Test.RulesEngine
 
             // Create company rule that doesn't match
             var companyRule = TestHelpers.CreateTestRule();
+            companyRule.FlagID = flag.Id;
             companyRule.Priority = 1;
             companyRule.Value = true;
             var condition1 = TestHelpers.CreateTestCondition(ConditionType.Company);
@@ -573,6 +582,7 @@ namespace SchematicHQ.Client.Test.RulesEngine
 
             // Create user rule that matches
             var userRule = TestHelpers.CreateTestRule();
+            userRule.FlagID = flag.Id;
             userRule.Priority = 2;
             userRule.Value = true;
             var condition2 = TestHelpers.CreateTestCondition(ConditionType.User);
@@ -608,6 +618,7 @@ namespace SchematicHQ.Client.Test.RulesEngine
             flagRule.Conditions = new List<Condition> { condition1 };
 
             var companyRule = TestHelpers.CreateTestRule();
+            companyRule.FlagID = flag.Id;
             companyRule.Priority = 3;
             companyRule.Value = true;
             var condition2 = TestHelpers.CreateTestCondition(ConditionType.Company);
@@ -615,6 +626,7 @@ namespace SchematicHQ.Client.Test.RulesEngine
             companyRule.Conditions = new List<Condition> { condition2 };
 
             var userRule = TestHelpers.CreateTestRule();
+            userRule.FlagID = flag.Id;
             userRule.Priority = 1; // Highest priority
             userRule.Value = true;
             var condition3 = TestHelpers.CreateTestCondition(ConditionType.User);
@@ -633,6 +645,110 @@ namespace SchematicHQ.Client.Test.RulesEngine
             Assert.That(result.RuleId, Is.Not.Null);
             // Should match the user rule since it has highest priority (lowest number)
             Assert.That(result.RuleId, Is.EqualTo(userRule.Id));
+        }
+
+        [Test]
+        public async Task CompanyProvidedRule_WithWrongFlagId_IsNotEvaluated()
+        {
+            // Arrange
+            var company = TestHelpers.CreateTestCompany();
+            var flag = TestHelpers.CreateTestFlag();
+            flag.DefaultValue = false;
+
+            // Create a company-provided rule for a different flag
+            var companyRule = TestHelpers.CreateTestRule();
+            companyRule.FlagID = TestHelpers.GenerateTestId("flag"); // Different flag ID
+            companyRule.Value = true;
+            var condition = TestHelpers.CreateTestCondition(ConditionType.Company);
+            condition.ResourceIds = new List<string> { company.Id };
+            companyRule.Conditions = new List<Condition> { condition };
+
+            company.Rules = new List<Rule> { companyRule };
+
+            // Act
+            var result = await FlagCheckService.CheckFlag(company, null, flag);
+
+            // Assert
+            Assert.That(result.Value, Is.False); // Should use flag's default value
+            Assert.That(result.Reason, Is.EqualTo(FlagCheckService.ReasonNoRulesMatched));
+        }
+
+        [Test]
+        public async Task UserProvidedRule_WithWrongFlagId_IsNotEvaluated()
+        {
+            // Arrange
+            var user = TestHelpers.CreateTestUser();
+            var flag = TestHelpers.CreateTestFlag();
+            flag.DefaultValue = false;
+
+            // Create a user-provided rule for a different flag
+            var userRule = TestHelpers.CreateTestRule();
+            userRule.FlagID = TestHelpers.GenerateTestId("flag"); // Different flag ID
+            userRule.Value = true;
+            var condition = TestHelpers.CreateTestCondition(ConditionType.User);
+            condition.ResourceIds = new List<string> { user.Id };
+            userRule.Conditions = new List<Condition> { condition };
+
+            user.Rules = new List<Rule> { userRule };
+
+            // Act
+            var result = await FlagCheckService.CheckFlag(null, user, flag);
+
+            // Assert
+            Assert.That(result.Value, Is.False); // Should use flag's default value
+            Assert.That(result.Reason, Is.EqualTo(FlagCheckService.ReasonNoRulesMatched));
+        }
+
+        [Test]
+        public async Task CompanyProvidedRule_WithNullFlagId_IsNotEvaluated()
+        {
+            // Arrange
+            var company = TestHelpers.CreateTestCompany();
+            var flag = TestHelpers.CreateTestFlag();
+            flag.DefaultValue = false;
+
+            // Create a company-provided rule with null FlagID
+            var companyRule = TestHelpers.CreateTestRule();
+            companyRule.FlagID = null;
+            companyRule.Value = true;
+            var condition = TestHelpers.CreateTestCondition(ConditionType.Company);
+            condition.ResourceIds = new List<string> { company.Id };
+            companyRule.Conditions = new List<Condition> { condition };
+
+            company.Rules = new List<Rule> { companyRule };
+
+            // Act
+            var result = await FlagCheckService.CheckFlag(company, null, flag);
+
+            // Assert
+            Assert.That(result.Value, Is.False); // Should use flag's default value
+            Assert.That(result.Reason, Is.EqualTo(FlagCheckService.ReasonNoRulesMatched));
+        }
+
+        [Test]
+        public async Task UserProvidedRule_WithNullFlagId_IsNotEvaluated()
+        {
+            // Arrange
+            var user = TestHelpers.CreateTestUser();
+            var flag = TestHelpers.CreateTestFlag();
+            flag.DefaultValue = false;
+
+            // Create a user-provided rule with null FlagID
+            var userRule = TestHelpers.CreateTestRule();
+            userRule.FlagID = null;
+            userRule.Value = true;
+            var condition = TestHelpers.CreateTestCondition(ConditionType.User);
+            condition.ResourceIds = new List<string> { user.Id };
+            userRule.Conditions = new List<Condition> { condition };
+
+            user.Rules = new List<Rule> { userRule };
+
+            // Act
+            var result = await FlagCheckService.CheckFlag(null, user, flag);
+
+            // Assert
+            Assert.That(result.Value, Is.False); // Should use flag's default value
+            Assert.That(result.Reason, Is.EqualTo(FlagCheckService.ReasonNoRulesMatched));
         }
     }
 }
