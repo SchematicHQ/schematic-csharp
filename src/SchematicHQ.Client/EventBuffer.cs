@@ -269,6 +269,7 @@ public class EventBuffer<T> : IEventBuffer<T>
 
             lock (_runningLock)
             {
+                if (!_isRunning) return;
                 _isRunning = false;
                 _cts.Cancel();
             }
