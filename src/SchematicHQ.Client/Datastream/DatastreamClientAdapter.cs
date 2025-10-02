@@ -18,6 +18,8 @@ namespace SchematicHQ.Client.Datastream
   {
     private readonly DatastreamClient _client;
     private readonly ISchematicLogger _logger;
+    private readonly bool _replicatorMode;
+    private readonly IReplicatorHealthService? _replicatorHealthService;
 
     private readonly ConnectionStateTracker _connectionTracker = new ConnectionStateTracker();
 
@@ -25,9 +27,20 @@ namespace SchematicHQ.Client.Datastream
     /// <summary>
     /// Creates a new datastream client adapter
     /// </summary>
-    public DatastreamClientAdapter(string baseUrl, ISchematicLogger logger, string apiKey, DatastreamOptions options)
+    public DatastreamClientAdapter(string baseUrl, ISchematicLogger logger, string apiKey, DatastreamOptions options, bool replicatorMode = false, string? replicatorHealthUrl = null)
     {
       _logger = logger;
+      _replicatorMode = replicatorMode;
+      
+      // Initialize replicator health service if in replicator mode
+      if (_replicatorMode && !string.IsNullOrWhiteSpace(replicatorHealthUrl))
+      {
+        // Create a simple HTTP client for health checks
+        var httpClient = new System.Net.Http.HttpClient();
+        _replicatorHealthService = new ReplicatorHealthService(httpClient, replicatorHealthUrl, logger);
+        _replicatorHealthService.Start();
+      }
+      
       _client = new DatastreamClient(
           baseUrl,
           _logger,
@@ -64,7 +77,24 @@ namespace SchematicHQ.Client.Datastream
     /// </summary>
     public void Close()
     {
+      _replicatorHealthService?.Dispose();
       _client.Dispose();
+    }
+
+    /// <summary>
+    /// Check if replicator is ready (only valid in replicator mode)
+    /// </summary>
+    public bool IsReplicatorReady()
+    {
+      return _replicatorMode && _replicatorHealthService?.IsHealthy == true;
+    }
+
+    /// <summary>
+    /// Check if running in replicator mode
+    /// </summary>
+    public bool IsReplicatorMode()
+    {
+      return _replicatorMode;
     }
 
     /// <summary>
@@ -103,6 +133,8 @@ namespace SchematicHQ.Client.Datastream
     public async Task<CheckFlagResult> CheckFlag(CheckFlagRequestBody request, string flagKey)
     {
       CancellationToken cancellationToken = CancellationToken.None;
+      
+      // Get flag first - return error if not found
       var cachedFlag = _client.GetFlag(flagKey);
       if (cachedFlag == null)
       {
@@ -114,53 +146,78 @@ namespace SchematicHQ.Client.Datastream
           Error = Errors.ErrorFlagNotFound,
         };
       }
+
       var needsCompany = request.Company != null && request.Company.Count > 0;
       var needsUser = request.User != null && request.User.Count > 0;
-      var cachedCompany = needsCompany ? _client.GetCompanyFromCache(request.Company) : null;
-      var cachedUser = needsUser ? _client.GetUserFromCache(request.User) : null;
 
+      Company? cachedCompany = null;
+      User? cachedUser = null;
+
+      // Try to get cached data first
+      if (needsCompany && request.Company != null)
+      {
+        cachedCompany = _client.GetCompanyFromCache(request.Company);
+      }
+      if (needsUser && request.User != null)
+      {
+        cachedUser = _client.GetUserFromCache(request.User);
+      }
+
+      // If we have all cached data we need, use it
       if ((!needsCompany || cachedCompany != null) && (!needsUser || cachedUser != null))
       {
-        // If we have all cached data, use it
         return await _client.CheckFlag(cachedCompany, cachedUser, cachedFlag);
       }
 
-      // Otherwise, make the request to the datastream client
-
-      if (_connectionTracker.IsConnected)
+      // Handle replicator mode behavior - similar to Go client
+      if (_replicatorMode)
       {
-        try
+        // In replicator mode, check if replicator is healthy before proceeding
+        if (_replicatorHealthService?.IsHealthy != true)
         {
-          Company? company = null;
-          User? user = null;
-
-          if (needsCompany)
-          {
-            company = await _client.GetCompanyAsync(request.Company, cancellationToken);
-          }
-
-          if (needsUser)
-          {
-            user = await _client.GetUserAsync(request.User, cancellationToken);
-          }
-
-          return await _client.CheckFlag(company, user, cachedFlag);
+          _logger.Warn("Replicator mode: external replicator is not healthy, returning flag evaluation with available data for flag '{0}'", flagKey);
         }
-        catch (Exception ex)
-        {
-          _logger.Error("Error checking flag {0}: {1}", flagKey, ex.Message);
-          return new CheckFlagResult
-          {
-            Reason = "Error",
-            FlagKey = flagKey,
-            Error = ex,
-            Value = false,
-          };
-        }
+        
+        // In replicator mode, if we don't have all cached data, evaluate with nil values instead of fetching
+        // The external replicator should have populated the cache with all necessary data
+        return await _client.CheckFlag(cachedCompany, cachedUser, cachedFlag);
       }
 
-      throw new InvalidOperationException("Not connected to datastream");
+      // Otherwise, check if we're connected to datastream
+      if (!_connectionTracker.IsConnected)
+      {
+        throw new InvalidOperationException("Not connected to datastream");
+      }
 
+      // Fetch missing data from datastream
+      try
+      {
+        Company? company = cachedCompany;
+        User? user = cachedUser;
+
+        if (needsCompany && company == null && request.Company != null)
+        {
+          company = await _client.GetCompanyAsync(request.Company, cancellationToken);
+        }
+
+        if (needsUser && user == null && request.User != null)
+        {
+          user = await _client.GetUserAsync(request.User, cancellationToken);
+        }
+
+        return await _client.CheckFlag(company, user, cachedFlag);
+      }
+      catch (Exception ex)
+      {
+        _logger.Error("Error checking flag {0}: {1}", flagKey, ex.Message);
+        return new CheckFlagResult
+        {
+          Reason = "Error",
+          FlagKey = flagKey,
+          Error = ex,
+          Value = false,
+        };
+      }
     }
 
     private class ConnectionStateTracker

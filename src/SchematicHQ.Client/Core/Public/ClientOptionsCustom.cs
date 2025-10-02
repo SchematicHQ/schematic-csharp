@@ -18,6 +18,16 @@ public partial class ClientOptions
     public Datastream.DatastreamOptions DatastreamOptions { get; set; } = new Datastream.DatastreamOptions();
     public TimeSpan? DefaultEventBufferPeriod { get; set; }
     public IEventBuffer<CreateEventRequestBody>? EventBuffer { get; set; }
+
+    /// <summary>
+    /// Enable replicator mode - uses only cached data from a replicator service
+    /// </summary>
+    public bool ReplicatorMode { get; set; } = false;
+
+    /// <summary>
+    /// Health check URL for the replicator service (required when ReplicatorMode is true)
+    /// </summary>
+    public string? ReplicatorHealthUrl { get; set; }
 }
 
 public static class ClientOptionsExtensions
@@ -38,6 +48,8 @@ public static class ClientOptionsExtensions
             Logger = options.Logger,
             MaxRetries = options.MaxRetries,
             Offline = options.Offline,
+            ReplicatorMode = options.ReplicatorMode,
+            ReplicatorHealthUrl = options.ReplicatorHealthUrl,
             Timeout = options.Timeout,
             UseDatastream = options.UseDatastream,
         };
@@ -96,6 +108,28 @@ public static class ClientOptionsExtensions
             LocalCacheCapacity = capacity,
             CacheTtl = ttl
         };
+
+        return options;
+    }
+
+    /// <summary>
+    /// Configure the client to use replicator mode
+    /// </summary>
+    /// <param name="options">Client options</param>
+    /// <param name="healthUrl">Health check URL for the replicator service</param>
+    /// <returns>Updated client options</returns>
+    public static ClientOptions WithReplicatorMode(
+        this ClientOptions options,
+        string healthUrl)
+    {
+        if (string.IsNullOrWhiteSpace(healthUrl))
+            throw new ArgumentException("Health URL is required for replicator mode", nameof(healthUrl));
+
+        options.ReplicatorMode = true;
+        options.ReplicatorHealthUrl = healthUrl;
+        
+        // Disable datastream when using replicator mode to avoid conflicts
+        options.UseDatastream = false;
 
         return options;
     }
