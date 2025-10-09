@@ -38,6 +38,10 @@ namespace SchematicHQ.Client.Datastream
         // Create a simple HTTP client for health checks
         var httpClient = new System.Net.Http.HttpClient();
         _replicatorHealthService = new ReplicatorHealthService(httpClient, replicatorHealthUrl, logger);
+        
+        // Subscribe to cache version changes for logging and potential cache invalidation
+        _replicatorHealthService.CacheVersionChanged += OnCacheVersionChanged;
+        
         _replicatorHealthService.Start();
       }
       
@@ -48,7 +52,8 @@ namespace SchematicHQ.Client.Datastream
           _connectionTracker.UpdateConnectionState, // callback to update connection state
           options.CacheTTL,
           null, // default websocket client
-          options
+          options,
+          _replicatorMode ? GetReplicatorCacheVersionWithFallback : null // cache version provider
           );
     }
 
@@ -77,7 +82,11 @@ namespace SchematicHQ.Client.Datastream
     /// </summary>
     public void Close()
     {
-      _replicatorHealthService?.Dispose();
+      if (_replicatorHealthService != null)
+      {
+        _replicatorHealthService.CacheVersionChanged -= OnCacheVersionChanged;
+        _replicatorHealthService.Dispose();
+      }
       _client.Dispose();
     }
 
@@ -95,6 +104,60 @@ namespace SchematicHQ.Client.Datastream
     public bool IsReplicatorMode()
     {
       return _replicatorMode;
+    }
+
+    /// <summary>
+    /// Gets the cache version from the replicator, attempting an immediate check if not available
+    /// </summary>
+    private string? GetReplicatorCacheVersionWithFallback()
+    {
+      if (_replicatorHealthService == null)
+        return null;
+
+      // If we already have a cache version, return it immediately
+      if (!string.IsNullOrEmpty(_replicatorHealthService.CacheVersion))
+        return _replicatorHealthService.CacheVersion;
+
+      // If we don't have a cache version yet, try to get it synchronously
+      // This handles the case where flag checks happen before the first health check
+      try
+      {
+        var task = _replicatorHealthService.GetCacheVersionAsync();
+        if (task.Wait(TimeSpan.FromSeconds(2))) // Wait up to 2 seconds
+        {
+          return task.Result;
+        }
+        else
+        {
+          _logger.Debug("Timed out waiting for replicator cache version");
+          return null;
+        }
+      }
+      catch (Exception ex)
+      {
+        _logger.Debug("Failed to get replicator cache version: {0}", ex.Message);
+        return null;
+      }
+    }
+
+    /// <summary>
+    /// Handle cache version changes from the replicator
+    /// </summary>
+    private void OnCacheVersionChanged(string? oldVersion, string? newVersion)
+    {
+      _logger.Info("Cache version changed from {0} to {1} - new cache keys will use updated version", 
+          oldVersion ?? "(null)", newVersion ?? "(null)");
+      
+      // Note: Cache invalidation is automatic because cache keys include the version.
+      // Old cache entries will naturally become inaccessible as new operations use the new version.
+    }
+
+    /// <summary>
+    /// Get the cache version from replicator (only valid in replicator mode)
+    /// </summary>
+    public string? GetReplicatorCacheVersion()
+    {
+      return _replicatorMode ? _replicatorHealthService?.CacheVersion : null;
     }
 
     /// <summary>
