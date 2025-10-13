@@ -252,12 +252,6 @@ public partial class Schematic
         // Try datastream first if enabled
         if (_datastreamClient != null)
         {
-            // In replicator mode, check if replicator is ready before using datastream
-            if (_replicatorMode && !_datastreamClient.IsReplicatorReady())
-            {
-                _logger.Debug("Replicator mode enabled but replicator not ready, falling back to API");
-                return await CheckFlagApi(flagKey, company, user);
-            }
 
             try
             {

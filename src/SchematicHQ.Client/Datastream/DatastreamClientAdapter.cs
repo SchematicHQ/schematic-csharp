@@ -197,26 +197,14 @@ namespace SchematicHQ.Client.Datastream
     {
       CancellationToken cancellationToken = CancellationToken.None;
       
-      // Get flag first - return error if not found
-      var cachedFlag = _client.GetFlag(flagKey);
-      if (cachedFlag == null)
-      {
-        return new CheckFlagResult
-        {
-          Reason = "FlagNotFound",
-          FlagKey = flagKey,
-          Value = false,
-          Error = Errors.ErrorFlagNotFound,
-        };
-      }
-
       var needsCompany = request.Company != null && request.Company.Count > 0;
       var needsUser = request.User != null && request.User.Count > 0;
 
+      // Always try to get cached resources first
+      var cachedFlag = _client.GetFlag(flagKey);
       Company? cachedCompany = null;
       User? cachedUser = null;
 
-      // Try to get cached data first
       if (needsCompany && request.Company != null)
       {
         cachedCompany = _client.GetCompanyFromCache(request.Company);
@@ -226,60 +214,117 @@ namespace SchematicHQ.Client.Datastream
         cachedUser = _client.GetUserFromCache(request.User);
       }
 
-      // If we have all cached data we need, use it
-      if ((!needsCompany || cachedCompany != null) && (!needsUser || cachedUser != null))
-      {
-        return await _client.CheckFlag(cachedCompany, cachedUser, cachedFlag);
-      }
+      // Check if all required resources are available in cache
+      bool flagInCache = cachedFlag != null;
+      bool allRequiredResourcesInCache = flagInCache && 
+                                       (!needsCompany || cachedCompany != null) && 
+                                       (!needsUser || cachedUser != null);
 
-      // Handle replicator mode behavior - similar to Go client
       if (_replicatorMode)
       {
-        // In replicator mode, check if replicator is healthy before proceeding
-        if (_replicatorHealthService?.IsHealthy != true)
-        {
-          _logger.Warn("Replicator mode: external replicator is not healthy, returning flag evaluation with available data for flag '{0}'", flagKey);
-        }
+        bool replicatorHealthy = _replicatorHealthService?.IsHealthy == true;
         
-        // In replicator mode, if we don't have all cached data, evaluate with nil values instead of fetching
-        // The external replicator should have populated the cache with all necessary data
-        return await _client.CheckFlag(cachedCompany, cachedUser, cachedFlag);
-      }
-
-      // Otherwise, check if we're connected to datastream
-      if (!_connectionTracker.IsConnected)
-      {
-        throw new InvalidOperationException("Not connected to datastream");
-      }
-
-      // Fetch missing data from datastream
-      try
-      {
-        Company? company = cachedCompany;
-        User? user = cachedUser;
-
-        if (needsCompany && company == null && request.Company != null)
+        if (replicatorHealthy)
         {
-          company = await _client.GetCompanyAsync(request.Company, cancellationToken);
+          // Replicator is connected and healthy
+          if (allRequiredResourcesInCache)
+          {
+            // All required resources in cache - evaluate flag
+            _logger.Debug("Replicator mode: All required resources in cache, evaluating flag '{0}'", flagKey);
+            return await _client.CheckFlag(cachedCompany, cachedUser, cachedFlag!);
+          }
+          else if (!flagInCache)
+          {
+            // Flag missing from cache - replicator should have populated it, so flag doesn't exist
+            _logger.Debug("Replicator mode: Flag '{0}' missing from cache, replicator is healthy so flag doesn't exist", flagKey);
+            return new CheckFlagResult
+            {
+              Reason = "FlagNotFound",
+              FlagKey = flagKey,
+              Value = false,
+              Error = Errors.ErrorFlagNotFound,
+            };
+          }
+          else
+          {
+            // Some company/user resources missing - evaluate with available data
+            _logger.Warn("Replicator mode: Some required resources missing from cache for flag '{0}', evaluating with available data", flagKey);
+            return await _client.CheckFlag(cachedCompany, cachedUser, cachedFlag!);
+          }
+        }
+        else
+        {
+          // Replicator is not connected/healthy
+          if (allRequiredResourcesInCache)
+          {
+            // All required resources in cache - evaluate flag even though replicator is unhealthy
+            _logger.Warn("Replicator mode: Replicator unhealthy but all required resources in cache, evaluating flag '{0}'", flagKey);
+            return await _client.CheckFlag(cachedCompany, cachedUser, cachedFlag!);
+          }
+          else
+          {
+            // Not all resources in cache and replicator unhealthy - fallback to API
+            _logger.Warn("Replicator mode: Replicator unhealthy and missing required resources for flag '{0}', falling back to API", flagKey);
+            throw new InvalidOperationException($"Replicator unhealthy and required resources missing for flag '{flagKey}' - API fallback required");
+          }
+        }
+      }
+      else
+      {
+        // Not in replicator mode - standard datastream behavior
+        if (allRequiredResourcesInCache)
+        {
+          // All required resources in cache - evaluate flag
+          return await _client.CheckFlag(cachedCompany, cachedUser, cachedFlag!);
         }
 
-        if (needsUser && user == null && request.User != null)
+        // Missing resources - check if we're connected to datastream for fetching
+        if (!_connectionTracker.IsConnected)
         {
-          user = await _client.GetUserAsync(request.User, cancellationToken);
+          throw new InvalidOperationException("Not connected to datastream and missing required resources");
         }
 
-        return await _client.CheckFlag(company, user, cachedFlag);
-      }
-      catch (Exception ex)
-      {
-        _logger.Error("Error checking flag {0}: {1}", flagKey, ex.Message);
-        return new CheckFlagResult
+        // Handle missing flag case first
+        if (cachedFlag == null)
         {
-          Reason = "Error",
-          FlagKey = flagKey,
-          Error = ex,
-          Value = false,
-        };
+          return new CheckFlagResult
+          {
+            Reason = "FlagNotFound",
+            FlagKey = flagKey,
+            Value = false,
+            Error = Errors.ErrorFlagNotFound,
+          };
+        }
+
+        // Fetch missing company/user data from datastream
+        try
+        {
+          Company? company = cachedCompany;
+          User? user = cachedUser;
+
+          if (needsCompany && company == null && request.Company != null)
+          {
+            company = await _client.GetCompanyAsync(request.Company, cancellationToken);
+          }
+
+          if (needsUser && user == null && request.User != null)
+          {
+            user = await _client.GetUserAsync(request.User, cancellationToken);
+          }
+
+          return await _client.CheckFlag(company, user, cachedFlag);
+        }
+        catch (Exception ex)
+        {
+          _logger.Error("Error fetching missing resources for flag {0}: {1}", flagKey, ex.Message);
+          return new CheckFlagResult
+          {
+            Reason = "Error",
+            FlagKey = flagKey,
+            Error = ex,
+            Value = false,
+          };
+        }
       }
     }
 
