@@ -4,19 +4,13 @@ using System.Text.Json.Serialization;
 namespace SchematicHQ.Client.RulesEngine.Utils
 {
   
-  [JsonConverter(typeof(JsonStringEnumConverter))]
+  [JsonConverter(typeof(SchematicHQ.Client.Cache.ComparableTypeConverter))]
   public enum ComparableType
   {
-    [JsonPropertyName("string")]
+    Unknown,
     String,
-    
-    [JsonPropertyName("int")]
     Int,
-    
-    [JsonPropertyName("bool")]
     Bool,
-    
-    [JsonPropertyName("date")]
     Date
   }
 
