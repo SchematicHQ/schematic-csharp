@@ -23,6 +23,7 @@ namespace SchematicHQ.Client.Test.RulesEngine
                 PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower,
                 Converters = { 
                     new ComparableTypeConverter(),
+                    new ResilientEnumConverter(),
                     new JsonStringEnumConverter(JsonNamingPolicy.SnakeCaseLower, true)
                 }
             };

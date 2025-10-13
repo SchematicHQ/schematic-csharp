@@ -278,13 +278,7 @@ namespace SchematicHQ.Client.Datastream
           return await _client.CheckFlag(cachedCompany, cachedUser, cachedFlag!);
         }
 
-        // Missing resources - check if we're connected to datastream for fetching
-        if (!_connectionTracker.IsConnected)
-        {
-          throw new InvalidOperationException("Not connected to datastream and missing required resources");
-        }
-
-        // Handle missing flag case first
+        // Handle missing flag case first - return FlagNotFound regardless of connection state
         if (cachedFlag == null)
         {
           return new CheckFlagResult
@@ -294,6 +288,12 @@ namespace SchematicHQ.Client.Datastream
             Value = false,
             Error = Errors.ErrorFlagNotFound,
           };
+        }
+
+        // Missing company/user resources - check if we're connected to datastream for fetching
+        if (!_connectionTracker.IsConnected)
+        {
+          throw new InvalidOperationException("Not connected to datastream and missing required resources");
         }
 
         // Fetch missing company/user data from datastream

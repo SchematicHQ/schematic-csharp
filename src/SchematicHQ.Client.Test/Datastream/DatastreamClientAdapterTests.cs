@@ -249,7 +249,7 @@ namespace SchematicHQ.Client.Test.Datastream
             var ex = Assert.ThrowsAsync<InvalidOperationException>(async () => 
                 await _adapter.CheckFlag(request, "test-flag"));
             
-            Assert.That(ex.Message, Is.EqualTo("Not connected to datastream"));
+            Assert.That(ex.Message, Is.EqualTo("Not connected to datastream and missing required resources"));
         }
     }
 }
