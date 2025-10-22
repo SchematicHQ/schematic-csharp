@@ -115,14 +115,26 @@ namespace SchematicHQ.Client.Test.Datastream
             var httpClient = new HttpClient(mockHttpMessageHandler.Object);
             var logger = new MockSchematicLogger();
             
-            string? oldVersion = null;
-            string? newVersion = null;
+            var eventCallCount = 0;
+            string? firstEventOldVersion = null;
+            string? firstEventNewVersion = null;
+            string? secondEventOldVersion = null;
+            string? secondEventNewVersion = null;
 
             var service = new ReplicatorHealthService(httpClient, "http://test/ready", logger);
             service.CacheVersionChanged += (old, newVer) =>
             {
-                oldVersion = old;
-                newVersion = newVer;
+                if (eventCallCount == 0)
+                {
+                    firstEventOldVersion = old;
+                    firstEventNewVersion = newVer;
+                }
+                else if (eventCallCount == 1)
+                {
+                    secondEventOldVersion = old;
+                    secondEventNewVersion = newVer;
+                }
+                eventCallCount++;
             };
 
             // First response with version "v1"
@@ -147,44 +159,65 @@ namespace SchematicHQ.Client.Test.Datastream
                 }
                 """;
 
-            var responseSequence = mockHttpMessageHandler.Protected()
-                .SetupSequence<Task<HttpResponseMessage>>(
+            // Set up separate calls instead of sequence to avoid timing issues
+            var callCount = 0;
+            mockHttpMessageHandler.Protected()
+                .Setup<Task<HttpResponseMessage>>(
                     "SendAsync",
                     ItExpr.IsAny<HttpRequestMessage>(),
-                    ItExpr.IsAny<CancellationToken>());
+                    ItExpr.IsAny<CancellationToken>())
+                .Returns(() =>
+                {
+                    callCount++;
+                    if (callCount == 1)
+                    {
+                        return Task.FromResult(new HttpResponseMessage
+                        {
+                            StatusCode = HttpStatusCode.OK,
+                            Content = new StringContent(firstResponse)
+                        });
+                    }
+                    else
+                    {
+                        return Task.FromResult(new HttpResponseMessage
+                        {
+                            StatusCode = HttpStatusCode.OK,
+                            Content = new StringContent(secondResponse)
+                        });
+                    }
+                });
 
-            responseSequence.ReturnsAsync(new HttpResponseMessage
+            try
             {
-                StatusCode = HttpStatusCode.OK,
-                Content = new StringContent(firstResponse)
-            });
-
-            responseSequence.ReturnsAsync(new HttpResponseMessage
+                // Act - Call GetCacheVersionAsync twice to trigger two health checks
+                // First call should trigger the first HTTP request
+                var firstVersion = await service.GetCacheVersionAsync();
+                
+                // Assert first version is set and first event fired (null -> "v1")
+                Assert.That(firstVersion, Is.EqualTo("v1"));
+                Assert.That(eventCallCount, Is.EqualTo(1), "Exactly one event should have fired for null -> v1");
+                Assert.That(firstEventOldVersion, Is.Null, "First event old version should be null");
+                Assert.That(firstEventNewVersion, Is.EqualTo("v1"), "First event new version should be v1");
+                
+                // Reset cache version to force second health check
+                // We can't directly access private fields, so we'll use reflection as a test-only approach
+                var cacheVersionField = typeof(ReplicatorHealthService).GetField("_cacheVersion", 
+                    System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+                cacheVersionField?.SetValue(service, null);
+                
+                // Second call should trigger the second HTTP request
+                var secondVersion = await service.GetCacheVersionAsync();
+                
+                // Assert that the second event was fired when version changed from v1 to v2
+                Assert.That(secondVersion, Is.EqualTo("v2"));
+                Assert.That(eventCallCount, Is.EqualTo(2), "Exactly two events should have fired");
+                Assert.That(secondEventOldVersion, Is.Null, "Second event old version should be null (since we reset it)");
+                Assert.That(secondEventNewVersion, Is.EqualTo("v2"), "Second event new version should be v2");
+            }
+            finally
             {
-                StatusCode = HttpStatusCode.OK,
-                Content = new StringContent(secondResponse)
-            });
-
-            // Act
-            service.Start();
-            
-            // Wait for first health check
-            await Task.Delay(100);
-            
-
-            
-            // Trigger second health check (this would normally happen on timer)
-            // For testing, we need to wait for the internal timer to trigger
-            // In a real scenario, we'd make the health check interval configurable for testing
-            
-            // Assert first version
-            Assert.That(service.CacheVersion, Is.EqualTo("v1"));
-            
-            // Wait for potential second check (note: this test relies on timing)
-            await Task.Delay(50);
-            
-            service.Stop();
-            service.Dispose();
+                service.Dispose();
+            }
         }
 
         [Test]

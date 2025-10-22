@@ -476,36 +476,13 @@ namespace SchematicHQ.Client.Test.RulesEngine
                 var result = Metrics.GetNextMetricPeriodStartForCompanyBillingSubscription(company);
                 Assert.That(result, Is.Not.Null);
 
-                DateTime expected;
-                if (now.Day < 15)
-                {
-                  // In this case, the result should be this month's reset date
-                  expected = new DateTime(
-                              now.Year,
-                              now.Month,
-                              futureDay,
-                              12, 0, 0,
-                              DateTimeKind.Utc);
-                }
-                else
-                {
-                   expected = new DateTime(
+                // Since the reset day is in the future this month, the next reset should be this month's reset date
+                DateTime expected = new DateTime(
                     now.Year,
-                    now.Month + 1,
+                    now.Month,
                     futureDay,
                     12, 0, 0,
                     DateTimeKind.Utc);
-
-                      if (now.Month == 12)
-                      {
-                          expected = new DateTime(
-                              now.Year + 1,
-                              1, // January
-                              futureDay,
-                              12, 0, 0,
-                              DateTimeKind.Utc);
-                      }
-                }
 
                 Assert.That(result?.Year, Is.EqualTo(expected.Year));
                 Assert.That(result?.Month, Is.EqualTo(expected.Month));
