@@ -8,7 +8,7 @@ Configure additional MSBuild properties for your project in this file:
     <TargetFrameworks>net8.0;</TargetFrameworks>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="OpenFeature" Version="1.5.1" />
+    <PackageReference Include="OpenFeature" Version="2.9.0" />
     <PackageReference Include="StackExchange.Redis" Version="2.8.41" />
   </ItemGroup>
 

@@ -38,7 +38,7 @@ namespace SchematicHQ.Client.Test.OpenFeature
             var context = EvaluationContext.Empty;
 
             // Act
-            var result = await provider.ResolveBooleanValue("test-flag", false, context);
+            var result = await provider.ResolveBooleanValueAsync("test-flag", false, context);
 
             // Assert
             Assert.That(result.FlagKey, Is.EqualTo("test-flag"));
@@ -63,7 +63,7 @@ namespace SchematicHQ.Client.Test.OpenFeature
 
             // Act
             // In offline mode, Schematic returns false for flags not in defaults, regardless of the provided default
-            var result = await provider.ResolveBooleanValue("non-existent-flag", true, EvaluationContext.Empty);
+            var result = await provider.ResolveBooleanValueAsync("non-existent-flag", true, EvaluationContext.Empty);
 
             // Assert
             Assert.That(result.Value, Is.False); // Schematic always returns false for unknown flags in offline mode
@@ -98,7 +98,7 @@ namespace SchematicHQ.Client.Test.OpenFeature
                 .Build();
 
             // Act - In offline mode, context is ignored but should not cause errors
-            var result = await provider.ResolveBooleanValue("feature-x", false, context);
+            var result = await provider.ResolveBooleanValueAsync("feature-x", false, context);
 
             // Assert
             Assert.That(result.Value, Is.True);
@@ -123,7 +123,7 @@ namespace SchematicHQ.Client.Test.OpenFeature
                 .Build();
 
             // Act
-            var result = await provider.ResolveBooleanValue("test-flag", false, context);
+            var result = await provider.ResolveBooleanValueAsync("test-flag", false, context);
 
             // Assert
             Assert.That(result.Value, Is.True);
@@ -137,7 +137,7 @@ namespace SchematicHQ.Client.Test.OpenFeature
             var context = EvaluationContext.Empty;
 
             // Act
-            var result = await provider.ResolveStringValue("test-flag", "default", context);
+            var result = await provider.ResolveStringValueAsync("test-flag", "default", context);
 
             // Assert
             Assert.That(result.FlagKey, Is.EqualTo("test-flag"));
@@ -154,7 +154,7 @@ namespace SchematicHQ.Client.Test.OpenFeature
             var provider = new SchematicProvider("test-key");
 
             // Act
-            var result = await provider.ResolveIntegerValue("test-flag", 42, EvaluationContext.Empty);
+            var result = await provider.ResolveIntegerValueAsync("test-flag", 42, EvaluationContext.Empty);
 
             // Assert
             Assert.That(result.Value, Is.EqualTo(42));
@@ -169,7 +169,7 @@ namespace SchematicHQ.Client.Test.OpenFeature
             var provider = new SchematicProvider("test-key");
 
             // Act
-            var result = await provider.ResolveDoubleValue("test-flag", 3.14, EvaluationContext.Empty);
+            var result = await provider.ResolveDoubleValueAsync("test-flag", 3.14, EvaluationContext.Empty);
 
             // Assert
             Assert.That(result.Value, Is.EqualTo(3.14));
@@ -185,7 +185,7 @@ namespace SchematicHQ.Client.Test.OpenFeature
             var defaultValue = new Value(new Structure(new Dictionary<string, Value>()));
 
             // Act
-            var result = await provider.ResolveStructureValue("test-flag", defaultValue, EvaluationContext.Empty);
+            var result = await provider.ResolveStructureValueAsync("test-flag", defaultValue, EvaluationContext.Empty);
 
             // Assert
             Assert.That(result.Value, Is.EqualTo(defaultValue));
@@ -200,7 +200,7 @@ namespace SchematicHQ.Client.Test.OpenFeature
             var provider = new SchematicProvider("test-key");
 
             // Act & Assert (should not throw)
-            await provider.Initialize(EvaluationContext.Empty);
+            await provider.InitializeAsync(EvaluationContext.Empty);
         }
 
         [Test]
@@ -211,7 +211,7 @@ namespace SchematicHQ.Client.Test.OpenFeature
             var provider = new SchematicProvider("test-key", options);
 
             // Act & Assert (should not throw)
-            await provider.Shutdown();
+            await provider.ShutdownAsync();
         }
 
         [Test]

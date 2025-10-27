@@ -38,13 +38,14 @@ namespace Examples.OpenFeature
             // Get the OpenFeature client
             var client = Api.Instance.GetClient();
             
-            // Evaluate a feature flag
-            var isFeatureEnabled = await client.GetBooleanValue("new-feature", false, context);
+            // Evaluate a feature flag (using OpenFeature 2.x async methods)
+            var isFeatureEnabled = await client.GetBooleanValueAsync("new-feature", false, context);
             Console.WriteLine($"Feature 'new-feature' is {(isFeatureEnabled ? "enabled" : "disabled")}");
             
-            // Get detailed flag evaluation
-            var flagDetails = await client.GetBooleanDetails("new-feature", false, context);
+            // Get detailed flag evaluation (using OpenFeature 2.x async methods)
+            var flagDetails = await client.GetBooleanDetailsAsync("new-feature", false, context);
             Console.WriteLine($"Flag evaluation reason: {flagDetails.Reason}");
+            Console.WriteLine($"Flag variant: {flagDetails.Variant}");
             
             // Track an event using the provider
             await provider.TrackEventAsync("feature_viewed", context, new Dictionary<string, object>
@@ -53,8 +54,15 @@ namespace Examples.OpenFeature
                 ["enabled"] = isFeatureEnabled
             });
             
+            // Demonstrate other flag types (they return default values with error reasons)
+            var stringFlag = await client.GetStringValueAsync("config-value", "default", context);
+            Console.WriteLine($"String flag value: {stringFlag}");
+            
+            var intFlag = await client.GetIntegerValueAsync("max-items", 10, context);
+            Console.WriteLine($"Integer flag value: {intFlag}");
+            
             // Shutdown
-            await Api.Instance.Shutdown();
+            await Api.Instance.ShutdownAsync();
         }
     }
 }
