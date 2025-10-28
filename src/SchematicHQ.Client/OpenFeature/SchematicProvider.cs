@@ -53,10 +53,11 @@ namespace SchematicHQ.Client.OpenFeature
         }
 
         /// <inheritdoc/>
-        public override async Task<ResolutionDetails<bool>> ResolveBooleanValue(
+        public override async Task<ResolutionDetails<bool>> ResolveBooleanValueAsync(
             string flagKey, 
             bool defaultValue, 
-            EvaluationContext context = null)
+            EvaluationContext? context = null,
+            CancellationToken cancellationToken = default)
         {
             try
             {
@@ -92,10 +93,11 @@ namespace SchematicHQ.Client.OpenFeature
         }
 
         /// <inheritdoc/>
-        public override Task<ResolutionDetails<string>> ResolveStringValue(
+        public override Task<ResolutionDetails<string>> ResolveStringValueAsync(
             string flagKey, 
             string defaultValue, 
-            EvaluationContext context = null)
+            EvaluationContext? context = null,
+            CancellationToken cancellationToken = default)
         {
             return Task.FromResult(new ResolutionDetails<string>(
                 flagKey: flagKey,
@@ -107,10 +109,11 @@ namespace SchematicHQ.Client.OpenFeature
         }
 
         /// <inheritdoc/>
-        public override Task<ResolutionDetails<int>> ResolveIntegerValue(
+        public override Task<ResolutionDetails<int>> ResolveIntegerValueAsync(
             string flagKey, 
             int defaultValue, 
-            EvaluationContext context = null)
+            EvaluationContext? context = null,
+            CancellationToken cancellationToken = default)
         {
             return Task.FromResult(new ResolutionDetails<int>(
                 flagKey: flagKey,
@@ -122,10 +125,11 @@ namespace SchematicHQ.Client.OpenFeature
         }
 
         /// <inheritdoc/>
-        public override Task<ResolutionDetails<double>> ResolveDoubleValue(
+        public override Task<ResolutionDetails<double>> ResolveDoubleValueAsync(
             string flagKey, 
             double defaultValue, 
-            EvaluationContext context = null)
+            EvaluationContext? context = null,
+            CancellationToken cancellationToken = default)
         {
             return Task.FromResult(new ResolutionDetails<double>(
                 flagKey: flagKey,
@@ -137,10 +141,11 @@ namespace SchematicHQ.Client.OpenFeature
         }
 
         /// <inheritdoc/>
-        public override Task<ResolutionDetails<Value>> ResolveStructureValue(
+        public override Task<ResolutionDetails<Value>> ResolveStructureValueAsync(
             string flagKey, 
             Value defaultValue, 
-            EvaluationContext context = null)
+            EvaluationContext? context = null,
+            CancellationToken cancellationToken = default)
         {
             return Task.FromResult(new ResolutionDetails<Value>(
                 flagKey: flagKey,
@@ -152,14 +157,14 @@ namespace SchematicHQ.Client.OpenFeature
         }
 
         /// <inheritdoc/>
-        public override Task Initialize(EvaluationContext context)
+        public override Task InitializeAsync(EvaluationContext? context, CancellationToken cancellationToken = default)
         {
             _options.Logger?.Info("Schematic provider initialized");
             return Task.CompletedTask;
         }
 
         /// <inheritdoc/>
-        public override async Task Shutdown()
+        public override async Task ShutdownAsync(CancellationToken cancellationToken = default)
         {
             _options.Logger?.Info("Schematic provider shutting down");
             await _schematic.Shutdown().ConfigureAwait(false);
@@ -173,7 +178,7 @@ namespace SchematicHQ.Client.OpenFeature
         /// <param name="traits">Additional event properties.</param>
         public Task TrackEventAsync(
             string eventName, 
-            EvaluationContext context = null, 
+            EvaluationContext? context = null, 
             Dictionary<string, object>? traits = null)
         {
             if (string.IsNullOrWhiteSpace(eventName))
@@ -206,7 +211,7 @@ namespace SchematicHQ.Client.OpenFeature
             return Task.CompletedTask;
         }
 
-        private static (Dictionary<string, string>? company, Dictionary<string, string>? user) ExtractContext(EvaluationContext context)
+        private static (Dictionary<string, string>? company, Dictionary<string, string>? user) ExtractContext(EvaluationContext? context)
         {
             if (context == null)
             {
