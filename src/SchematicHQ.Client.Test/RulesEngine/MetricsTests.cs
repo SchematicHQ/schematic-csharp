@@ -455,39 +455,85 @@ namespace SchematicHQ.Client.Test.RulesEngine
                 var company = TestHelpers.CreateTestCompany();
 
                 // Set subscription to start on a day later in the month than today
-                int futureDay = now.Day + 5;
+                // Ensure we have a truly future day by adding a safety margin
+                int futureDay = now.Day + 2;
                 if (futureDay > 28) // Avoid month boundary issues
                 {
-                    futureDay = 28;
-                }
+                    // If we can't get a future day this month, use a day earlier this month
+                    // and expect next month's reset date instead
+                    futureDay = Math.Max(1, now.Day - 2);
+                    
+                    company.Subscription = new Subscription
+                    {
+                        Id = "test-subscription",
+                        PeriodStart = new DateTime(
+                            now.Year - 1,
+                            now.Month,
+                            futureDay,
+                            12, 0, 0,
+                            DateTimeKind.Utc),
+                        PeriodEnd = now.AddYears(1) // Set end date far in the future
+                    };
 
-                company.Subscription = new Subscription
+                    var result = Metrics.GetNextMetricPeriodStartForCompanyBillingSubscription(company);
+                    Assert.That(result, Is.Not.Null);
+
+                    // Since the reset day is in the past this month, the next reset should be next month's reset date
+                    DateTime expected;
+                    if (now.Month == 12) // December
+                    {
+                        expected = new DateTime(
+                            now.Year + 1,
+                            1, // January
+                            futureDay,
+                            12, 0, 0,
+                            DateTimeKind.Utc);
+                    }
+                    else
+                    {
+                        expected = new DateTime(
+                            now.Year,
+                            now.Month + 1,
+                            Math.Min(futureDay, DateTime.DaysInMonth(now.Year, now.Month + 1)),
+                            12, 0, 0,
+                            DateTimeKind.Utc);
+                    }
+
+                    Assert.That(result?.Year, Is.EqualTo(expected.Year));
+                    Assert.That(result?.Month, Is.EqualTo(expected.Month));
+                    Assert.That(result?.Day, Is.EqualTo(expected.Day));
+                    Assert.That(result?.Hour, Is.EqualTo(expected.Hour));
+                }
+                else
                 {
-                    Id = "test-subscription",
-                    PeriodStart = new DateTime(
-                        now.Year - 1,
+                    company.Subscription = new Subscription
+                    {
+                        Id = "test-subscription",
+                        PeriodStart = new DateTime(
+                            now.Year - 1,
+                            now.Month,
+                            futureDay,
+                            12, 0, 0,
+                            DateTimeKind.Utc),
+                        PeriodEnd = now.AddYears(1) // Set end date far in the future
+                    };
+
+                    var result = Metrics.GetNextMetricPeriodStartForCompanyBillingSubscription(company);
+                    Assert.That(result, Is.Not.Null);
+
+                    // Since the reset day is in the future this month, the next reset should be this month's reset date
+                    DateTime expected = new DateTime(
+                        now.Year,
                         now.Month,
                         futureDay,
                         12, 0, 0,
-                        DateTimeKind.Utc),
-                    PeriodEnd = now.AddYears(1) // Set end date far in the future
-                };
+                        DateTimeKind.Utc);
 
-                var result = Metrics.GetNextMetricPeriodStartForCompanyBillingSubscription(company);
-                Assert.That(result, Is.Not.Null);
-
-                // Since the reset day is in the future this month, the next reset should be this month's reset date
-                DateTime expected = new DateTime(
-                    now.Year,
-                    now.Month,
-                    futureDay,
-                    12, 0, 0,
-                    DateTimeKind.Utc);
-
-                Assert.That(result?.Year, Is.EqualTo(expected.Year));
-                Assert.That(result?.Month, Is.EqualTo(expected.Month));
-                Assert.That(result?.Day, Is.EqualTo(expected.Day));
-                Assert.That(result?.Hour, Is.EqualTo(expected.Hour));
+                    Assert.That(result?.Year, Is.EqualTo(expected.Year));
+                    Assert.That(result?.Month, Is.EqualTo(expected.Month));
+                    Assert.That(result?.Day, Is.EqualTo(expected.Day));
+                    Assert.That(result?.Hour, Is.EqualTo(expected.Hour));
+                }
             }
         }
 
