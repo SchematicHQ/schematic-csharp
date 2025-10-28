@@ -11,6 +11,9 @@ public record ApiKeyRequestResponseData : IJsonOnDeserialized
     private readonly IDictionary<string, JsonElement> _extensionData =
         new Dictionary<string, JsonElement>();
 
+    [JsonPropertyName("api_key")]
+    public ApiKeyResponseData? ApiKey { get; set; }
+
     [JsonPropertyName("api_key_id")]
     public required string ApiKeyId { get; set; }
 

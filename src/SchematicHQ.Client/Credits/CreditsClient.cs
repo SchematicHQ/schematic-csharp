@@ -178,10 +178,10 @@ public partial class CreditsClient
     }
 
     /// <example><code>
-    /// await client.Credits.GetSingleBillingCreditAsync("billing_id");
+    /// await client.Credits.GetSingleBillingCreditAsync("credit_id");
     /// </code></example>
     public async Task<GetSingleBillingCreditResponse> GetSingleBillingCreditAsync(
-        string billingId,
+        string creditId,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
@@ -194,7 +194,7 @@ public partial class CreditsClient
                     Method = HttpMethod.Get,
                     Path = string.Format(
                         "billing/credits/{0}",
-                        ValueConvert.ToPathParameterString(billingId)
+                        ValueConvert.ToPathParameterString(creditId)
                     ),
                     Options = options,
                 },
@@ -246,12 +246,12 @@ public partial class CreditsClient
 
     /// <example><code>
     /// await client.Credits.UpdateBillingCreditAsync(
-    ///     "billing_id",
+    ///     "credit_id",
     ///     new UpdateBillingCreditRequestBody { Description = "description", Name = "name" }
     /// );
     /// </code></example>
     public async Task<UpdateBillingCreditResponse> UpdateBillingCreditAsync(
-        string billingId,
+        string creditId,
         UpdateBillingCreditRequestBody request,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
@@ -265,7 +265,7 @@ public partial class CreditsClient
                     Method = HttpMethod.Put,
                     Path = string.Format(
                         "billing/credits/{0}",
-                        ValueConvert.ToPathParameterString(billingId)
+                        ValueConvert.ToPathParameterString(creditId)
                     ),
                     Body = request,
                     ContentType = "application/json",
@@ -320,10 +320,10 @@ public partial class CreditsClient
     }
 
     /// <example><code>
-    /// await client.Credits.SoftDeleteBillingCreditAsync("billing_id");
+    /// await client.Credits.SoftDeleteBillingCreditAsync("credit_id");
     /// </code></example>
     public async Task<SoftDeleteBillingCreditResponse> SoftDeleteBillingCreditAsync(
-        string billingId,
+        string creditId,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
@@ -336,7 +336,7 @@ public partial class CreditsClient
                     Method = HttpMethod.Delete,
                     Path = string.Format(
                         "billing/credits/{0}",
-                        ValueConvert.ToPathParameterString(billingId)
+                        ValueConvert.ToPathParameterString(creditId)
                     ),
                     Options = options,
                 },
@@ -563,10 +563,10 @@ public partial class CreditsClient
     }
 
     /// <example><code>
-    /// await client.Credits.GetCreditBundleAsync("billing_id");
+    /// await client.Credits.GetCreditBundleAsync("bundle_id");
     /// </code></example>
     public async Task<GetCreditBundleResponse> GetCreditBundleAsync(
-        string billingId,
+        string bundleId,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
@@ -579,7 +579,7 @@ public partial class CreditsClient
                     Method = HttpMethod.Get,
                     Path = string.Format(
                         "billing/credits/bundles/{0}",
-                        ValueConvert.ToPathParameterString(billingId)
+                        ValueConvert.ToPathParameterString(bundleId)
                     ),
                     Options = options,
                 },
@@ -631,12 +631,12 @@ public partial class CreditsClient
 
     /// <example><code>
     /// await client.Credits.UpdateCreditBundleDetailsAsync(
-    ///     "billing_id",
+    ///     "bundle_id",
     ///     new UpdateCreditBundleDetailsRequestBody { BundleName = "bundle_name", PricePerUnit = 1 }
     /// );
     /// </code></example>
     public async Task<UpdateCreditBundleDetailsResponse> UpdateCreditBundleDetailsAsync(
-        string billingId,
+        string bundleId,
         UpdateCreditBundleDetailsRequestBody request,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
@@ -650,7 +650,7 @@ public partial class CreditsClient
                     Method = HttpMethod.Put,
                     Path = string.Format(
                         "billing/credits/bundles/{0}",
-                        ValueConvert.ToPathParameterString(billingId)
+                        ValueConvert.ToPathParameterString(bundleId)
                     ),
                     Body = request,
                     ContentType = "application/json",
@@ -705,10 +705,10 @@ public partial class CreditsClient
     }
 
     /// <example><code>
-    /// await client.Credits.DeleteCreditBundleAsync("billing_id");
+    /// await client.Credits.DeleteCreditBundleAsync("bundle_id");
     /// </code></example>
     public async Task<DeleteCreditBundleResponse> DeleteCreditBundleAsync(
-        string billingId,
+        string bundleId,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
@@ -721,7 +721,7 @@ public partial class CreditsClient
                     Method = HttpMethod.Delete,
                     Path = string.Format(
                         "billing/credits/bundles/{0}",
-                        ValueConvert.ToPathParameterString(billingId)
+                        ValueConvert.ToPathParameterString(bundleId)
                     ),
                     Options = options,
                 },
@@ -960,10 +960,10 @@ public partial class CreditsClient
     }
 
     /// <example><code>
-    /// await client.Credits.ZeroOutGrantAsync("billing_id", new ZeroOutGrantRequestBody());
+    /// await client.Credits.ZeroOutGrantAsync("grant_id", new ZeroOutGrantRequestBody());
     /// </code></example>
     public async Task<ZeroOutGrantResponse> ZeroOutGrantAsync(
-        string billingId,
+        string grantId,
         ZeroOutGrantRequestBody request,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
@@ -977,7 +977,7 @@ public partial class CreditsClient
                     Method = HttpMethod.Put,
                     Path = string.Format(
                         "billing/credits/grants/{0}/zero-out",
-                        ValueConvert.ToPathParameterString(billingId)
+                        ValueConvert.ToPathParameterString(grantId)
                     ),
                     Body = request,
                     ContentType = "application/json",
@@ -1381,6 +1381,218 @@ public partial class CreditsClient
     }
 
     /// <example><code>
+    /// await client.Credits.GetEnrichedCreditLedgerAsync(
+    ///     new GetEnrichedCreditLedgerRequest
+    ///     {
+    ///         CompanyId = "company_id",
+    ///         BillingCreditId = "billing_credit_id",
+    ///         FeatureId = "feature_id",
+    ///         Period = GetEnrichedCreditLedgerRequestPeriod.Daily,
+    ///         StartTime = "start_time",
+    ///         EndTime = "end_time",
+    ///         Limit = 1,
+    ///         Offset = 1,
+    ///     }
+    /// );
+    /// </code></example>
+    public async Task<GetEnrichedCreditLedgerResponse> GetEnrichedCreditLedgerAsync(
+        GetEnrichedCreditLedgerRequest request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        var _query = new Dictionary<string, object>();
+        _query["company_id"] = request.CompanyId;
+        _query["period"] = request.Period.Stringify();
+        if (request.BillingCreditId != null)
+        {
+            _query["billing_credit_id"] = request.BillingCreditId;
+        }
+        if (request.FeatureId != null)
+        {
+            _query["feature_id"] = request.FeatureId;
+        }
+        if (request.StartTime != null)
+        {
+            _query["start_time"] = request.StartTime;
+        }
+        if (request.EndTime != null)
+        {
+            _query["end_time"] = request.EndTime;
+        }
+        if (request.Limit != null)
+        {
+            _query["limit"] = request.Limit.Value.ToString();
+        }
+        if (request.Offset != null)
+        {
+            _query["offset"] = request.Offset.Value.ToString();
+        }
+        var response = await _client
+            .SendRequestAsync(
+                new JsonRequest
+                {
+                    BaseUrl = _client.Options.BaseUrl,
+                    Method = HttpMethod.Get,
+                    Path = "billing/credits/ledger",
+                    Query = _query,
+                    Options = options,
+                },
+                cancellationToken
+            )
+            .ConfigureAwait(false);
+        if (response.StatusCode is >= 200 and < 400)
+        {
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            try
+            {
+                return JsonUtils.Deserialize<GetEnrichedCreditLedgerResponse>(responseBody)!;
+            }
+            catch (JsonException e)
+            {
+                throw new SchematicException("Failed to deserialize response", e);
+            }
+        }
+
+        {
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            try
+            {
+                switch (response.StatusCode)
+                {
+                    case 400:
+                        throw new BadRequestError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 401:
+                        throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 403:
+                        throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 404:
+                        throw new NotFoundError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 500:
+                        throw new InternalServerError(
+                            JsonUtils.Deserialize<ApiError>(responseBody)
+                        );
+                }
+            }
+            catch (JsonException)
+            {
+                // unable to map error response, throwing generic error
+            }
+            throw new SchematicApiException(
+                $"Error with status code {response.StatusCode}",
+                response.StatusCode,
+                responseBody
+            );
+        }
+    }
+
+    /// <example><code>
+    /// await client.Credits.CountCreditLedgerAsync(
+    ///     new CountCreditLedgerRequest
+    ///     {
+    ///         CompanyId = "company_id",
+    ///         BillingCreditId = "billing_credit_id",
+    ///         FeatureId = "feature_id",
+    ///         Period = CountCreditLedgerRequestPeriod.Daily,
+    ///         StartTime = "start_time",
+    ///         EndTime = "end_time",
+    ///         Limit = 1,
+    ///         Offset = 1,
+    ///     }
+    /// );
+    /// </code></example>
+    public async Task<CountCreditLedgerResponse> CountCreditLedgerAsync(
+        CountCreditLedgerRequest request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        var _query = new Dictionary<string, object>();
+        _query["company_id"] = request.CompanyId;
+        _query["period"] = request.Period.Stringify();
+        if (request.BillingCreditId != null)
+        {
+            _query["billing_credit_id"] = request.BillingCreditId;
+        }
+        if (request.FeatureId != null)
+        {
+            _query["feature_id"] = request.FeatureId;
+        }
+        if (request.StartTime != null)
+        {
+            _query["start_time"] = request.StartTime;
+        }
+        if (request.EndTime != null)
+        {
+            _query["end_time"] = request.EndTime;
+        }
+        if (request.Limit != null)
+        {
+            _query["limit"] = request.Limit.Value.ToString();
+        }
+        if (request.Offset != null)
+        {
+            _query["offset"] = request.Offset.Value.ToString();
+        }
+        var response = await _client
+            .SendRequestAsync(
+                new JsonRequest
+                {
+                    BaseUrl = _client.Options.BaseUrl,
+                    Method = HttpMethod.Get,
+                    Path = "billing/credits/ledger/count",
+                    Query = _query,
+                    Options = options,
+                },
+                cancellationToken
+            )
+            .ConfigureAwait(false);
+        if (response.StatusCode is >= 200 and < 400)
+        {
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            try
+            {
+                return JsonUtils.Deserialize<CountCreditLedgerResponse>(responseBody)!;
+            }
+            catch (JsonException e)
+            {
+                throw new SchematicException("Failed to deserialize response", e);
+            }
+        }
+
+        {
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            try
+            {
+                switch (response.StatusCode)
+                {
+                    case 400:
+                        throw new BadRequestError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 401:
+                        throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 403:
+                        throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 404:
+                        throw new NotFoundError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 500:
+                        throw new InternalServerError(
+                            JsonUtils.Deserialize<ApiError>(responseBody)
+                        );
+                }
+            }
+            catch (JsonException)
+            {
+                // unable to map error response, throwing generic error
+            }
+            throw new SchematicApiException(
+                $"Error with status code {response.StatusCode}",
+                response.StatusCode,
+                responseBody
+            );
+        }
+    }
+
+    /// <example><code>
     /// await client.Credits.ListBillingPlanCreditGrantsAsync(
     ///     new ListBillingPlanCreditGrantsRequest
     ///     {
@@ -1552,10 +1764,10 @@ public partial class CreditsClient
     }
 
     /// <example><code>
-    /// await client.Credits.DeleteBillingPlanCreditGrantAsync("billing_id");
+    /// await client.Credits.DeleteBillingPlanCreditGrantAsync("plan_grant_id");
     /// </code></example>
     public async Task<DeleteBillingPlanCreditGrantResponse> DeleteBillingPlanCreditGrantAsync(
-        string billingId,
+        string planGrantId,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
@@ -1568,7 +1780,7 @@ public partial class CreditsClient
                     Method = HttpMethod.Delete,
                     Path = string.Format(
                         "billing/credits/plan-grants/{0}",
-                        ValueConvert.ToPathParameterString(billingId)
+                        ValueConvert.ToPathParameterString(planGrantId)
                     ),
                     Options = options,
                 },

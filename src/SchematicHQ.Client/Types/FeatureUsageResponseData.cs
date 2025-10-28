@@ -65,6 +65,18 @@ public record FeatureUsageResponseData : IJsonOnDeserialized
     [JsonPropertyName("credit_used")]
     public double? CreditUsed { get; set; }
 
+    /// <summary>
+    /// Effective limit for usage calculations. For overage pricing, this is the soft limit where overage charges begin. For tiered pricing, this is the first tier boundary. For other pricing models, this is the base allocation. Used to calculate usage percentages and determine access thresholds.
+    /// </summary>
+    [JsonPropertyName("effective_limit")]
+    public int? EffectiveLimit { get; set; }
+
+    /// <summary>
+    /// Per-unit price for current usage scenario
+    /// </summary>
+    [JsonPropertyName("effective_price")]
+    public double? EffectivePrice { get; set; }
+
     [JsonPropertyName("entitlement_expiration_date")]
     public DateTime? EntitlementExpirationDate { get; set; }
 
@@ -84,6 +96,18 @@ public record FeatureUsageResponseData : IJsonOnDeserialized
     public FeatureDetailResponseData? Feature { get; set; }
 
     /// <summary>
+    /// Whether a valid allocation exists
+    /// </summary>
+    [JsonPropertyName("has_valid_allocation")]
+    public bool? HasValidAllocation { get; set; }
+
+    /// <summary>
+    /// Whether this is an unlimited allocation
+    /// </summary>
+    [JsonPropertyName("is_unlimited")]
+    public bool? IsUnlimited { get; set; }
+
+    /// <summary>
     /// The time at which the metric will reset.
     /// </summary>
     [JsonPropertyName("metric_reset_at")]
@@ -97,6 +121,18 @@ public record FeatureUsageResponseData : IJsonOnDeserialized
 
     [JsonPropertyName("monthly_usage_based_price")]
     public BillingPriceView? MonthlyUsageBasedPrice { get; set; }
+
+    /// <summary>
+    /// Amount of usage exceeding soft limit (overage pricing only)
+    /// </summary>
+    [JsonPropertyName("overuse")]
+    public int? Overuse { get; set; }
+
+    /// <summary>
+    /// Percentage of allocation consumed (0-100+)
+    /// </summary>
+    [JsonPropertyName("percent_used")]
+    public double? PercentUsed { get; set; }
 
     /// <summary>
     /// The period over which usage is measured.

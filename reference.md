@@ -1,4 +1,84 @@
 # Reference
+<details><summary><code>client.<a href="/src/SchematicHQ.Client/Schematic.cs">PutPlanAudiencesPlanAudienceIdAsync</a>(planAudienceId)</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.PutPlanAudiencesPlanAudienceIdAsync("plan_audience_id");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**planAudienceId:** `string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.<a href="/src/SchematicHQ.Client/Schematic.cs">DeletePlanAudiencesPlanAudienceIdAsync</a>(planAudienceId)</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.DeletePlanAudiencesPlanAudienceIdAsync("plan_audience_id");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**planAudienceId:** `string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 ## accounts
 <details><summary><code>client.Accounts.<a href="/src/SchematicHQ.Client/Accounts/AccountsClient.cs">ListApiKeysAsync</a>(ListApiKeysRequest { ... }) -> ListApiKeysResponse</code></summary>
 <dl>
@@ -631,1012 +711,6 @@ await client.Accounts.DeleteEnvironmentAsync("environment_id");
 ```csharp
 await client.Accounts.QuickstartAsync();
 ```
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-## features
-<details><summary><code>client.Features.<a href="/src/SchematicHQ.Client/Features/FeaturesClient.cs">CountAudienceCompaniesAsync</a>(AudienceRequestBody { ... }) -> CountAudienceCompaniesResponse</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```csharp
-await client.Features.CountAudienceCompaniesAsync(
-    new AudienceRequestBody
-    {
-        ConditionGroups = new List<CreateOrUpdateConditionGroupRequestBody>()
-        {
-            new CreateOrUpdateConditionGroupRequestBody
-            {
-                Conditions = new List<CreateOrUpdateConditionRequestBody>()
-                {
-                    new CreateOrUpdateConditionRequestBody
-                    {
-                        ConditionType = CreateOrUpdateConditionRequestBodyConditionType.Company,
-                        Operator = CreateOrUpdateConditionRequestBodyOperator.Eq,
-                        ResourceIds = new List<string>() { "resource_ids" },
-                    },
-                },
-            },
-        },
-        Conditions = new List<CreateOrUpdateConditionRequestBody>()
-        {
-            new CreateOrUpdateConditionRequestBody
-            {
-                ConditionType = CreateOrUpdateConditionRequestBodyConditionType.Company,
-                Operator = CreateOrUpdateConditionRequestBodyOperator.Eq,
-                ResourceIds = new List<string>() { "resource_ids" },
-            },
-        },
-    }
-);
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**request:** `AudienceRequestBody` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Features.<a href="/src/SchematicHQ.Client/Features/FeaturesClient.cs">CountAudienceUsersAsync</a>(AudienceRequestBody { ... }) -> CountAudienceUsersResponse</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```csharp
-await client.Features.CountAudienceUsersAsync(
-    new AudienceRequestBody
-    {
-        ConditionGroups = new List<CreateOrUpdateConditionGroupRequestBody>()
-        {
-            new CreateOrUpdateConditionGroupRequestBody
-            {
-                Conditions = new List<CreateOrUpdateConditionRequestBody>()
-                {
-                    new CreateOrUpdateConditionRequestBody
-                    {
-                        ConditionType = CreateOrUpdateConditionRequestBodyConditionType.Company,
-                        Operator = CreateOrUpdateConditionRequestBodyOperator.Eq,
-                        ResourceIds = new List<string>() { "resource_ids" },
-                    },
-                },
-            },
-        },
-        Conditions = new List<CreateOrUpdateConditionRequestBody>()
-        {
-            new CreateOrUpdateConditionRequestBody
-            {
-                ConditionType = CreateOrUpdateConditionRequestBodyConditionType.Company,
-                Operator = CreateOrUpdateConditionRequestBodyOperator.Eq,
-                ResourceIds = new List<string>() { "resource_ids" },
-            },
-        },
-    }
-);
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**request:** `AudienceRequestBody` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Features.<a href="/src/SchematicHQ.Client/Features/FeaturesClient.cs">ListAudienceCompaniesAsync</a>(AudienceRequestBody { ... }) -> ListAudienceCompaniesResponse</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```csharp
-await client.Features.ListAudienceCompaniesAsync(
-    new AudienceRequestBody
-    {
-        ConditionGroups = new List<CreateOrUpdateConditionGroupRequestBody>()
-        {
-            new CreateOrUpdateConditionGroupRequestBody
-            {
-                Conditions = new List<CreateOrUpdateConditionRequestBody>()
-                {
-                    new CreateOrUpdateConditionRequestBody
-                    {
-                        ConditionType = CreateOrUpdateConditionRequestBodyConditionType.Company,
-                        Operator = CreateOrUpdateConditionRequestBodyOperator.Eq,
-                        ResourceIds = new List<string>() { "resource_ids" },
-                    },
-                },
-            },
-        },
-        Conditions = new List<CreateOrUpdateConditionRequestBody>()
-        {
-            new CreateOrUpdateConditionRequestBody
-            {
-                ConditionType = CreateOrUpdateConditionRequestBodyConditionType.Company,
-                Operator = CreateOrUpdateConditionRequestBodyOperator.Eq,
-                ResourceIds = new List<string>() { "resource_ids" },
-            },
-        },
-    }
-);
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**request:** `AudienceRequestBody` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Features.<a href="/src/SchematicHQ.Client/Features/FeaturesClient.cs">ListAudienceUsersAsync</a>(AudienceRequestBody { ... }) -> ListAudienceUsersResponse</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```csharp
-await client.Features.ListAudienceUsersAsync(
-    new AudienceRequestBody
-    {
-        ConditionGroups = new List<CreateOrUpdateConditionGroupRequestBody>()
-        {
-            new CreateOrUpdateConditionGroupRequestBody
-            {
-                Conditions = new List<CreateOrUpdateConditionRequestBody>()
-                {
-                    new CreateOrUpdateConditionRequestBody
-                    {
-                        ConditionType = CreateOrUpdateConditionRequestBodyConditionType.Company,
-                        Operator = CreateOrUpdateConditionRequestBodyOperator.Eq,
-                        ResourceIds = new List<string>() { "resource_ids" },
-                    },
-                },
-            },
-        },
-        Conditions = new List<CreateOrUpdateConditionRequestBody>()
-        {
-            new CreateOrUpdateConditionRequestBody
-            {
-                ConditionType = CreateOrUpdateConditionRequestBodyConditionType.Company,
-                Operator = CreateOrUpdateConditionRequestBodyOperator.Eq,
-                ResourceIds = new List<string>() { "resource_ids" },
-            },
-        },
-    }
-);
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**request:** `AudienceRequestBody` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Features.<a href="/src/SchematicHQ.Client/Features/FeaturesClient.cs">ListFeaturesAsync</a>(ListFeaturesRequest { ... }) -> ListFeaturesResponse</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```csharp
-await client.Features.ListFeaturesAsync(
-    new ListFeaturesRequest
-    {
-        Q = "q",
-        WithoutCompanyOverrideFor = "without_company_override_for",
-        WithoutPlanEntitlementFor = "without_plan_entitlement_for",
-        BooleanRequireEvent = true,
-        Limit = 1,
-        Offset = 1,
-    }
-);
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**request:** `ListFeaturesRequest` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Features.<a href="/src/SchematicHQ.Client/Features/FeaturesClient.cs">CreateFeatureAsync</a>(CreateFeatureRequestBody { ... }) -> CreateFeatureResponse</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```csharp
-await client.Features.CreateFeatureAsync(
-    new CreateFeatureRequestBody
-    {
-        Description = "description",
-        FeatureType = CreateFeatureRequestBodyFeatureType.Boolean,
-        Name = "name",
-    }
-);
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**request:** `CreateFeatureRequestBody` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Features.<a href="/src/SchematicHQ.Client/Features/FeaturesClient.cs">GetFeatureAsync</a>(featureId) -> GetFeatureResponse</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```csharp
-await client.Features.GetFeatureAsync("feature_id");
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**featureId:** `string` — feature_id
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Features.<a href="/src/SchematicHQ.Client/Features/FeaturesClient.cs">UpdateFeatureAsync</a>(featureId, UpdateFeatureRequestBody { ... }) -> UpdateFeatureResponse</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```csharp
-await client.Features.UpdateFeatureAsync("feature_id", new UpdateFeatureRequestBody());
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**featureId:** `string` — feature_id
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request:** `UpdateFeatureRequestBody` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Features.<a href="/src/SchematicHQ.Client/Features/FeaturesClient.cs">DeleteFeatureAsync</a>(featureId) -> DeleteFeatureResponse</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```csharp
-await client.Features.DeleteFeatureAsync("feature_id");
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**featureId:** `string` — feature_id
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Features.<a href="/src/SchematicHQ.Client/Features/FeaturesClient.cs">CountFeaturesAsync</a>(CountFeaturesRequest { ... }) -> CountFeaturesResponse</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```csharp
-await client.Features.CountFeaturesAsync(
-    new CountFeaturesRequest
-    {
-        Q = "q",
-        WithoutCompanyOverrideFor = "without_company_override_for",
-        WithoutPlanEntitlementFor = "without_plan_entitlement_for",
-        BooleanRequireEvent = true,
-        Limit = 1,
-        Offset = 1,
-    }
-);
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**request:** `CountFeaturesRequest` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Features.<a href="/src/SchematicHQ.Client/Features/FeaturesClient.cs">ListFlagsAsync</a>(ListFlagsRequest { ... }) -> ListFlagsResponse</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```csharp
-await client.Features.ListFlagsAsync(
-    new ListFlagsRequest
-    {
-        FeatureId = "feature_id",
-        Q = "q",
-        Limit = 1,
-        Offset = 1,
-    }
-);
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**request:** `ListFlagsRequest` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Features.<a href="/src/SchematicHQ.Client/Features/FeaturesClient.cs">CreateFlagAsync</a>(CreateFlagRequestBody { ... }) -> CreateFlagResponse</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```csharp
-await client.Features.CreateFlagAsync(
-    new CreateFlagRequestBody
-    {
-        DefaultValue = true,
-        Description = "description",
-        FlagType = "boolean",
-        Key = "key",
-        Name = "name",
-    }
-);
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**request:** `CreateFlagRequestBody` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Features.<a href="/src/SchematicHQ.Client/Features/FeaturesClient.cs">GetFlagAsync</a>(flagId) -> GetFlagResponse</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```csharp
-await client.Features.GetFlagAsync("flag_id");
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**flagId:** `string` — flag_id
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Features.<a href="/src/SchematicHQ.Client/Features/FeaturesClient.cs">UpdateFlagAsync</a>(flagId, CreateFlagRequestBody { ... }) -> UpdateFlagResponse</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```csharp
-await client.Features.UpdateFlagAsync(
-    "flag_id",
-    new CreateFlagRequestBody
-    {
-        DefaultValue = true,
-        Description = "description",
-        FlagType = "boolean",
-        Key = "key",
-        Name = "name",
-    }
-);
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**flagId:** `string` — flag_id
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request:** `CreateFlagRequestBody` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Features.<a href="/src/SchematicHQ.Client/Features/FeaturesClient.cs">DeleteFlagAsync</a>(flagId) -> DeleteFlagResponse</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```csharp
-await client.Features.DeleteFlagAsync("flag_id");
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**flagId:** `string` — flag_id
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Features.<a href="/src/SchematicHQ.Client/Features/FeaturesClient.cs">UpdateFlagRulesAsync</a>(flagId, UpdateFlagRulesRequestBody { ... }) -> UpdateFlagRulesResponse</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```csharp
-await client.Features.UpdateFlagRulesAsync(
-    "flag_id",
-    new UpdateFlagRulesRequestBody
-    {
-        Rules = new List<CreateOrUpdateRuleRequestBody>()
-        {
-            new CreateOrUpdateRuleRequestBody
-            {
-                ConditionGroups = new List<CreateOrUpdateConditionGroupRequestBody>()
-                {
-                    new CreateOrUpdateConditionGroupRequestBody
-                    {
-                        Conditions = new List<CreateOrUpdateConditionRequestBody>()
-                        {
-                            new CreateOrUpdateConditionRequestBody
-                            {
-                                ConditionType =
-                                    CreateOrUpdateConditionRequestBodyConditionType.Company,
-                                Operator = CreateOrUpdateConditionRequestBodyOperator.Eq,
-                                ResourceIds = new List<string>() { "resource_ids" },
-                            },
-                        },
-                    },
-                },
-                Conditions = new List<CreateOrUpdateConditionRequestBody>()
-                {
-                    new CreateOrUpdateConditionRequestBody
-                    {
-                        ConditionType = CreateOrUpdateConditionRequestBodyConditionType.Company,
-                        Operator = CreateOrUpdateConditionRequestBodyOperator.Eq,
-                        ResourceIds = new List<string>() { "resource_ids" },
-                    },
-                },
-                Name = "name",
-                Priority = 1,
-                Value = true,
-            },
-        },
-    }
-);
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**flagId:** `string` — flag_id
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request:** `UpdateFlagRulesRequestBody` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Features.<a href="/src/SchematicHQ.Client/Features/FeaturesClient.cs">CheckFlagAsync</a>(key, CheckFlagRequestBody { ... }) -> CheckFlagResponse</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```csharp
-await client.Features.CheckFlagAsync("key", new CheckFlagRequestBody());
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**key:** `string` — key
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request:** `CheckFlagRequestBody` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Features.<a href="/src/SchematicHQ.Client/Features/FeaturesClient.cs">CheckFlagsAsync</a>(CheckFlagRequestBody { ... }) -> CheckFlagsResponse</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```csharp
-await client.Features.CheckFlagsAsync(new CheckFlagRequestBody());
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**request:** `CheckFlagRequestBody` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Features.<a href="/src/SchematicHQ.Client/Features/FeaturesClient.cs">CountFlagsAsync</a>(CountFlagsRequest { ... }) -> CountFlagsResponse</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```csharp
-await client.Features.CountFlagsAsync(
-    new CountFlagsRequest
-    {
-        FeatureId = "feature_id",
-        Q = "q",
-        Limit = 1,
-        Offset = 1,
-    }
-);
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**request:** `CountFlagsRequest` 
-    
 </dd>
 </dl>
 </dd>
@@ -2754,7 +1828,7 @@ await client.Credits.CreateBillingCreditAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Credits.<a href="/src/SchematicHQ.Client/Credits/CreditsClient.cs">GetSingleBillingCreditAsync</a>(billingId) -> GetSingleBillingCreditResponse</code></summary>
+<details><summary><code>client.Credits.<a href="/src/SchematicHQ.Client/Credits/CreditsClient.cs">GetSingleBillingCreditAsync</a>(creditId) -> GetSingleBillingCreditResponse</code></summary>
 <dl>
 <dd>
 
@@ -2767,7 +1841,7 @@ await client.Credits.CreateBillingCreditAsync(
 <dd>
 
 ```csharp
-await client.Credits.GetSingleBillingCreditAsync("billing_id");
+await client.Credits.GetSingleBillingCreditAsync("credit_id");
 ```
 </dd>
 </dl>
@@ -2782,7 +1856,7 @@ await client.Credits.GetSingleBillingCreditAsync("billing_id");
 <dl>
 <dd>
 
-**billingId:** `string` — billing_id
+**creditId:** `string` — credit_id
     
 </dd>
 </dl>
@@ -2794,7 +1868,7 @@ await client.Credits.GetSingleBillingCreditAsync("billing_id");
 </dl>
 </details>
 
-<details><summary><code>client.Credits.<a href="/src/SchematicHQ.Client/Credits/CreditsClient.cs">UpdateBillingCreditAsync</a>(billingId, UpdateBillingCreditRequestBody { ... }) -> UpdateBillingCreditResponse</code></summary>
+<details><summary><code>client.Credits.<a href="/src/SchematicHQ.Client/Credits/CreditsClient.cs">UpdateBillingCreditAsync</a>(creditId, UpdateBillingCreditRequestBody { ... }) -> UpdateBillingCreditResponse</code></summary>
 <dl>
 <dd>
 
@@ -2808,7 +1882,7 @@ await client.Credits.GetSingleBillingCreditAsync("billing_id");
 
 ```csharp
 await client.Credits.UpdateBillingCreditAsync(
-    "billing_id",
+    "credit_id",
     new UpdateBillingCreditRequestBody { Description = "description", Name = "name" }
 );
 ```
@@ -2825,7 +1899,7 @@ await client.Credits.UpdateBillingCreditAsync(
 <dl>
 <dd>
 
-**billingId:** `string` — billing_id
+**creditId:** `string` — credit_id
     
 </dd>
 </dl>
@@ -2845,7 +1919,7 @@ await client.Credits.UpdateBillingCreditAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Credits.<a href="/src/SchematicHQ.Client/Credits/CreditsClient.cs">SoftDeleteBillingCreditAsync</a>(billingId) -> SoftDeleteBillingCreditResponse</code></summary>
+<details><summary><code>client.Credits.<a href="/src/SchematicHQ.Client/Credits/CreditsClient.cs">SoftDeleteBillingCreditAsync</a>(creditId) -> SoftDeleteBillingCreditResponse</code></summary>
 <dl>
 <dd>
 
@@ -2858,7 +1932,7 @@ await client.Credits.UpdateBillingCreditAsync(
 <dd>
 
 ```csharp
-await client.Credits.SoftDeleteBillingCreditAsync("billing_id");
+await client.Credits.SoftDeleteBillingCreditAsync("credit_id");
 ```
 </dd>
 </dl>
@@ -2873,7 +1947,7 @@ await client.Credits.SoftDeleteBillingCreditAsync("billing_id");
 <dl>
 <dd>
 
-**billingId:** `string` — billing_id
+**creditId:** `string` — credit_id
     
 </dd>
 </dl>
@@ -2982,7 +2056,7 @@ await client.Credits.CreateCreditBundleAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Credits.<a href="/src/SchematicHQ.Client/Credits/CreditsClient.cs">GetCreditBundleAsync</a>(billingId) -> GetCreditBundleResponse</code></summary>
+<details><summary><code>client.Credits.<a href="/src/SchematicHQ.Client/Credits/CreditsClient.cs">GetCreditBundleAsync</a>(bundleId) -> GetCreditBundleResponse</code></summary>
 <dl>
 <dd>
 
@@ -2995,7 +2069,7 @@ await client.Credits.CreateCreditBundleAsync(
 <dd>
 
 ```csharp
-await client.Credits.GetCreditBundleAsync("billing_id");
+await client.Credits.GetCreditBundleAsync("bundle_id");
 ```
 </dd>
 </dl>
@@ -3010,7 +2084,7 @@ await client.Credits.GetCreditBundleAsync("billing_id");
 <dl>
 <dd>
 
-**billingId:** `string` — billing_id
+**bundleId:** `string` — bundle_id
     
 </dd>
 </dl>
@@ -3022,7 +2096,7 @@ await client.Credits.GetCreditBundleAsync("billing_id");
 </dl>
 </details>
 
-<details><summary><code>client.Credits.<a href="/src/SchematicHQ.Client/Credits/CreditsClient.cs">UpdateCreditBundleDetailsAsync</a>(billingId, UpdateCreditBundleDetailsRequestBody { ... }) -> UpdateCreditBundleDetailsResponse</code></summary>
+<details><summary><code>client.Credits.<a href="/src/SchematicHQ.Client/Credits/CreditsClient.cs">UpdateCreditBundleDetailsAsync</a>(bundleId, UpdateCreditBundleDetailsRequestBody { ... }) -> UpdateCreditBundleDetailsResponse</code></summary>
 <dl>
 <dd>
 
@@ -3036,7 +2110,7 @@ await client.Credits.GetCreditBundleAsync("billing_id");
 
 ```csharp
 await client.Credits.UpdateCreditBundleDetailsAsync(
-    "billing_id",
+    "bundle_id",
     new UpdateCreditBundleDetailsRequestBody { BundleName = "bundle_name", PricePerUnit = 1 }
 );
 ```
@@ -3053,7 +2127,7 @@ await client.Credits.UpdateCreditBundleDetailsAsync(
 <dl>
 <dd>
 
-**billingId:** `string` — billing_id
+**bundleId:** `string` — bundle_id
     
 </dd>
 </dl>
@@ -3073,7 +2147,7 @@ await client.Credits.UpdateCreditBundleDetailsAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Credits.<a href="/src/SchematicHQ.Client/Credits/CreditsClient.cs">DeleteCreditBundleAsync</a>(billingId) -> DeleteCreditBundleResponse</code></summary>
+<details><summary><code>client.Credits.<a href="/src/SchematicHQ.Client/Credits/CreditsClient.cs">DeleteCreditBundleAsync</a>(bundleId) -> DeleteCreditBundleResponse</code></summary>
 <dl>
 <dd>
 
@@ -3086,7 +2160,7 @@ await client.Credits.UpdateCreditBundleDetailsAsync(
 <dd>
 
 ```csharp
-await client.Credits.DeleteCreditBundleAsync("billing_id");
+await client.Credits.DeleteCreditBundleAsync("bundle_id");
 ```
 </dd>
 </dl>
@@ -3101,7 +2175,7 @@ await client.Credits.DeleteCreditBundleAsync("billing_id");
 <dl>
 <dd>
 
-**billingId:** `string` — billing_id
+**bundleId:** `string` — bundle_id
     
 </dd>
 </dl>
@@ -3209,7 +2283,7 @@ await client.Credits.CountBillingCreditsAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Credits.<a href="/src/SchematicHQ.Client/Credits/CreditsClient.cs">ZeroOutGrantAsync</a>(billingId, ZeroOutGrantRequestBody { ... }) -> ZeroOutGrantResponse</code></summary>
+<details><summary><code>client.Credits.<a href="/src/SchematicHQ.Client/Credits/CreditsClient.cs">ZeroOutGrantAsync</a>(grantId, ZeroOutGrantRequestBody { ... }) -> ZeroOutGrantResponse</code></summary>
 <dl>
 <dd>
 
@@ -3222,7 +2296,7 @@ await client.Credits.CountBillingCreditsAsync(
 <dd>
 
 ```csharp
-await client.Credits.ZeroOutGrantAsync("billing_id", new ZeroOutGrantRequestBody());
+await client.Credits.ZeroOutGrantAsync("grant_id", new ZeroOutGrantRequestBody());
 ```
 </dd>
 </dl>
@@ -3237,7 +2311,7 @@ await client.Credits.ZeroOutGrantAsync("billing_id", new ZeroOutGrantRequestBody
 <dl>
 <dd>
 
-**billingId:** `string` — billing_id
+**grantId:** `string` — grant_id
     
 </dd>
 </dl>
@@ -3448,6 +2522,110 @@ await client.Credits.ListGrantsForCreditAsync(
 </dl>
 </details>
 
+<details><summary><code>client.Credits.<a href="/src/SchematicHQ.Client/Credits/CreditsClient.cs">GetEnrichedCreditLedgerAsync</a>(GetEnrichedCreditLedgerRequest { ... }) -> GetEnrichedCreditLedgerResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Credits.GetEnrichedCreditLedgerAsync(
+    new GetEnrichedCreditLedgerRequest
+    {
+        CompanyId = "company_id",
+        BillingCreditId = "billing_credit_id",
+        FeatureId = "feature_id",
+        Period = GetEnrichedCreditLedgerRequestPeriod.Daily,
+        StartTime = "start_time",
+        EndTime = "end_time",
+        Limit = 1,
+        Offset = 1,
+    }
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `GetEnrichedCreditLedgerRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Credits.<a href="/src/SchematicHQ.Client/Credits/CreditsClient.cs">CountCreditLedgerAsync</a>(CountCreditLedgerRequest { ... }) -> CountCreditLedgerResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Credits.CountCreditLedgerAsync(
+    new CountCreditLedgerRequest
+    {
+        CompanyId = "company_id",
+        BillingCreditId = "billing_credit_id",
+        FeatureId = "feature_id",
+        Period = CountCreditLedgerRequestPeriod.Daily,
+        StartTime = "start_time",
+        EndTime = "end_time",
+        Limit = 1,
+        Offset = 1,
+    }
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `CountCreditLedgerRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.Credits.<a href="/src/SchematicHQ.Client/Credits/CreditsClient.cs">ListBillingPlanCreditGrantsAsync</a>(ListBillingPlanCreditGrantsRequest { ... }) -> ListBillingPlanCreditGrantsResponse</code></summary>
 <dl>
 <dd>
@@ -3545,7 +2723,7 @@ await client.Credits.CreateBillingPlanCreditGrantAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Credits.<a href="/src/SchematicHQ.Client/Credits/CreditsClient.cs">DeleteBillingPlanCreditGrantAsync</a>(billingId) -> DeleteBillingPlanCreditGrantResponse</code></summary>
+<details><summary><code>client.Credits.<a href="/src/SchematicHQ.Client/Credits/CreditsClient.cs">DeleteBillingPlanCreditGrantAsync</a>(planGrantId) -> DeleteBillingPlanCreditGrantResponse</code></summary>
 <dl>
 <dd>
 
@@ -3558,7 +2736,7 @@ await client.Credits.CreateBillingPlanCreditGrantAsync(
 <dd>
 
 ```csharp
-await client.Credits.DeleteBillingPlanCreditGrantAsync("billing_id");
+await client.Credits.DeleteBillingPlanCreditGrantAsync("plan_grant_id");
 ```
 </dd>
 </dl>
@@ -3573,7 +2751,7 @@ await client.Credits.DeleteBillingPlanCreditGrantAsync("billing_id");
 <dl>
 <dd>
 
-**billingId:** `string` — billing_id
+**planGrantId:** `string` — plan_grant_id
     
 </dd>
 </dl>
@@ -3785,6 +2963,114 @@ await client.Checkout.PreviewCheckoutInternalAsync(
 <dd>
 
 **request:** `ChangeSubscriptionInternalRequestBody` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Checkout.<a href="/src/SchematicHQ.Client/Checkout/CheckoutClient.cs">ManagePlanAsync</a>(ManagePlanRequest { ... }) -> ManagePlanResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Checkout.ManagePlanAsync(
+    new ManagePlanRequest
+    {
+        AddOnSelections = new List<PlanSelection>() { new PlanSelection { PlanId = "plan_id" } },
+        CompanyId = "company_id",
+        CreditBundles = new List<UpdateCreditBundleRequestBody>()
+        {
+            new UpdateCreditBundleRequestBody { BundleId = "bundle_id", Quantity = 1 },
+        },
+        PayInAdvanceEntitlements = new List<UpdatePayInAdvanceRequestBody>()
+        {
+            new UpdatePayInAdvanceRequestBody { PriceId = "price_id", Quantity = 1 },
+        },
+    }
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `ManagePlanRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Checkout.<a href="/src/SchematicHQ.Client/Checkout/CheckoutClient.cs">PreviewManagePlanAsync</a>(ManagePlanRequest { ... }) -> PreviewManagePlanResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Checkout.PreviewManagePlanAsync(
+    new ManagePlanRequest
+    {
+        AddOnSelections = new List<PlanSelection>() { new PlanSelection { PlanId = "plan_id" } },
+        CompanyId = "company_id",
+        CreditBundles = new List<UpdateCreditBundleRequestBody>()
+        {
+            new UpdateCreditBundleRequestBody { BundleId = "bundle_id", Quantity = 1 },
+        },
+        PayInAdvanceEntitlements = new List<UpdatePayInAdvanceRequestBody>()
+        {
+            new UpdatePayInAdvanceRequestBody { PriceId = "price_id", Quantity = 1 },
+        },
+    }
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `ManagePlanRequest` 
     
 </dd>
 </dl>
@@ -4945,6 +4231,95 @@ await client.Companies.GetEntityTraitValuesAsync(
 <dd>
 
 **request:** `GetEntityTraitValuesRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Companies.<a href="/src/SchematicHQ.Client/Companies/CompaniesClient.cs">ListPlanChangesAsync</a>(ListPlanChangesRequest { ... }) -> ListPlanChangesResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Companies.ListPlanChangesAsync(
+    new ListPlanChangesRequest
+    {
+        Action = "action",
+        BasePlanAction = "base_plan_action",
+        CompanyId = "company_id",
+        Limit = 1,
+        Offset = 1,
+    }
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `ListPlanChangesRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Companies.<a href="/src/SchematicHQ.Client/Companies/CompaniesClient.cs">GetPlanChangeAsync</a>(planChangeId) -> GetPlanChangeResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Companies.GetPlanChangeAsync("plan_change_id");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**planChangeId:** `string` — plan_change_id
     
 </dd>
 </dl>
@@ -6625,163 +6000,6 @@ await client.Plans.UpdateCompanyPlansAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Plans.<a href="/src/SchematicHQ.Client/Plans/PlansClient.cs">GetAudienceAsync</a>(planAudienceId) -> GetAudienceResponse</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```csharp
-await client.Plans.GetAudienceAsync("plan_audience_id");
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**planAudienceId:** `string` — plan_audience_id
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Plans.<a href="/src/SchematicHQ.Client/Plans/PlansClient.cs">UpdateAudienceAsync</a>(planAudienceId, UpdateAudienceRequestBody { ... }) -> UpdateAudienceResponse</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```csharp
-await client.Plans.UpdateAudienceAsync(
-    "plan_audience_id",
-    new UpdateAudienceRequestBody
-    {
-        ConditionGroups = new List<CreateOrUpdateConditionGroupRequestBody>()
-        {
-            new CreateOrUpdateConditionGroupRequestBody
-            {
-                Conditions = new List<CreateOrUpdateConditionRequestBody>()
-                {
-                    new CreateOrUpdateConditionRequestBody
-                    {
-                        ConditionType = CreateOrUpdateConditionRequestBodyConditionType.Company,
-                        Operator = CreateOrUpdateConditionRequestBodyOperator.Eq,
-                        ResourceIds = new List<string>() { "resource_ids" },
-                    },
-                },
-            },
-        },
-        Conditions = new List<CreateOrUpdateConditionRequestBody>()
-        {
-            new CreateOrUpdateConditionRequestBody
-            {
-                ConditionType = CreateOrUpdateConditionRequestBodyConditionType.Company,
-                Operator = CreateOrUpdateConditionRequestBodyOperator.Eq,
-                ResourceIds = new List<string>() { "resource_ids" },
-            },
-        },
-    }
-);
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**planAudienceId:** `string` — plan_audience_id
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request:** `UpdateAudienceRequestBody` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Plans.<a href="/src/SchematicHQ.Client/Plans/PlansClient.cs">DeleteAudienceAsync</a>(planAudienceId) -> DeleteAudienceResponse</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```csharp
-await client.Plans.DeleteAudienceAsync("plan_audience_id");
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**planAudienceId:** `string` — plan_audience_id
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
 <details><summary><code>client.Plans.<a href="/src/SchematicHQ.Client/Plans/PlansClient.cs">ListPlansAsync</a>(ListPlansRequest { ... }) -> ListPlansResponse</code></summary>
 <dl>
 <dd>
@@ -8060,6 +7278,740 @@ await client.Events.GetSegmentIntegrationStatusAsync();
 </dl>
 </details>
 
+## features
+<details><summary><code>client.Features.<a href="/src/SchematicHQ.Client/Features/FeaturesClient.cs">ListFeaturesAsync</a>(ListFeaturesRequest { ... }) -> ListFeaturesResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Features.ListFeaturesAsync(
+    new ListFeaturesRequest
+    {
+        Q = "q",
+        WithoutCompanyOverrideFor = "without_company_override_for",
+        WithoutPlanEntitlementFor = "without_plan_entitlement_for",
+        BooleanRequireEvent = true,
+        Limit = 1,
+        Offset = 1,
+    }
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `ListFeaturesRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Features.<a href="/src/SchematicHQ.Client/Features/FeaturesClient.cs">CreateFeatureAsync</a>(CreateFeatureRequestBody { ... }) -> CreateFeatureResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Features.CreateFeatureAsync(
+    new CreateFeatureRequestBody
+    {
+        Description = "description",
+        FeatureType = CreateFeatureRequestBodyFeatureType.Boolean,
+        Name = "name",
+    }
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `CreateFeatureRequestBody` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Features.<a href="/src/SchematicHQ.Client/Features/FeaturesClient.cs">GetFeatureAsync</a>(featureId) -> GetFeatureResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Features.GetFeatureAsync("feature_id");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**featureId:** `string` — feature_id
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Features.<a href="/src/SchematicHQ.Client/Features/FeaturesClient.cs">UpdateFeatureAsync</a>(featureId, UpdateFeatureRequestBody { ... }) -> UpdateFeatureResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Features.UpdateFeatureAsync("feature_id", new UpdateFeatureRequestBody());
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**featureId:** `string` — feature_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `UpdateFeatureRequestBody` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Features.<a href="/src/SchematicHQ.Client/Features/FeaturesClient.cs">DeleteFeatureAsync</a>(featureId) -> DeleteFeatureResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Features.DeleteFeatureAsync("feature_id");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**featureId:** `string` — feature_id
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Features.<a href="/src/SchematicHQ.Client/Features/FeaturesClient.cs">CountFeaturesAsync</a>(CountFeaturesRequest { ... }) -> CountFeaturesResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Features.CountFeaturesAsync(
+    new CountFeaturesRequest
+    {
+        Q = "q",
+        WithoutCompanyOverrideFor = "without_company_override_for",
+        WithoutPlanEntitlementFor = "without_plan_entitlement_for",
+        BooleanRequireEvent = true,
+        Limit = 1,
+        Offset = 1,
+    }
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `CountFeaturesRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Features.<a href="/src/SchematicHQ.Client/Features/FeaturesClient.cs">ListFlagsAsync</a>(ListFlagsRequest { ... }) -> ListFlagsResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Features.ListFlagsAsync(
+    new ListFlagsRequest
+    {
+        FeatureId = "feature_id",
+        Q = "q",
+        Limit = 1,
+        Offset = 1,
+    }
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `ListFlagsRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Features.<a href="/src/SchematicHQ.Client/Features/FeaturesClient.cs">CreateFlagAsync</a>(CreateFlagRequestBody { ... }) -> CreateFlagResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Features.CreateFlagAsync(
+    new CreateFlagRequestBody
+    {
+        DefaultValue = true,
+        Description = "description",
+        FlagType = "boolean",
+        Key = "key",
+        Name = "name",
+    }
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `CreateFlagRequestBody` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Features.<a href="/src/SchematicHQ.Client/Features/FeaturesClient.cs">GetFlagAsync</a>(flagId) -> GetFlagResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Features.GetFlagAsync("flag_id");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**flagId:** `string` — flag_id
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Features.<a href="/src/SchematicHQ.Client/Features/FeaturesClient.cs">UpdateFlagAsync</a>(flagId, CreateFlagRequestBody { ... }) -> UpdateFlagResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Features.UpdateFlagAsync(
+    "flag_id",
+    new CreateFlagRequestBody
+    {
+        DefaultValue = true,
+        Description = "description",
+        FlagType = "boolean",
+        Key = "key",
+        Name = "name",
+    }
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**flagId:** `string` — flag_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `CreateFlagRequestBody` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Features.<a href="/src/SchematicHQ.Client/Features/FeaturesClient.cs">DeleteFlagAsync</a>(flagId) -> DeleteFlagResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Features.DeleteFlagAsync("flag_id");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**flagId:** `string` — flag_id
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Features.<a href="/src/SchematicHQ.Client/Features/FeaturesClient.cs">UpdateFlagRulesAsync</a>(flagId, UpdateFlagRulesRequestBody { ... }) -> UpdateFlagRulesResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Features.UpdateFlagRulesAsync(
+    "flag_id",
+    new UpdateFlagRulesRequestBody
+    {
+        Rules = new List<CreateOrUpdateRuleRequestBody>()
+        {
+            new CreateOrUpdateRuleRequestBody
+            {
+                ConditionGroups = new List<CreateOrUpdateConditionGroupRequestBody>()
+                {
+                    new CreateOrUpdateConditionGroupRequestBody
+                    {
+                        Conditions = new List<CreateOrUpdateConditionRequestBody>()
+                        {
+                            new CreateOrUpdateConditionRequestBody
+                            {
+                                ConditionType =
+                                    CreateOrUpdateConditionRequestBodyConditionType.Company,
+                                Operator = CreateOrUpdateConditionRequestBodyOperator.Eq,
+                                ResourceIds = new List<string>() { "resource_ids" },
+                            },
+                        },
+                    },
+                },
+                Conditions = new List<CreateOrUpdateConditionRequestBody>()
+                {
+                    new CreateOrUpdateConditionRequestBody
+                    {
+                        ConditionType = CreateOrUpdateConditionRequestBodyConditionType.Company,
+                        Operator = CreateOrUpdateConditionRequestBodyOperator.Eq,
+                        ResourceIds = new List<string>() { "resource_ids" },
+                    },
+                },
+                Name = "name",
+                Priority = 1,
+                Value = true,
+            },
+        },
+    }
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**flagId:** `string` — flag_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `UpdateFlagRulesRequestBody` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Features.<a href="/src/SchematicHQ.Client/Features/FeaturesClient.cs">CheckFlagAsync</a>(key, CheckFlagRequestBody { ... }) -> CheckFlagResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Features.CheckFlagAsync("key", new CheckFlagRequestBody());
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**key:** `string` — key
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `CheckFlagRequestBody` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Features.<a href="/src/SchematicHQ.Client/Features/FeaturesClient.cs">CheckFlagsAsync</a>(CheckFlagRequestBody { ... }) -> CheckFlagsResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Features.CheckFlagsAsync(new CheckFlagRequestBody());
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `CheckFlagRequestBody` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Features.<a href="/src/SchematicHQ.Client/Features/FeaturesClient.cs">CountFlagsAsync</a>(CountFlagsRequest { ... }) -> CountFlagsResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Features.CountFlagsAsync(
+    new CountFlagsRequest
+    {
+        FeatureId = "feature_id",
+        Q = "q",
+        Limit = 1,
+        Offset = 1,
+    }
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `CountFlagsRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 ## plangroups
 <details><summary><code>client.Plangroups.<a href="/src/SchematicHQ.Client/Plangroups/PlangroupsClient.cs">GetPlanGroupAsync</a>() -> GetPlanGroupResponse</code></summary>
 <dl>
@@ -8119,9 +8071,11 @@ await client.Plangroups.CreatePlanGroupAsync(
         {
             new OrderedPlansInGroup { PlanId = "plan_id" },
         },
+        PreventDowngradesWhenOverLimit = true,
         ShowCredits = true,
         ShowPeriodToggle = true,
         ShowZeroPriceAsFree = true,
+        SyncCustomerBillingDetailsForTax = true,
     }
 );
 ```
@@ -8184,9 +8138,11 @@ await client.Plangroups.UpdatePlanGroupAsync(
         {
             new OrderedPlansInGroup { PlanId = "plan_id" },
         },
+        PreventDowngradesWhenOverLimit = true,
         ShowCredits = true,
         ShowPeriodToggle = true,
         ShowZeroPriceAsFree = true,
+        SyncCustomerBillingDetailsForTax = true,
     }
 );
 ```

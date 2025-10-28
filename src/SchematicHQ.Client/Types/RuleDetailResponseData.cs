@@ -34,9 +34,6 @@ public record RuleDetailResponseData : IJsonOnDeserialized
     [JsonPropertyName("name")]
     public required string Name { get; set; }
 
-    [JsonPropertyName("plan_id")]
-    public string? PlanId { get; set; }
-
     [JsonPropertyName("priority")]
     public required int Priority { get; set; }
 
