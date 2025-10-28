@@ -52,6 +52,45 @@ public partial class Schematic
             throw new ArgumentException("ReplicatorHealthUrl is required when ReplicatorMode is enabled");
         }
 
+        // Validate that Redis cache is configured when replicator mode is enabled
+        if (_replicatorMode)
+        {
+            var hasRedisCache = false;
+
+            // Check if Redis is configured via CacheConfiguration
+            if (_options.CacheConfiguration?.ProviderType == CacheProviderType.Redis && 
+                _options.CacheConfiguration.RedisConfig != null)
+            {
+                hasRedisCache = true;
+            }
+
+            // Check if Redis is configured via DatastreamOptions
+            if (_options.DatastreamOptions?.CacheProviderType == DatastreamCacheProviderType.Redis && 
+                _options.DatastreamOptions.RedisConfig != null)
+            {
+                hasRedisCache = true;
+            }
+
+            // Check if explicit Redis cache providers are configured
+            if (_options.CacheProviders.Count > 0)
+            {
+                foreach (var provider in _options.CacheProviders)
+                {
+                    if (provider is RedisCache<bool?>)
+                    {
+                        hasRedisCache = true;
+                        break;
+                    }
+                }
+            }
+
+            if (!hasRedisCache)
+            {
+                throw new ArgumentException("Redis cache configuration is required when ReplicatorMode is enabled. " +
+                    "Configure Redis either through CacheConfiguration.RedisConfig or DatastreamOptions.RedisConfig.");
+            }
+        }
+
         var httpClient = _offline ? new HttpClient(new OfflineHttpMessageHandler()) : _options.HttpClient;
         API = new SchematicApi(apiKey, _options.WithHttpClient(httpClient));
         Accesstokens = API.Accesstokens;
