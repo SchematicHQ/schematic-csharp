@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SchematicHQ.Client", "SchematicHQ.Client\SchematicHQ.Client.csproj", "{DD0FB689-EF1F-421E-9E0B-ED27B0CE542E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SchematicHQ.Client", "SchematicHQ.Client\SchematicHQ.Client.csproj", "{15D1CCD4-5737-4A96-A798-B80DC7FA7B60}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SchematicHQ.Client.Test", "SchematicHQ.Client.Test\SchematicHQ.Client.Test.csproj", "{D9BDB459-32CD-4F46-AE1B-8DEB50DFEE16}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SchematicHQ.Client.Test", "SchematicHQ.Client.Test\SchematicHQ.Client.Test.csproj", "{507F194A-BC7A-43E9-A3F0-48A3A91337EA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -16,13 +16,13 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{DD0FB689-EF1F-421E-9E0B-ED27B0CE542E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DD0FB689-EF1F-421E-9E0B-ED27B0CE542E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DD0FB689-EF1F-421E-9E0B-ED27B0CE542E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DD0FB689-EF1F-421E-9E0B-ED27B0CE542E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D9BDB459-32CD-4F46-AE1B-8DEB50DFEE16}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D9BDB459-32CD-4F46-AE1B-8DEB50DFEE16}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D9BDB459-32CD-4F46-AE1B-8DEB50DFEE16}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D9BDB459-32CD-4F46-AE1B-8DEB50DFEE16}.Release|Any CPU.Build.0 = Release|Any CPU
+		{15D1CCD4-5737-4A96-A798-B80DC7FA7B60}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{15D1CCD4-5737-4A96-A798-B80DC7FA7B60}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{15D1CCD4-5737-4A96-A798-B80DC7FA7B60}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{15D1CCD4-5737-4A96-A798-B80DC7FA7B60}.Release|Any CPU.Build.0 = Release|Any CPU
+		{507F194A-BC7A-43E9-A3F0-48A3A91337EA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{507F194A-BC7A-43E9-A3F0-48A3A91337EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{507F194A-BC7A-43E9-A3F0-48A3A91337EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{507F194A-BC7A-43E9-A3F0-48A3A91337EA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

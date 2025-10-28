@@ -50,9 +50,6 @@ public record RuleConditionDetailResponseData : IJsonOnDeserialized
     [JsonPropertyName("operator")]
     public required string Operator { get; set; }
 
-    [JsonPropertyName("plan_id")]
-    public string? PlanId { get; set; }
-
     [JsonPropertyName("resource_ids")]
     public IEnumerable<string> ResourceIds { get; set; } = new List<string>();
 

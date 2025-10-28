@@ -4,20 +4,27 @@ using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
 
+/// <summary>
+/// Input parameters
+/// </summary>
 [Serializable]
-public record AudienceRequestBody : IJsonOnDeserialized
+public record CountCreditLedgerParams : IJsonOnDeserialized
 {
     [JsonExtensionData]
     private readonly IDictionary<string, JsonElement> _extensionData =
         new Dictionary<string, JsonElement>();
 
-    [JsonPropertyName("condition_groups")]
-    public IEnumerable<CreateOrUpdateConditionGroupRequestBody> ConditionGroups { get; set; } =
-        new List<CreateOrUpdateConditionGroupRequestBody>();
+    [JsonPropertyName("billing_credit_id")]
+    public string? BillingCreditId { get; set; }
 
-    [JsonPropertyName("conditions")]
-    public IEnumerable<CreateOrUpdateConditionRequestBody> Conditions { get; set; } =
-        new List<CreateOrUpdateConditionRequestBody>();
+    [JsonPropertyName("company_id")]
+    public string? CompanyId { get; set; }
+
+    [JsonPropertyName("end_time")]
+    public string? EndTime { get; set; }
+
+    [JsonPropertyName("feature_id")]
+    public string? FeatureId { get; set; }
 
     /// <summary>
     /// Page limit (default 100)
@@ -31,8 +38,11 @@ public record AudienceRequestBody : IJsonOnDeserialized
     [JsonPropertyName("offset")]
     public int? Offset { get; set; }
 
-    [JsonPropertyName("q")]
-    public string? Q { get; set; }
+    [JsonPropertyName("period")]
+    public CountCreditLedgerResponseParamsPeriod? Period { get; set; }
+
+    [JsonPropertyName("start_time")]
+    public string? StartTime { get; set; }
 
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();

@@ -72,6 +72,9 @@ public record CompanyViewWithFeatureUsageResponseData : IJsonOnDeserialized
     [JsonPropertyName("plans")]
     public IEnumerable<GenericPreviewObject> Plans { get; set; } = new List<GenericPreviewObject>();
 
+    [JsonPropertyName("rules")]
+    public IEnumerable<Rule> Rules { get; set; } = new List<Rule>();
+
     /// <summary>
     /// A map of trait names to trait values
     /// </summary>

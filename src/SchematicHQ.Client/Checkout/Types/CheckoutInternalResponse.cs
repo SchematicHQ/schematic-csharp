@@ -12,7 +12,7 @@ public record CheckoutInternalResponse : IJsonOnDeserialized
         new Dictionary<string, JsonElement>();
 
     [JsonPropertyName("data")]
-    public required BillingSubscriptionResponseData Data { get; set; }
+    public required CheckoutSubscription Data { get; set; }
 
     /// <summary>
     /// Input parameters
