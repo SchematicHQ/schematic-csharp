@@ -718,6 +718,90 @@ if (flagValue) {
 
 The difference is that with Datastream enabled, after the initial data load, subsequent flag checks for the same company and user will be nearly instantaneous and won't require additional network requests.
 
+### Replicator Mode
+
+Replicator mode is an advanced Datastream configuration that maintains a local replica of your Schematic data using a persistent cache layer. This mode provides enhanced performance and reliability for high-throughput applications.
+
+#### Enabling Replicator Mode
+
+```csharp
+using SchematicHQ.Client;
+using SchematicHQ.Client.Datastream;
+
+var options = new ClientOptions
+{
+    UseDatastream = true,
+    
+    DatastreamOptions = new DatastreamOptions()
+        .WithReplicatorMode(enabled: true)
+};
+
+var schematic = new Schematic("YOUR_API_KEY", options);
+```
+
+#### Replicator Mode with Cache Configuration
+
+```csharp
+using SchematicHQ.Client;
+using SchematicHQ.Client.Cache;
+using SchematicHQ.Client.Datastream;
+
+var options = new ClientOptions
+{
+    UseDatastream = true,
+    
+    DatastreamOptions = new DatastreamOptions()
+        .WithReplicatorMode(enabled: true)
+        .WithRedisCache(new RedisCacheConfig
+        {
+            Endpoints = new List<string> { "redis://localhost:6379" },
+            KeyPrefix = "schematic-replica:",
+            CacheTTL = TimeSpan.FromHours(24)
+        })
+};
+
+var schematic = new Schematic("YOUR_API_KEY", options);
+```
+
+#### Advanced Replicator Configuration
+
+```csharp
+using SchematicHQ.Client;
+using SchematicHQ.Client.Cache;
+using SchematicHQ.Client.Datastream;
+
+var options = new ClientOptions
+{
+    UseDatastream = true,
+    
+    DatastreamOptions = new DatastreamOptions()
+        .WithReplicatorMode(enabled: true)
+        .WithHealthCheckUrl("https://health.your-app.com/schematic-replicator")
+        .WithRedisCache(new RedisCacheConfig
+        {
+            Endpoints = new List<string>
+            {
+                "redis-primary.example.com:6379",
+                "redis-replica.example.com:6379"
+            },
+            KeyPrefix = "schematic-replica:",
+            CacheTTL = TimeSpan.FromHours(24),
+            ConnectTimeout = 10000,
+            AbortOnConnectFail = false
+        })
+};
+
+var schematic = new Schematic("YOUR_API_KEY", options);
+```
+
+#### Replicator Mode Configuration Options
+
+| Configuration Method | Description | Example |
+|---------------------|-------------|---------|
+| `.WithReplicatorMode(enabled: true)` | Enables replicator mode with default settings | Basic replicator activation |
+| `.WithHealthCheckUrl(url)` | Sets a custom health check endpoint URL for monitoring replicator status | `"https://health.example.com/replicator"` |
+| `.WithRedisCache(config)` | Configures Redis as the cache provider for replicator data | Required for replicator mode |
+
 ## Contributing
 While we value open-source contributions to this SDK, this library
 is generated programmatically. Additions made directly to this library
