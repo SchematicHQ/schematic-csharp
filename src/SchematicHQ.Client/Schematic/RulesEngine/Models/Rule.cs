@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace SchematicHQ.Client.RulesEngine.Models
+namespace Schematic.RulesEngine.Models
 {
   public class Rule
   {
@@ -14,7 +14,7 @@ namespace SchematicHQ.Client.RulesEngine.Models
     public required string EnvironmentId { get; set; }
 
     [JsonPropertyName("rule_type")]
-    public RuleType RuleType { get; set; }
+    public Schematic.RulesEngine.RuleType RuleType { get; set; }
 
     [JsonPropertyName("name")]
     public string? Name { get; set; }
@@ -23,10 +23,10 @@ namespace SchematicHQ.Client.RulesEngine.Models
     public long Priority { get; set; }
 
     [JsonPropertyName("conditions")]
-    public List<Condition>? Conditions { get; set; } = new List<Condition>();
+    public List<global::Schematic.RulesEngine.Models.Condition>? Conditions { get; set; } = new List<global::Schematic.RulesEngine.Models.Condition>();
 
     [JsonPropertyName("condition_groups")]
-    public List<ConditionGroup>? ConditionGroups { get; set; } = new List<ConditionGroup>();
+    public List<global::Schematic.RulesEngine.Models.ConditionGroup>? ConditionGroups { get; set; } = new List<global::Schematic.RulesEngine.Models.ConditionGroup>();
 
     [JsonPropertyName("value")]
     public bool Value { get; set; }

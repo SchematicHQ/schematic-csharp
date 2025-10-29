@@ -2,12 +2,26 @@ using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using NUnit.Framework;
-using SchematicHQ.Client.RulesEngine.Models;
-using SchematicHQ.Client.RulesEngine.Utils;
+
+// Type aliases using global:: prefix to avoid conflicts with Schematic class
+using Company = global::Schematic.RulesEngine.Models.Company;
+using Rule = global::Schematic.RulesEngine.Models.Rule;
+using Condition = global::Schematic.RulesEngine.Models.Condition;
+using ConditionGroup = global::Schematic.RulesEngine.Models.ConditionGroup;
+using Flag = global::Schematic.RulesEngine.Models.Flag;
+using Trait = global::Schematic.RulesEngine.Models.Trait;
+using TraitDefinition = global::Schematic.RulesEngine.Models.TraitDefinition;
+using ComparableType = global::Schematic.RulesEngine.Utils.ComparableType;
+using EntityType = global::Schematic.RulesEngine.EntityType;
+
+using Schematic.RulesEngine.Models;
+using Schematic.RulesEngine.Utils;
+using Schematic.RulesEngine;
+using SchematicHQ.Client;
 using SchematicHQ.Client.Datastream;
 using SchematicHQ.Client.Test.Datastream.Mocks;
 
-namespace SchematicHQ.Client.Test.Datastream
+namespace SchematicHQ.Tests.Datastream
 {
     [TestFixture]
     public class DatastreamClientTests
@@ -89,13 +103,13 @@ namespace SchematicHQ.Client.Test.Datastream
                 },
                 Traits = new List<Trait>
                 {
-                    new Trait { 
-                        Value = "pro", 
-                        TraitDefinition = new TraitDefinition { 
-                            Id = "trait_123", 
-                            ComparableType = ComparableType.String, 
-                            EntityType = Client.RulesEngine.EntityType.Company 
-                        } 
+                    new Trait {
+                        Value = "pro",
+                        TraitDefinition = new TraitDefinition {
+                            Id = "trait_123",
+                            ComparableType = ComparableType.String,
+                            EntityType = EntityType.Company
+                        }
                     }
                 }
             };
@@ -133,14 +147,14 @@ namespace SchematicHQ.Client.Test.Datastream
             var flagsCache = flagsCacheField!.GetValue(_client);
             
             // Create a test flag
-            var testFlag = new SchematicHQ.Client.RulesEngine.Models.Flag
+            var testFlag = new Schematic.RulesEngine.Models.Flag
             {
                 Id = "flag_456",
                 Key = "another-feature",
                 AccountId = "acc_123",
                 EnvironmentId = "env_123",
                 DefaultValue = true,
-                Rules = new List<SchematicHQ.Client.RulesEngine.Models.Rule>()
+                Rules = new List<Schematic.RulesEngine.Models.Rule>()
             };
             
             // Generate the cache key for the flag
@@ -156,7 +170,7 @@ namespace SchematicHQ.Client.Test.Datastream
             // Verify flag is in cache now
             var getFlagMethod = typeof(DatastreamClient).GetMethod("GetFlag", 
                 System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-            var flag = getFlagMethod!.Invoke(_client, new object[] { "another-feature" }) as SchematicHQ.Client.RulesEngine.Models.Flag;
+            var flag = getFlagMethod!.Invoke(_client, new object[] { "another-feature" }) as Schematic.RulesEngine.Models.Flag;
             Assert.That(flag, Is.Not.Null, "Flag should be in cache after setup");
             
             // Now call CheckFlag directly on the client

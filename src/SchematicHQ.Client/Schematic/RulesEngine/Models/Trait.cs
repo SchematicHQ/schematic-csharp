@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace SchematicHQ.Client.RulesEngine.Models
+namespace Schematic.RulesEngine.Models
 {
   public class Trait
   {

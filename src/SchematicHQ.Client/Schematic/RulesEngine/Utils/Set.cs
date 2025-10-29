@@ -1,4 +1,4 @@
-namespace SchematicHQ.Client.RulesEngine.Utils
+namespace Schematic.RulesEngine.Utils
 {
     public class Set<T>
     {

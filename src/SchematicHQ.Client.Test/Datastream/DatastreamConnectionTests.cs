@@ -5,7 +5,7 @@ using NUnit.Framework;
 using SchematicHQ.Client.Datastream;
 using SchematicHQ.Client.Test.Datastream.Mocks;
 
-namespace SchematicHQ.Client.Test.Datastream
+namespace SchematicHQ.Tests.Datastream
 {
     [TestFixture]
     public class DatastreamConnectionTests

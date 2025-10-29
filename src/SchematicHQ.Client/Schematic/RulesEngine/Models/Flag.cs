@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace SchematicHQ.Client.RulesEngine.Models
+namespace Schematic.RulesEngine.Models
 {
     public class Flag
     {
@@ -17,7 +17,7 @@ namespace SchematicHQ.Client.RulesEngine.Models
         public required string Key { get; set; }
 
         [JsonPropertyName("rules")]
-        public List<Rule> Rules { get; set; } = new List<Rule>();
+        public List<global::Schematic.RulesEngine.Models.Rule> Rules { get; set; } = new List<global::Schematic.RulesEngine.Models.Rule>();
 
         [JsonPropertyName("default_value")]
         public bool DefaultValue { get; set; }

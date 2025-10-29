@@ -1,10 +1,14 @@
 using System.Text.Json;
 using NUnit.Framework;
-using SchematicHQ.Client.RulesEngine.Models;
+
+// Type aliases using global:: prefix to avoid conflicts with Schematic class
+using Company = global::Schematic.RulesEngine.Models.Company;
+
+using Schematic.RulesEngine.Models;
 using SchematicHQ.Client.Datastream;
 using SchematicHQ.Client.Test.Datastream.Mocks;
 
-namespace SchematicHQ.Client.Test.Datastream
+namespace SchematicHQ.Tests.Datastream
 {
     [TestFixture]
     public class DatastreamCacheTests

@@ -3,7 +3,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Globalization;
 
-namespace SchematicHQ.Client.RulesEngine
+namespace Schematic.RulesEngine
 {
     public class SnakeCaseEnumConverter<T> : JsonConverter<T> where T : struct, Enum
     {

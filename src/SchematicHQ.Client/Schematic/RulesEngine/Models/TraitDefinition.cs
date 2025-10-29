@@ -1,7 +1,7 @@
-using SchematicHQ.Client.RulesEngine.Utils;
+using Schematic.RulesEngine.Utils;
 using System.Text.Json.Serialization;
 
-namespace SchematicHQ.Client.RulesEngine.Models
+namespace Schematic.RulesEngine.Models
 {
     public class TraitDefinition
     {
@@ -9,10 +9,10 @@ namespace SchematicHQ.Client.RulesEngine.Models
     public required string Id { get; set; }
     
     [JsonPropertyName("comparable_type")]
-    public ComparableType ComparableType { get; set; }
-    
+    public Schematic.RulesEngine.Utils.ComparableType ComparableType { get; set; }
+
     [JsonPropertyName("entity_type")]
-    public EntityType EntityType { get; set; }
+    public Schematic.RulesEngine.EntityType EntityType { get; set; }
     
     }
 }

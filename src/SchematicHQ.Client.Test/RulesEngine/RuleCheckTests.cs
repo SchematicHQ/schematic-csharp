@@ -1,9 +1,24 @@
 using NUnit.Framework;
-using SchematicHQ.Client.RulesEngine;
-using SchematicHQ.Client.RulesEngine.Models;
-using SchematicHQ.Client.RulesEngine.Utils;
 
-namespace SchematicHQ.Client.Test.RulesEngine
+// Type aliases using global:: prefix to avoid conflicts with Schematic class
+using Company = global::Schematic.RulesEngine.Models.Company;
+using User = global::Schematic.RulesEngine.Models.User;
+using Rule = global::Schematic.RulesEngine.Models.Rule;
+using Condition = global::Schematic.RulesEngine.Models.Condition;
+using ConditionGroup = global::Schematic.RulesEngine.Models.ConditionGroup;
+using Trait = global::Schematic.RulesEngine.Models.Trait;
+using TraitDefinition = global::Schematic.RulesEngine.Models.TraitDefinition;
+using Subscription = global::Schematic.RulesEngine.Models.Subscription;
+using CompanyMetric = global::Schematic.RulesEngine.Models.CompanyMetric;
+using ConditionType = global::Schematic.RulesEngine.ConditionType;
+using RuleType = global::Schematic.RulesEngine.RuleType;
+using ComparableOperator = global::Schematic.RulesEngine.Utils.ComparableOperator;
+
+using Schematic.RulesEngine;
+using Schematic.RulesEngine.Models;
+using Schematic.RulesEngine.Utils;
+
+namespace SchematicHQ.Tests.RulesEngine
 {
   [TestFixture]
   public class RuleCheckServiceTests

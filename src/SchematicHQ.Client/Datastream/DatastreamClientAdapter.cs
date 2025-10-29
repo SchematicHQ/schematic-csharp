@@ -1,6 +1,6 @@
 using Microsoft.Extensions.Logging;
-using SchematicHQ.Client.RulesEngine;
-using SchematicHQ.Client.RulesEngine.Models;
+using Schematic.RulesEngine;
+using Schematic.RulesEngine.Models;
 using System;
 using System.Collections.Generic;
 using System.Threading;

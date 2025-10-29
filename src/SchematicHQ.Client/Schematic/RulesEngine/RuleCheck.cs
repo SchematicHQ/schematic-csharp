@@ -1,7 +1,7 @@
-using SchematicHQ.Client.RulesEngine.Models;
-using SchematicHQ.Client.RulesEngine.Utils;
+using Schematic.RulesEngine.Models;
+using Schematic.RulesEngine.Utils;
 
-namespace SchematicHQ.Client.RulesEngine
+namespace Schematic.RulesEngine
 {
     public class CheckScope
     {

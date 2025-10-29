@@ -1,9 +1,23 @@
-using SchematicHQ.Client.RulesEngine.Utils;
-using SchematicHQ.Client.RulesEngine.Models;
-using SchematicHQ.Client.RulesEngine;
 using NUnit.Framework;
 
-namespace SchematicHQ.Client.Test.RulesEngine
+// Type aliases using global:: prefix to avoid conflicts with Schematic class
+using Company = global::Schematic.RulesEngine.Models.Company;
+using User = global::Schematic.RulesEngine.Models.User;
+using Rule = global::Schematic.RulesEngine.Models.Rule;
+using Flag = global::Schematic.RulesEngine.Models.Flag;
+using Condition = global::Schematic.RulesEngine.Models.Condition;
+using ConditionGroup = global::Schematic.RulesEngine.Models.ConditionGroup;
+using TraitDefinition = global::Schematic.RulesEngine.Models.TraitDefinition;
+using Trait = global::Schematic.RulesEngine.Models.Trait;
+using ConditionType = global::Schematic.RulesEngine.ConditionType;
+using RuleType = global::Schematic.RulesEngine.RuleType;
+using ComparableOperator = global::Schematic.RulesEngine.Utils.ComparableOperator;
+
+using Schematic.RulesEngine.Utils;
+using Schematic.RulesEngine.Models;
+using Schematic.RulesEngine;
+
+namespace SchematicHQ.Tests.RulesEngine
 {
     [TestFixture]
     public class FlagCheckServiceTests

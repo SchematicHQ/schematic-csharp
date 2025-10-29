@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace SchematicHQ.Client.RulesEngine.Models
+namespace Schematic.RulesEngine.Models
 {
     public class User
     {
@@ -17,10 +17,10 @@ namespace SchematicHQ.Client.RulesEngine.Models
         public IDictionary<string, string> Keys { get; set; } = new Dictionary<string, string>();
 
         [JsonPropertyName("traits")]
-        public List<Trait> Traits { get; set; } = new List<Trait>();
+        public List<global::Schematic.RulesEngine.Models.Trait> Traits { get; set; } = new List<global::Schematic.RulesEngine.Models.Trait>();
 
         [JsonPropertyName("rules")]
-        public List<Rule> Rules { get; set; } = new List<Rule>();
+        public List<global::Schematic.RulesEngine.Models.Rule> Rules { get; set; } = new List<global::Schematic.RulesEngine.Models.Rule>();
 
     }
 }

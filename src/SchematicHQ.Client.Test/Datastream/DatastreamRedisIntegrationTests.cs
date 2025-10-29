@@ -8,7 +8,10 @@ using SchematicHQ.Client;
 using SchematicHQ.Client.Datastream;
 using SchematicHQ.Client.Test.Datastream.Mocks;
 
-namespace SchematicHQ.Client.Test.Datastream
+// Type alias to avoid conflict with Schematic namespace
+using SchematicClient = SchematicHQ.Client.Schematic;
+
+namespace SchematicHQ.Tests.Datastream
 {
     [TestFixture]
     public class DatastreamRedisIntegrationTests
@@ -65,7 +68,7 @@ namespace SchematicHQ.Client.Test.Datastream
             // Act & Assert - Should not throw TypeLoadException
             Assert.DoesNotThrow(() =>
             {
-                var schematic = new Schematic("test_api_key", clientOptions);
+                var schematic = new SchematicClient("test_api_key", clientOptions);
             });
         }
 
@@ -95,10 +98,10 @@ namespace SchematicHQ.Client.Test.Datastream
             // Act & Assert - The key test is that we can instantiate Schematic with Datastream enabled
             // which internally creates a DatastreamClient that depends on RulesEngine types
             Exception? caughtException = null;
-            Schematic? schematic = null;
+            SchematicClient? schematic = null;
             try
             {
-                schematic = new Schematic("test_api_key", clientOptions);
+                schematic = new SchematicClient("test_api_key", clientOptions);
                 // The DatastreamClient constructor is where the TypeLoadException would occur
                 // if the RulesEngine assembly wasn't properly referenced
                 Assert.That(schematic, Is.Not.Null);
@@ -150,7 +153,7 @@ namespace SchematicHQ.Client.Test.Datastream
             try
             {
                 // This is the exact type that was failing to load in the customer's issue
-                companyType = Type.GetType("SchematicHQ.Client.RulesEngine.Models.Company, SchematicHQ.Client");
+                companyType = Type.GetType("Schematic.RulesEngine.Models.Company, SchematicHQ.Client");
 
                 // If the type is null, try to load from any loaded assembly
                 if (companyType == null)
@@ -160,7 +163,7 @@ namespace SchematicHQ.Client.Test.Datastream
 
                     if (clientAssembly != null)
                     {
-                        companyType = clientAssembly.GetType("SchematicHQ.Client.RulesEngine.Models.Company");
+                        companyType = clientAssembly.GetType("Schematic.RulesEngine.Models.Company");
                     }
                 }
             }
@@ -176,13 +179,13 @@ namespace SchematicHQ.Client.Test.Datastream
                 "Should be able to load RulesEngine.Models.Company type");
 
             // Verify we can also load other RulesEngine types that DatastreamClient might use
-            var userType = Type.GetType("SchematicHQ.Client.RulesEngine.Models.User, SchematicHQ.Client") ??
+            var userType = Type.GetType("Schematic.RulesEngine.Models.User, SchematicHQ.Client") ??
                           AppDomain.CurrentDomain.GetAssemblies()
                               .FirstOrDefault(a => a.GetName().Name == "SchematicHQ.Client")
-                              ?.GetType("SchematicHQ.Client.RulesEngine.Models.User");
+                              ?.GetType("Schematic.RulesEngine.Models.User");
 
             Assert.That(userType, Is.Not.Null,
-                "Should be able to load SchematicHQ.Client.RulesEngine.Models.User type");
+                "Should be able to load Schematic.RulesEngine.Models.User type");
         }
 
     }

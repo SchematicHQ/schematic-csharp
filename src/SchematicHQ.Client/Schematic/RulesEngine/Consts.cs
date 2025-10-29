@@ -1,7 +1,7 @@
 using System.Text.Json.Serialization;
 using System.Collections.Generic;
 
-namespace SchematicHQ.Client.RulesEngine
+namespace Schematic.RulesEngine
 {
   [JsonConverter(typeof(JsonStringEnumConverter))]
   public enum ConditionType
@@ -44,7 +44,7 @@ namespace SchematicHQ.Client.RulesEngine
     User
   }
 
-  [JsonConverter(typeof(SchematicHQ.Client.RulesEngine.SnakeCaseEnumConverter<MetricPeriod>))]
+  [JsonConverter(typeof(Schematic.RulesEngine.SnakeCaseEnumConverter<MetricPeriod>))]
     public enum MetricPeriod
   {
     AllTime,
@@ -53,7 +53,7 @@ namespace SchematicHQ.Client.RulesEngine
     CurrentWeek
   }
 
-  [JsonConverter(typeof(SchematicHQ.Client.RulesEngine.SnakeCaseEnumConverter<MetricPeriodMonthReset>))]
+  [JsonConverter(typeof(Schematic.RulesEngine.SnakeCaseEnumConverter<MetricPeriodMonthReset>))]
   public enum MetricPeriodMonthReset
   {
     [JsonPropertyName("first_of_month")]

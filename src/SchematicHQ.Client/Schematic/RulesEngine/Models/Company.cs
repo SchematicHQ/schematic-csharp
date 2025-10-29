@@ -1,7 +1,7 @@
 using System.Diagnostics;
 using System.Text.Json.Serialization;
 
-namespace SchematicHQ.Client.RulesEngine.Models
+namespace Schematic.RulesEngine.Models
 {
   public class Company
   {
@@ -32,16 +32,16 @@ namespace SchematicHQ.Client.RulesEngine.Models
     public IDictionary<string, string> Keys { get; set; } = new Dictionary<string, string>();
 
     [JsonPropertyName("traits")]
-    public List<Trait> Traits { get; set; } = new List<Trait>();
+    public List<global::Schematic.RulesEngine.Models.Trait> Traits { get; set; } = new List<global::Schematic.RulesEngine.Models.Trait>();
 
     [JsonPropertyName("metrics")]
-    public List<CompanyMetric> Metrics { get; set; } = new List<CompanyMetric>();
+    public List<global::Schematic.RulesEngine.Models.CompanyMetric> Metrics { get; set; } = new List<global::Schematic.RulesEngine.Models.CompanyMetric>();
 
     [JsonPropertyName("subscription")]
     public Subscription? Subscription { get; set; }
 
     [JsonPropertyName("rules")]
-    public List<Rule> Rules { get; set; } = new List<Rule>();
+    public List<global::Schematic.RulesEngine.Models.Rule> Rules { get; set; } = new List<global::Schematic.RulesEngine.Models.Rule>();
 
     private readonly object _metricsLock = new object();
 

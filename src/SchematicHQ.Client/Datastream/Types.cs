@@ -1,7 +1,7 @@
 using System.Text.Json.Serialization;
 using System.Text.Json;
 using System.Runtime.Serialization;
-using SchematicHQ.Client.RulesEngine.Models;
+using Schematic.RulesEngine.Models;
 
 namespace SchematicHQ.Client.Datastream
 {

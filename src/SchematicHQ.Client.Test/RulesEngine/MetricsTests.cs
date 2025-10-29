@@ -1,8 +1,17 @@
-using SchematicHQ.Client.RulesEngine.Models;
-using SchematicHQ.Client.RulesEngine;
 using NUnit.Framework;
 
-namespace SchematicHQ.Client.Test.RulesEngine
+// Type aliases using global:: prefix to avoid conflicts with Schematic class
+using Company = global::Schematic.RulesEngine.Models.Company;
+using Condition = global::Schematic.RulesEngine.Models.Condition;
+using Subscription = global::Schematic.RulesEngine.Models.Subscription;
+using ConditionType = global::Schematic.RulesEngine.ConditionType;
+using MetricPeriod = global::Schematic.RulesEngine.MetricPeriod;
+using MetricPeriodMonthReset = global::Schematic.RulesEngine.MetricPeriodMonthReset;
+
+using Schematic.RulesEngine.Models;
+using Schematic.RulesEngine;
+
+namespace SchematicHQ.Tests.RulesEngine
 {
     [TestFixture]
     public class MetricsTests

@@ -7,9 +7,13 @@ using SchematicHQ.Client.Cache;
 using SchematicHQ.Client.Test.Datastream.Mocks;
 using SchematicHQ.Client.Core;
 using SchematicHQ.Client.Datastream;
-using SchematicHQ.Client.RulesEngine.Models;
 
-namespace SchematicHQ.Client.Test.Datastream
+// Type aliases using global:: prefix to avoid conflicts with Schematic class
+using Company = global::Schematic.RulesEngine.Models.Company;
+
+using Schematic.RulesEngine.Models;
+
+namespace SchematicHQ.Tests.Datastream
 {
     [TestFixture]
     public class CompanyMetricsTests : IDisposable

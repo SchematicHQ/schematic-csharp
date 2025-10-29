@@ -3,10 +3,11 @@ using System.Net.WebSockets;
 using System.Threading;
 using System.Threading.Tasks;
 using NUnit.Framework;
+using SchematicHQ.Client;
 using SchematicHQ.Client.Datastream;
 using SchematicHQ.Client.Test.Datastream.Mocks;
 
-namespace SchematicHQ.Client.Test.Datastream
+namespace SchematicHQ.Tests.Datastream
 {
     [TestFixture]
     public class DatastreamClientAdapterTests
@@ -209,7 +210,7 @@ namespace SchematicHQ.Client.Test.Datastream
             var flagsCache = flagsCacheField!.GetValue(client);
             
             // Create a test flag
-            var flag = new SchematicHQ.Client.RulesEngine.Models.Flag
+            var flag = new Schematic.RulesEngine.Models.Flag
             {
                 Id = "flag_123",
                 Key = "test-flag",

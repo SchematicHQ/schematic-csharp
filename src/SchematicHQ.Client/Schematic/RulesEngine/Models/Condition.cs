@@ -1,7 +1,7 @@
-using SchematicHQ.Client.RulesEngine.Utils;
+using Schematic.RulesEngine.Utils;
 using System.Text.Json.Serialization;
 
-namespace SchematicHQ.Client.RulesEngine.Models
+namespace Schematic.RulesEngine.Models
 {
   public class Condition
   {
@@ -15,14 +15,14 @@ namespace SchematicHQ.Client.RulesEngine.Models
     public string? EnvironmentId { get; set; }
     
     [JsonPropertyName("condition_type")]
-    public ConditionType ConditionType { get; set; }
+    public Schematic.RulesEngine.ConditionType ConditionType { get; set; }
     [JsonPropertyName("consumption_rate")]
     public double? ConsumptionRate { get; set; }
     [JsonPropertyName("credit_id")]
     public string? CreditId { get; set; }
     
     [JsonPropertyName("operator")]
-    public ComparableOperator Operator { get; set; }
+    public Schematic.RulesEngine.Utils.ComparableOperator Operator { get; set; }
     
     // Fields for Company, User, Plan, Base Plan, Billing Product, or CRM Product conditions
     [JsonPropertyName("resource_ids")]
@@ -36,10 +36,10 @@ namespace SchematicHQ.Client.RulesEngine.Models
     public long? MetricValue { get; set; }
     
     [JsonPropertyName("metric_period")]
-    public MetricPeriod? MetricPeriod { get; set; }
+    public Schematic.RulesEngine.MetricPeriod? MetricPeriod { get; set; }
     
     [JsonPropertyName("metric_period_month_reset")]
-    public MetricPeriodMonthReset? MetricPeriodMonthReset { get; set; }
+    public Schematic.RulesEngine.MetricPeriodMonthReset? MetricPeriodMonthReset { get; set; }
     
     // Fields for Trait conditions
     [JsonPropertyName("trait_definition")]

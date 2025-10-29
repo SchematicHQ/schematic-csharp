@@ -14,11 +14,11 @@ Configure additional MSBuild properties for your project in this file:
 
   <PropertyGroup>
     <!-- Ensure the GeneratedModelHash.cs file is included in compilation -->
-    <GeneratedModelHashFile>$(MSBuildThisFileDirectory)RulesEngine/Utils/GeneratedModelHash.cs</GeneratedModelHashFile>
+    <GeneratedModelHashFile>$(MSBuildThisFileDirectory)Schematic/RulesEngine/Utils/GeneratedModelHash.cs</GeneratedModelHashFile>
   </PropertyGroup>
 
   <Target Name="GenerateModelHash" BeforeTargets="CoreCompile">
-    <Exec Command="bash $(MSBuildThisFileDirectory)/generate-schema-hash.sh $(MSBuildThisFileDirectory)RulesEngine/Models $(GeneratedModelHashFile)" />
+    <Exec Command="bash $(MSBuildThisFileDirectory)/generate-schema-hash.sh $(MSBuildThisFileDirectory)Schematic/RulesEngine/Models $(GeneratedModelHashFile)" />
     <ItemGroup>
       <Compile Include="$(GeneratedModelHashFile)" />
     </ItemGroup>

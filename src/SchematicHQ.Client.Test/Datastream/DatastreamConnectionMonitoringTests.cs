@@ -4,10 +4,10 @@ using System.Threading;
 using System.Threading.Tasks;
 using NUnit.Framework;
 using SchematicHQ.Client.Datastream;
-using SchematicHQ.Client.RulesEngine.Models;
+using Schematic.RulesEngine.Models;
 using SchematicHQ.Client.Test.Datastream.Mocks;
 
-namespace SchematicHQ.Client.Test.Datastream
+namespace SchematicHQ.Tests.Datastream
 {
     [TestFixture]
     public class DatastreamConnectionMonitoringTests
