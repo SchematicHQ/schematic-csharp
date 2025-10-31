@@ -52,8 +52,10 @@ namespace SchematicHQ.Tests.Datastream
         public void Schematic_WithDatastreamRedisOptions_InitializesWithoutError()
         {
             // Arrange
+            var mockLogger = new MockSchematicLogger();
             var clientOptions = new ClientOptions
             {
+                Logger = mockLogger,
                 DatastreamOptions = new DatastreamOptions()
                     .WithRedisCache(new RedisCacheConfig
                     {
@@ -66,10 +68,19 @@ namespace SchematicHQ.Tests.Datastream
             };
 
             // Act & Assert - Should not throw TypeLoadException
-            Assert.DoesNotThrow(() =>
+            SchematicClient? schematic = null;
+            try
             {
-                var schematic = new SchematicClient("test_api_key", clientOptions);
-            });
+                Assert.DoesNotThrow(() =>
+                {
+                    schematic = new SchematicClient("test_api_key", clientOptions);
+                });
+                Assert.That(schematic, Is.Not.Null);
+            }
+            finally
+            {
+                schematic?.Shutdown().Wait(TimeSpan.FromSeconds(5));
+            }
         }
 
         [Test]
@@ -79,8 +90,10 @@ namespace SchematicHQ.Tests.Datastream
             // "Could not load type 'RulesEngine.Models.Company' from assembly 'RulesEngine'"
 
             // Arrange
+            var mockLogger = new MockSchematicLogger();
             var clientOptions = new ClientOptions
             {
+                Logger = mockLogger,
                 UseDatastream = true,
                 DatastreamOptions = new DatastreamOptions()
                     .WithRedisCache(new RedisCacheConfig
