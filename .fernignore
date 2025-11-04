@@ -3,6 +3,7 @@
 .github/CODEOWNERS
 .github/workflows/claude-code.yml
 CLAUDE.md
+LICENSE
 README.md
 examples/
 src/SchematicHQ.Client.Test/Cache/
