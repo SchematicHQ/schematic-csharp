@@ -3,120 +3,35 @@ using System.Collections.Generic;
 
 namespace SchematicHQ.Client.RulesEngine
 {
-  [JsonConverter(typeof(JsonStringEnumConverter))]
-  public enum ConditionType
-  {
-    [JsonPropertyName("base_plan")]
-    BasePlan,
-    
-    [JsonPropertyName("billing_product")]
-    BillingProduct,
+  // Note: All enum types now use the generated types from SchematicHQ.Client namespace
+  // (RuleRuleType, ConditionConditionType, ConditionMetricPeriod, etc.)
 
-    [JsonPropertyName("credit")]
-    Credit,
-    
-    [JsonPropertyName("company")]
-    Company,
-    
-    [JsonPropertyName("crm_product")]
-    CrmProduct,
-    
-    [JsonPropertyName("metric")]
-    Metric,
-    
-    [JsonPropertyName("plan")]
-    Plan,
-    
-    [JsonPropertyName("trait")]
-    Trait,
-    
-    [JsonPropertyName("user")]
-    User
-  }
-
-  [JsonConverter(typeof(JsonStringEnumConverter))]
-  public enum EntityType
+  public static class RuleRuleTypeExtensions
   {
-    [JsonPropertyName("company")]
-    Company,
-    
-    [JsonPropertyName("user")]
-    User
-  }
-
-  [JsonConverter(typeof(SchematicHQ.Client.RulesEngine.SnakeCaseEnumConverter<MetricPeriod>))]
-    public enum MetricPeriod
-  {
-    AllTime,
-    CurrentDay,
-    CurrentMonth,
-    CurrentWeek
-  }
-
-  [JsonConverter(typeof(SchematicHQ.Client.RulesEngine.SnakeCaseEnumConverter<MetricPeriodMonthReset>))]
-  public enum MetricPeriodMonthReset
-  {
-    [JsonPropertyName("first_of_month")]
-    FirstOfMonth,
-    
-    [JsonPropertyName("billing_cycle")]
-    BillingCycle
-  }
-
-  [JsonConverter(typeof(JsonStringEnumConverter))]
-  public enum RuleType
-  {
-    [JsonPropertyName("global_override")]
-    GlobalOverride,
-    
-    [JsonPropertyName("company_override")]
-    CompanyOverride,
-    
-    [JsonPropertyName("company_override_usage_exceeded")]
-    CompanyOverrideUsageExceeded,
-    
-    [JsonPropertyName("plan_entitlement")]
-    PlanEntitlement,
-    
-    [JsonPropertyName("plan_entitlement_usage_exceeded")]
-    PlanEntitlementUsageExceeded,
-    
-    [JsonPropertyName("standard")]
-    Standard,
-    
-    [JsonPropertyName("default")]
-    Default,
-    
-    [JsonPropertyName("plan_audience")]
-    PlanAudience
-  }
-
-  public static class RuleTypeExtensions
-  {
-    public static string DisplayName(this RuleType ruleType)
+    public static string DisplayName(this RuleRuleType ruleType)
     {
-      return ruleType.ToString().Replace("_", " ");
+      return ruleType.Value.Replace("_", " ");
     }
 
-    public static bool IsEntitlement(this RuleType ruleType)
+    public static bool IsEntitlement(this RuleRuleType ruleType)
     {
-      return ruleType == RuleType.PlanEntitlement ||
-             ruleType == RuleType.PlanEntitlementUsageExceeded ||
-             ruleType == RuleType.CompanyOverride ||
-             ruleType == RuleType.CompanyOverrideUsageExceeded;
+      return ruleType == RuleRuleType.PlanEntitlement.Value ||
+             ruleType == RuleRuleType.PlanEntitlementUsageExceeded.Value ||
+             ruleType == RuleRuleType.CompanyOverride.Value ||
+             ruleType == RuleRuleType.CompanyOverrideUsageExceeded.Value;
     }
 
-    public static RulePrioritizationMethod PrioritizationMethod(this RuleType ruleType)
+    public static RulePrioritizationMethod PrioritizationMethod(this RuleRuleType ruleType)
     {
-      if (ruleType == RuleType.Standard)
+      if (ruleType == RuleRuleType.Standard.Value)
       {
         return RulePrioritizationMethod.Priority;
       }
 
-      if (ruleType == RuleType.CompanyOverride ||
-          ruleType == RuleType.PlanEntitlement ||
-          ruleType == RuleType.CompanyOverrideUsageExceeded ||
-          ruleType == RuleType.PlanEntitlementUsageExceeded)
+      if (ruleType == RuleRuleType.CompanyOverride.Value ||
+          ruleType == RuleRuleType.PlanEntitlement.Value ||
+          ruleType == RuleRuleType.CompanyOverrideUsageExceeded.Value ||
+          ruleType == RuleRuleType.PlanEntitlementUsageExceeded.Value)
       {
         return RulePrioritizationMethod.Optimistic;
       }
@@ -124,15 +39,15 @@ namespace SchematicHQ.Client.RulesEngine
       return RulePrioritizationMethod.None;
     }
 
-    public static List<RuleType> RuleTypePriority = new List<RuleType>
+    public static List<RuleRuleType> RuleTypePriority = new List<RuleRuleType>
         {
-            RuleType.GlobalOverride,
-            RuleType.CompanyOverride,
-            RuleType.PlanEntitlement,
-            RuleType.CompanyOverrideUsageExceeded,
-            RuleType.PlanEntitlementUsageExceeded,
-            RuleType.Standard,
-            RuleType.Default
+            RuleRuleType.GlobalOverride,
+            RuleRuleType.CompanyOverride,
+            RuleRuleType.PlanEntitlement,
+            RuleRuleType.CompanyOverrideUsageExceeded,
+            RuleRuleType.PlanEntitlementUsageExceeded,
+            RuleRuleType.Standard,
+            RuleRuleType.Default
         };
   }
 
@@ -141,10 +56,10 @@ namespace SchematicHQ.Client.RulesEngine
   {
     [JsonPropertyName("none")]
     None,
-    
+
     [JsonPropertyName("priority")]
     Priority,
-    
+
     [JsonPropertyName("optimistic")]
     Optimistic
   }

@@ -49,13 +49,13 @@ namespace SchematicHQ.Client.Test.RulesEngine
             // Create a standard rule that matches
             var standardRule = TestHelpers.CreateTestRule();
             standardRule.Value = false;
-            var standardCondition = TestHelpers.CreateTestCondition(ConditionType.Company);
+            var standardCondition = TestHelpers.CreateTestCondition(ConditionConditionType.Company);
             standardCondition.ResourceIds = new List<string> { company.Id };
             standardRule.Conditions = new List<Condition> { standardCondition };
 
             // Create a global override rule
             var overrideRule = TestHelpers.CreateTestRule();
-            overrideRule.RuleType = RuleType.GlobalOverride;
+            overrideRule.RuleType = RuleRuleType.GlobalOverride;
             overrideRule.Value = true;
 
             flag.Rules.Add(standardRule);
@@ -80,14 +80,14 @@ namespace SchematicHQ.Client.Test.RulesEngine
             var rule1 = TestHelpers.CreateTestRule();
             rule1.Priority = 2;
             rule1.Value = false;
-            var condition1 = TestHelpers.CreateTestCondition(ConditionType.Company);
+            var condition1 = TestHelpers.CreateTestCondition(ConditionConditionType.Company);
             condition1.ResourceIds = new List<string> { company.Id };
             rule1.Conditions = new List<Condition> { condition1 };
 
             var rule2 = TestHelpers.CreateTestRule();
             rule2.Priority = 1; // Lower priority number = higher priority
             rule2.Value = true;
-            var condition2 = TestHelpers.CreateTestCondition(ConditionType.Company);
+            var condition2 = TestHelpers.CreateTestCondition(ConditionConditionType.Company);
             condition2.ResourceIds = new List<string> { company.Id };
             rule2.Conditions = new List<Condition> { condition2 };
 
@@ -112,10 +112,10 @@ namespace SchematicHQ.Client.Test.RulesEngine
             rule.Value = true;
 
             // Create condition group with two conditions
-            var condition1 = TestHelpers.CreateTestCondition(ConditionType.Company);
+            var condition1 = TestHelpers.CreateTestCondition(ConditionConditionType.Company);
             condition1.ResourceIds = new List<string> { "non-matching-id" };
 
-            var condition2 = TestHelpers.CreateTestCondition(ConditionType.Company);
+            var condition2 = TestHelpers.CreateTestCondition(ConditionConditionType.Company);
             condition2.ResourceIds = new List<string> { company.Id };
 
             var group = new ConditionGroup
@@ -144,13 +144,13 @@ namespace SchematicHQ.Client.Test.RulesEngine
             // Create entitlement rule with metric condition
             string eventSubtype = "test-event";
             var rule = TestHelpers.CreateTestRule();
-            rule.RuleType = RuleType.PlanEntitlement;
+            rule.RuleType = RuleRuleType.PlanEntitlement;
             rule.Value = true;
 
-            var condition = TestHelpers.CreateTestCondition(ConditionType.Metric);
+            var condition = TestHelpers.CreateTestCondition(ConditionConditionType.Metric);
             condition.EventSubtype = eventSubtype;
             condition.MetricValue = 10;
-            condition.Operator = ComparableOperator.Lte;
+            condition.Operator = ConditionOperator.Lte;
 
             rule.Conditions = new List<Condition> { condition };
             flag.Rules = new List<Rule> { rule };
@@ -179,19 +179,19 @@ namespace SchematicHQ.Client.Test.RulesEngine
             var flag = TestHelpers.CreateTestFlag();
 
             // Create trait
-            var traitDef = TestHelpers.CreateTestTraitDefinition(ComparableType.Int, EntityType.Company);
+            var traitDef = TestHelpers.CreateTestTraitDefinition(TraitDefinitionComparableType.Int, TraitDefinitionEntityType.Company);
             var trait = TestHelpers.CreateTestTrait("5", traitDef);
             company.Traits = new List<Trait> { trait };
 
             // Create entitlement rule with trait condition
             var rule = TestHelpers.CreateTestRule();
-            rule.RuleType = RuleType.PlanEntitlement;
+            rule.RuleType = RuleRuleType.PlanEntitlement;
             rule.Value = true;
 
-            var condition = TestHelpers.CreateTestCondition(ConditionType.Trait);
+            var condition = TestHelpers.CreateTestCondition(ConditionConditionType.Trait);
             condition.TraitDefinition = traitDef;
             condition.TraitValue = "10";
-            condition.Operator = ComparableOperator.Lte;
+            condition.Operator = ConditionOperator.Lte;
 
             rule.Conditions = new List<Condition> { condition };
             flag.Rules = new List<Rule> { rule };
@@ -218,7 +218,7 @@ namespace SchematicHQ.Client.Test.RulesEngine
 
             var rule = TestHelpers.CreateTestRule();
             rule.Value = true;
-            var condition = TestHelpers.CreateTestCondition(ConditionType.User);
+            var condition = TestHelpers.CreateTestCondition(ConditionConditionType.User);
             condition.ResourceIds = new List<string> { user.Id };
             rule.Conditions = new List<Condition> { condition };
 
@@ -238,7 +238,7 @@ namespace SchematicHQ.Client.Test.RulesEngine
         {
             // Arrange
             var user = TestHelpers.CreateTestUser();
-            var traitDef = TestHelpers.CreateTestTraitDefinition(ComparableType.String, EntityType.User);
+            var traitDef = TestHelpers.CreateTestTraitDefinition(TraitDefinitionComparableType.String, TraitDefinitionEntityType.User);
             var trait = TestHelpers.CreateTestTrait("test-value", traitDef);
             user.Traits = new List<Trait> { trait };
 
@@ -246,10 +246,10 @@ namespace SchematicHQ.Client.Test.RulesEngine
             var rule = TestHelpers.CreateTestRule();
             rule.Value = true;
 
-            var condition = TestHelpers.CreateTestCondition(ConditionType.Trait);
+            var condition = TestHelpers.CreateTestCondition(ConditionConditionType.Trait);
             condition.TraitDefinition = traitDef;
             condition.TraitValue = "test-value";
-            condition.Operator = ComparableOperator.Eq;
+            condition.Operator = ConditionOperator.Eq;
 
             rule.Conditions = new List<Condition> { condition };
             flag.Rules = new List<Rule> { rule };
@@ -275,30 +275,30 @@ namespace SchematicHQ.Client.Test.RulesEngine
             rule.Value = true;
 
             // Add direct conditions
-            var condition1 = TestHelpers.CreateTestCondition(ConditionType.Company);
+            var condition1 = TestHelpers.CreateTestCondition(ConditionConditionType.Company);
             condition1.ResourceIds = new List<string> { company.Id };
-            rule.Conditions?.Add(condition1);
 
-            var condition2 = TestHelpers.CreateTestCondition(ConditionType.Trait);
+            var condition2 = TestHelpers.CreateTestCondition(ConditionConditionType.Trait);
             condition2.TraitDefinition = trait.TraitDefinition;
             condition2.TraitValue = "test-value";
-            condition2.Operator = ComparableOperator.Eq;
-            rule.Conditions?.Add(condition2);
+            condition2.Operator = ConditionOperator.Eq;
+
+            rule.Conditions = new List<Condition> { condition1, condition2 };
 
             // Add condition group
-            var group = new ConditionGroup
-            {
-                Conditions = new List<Condition>
-                {
-                    TestHelpers.CreateTestCondition(ConditionType.Plan),
-                    TestHelpers.CreateTestCondition(ConditionType.BasePlan)
-                }
-            };
-            group.Conditions[0].ResourceIds = new List<string> { company.PlanIds[0] };
+            var groupCondition1 = TestHelpers.CreateTestCondition(ConditionConditionType.Plan);
+            groupCondition1.ResourceIds = new List<string> { company.PlanIds[0] };
+
+            var groupCondition2 = TestHelpers.CreateTestCondition(ConditionConditionType.BasePlan);
             if (!string.IsNullOrEmpty(company.BasePlanId))
             {
-                group.Conditions[1].ResourceIds = new List<string> { company.BasePlanId };
+                groupCondition2.ResourceIds = new List<string> { company.BasePlanId };
             }
+
+            var group = new ConditionGroup
+            {
+                Conditions = new List<Condition> { groupCondition1, groupCondition2 }
+            };
 
             rule.ConditionGroups = new List<ConditionGroup> { group };
             flag.Rules = new List<Rule> { rule };
@@ -325,7 +325,9 @@ namespace SchematicHQ.Client.Test.RulesEngine
                 Id = "",
                 AccountId = "",
                 EnvironmentId = "",
-                ConditionType = ConditionType.Metric
+                ConditionType = ConditionConditionType.Metric,
+                Operator = ConditionOperator.Eq,
+                TraitValue = ""
             };
             rule.Conditions = new List<Condition> { condition };
 
@@ -353,9 +355,9 @@ namespace SchematicHQ.Client.Test.RulesEngine
 
             // Create a company-provided rule that matches
             var companyRule = TestHelpers.CreateTestRule();
-            companyRule.FlagID = flag.Id;
+            companyRule.FlagId = flag.Id;
             companyRule.Value = true;
-            var condition = TestHelpers.CreateTestCondition(ConditionType.Company);
+            var condition = TestHelpers.CreateTestCondition(ConditionConditionType.Company);
             condition.ResourceIds = new List<string> { company.Id };
             companyRule.Conditions = new List<Condition> { condition };
 
@@ -380,16 +382,16 @@ namespace SchematicHQ.Client.Test.RulesEngine
             var flagRule = TestHelpers.CreateTestRule();
             flagRule.Priority = 2;
             flagRule.Value = false;
-            var condition1 = TestHelpers.CreateTestCondition(ConditionType.Company);
+            var condition1 = TestHelpers.CreateTestCondition(ConditionConditionType.Company);
             condition1.ResourceIds = new List<string> { company.Id };
             flagRule.Conditions = new List<Condition> { condition1 };
 
             // Create company rule with higher priority
             var companyRule = TestHelpers.CreateTestRule();
-            companyRule.FlagID = flag.Id;
+            companyRule.FlagId = flag.Id;
             companyRule.Priority = 1;
             companyRule.Value = true;
-            var condition2 = TestHelpers.CreateTestCondition(ConditionType.Company);
+            var condition2 = TestHelpers.CreateTestCondition(ConditionConditionType.Company);
             condition2.ResourceIds = new List<string> { company.Id };
             companyRule.Conditions = new List<Condition> { condition2 };
 
@@ -414,14 +416,14 @@ namespace SchematicHQ.Client.Test.RulesEngine
             // Create standard flag rule
             var flagRule = TestHelpers.CreateTestRule();
             flagRule.Value = false;
-            var condition1 = TestHelpers.CreateTestCondition(ConditionType.Company);
+            var condition1 = TestHelpers.CreateTestCondition(ConditionConditionType.Company);
             condition1.ResourceIds = new List<string> { company.Id };
             flagRule.Conditions = new List<Condition> { condition1 };
 
             // Create company rule with global override
             var companyRule = TestHelpers.CreateTestRule();
-            companyRule.FlagID = flag.Id;
-            companyRule.RuleType = RuleType.GlobalOverride;
+            companyRule.FlagId = flag.Id;
+            companyRule.RuleType = RuleRuleType.GlobalOverride;
             companyRule.Value = true;
 
             flag.Rules = new List<Rule> { flagRule };
@@ -445,18 +447,18 @@ namespace SchematicHQ.Client.Test.RulesEngine
 
             // Create two company rules, only one matches
             var companyRule1 = TestHelpers.CreateTestRule();
-            companyRule1.FlagID = flag.Id;
+            companyRule1.FlagId = flag.Id;
             companyRule1.Priority = 1;
             companyRule1.Value = true;
-            var condition1 = TestHelpers.CreateTestCondition(ConditionType.Company);
+            var condition1 = TestHelpers.CreateTestCondition(ConditionConditionType.Company);
             condition1.ResourceIds = new List<string> { "non-matching-id" };
             companyRule1.Conditions = new List<Condition> { condition1 };
 
             var companyRule2 = TestHelpers.CreateTestRule();
-            companyRule2.FlagID = flag.Id;
+            companyRule2.FlagId = flag.Id;
             companyRule2.Priority = 2;
             companyRule2.Value = true;
-            var condition2 = TestHelpers.CreateTestCondition(ConditionType.Company);
+            var condition2 = TestHelpers.CreateTestCondition(ConditionConditionType.Company);
             condition2.ResourceIds = new List<string> { company.Id };
             companyRule2.Conditions = new List<Condition> { condition2 };
 
@@ -480,9 +482,9 @@ namespace SchematicHQ.Client.Test.RulesEngine
 
             // Create a user-provided rule that matches
             var userRule = TestHelpers.CreateTestRule();
-            userRule.FlagID = flag.Id;
+            userRule.FlagId = flag.Id;
             userRule.Value = true;
-            var condition = TestHelpers.CreateTestCondition(ConditionType.User);
+            var condition = TestHelpers.CreateTestCondition(ConditionConditionType.User);
             condition.ResourceIds = new List<string> { user.Id };
             userRule.Conditions = new List<Condition> { condition };
 
@@ -507,16 +509,16 @@ namespace SchematicHQ.Client.Test.RulesEngine
             var flagRule = TestHelpers.CreateTestRule();
             flagRule.Priority = 2;
             flagRule.Value = false;
-            var condition1 = TestHelpers.CreateTestCondition(ConditionType.User);
+            var condition1 = TestHelpers.CreateTestCondition(ConditionConditionType.User);
             condition1.ResourceIds = new List<string> { user.Id };
             flagRule.Conditions = new List<Condition> { condition1 };
 
             // Create user rule with higher priority
             var userRule = TestHelpers.CreateTestRule();
-            userRule.FlagID = flag.Id;
+            userRule.FlagId = flag.Id;
             userRule.Priority = 1;
             userRule.Value = true;
-            var condition2 = TestHelpers.CreateTestCondition(ConditionType.User);
+            var condition2 = TestHelpers.CreateTestCondition(ConditionConditionType.User);
             condition2.ResourceIds = new List<string> { user.Id };
             userRule.Conditions = new List<Condition> { condition2 };
 
@@ -541,14 +543,14 @@ namespace SchematicHQ.Client.Test.RulesEngine
             // Create standard flag rule
             var flagRule = TestHelpers.CreateTestRule();
             flagRule.Value = false;
-            var condition1 = TestHelpers.CreateTestCondition(ConditionType.User);
+            var condition1 = TestHelpers.CreateTestCondition(ConditionConditionType.User);
             condition1.ResourceIds = new List<string> { user.Id };
             flagRule.Conditions = new List<Condition> { condition1 };
 
             // Create user rule with global override
             var userRule = TestHelpers.CreateTestRule();
-            userRule.FlagID = flag.Id;
-            userRule.RuleType = RuleType.GlobalOverride;
+            userRule.FlagId = flag.Id;
+            userRule.RuleType = RuleRuleType.GlobalOverride;
             userRule.Value = true;
 
             flag.Rules = new List<Rule> { flagRule };
@@ -573,19 +575,19 @@ namespace SchematicHQ.Client.Test.RulesEngine
 
             // Create company rule that doesn't match
             var companyRule = TestHelpers.CreateTestRule();
-            companyRule.FlagID = flag.Id;
+            companyRule.FlagId = flag.Id;
             companyRule.Priority = 1;
             companyRule.Value = true;
-            var condition1 = TestHelpers.CreateTestCondition(ConditionType.Company);
+            var condition1 = TestHelpers.CreateTestCondition(ConditionConditionType.Company);
             condition1.ResourceIds = new List<string> { "non-matching-id" };
             companyRule.Conditions = new List<Condition> { condition1 };
 
             // Create user rule that matches
             var userRule = TestHelpers.CreateTestRule();
-            userRule.FlagID = flag.Id;
+            userRule.FlagId = flag.Id;
             userRule.Priority = 2;
             userRule.Value = true;
-            var condition2 = TestHelpers.CreateTestCondition(ConditionType.User);
+            var condition2 = TestHelpers.CreateTestCondition(ConditionConditionType.User);
             condition2.ResourceIds = new List<string> { user.Id };
             userRule.Conditions = new List<Condition> { condition2 };
 
@@ -613,23 +615,23 @@ namespace SchematicHQ.Client.Test.RulesEngine
             var flagRule = TestHelpers.CreateTestRule();
             flagRule.Priority = 2;
             flagRule.Value = true;
-            var condition1 = TestHelpers.CreateTestCondition(ConditionType.Company);
+            var condition1 = TestHelpers.CreateTestCondition(ConditionConditionType.Company);
             condition1.ResourceIds = new List<string> { company.Id };
             flagRule.Conditions = new List<Condition> { condition1 };
 
             var companyRule = TestHelpers.CreateTestRule();
-            companyRule.FlagID = flag.Id;
+            companyRule.FlagId = flag.Id;
             companyRule.Priority = 3;
             companyRule.Value = true;
-            var condition2 = TestHelpers.CreateTestCondition(ConditionType.Company);
+            var condition2 = TestHelpers.CreateTestCondition(ConditionConditionType.Company);
             condition2.ResourceIds = new List<string> { company.Id };
             companyRule.Conditions = new List<Condition> { condition2 };
 
             var userRule = TestHelpers.CreateTestRule();
-            userRule.FlagID = flag.Id;
+            userRule.FlagId = flag.Id;
             userRule.Priority = 1; // Highest priority
             userRule.Value = true;
-            var condition3 = TestHelpers.CreateTestCondition(ConditionType.User);
+            var condition3 = TestHelpers.CreateTestCondition(ConditionConditionType.User);
             condition3.ResourceIds = new List<string> { user.Id };
             userRule.Conditions = new List<Condition> { condition3 };
 
@@ -657,9 +659,9 @@ namespace SchematicHQ.Client.Test.RulesEngine
 
             // Create a company-provided rule for a different flag
             var companyRule = TestHelpers.CreateTestRule();
-            companyRule.FlagID = TestHelpers.GenerateTestId("flag"); // Different flag ID
+            companyRule.FlagId = TestHelpers.GenerateTestId("flag"); // Different flag ID
             companyRule.Value = true;
-            var condition = TestHelpers.CreateTestCondition(ConditionType.Company);
+            var condition = TestHelpers.CreateTestCondition(ConditionConditionType.Company);
             condition.ResourceIds = new List<string> { company.Id };
             companyRule.Conditions = new List<Condition> { condition };
 
@@ -683,9 +685,9 @@ namespace SchematicHQ.Client.Test.RulesEngine
 
             // Create a user-provided rule for a different flag
             var userRule = TestHelpers.CreateTestRule();
-            userRule.FlagID = TestHelpers.GenerateTestId("flag"); // Different flag ID
+            userRule.FlagId = TestHelpers.GenerateTestId("flag"); // Different flag ID
             userRule.Value = true;
-            var condition = TestHelpers.CreateTestCondition(ConditionType.User);
+            var condition = TestHelpers.CreateTestCondition(ConditionConditionType.User);
             condition.ResourceIds = new List<string> { user.Id };
             userRule.Conditions = new List<Condition> { condition };
 
@@ -707,11 +709,11 @@ namespace SchematicHQ.Client.Test.RulesEngine
             var flag = TestHelpers.CreateTestFlag();
             flag.DefaultValue = false;
 
-            // Create a company-provided rule with null FlagID
+            // Create a company-provided rule with null FlagId
             var companyRule = TestHelpers.CreateTestRule();
-            companyRule.FlagID = null;
+            companyRule.FlagId = null;
             companyRule.Value = true;
-            var condition = TestHelpers.CreateTestCondition(ConditionType.Company);
+            var condition = TestHelpers.CreateTestCondition(ConditionConditionType.Company);
             condition.ResourceIds = new List<string> { company.Id };
             companyRule.Conditions = new List<Condition> { condition };
 
@@ -733,11 +735,11 @@ namespace SchematicHQ.Client.Test.RulesEngine
             var flag = TestHelpers.CreateTestFlag();
             flag.DefaultValue = false;
 
-            // Create a user-provided rule with null FlagID
+            // Create a user-provided rule with null FlagId
             var userRule = TestHelpers.CreateTestRule();
-            userRule.FlagID = null;
+            userRule.FlagId = null;
             userRule.Value = true;
-            var condition = TestHelpers.CreateTestCondition(ConditionType.User);
+            var condition = TestHelpers.CreateTestCondition(ConditionConditionType.User);
             condition.ResourceIds = new List<string> { user.Id };
             userRule.Conditions = new List<Condition> { condition };
 

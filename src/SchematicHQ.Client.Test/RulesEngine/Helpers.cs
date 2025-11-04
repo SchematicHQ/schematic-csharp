@@ -1,3 +1,4 @@
+using SchematicHQ.Client;
 using SchematicHQ.Client.RulesEngine;
 using SchematicHQ.Client.RulesEngine.Models;
 using SchematicHQ.Client.RulesEngine.Utils;
@@ -46,7 +47,7 @@ namespace SchematicHQ.Client.Test.RulesEngine
         Id = GenerateTestId("rule"),
         AccountId = GenerateTestId("acct"),
         EnvironmentId = GenerateTestId("env"),
-        RuleType = RuleType.Standard,
+        RuleType = RuleRuleType.Standard,
         Name = $"Test Rule {Random.Next(1000)}",
         Priority = 1,
         Conditions = new List<Condition>(),
@@ -68,7 +69,7 @@ namespace SchematicHQ.Client.Test.RulesEngine
       };
     }
 
-    public static Condition CreateTestCondition(ConditionType conditionType)
+    public static Condition CreateTestCondition(ConditionConditionType conditionType)
     {
       var condition = new Condition
       {
@@ -77,25 +78,27 @@ namespace SchematicHQ.Client.Test.RulesEngine
         EnvironmentId = GenerateTestId("env"),
         ConditionType = conditionType,
         ResourceIds = new List<string>(),
-        Operator = ComparableOperator.Eq
+        Operator = ConditionOperator.Eq,
+        TraitValue = ""
       };
 
-      if (conditionType == ConditionType.Metric)
+      if (conditionType == ConditionConditionType.Metric)
       {
         condition.EventSubtype = $"test_event_{Random.Next(1000)}";
-        condition.MetricPeriod = MetricPeriod.AllTime;
+        condition.MetricPeriod = ConditionMetricPeriod.AllTime;
         condition.MetricValue = 10;
       }
 
       return condition;
     }
 
-    public static CompanyMetric CreateTestMetric(Company company, string eventSubtype, MetricPeriod period, long value)
+    public static CompanyMetric CreateTestMetric(Company company, string eventSubtype, ConditionMetricPeriod period, long value)
     {
       return new CompanyMetric
       {
         EventSubtype = eventSubtype,
         Period = period,
+        MonthReset = ConditionMetricPeriodMonthReset.FirstOfMonth,
         Value = value,
         CreatedAt = DateTime.UtcNow,
       };
@@ -106,7 +109,7 @@ namespace SchematicHQ.Client.Test.RulesEngine
     {
       if (traitDefinition == null)
       {
-        traitDefinition = CreateTestTraitDefinition(ComparableType.String, EntityType.Company);
+        traitDefinition = CreateTestTraitDefinition(TraitDefinitionComparableType.String, TraitDefinitionEntityType.Company);
       }
 
       return new Trait
@@ -116,7 +119,7 @@ namespace SchematicHQ.Client.Test.RulesEngine
       };
     }
 
-    public static TraitDefinition CreateTestTraitDefinition(ComparableType comparableType, EntityType entityType)
+    public static TraitDefinition CreateTestTraitDefinition(TraitDefinitionComparableType comparableType, TraitDefinitionEntityType entityType)
     {
       return new TraitDefinition
       {

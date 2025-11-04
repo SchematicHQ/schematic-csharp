@@ -12,7 +12,7 @@ namespace SchematicHQ.Client.Test.RulesEngine
         {
             // Test for CurrentDay
             {
-                var result = Metrics.GetCurrentMetricPeriodStartForCalendarMetricPeriod(MetricPeriod.CurrentDay);
+                var result = Metrics.GetCurrentMetricPeriodStartForCalendarMetricPeriod(ConditionMetricPeriod.CurrentDay);
                 Assert.That(result, Is.Not.Null);
 
                 var expected = DateTime.UtcNow.Date;
@@ -26,7 +26,7 @@ namespace SchematicHQ.Client.Test.RulesEngine
 
             // Test for CurrentWeek
             {
-                var result = Metrics.GetCurrentMetricPeriodStartForCalendarMetricPeriod(MetricPeriod.CurrentWeek);
+                var result = Metrics.GetCurrentMetricPeriodStartForCalendarMetricPeriod(ConditionMetricPeriod.CurrentWeek);
                 Assert.That(result, Is.Not.Null);
 
                 var now = DateTime.UtcNow;
@@ -43,7 +43,7 @@ namespace SchematicHQ.Client.Test.RulesEngine
 
             // Test for CurrentMonth
             {
-                var result = Metrics.GetCurrentMetricPeriodStartForCalendarMetricPeriod(MetricPeriod.CurrentMonth);
+                var result = Metrics.GetCurrentMetricPeriodStartForCalendarMetricPeriod(ConditionMetricPeriod.CurrentMonth);
                 Assert.That(result, Is.Not.Null);
 
                 var now = DateTime.UtcNow;
@@ -59,7 +59,7 @@ namespace SchematicHQ.Client.Test.RulesEngine
 
             // Test for AllTime
             {
-                var result = Metrics.GetCurrentMetricPeriodStartForCalendarMetricPeriod(MetricPeriod.AllTime);
+                var result = Metrics.GetCurrentMetricPeriodStartForCalendarMetricPeriod(ConditionMetricPeriod.AllTime);
                 Assert.That(result, Is.Null);
             }
         }
@@ -257,7 +257,7 @@ namespace SchematicHQ.Client.Test.RulesEngine
         {
             // Test for CurrentDay
             {
-                var result = Metrics.GetNextMetricPeriodStartForCalendarMetricPeriod(MetricPeriod.CurrentDay);
+                var result = Metrics.GetNextMetricPeriodStartForCalendarMetricPeriod(ConditionMetricPeriod.CurrentDay);
                 Assert.That(result, Is.Not.Null);
 
                 var expected = DateTime.UtcNow.Date.AddDays(1);
@@ -271,7 +271,7 @@ namespace SchematicHQ.Client.Test.RulesEngine
 
             // Test for CurrentWeek
             {
-                var result = Metrics.GetNextMetricPeriodStartForCalendarMetricPeriod(MetricPeriod.CurrentWeek);
+                var result = Metrics.GetNextMetricPeriodStartForCalendarMetricPeriod(ConditionMetricPeriod.CurrentWeek);
                 Assert.That(result, Is.Not.Null);
 
                 var now = DateTime.UtcNow;
@@ -290,7 +290,7 @@ namespace SchematicHQ.Client.Test.RulesEngine
 
             // Test for CurrentMonth
             {
-                var result = Metrics.GetNextMetricPeriodStartForCalendarMetricPeriod(MetricPeriod.CurrentMonth);
+                var result = Metrics.GetNextMetricPeriodStartForCalendarMetricPeriod(ConditionMetricPeriod.CurrentMonth);
                 Assert.That(result, Is.Not.Null);
 
                 var now = DateTime.UtcNow;
@@ -307,7 +307,7 @@ namespace SchematicHQ.Client.Test.RulesEngine
 
             // Test for AllTime
             {
-                var result = Metrics.GetNextMetricPeriodStartForCalendarMetricPeriod(MetricPeriod.AllTime);
+                var result = Metrics.GetNextMetricPeriodStartForCalendarMetricPeriod(ConditionMetricPeriod.AllTime);
                 Assert.That(result, Is.Null);
             }
         }
@@ -525,14 +525,14 @@ namespace SchematicHQ.Client.Test.RulesEngine
 
             // Test for condition that is not metric type
             {
-                var condition = TestHelpers.CreateTestCondition(ConditionType.Trait);
+                var condition = TestHelpers.CreateTestCondition(ConditionConditionType.Trait);
                 var result = Metrics.GetNextMetricPeriodStartFromCondition(condition, null);
                 Assert.That(result, Is.Null);
             }
 
             // Test for metric period is null
             {
-                var condition = TestHelpers.CreateTestCondition(ConditionType.Metric);
+                var condition = TestHelpers.CreateTestCondition(ConditionConditionType.Metric);
                 condition.MetricPeriod = null;
                 var result = Metrics.GetNextMetricPeriodStartFromCondition(condition, null);
                 Assert.That(result, Is.Null);
@@ -540,8 +540,8 @@ namespace SchematicHQ.Client.Test.RulesEngine
 
             // Test for metric period is all time
             {
-                var condition = TestHelpers.CreateTestCondition(ConditionType.Metric);
-                condition.MetricPeriod = MetricPeriod.AllTime;
+                var condition = TestHelpers.CreateTestCondition(ConditionConditionType.Metric);
+                condition.MetricPeriod = ConditionMetricPeriod.AllTime;
                 var result = Metrics.GetNextMetricPeriodStartFromCondition(condition, null);
                 Assert.That(result, Is.Null);
             }
@@ -556,9 +556,9 @@ namespace SchematicHQ.Client.Test.RulesEngine
                     PeriodEnd = DateTime.UtcNow.AddMonths(1)
                 };
 
-                var condition = TestHelpers.CreateTestCondition(ConditionType.Metric);
-                condition.MetricPeriod = MetricPeriod.CurrentMonth;
-                condition.MetricPeriodMonthReset = MetricPeriodMonthReset.BillingCycle;
+                var condition = TestHelpers.CreateTestCondition(ConditionConditionType.Metric);
+                condition.MetricPeriod = ConditionMetricPeriod.CurrentMonth;
+                condition.MetricPeriodMonthReset = ConditionMetricPeriodMonthReset.BillingCycle;
 
                 var result = Metrics.GetNextMetricPeriodStartFromCondition(condition, company);
                 var expected = Metrics.GetNextMetricPeriodStartForCompanyBillingSubscription(company);
@@ -569,11 +569,11 @@ namespace SchematicHQ.Client.Test.RulesEngine
 
             // Test for metric period is calendar-based
             {
-                var condition = TestHelpers.CreateTestCondition(ConditionType.Metric);
-                condition.MetricPeriod = MetricPeriod.CurrentDay;
+                var condition = TestHelpers.CreateTestCondition(ConditionConditionType.Metric);
+                condition.MetricPeriod = ConditionMetricPeriod.CurrentDay;
                 
                 var result = Metrics.GetNextMetricPeriodStartFromCondition(condition, null);
-                var expected = Metrics.GetNextMetricPeriodStartForCalendarMetricPeriod(MetricPeriod.CurrentDay);
+                var expected = Metrics.GetNextMetricPeriodStartForCalendarMetricPeriod(ConditionMetricPeriod.CurrentDay);
 
                 Assert.That(result, Is.Not.Null);
                 Assert.That(result, Is.EqualTo(expected));

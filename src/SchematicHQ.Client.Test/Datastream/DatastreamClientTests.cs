@@ -91,10 +91,10 @@ namespace SchematicHQ.Client.Test.Datastream
                 {
                     new Trait { 
                         Value = "pro", 
-                        TraitDefinition = new TraitDefinition { 
-                            Id = "trait_123", 
-                            ComparableType = ComparableType.String, 
-                            EntityType = Client.RulesEngine.EntityType.Company 
+                        TraitDefinition = new TraitDefinition {
+                            Id = "trait_123",
+                            ComparableType = TraitDefinitionComparableType.String,
+                            EntityType = TraitDefinitionEntityType.Company
                         } 
                     }
                 }
@@ -140,7 +140,7 @@ namespace SchematicHQ.Client.Test.Datastream
                 AccountId = "acc_123",
                 EnvironmentId = "env_123",
                 DefaultValue = true,
-                Rules = new List<SchematicHQ.Client.RulesEngine.Models.Rule>()
+                Rules = new List<Rule>()
             };
             
             // Generate the cache key for the flag
@@ -271,6 +271,8 @@ namespace SchematicHQ.Client.Test.Datastream
                             EnvironmentId = "env_123",
                             Id = "rule_123",
                             Name = "Test Rule",
+                            RuleType = RuleRuleType.Standard,
+                            Priority = 1,
                             Conditions = new List<Condition>(),
                             Value = true
                         }
