@@ -23,9 +23,6 @@ public record RuleConditionGroupResponseData : IJsonOnDeserialized
     [JsonPropertyName("id")]
     public required string Id { get; set; }
 
-    [JsonPropertyName("plan_id")]
-    public string? PlanId { get; set; }
-
     [JsonPropertyName("rule_id")]
     public required string RuleId { get; set; }
 

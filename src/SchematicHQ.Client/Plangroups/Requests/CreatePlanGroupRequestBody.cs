@@ -30,9 +30,6 @@ public record CreatePlanGroupRequestBody
     [JsonPropertyName("custom_plan_id")]
     public string? CustomPlanId { get; set; }
 
-    [JsonPropertyName("default_plan_id")]
-    public string? DefaultPlanId { get; set; }
-
     [JsonPropertyName("enable_tax_collection")]
     public required bool EnableTaxCollection { get; set; }
 
@@ -57,6 +54,9 @@ public record CreatePlanGroupRequestBody
     public IEnumerable<OrderedPlansInGroup> OrderedPlans { get; set; } =
         new List<OrderedPlansInGroup>();
 
+    [JsonPropertyName("prevent_downgrades_when_over_limit")]
+    public required bool PreventDowngradesWhenOverLimit { get; set; }
+
     [JsonPropertyName("show_credits")]
     public required bool ShowCredits { get; set; }
 
@@ -65,6 +65,9 @@ public record CreatePlanGroupRequestBody
 
     [JsonPropertyName("show_zero_price_as_free")]
     public required bool ShowZeroPriceAsFree { get; set; }
+
+    [JsonPropertyName("sync_customer_billing_details_for_tax")]
+    public required bool SyncCustomerBillingDetailsForTax { get; set; }
 
     [JsonPropertyName("trial_days")]
     public int? TrialDays { get; set; }

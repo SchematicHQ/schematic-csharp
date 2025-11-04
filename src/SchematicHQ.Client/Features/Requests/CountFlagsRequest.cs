@@ -12,6 +12,9 @@ public record CountFlagsRequest
     [JsonIgnore]
     public IEnumerable<string> Ids { get; set; } = new List<string>();
 
+    /// <summary>
+    /// Search by flag name, key, or ID
+    /// </summary>
     [JsonIgnore]
     public string? Q { get; set; }
 

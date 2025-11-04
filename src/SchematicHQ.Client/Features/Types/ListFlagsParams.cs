@@ -32,6 +32,9 @@ public record ListFlagsParams : IJsonOnDeserialized
     [JsonPropertyName("offset")]
     public int? Offset { get; set; }
 
+    /// <summary>
+    /// Search by flag name, key, or ID
+    /// </summary>
     [JsonPropertyName("q")]
     public string? Q { get; set; }
 

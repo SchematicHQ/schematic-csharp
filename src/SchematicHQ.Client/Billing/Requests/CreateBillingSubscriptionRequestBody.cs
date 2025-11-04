@@ -18,6 +18,9 @@ public record CreateBillingSubscriptionRequestBody
     [JsonPropertyName("customer_external_id")]
     public required string CustomerExternalId { get; set; }
 
+    [JsonPropertyName("default_payment_method_external_id")]
+    public string? DefaultPaymentMethodExternalId { get; set; }
+
     [JsonPropertyName("default_payment_method_id")]
     public string? DefaultPaymentMethodId { get; set; }
 

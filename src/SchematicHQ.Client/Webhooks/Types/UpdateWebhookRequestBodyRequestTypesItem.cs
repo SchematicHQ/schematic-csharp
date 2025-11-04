@@ -115,12 +115,22 @@ public readonly record struct UpdateWebhookRequestBodyRequestTypesItem : IString
     public static readonly UpdateWebhookRequestBodyRequestTypesItem EntitlementSoftLimitReached =
         new(Values.EntitlementSoftLimitReached);
 
+    public static readonly UpdateWebhookRequestBodyRequestTypesItem EntitlementTierLimitWarning =
+        new(Values.EntitlementTierLimitWarning);
+
+    public static readonly UpdateWebhookRequestBodyRequestTypesItem EntitlementTierLimitReached =
+        new(Values.EntitlementTierLimitReached);
+
     public static readonly UpdateWebhookRequestBodyRequestTypesItem CreditLimitWarning = new(
         Values.CreditLimitWarning
     );
 
     public static readonly UpdateWebhookRequestBodyRequestTypesItem CreditLimitReached = new(
         Values.CreditLimitReached
+    );
+
+    public static readonly UpdateWebhookRequestBodyRequestTypesItem CompanyPlanChange = new(
+        Values.CompanyPlanChange
     );
 
     public UpdateWebhookRequestBodyRequestTypesItem(string value)
@@ -232,8 +242,14 @@ public readonly record struct UpdateWebhookRequestBodyRequestTypesItem : IString
 
         public const string EntitlementSoftLimitReached = "entitlement.soft_limit.reached";
 
+        public const string EntitlementTierLimitWarning = "entitlement.tier_limit.warning";
+
+        public const string EntitlementTierLimitReached = "entitlement.tier_limit.reached";
+
         public const string CreditLimitWarning = "credit.limit.warning";
 
         public const string CreditLimitReached = "credit.limit.reached";
+
+        public const string CompanyPlanChange = "company.plan_change";
     }
 }

@@ -5,14 +5,14 @@ using SchematicHQ.Client.Core;
 namespace SchematicHQ.Client;
 
 [Serializable]
-public record CountAudienceCompaniesResponse : IJsonOnDeserialized
+public record PreviewManagePlanResponse : IJsonOnDeserialized
 {
     [JsonExtensionData]
     private readonly IDictionary<string, JsonElement> _extensionData =
         new Dictionary<string, JsonElement>();
 
     [JsonPropertyName("data")]
-    public required CountResponse Data { get; set; }
+    public required ManagePlanPreviewResponseResponseData Data { get; set; }
 
     /// <summary>
     /// Input parameters

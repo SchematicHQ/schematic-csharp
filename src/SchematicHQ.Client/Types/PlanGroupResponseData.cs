@@ -43,6 +43,9 @@ public record PlanGroupResponseData : IJsonOnDeserialized
     [JsonPropertyName("plan_ids")]
     public IEnumerable<OrderedPlansInGroup> PlanIds { get; set; } = new List<OrderedPlansInGroup>();
 
+    [JsonPropertyName("prevent_downgrades_when_over_limit")]
+    public required bool PreventDowngradesWhenOverLimit { get; set; }
+
     [JsonPropertyName("show_credits")]
     public required bool ShowCredits { get; set; }
 
@@ -51,6 +54,9 @@ public record PlanGroupResponseData : IJsonOnDeserialized
 
     [JsonPropertyName("show_zero_price_as_free")]
     public required bool ShowZeroPriceAsFree { get; set; }
+
+    [JsonPropertyName("sync_customer_billing_details_for_tax")]
+    public required bool SyncCustomerBillingDetailsForTax { get; set; }
 
     [JsonPropertyName("tax_collection_enabled")]
     public required bool TaxCollectionEnabled { get; set; }

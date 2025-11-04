@@ -98,9 +98,11 @@ public partial class PlangroupsClient
     ///         {
     ///             new OrderedPlansInGroup { PlanId = "plan_id" },
     ///         },
+    ///         PreventDowngradesWhenOverLimit = true,
     ///         ShowCredits = true,
     ///         ShowPeriodToggle = true,
     ///         ShowZeroPriceAsFree = true,
+    ///         SyncCustomerBillingDetailsForTax = true,
     ///     }
     /// );
     /// </code></example>
@@ -191,9 +193,11 @@ public partial class PlangroupsClient
     ///         {
     ///             new OrderedPlansInGroup { PlanId = "plan_id" },
     ///         },
+    ///         PreventDowngradesWhenOverLimit = true,
     ///         ShowCredits = true,
     ///         ShowPeriodToggle = true,
     ///         ShowZeroPriceAsFree = true,
+    ///         SyncCustomerBillingDetailsForTax = true,
     ///     }
     /// );
     /// </code></example>

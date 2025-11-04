@@ -41,6 +41,9 @@ public record ListFeaturesParams : IJsonOnDeserialized
     [JsonPropertyName("offset")]
     public int? Offset { get; set; }
 
+    /// <summary>
+    /// Search by feature name or ID
+    /// </summary>
     [JsonPropertyName("q")]
     public string? Q { get; set; }
 
