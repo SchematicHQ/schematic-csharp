@@ -6,6 +6,7 @@ Configure additional MSBuild properties for your project in this file:
 <Project>
   <PropertyGroup>
     <TargetFrameworks>net8.0;</TargetFrameworks>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="OpenFeature" Version="2.9.0" />
