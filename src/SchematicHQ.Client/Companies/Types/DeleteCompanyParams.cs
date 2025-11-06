@@ -4,21 +4,21 @@ using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
 
+/// <summary>
+/// Input parameters
+/// </summary>
 [Serializable]
-public record DeleteCompanyResponse : IJsonOnDeserialized
+public record DeleteCompanyParams : IJsonOnDeserialized
 {
     [JsonExtensionData]
     private readonly IDictionary<string, JsonElement> _extensionData =
         new Dictionary<string, JsonElement>();
 
-    [JsonPropertyName("data")]
-    public required DeleteResponse Data { get; set; }
+    [JsonPropertyName("cancel_subscription")]
+    public bool? CancelSubscription { get; set; }
 
-    /// <summary>
-    /// Input parameters
-    /// </summary>
-    [JsonPropertyName("params")]
-    public required DeleteCompanyParams Params { get; set; }
+    [JsonPropertyName("prorate")]
+    public bool? Prorate { get; set; }
 
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();

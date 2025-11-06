@@ -3333,7 +3333,7 @@ await client.Companies.GetCompanyAsync("company_id");
 </dl>
 </details>
 
-<details><summary><code>client.Companies.<a href="/src/SchematicHQ.Client/Companies/CompaniesClient.cs">DeleteCompanyAsync</a>(companyId) -> DeleteCompanyResponse</code></summary>
+<details><summary><code>client.Companies.<a href="/src/SchematicHQ.Client/Companies/CompaniesClient.cs">DeleteCompanyAsync</a>(companyId, DeleteCompanyRequest { ... }) -> DeleteCompanyResponse</code></summary>
 <dl>
 <dd>
 
@@ -3346,7 +3346,10 @@ await client.Companies.GetCompanyAsync("company_id");
 <dd>
 
 ```csharp
-await client.Companies.DeleteCompanyAsync("company_id");
+await client.Companies.DeleteCompanyAsync(
+    "company_id",
+    new DeleteCompanyRequest { CancelSubscription = true, Prorate = true }
+);
 ```
 </dd>
 </dl>
@@ -3362,6 +3365,14 @@ await client.Companies.DeleteCompanyAsync("company_id");
 <dd>
 
 **companyId:** `string` — company_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `DeleteCompanyRequest` 
     
 </dd>
 </dl>
