@@ -32,6 +32,9 @@ namespace SchematicHQ.Client.Datastream
     private readonly ICacheProvider<Flag> _flagsCache;
     private readonly ICacheProvider<Company> _companyCache;
     private readonly ICacheProvider<User> _userCache;
+    
+    // Cache version provider (optional, for replicator mode)
+    private readonly Func<string?>? _cacheVersionProvider;
 
     // Pending request tracking
     private readonly Dictionary<string, List<TaskCompletionSource<Company?>>> _pendingCompanyRequests = new Dictionary<string, List<TaskCompletionSource<Company?>>>();
@@ -71,12 +74,14 @@ namespace SchematicHQ.Client.Datastream
         Action<bool> connectionStateCallback,
         TimeSpan? cacheTtl = null,
         IWebSocketClient? webSocket = null,
-        DatastreamOptions? options = null
+        DatastreamOptions? options = null,
+        Func<string?>? cacheVersionProvider = null
     )
     {
       _logger = logger ?? throw new ArgumentNullException(nameof(logger));
       _apiKey = apiKey ?? throw new ArgumentNullException(nameof(apiKey));
       _connectionStateCallback = connectionStateCallback ?? throw new ArgumentNullException(nameof(connectionStateCallback));
+      _cacheVersionProvider = cacheVersionProvider;
 
       // Use options if provided, otherwise use default values
       options ??= new DatastreamOptions();
@@ -1254,15 +1259,36 @@ namespace SchematicHQ.Client.Datastream
 
     }
 
+    /// <summary>
+    /// Gets the cache version to use for cache keys.
+    /// In replicator mode, uses the replicator-provided version if available.
+    /// Otherwise, uses the SDK's generated model hash.
+    /// </summary>
+    private string GetCacheVersion()
+    {
+      var replicatorVersion = _cacheVersionProvider?.Invoke();
+      _logger.Debug("Cache version provider returned: {0}", replicatorVersion ?? "(null)");
+      
+      if (!string.IsNullOrEmpty(replicatorVersion))
+      {
+        _logger.Info("Using replicator cache version: {0}", replicatorVersion);
+        return replicatorVersion;
+      }
+      
+      var sdkVersion = SchemaVersionGenerator.GetGlobalSchemaVersion();
+      _logger.Info("Using SDK cache version: {0}", sdkVersion);
+      return sdkVersion;
+    }
+
     private string FlagCacheKey(string key)
     {
-      var schemaVersion = SchemaVersionGenerator.GetGlobalSchemaVersion();
+      var schemaVersion = GetCacheVersion();
       return $"{CacheKeyPrefix}:{CacheKeyPrefixFlags}:{schemaVersion}:{key}";
     }
 
     private string ResourceKeyToCacheKey<T>(string resourceType, string key, string value)
     {
-      var schemaVersion = SchemaVersionGenerator.GetGlobalSchemaVersion();
+      var schemaVersion = GetCacheVersion();
       return $"{CacheKeyPrefix}:{resourceType}:{schemaVersion}:{key}:{value}";
     }
 

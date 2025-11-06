@@ -18,6 +18,8 @@ namespace SchematicHQ.Client.Datastream
   {
     private readonly DatastreamClient _client;
     private readonly ISchematicLogger _logger;
+    private readonly bool _replicatorMode;
+    private readonly IReplicatorHealthService? _replicatorHealthService;
 
     private readonly ConnectionStateTracker _connectionTracker = new ConnectionStateTracker();
 
@@ -25,9 +27,24 @@ namespace SchematicHQ.Client.Datastream
     /// <summary>
     /// Creates a new datastream client adapter
     /// </summary>
-    public DatastreamClientAdapter(string baseUrl, ISchematicLogger logger, string apiKey, DatastreamOptions options)
+    public DatastreamClientAdapter(string baseUrl, ISchematicLogger logger, string apiKey, DatastreamOptions options, bool replicatorMode = false, string? replicatorHealthUrl = null)
     {
       _logger = logger;
+      _replicatorMode = replicatorMode;
+      
+      // Initialize replicator health service if in replicator mode
+      if (_replicatorMode && !string.IsNullOrWhiteSpace(replicatorHealthUrl))
+      {
+        // Create a simple HTTP client for health checks
+        var httpClient = new System.Net.Http.HttpClient();
+        _replicatorHealthService = new ReplicatorHealthService(httpClient, replicatorHealthUrl, logger);
+        
+        // Subscribe to cache version changes for logging and potential cache invalidation
+        _replicatorHealthService.CacheVersionChanged += OnCacheVersionChanged;
+        
+        _replicatorHealthService.Start();
+      }
+      
       _client = new DatastreamClient(
           baseUrl,
           _logger,
@@ -35,7 +52,8 @@ namespace SchematicHQ.Client.Datastream
           _connectionTracker.UpdateConnectionState, // callback to update connection state
           options.CacheTTL,
           null, // default websocket client
-          options
+          options,
+          _replicatorMode ? GetReplicatorCacheVersionWithFallback : null // cache version provider
           );
     }
 
@@ -64,7 +82,82 @@ namespace SchematicHQ.Client.Datastream
     /// </summary>
     public void Close()
     {
+      if (_replicatorHealthService != null)
+      {
+        _replicatorHealthService.CacheVersionChanged -= OnCacheVersionChanged;
+        _replicatorHealthService.Dispose();
+      }
       _client.Dispose();
+    }
+
+    /// <summary>
+    /// Check if replicator is ready (only valid in replicator mode)
+    /// </summary>
+    public bool IsReplicatorReady()
+    {
+      return _replicatorMode && _replicatorHealthService?.IsHealthy == true;
+    }
+
+    /// <summary>
+    /// Check if running in replicator mode
+    /// </summary>
+    public bool IsReplicatorMode()
+    {
+      return _replicatorMode;
+    }
+
+    /// <summary>
+    /// Gets the cache version from the replicator, attempting an immediate check if not available
+    /// </summary>
+    private string? GetReplicatorCacheVersionWithFallback()
+    {
+      if (_replicatorHealthService == null)
+        return null;
+
+      // If we already have a cache version, return it immediately
+      if (!string.IsNullOrEmpty(_replicatorHealthService.CacheVersion))
+        return _replicatorHealthService.CacheVersion;
+
+      // If we don't have a cache version yet, try to get it synchronously
+      // This handles the case where flag checks happen before the first health check
+      try
+      {
+        var task = _replicatorHealthService.GetCacheVersionAsync();
+        if (task.Wait(TimeSpan.FromSeconds(2))) // Wait up to 2 seconds
+        {
+          return task.Result;
+        }
+        else
+        {
+          _logger.Debug("Timed out waiting for replicator cache version");
+          return null;
+        }
+      }
+      catch (Exception ex)
+      {
+        _logger.Debug("Failed to get replicator cache version: {0}", ex.Message);
+        return null;
+      }
+    }
+
+    /// <summary>
+    /// Handle cache version changes from the replicator
+    /// </summary>
+    private void OnCacheVersionChanged(string? oldVersion, string? newVersion)
+    {
+      _logger.Info("Cache version changed from {0} to {1} - new cache keys will use updated version", 
+          oldVersion ?? "(null)", newVersion ?? "(null)");
+      
+      // Note: Cache invalidation is automatic because cache keys include the version.
+      // Old cache entries will naturally become inaccessible as new operations use the new version.
+    }
+
+    /// <summary>
+    /// Get the cache version from replicator (only valid in replicator mode)
+    /// </summary>
+    public string? GetReplicatorCacheVersion()
+    {
+      return _replicatorMode ? _replicatorHealthService?.CacheVersion : null;
     }
 
     /// <summary>
@@ -103,43 +196,118 @@ namespace SchematicHQ.Client.Datastream
     public async Task<CheckFlagResult> CheckFlag(CheckFlagRequestBody request, string flagKey)
     {
       CancellationToken cancellationToken = CancellationToken.None;
-      var cachedFlag = _client.GetFlag(flagKey);
-      if (cachedFlag == null)
-      {
-        return new CheckFlagResult
-        {
-          Reason = "FlagNotFound",
-          FlagKey = flagKey,
-          Value = false,
-          Error = Errors.ErrorFlagNotFound,
-        };
-      }
+      
       var needsCompany = request.Company != null && request.Company.Count > 0;
       var needsUser = request.User != null && request.User.Count > 0;
-      var cachedCompany = needsCompany ? _client.GetCompanyFromCache(request.Company) : null;
-      var cachedUser = needsUser ? _client.GetUserFromCache(request.User) : null;
 
-      if ((!needsCompany || cachedCompany != null) && (!needsUser || cachedUser != null))
+      // Always try to get cached resources first
+      var cachedFlag = _client.GetFlag(flagKey);
+      Company? cachedCompany = null;
+      User? cachedUser = null;
+
+      if (needsCompany && request.Company != null)
       {
-        // If we have all cached data, use it
-        return await _client.CheckFlag(cachedCompany, cachedUser, cachedFlag);
+        cachedCompany = _client.GetCompanyFromCache(request.Company);
+      }
+      if (needsUser && request.User != null)
+      {
+        cachedUser = _client.GetUserFromCache(request.User);
       }
 
-      // Otherwise, make the request to the datastream client
+      // Check if all required resources are available in cache
+      bool flagInCache = cachedFlag != null;
+      bool allRequiredResourcesInCache = flagInCache && 
+                                       (!needsCompany || cachedCompany != null) && 
+                                       (!needsUser || cachedUser != null);
 
-      if (_connectionTracker.IsConnected)
+      if (_replicatorMode)
       {
+        bool replicatorHealthy = _replicatorHealthService?.IsHealthy == true;
+        
+        if (replicatorHealthy)
+        {
+          // Replicator is connected and healthy
+          if (allRequiredResourcesInCache)
+          {
+            // All required resources in cache - evaluate flag
+            _logger.Debug("Replicator mode: All required resources in cache, evaluating flag '{0}'", flagKey);
+            return await _client.CheckFlag(cachedCompany, cachedUser, cachedFlag!);
+          }
+          else if (!flagInCache)
+          {
+            // Flag missing from cache - replicator should have populated it, so flag doesn't exist
+            _logger.Debug("Replicator mode: Flag '{0}' missing from cache, replicator is healthy so flag doesn't exist", flagKey);
+            return new CheckFlagResult
+            {
+              Reason = "FlagNotFound",
+              FlagKey = flagKey,
+              Value = false,
+              Error = Errors.ErrorFlagNotFound,
+            };
+          }
+          else
+          {
+            // Some company/user resources missing - evaluate with available data
+            _logger.Warn("Replicator mode: Some required resources missing from cache for flag '{0}', evaluating with available data", flagKey);
+            return await _client.CheckFlag(cachedCompany, cachedUser, cachedFlag!);
+          }
+        }
+        else
+        {
+          // Replicator is not connected/healthy
+          if (allRequiredResourcesInCache)
+          {
+            // All required resources in cache - evaluate flag even though replicator is unhealthy
+            _logger.Warn("Replicator mode: Replicator unhealthy but all required resources in cache, evaluating flag '{0}'", flagKey);
+            return await _client.CheckFlag(cachedCompany, cachedUser, cachedFlag!);
+          }
+          else
+          {
+            // Not all resources in cache and replicator unhealthy - fallback to API
+            _logger.Warn("Replicator mode: Replicator unhealthy and missing required resources for flag '{0}', falling back to API", flagKey);
+            throw new InvalidOperationException($"Replicator unhealthy and required resources missing for flag '{flagKey}' - API fallback required");
+          }
+        }
+      }
+      else
+      {
+        // Not in replicator mode - standard datastream behavior
+        if (allRequiredResourcesInCache)
+        {
+          // All required resources in cache - evaluate flag
+          return await _client.CheckFlag(cachedCompany, cachedUser, cachedFlag!);
+        }
+
+        // Handle missing flag case first - return FlagNotFound regardless of connection state
+        if (cachedFlag == null)
+        {
+          return new CheckFlagResult
+          {
+            Reason = "FlagNotFound",
+            FlagKey = flagKey,
+            Value = false,
+            Error = Errors.ErrorFlagNotFound,
+          };
+        }
+
+        // Missing company/user resources - check if we're connected to datastream for fetching
+        if (!_connectionTracker.IsConnected)
+        {
+          throw new InvalidOperationException("Not connected to datastream and missing required resources");
+        }
+
+        // Fetch missing company/user data from datastream
         try
         {
-          Company? company = null;
-          User? user = null;
+          Company? company = cachedCompany;
+          User? user = cachedUser;
 
-          if (needsCompany)
+          if (needsCompany && company == null && request.Company != null)
           {
             company = await _client.GetCompanyAsync(request.Company, cancellationToken);
           }
 
-          if (needsUser)
+          if (needsUser && user == null && request.User != null)
           {
             user = await _client.GetUserAsync(request.User, cancellationToken);
           }
@@ -148,7 +316,7 @@ namespace SchematicHQ.Client.Datastream
         }
         catch (Exception ex)
         {
-          _logger.Error("Error checking flag {0}: {1}", flagKey, ex.Message);
+          _logger.Error("Error fetching missing resources for flag {0}: {1}", flagKey, ex.Message);
           return new CheckFlagResult
           {
             Reason = "Error",
@@ -158,9 +326,6 @@ namespace SchematicHQ.Client.Datastream
           };
         }
       }
-
-      throw new InvalidOperationException("Not connected to datastream");
-
     }
 
     private class ConnectionStateTracker
