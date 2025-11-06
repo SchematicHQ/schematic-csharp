@@ -23,6 +23,9 @@ public record BillingCreditGrantResponseData : IJsonOnDeserialized
     [JsonPropertyName("credit_icon")]
     public string? CreditIcon { get; set; }
 
+    [JsonPropertyName("credit_id")]
+    public required string CreditId { get; set; }
+
     [JsonPropertyName("credit_name")]
     public required string CreditName { get; set; }
 

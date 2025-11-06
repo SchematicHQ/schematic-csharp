@@ -16,7 +16,7 @@ namespace SchematicHQ.Client.Test.RulesEngine
             int initialCount = company.Metrics.Count;
 
             // Act
-            var metric = TestHelpers.CreateTestMetric(company, "test-event", MetricPeriod.AllTime, 5);
+            var metric = TestHelpers.CreateTestMetric(company, "test-event", ConditionMetricPeriod.AllTime, 5);
             company.AddMetric(metric);
 
             // Assert
@@ -32,8 +32,8 @@ namespace SchematicHQ.Client.Test.RulesEngine
 
             // Add initial metric
             string eventSubtype = "test-event";
-            var period = MetricPeriod.AllTime;
-            MetricPeriodMonthReset monthReset = MetricPeriodMonthReset.FirstOfMonth;
+            var period = ConditionMetricPeriod.AllTime;
+            ConditionMetricPeriodMonthReset monthReset = ConditionMetricPeriodMonthReset.FirstOfMonth;
 
             var initialMetric = TestHelpers.CreateTestMetric(company, eventSubtype, period, 5);
             company.AddMetric(initialMetric);
@@ -73,7 +73,7 @@ namespace SchematicHQ.Client.Test.RulesEngine
                 {
                     // Create a metric with a unique event subtype to avoid collision
                     string uniqueSubtype = $"test-event-{DateTime.Now.Ticks}-{index}";
-                    var metric = TestHelpers.CreateTestMetric(company, uniqueSubtype, MetricPeriod.AllTime, index);
+                    var metric = TestHelpers.CreateTestMetric(company, uniqueSubtype, ConditionMetricPeriod.AllTime, index);
 
                     // Add the metric
                     company.AddMetric(metric);
@@ -135,7 +135,7 @@ namespace SchematicHQ.Client.Test.RulesEngine
                 Metrics = null!
             };
 
-            var metric = TestHelpers.CreateTestMetric(company, "foo", MetricPeriod.AllTime, 1);
+            var metric = TestHelpers.CreateTestMetric(company, "foo", ConditionMetricPeriod.AllTime, 1);
 
             // Act & Assert
             Assert.DoesNotThrow(() => company.AddMetric(metric));

@@ -165,7 +165,9 @@ namespace SchematicHQ.Client.Test.Datastream
                     {
                         ""trait_definition"": {
                             ""id"": ""td_123"",
-                            ""name"": ""name""
+                            ""name"": ""name"",
+                            ""comparable_type"": ""string"",
+                            ""entity_type"": ""company""
                         },
                         ""value"": ""Acme Inc""
                     }
@@ -205,7 +207,9 @@ namespace SchematicHQ.Client.Test.Datastream
                     {
                         ""trait_definition"": {
                             ""id"": ""td_123"",
-                            ""name"": ""name""
+                            ""name"": ""name"",
+                            ""comparable_type"": ""string"",
+                            ""entity_type"": ""company""
                         },
                         ""value"": ""Acme Inc""
                     }
@@ -231,7 +235,7 @@ namespace SchematicHQ.Client.Test.Datastream
             var company = GetCompanyFromCache(SingleCompanyKey);
             Assert.That(company, Is.Not.Null);
             
-            var metric = company?.Metrics?.FirstOrDefault(m => m.EventSubtype == "metric1" && m.Period.ToString() == "AllTime");
+            var metric = company?.Metrics?.FirstOrDefault(m => m.EventSubtype == "metric1" && m.Period.Value == "all_time");
             Assert.That(metric, Is.Not.Null);
             Assert.That(metric?.Value, Is.EqualTo(101)); // Default quantity is 1
         }
@@ -251,7 +255,9 @@ namespace SchematicHQ.Client.Test.Datastream
                     {
                         ""trait_definition"": {
                             ""id"": ""td_123"",
-                            ""name"": ""name""
+                            ""name"": ""name"",
+                            ""comparable_type"": ""string"",
+                            ""entity_type"": ""company""
                         },
                         ""value"": ""Acme Inc""
                     }
@@ -277,7 +283,7 @@ namespace SchematicHQ.Client.Test.Datastream
             var company = GetCompanyFromCache(SingleCompanyKey);
             Assert.That(company, Is.Not.Null);
             
-            var metric = company?.Metrics?.FirstOrDefault(m => m.EventSubtype == "metric1" && m.Period.ToString() == "AllTime");
+            var metric = company?.Metrics?.FirstOrDefault(m => m.EventSubtype == "metric1" && m.Period.Value == "all_time");
             Assert.That(metric, Is.Not.Null);
             Assert.That(metric?.Value, Is.EqualTo(105)); // 100 + 5
         }
@@ -298,7 +304,9 @@ namespace SchematicHQ.Client.Test.Datastream
                     {
                         ""trait_definition"": {
                             ""id"": ""td_123"",
-                            ""name"": ""name""
+                            ""name"": ""name"",
+                            ""comparable_type"": ""string"",
+                            ""entity_type"": ""company""
                         },
                         ""value"": ""Acme Inc""
                     }
@@ -326,7 +334,7 @@ namespace SchematicHQ.Client.Test.Datastream
             var companyByPrimary = GetCompanyFromCache(new Dictionary<string, string> { ["company_id"] = "12345" });
             Assert.That(companyByPrimary, Is.Not.Null);
             
-            var metricByPrimary = companyByPrimary?.Metrics?.FirstOrDefault(m => m.EventSubtype == "metric1" && m.Period.ToString() == "AllTime");
+            var metricByPrimary = companyByPrimary?.Metrics?.FirstOrDefault(m => m.EventSubtype == "metric1" && m.Period.Value == "all_time");
             Assert.That(metricByPrimary, Is.Not.Null);
             Assert.That(metricByPrimary?.Value, Is.EqualTo(105));
             
@@ -354,7 +362,9 @@ namespace SchematicHQ.Client.Test.Datastream
                     {
                         ""trait_definition"": {
                             ""id"": ""td_123"",
-                            ""name"": ""name""
+                            ""name"": ""name"",
+                            ""comparable_type"": ""string"",
+                            ""entity_type"": ""company""
                         },
                         ""value"": ""Acme Inc""
                     }
@@ -395,10 +405,10 @@ namespace SchematicHQ.Client.Test.Datastream
             Assert.That(company, Is.Not.Null);
             
             // All metric1 metrics should be updated regardless of period
-            var metric1AllTime = company?.Metrics?.FirstOrDefault(m => m.EventSubtype == "metric1" && m.Period.ToString() == "AllTime");
+            var metric1AllTime = company?.Metrics?.FirstOrDefault(m => m.EventSubtype == "metric1" && m.Period.Value == "all_time");
             Assert.That(metric1AllTime, Is.Not.Null);
             Assert.That(metric1AllTime?.Value, Is.EqualTo(110)); // 100 + 10
-            var metric1CurrentMonth = company?.Metrics?.FirstOrDefault(m => m.EventSubtype == "metric1" && m.Period.ToString() == "CurrentMonth");
+            var metric1CurrentMonth = company?.Metrics?.FirstOrDefault(m => m.EventSubtype == "metric1" && m.Period.Value == "current_month");
             Assert.That(metric1CurrentMonth, Is.Not.Null);
             Assert.That(metric1CurrentMonth?.Value, Is.EqualTo(60)); // 50 + 10
             // metric2 should not be updated

@@ -19,27 +19,60 @@ namespace SchematicHQ.Client.RulesEngine.Utils
   {
     [JsonPropertyName("eq")]
     Eq,
-    
+
     [JsonPropertyName("ne")]
     Ne,
-    
+
     [JsonPropertyName("lt")]
     Lt,
-    
+
     [JsonPropertyName("lte")]
     Lte,
-    
+
     [JsonPropertyName("gt")]
     Gt,
-    
+
     [JsonPropertyName("gte")]
     Gte,
-    
+
     [JsonPropertyName("is_empty")]
     IsEmpty,
     [JsonPropertyName("not_empty")]
     NotEmpty,
   }
+
+  // Extension methods to convert from generated types to utility types
+  public static class ComparableTypeExtensions
+  {
+    public static ComparableOperator ToComparableOperator(this ConditionOperator op)
+    {
+      return op.Value switch
+      {
+        "eq" => ComparableOperator.Eq,
+        "ne" => ComparableOperator.Ne,
+        "gt" => ComparableOperator.Gt,
+        "lt" => ComparableOperator.Lt,
+        "gte" => ComparableOperator.Gte,
+        "lte" => ComparableOperator.Lte,
+        "is_empty" => ComparableOperator.IsEmpty,
+        "not_empty" => ComparableOperator.NotEmpty,
+        _ => ComparableOperator.Eq
+      };
+    }
+
+    public static ComparableType ToComparableType(this TraitDefinitionComparableType comparableType)
+    {
+      return comparableType.Value switch
+      {
+        "bool" => ComparableType.Bool,
+        "date" => ComparableType.Date,
+        "int" => ComparableType.Int,
+        "string" => ComparableType.String,
+        _ => ComparableType.String
+      };
+    }
+  }
+
     public static class TypeConverter
   {
     public static bool Compare(string a, string b, ComparableType comparableType, ComparableOperator op)

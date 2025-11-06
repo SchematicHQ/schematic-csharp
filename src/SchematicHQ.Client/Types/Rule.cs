@@ -5,14 +5,20 @@ using SchematicHQ.Client.Core;
 namespace SchematicHQ.Client;
 
 [Serializable]
-public record PlanAudienceResponseData : IJsonOnDeserialized
+public record Rule : IJsonOnDeserialized
 {
     [JsonExtensionData]
     private readonly IDictionary<string, JsonElement> _extensionData =
         new Dictionary<string, JsonElement>();
 
-    [JsonPropertyName("created_at")]
-    public required DateTime CreatedAt { get; set; }
+    [JsonPropertyName("account_id")]
+    public required string AccountId { get; set; }
+
+    [JsonPropertyName("condition_groups")]
+    public IEnumerable<ConditionGroup> ConditionGroups { get; set; } = new List<ConditionGroup>();
+
+    [JsonPropertyName("conditions")]
+    public IEnumerable<Condition> Conditions { get; set; } = new List<Condition>();
 
     [JsonPropertyName("environment_id")]
     public required string EnvironmentId { get; set; }
@@ -26,17 +32,11 @@ public record PlanAudienceResponseData : IJsonOnDeserialized
     [JsonPropertyName("name")]
     public required string Name { get; set; }
 
-    [JsonPropertyName("plan_id")]
-    public string? PlanId { get; set; }
-
     [JsonPropertyName("priority")]
     public required int Priority { get; set; }
 
     [JsonPropertyName("rule_type")]
-    public required string RuleType { get; set; }
-
-    [JsonPropertyName("updated_at")]
-    public required DateTime UpdatedAt { get; set; }
+    public required RuleRuleType RuleType { get; set; }
 
     [JsonPropertyName("value")]
     public required bool Value { get; set; }

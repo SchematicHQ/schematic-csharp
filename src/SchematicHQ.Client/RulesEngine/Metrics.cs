@@ -5,39 +5,39 @@ namespace SchematicHQ.Client.RulesEngine
   public static class Metrics
   {
 
-    public static DateTime? GetCurrentMetricPeriodStartForCalendarMetricPeriod(MetricPeriod metricPeriod)
+    public static DateTime? GetCurrentMetricPeriodStartForCalendarMetricPeriod(ConditionMetricPeriod? metricPeriod)
     {
+      if (metricPeriod == null) return null;
+
       var now = DateTime.UtcNow;
 
-      switch (metricPeriod)
+      if (metricPeriod == ConditionMetricPeriod.CurrentDay)
+        // UTC midnight for the current day
+        return now.Date;
+
+      if (metricPeriod == ConditionMetricPeriod.CurrentWeek)
       {
-        case MetricPeriod.CurrentDay:
-          // UTC midnight for the current day
-          return now.Date;
-
-        case MetricPeriod.CurrentWeek:
-          // UTC midnight for the current week's Monday
-          int daysSinceMonday = ((int)now.DayOfWeek - (int)DayOfWeek.Monday + 7) % 7;
-          return now.Date.AddDays(-daysSinceMonday);
-
-        case MetricPeriod.CurrentMonth:
-          // UTC midnight for the first day of current month
-          return new DateTime(now.Year, now.Month, 1, 0, 0, 0, DateTimeKind.Utc);
-
-        default:
-          return null;
+        // UTC midnight for the current week's Monday
+        int daysSinceMonday = ((int)now.DayOfWeek - (int)DayOfWeek.Monday + 7) % 7;
+        return now.Date.AddDays(-daysSinceMonday);
       }
+
+      if (metricPeriod == ConditionMetricPeriod.CurrentMonth)
+        // UTC midnight for the first day of current month
+        return new DateTime(now.Year, now.Month, 1, 0, 0, 0, DateTimeKind.Utc);
+
+      return null;
     }
 
     /// <summary>
     /// Given a company, determine the current metric period start based on the company's billing subscription.
     /// </summary>
-    public static DateTime? GetCurrentMetricPeriodStartForCompanyBillingSubscription(Company? company)
+    public static DateTime? GetCurrentMetricPeriodStartForCompanyBillingSubscription(Models.Company? company)
     {
       // If no subscription exists, we use calendar month reset
       if (company == null || company.Subscription == null)
       {
-        return GetCurrentMetricPeriodStartForCalendarMetricPeriod(MetricPeriod.CurrentMonth);
+        return GetCurrentMetricPeriodStartForCalendarMetricPeriod(ConditionMetricPeriod.CurrentMonth);
       }
 
       var now = DateTime.UtcNow;
@@ -48,7 +48,7 @@ namespace SchematicHQ.Client.RulesEngine
       // the end of the current calendar month or the start of the billing period, whichever comes first
       if (periodStart > now)
       {
-        DateTime? startOfNextMonth = GetCurrentMetricPeriodStartForCalendarMetricPeriod(MetricPeriod.CurrentMonth);
+        DateTime? startOfNextMonth = GetCurrentMetricPeriodStartForCalendarMetricPeriod(ConditionMetricPeriod.CurrentMonth);
         if (periodStart > startOfNextMonth)
         {
           return startOfNextMonth;
@@ -97,40 +97,44 @@ namespace SchematicHQ.Client.RulesEngine
       return currentPeriodStart;
     }
 
-    public static DateTime? GetNextMetricPeriodStartForCalendarMetricPeriod(MetricPeriod metricPeriod)
+    public static DateTime? GetNextMetricPeriodStartForCalendarMetricPeriod(ConditionMetricPeriod? metricPeriod)
     {
-      switch (metricPeriod)
-      {
-        case MetricPeriod.CurrentDay:
-          // UTC midnight for upcoming day
-          return DateTime.UtcNow.Date.AddDays(1);
-        case MetricPeriod.CurrentWeek:
-          // UTC midnight for upcoming Monday (C# uses Monday as first day, Go example used Sunday)
-          var now = DateTime.UtcNow;
-          int daysUntilMonday = ((int)DayOfWeek.Monday - (int)now.DayOfWeek + 7) % 7;
-          if (daysUntilMonday == 0)
-            daysUntilMonday = 7; // If today is Monday, get next Monday
-          return now.Date.AddDays(daysUntilMonday);
-        case MetricPeriod.CurrentMonth:
-          // UTC midnight for the first day of next month
-          var currentDate = DateTime.UtcNow;
-          return new DateTime(currentDate.Year, currentDate.Month, 1, 0, 0, 0, DateTimeKind.Utc).AddMonths(1);
+      if (metricPeriod == null) return null;
 
-        default:
-          return null;
+      if (metricPeriod == ConditionMetricPeriod.CurrentDay)
+        // UTC midnight for upcoming day
+        return DateTime.UtcNow.Date.AddDays(1);
+
+      if (metricPeriod == ConditionMetricPeriod.CurrentWeek)
+      {
+        // UTC midnight for upcoming Monday (C# uses Monday as first day, Go example used Sunday)
+        var now = DateTime.UtcNow;
+        int daysUntilMonday = ((int)DayOfWeek.Monday - (int)now.DayOfWeek + 7) % 7;
+        if (daysUntilMonday == 0)
+          daysUntilMonday = 7; // If today is Monday, get next Monday
+        return now.Date.AddDays(daysUntilMonday);
       }
+
+      if (metricPeriod == ConditionMetricPeriod.CurrentMonth)
+      {
+        // UTC midnight for the first day of next month
+        var currentDate = DateTime.UtcNow;
+        return new DateTime(currentDate.Year, currentDate.Month, 1, 0, 0, 0, DateTimeKind.Utc).AddMonths(1);
+      }
+
+      return null;
     }
     
 
     /// <summary>
     /// Given a company, determine the next metric period start based on the company's billing subscription.
     /// </summary>
-    public static DateTime? GetNextMetricPeriodStartForCompanyBillingSubscription(Company? company)
+    public static DateTime? GetNextMetricPeriodStartForCompanyBillingSubscription(Models.Company? company)
     {
       // If no subscription exists, we use calendar month reset
       if (company == null || company.Subscription == null)
       {
-        return GetNextMetricPeriodStartForCalendarMetricPeriod(MetricPeriod.CurrentMonth);
+        return GetNextMetricPeriodStartForCalendarMetricPeriod(ConditionMetricPeriod.CurrentMonth);
       }
 
       var now = DateTime.UtcNow;
@@ -141,7 +145,7 @@ namespace SchematicHQ.Client.RulesEngine
       // the end of the current calendar month or the start of the billing period, whichever comes first
       if (periodStart > now)
       {
-        var startOfNextMonth = GetNextMetricPeriodStartForCalendarMetricPeriod(MetricPeriod.CurrentMonth);
+        var startOfNextMonth = GetNextMetricPeriodStartForCalendarMetricPeriod(ConditionMetricPeriod.CurrentMonth);
         if (periodStart > startOfNextMonth)
         {
           return startOfNextMonth;
@@ -181,30 +185,32 @@ namespace SchematicHQ.Client.RulesEngine
     /// Given a rule condition and a company, determine the next metric period start.
     /// Will return null if the condition is not a metric condition.
     /// </summary>
-    public static DateTime? GetNextMetricPeriodStartFromCondition(Condition? condition, Company? company)
+    public static DateTime? GetNextMetricPeriodStartFromCondition(Condition? condition, Models.Company? company)
     {
       // Only metric conditions have a metric period that can reset
-      if (condition == null || condition.ConditionType != ConditionType.Metric || condition.MetricPeriod == null)
+      if (condition == null || condition.ConditionType != ConditionConditionType.Metric || condition.MetricPeriod == null)
       {
         return null;
       }
 
+      var metricPeriod = condition.MetricPeriod;
+
       // If the metric period is all-time, no reset
-      if (condition.MetricPeriod == MetricPeriod.AllTime)
+      if (metricPeriod == ConditionMetricPeriod.AllTime)
       {
         return null;
       }
 
       // Metric period current month with billing cycle reset
-      if (condition.MetricPeriod == MetricPeriod.CurrentMonth &&
+      if (metricPeriod == ConditionMetricPeriod.CurrentMonth &&
           condition.MetricPeriodMonthReset.HasValue &&
-          condition.MetricPeriodMonthReset.Value == MetricPeriodMonthReset.BillingCycle)
+          condition.MetricPeriodMonthReset == ConditionMetricPeriodMonthReset.BillingCycle)
       {
         return GetNextMetricPeriodStartForCompanyBillingSubscription(company);
       }
 
       // Calendar-based metric periods
-      return GetNextMetricPeriodStartForCalendarMetricPeriod(condition.MetricPeriod.Value);
+      return GetNextMetricPeriodStartForCalendarMetricPeriod(metricPeriod);
     }
   }
 }

@@ -9,6 +9,9 @@ public record CountFeaturesRequest
     [JsonIgnore]
     public IEnumerable<string> Ids { get; set; } = new List<string>();
 
+    /// <summary>
+    /// Search by feature name or ID
+    /// </summary>
     [JsonIgnore]
     public string? Q { get; set; }
 

@@ -6,6 +6,9 @@ namespace SchematicHQ.Client;
 [Serializable]
 public record CreateBillingPlanCreditGrantRequestBody
 {
+    [JsonPropertyName("apply_to_existing")]
+    public bool? ApplyToExisting { get; set; }
+
     [JsonPropertyName("credit_amount")]
     public required int CreditAmount { get; set; }
 

@@ -21,9 +21,6 @@ public record CreateOrUpdateConditionGroupRequestBody : IJsonOnDeserialized
     [JsonPropertyName("id")]
     public string? Id { get; set; }
 
-    [JsonPropertyName("plan_id")]
-    public string? PlanId { get; set; }
-
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();
 

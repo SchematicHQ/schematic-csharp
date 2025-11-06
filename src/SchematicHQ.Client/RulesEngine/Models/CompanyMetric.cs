@@ -17,10 +17,10 @@ namespace SchematicHQ.Client.RulesEngine.Models
     public required string EventSubtype { get; set; }
 
     [JsonPropertyName("period")]
-    public MetricPeriod Period { get; set; }
+    public ConditionMetricPeriod Period { get; set; }
 
     [JsonPropertyName("month_reset")]
-    public MetricPeriodMonthReset MonthReset { get; set; }
+    public ConditionMetricPeriodMonthReset MonthReset { get; set; }
 
     [JsonPropertyName("value")]
     public long Value { get; set; }
@@ -31,7 +31,7 @@ namespace SchematicHQ.Client.RulesEngine.Models
     [JsonPropertyName("valid_until")]
     public DateTime? ValidUntil { get; set; }
 
-    public static CompanyMetric? Find(List<CompanyMetric> metrics, string eventSubtype, MetricPeriod? period, MetricPeriodMonthReset? monthReset)
+    public static CompanyMetric? Find(List<CompanyMetric> metrics, string eventSubtype, ConditionMetricPeriod? period, ConditionMetricPeriodMonthReset? monthReset)
     {
       if (metrics == null || string.IsNullOrEmpty(eventSubtype) || period == null)
         return null;
