@@ -8,6 +8,7 @@ README.md
 examples/
 src/SchematicHQ.Client.Test/Cache/
 src/SchematicHQ.Client.Test/Datastream/
+src/SchematicHQ.Client.Test/Integration/
 src/SchematicHQ.Client.Test/TestCache.cs
 src/SchematicHQ.Client.Test/TestClient.cs
 src/SchematicHQ.Client.Test/TestCompaniesClient.cs
