@@ -83,7 +83,7 @@ namespace SchematicHQ.Client.Test.RulesEngine
             Assert.That(flag!.Id, Is.EqualTo("flag_6SB8FaJPR8C"));
             Assert.That(flag.Key, Is.EqualTo("analyze-clicks"));
             Assert.That(flag.Rules, Has.Count.EqualTo(1));
-            Assert.That(flag.Rules[0].RuleType, Is.EqualTo(RuleType.PlanEntitlement));
+            Assert.That(flag.Rules[0].RuleType, Is.EqualTo(RuleRuleType.PlanEntitlement));
         }
 
         [Test]
@@ -146,65 +146,186 @@ namespace SchematicHQ.Client.Test.RulesEngine
             Assert.That(company!.Id, Is.EqualTo("comp_DopLPhkmGHU"));
             Assert.That(company.Traits, Has.Count.EqualTo(3));
             
-            // Check that empty string comparable_type is converted to Unknown
+            // Check that empty string comparable_type is handled correctly
             foreach (var trait in company.Traits)
             {
-                Assert.That(trait.TraitDefinition?.ComparableType, Is.EqualTo(ComparableType.Unknown));
+                // Empty string should create a TraitDefinitionComparableType with empty string value
+                Assert.That(trait.TraitDefinition?.ComparableType.Value, Is.EqualTo(""));
             }
         }
 
         [Test]
-        [TestCase("", ComparableType.Unknown)]
-        [TestCase("string", ComparableType.String)]
-        [TestCase("int", ComparableType.Int)]
-        [TestCase("bool", ComparableType.Bool)]
-        [TestCase("date", ComparableType.Date)]
-        public void ComparableType_ShouldDeserializeCorrectly(string jsonValue, ComparableType expectedEnum)
+        public void TraitDefinitionComparableType_EmptyString_ShouldDeserializeToEmptyValue()
         {
             // Arrange
-            var json = $@"{{""comparable_type"": ""{jsonValue}""}}";
+            var json = @"{""comparable_type"": """"}";
 
             // Act
-            var testObj = JsonSerializer.Deserialize<TestComparableTypeObject>(json, _jsonOptions);
+            var testObj = JsonSerializer.Deserialize<TestTraitDefinitionComparableTypeObject>(json, _jsonOptions);
 
             // Assert
-            Assert.That(testObj!.ComparableType, Is.EqualTo(expectedEnum));
+            Assert.That(testObj!.ComparableType.Value, Is.EqualTo(""));
         }
 
         [Test]
-        [TestCase("plan_entitlement", RuleType.PlanEntitlement)]
-        [TestCase("global_override", RuleType.GlobalOverride)]
-        [TestCase("company_override", RuleType.CompanyOverride)]
-        [TestCase("standard", RuleType.Standard)]
-        [TestCase("default", RuleType.Default)]
-        public void RuleType_ShouldDeserializeCorrectly(string jsonValue, RuleType expectedEnum)
+        public void TraitDefinitionComparableType_String_ShouldDeserializeCorrectly()
         {
             // Arrange
-            var json = $@"{{""rule_type"": ""{jsonValue}""}}";
+            var json = @"{""comparable_type"": ""string""}";
+
+            // Act
+            var testObj = JsonSerializer.Deserialize<TestTraitDefinitionComparableTypeObject>(json, _jsonOptions);
+
+            // Assert
+            Assert.That(testObj!.ComparableType, Is.EqualTo(TraitDefinitionComparableType.String));
+        }
+
+        [Test]
+        public void TraitDefinitionComparableType_Int_ShouldDeserializeCorrectly()
+        {
+            // Arrange
+            var json = @"{""comparable_type"": ""int""}";
+
+            // Act
+            var testObj = JsonSerializer.Deserialize<TestTraitDefinitionComparableTypeObject>(json, _jsonOptions);
+
+            // Assert
+            Assert.That(testObj!.ComparableType, Is.EqualTo(TraitDefinitionComparableType.Int));
+        }
+
+        [Test]
+        public void TraitDefinitionComparableType_Bool_ShouldDeserializeCorrectly()
+        {
+            // Arrange
+            var json = @"{""comparable_type"": ""bool""}";
+
+            // Act
+            var testObj = JsonSerializer.Deserialize<TestTraitDefinitionComparableTypeObject>(json, _jsonOptions);
+
+            // Assert
+            Assert.That(testObj!.ComparableType, Is.EqualTo(TraitDefinitionComparableType.Bool));
+        }
+
+        [Test]
+        public void TraitDefinitionComparableType_Date_ShouldDeserializeCorrectly()
+        {
+            // Arrange
+            var json = @"{""comparable_type"": ""date""}";
+
+            // Act
+            var testObj = JsonSerializer.Deserialize<TestTraitDefinitionComparableTypeObject>(json, _jsonOptions);
+
+            // Assert
+            Assert.That(testObj!.ComparableType, Is.EqualTo(TraitDefinitionComparableType.Date));
+        }
+
+        [Test]
+        public void RuleType_PlanEntitlement_ShouldDeserializeCorrectly()
+        {
+            // Arrange
+            var json = @"{""rule_type"": ""plan_entitlement""}";
 
             // Act
             var testObj = JsonSerializer.Deserialize<TestRuleTypeObject>(json, _jsonOptions);
 
             // Assert
-            Assert.That(testObj!.RuleType, Is.EqualTo(expectedEnum));
+            Assert.That(testObj!.RuleType, Is.EqualTo(RuleRuleType.PlanEntitlement));
         }
 
         [Test]
-        [TestCase("unknown_value")] 
-        [TestCase("")]
-        [TestCase("invalid")]
-        public void RuleType_WithUnknownValue_ShouldFallbackToFirstEnumValue(string jsonValue)
+        public void RuleType_GlobalOverride_ShouldDeserializeCorrectly()
         {
             // Arrange
-            var json = $@"{{""rule_type"": ""{jsonValue}""}}";
+            var json = @"{""rule_type"": ""global_override""}";
 
-            // Act & Assert - Should not throw, should fallback to first enum value
+            // Act
+            var testObj = JsonSerializer.Deserialize<TestRuleTypeObject>(json, _jsonOptions);
+
+            // Assert
+            Assert.That(testObj!.RuleType, Is.EqualTo(RuleRuleType.GlobalOverride));
+        }
+
+        [Test]
+        public void RuleType_CompanyOverride_ShouldDeserializeCorrectly()
+        {
+            // Arrange
+            var json = @"{""rule_type"": ""company_override""}";
+
+            // Act
+            var testObj = JsonSerializer.Deserialize<TestRuleTypeObject>(json, _jsonOptions);
+
+            // Assert
+            Assert.That(testObj!.RuleType, Is.EqualTo(RuleRuleType.CompanyOverride));
+        }
+
+        [Test]
+        public void RuleType_Standard_ShouldDeserializeCorrectly()
+        {
+            // Arrange
+            var json = @"{""rule_type"": ""standard""}";
+
+            // Act
+            var testObj = JsonSerializer.Deserialize<TestRuleTypeObject>(json, _jsonOptions);
+
+            // Assert
+            Assert.That(testObj!.RuleType, Is.EqualTo(RuleRuleType.Standard));
+        }
+
+        [Test]
+        public void RuleType_Default_ShouldDeserializeCorrectly()
+        {
+            // Arrange
+            var json = @"{""rule_type"": ""default""}";
+
+            // Act
+            var testObj = JsonSerializer.Deserialize<TestRuleTypeObject>(json, _jsonOptions);
+
+            // Assert
+            Assert.That(testObj!.RuleType, Is.EqualTo(RuleRuleType.Default));
+        }
+
+        [Test]
+        public void RuleType_WithUnknownValue_ShouldFallbackToUnknown()
+        {
+            // Arrange
+            var json = @"{""rule_type"": ""unknown_value""}";
+
+            // Act & Assert - Should not throw, should fallback to Unknown
             Assert.DoesNotThrow(() =>
             {
                 var testObj = JsonSerializer.Deserialize<TestRuleTypeObject>(json, _jsonOptions);
-                // First enum value should be used as fallback
-                var firstEnumValue = Enum.GetValues<RuleType>()[0];
-                Assert.That(testObj!.RuleType, Is.EqualTo(firstEnumValue));
+                // Should fallback to Unknown for unrecognized values
+                Assert.That(testObj!.RuleType, Is.EqualTo(RuleRuleType.Unknown));
+            });
+        }
+
+        [Test]
+        public void RuleType_WithEmptyValue_ShouldFallbackToUnknown()
+        {
+            // Arrange
+            var json = @"{""rule_type"": """"}";
+
+            // Act & Assert - Should not throw, should fallback to Unknown
+            Assert.DoesNotThrow(() =>
+            {
+                var testObj = JsonSerializer.Deserialize<TestRuleTypeObject>(json, _jsonOptions);
+                // Should fallback to Unknown for empty values
+                Assert.That(testObj!.RuleType, Is.EqualTo(RuleRuleType.Unknown));
+            });
+        }
+
+        [Test]
+        public void RuleType_WithInvalidValue_ShouldFallbackToUnknown()
+        {
+            // Arrange
+            var json = @"{""rule_type"": ""invalid""}";
+
+            // Act & Assert - Should not throw, should fallback to Unknown
+            Assert.DoesNotThrow(() =>
+            {
+                var testObj = JsonSerializer.Deserialize<TestRuleTypeObject>(json, _jsonOptions);
+                // Should fallback to Unknown for invalid values
+                Assert.That(testObj!.RuleType, Is.EqualTo(RuleRuleType.Unknown));
             });
         }
 
@@ -215,10 +336,16 @@ namespace SchematicHQ.Client.Test.RulesEngine
             public ComparableType ComparableType { get; set; }
         }
 
+        private class TestTraitDefinitionComparableTypeObject
+        {
+            [JsonPropertyName("comparable_type")]
+            public TraitDefinitionComparableType ComparableType { get; set; }
+        }
+
         private class TestRuleTypeObject
         {
             [JsonPropertyName("rule_type")]
-            public RuleType RuleType { get; set; }
+            public RuleRuleType RuleType { get; set; }
         }
     }
 }

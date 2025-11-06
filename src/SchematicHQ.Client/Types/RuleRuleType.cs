@@ -1,12 +1,15 @@
 using System.Text.Json.Serialization;
+using SchematicHQ.Client.Cache;
 using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
 
-[JsonConverter(typeof(StringEnumSerializer<RuleRuleType>))]
+[JsonConverter(typeof(RuleRuleTypeConverter))]
 [Serializable]
 public readonly record struct RuleRuleType : IStringEnum
 {
+    public static readonly RuleRuleType Unknown = new(Values.Unknown);
+
     public static readonly RuleRuleType Default = new(Values.Default);
 
     public static readonly RuleRuleType GlobalOverride = new(Values.GlobalOverride);
@@ -72,6 +75,8 @@ public readonly record struct RuleRuleType : IStringEnum
     [Serializable]
     public static class Values
     {
+        public const string Unknown = "";
+
         public const string Default = "default";
 
         public const string GlobalOverride = "global_override";
