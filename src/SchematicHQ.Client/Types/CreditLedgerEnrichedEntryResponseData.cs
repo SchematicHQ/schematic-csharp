@@ -11,6 +11,9 @@ public record CreditLedgerEnrichedEntryResponseData : IJsonOnDeserialized
     private readonly IDictionary<string, JsonElement> _extensionData =
         new Dictionary<string, JsonElement>();
 
+    [JsonPropertyName("billing_credit_auto_topup_grant_count")]
+    public required int BillingCreditAutoTopupGrantCount { get; set; }
+
     [JsonPropertyName("billing_credit_id")]
     public required string BillingCreditId { get; set; }
 

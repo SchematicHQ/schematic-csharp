@@ -11,6 +11,9 @@ public record CheckoutSubscription : IJsonOnDeserialized
     private readonly IDictionary<string, JsonElement> _extensionData =
         new Dictionary<string, JsonElement>();
 
+    [JsonPropertyName("application_id")]
+    public string? ApplicationId { get; set; }
+
     [JsonPropertyName("cancel_at")]
     public int? CancelAt { get; set; }
 

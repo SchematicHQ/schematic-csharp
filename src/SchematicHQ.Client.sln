@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SchematicHQ.Client", "SchematicHQ.Client\SchematicHQ.Client.csproj", "{07FB2D53-C505-4833-BA28-D66A010580CE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SchematicHQ.Client", "SchematicHQ.Client\SchematicHQ.Client.csproj", "{56CBBACF-A882-4165-9670-D4EAB5825B14}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SchematicHQ.Client.Test", "SchematicHQ.Client.Test\SchematicHQ.Client.Test.csproj", "{EB597097-A87B-48B4-9100-96F58252CDD3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SchematicHQ.Client.Test", "SchematicHQ.Client.Test\SchematicHQ.Client.Test.csproj", "{97DE2575-2931-44C0-8EFD-0FFFE9C95358}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -16,13 +16,13 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{07FB2D53-C505-4833-BA28-D66A010580CE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{07FB2D53-C505-4833-BA28-D66A010580CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{07FB2D53-C505-4833-BA28-D66A010580CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{07FB2D53-C505-4833-BA28-D66A010580CE}.Release|Any CPU.Build.0 = Release|Any CPU
-		{EB597097-A87B-48B4-9100-96F58252CDD3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EB597097-A87B-48B4-9100-96F58252CDD3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EB597097-A87B-48B4-9100-96F58252CDD3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EB597097-A87B-48B4-9100-96F58252CDD3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{56CBBACF-A882-4165-9670-D4EAB5825B14}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{56CBBACF-A882-4165-9670-D4EAB5825B14}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{56CBBACF-A882-4165-9670-D4EAB5825B14}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{56CBBACF-A882-4165-9670-D4EAB5825B14}.Release|Any CPU.Build.0 = Release|Any CPU
+		{97DE2575-2931-44C0-8EFD-0FFFE9C95358}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{97DE2575-2931-44C0-8EFD-0FFFE9C95358}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{97DE2575-2931-44C0-8EFD-0FFFE9C95358}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{97DE2575-2931-44C0-8EFD-0FFFE9C95358}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

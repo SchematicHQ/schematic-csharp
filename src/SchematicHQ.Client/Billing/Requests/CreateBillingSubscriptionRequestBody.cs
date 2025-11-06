@@ -6,6 +6,9 @@ namespace SchematicHQ.Client;
 [Serializable]
 public record CreateBillingSubscriptionRequestBody
 {
+    [JsonPropertyName("application_id")]
+    public string? ApplicationId { get; set; }
+
     [JsonPropertyName("cancel_at")]
     public int? CancelAt { get; set; }
 

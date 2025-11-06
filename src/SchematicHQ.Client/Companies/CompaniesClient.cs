@@ -260,14 +260,27 @@ public partial class CompaniesClient
     }
 
     /// <example><code>
-    /// await client.Companies.DeleteCompanyAsync("company_id");
+    /// await client.Companies.DeleteCompanyAsync(
+    ///     "company_id",
+    ///     new DeleteCompanyRequest { CancelSubscription = true, Prorate = true }
+    /// );
     /// </code></example>
     public async Task<DeleteCompanyResponse> DeleteCompanyAsync(
         string companyId,
+        DeleteCompanyRequest request,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
     {
+        var _query = new Dictionary<string, object>();
+        if (request.CancelSubscription != null)
+        {
+            _query["cancel_subscription"] = JsonUtils.Serialize(request.CancelSubscription.Value);
+        }
+        if (request.Prorate != null)
+        {
+            _query["prorate"] = JsonUtils.Serialize(request.Prorate.Value);
+        }
         var response = await _client
             .SendRequestAsync(
                 new JsonRequest
@@ -278,6 +291,7 @@ public partial class CompaniesClient
                         "companies/{0}",
                         ValueConvert.ToPathParameterString(companyId)
                     ),
+                    Query = _query,
                     Options = options,
                 },
                 cancellationToken

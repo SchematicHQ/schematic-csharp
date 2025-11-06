@@ -54,6 +54,4 @@ namespace SchematicHQ.Client.Test.Integration
             await Task.Delay(1000);
         }
     }
-
-
 }

@@ -26,7 +26,7 @@ namespace SchematicHQ.Client.Test.RulesEngine
         }
 
         [Test]
-        public void RuleType_UnknownValue_ShouldFallbackToDefault()
+        public void RuleType_UnknownValue_ShouldFallbackToUnknown()
         {
             // Arrange
             string unknownRuleTypeJson = "\"unknown_rule_type\"";
@@ -34,8 +34,8 @@ namespace SchematicHQ.Client.Test.RulesEngine
             // Act & Assert
             Assert.DoesNotThrow(() =>
             {
-                var result = JsonSerializer.Deserialize<RuleType>(unknownRuleTypeJson, _options);
-                Assert.That(result, Is.EqualTo(RuleType.GlobalOverride)); // First enum value
+                var result = JsonSerializer.Deserialize<RuleRuleType>(unknownRuleTypeJson, _options);
+                Assert.That(result, Is.EqualTo(RuleRuleType.Unknown)); // Should fallback to Unknown
             });
         }
 
@@ -74,10 +74,10 @@ namespace SchematicHQ.Client.Test.RulesEngine
             string validRuleTypeJson = "\"standard\"";
 
             // Act
-            var result = JsonSerializer.Deserialize<RuleType>(validRuleTypeJson, _options);
+            var result = JsonSerializer.Deserialize<RuleRuleType>(validRuleTypeJson, _options);
 
             // Assert
-            Assert.That(result, Is.EqualTo(RuleType.Standard));
+            Assert.That(result, Is.EqualTo(RuleRuleType.Standard));
         }
 
         [Test]
@@ -100,10 +100,10 @@ namespace SchematicHQ.Client.Test.RulesEngine
             string snakeCaseRuleTypeJson = "\"global_override\"";
 
             // Act
-            var result = JsonSerializer.Deserialize<RuleType>(snakeCaseRuleTypeJson, _options);
+            var result = JsonSerializer.Deserialize<RuleRuleType>(snakeCaseRuleTypeJson, _options);
 
             // Assert
-            Assert.That(result, Is.EqualTo(RuleType.GlobalOverride));
+            Assert.That(result, Is.EqualTo(RuleRuleType.GlobalOverride));
         }
 
         [Test]
@@ -120,16 +120,36 @@ namespace SchematicHQ.Client.Test.RulesEngine
             });
         }
 
-        [TestCase("\"invalid_rule\"", RuleType.GlobalOverride)]
-        [TestCase("\"nonexistent\"", RuleType.GlobalOverride)]
-        [TestCase("\"\"", RuleType.GlobalOverride)]
-        public void RuleType_InvalidValues_ShouldFallbackToDefault(string json, RuleType expected)
+        [Test]
+        public void RuleType_InvalidValue_ShouldFallbackToUnknown()
         {
             // Act & Assert
             Assert.DoesNotThrow(() =>
             {
-                var result = JsonSerializer.Deserialize<RuleType>(json, _options);
-                Assert.That(result, Is.EqualTo(expected));
+                var result = JsonSerializer.Deserialize<RuleRuleType>("\"invalid_rule\"", _options);
+                Assert.That(result, Is.EqualTo(RuleRuleType.Unknown));
+            });
+        }
+
+        [Test]
+        public void RuleType_NonexistentValue_ShouldFallbackToUnknown()
+        {
+            // Act & Assert
+            Assert.DoesNotThrow(() =>
+            {
+                var result = JsonSerializer.Deserialize<RuleRuleType>("\"nonexistent\"", _options);
+                Assert.That(result, Is.EqualTo(RuleRuleType.Unknown));
+            });
+        }
+
+        [Test]
+        public void RuleType_EmptyValue_ShouldFallbackToUnknown()
+        {
+            // Act & Assert
+            Assert.DoesNotThrow(() =>
+            {
+                var result = JsonSerializer.Deserialize<RuleRuleType>("\"\"", _options);
+                Assert.That(result, Is.EqualTo(RuleRuleType.Unknown));
             });
         }
 
@@ -150,13 +170,26 @@ namespace SchematicHQ.Client.Test.RulesEngine
         public void RuleType_Serialization_ShouldUseSnakeCase()
         {
             // Arrange
-            var ruleType = RuleType.GlobalOverride;
+            var ruleType = RuleRuleType.GlobalOverride;
 
             // Act
             var json = JsonSerializer.Serialize(ruleType, _options);
 
             // Assert
             Assert.That(json, Is.EqualTo("\"global_override\""));
+        }
+
+        [Test]
+        public void RuleType_UnknownSerialization_ShouldSerializeAsEmptyString()
+        {
+            // Arrange
+            var ruleType = RuleRuleType.Unknown;
+
+            // Act
+            var json = JsonSerializer.Serialize(ruleType, _options);
+
+            // Assert
+            Assert.That(json, Is.EqualTo("\"\""));
         }
 
         [Test]
