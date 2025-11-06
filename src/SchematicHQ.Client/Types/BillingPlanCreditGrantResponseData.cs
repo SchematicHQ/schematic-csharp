@@ -11,6 +11,27 @@ public record BillingPlanCreditGrantResponseData : IJsonOnDeserialized
     private readonly IDictionary<string, JsonElement> _extensionData =
         new Dictionary<string, JsonElement>();
 
+    [JsonPropertyName("auto_topup_amount")]
+    public int? AutoTopupAmount { get; set; }
+
+    [JsonPropertyName("auto_topup_amount_type")]
+    public string? AutoTopupAmountType { get; set; }
+
+    [JsonPropertyName("auto_topup_enabled")]
+    public required bool AutoTopupEnabled { get; set; }
+
+    [JsonPropertyName("auto_topup_expiry_type")]
+    public string? AutoTopupExpiryType { get; set; }
+
+    [JsonPropertyName("auto_topup_expiry_unit")]
+    public string? AutoTopupExpiryUnit { get; set; }
+
+    [JsonPropertyName("auto_topup_expiry_unit_count")]
+    public int? AutoTopupExpiryUnitCount { get; set; }
+
+    [JsonPropertyName("auto_topup_threshold_percent")]
+    public int? AutoTopupThresholdPercent { get; set; }
+
     [JsonPropertyName("created_at")]
     public required DateTime CreatedAt { get; set; }
 

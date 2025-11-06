@@ -4,12 +4,27 @@ using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
 
+/// <summary>
+/// Input parameters
+/// </summary>
 [Serializable]
-public record PaginationFilter : IJsonOnDeserialized
+public record ListPlanChangesParams : IJsonOnDeserialized
 {
     [JsonExtensionData]
     private readonly IDictionary<string, JsonElement> _extensionData =
         new Dictionary<string, JsonElement>();
+
+    [JsonPropertyName("action")]
+    public string? Action { get; set; }
+
+    [JsonPropertyName("base_plan_action")]
+    public string? BasePlanAction { get; set; }
+
+    [JsonPropertyName("company_id")]
+    public string? CompanyId { get; set; }
+
+    [JsonPropertyName("company_ids")]
+    public IEnumerable<string>? CompanyIds { get; set; }
 
     /// <summary>
     /// Page limit (default 100)
@@ -22,6 +37,9 @@ public record PaginationFilter : IJsonOnDeserialized
     /// </summary>
     [JsonPropertyName("offset")]
     public int? Offset { get; set; }
+
+    [JsonPropertyName("plan_ids")]
+    public IEnumerable<string>? PlanIds { get; set; }
 
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();

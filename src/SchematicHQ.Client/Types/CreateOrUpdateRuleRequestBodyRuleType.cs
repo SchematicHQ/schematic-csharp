@@ -23,10 +23,6 @@ public readonly record struct CreateOrUpdateRuleRequestBodyRuleType : IStringEnu
 
     public static readonly CreateOrUpdateRuleRequestBodyRuleType Default = new(Values.Default);
 
-    public static readonly CreateOrUpdateRuleRequestBodyRuleType PlanAudience = new(
-        Values.PlanAudience
-    );
-
     public CreateOrUpdateRuleRequestBodyRuleType(string value)
     {
         Value = value;
@@ -85,7 +81,5 @@ public readonly record struct CreateOrUpdateRuleRequestBodyRuleType : IStringEnu
         public const string Standard = "standard";
 
         public const string Default = "default";
-
-        public const string PlanAudience = "plan_audience";
     }
 }

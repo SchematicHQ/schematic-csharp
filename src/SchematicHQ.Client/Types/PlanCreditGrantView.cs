@@ -11,6 +11,27 @@ public record PlanCreditGrantView : IJsonOnDeserialized
     private readonly IDictionary<string, JsonElement> _extensionData =
         new Dictionary<string, JsonElement>();
 
+    [JsonPropertyName("billing_credit_auto_topup_amount")]
+    public int? BillingCreditAutoTopupAmount { get; set; }
+
+    [JsonPropertyName("billing_credit_auto_topup_amount_type")]
+    public string? BillingCreditAutoTopupAmountType { get; set; }
+
+    [JsonPropertyName("billing_credit_auto_topup_enabled")]
+    public required bool BillingCreditAutoTopupEnabled { get; set; }
+
+    [JsonPropertyName("billing_credit_auto_topup_expiry_type")]
+    public string? BillingCreditAutoTopupExpiryType { get; set; }
+
+    [JsonPropertyName("billing_credit_auto_topup_expiry_unit")]
+    public string? BillingCreditAutoTopupExpiryUnit { get; set; }
+
+    [JsonPropertyName("billing_credit_auto_topup_expiry_unit_count")]
+    public int? BillingCreditAutoTopupExpiryUnitCount { get; set; }
+
+    [JsonPropertyName("billing_credit_auto_topup_threshold_percent")]
+    public int? BillingCreditAutoTopupThresholdPercent { get; set; }
+
     [JsonPropertyName("created_at")]
     public required DateTime CreatedAt { get; set; }
 

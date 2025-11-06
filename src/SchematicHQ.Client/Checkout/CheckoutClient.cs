@@ -261,6 +261,170 @@ public partial class CheckoutClient
     }
 
     /// <example><code>
+    /// await client.Checkout.ManagePlanAsync(
+    ///     new ManagePlanRequest
+    ///     {
+    ///         AddOnSelections = new List&lt;PlanSelection&gt;() { new PlanSelection { PlanId = "plan_id" } },
+    ///         CompanyId = "company_id",
+    ///         CreditBundles = new List&lt;UpdateCreditBundleRequestBody&gt;()
+    ///         {
+    ///             new UpdateCreditBundleRequestBody { BundleId = "bundle_id", Quantity = 1 },
+    ///         },
+    ///         PayInAdvanceEntitlements = new List&lt;UpdatePayInAdvanceRequestBody&gt;()
+    ///         {
+    ///             new UpdatePayInAdvanceRequestBody { PriceId = "price_id", Quantity = 1 },
+    ///         },
+    ///     }
+    /// );
+    /// </code></example>
+    public async Task<ManagePlanResponse> ManagePlanAsync(
+        ManagePlanRequest request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        var response = await _client
+            .SendRequestAsync(
+                new JsonRequest
+                {
+                    BaseUrl = _client.Options.BaseUrl,
+                    Method = HttpMethod.Post,
+                    Path = "manage-plan",
+                    Body = request,
+                    ContentType = "application/json",
+                    Options = options,
+                },
+                cancellationToken
+            )
+            .ConfigureAwait(false);
+        if (response.StatusCode is >= 200 and < 400)
+        {
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            try
+            {
+                return JsonUtils.Deserialize<ManagePlanResponse>(responseBody)!;
+            }
+            catch (JsonException e)
+            {
+                throw new SchematicException("Failed to deserialize response", e);
+            }
+        }
+
+        {
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            try
+            {
+                switch (response.StatusCode)
+                {
+                    case 400:
+                        throw new BadRequestError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 401:
+                        throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 403:
+                        throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 404:
+                        throw new NotFoundError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 500:
+                        throw new InternalServerError(
+                            JsonUtils.Deserialize<ApiError>(responseBody)
+                        );
+                }
+            }
+            catch (JsonException)
+            {
+                // unable to map error response, throwing generic error
+            }
+            throw new SchematicApiException(
+                $"Error with status code {response.StatusCode}",
+                response.StatusCode,
+                responseBody
+            );
+        }
+    }
+
+    /// <example><code>
+    /// await client.Checkout.PreviewManagePlanAsync(
+    ///     new ManagePlanRequest
+    ///     {
+    ///         AddOnSelections = new List&lt;PlanSelection&gt;() { new PlanSelection { PlanId = "plan_id" } },
+    ///         CompanyId = "company_id",
+    ///         CreditBundles = new List&lt;UpdateCreditBundleRequestBody&gt;()
+    ///         {
+    ///             new UpdateCreditBundleRequestBody { BundleId = "bundle_id", Quantity = 1 },
+    ///         },
+    ///         PayInAdvanceEntitlements = new List&lt;UpdatePayInAdvanceRequestBody&gt;()
+    ///         {
+    ///             new UpdatePayInAdvanceRequestBody { PriceId = "price_id", Quantity = 1 },
+    ///         },
+    ///     }
+    /// );
+    /// </code></example>
+    public async Task<PreviewManagePlanResponse> PreviewManagePlanAsync(
+        ManagePlanRequest request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        var response = await _client
+            .SendRequestAsync(
+                new JsonRequest
+                {
+                    BaseUrl = _client.Options.BaseUrl,
+                    Method = HttpMethod.Post,
+                    Path = "manage-plan/preview",
+                    Body = request,
+                    ContentType = "application/json",
+                    Options = options,
+                },
+                cancellationToken
+            )
+            .ConfigureAwait(false);
+        if (response.StatusCode is >= 200 and < 400)
+        {
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            try
+            {
+                return JsonUtils.Deserialize<PreviewManagePlanResponse>(responseBody)!;
+            }
+            catch (JsonException e)
+            {
+                throw new SchematicException("Failed to deserialize response", e);
+            }
+        }
+
+        {
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            try
+            {
+                switch (response.StatusCode)
+                {
+                    case 400:
+                        throw new BadRequestError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 401:
+                        throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 403:
+                        throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 404:
+                        throw new NotFoundError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 500:
+                        throw new InternalServerError(
+                            JsonUtils.Deserialize<ApiError>(responseBody)
+                        );
+                }
+            }
+            catch (JsonException)
+            {
+                // unable to map error response, throwing generic error
+            }
+            throw new SchematicApiException(
+                $"Error with status code {response.StatusCode}",
+                response.StatusCode,
+                responseBody
+            );
+        }
+    }
+
+    /// <example><code>
     /// await client.Checkout.UpdateCustomerSubscriptionTrialEndAsync(
     ///     "subscription_id",
     ///     new UpdateTrialEndRequestBody()

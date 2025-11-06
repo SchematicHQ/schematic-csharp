@@ -5,21 +5,21 @@ using SchematicHQ.Client.Core;
 namespace SchematicHQ.Client;
 
 [Serializable]
-public record ListAudienceCompaniesResponse : IJsonOnDeserialized
+public record GetEnrichedCreditLedgerResponse : IJsonOnDeserialized
 {
     [JsonExtensionData]
     private readonly IDictionary<string, JsonElement> _extensionData =
         new Dictionary<string, JsonElement>();
 
     [JsonPropertyName("data")]
-    public IEnumerable<CompanyDetailResponseData> Data { get; set; } =
-        new List<CompanyDetailResponseData>();
+    public IEnumerable<CreditLedgerEnrichedEntryResponseData> Data { get; set; } =
+        new List<CreditLedgerEnrichedEntryResponseData>();
 
     /// <summary>
     /// Input parameters
     /// </summary>
     [JsonPropertyName("params")]
-    public Dictionary<string, object?> Params { get; set; } = new Dictionary<string, object?>();
+    public required GetEnrichedCreditLedgerParams Params { get; set; }
 
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();
