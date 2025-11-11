@@ -285,47 +285,47 @@ namespace SchematicHQ.Client.Test.RulesEngine
         }
 
         [Test]
-        public void RuleType_WithUnknownValue_ShouldFallbackToUnknown()
+        public void RuleType_WithUnknownValue_ShouldCreateCustomEnumValue()
         {
             // Arrange
             var json = @"{""rule_type"": ""unknown_value""}";
 
-            // Act & Assert - Should not throw, should fallback to Unknown
+            // Act & Assert - Should not throw, should create custom enum value
             Assert.DoesNotThrow(() =>
             {
                 var testObj = JsonSerializer.Deserialize<TestRuleTypeObject>(json, _jsonOptions);
-                // Should fallback to Unknown for unrecognized values
-                Assert.That(testObj!.RuleType, Is.EqualTo(RuleRuleType.Unknown));
+                // Should create custom enum value for unrecognized values
+                Assert.That(testObj!.RuleType.Value, Is.EqualTo("unknown_value"));
             });
         }
 
         [Test]
-        public void RuleType_WithEmptyValue_ShouldFallbackToUnknown()
+        public void RuleType_WithEmptyValue_ShouldCreateCustomEnumValue()
         {
             // Arrange
             var json = @"{""rule_type"": """"}";
 
-            // Act & Assert - Should not throw, should fallback to Unknown
+            // Act & Assert - Should not throw, should create custom enum value
             Assert.DoesNotThrow(() =>
             {
                 var testObj = JsonSerializer.Deserialize<TestRuleTypeObject>(json, _jsonOptions);
-                // Should fallback to Unknown for empty values
-                Assert.That(testObj!.RuleType, Is.EqualTo(RuleRuleType.Unknown));
+                // Should create custom enum value for empty values
+                Assert.That(testObj!.RuleType.Value, Is.EqualTo(""));
             });
         }
 
         [Test]
-        public void RuleType_WithInvalidValue_ShouldFallbackToUnknown()
+        public void RuleType_WithInvalidValue_ShouldCreateCustomEnumValue()
         {
             // Arrange
             var json = @"{""rule_type"": ""invalid""}";
 
-            // Act & Assert - Should not throw, should fallback to Unknown
+            // Act & Assert - Should not throw, should create custom enum value
             Assert.DoesNotThrow(() =>
             {
                 var testObj = JsonSerializer.Deserialize<TestRuleTypeObject>(json, _jsonOptions);
-                // Should fallback to Unknown for invalid values
-                Assert.That(testObj!.RuleType, Is.EqualTo(RuleRuleType.Unknown));
+                // Should create custom enum value for invalid values
+                Assert.That(testObj!.RuleType.Value, Is.EqualTo("invalid"));
             });
         }
 

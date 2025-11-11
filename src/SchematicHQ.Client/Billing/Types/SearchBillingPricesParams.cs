@@ -53,12 +53,6 @@ public record SearchBillingPricesParams : IJsonOnDeserialized
     [JsonPropertyName("q")]
     public string? Q { get; set; }
 
-    /// <summary>
-    /// Filter for prices that require a payment method (inverse of ForInitialPlan)
-    /// </summary>
-    [JsonPropertyName("requires_payment_method")]
-    public bool? RequiresPaymentMethod { get; set; }
-
     [JsonPropertyName("tiers_mode")]
     public SearchBillingPricesResponseParamsTiersMode? TiersMode { get; set; }
 

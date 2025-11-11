@@ -962,11 +962,10 @@ public partial class BillingClient
     ///     {
     ///         ForInitialPlan = true,
     ///         ForTrialExpiryPlan = true,
-    ///         ProductId = "product_id",
     ///         Interval = "interval",
     ///         Price = 1,
+    ///         ProductId = "product_id",
     ///         Q = "q",
-    ///         RequiresPaymentMethod = true,
     ///         TiersMode = SearchBillingPricesRequestTiersMode.Volume,
     ///         UsageType = SearchBillingPricesRequestUsageType.Licensed,
     ///         Limit = 1,
@@ -990,10 +989,6 @@ public partial class BillingClient
         {
             _query["for_trial_expiry_plan"] = JsonUtils.Serialize(request.ForTrialExpiryPlan.Value);
         }
-        if (request.ProductId != null)
-        {
-            _query["product_id"] = request.ProductId;
-        }
         if (request.Interval != null)
         {
             _query["interval"] = request.Interval;
@@ -1002,15 +997,13 @@ public partial class BillingClient
         {
             _query["price"] = request.Price.Value.ToString();
         }
+        if (request.ProductId != null)
+        {
+            _query["product_id"] = request.ProductId;
+        }
         if (request.Q != null)
         {
             _query["q"] = request.Q;
-        }
-        if (request.RequiresPaymentMethod != null)
-        {
-            _query["requires_payment_method"] = JsonUtils.Serialize(
-                request.RequiresPaymentMethod.Value
-            );
         }
         if (request.TiersMode != null)
         {
