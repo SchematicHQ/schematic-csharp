@@ -22,22 +22,16 @@ public record SearchBillingPricesRequest
     public IEnumerable<string> Ids { get; set; } = new List<string>();
 
     [JsonIgnore]
-    public string? ProductId { get; set; }
-
-    [JsonIgnore]
     public string? Interval { get; set; }
 
     [JsonIgnore]
     public int? Price { get; set; }
 
     [JsonIgnore]
-    public string? Q { get; set; }
+    public string? ProductId { get; set; }
 
-    /// <summary>
-    /// Filter for prices that require a payment method (inverse of ForInitialPlan)
-    /// </summary>
     [JsonIgnore]
-    public bool? RequiresPaymentMethod { get; set; }
+    public string? Q { get; set; }
 
     [JsonIgnore]
     public SearchBillingPricesRequestTiersMode? TiersMode { get; set; }
