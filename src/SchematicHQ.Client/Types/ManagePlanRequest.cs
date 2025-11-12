@@ -20,6 +20,12 @@ public record ManagePlanRequest : IJsonOnDeserialized
     [JsonPropertyName("base_plan_price_id")]
     public string? BasePlanPriceId { get; set; }
 
+    /// <summary>
+    /// If false, subscription cancels at period end. Only applies when removing all plans. Defaults to true.
+    /// </summary>
+    [JsonPropertyName("cancel_immediately")]
+    public bool? CancelImmediately { get; set; }
+
     [JsonPropertyName("company_id")]
     public required string CompanyId { get; set; }
 
@@ -39,6 +45,12 @@ public record ManagePlanRequest : IJsonOnDeserialized
 
     [JsonPropertyName("promo_code")]
     public string? PromoCode { get; set; }
+
+    /// <summary>
+    /// If true and cancel_immediately is true, issue prorated credit. Only applies when removing all plans. Defaults to true.
+    /// </summary>
+    [JsonPropertyName("prorate")]
+    public bool? Prorate { get; set; }
 
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();

@@ -4,7 +4,7 @@ using SchematicHQ.Client.Core;
 namespace SchematicHQ.Client;
 
 [Serializable]
-public record SearchBillingPricesRequest
+public record ListBillingProductPricesRequest
 {
     /// <summary>
     /// Filter for prices valid for initial plans (free prices only)
@@ -22,28 +22,37 @@ public record SearchBillingPricesRequest
     public IEnumerable<string> Ids { get; set; } = new List<string>();
 
     [JsonIgnore]
-    public string? ProductId { get; set; }
-
-    [JsonIgnore]
     public string? Interval { get; set; }
+
+    /// <summary>
+    /// Filter for active prices on active products (defaults to true if not specified)
+    /// </summary>
+    [JsonIgnore]
+    public bool? IsActive { get; set; }
 
     [JsonIgnore]
     public int? Price { get; set; }
 
     [JsonIgnore]
+    public string? ProductId { get; set; }
+
+    [JsonIgnore]
+    public IEnumerable<string> ProductIds { get; set; } = new List<string>();
+
+    [JsonIgnore]
     public string? Q { get; set; }
 
+    [JsonIgnore]
+    public ListBillingProductPricesRequestTiersMode? TiersMode { get; set; }
+
+    [JsonIgnore]
+    public ListBillingProductPricesRequestUsageType? UsageType { get; set; }
+
     /// <summary>
-    /// Filter for prices that require a payment method (inverse of ForInitialPlan)
+    /// Filter for prices with a meter
     /// </summary>
     [JsonIgnore]
-    public bool? RequiresPaymentMethod { get; set; }
-
-    [JsonIgnore]
-    public SearchBillingPricesRequestTiersMode? TiersMode { get; set; }
-
-    [JsonIgnore]
-    public SearchBillingPricesRequestUsageType? UsageType { get; set; }
+    public bool? WithMeter { get; set; }
 
     /// <summary>
     /// Page limit (default 100)

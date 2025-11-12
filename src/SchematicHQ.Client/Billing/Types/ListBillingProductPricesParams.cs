@@ -8,17 +8,32 @@ namespace SchematicHQ.Client;
 /// Input parameters
 /// </summary>
 [Serializable]
-public record ListProductPricesParams : IJsonOnDeserialized
+public record ListBillingProductPricesParams : IJsonOnDeserialized
 {
     [JsonExtensionData]
     private readonly IDictionary<string, JsonElement> _extensionData =
         new Dictionary<string, JsonElement>();
 
+    /// <summary>
+    /// Filter for prices valid for initial plans (free prices only)
+    /// </summary>
+    [JsonPropertyName("for_initial_plan")]
+    public bool? ForInitialPlan { get; set; }
+
+    /// <summary>
+    /// Filter for prices valid for trial expiry plans (free prices only)
+    /// </summary>
+    [JsonPropertyName("for_trial_expiry_plan")]
+    public bool? ForTrialExpiryPlan { get; set; }
+
     [JsonPropertyName("ids")]
     public IEnumerable<string>? Ids { get; set; }
 
+    [JsonPropertyName("interval")]
+    public string? Interval { get; set; }
+
     /// <summary>
-    /// Filter products that are active
+    /// Filter for active prices on active products (defaults to true if not specified)
     /// </summary>
     [JsonPropertyName("is_active")]
     public bool? IsActive { get; set; }
@@ -29,44 +44,35 @@ public record ListProductPricesParams : IJsonOnDeserialized
     [JsonPropertyName("limit")]
     public int? Limit { get; set; }
 
-    [JsonPropertyName("name")]
-    public string? Name { get; set; }
-
     /// <summary>
     /// Page offset (default 0)
     /// </summary>
     [JsonPropertyName("offset")]
     public int? Offset { get; set; }
 
-    [JsonPropertyName("price_usage_type")]
-    public ListProductPricesResponseParamsPriceUsageType? PriceUsageType { get; set; }
+    [JsonPropertyName("price")]
+    public int? Price { get; set; }
+
+    [JsonPropertyName("product_id")]
+    public string? ProductId { get; set; }
+
+    [JsonPropertyName("product_ids")]
+    public IEnumerable<string>? ProductIds { get; set; }
 
     [JsonPropertyName("q")]
     public string? Q { get; set; }
 
-    /// <summary>
-    /// Filter products that are one time charges
-    /// </summary>
-    [JsonPropertyName("with_one_time_charges")]
-    public bool? WithOneTimeCharges { get; set; }
+    [JsonPropertyName("tiers_mode")]
+    public ListBillingProductPricesResponseParamsTiersMode? TiersMode { get; set; }
+
+    [JsonPropertyName("usage_type")]
+    public ListBillingProductPricesResponseParamsUsageType? UsageType { get; set; }
 
     /// <summary>
-    /// Filter products that have prices
+    /// Filter for prices with a meter
     /// </summary>
-    [JsonPropertyName("with_prices_only")]
-    public bool? WithPricesOnly { get; set; }
-
-    /// <summary>
-    /// Filter products that have zero price for free subscription type
-    /// </summary>
-    [JsonPropertyName("with_zero_price")]
-    public bool? WithZeroPrice { get; set; }
-
-    /// <summary>
-    /// Filter products that are not linked to any plan
-    /// </summary>
-    [JsonPropertyName("without_linked_to_plan")]
-    public bool? WithoutLinkedToPlan { get; set; }
+    [JsonPropertyName("with_meter")]
+    public bool? WithMeter { get; set; }
 
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();

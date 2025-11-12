@@ -38,6 +38,9 @@ public record CountEntityTraitDefinitionsParams : IJsonOnDeserialized
     [JsonPropertyName("trait_type")]
     public CountEntityTraitDefinitionsResponseParamsTraitType? TraitType { get; set; }
 
+    [JsonPropertyName("trait_types")]
+    public IEnumerable<CountEntityTraitDefinitionsResponseParamsTraitTypesItem>? TraitTypes { get; set; }
+
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();
 

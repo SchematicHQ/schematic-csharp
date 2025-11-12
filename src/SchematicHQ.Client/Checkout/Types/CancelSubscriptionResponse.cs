@@ -5,21 +5,20 @@ using SchematicHQ.Client.Core;
 namespace SchematicHQ.Client;
 
 [Serializable]
-public record ListProductPricesResponse : IJsonOnDeserialized
+public record CancelSubscriptionResponse : IJsonOnDeserialized
 {
     [JsonExtensionData]
     private readonly IDictionary<string, JsonElement> _extensionData =
         new Dictionary<string, JsonElement>();
 
     [JsonPropertyName("data")]
-    public IEnumerable<BillingPriceResponseData> Data { get; set; } =
-        new List<BillingPriceResponseData>();
+    public required ManagePlanResponseResponseData Data { get; set; }
 
     /// <summary>
     /// Input parameters
     /// </summary>
     [JsonPropertyName("params")]
-    public required ListProductPricesParams Params { get; set; }
+    public Dictionary<string, object?> Params { get; set; } = new Dictionary<string, object?>();
 
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();
