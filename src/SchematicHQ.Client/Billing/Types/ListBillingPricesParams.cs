@@ -8,7 +8,7 @@ namespace SchematicHQ.Client;
 /// Input parameters
 /// </summary>
 [Serializable]
-public record SearchBillingPricesParams : IJsonOnDeserialized
+public record ListBillingPricesParams : IJsonOnDeserialized
 {
     [JsonExtensionData]
     private readonly IDictionary<string, JsonElement> _extensionData =
@@ -33,6 +33,12 @@ public record SearchBillingPricesParams : IJsonOnDeserialized
     public string? Interval { get; set; }
 
     /// <summary>
+    /// Filter for active prices on active products (defaults to true if not specified)
+    /// </summary>
+    [JsonPropertyName("is_active")]
+    public bool? IsActive { get; set; }
+
+    /// <summary>
     /// Page limit (default 100)
     /// </summary>
     [JsonPropertyName("limit")]
@@ -50,20 +56,23 @@ public record SearchBillingPricesParams : IJsonOnDeserialized
     [JsonPropertyName("product_id")]
     public string? ProductId { get; set; }
 
+    [JsonPropertyName("product_ids")]
+    public IEnumerable<string>? ProductIds { get; set; }
+
     [JsonPropertyName("q")]
     public string? Q { get; set; }
 
-    /// <summary>
-    /// Filter for prices that require a payment method (inverse of ForInitialPlan)
-    /// </summary>
-    [JsonPropertyName("requires_payment_method")]
-    public bool? RequiresPaymentMethod { get; set; }
-
     [JsonPropertyName("tiers_mode")]
-    public SearchBillingPricesResponseParamsTiersMode? TiersMode { get; set; }
+    public ListBillingPricesResponseParamsTiersMode? TiersMode { get; set; }
 
     [JsonPropertyName("usage_type")]
-    public SearchBillingPricesResponseParamsUsageType? UsageType { get; set; }
+    public ListBillingPricesResponseParamsUsageType? UsageType { get; set; }
+
+    /// <summary>
+    /// Filter for prices with a meter
+    /// </summary>
+    [JsonPropertyName("with_meter")]
+    public bool? WithMeter { get; set; }
 
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();

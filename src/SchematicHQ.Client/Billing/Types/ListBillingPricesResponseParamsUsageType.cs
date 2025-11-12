@@ -3,19 +3,15 @@ using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
 
-[JsonConverter(typeof(StringEnumSerializer<ListProductPricesResponseParamsPriceUsageType>))]
+[JsonConverter(typeof(StringEnumSerializer<ListBillingPricesResponseParamsUsageType>))]
 [Serializable]
-public readonly record struct ListProductPricesResponseParamsPriceUsageType : IStringEnum
+public readonly record struct ListBillingPricesResponseParamsUsageType : IStringEnum
 {
-    public static readonly ListProductPricesResponseParamsPriceUsageType Licensed = new(
-        Values.Licensed
-    );
+    public static readonly ListBillingPricesResponseParamsUsageType Licensed = new(Values.Licensed);
 
-    public static readonly ListProductPricesResponseParamsPriceUsageType Metered = new(
-        Values.Metered
-    );
+    public static readonly ListBillingPricesResponseParamsUsageType Metered = new(Values.Metered);
 
-    public ListProductPricesResponseParamsPriceUsageType(string value)
+    public ListBillingPricesResponseParamsUsageType(string value)
     {
         Value = value;
     }
@@ -28,9 +24,9 @@ public readonly record struct ListProductPricesResponseParamsPriceUsageType : IS
     /// <summary>
     /// Create a string enum with the given value.
     /// </summary>
-    public static ListProductPricesResponseParamsPriceUsageType FromCustom(string value)
+    public static ListBillingPricesResponseParamsUsageType FromCustom(string value)
     {
-        return new ListProductPricesResponseParamsPriceUsageType(value);
+        return new ListBillingPricesResponseParamsUsageType(value);
     }
 
     public bool Equals(string? other)
@@ -47,19 +43,19 @@ public readonly record struct ListProductPricesResponseParamsPriceUsageType : IS
     }
 
     public static bool operator ==(
-        ListProductPricesResponseParamsPriceUsageType value1,
+        ListBillingPricesResponseParamsUsageType value1,
         string value2
     ) => value1.Value.Equals(value2);
 
     public static bool operator !=(
-        ListProductPricesResponseParamsPriceUsageType value1,
+        ListBillingPricesResponseParamsUsageType value1,
         string value2
     ) => !value1.Value.Equals(value2);
 
-    public static explicit operator string(ListProductPricesResponseParamsPriceUsageType value) =>
+    public static explicit operator string(ListBillingPricesResponseParamsUsageType value) =>
         value.Value;
 
-    public static explicit operator ListProductPricesResponseParamsPriceUsageType(string value) =>
+    public static explicit operator ListBillingPricesResponseParamsUsageType(string value) =>
         new(value);
 
     /// <summary>

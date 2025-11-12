@@ -46,7 +46,7 @@ public record PlanGroupDetailResponseData : IJsonOnDeserialized
     public string? InitialPlanId { get; set; }
 
     [JsonPropertyName("initial_plan_price")]
-    public BillingPriceResponseData? InitialPlanPrice { get; set; }
+    public BillingPriceView? InitialPlanPrice { get; set; }
 
     [JsonPropertyName("initial_plan_price_id")]
     public string? InitialPlanPriceId { get; set; }
@@ -95,7 +95,7 @@ public record PlanGroupDetailResponseData : IJsonOnDeserialized
     public string? TrialExpiryPlanId { get; set; }
 
     [JsonPropertyName("trial_expiry_plan_price")]
-    public BillingPriceResponseData? TrialExpiryPlanPrice { get; set; }
+    public BillingPriceView? TrialExpiryPlanPrice { get; set; }
 
     [JsonPropertyName("trial_expiry_plan_price_id")]
     public string? TrialExpiryPlanPriceId { get; set; }

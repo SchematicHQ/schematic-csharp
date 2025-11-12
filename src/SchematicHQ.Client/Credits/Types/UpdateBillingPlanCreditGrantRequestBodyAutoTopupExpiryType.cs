@@ -4,22 +4,22 @@ using SchematicHQ.Client.Core;
 namespace SchematicHQ.Client;
 
 [JsonConverter(
-    typeof(StringEnumSerializer<CreateBillingPlanCreditGrantRequestBodyAutoTopupExpiryType>)
+    typeof(StringEnumSerializer<UpdateBillingPlanCreditGrantRequestBodyAutoTopupExpiryType>)
 )]
 [Serializable]
-public readonly record struct CreateBillingPlanCreditGrantRequestBodyAutoTopupExpiryType
+public readonly record struct UpdateBillingPlanCreditGrantRequestBodyAutoTopupExpiryType
     : IStringEnum
 {
-    public static readonly CreateBillingPlanCreditGrantRequestBodyAutoTopupExpiryType Duration =
+    public static readonly UpdateBillingPlanCreditGrantRequestBodyAutoTopupExpiryType Duration =
         new(Values.Duration);
 
-    public static readonly CreateBillingPlanCreditGrantRequestBodyAutoTopupExpiryType NoExpiry =
+    public static readonly UpdateBillingPlanCreditGrantRequestBodyAutoTopupExpiryType NoExpiry =
         new(Values.NoExpiry);
 
-    public static readonly CreateBillingPlanCreditGrantRequestBodyAutoTopupExpiryType EndOfTrial =
+    public static readonly UpdateBillingPlanCreditGrantRequestBodyAutoTopupExpiryType EndOfTrial =
         new(Values.EndOfTrial);
 
-    public CreateBillingPlanCreditGrantRequestBodyAutoTopupExpiryType(string value)
+    public UpdateBillingPlanCreditGrantRequestBodyAutoTopupExpiryType(string value)
     {
         Value = value;
     }
@@ -32,11 +32,11 @@ public readonly record struct CreateBillingPlanCreditGrantRequestBodyAutoTopupEx
     /// <summary>
     /// Create a string enum with the given value.
     /// </summary>
-    public static CreateBillingPlanCreditGrantRequestBodyAutoTopupExpiryType FromCustom(
+    public static UpdateBillingPlanCreditGrantRequestBodyAutoTopupExpiryType FromCustom(
         string value
     )
     {
-        return new CreateBillingPlanCreditGrantRequestBodyAutoTopupExpiryType(value);
+        return new UpdateBillingPlanCreditGrantRequestBodyAutoTopupExpiryType(value);
     }
 
     public bool Equals(string? other)
@@ -53,20 +53,20 @@ public readonly record struct CreateBillingPlanCreditGrantRequestBodyAutoTopupEx
     }
 
     public static bool operator ==(
-        CreateBillingPlanCreditGrantRequestBodyAutoTopupExpiryType value1,
+        UpdateBillingPlanCreditGrantRequestBodyAutoTopupExpiryType value1,
         string value2
     ) => value1.Value.Equals(value2);
 
     public static bool operator !=(
-        CreateBillingPlanCreditGrantRequestBodyAutoTopupExpiryType value1,
+        UpdateBillingPlanCreditGrantRequestBodyAutoTopupExpiryType value1,
         string value2
     ) => !value1.Value.Equals(value2);
 
     public static explicit operator string(
-        CreateBillingPlanCreditGrantRequestBodyAutoTopupExpiryType value
+        UpdateBillingPlanCreditGrantRequestBodyAutoTopupExpiryType value
     ) => value.Value;
 
-    public static explicit operator CreateBillingPlanCreditGrantRequestBodyAutoTopupExpiryType(
+    public static explicit operator UpdateBillingPlanCreditGrantRequestBodyAutoTopupExpiryType(
         string value
     ) => new(value);
 

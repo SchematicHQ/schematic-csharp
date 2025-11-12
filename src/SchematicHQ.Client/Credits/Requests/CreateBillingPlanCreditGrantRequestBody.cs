@@ -22,7 +22,7 @@ public record CreateBillingPlanCreditGrantRequestBody
     public CreateBillingPlanCreditGrantRequestBodyAutoTopupExpiryType? AutoTopupExpiryType { get; set; }
 
     [JsonPropertyName("auto_topup_expiry_unit")]
-    public CreateBillingPlanCreditGrantRequestBodyAutoTopupExpiryUnit? AutoTopupExpiryUnit { get; set; }
+    public string? AutoTopupExpiryUnit { get; set; }
 
     [JsonPropertyName("auto_topup_expiry_unit_count")]
     public int? AutoTopupExpiryUnitCount { get; set; }

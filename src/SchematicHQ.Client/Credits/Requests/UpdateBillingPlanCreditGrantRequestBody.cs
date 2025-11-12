@@ -9,6 +9,27 @@ public record UpdateBillingPlanCreditGrantRequestBody
     [JsonPropertyName("apply_to_existing")]
     public bool? ApplyToExisting { get; set; }
 
+    [JsonPropertyName("auto_topup_amount")]
+    public int? AutoTopupAmount { get; set; }
+
+    [JsonPropertyName("auto_topup_amount_type")]
+    public string? AutoTopupAmountType { get; set; }
+
+    [JsonPropertyName("auto_topup_enabled")]
+    public bool? AutoTopupEnabled { get; set; }
+
+    [JsonPropertyName("auto_topup_expiry_type")]
+    public UpdateBillingPlanCreditGrantRequestBodyAutoTopupExpiryType? AutoTopupExpiryType { get; set; }
+
+    [JsonPropertyName("auto_topup_expiry_unit")]
+    public string? AutoTopupExpiryUnit { get; set; }
+
+    [JsonPropertyName("auto_topup_expiry_unit_count")]
+    public int? AutoTopupExpiryUnitCount { get; set; }
+
+    [JsonPropertyName("auto_topup_threshold_percent")]
+    public int? AutoTopupThresholdPercent { get; set; }
+
     [JsonPropertyName("credit_amount")]
     public int? CreditAmount { get; set; }
 

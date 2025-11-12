@@ -5,20 +5,20 @@ using SchematicHQ.Client.Core;
 namespace SchematicHQ.Client;
 
 [Serializable]
-public record SearchBillingPricesResponse : IJsonOnDeserialized
+public record RulesengineTraitDefinition : IJsonOnDeserialized
 {
     [JsonExtensionData]
     private readonly IDictionary<string, JsonElement> _extensionData =
         new Dictionary<string, JsonElement>();
 
-    [JsonPropertyName("data")]
-    public IEnumerable<BillingPriceView> Data { get; set; } = new List<BillingPriceView>();
+    [JsonPropertyName("comparable_type")]
+    public required RulesengineTraitDefinitionComparableType ComparableType { get; set; }
 
-    /// <summary>
-    /// Input parameters
-    /// </summary>
-    [JsonPropertyName("params")]
-    public required SearchBillingPricesParams Params { get; set; }
+    [JsonPropertyName("entity_type")]
+    public required RulesengineTraitDefinitionEntityType EntityType { get; set; }
+
+    [JsonPropertyName("id")]
+    public required string Id { get; set; }
 
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();

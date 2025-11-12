@@ -3,29 +3,29 @@ using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
 
-[JsonConverter(typeof(StringEnumSerializer<RuleRuleType>))]
+[JsonConverter(typeof(StringEnumSerializer<RulesengineRuleRuleType>))]
 [Serializable]
-public readonly record struct RuleRuleType : IStringEnum
+public readonly record struct RulesengineRuleRuleType : IStringEnum
 {
-    public static readonly RuleRuleType Default = new(Values.Default);
+    public static readonly RulesengineRuleRuleType Default = new(Values.Default);
 
-    public static readonly RuleRuleType GlobalOverride = new(Values.GlobalOverride);
+    public static readonly RulesengineRuleRuleType GlobalOverride = new(Values.GlobalOverride);
 
-    public static readonly RuleRuleType CompanyOverride = new(Values.CompanyOverride);
+    public static readonly RulesengineRuleRuleType CompanyOverride = new(Values.CompanyOverride);
 
-    public static readonly RuleRuleType CompanyOverrideUsageExceeded = new(
+    public static readonly RulesengineRuleRuleType CompanyOverrideUsageExceeded = new(
         Values.CompanyOverrideUsageExceeded
     );
 
-    public static readonly RuleRuleType PlanEntitlement = new(Values.PlanEntitlement);
+    public static readonly RulesengineRuleRuleType PlanEntitlement = new(Values.PlanEntitlement);
 
-    public static readonly RuleRuleType PlanEntitlementUsageExceeded = new(
+    public static readonly RulesengineRuleRuleType PlanEntitlementUsageExceeded = new(
         Values.PlanEntitlementUsageExceeded
     );
 
-    public static readonly RuleRuleType Standard = new(Values.Standard);
+    public static readonly RulesengineRuleRuleType Standard = new(Values.Standard);
 
-    public RuleRuleType(string value)
+    public RulesengineRuleRuleType(string value)
     {
         Value = value;
     }
@@ -38,9 +38,9 @@ public readonly record struct RuleRuleType : IStringEnum
     /// <summary>
     /// Create a string enum with the given value.
     /// </summary>
-    public static RuleRuleType FromCustom(string value)
+    public static RulesengineRuleRuleType FromCustom(string value)
     {
-        return new RuleRuleType(value);
+        return new RulesengineRuleRuleType(value);
     }
 
     public bool Equals(string? other)
@@ -56,15 +56,15 @@ public readonly record struct RuleRuleType : IStringEnum
         return Value;
     }
 
-    public static bool operator ==(RuleRuleType value1, string value2) =>
+    public static bool operator ==(RulesengineRuleRuleType value1, string value2) =>
         value1.Value.Equals(value2);
 
-    public static bool operator !=(RuleRuleType value1, string value2) =>
+    public static bool operator !=(RulesengineRuleRuleType value1, string value2) =>
         !value1.Value.Equals(value2);
 
-    public static explicit operator string(RuleRuleType value) => value.Value;
+    public static explicit operator string(RulesengineRuleRuleType value) => value.Value;
 
-    public static explicit operator RuleRuleType(string value) => new(value);
+    public static explicit operator RulesengineRuleRuleType(string value) => new(value);
 
     /// <summary>
     /// Constant strings for enum values
