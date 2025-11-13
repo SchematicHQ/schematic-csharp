@@ -26,7 +26,7 @@ namespace SchematicHQ.Client.Test.RulesEngine
         }
 
         [Test]
-        public void RuleType_UnknownValue_ShouldFallbackToUnknown()
+        public void RuleType_UnknownValue_ShouldCreateCustomEnumValue()
         {
             // Arrange
             string unknownRuleTypeJson = "\"unknown_rule_type\"";
@@ -35,7 +35,7 @@ namespace SchematicHQ.Client.Test.RulesEngine
             Assert.DoesNotThrow(() =>
             {
                 var result = JsonSerializer.Deserialize<RuleRuleType>(unknownRuleTypeJson, _options);
-                Assert.That(result, Is.EqualTo(RuleRuleType.Unknown)); // Should fallback to Unknown
+                Assert.That(result.Value, Is.EqualTo("unknown_rule_type")); // Should create custom value
             });
         }
 
@@ -121,35 +121,35 @@ namespace SchematicHQ.Client.Test.RulesEngine
         }
 
         [Test]
-        public void RuleType_InvalidValue_ShouldFallbackToUnknown()
+        public void RuleType_InvalidValue_ShouldCreateCustomEnumValue()
         {
             // Act & Assert
             Assert.DoesNotThrow(() =>
             {
                 var result = JsonSerializer.Deserialize<RuleRuleType>("\"invalid_rule\"", _options);
-                Assert.That(result, Is.EqualTo(RuleRuleType.Unknown));
+                Assert.That(result.Value, Is.EqualTo("invalid_rule"));
             });
         }
 
         [Test]
-        public void RuleType_NonexistentValue_ShouldFallbackToUnknown()
+        public void RuleType_NonexistentValue_ShouldCreateCustomEnumValue()
         {
             // Act & Assert
             Assert.DoesNotThrow(() =>
             {
                 var result = JsonSerializer.Deserialize<RuleRuleType>("\"nonexistent\"", _options);
-                Assert.That(result, Is.EqualTo(RuleRuleType.Unknown));
+                Assert.That(result.Value, Is.EqualTo("nonexistent"));
             });
         }
 
         [Test]
-        public void RuleType_EmptyValue_ShouldFallbackToUnknown()
+        public void RuleType_EmptyValue_ShouldCreateCustomEnumValue()
         {
             // Act & Assert
             Assert.DoesNotThrow(() =>
             {
                 var result = JsonSerializer.Deserialize<RuleRuleType>("\"\"", _options);
-                Assert.That(result, Is.EqualTo(RuleRuleType.Unknown));
+                Assert.That(result.Value, Is.EqualTo(""));
             });
         }
 
@@ -180,16 +180,16 @@ namespace SchematicHQ.Client.Test.RulesEngine
         }
 
         [Test]
-        public void RuleType_UnknownSerialization_ShouldSerializeAsEmptyString()
+        public void RuleType_CustomValueSerialization_ShouldSerializeAsOriginalValue()
         {
             // Arrange
-            var ruleType = RuleRuleType.Unknown;
+            var ruleType = RuleRuleType.FromCustom("custom_value");
 
             // Act
             var json = JsonSerializer.Serialize(ruleType, _options);
 
             // Assert
-            Assert.That(json, Is.EqualTo("\"\""));
+            Assert.That(json, Is.EqualTo("\"custom_value\""));
         }
 
         [Test]

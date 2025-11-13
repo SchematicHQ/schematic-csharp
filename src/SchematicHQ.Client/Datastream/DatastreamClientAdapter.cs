@@ -193,7 +193,7 @@ namespace SchematicHQ.Client.Datastream
     /// <summary>
     /// Check a feature flag via datastream
     /// </summary>
-    public async Task<CheckFlagResult> CheckFlag(CheckFlagRequestBody request, string flagKey)
+    public async Task<RulesengineCheckFlagResult> CheckFlag(CheckFlagRequestBody request, string flagKey)
     {
       CancellationToken cancellationToken = CancellationToken.None;
       
@@ -202,8 +202,8 @@ namespace SchematicHQ.Client.Datastream
 
       // Always try to get cached resources first
       var cachedFlag = _client.GetFlag(flagKey);
-      Company? cachedCompany = null;
-      User? cachedUser = null;
+      RulesengineCompany? cachedCompany = null;
+      RulesengineUser? cachedUser = null;
 
       if (needsCompany && request.Company != null)
       {
@@ -237,12 +237,12 @@ namespace SchematicHQ.Client.Datastream
           {
             // Flag missing from cache - replicator should have populated it, so flag doesn't exist
             _logger.Debug("Replicator mode: Flag '{0}' missing from cache, replicator is healthy so flag doesn't exist", flagKey);
-            return new CheckFlagResult
+            return new RulesengineCheckFlagResult
             {
               Reason = "FlagNotFound",
               FlagKey = flagKey,
               Value = false,
-              Error = Errors.ErrorFlagNotFound,
+              Err = Errors.ErrorFlagNotFound.Message,
             };
           }
           else
@@ -281,12 +281,12 @@ namespace SchematicHQ.Client.Datastream
         // Handle missing flag case first - return FlagNotFound regardless of connection state
         if (cachedFlag == null)
         {
-          return new CheckFlagResult
+          return new RulesengineCheckFlagResult
           {
             Reason = "FlagNotFound",
             FlagKey = flagKey,
             Value = false,
-            Error = Errors.ErrorFlagNotFound,
+            Err = Errors.ErrorFlagNotFound.Message,
           };
         }
 
@@ -299,8 +299,8 @@ namespace SchematicHQ.Client.Datastream
         // Fetch missing company/user data from datastream
         try
         {
-          Company? company = cachedCompany;
-          User? user = cachedUser;
+          RulesengineCompany? company = cachedCompany;
+          RulesengineUser? user = cachedUser;
 
           if (needsCompany && company == null && request.Company != null)
           {
@@ -317,11 +317,11 @@ namespace SchematicHQ.Client.Datastream
         catch (Exception ex)
         {
           _logger.Error("Error fetching missing resources for flag {0}: {1}", flagKey, ex.Message);
-          return new CheckFlagResult
+          return new RulesengineCheckFlagResult
           {
             Reason = "Error",
             FlagKey = flagKey,
-            Error = ex,
+            Err = ex.Message,
             Value = false,
           };
         }

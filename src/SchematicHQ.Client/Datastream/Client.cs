@@ -29,16 +29,16 @@ namespace SchematicHQ.Client.Datastream
     private CancellationTokenSource _readCancellationSource = new CancellationTokenSource();
 
     // Cache providers
-    private readonly ICacheProvider<Flag> _flagsCache;
-    private readonly ICacheProvider<Company> _companyCache;
-    private readonly ICacheProvider<User> _userCache;
+    private readonly ICacheProvider<RulesengineFlag> _flagsCache;
+    private readonly ICacheProvider<RulesengineCompany> _companyCache;
+    private readonly ICacheProvider<RulesengineUser> _userCache;
     
     // Cache version provider (optional, for replicator mode)
     private readonly Func<string?>? _cacheVersionProvider;
 
     // Pending request tracking
-    private readonly Dictionary<string, List<TaskCompletionSource<Company?>>> _pendingCompanyRequests = new Dictionary<string, List<TaskCompletionSource<Company?>>>();
-    private readonly Dictionary<string, List<TaskCompletionSource<User?>>> _pendingUserRequests = new Dictionary<string, List<TaskCompletionSource<User?>>>();
+    private readonly Dictionary<string, List<TaskCompletionSource<RulesengineCompany?>>> _pendingCompanyRequests = new Dictionary<string, List<TaskCompletionSource<RulesengineCompany?>>>();
+    private readonly Dictionary<string, List<TaskCompletionSource<RulesengineUser?>>> _pendingUserRequests = new Dictionary<string, List<TaskCompletionSource<RulesengineUser?>>>();
     private TaskCompletionSource<bool>? _pendingFlagRequest;
     private readonly object _pendingRequestsLock = new object();
 
@@ -110,26 +110,26 @@ namespace SchematicHQ.Client.Datastream
         {
           _logger.Info("Initializing Redis cache for Datastream company, user and flag data");
           // We need to use the Cache namespace version, but cast it to the Client namespace interface
-          _companyCache = new RedisCache<Company>(options.RedisConfig);
-          _userCache = new RedisCache<User>(options.RedisConfig);
+          _companyCache = new RedisCache<RulesengineCompany>(options.RedisConfig);
+          _userCache = new RedisCache<RulesengineUser>(options.RedisConfig);
           var flagConfig = options.RedisConfig;
           flagConfig.CacheTTL = flagTTL; // Set TTL for flags cache
-          _flagsCache = new RedisCache<Flag>(flagConfig);
+          _flagsCache = new RedisCache<RulesengineFlag>(flagConfig);
         }
         catch (Exception ex)
         {
           _logger.Error("Failed to initialize Redis cache: {0}. Falling back to local cache.", ex.Message);
-          _companyCache = new LocalCache<Company>(options.LocalCacheCapacity, _cacheTtl);
-          _userCache = new LocalCache<User>(options.LocalCacheCapacity, _cacheTtl);
-          _flagsCache = new LocalCache<Flag>(options.LocalCacheCapacity, flagTTL);
+          _companyCache = new LocalCache<RulesengineCompany>(options.LocalCacheCapacity, _cacheTtl);
+          _userCache = new LocalCache<RulesengineUser>(options.LocalCacheCapacity, _cacheTtl);
+          _flagsCache = new LocalCache<RulesengineFlag>(options.LocalCacheCapacity, flagTTL);
         }
       }
       else
       {
         // Use local cache (default)
-        _companyCache = new LocalCache<Company>(options.LocalCacheCapacity, _cacheTtl);
-        _userCache = new LocalCache<User>(options.LocalCacheCapacity, _cacheTtl);
-        _flagsCache = new LocalCache<Flag>(options.LocalCacheCapacity, flagTTL);
+        _companyCache = new LocalCache<RulesengineCompany>(options.LocalCacheCapacity, _cacheTtl);
+        _userCache = new LocalCache<RulesengineUser>(options.LocalCacheCapacity, _cacheTtl);
+        _flagsCache = new LocalCache<RulesengineFlag>(options.LocalCacheCapacity, flagTTL);
       }
 
       _webSocket = webSocket ?? new StandardWebSocketClient();
@@ -431,7 +431,7 @@ namespace SchematicHQ.Client.Datastream
         };
 
         var jsonString = response.Data.ToString() ?? string.Empty;
-        var flags = JsonSerializer.Deserialize<List<Flag>>(jsonString, options);
+        var flags = JsonSerializer.Deserialize<List<RulesengineFlag>>(jsonString, options);
         var cacheKeys = new List<string>();
 
         if (flags == null || flags.Count == 0)
@@ -525,7 +525,7 @@ namespace SchematicHQ.Client.Datastream
         }
 
         // Handle single flag creation/update
-        var flag = JsonSerializer.Deserialize<Flag>(jsonString, options);
+        var flag = JsonSerializer.Deserialize<RulesengineFlag>(jsonString, options);
 
         if (flag == null)
         {
@@ -599,7 +599,7 @@ namespace SchematicHQ.Client.Datastream
         };
 
         var jsonString = response.Data.ToString() ?? string.Empty;
-        var company = JsonSerializer.Deserialize<Company>(jsonString, options);
+        var company = JsonSerializer.Deserialize<RulesengineCompany>(jsonString, options);
 
         if (company == null)
         {
@@ -626,7 +626,7 @@ namespace SchematicHQ.Client.Datastream
               // Handle deletion by removing company from cache
               foreach (var key in company.Keys)
               {
-                var cacheKey = ResourceKeyToCacheKey<Company>(CacheKeyPrefixCompany, key.Key, key.Value);
+                var cacheKey = ResourceKeyToCacheKey<RulesengineCompany>(CacheKeyPrefixCompany, key.Key, key.Value);
                 _companyCache.Delete(cacheKey);
               }
 
@@ -636,7 +636,7 @@ namespace SchematicHQ.Client.Datastream
             // Update cache (inside the lock to prevent race conditions)
             foreach (var key in company.Keys)
             {
-              var cacheKey = ResourceKeyToCacheKey<Company>(CacheKeyPrefixCompany, key.Key, key.Value);
+              var cacheKey = ResourceKeyToCacheKey<RulesengineCompany>(CacheKeyPrefixCompany, key.Key, key.Value);
               _companyCache.Set(cacheKey, company);
             }
 
@@ -679,7 +679,7 @@ namespace SchematicHQ.Client.Datastream
           }
         };
         var jsonString = response.Data.ToString() ?? string.Empty;
-        var user = JsonSerializer.Deserialize<User>(jsonString, options);
+        var user = JsonSerializer.Deserialize<RulesengineUser>(jsonString, options);
 
         if (user == null)
         {
@@ -692,7 +692,7 @@ namespace SchematicHQ.Client.Datastream
           // Handle deletion by removing user from cache
           foreach (var key in user.Keys)
           {
-            var cacheKey = ResourceKeyToCacheKey<User>(CacheKeyPrefixUser, key.Key, key.Value);
+            var cacheKey = ResourceKeyToCacheKey<RulesengineUser>(CacheKeyPrefixUser, key.Key, key.Value);
             _userCache.Delete(cacheKey);
             _logger.Debug("Deleted user from cache with key: {0}", cacheKey);
           }
@@ -702,7 +702,7 @@ namespace SchematicHQ.Client.Datastream
         // Update cache
         foreach (var key in user.Keys)
         {
-          var cacheKey = ResourceKeyToCacheKey<User>(CacheKeyPrefixUser, key.Key, key.Value);
+          var cacheKey = ResourceKeyToCacheKey<RulesengineUser>(CacheKeyPrefixUser, key.Key, key.Value);
           _userCache.Set(cacheKey, user);
         }
 
@@ -741,10 +741,10 @@ namespace SchematicHQ.Client.Datastream
             switch (error.EntityType.Value)
             {
               case EntityType.Company:
-                NotifyPendingRequests<Company>(null, error.Keys, CacheKeyPrefixCompany, _pendingCompanyRequests);
+                NotifyPendingRequests<RulesengineCompany>(null, error.Keys, CacheKeyPrefixCompany, _pendingCompanyRequests);
                 break;
               case EntityType.User:
-                NotifyPendingRequests<User>(null, error.Keys, CacheKeyPrefixUser, _pendingUserRequests);
+                NotifyPendingRequests<RulesengineUser>(null, error.Keys, CacheKeyPrefixUser, _pendingUserRequests);
                 break;
               default:
                 _logger.Warn("Received error for unsupported entity type: {0}", error.EntityType.Value);
@@ -759,7 +759,7 @@ namespace SchematicHQ.Client.Datastream
       }
     }
 
-    internal async Task<CheckFlagResult> CheckFlag(Company? company, User? user, Flag flag, CancellationToken cancellationToken = default)
+    internal async Task<RulesengineCheckFlagResult> CheckFlag(RulesengineCompany? company, RulesengineUser? user, RulesengineFlag flag, CancellationToken cancellationToken = default)
     {
       try
       {
@@ -769,20 +769,20 @@ namespace SchematicHQ.Client.Datastream
       catch (Exception ex)
       {
         _logger.Error("Error checking flag {0}: {1}", flag.Key, ex.Message);
-        return new CheckFlagResult
+        return new RulesengineCheckFlagResult
         {
           Reason = "Error",
           FlagKey = flag.Key,
-          Error = ex,
+          Err = ex.Message,
           Value = false,
         };
       }
     }
 
-    internal async Task<Company?> GetCompanyAsync(Dictionary<string, string> keys, CancellationToken cancellationToken)
+    internal async Task<RulesengineCompany?> GetCompanyAsync(Dictionary<string, string> keys, CancellationToken cancellationToken)
     {
 
-      var waitTask = new TaskCompletionSource<Company?>();
+      var waitTask = new TaskCompletionSource<RulesengineCompany?>();
       var cacheKeys = new List<string>();
       bool shouldSendRequest = true;
 
@@ -790,7 +790,7 @@ namespace SchematicHQ.Client.Datastream
       {
         foreach (var key in keys)
         {
-          var cacheKey = ResourceKeyToCacheKey<Company>(CacheKeyPrefixCompany, key.Key, key.Value);
+          var cacheKey = ResourceKeyToCacheKey<RulesengineCompany>(CacheKeyPrefixCompany, key.Key, key.Value);
           cacheKeys.Add(cacheKey);
 
           if (_pendingCompanyRequests.TryGetValue(cacheKey, out var existingChannels))
@@ -800,7 +800,7 @@ namespace SchematicHQ.Client.Datastream
           }
           else
           {
-            _pendingCompanyRequests[cacheKey] = new List<TaskCompletionSource<Company?>> { waitTask };
+            _pendingCompanyRequests[cacheKey] = new List<TaskCompletionSource<RulesengineCompany?>> { waitTask };
           }
         }
       }
@@ -841,11 +841,11 @@ namespace SchematicHQ.Client.Datastream
       }
     }
 
-    internal async Task<User?> GetUserAsync(Dictionary<string, string> keys, CancellationToken cancellationToken)
+    internal async Task<RulesengineUser?> GetUserAsync(Dictionary<string, string> keys, CancellationToken cancellationToken)
     {
 
 
-      var waitTask = new TaskCompletionSource<User?>();
+      var waitTask = new TaskCompletionSource<RulesengineUser?>();
       var cacheKeys = new List<string>();
       bool shouldSendRequest = true;
 
@@ -853,7 +853,7 @@ namespace SchematicHQ.Client.Datastream
       {
         foreach (var key in keys)
         {
-          var cacheKey = ResourceKeyToCacheKey<User>(CacheKeyPrefixUser, key.Key, key.Value);
+          var cacheKey = ResourceKeyToCacheKey<RulesengineUser>(CacheKeyPrefixUser, key.Key, key.Value);
           cacheKeys.Add(cacheKey);
 
           if (_pendingUserRequests.TryGetValue(cacheKey, out var existingChannels))
@@ -863,7 +863,7 @@ namespace SchematicHQ.Client.Datastream
           }
           else
           {
-            _pendingUserRequests[cacheKey] = new List<TaskCompletionSource<User?>> { waitTask };
+            _pendingUserRequests[cacheKey] = new List<TaskCompletionSource<RulesengineUser?>> { waitTask };
           }
         }
       }
@@ -958,17 +958,17 @@ namespace SchematicHQ.Client.Datastream
       }
     }
 
-    internal Flag? GetFlag(string key)
+    internal RulesengineFlag? GetFlag(string key)
     {
       var flag = _flagsCache.Get(FlagCacheKey(key));
       return flag;
     }
 
-    internal Company? GetCompanyFromCache(Dictionary<string, string> keys)
+    internal RulesengineCompany? GetCompanyFromCache(Dictionary<string, string> keys)
     {
       foreach (var key in keys)
       {
-        var cacheKey = ResourceKeyToCacheKey<Company>(CacheKeyPrefixCompany, key.Key, key.Value);
+        var cacheKey = ResourceKeyToCacheKey<RulesengineCompany>(CacheKeyPrefixCompany, key.Key, key.Value);
         var company = _companyCache.Get(cacheKey);
         if (company != null)
         {
@@ -978,11 +978,11 @@ namespace SchematicHQ.Client.Datastream
       return null;
     }
 
-    internal User? GetUserFromCache(Dictionary<string, string> keys)
+    internal RulesengineUser? GetUserFromCache(Dictionary<string, string> keys)
     {
       foreach (var key in keys)
       {
-        var cacheKey = ResourceKeyToCacheKey<User>(CacheKeyPrefixUser, key.Key, key.Value);
+        var cacheKey = ResourceKeyToCacheKey<RulesengineUser>(CacheKeyPrefixUser, key.Key, key.Value);
         var user = _userCache.Get(cacheKey);
         if (user != null)
         {
@@ -1045,13 +1045,20 @@ namespace SchematicHQ.Client.Datastream
 
                 // Update the metric value if it matches the event
                 bool metricUpdated = false;
+                var updatedMetrics = new List<RulesengineCompanyMetric>();
+                
                 foreach (var metric in companyCopy.Metrics)
                 {
                     if (metric != null && metric.EventSubtype == eventBody.Event)
                     {
                         int quantity = eventBody.Quantity ?? 0;
-                        metric.Value += quantity;
+                        var updatedMetric = metric with { Value = metric.Value + quantity };
+                        updatedMetrics.Add(updatedMetric);
                         metricUpdated = true;
+                    }
+                    else if (metric != null)
+                    {
+                        updatedMetrics.Add(metric);
                     }
                 }
 
@@ -1061,13 +1068,16 @@ namespace SchematicHQ.Client.Datastream
                     return false;
                 }
 
+                // Update the company with the new metrics
+                companyCopy = companyCopy with { Metrics = updatedMetrics };
+
                 // Cache the updated company for all keys (still inside the lock)
                 bool cacheSuccess = true;
                 foreach (var key in companyCopy.Keys)
                 {
                     try
                     {
-                        var cacheKey = ResourceKeyToCacheKey<Company>(CacheKeyPrefixCompany, key.Key, key.Value);
+                        var cacheKey = ResourceKeyToCacheKey<RulesengineCompany>(CacheKeyPrefixCompany, key.Key, key.Value);
                         _companyCache.Set(cacheKey, companyCopy);
                     }
                     catch (Exception ex)
@@ -1100,105 +1110,65 @@ namespace SchematicHQ.Client.Datastream
     /// <returns>Boolean indicating if the metrics were successfully updated</returns>
     public bool UpdateCompanyMetrics(EventBodyTrack eventBody)
     {
-        try
-        {
-            return UpdateCompanyMetricsAsync(eventBody).GetAwaiter().GetResult();
-        }
-        catch (Exception ex)
-        {
-            _logger.Error($"Error in synchronous company metrics update: {ex.Message}");
-            return false;
-        }
-    }    /// <summary>
-    /// Creates a complete deep copy of a Company object and all its nested fields.
-    /// This ensures that modifying the returned company won't affect the original cached object.
-    /// All nested objects including Subscription, Metrics, and Traits are deep copied.
+      try
+      {
+        return UpdateCompanyMetricsAsync(eventBody).GetAwaiter().GetResult();
+      }
+      catch (Exception ex)
+      {
+        _logger.Error($"Error in synchronous company metrics update: {ex.Message}");
+        return false;
+      }
+    }
+    
+    /// <summary>
+    /// Creates a deep copy of a RulesengineCompany object for metrics updates.
+    /// Since RulesengineCompany is an immutable record, we use the 'with' syntax for copying
+    /// and need to deep copy collections to ensure modifications don't affect the original.
     /// </summary>
     /// <param name="company">The company to copy</param>
     /// <returns>A new independent copy of the company</returns>
-    private Company? DeepCopyCompany(Company? company)
+    private RulesengineCompany? DeepCopyCompany(RulesengineCompany? company)
     {
         if (company == null)
         {
             return null;
         }
 
-        // Create a new company instance
-        var companyCopy = new Company
+        // Deep copy all collections to ensure complete independence
+        // For immutable records like metrics, create new instances using 'with' syntax
+        var newMetrics = company.Metrics?.Select(metric => metric with { }).ToList() ?? new List<RulesengineCompanyMetric>();
+        
+        // Copy traits (immutable records)
+        var newTraits = company.Traits?.Select(trait => trait with { }).ToList() ?? new List<RulesengineTrait>();
+        
+        // Copy rules (immutable records)
+        var newRules = company.Rules?.Select(rule => rule with { }).ToList() ?? new List<RulesengineRule>();
+        
+        // Copy dictionary collections
+        var newKeys = company.Keys != null ? new Dictionary<string, string>(company.Keys) : new Dictionary<string, string>();
+        var newCreditBalances = company.CreditBalances != null ? new Dictionary<string, double>(company.CreditBalances) : new Dictionary<string, double>();
+        
+        // Copy string enumerable collections
+        var newBillingProductIds = company.BillingProductIds?.ToList() ?? new List<string>();
+        var newCrmProductIds = company.CrmProductIds?.ToList() ?? new List<string>();
+        var newPlanIds = company.PlanIds?.ToList() ?? new List<string>();
+
+        return company with 
         {
-            Id = company.Id,
-            AccountId = company.AccountId,
-            EnvironmentId = company.EnvironmentId,
-            BasePlanId = company.BasePlanId,
-            BillingProductIds = new List<string>(company.BillingProductIds),
-            CrmProductIds = new List<string>(company.CrmProductIds),
-            PlanIds = new List<string>(company.PlanIds),
-            Subscription = company.Subscription != null ? new Subscription
-            {
-                Id = company.Subscription.Id,
-                PeriodStart = company.Subscription.PeriodStart,
-                PeriodEnd = company.Subscription.PeriodEnd
-            } : null,
-            Keys = new Dictionary<string, string>(),
-            Metrics = new List<CompanyMetric>(),
-            Traits = new List<Trait>()
+            Keys = newKeys,
+            Metrics = newMetrics,
+            Traits = newTraits,
+            Rules = newRules,
+            CreditBalances = newCreditBalances,
+            BillingProductIds = newBillingProductIds,
+            CrmProductIds = newCrmProductIds,
+            PlanIds = newPlanIds
         };
-
-        // Copy the keys dictionary
-        foreach (var key in company.Keys)
-        {
-            companyCopy.Keys[key.Key] = key.Value;
-        }
-
-        // Deep copy metrics
-        foreach (var metric in company.Metrics)
-        {
-            if (metric == null)
-            {
-                // Skip null metrics
-                continue;
-            }
-
-            var metricCopy = new CompanyMetric
-            {
-                AccountId = metric.AccountId,
-                EnvironmentId = metric.EnvironmentId,
-                CompanyId = metric.CompanyId,
-                EventSubtype = metric.EventSubtype,
-                Period = metric.Period,
-                MonthReset = metric.MonthReset,
-                Value = metric.Value,
-                CreatedAt = metric.CreatedAt,
-                ValidUntil = metric.ValidUntil
-            };
-
-            companyCopy.Metrics.Add(metricCopy);
-        }
-
-        // Copy traits
-        foreach (var trait in company.Traits)
-        {
-            if (trait == null)
-            {
-                // Skip null traits
-                continue;
-            }
-            
-            // Create a new trait instance
-            var traitCopy = new Trait
-            {
-                Value = trait.Value,
-                TraitDefinition = trait.TraitDefinition
-            };
-            
-            companyCopy.Traits.Add(traitCopy);
-        }
-
-        return companyCopy;
     }
 
 
-    private void CleanupPendingCompanyRequests(List<string> cacheKeys, TaskCompletionSource<Company?> waitTask)
+    private void CleanupPendingCompanyRequests(List<string> cacheKeys, TaskCompletionSource<RulesengineCompany?> waitTask)
     {
       lock (_pendingRequestsLock)
       {
@@ -1216,7 +1186,7 @@ namespace SchematicHQ.Client.Datastream
       }
     }
 
-    private void CleanupPendingUserRequests(List<string> cacheKeys, TaskCompletionSource<User?> waitTask)
+    private void CleanupPendingUserRequests(List<string> cacheKeys, TaskCompletionSource<RulesengineUser?> waitTask)
     {
       lock (_pendingRequestsLock)
       {

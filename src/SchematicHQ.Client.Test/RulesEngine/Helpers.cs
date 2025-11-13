@@ -1,6 +1,5 @@
 using SchematicHQ.Client;
 using SchematicHQ.Client.RulesEngine;
-using SchematicHQ.Client.RulesEngine.Models;
 using SchematicHQ.Client.RulesEngine.Utils;
 
 namespace SchematicHQ.Client.Test.RulesEngine
@@ -14,114 +13,117 @@ namespace SchematicHQ.Client.Test.RulesEngine
       return $"{prefix}_{Guid.NewGuid().ToString().Replace("-", "").Substring(0, 8)}";
     }
 
-    public static Company CreateTestCompany()
+    public static RulesengineCompany CreateTestCompany()
     {
-      return new Company
+      return new RulesengineCompany
       {
         Id = GenerateTestId("comp"),
         AccountId = GenerateTestId("acct"),
         EnvironmentId = GenerateTestId("env"),
         PlanIds = new List<string> { GenerateTestId("plan") },
-        Traits = new List<Trait>(),
-        Metrics = new List<CompanyMetric>(),
+        Traits = new List<RulesengineTrait>(),
+        Metrics = new List<RulesengineCompanyMetric>(),
         BillingProductIds = new List<string>(),
         CrmProductIds = new List<string>()
       };
     }
 
-    public static User CreateTestUser()
+    public static RulesengineUser CreateTestUser()
     {
-      return new User
+      return new RulesengineUser
       {
         Id = GenerateTestId("user"),
         AccountId = GenerateTestId("acct"),
         EnvironmentId = GenerateTestId("env"),
-        Traits = new List<Trait>()
+        Traits = new List<RulesengineTrait>()
       };
     }
 
-    public static Rule CreateTestRule()
+    public static RulesengineRule CreateTestRule()
     {
-      return new Rule
+      return new RulesengineRule
       {
         Id = GenerateTestId("rule"),
         AccountId = GenerateTestId("acct"),
         EnvironmentId = GenerateTestId("env"),
-        RuleType = RuleRuleType.Standard,
+        RuleType = RulesengineRuleRuleType.Standard,
         Name = $"Test Rule {Random.Next(1000)}",
         Priority = 1,
-        Conditions = new List<Condition>(),
-        ConditionGroups = new List<ConditionGroup>(),
+        Conditions = new List<RulesengineCondition>(),
+        ConditionGroups = new List<RulesengineConditionGroup>(),
         Value = true
       };
     }
 
-    public static Flag CreateTestFlag()
+    public static RulesengineFlag CreateTestFlag()
     {
-      return new Flag
+      return new RulesengineFlag
       {
         Id = GenerateTestId("flag"),
         AccountId = GenerateTestId("acct"),
         EnvironmentId = GenerateTestId("env"),
         Key = $"test_flag_{Random.Next(1000)}",
-        Rules = new List<Rule>(),
+        Rules = new List<RulesengineRule>(),
         DefaultValue = Random.Next(2) == 0 // Random boolean
       };
     }
 
-    public static Condition CreateTestCondition(ConditionConditionType conditionType)
+    public static RulesengineCondition CreateTestCondition(RulesengineConditionConditionType conditionType)
     {
-      var condition = new Condition
+      var condition = new RulesengineCondition
       {
         Id = GenerateTestId("cond"),
         AccountId = GenerateTestId("acct"),
         EnvironmentId = GenerateTestId("env"),
         ConditionType = conditionType,
         ResourceIds = new List<string>(),
-        Operator = ConditionOperator.Eq,
+        Operator = RulesengineConditionOperator.Eq,
         TraitValue = ""
       };
 
-      if (conditionType == ConditionConditionType.Metric)
+      if (conditionType == RulesengineConditionConditionType.Metric)
       {
         condition.EventSubtype = $"test_event_{Random.Next(1000)}";
-        condition.MetricPeriod = ConditionMetricPeriod.AllTime;
+        condition.MetricPeriod = RulesengineConditionMetricPeriod.AllTime;
         condition.MetricValue = 10;
       }
 
       return condition;
     }
 
-    public static CompanyMetric CreateTestMetric(Company company, string eventSubtype, ConditionMetricPeriod period, long value)
+    public static RulesengineCompanyMetric CreateTestMetric(RulesengineCompany company, string eventSubtype, RulesengineCompanyMetricPeriod period, int value)
     {
-      return new CompanyMetric
+      return new RulesengineCompanyMetric
       {
+        AccountId = company?.AccountId,
+        EnvironmentId = company?.EnvironmentId,
+        CompanyId = company?.Id,
         EventSubtype = eventSubtype,
         Period = period,
-        MonthReset = ConditionMetricPeriodMonthReset.FirstOfMonth,
+        MonthReset = RulesengineCompanyMetricMonthReset.FirstOfMonth,
         Value = value,
         CreatedAt = DateTime.UtcNow,
       };
     }
 
 
-    public static Trait CreateTestTrait(string value, TraitDefinition? traitDefinition)
+    public static RulesengineTrait CreateTestTrait(string value,RulesengineTraitDefinition? traitDefinition)
     {
       if (traitDefinition == null)
       {
-        traitDefinition = CreateTestTraitDefinition(TraitDefinitionComparableType.String, TraitDefinitionEntityType.Company);
+        traitDefinition = CreateTestTraitDefinition(RulesengineTraitDefinitionComparableType.String, RulesengineTraitDefinitionEntityType.Company);
       }
 
-      return new Trait
+      return new RulesengineTrait
       {
         Value = value,
         TraitDefinition = traitDefinition,
       };
     }
 
-    public static TraitDefinition CreateTestTraitDefinition(TraitDefinitionComparableType comparableType, TraitDefinitionEntityType entityType)
+    public static RulesengineTraitDefinition CreateTestTraitDefinition(RulesengineTraitDefinitionComparableType comparableType, RulesengineTraitDefinitionEntityType entityType)
     {
-      return new TraitDefinition
+      return new RulesengineTraitDefinition
       {
         Id = GenerateTestId("traitdef"),
         ComparableType = comparableType,

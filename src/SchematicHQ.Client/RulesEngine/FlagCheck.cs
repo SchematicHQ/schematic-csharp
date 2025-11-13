@@ -1,115 +1,9 @@
 using SchematicHQ.Client.RulesEngine.Models;
 using SchematicHQ.Client.RulesEngine.Utils;
+using SchematicHQ.Client.RulesEngine.Extensions;
 
 namespace SchematicHQ.Client.RulesEngine
 {
-    public class CheckFlagResult
-    {
-        public string? CompanyId { get; set; }
-        public Exception? Error { get; set; }
-        public long? FeatureAllocation { get; set; }
-        public long? FeatureUsage { get; set; }
-        public ConditionMetricPeriod? FeatureUsagePeriod { get; set; }
-        public DateTime? FeatureUsageResetAt { get; set; }
-        public string? FlagId { get; set; }
-        public required string FlagKey { get; set; }
-        public required string Reason { get; set; }
-        public string? RuleId { get; set; }
-        public RuleRuleType? RuleType { get; set; }
-        public string? UserId { get; set; }
-        public bool Value { get; set; }
-
-        public void SetRuleFields(Models.Company? company, Rule? rule)
-        {
-            if (rule == null)
-            {
-                return;
-            }
-
-            RuleId = rule.Id;
-            RuleType = rule.RuleType;
-
-
-            if (company == null)
-            {
-                return;
-            }
-
-            // Only set entitlement fields if the matched rule is an entitlement rule
-            if (!rule.RuleType.IsEntitlement())
-            {
-                return;
-            }
-
-            // For a numeric entitlement rule, there will be a metric or trait condition;
-            // for a boolean or unlimited entitlement rule, we don't need to set these fields
-            var usageCondition = rule.Conditions.FirstOrDefault(c =>
-                c != null && (c.ConditionType == ConditionConditionType.Metric || c.ConditionType == ConditionConditionType.Trait));
-                
-            if (usageCondition == null)
-            {
-                return;
-            }
-
-            // Set usage, allocation, and other usage-related fields
-            long usage = 0;
-            long allocation = 0;
-
-            if (usageCondition.ConditionType == ConditionConditionType.Metric)
-            {
-                if (!string.IsNullOrEmpty(usageCondition.EventSubtype))
-                {
-                    var usageMetric = Models.CompanyMetric.Find(
-                        company.Metrics,
-                        usageCondition.EventSubtype,
-                        usageCondition.MetricPeriod,
-                        usageCondition.MetricPeriodMonthReset
-                    );
-
-                    if (usageMetric != null)
-                    {
-                        usage = usageMetric.Value;
-                    }
-                }
-
-                if (usageCondition.MetricValue.HasValue)
-                {
-                    allocation = usageCondition.MetricValue.Value;
-                }
-
-                var metricPeriod = usageCondition.MetricPeriod;
-
-                FeatureUsagePeriod = metricPeriod;
-                FeatureUsageResetAt = Metrics.GetNextMetricPeriodStartFromCondition(usageCondition, company);
-            }
-            else if (usageCondition.ConditionType == ConditionConditionType.Trait)
-            {
-                if (usageCondition.TraitDefinition != null)
-                {
-                    var companyUsageTrait = company.GetTraitByDefinitionId(usageCondition.TraitDefinition.Id);
-                    if (companyUsageTrait != null)
-                    {
-                        usage = TypeConverter.StringToInt64(companyUsageTrait.Value);
-                    }
-                }
-
-                allocation = TypeConverter.StringToInt64(usageCondition.TraitValue);
-            }
-
-            // If there is a comparison trait, this takes precedence for allocation over the numeric value
-            if (usageCondition.ComparisonTraitDefinition != null)
-            {
-                var companyAllocationTrait = company.GetTraitByDefinitionId(usageCondition.ComparisonTraitDefinition.Id);
-                if (companyAllocationTrait != null)
-                {
-                    allocation = TypeConverter.StringToInt64(companyAllocationTrait.Value);
-                }
-            }
-
-            FeatureUsage = usage;
-            FeatureAllocation = allocation;
-        }
-    }
 
     public static class Errors
     {
@@ -127,22 +21,23 @@ namespace SchematicHQ.Client.RulesEngine
         public const string ReasonServerError = "Server error; Schematic has been notified";
         public const string ReasonUserNotFound = "User not found";
 
-        public static async Task<CheckFlagResult> CheckFlag(
-            Models.Company? company,
-            Models.User? user,
-            Models.Flag? flag,
+        public static async Task<RulesengineCheckFlagResult> CheckFlag(
+            RulesengineCompany? company,
+            RulesengineUser? user,
+            RulesengineFlag? flag,
             CancellationToken cancellationToken = default)
         {
-            var resp = new CheckFlagResult
+            var resp = new RulesengineCheckFlagResult
             {
               Reason = ReasonNoRulesMatched,
               FlagKey = "",
+              Value = false, // Required property
             };
 
             if (flag == null)
             {
                 resp.Reason = ReasonFlagNotFound;
-                resp.Error = Errors.ErrorFlagNotFound;
+                resp.Err = Errors.ErrorFlagNotFound.Message;
                 return resp;
             }
 
@@ -169,7 +64,7 @@ namespace SchematicHQ.Client.RulesEngine
                 .ToList();
 
             var ruleChecker = RuleCheckService.NewRuleCheckService();
-            foreach (var group in GroupRulesByPriority(flag.Rules, companyRules, userRules))
+            foreach (var group in GroupRulesByPriority(flag.Rules?.ToList(), companyRules, userRules))
             {
                 foreach (var rule in group)
                 {
@@ -189,7 +84,7 @@ namespace SchematicHQ.Client.RulesEngine
 
                         if (checkRuleResp == null)
                         {
-                            resp.Error = Errors.ErrorUnexpected;
+                            resp.Err = Errors.ErrorUnexpected.Message;
                             return resp;
                         }
 
@@ -203,7 +98,7 @@ namespace SchematicHQ.Client.RulesEngine
                     }
                     catch (Exception ex)
                     {
-                        resp.Error = ex;
+                        resp.Err = ex.Message;
                         return resp;
                     }
                 }
@@ -212,9 +107,9 @@ namespace SchematicHQ.Client.RulesEngine
             return resp;
         }
 
-        public static List<List<Rule>> GroupRulesByPriority(params List<Rule>?[] ruleSlices)
+        public static List<List<RulesengineRule>> GroupRulesByPriority(params List<RulesengineRule>?[] ruleSlices)
         {
-            var allRules = new List<Rule>();
+            var allRules = new List<RulesengineRule>();
             foreach (var rules in ruleSlices)
             {
                 if (rules != null && rules.Count > 0)
@@ -225,7 +120,7 @@ namespace SchematicHQ.Client.RulesEngine
 
             if (allRules.Count == 0)
             {
-                return new List<List<Rule>>();
+                return new List<List<RulesengineRule>>();
             }
 
             // Group rules by their type (convert to internal enum for grouping)
@@ -248,8 +143,8 @@ namespace SchematicHQ.Client.RulesEngine
             }
 
             // Prioritize type groups relative to one another
-            var prioritizedGroups = new List<List<Rule>>();
-            foreach (var ruleType in RuleRuleTypeExtensions.RuleTypePriority)
+            var prioritizedGroups = new List<List<RulesengineRule>>();
+            foreach (var ruleType in RulesengineRuleTypeExtensions.RuleTypePriority)
             {
                 if (grouped.TryGetValue(ruleType, out var rules2))
                 {

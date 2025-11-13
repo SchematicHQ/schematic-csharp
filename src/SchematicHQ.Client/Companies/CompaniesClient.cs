@@ -1588,6 +1588,7 @@ public partial class CompaniesClient
     {
         var _query = new Dictionary<string, object>();
         _query["ids"] = request.Ids;
+        _query["trait_types"] = request.TraitTypes.Select(_value => _value.Stringify()).ToList();
         if (request.EntityType != null)
         {
             _query["entity_type"] = request.EntityType.Value.Stringify();
@@ -1908,6 +1909,7 @@ public partial class CompaniesClient
     {
         var _query = new Dictionary<string, object>();
         _query["ids"] = request.Ids;
+        _query["trait_types"] = request.TraitTypes.Select(_value => _value.Stringify()).ToList();
         if (request.EntityType != null)
         {
             _query["entity_type"] = request.EntityType.Value.Stringify();
