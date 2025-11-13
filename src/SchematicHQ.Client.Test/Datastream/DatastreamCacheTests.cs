@@ -1,6 +1,5 @@
 using System.Text.Json;
 using NUnit.Framework;
-using SchematicHQ.Client.RulesEngine.Models;
 using SchematicHQ.Client.Datastream;
 using SchematicHQ.Client.Test.Datastream.Mocks;
 
@@ -32,7 +31,7 @@ namespace SchematicHQ.Client.Test.Datastream
             var companyKey = "company-123";
             
             // Create a test company to store in cache
-            var company = new Company
+            var company = new RulesengineCompany
             {
                 AccountId = "acc_123",
                 EnvironmentId = "env_123",
@@ -54,7 +53,7 @@ namespace SchematicHQ.Client.Test.Datastream
             Assert.That(resourceKeyToCacheKeyMethod, Is.Not.Null, "ResourceKeyToCacheKey method not found");
             
             // Call the generic method with reflection
-            var genericMethod = resourceKeyToCacheKeyMethod!.MakeGenericMethod(typeof(Company));
+            var genericMethod = resourceKeyToCacheKeyMethod!.MakeGenericMethod(typeof(RulesengineCompany));
             var cacheKey = (string)genericMethod.Invoke(_client, new object[] { "company", "id", companyKey })!;
             
             // Setup cache by directly storing the company - this avoids WebSocket complexity

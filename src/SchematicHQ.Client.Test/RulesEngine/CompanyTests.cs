@@ -1,7 +1,7 @@
-using SchematicHQ.Client.RulesEngine.Models;
 using SchematicHQ.Client.RulesEngine;
 using System.Diagnostics;
 using NUnit.Framework;
+using SchematicHQ.Client.RulesEngine.Extensions;
 
 namespace SchematicHQ.Client.Test.RulesEngine
 {
@@ -13,11 +13,11 @@ namespace SchematicHQ.Client.Test.RulesEngine
         {
             // Arrange
             var company = TestHelpers.CreateTestCompany();
-            int initialCount = company.Metrics.Count;
+            int initialCount = company.Metrics.Count();
 
             // Act
-            var metric = TestHelpers.CreateTestMetric(company, "test-event", ConditionMetricPeriod.AllTime, 5);
-            company.AddMetric(metric);
+            var metric = TestHelpers.CreateTestMetric(company, "test-event", RulesengineCompanyMetricPeriod.AllTime, 5);
+            company = company.AddMetric(metric);
 
             // Assert
             Assert.That(company.Metrics.Count, Is.EqualTo(initialCount + 1));
@@ -32,17 +32,16 @@ namespace SchematicHQ.Client.Test.RulesEngine
 
             // Add initial metric
             string eventSubtype = "test-event";
-            var period = ConditionMetricPeriod.AllTime;
-            ConditionMetricPeriodMonthReset monthReset = ConditionMetricPeriodMonthReset.FirstOfMonth;
+            var period = RulesengineCompanyMetricPeriod.AllTime;
+            RulesengineConditionMetricPeriodMonthReset monthReset = RulesengineConditionMetricPeriodMonthReset.FirstOfMonth;
 
             var initialMetric = TestHelpers.CreateTestMetric(company, eventSubtype, period, 5);
-            company.AddMetric(initialMetric);
-            int initialCount = company.Metrics.Count;
+            company = company.AddMetric(initialMetric);
+            int initialCount = company.Metrics.Count();
 
             // Act - Add metric with same constraints but different value
             var newMetric = TestHelpers.CreateTestMetric(company, eventSubtype, period, 10);
-            company.AddMetric(newMetric);
-
+            company = company.AddMetric(newMetric);
             // Assert
             // Verify the length hasn't changed but the new metric replaced the old one
             Assert.That(company.Metrics.Count, Is.EqualTo(initialCount));
@@ -50,52 +49,60 @@ namespace SchematicHQ.Client.Test.RulesEngine
             Assert.That(company.Metrics, Does.Not.Contain(initialMetric));
 
             // Find the metric and verify it has the new value
-            var foundMetric = CompanyMetric.Find(company.Metrics, eventSubtype, period, monthReset);
+            var foundMetric = company.Metrics.Find(eventSubtype, RulesengineConditionMetricPeriod.FromCustom(period.Value), monthReset);
             Assert.That(foundMetric, Is.Not.Null);
             Assert.That(foundMetric!.Value, Is.EqualTo(10));
         }
 
         [Test]
-        public void AddMetric_Handles_Concurrent_Updates_Safely()
+        public void AddMetric_Immutable_Operations_Are_Thread_Safe()
         {
             // Arrange
             var company = TestHelpers.CreateTestCompany();
 
-            // Set up concurrent tasks to add metrics
+            // Set up concurrent tasks to create new company instances with added metrics
             const int numTasks = 10;
-            var tasks = new List<Task>();
+            var tasks = new List<Task<RulesengineCompany>>();
 
-            // Act
+            // Act - Each task creates its own company instance with an added metric
             for (int i = 0; i < numTasks; i++)
             {
                 var index = i; // Capture the current index for the task
                 tasks.Add(Task.Run(() =>
                 {
-                    // Create a metric with a unique event subtype to avoid collision
-                    string uniqueSubtype = $"test-event-{DateTime.Now.Ticks}-{index}";
-                    var metric = TestHelpers.CreateTestMetric(company, uniqueSubtype, ConditionMetricPeriod.AllTime, index);
+                    // Create a metric with a unique event subtype 
+                    string uniqueSubtype = $"test-event-{index}";
+                    var metric = TestHelpers.CreateTestMetric(company, uniqueSubtype, RulesengineCompanyMetricPeriod.AllTime, index);
 
-                    // Add the metric
-                    company.AddMetric(metric);
+                    // Each task returns its own new company instance (immutable operation)
+                    return company.AddMetric(metric);
                 }));
             }
 
-            var taskArray = tasks.ToArray();
-            Debug.WriteLine($"Starting {taskArray.Length} concurrent tasks to add metrics...");
+            Debug.WriteLine($"Starting {tasks.Count} concurrent tasks to add metrics...");
 
-            // Wait for all tasks to finish
+            // Wait for all tasks to finish and collect results
             Task.WaitAll(tasks.ToArray());
+            var results = tasks.Select(t => t.Result).ToList();
 
-            // Assert
-            Assert.That(company.Metrics.Count, Is.GreaterThanOrEqualTo(numTasks));
+            // Assert - Each task should have produced a valid company with the original + 1 new metric
+            Assert.That(results.Count, Is.EqualTo(numTasks));
+            
+            var initialMetricCount = company.Metrics.Count();
+            foreach (var result in results)
+            {
+                Assert.That(result.Metrics.Count(), Is.EqualTo(initialMetricCount + 1));
+                Assert.That(result.Id, Is.EqualTo(company.Id)); // Same company, different instance
+            }
         }
 
         [Test]
         public void AddMetric_NullCompany_DoesNotThrow()
         {
             // Arrange
-            Company? company = null;
-            var metric = new CompanyMetric { EventSubtype = "test" };
+            RulesengineCompany? company = null;
+            var testCompany = TestHelpers.CreateTestCompany(); // Use a valid company for creating the metric
+            var metric = TestHelpers.CreateTestMetric(testCompany, "foo", RulesengineCompanyMetricPeriod.AllTime, 1);
 
             // Act & Assert
             Assert.DoesNotThrow(() => company?.AddMetric(metric));
@@ -115,7 +122,7 @@ namespace SchematicHQ.Client.Test.RulesEngine
         public void AddMetric_CompanyWithNoMetrics_DoesNotThrow()
         {
             // Arrange
-            var company = new Company
+            var company = new RulesengineCompany
             {
                 Id = TestHelpers.GenerateTestId("comp"),
                 AccountId = TestHelpers.GenerateTestId("acct"),
@@ -124,8 +131,8 @@ namespace SchematicHQ.Client.Test.RulesEngine
                 BillingProductIds = new List<string> { TestHelpers.GenerateTestId("bilp"), TestHelpers.GenerateTestId("bilp") },
                 CrmProductIds = new List<string> { TestHelpers.GenerateTestId("crmp"), TestHelpers.GenerateTestId("crmp") },
                 BasePlanId = TestHelpers.GenerateTestId("plan"),
-                Traits = new List<Trait>(),
-                Subscription = new Subscription
+                Traits = new List<RulesengineTrait>(),
+                Subscription = new RulesengineSubscription
                 {
                     Id = TestHelpers.GenerateTestId("bilsub"),
                     PeriodStart = DateTime.UtcNow.AddDays(-30),
@@ -135,12 +142,72 @@ namespace SchematicHQ.Client.Test.RulesEngine
                 Metrics = null!
             };
 
-            var metric = TestHelpers.CreateTestMetric(company, "foo", ConditionMetricPeriod.AllTime, 1);
+            var metric = TestHelpers.CreateTestMetric(company, "foo", RulesengineCompanyMetricPeriod.AllTime, 1);
 
             // Act & Assert
-            Assert.DoesNotThrow(() => company.AddMetric(metric));
-            Assert.That(company.Metrics, Is.Not.Null);
-            Assert.That(company.Metrics.Count, Is.EqualTo(1));
+            RulesengineCompany? updatedCompany = null;
+            Assert.DoesNotThrow(() => updatedCompany = company.AddMetric(metric));
+            Assert.That(updatedCompany, Is.Not.Null);
+            Assert.That(updatedCompany!.Metrics, Is.Not.Null);
+            Assert.That(updatedCompany.Metrics.Count(), Is.EqualTo(1));
+        }
+
+        [Test]
+        public void AddMetric_HighConcurrency_IsThreadSafe()
+        {
+            // Arrange
+            var baseCompany = TestHelpers.CreateTestCompany();
+            const int numTasks = 100;
+            const int iterationsPerTask = 10;
+            
+            var results = new System.Collections.Concurrent.ConcurrentBag<RulesengineCompany>();
+            var exceptions = new System.Collections.Concurrent.ConcurrentBag<Exception>();
+
+            // Act - Multiple threads adding different metrics to the same base company
+            var tasks = new List<Task>();
+            for (int i = 0; i < numTasks; i++)
+            {
+                var taskIndex = i;
+                tasks.Add(Task.Run(() =>
+                {
+                    try
+                    {
+                        for (int j = 0; j < iterationsPerTask; j++)
+                        {
+                            // Each iteration adds a unique metric
+                            var uniqueSubtype = $"task-{taskIndex}-iter-{j}";
+                            var metric = TestHelpers.CreateTestMetric(baseCompany, uniqueSubtype, 
+                                RulesengineCompanyMetricPeriod.AllTime, taskIndex * 1000 + j);
+
+                            // This should be thread-safe
+                            var newCompany = baseCompany.AddMetric(metric);
+                            results.Add(newCompany);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        exceptions.Add(ex);
+                    }
+                }));
+            }
+
+            // Wait for all tasks to complete
+            Task.WaitAll(tasks.ToArray());
+
+            // Assert - No exceptions should occur
+            Assert.That(exceptions, Is.Empty, 
+                $"Thread safety test failed with exceptions: {string.Join(", ", exceptions.Select(e => e.Message))}");
+
+            // All operations should complete successfully
+            Assert.That(results.Count, Is.EqualTo(numTasks * iterationsPerTask));
+
+            // Each result should have exactly the original metrics + 1 new metric
+            var expectedMetricCount = baseCompany.Metrics.Count() + 1;
+            foreach (var result in results)
+            {
+                Assert.That(result.Metrics?.Count(), Is.EqualTo(expectedMetricCount), 
+                    "Each result should contain the original metrics plus 1 new metric");
+            }
         }
     }
 }

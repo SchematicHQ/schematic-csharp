@@ -1,7 +1,7 @@
 using NUnit.Framework;
 using SchematicHQ.Client.RulesEngine;
-using SchematicHQ.Client.RulesEngine.Models;
 using SchematicHQ.Client.RulesEngine.Utils;
+using SchematicHQ.Client;
 
 namespace SchematicHQ.Client.Test.RulesEngine
 {
@@ -15,7 +15,7 @@ namespace SchematicHQ.Client.Test.RulesEngine
       var svc = RuleCheckService.NewRuleCheckService();
       var company = TestHelpers.CreateTestCompany();
       var rule = TestHelpers.CreateTestRule();
-      rule.RuleType = RuleRuleType.GlobalOverride;
+      rule.RuleType = RulesengineRuleRuleType.GlobalOverride;
 
       // Act
       var result = await svc.Check(new CheckScope
@@ -55,7 +55,7 @@ namespace SchematicHQ.Client.Test.RulesEngine
       var svc = RuleCheckService.NewRuleCheckService();
       var company = TestHelpers.CreateTestCompany();
       var rule = TestHelpers.CreateTestRule();
-      rule.RuleType = RuleRuleType.Default;
+      rule.RuleType = RulesengineRuleRuleType.Default;
 
       // Act
       var result = await svc.Check(new CheckScope
@@ -78,9 +78,9 @@ namespace SchematicHQ.Client.Test.RulesEngine
       var rule = TestHelpers.CreateTestRule();
 
       // Create condition targeting the company
-      var condition = TestHelpers.CreateTestCondition(ConditionConditionType.Company);
+      var condition = TestHelpers.CreateTestCondition(RulesengineConditionConditionType.Company);
       condition.ResourceIds = new List<string> { company.Id };
-      rule.Conditions = new List<Condition> { condition };
+      rule.Conditions = new List<RulesengineCondition> { condition };
 
       // Act
       var result = await svc.Check(new CheckScope
@@ -103,14 +103,14 @@ namespace SchematicHQ.Client.Test.RulesEngine
 
       string eventSubtype = "test-event";
       var rule = TestHelpers.CreateTestRule();
-      var condition = TestHelpers.CreateTestCondition(ConditionConditionType.Metric);
+      var condition = TestHelpers.CreateTestCondition(RulesengineConditionConditionType.Metric);
       condition.EventSubtype = eventSubtype;
       condition.MetricValue = 10;
-      condition.Operator = ConditionOperator.Lte;
-      rule.Conditions = new List<Condition> { condition };
+      condition.Operator = RulesengineConditionOperator.Lte;
+      rule.Conditions = new List<RulesengineCondition> { condition };
 
-      var metric = TestHelpers.CreateTestMetric(company, eventSubtype, condition.MetricPeriod!.Value, 5);
-      company.Metrics = new List<CompanyMetric> { metric };
+      var metric = TestHelpers.CreateTestMetric(company, eventSubtype, RulesengineCompanyMetricPeriod.FromCustom(condition.MetricPeriod!.Value.Value), 5);
+      company.Metrics = new List<RulesengineCompanyMetric> { metric };
 
       // Act
       var result = await svc.Check(new CheckScope
@@ -133,14 +133,14 @@ namespace SchematicHQ.Client.Test.RulesEngine
 
       string eventSubtype = "test-event";
       var rule = TestHelpers.CreateTestRule();
-      var condition = TestHelpers.CreateTestCondition(ConditionConditionType.Metric);
+      var condition = TestHelpers.CreateTestCondition(RulesengineConditionConditionType.Metric);
       condition.EventSubtype = eventSubtype;
       condition.MetricValue = 5;
-      condition.Operator = ConditionOperator.Lte;
-      rule.Conditions = new List<Condition> { condition };
+      condition.Operator = RulesengineConditionOperator.Lte;
+      rule.Conditions = new List<RulesengineCondition> { condition };
 
-      var metric = TestHelpers.CreateTestMetric(company, eventSubtype, condition.MetricPeriod!.Value, 6); // Value exceeds limit
-      company.Metrics = new List<CompanyMetric> { metric };
+      var metric = TestHelpers.CreateTestMetric(company, eventSubtype, RulesengineCompanyMetricPeriod.FromCustom(condition.MetricPeriod!.Value.Value), 6); // Value exceeds limit
+      company.Metrics = new List<RulesengineCompanyMetric> { metric };
 
       // Act
       var result = await svc.Check(new CheckScope
@@ -161,14 +161,14 @@ namespace SchematicHQ.Client.Test.RulesEngine
       var svc = RuleCheckService.NewRuleCheckService();
       var company = TestHelpers.CreateTestCompany();
       var trait = TestHelpers.CreateTestTrait("test-value", null);
-      company.Traits.Add(trait);
+      company = company with { Traits = new List<RulesengineTrait> { trait } };
 
       var rule = TestHelpers.CreateTestRule();
-      var condition = TestHelpers.CreateTestCondition(ConditionConditionType.Trait);
+      var condition = TestHelpers.CreateTestCondition(RulesengineConditionConditionType.Trait);
       condition.TraitDefinition = trait.TraitDefinition;
       condition.TraitValue = "test-value";
-      condition.Operator = ConditionOperator.Eq;
-      rule.Conditions = new List<Condition> { condition };
+      condition.Operator = RulesengineConditionOperator.Eq;
+      rule.Conditions = new List<RulesengineCondition> { condition };
 
       // Act
       var result = await svc.Check(new CheckScope
@@ -190,15 +190,15 @@ namespace SchematicHQ.Client.Test.RulesEngine
       var company = TestHelpers.CreateTestCompany();
 
       var rule = TestHelpers.CreateTestRule();
-      var condition1 = TestHelpers.CreateTestCondition(ConditionConditionType.Company);
-      var condition2 = TestHelpers.CreateTestCondition(ConditionConditionType.Company);
+      var condition1 = TestHelpers.CreateTestCondition(RulesengineConditionConditionType.Company);
+      var condition2 = TestHelpers.CreateTestCondition(RulesengineConditionConditionType.Company);
       condition2.ResourceIds = new List<string> { company.Id };
 
-      var group = new ConditionGroup
+      var group = new RulesengineConditionGroup
       {
-        Conditions = new List<Condition> { condition1, condition2 }
+        Conditions = new List<RulesengineCondition> { condition1, condition2 }
       };
-      rule.ConditionGroups = new List<ConditionGroup> { group };
+      rule.ConditionGroups = new List<RulesengineConditionGroup> { group };
 
       // Act
       var result = await svc.Check(new CheckScope
@@ -220,15 +220,15 @@ namespace SchematicHQ.Client.Test.RulesEngine
       var company = TestHelpers.CreateTestCompany();
 
       var rule = TestHelpers.CreateTestRule();
-      var condition1 = TestHelpers.CreateTestCondition(ConditionConditionType.Company);
-      var condition2 = TestHelpers.CreateTestCondition(ConditionConditionType.Company);
+      var condition1 = TestHelpers.CreateTestCondition(RulesengineConditionConditionType.Company);
+      var condition2 = TestHelpers.CreateTestCondition(RulesengineConditionConditionType.Company);
       // No matching condition added to the group
 
-      var group = new ConditionGroup
+      var group = new RulesengineConditionGroup
       {
-        Conditions = new List<Condition> { condition1, condition2 }
+        Conditions = new List<RulesengineCondition> { condition1, condition2 }
       };
-      rule.ConditionGroups = new List<ConditionGroup> { group };
+      rule.ConditionGroups = new List<RulesengineConditionGroup> { group };
 
       // Act
       var result = await svc.Check(new CheckScope
@@ -248,16 +248,16 @@ namespace SchematicHQ.Client.Test.RulesEngine
       // Arrange
       var svc = RuleCheckService.NewRuleCheckService();
       var user = TestHelpers.CreateTestUser();
-      var traitDef = TestHelpers.CreateTestTraitDefinition(TraitDefinitionComparableType.String, TraitDefinitionEntityType.User);
+      var traitDef = TestHelpers.CreateTestTraitDefinition(RulesengineTraitDefinitionComparableType.String, RulesengineTraitDefinitionEntityType.User);
       var trait = TestHelpers.CreateTestTrait("user-trait-value", traitDef);
-      user.Traits.Add(trait);
+      user = user with { Traits = new List<RulesengineTrait> { trait } };
 
       var rule = TestHelpers.CreateTestRule();
-      var condition = TestHelpers.CreateTestCondition(ConditionConditionType.Trait);
+      var condition = TestHelpers.CreateTestCondition(RulesengineConditionConditionType.Trait);
       condition.TraitDefinition = traitDef;
       condition.TraitValue = "user-trait-value";
-      condition.Operator = ConditionOperator.Eq;
-      rule.Conditions = new List<Condition> { condition };
+      condition.Operator = RulesengineConditionOperator.Eq;
+      rule.Conditions = new List<RulesengineCondition> { condition };
 
       // Act
       var result = await svc.Check(new CheckScope
@@ -278,21 +278,21 @@ namespace SchematicHQ.Client.Test.RulesEngine
       var svc = RuleCheckService.NewRuleCheckService();
       var company = TestHelpers.CreateTestCompany();
       var trait = TestHelpers.CreateTestTrait("test-value", null);
-      company.Traits.Add(trait);
+      company = company with { Traits = new List<RulesengineTrait> { trait } };
 
       var rule = TestHelpers.CreateTestRule();
       
       // Company condition
-      var condition1 = TestHelpers.CreateTestCondition(ConditionConditionType.Company);
+      var condition1 = TestHelpers.CreateTestCondition(RulesengineConditionConditionType.Company);
       condition1.ResourceIds = new List<string> { company.Id };
       
       // Trait condition
-      var condition2 = TestHelpers.CreateTestCondition(ConditionConditionType.Trait);
+      var condition2 = TestHelpers.CreateTestCondition(RulesengineConditionConditionType.Trait);
       condition2.TraitDefinition = trait.TraitDefinition;
       condition2.TraitValue = "test-value";
-      condition2.Operator = ConditionOperator.Eq;
+      condition2.Operator = RulesengineConditionOperator.Eq;
       
-      rule.Conditions = new List<Condition> { condition1, condition2 };
+      rule.Conditions = new List<RulesengineCondition> { condition1, condition2 };
 
       // Act
       var result = await svc.Check(new CheckScope
@@ -313,21 +313,21 @@ namespace SchematicHQ.Client.Test.RulesEngine
       var svc = RuleCheckService.NewRuleCheckService();
       var company = TestHelpers.CreateTestCompany();
       var trait = TestHelpers.CreateTestTrait("test-value", null);
-      company.Traits.Add(trait);
+      company = company with { Traits = new List<RulesengineTrait> { trait } };
 
       var rule = TestHelpers.CreateTestRule();
       
       // Company condition
-      var condition1 = TestHelpers.CreateTestCondition(ConditionConditionType.Company);
+      var condition1 = TestHelpers.CreateTestCondition(RulesengineConditionConditionType.Company);
       condition1.ResourceIds = new List<string> { company.Id };
       
       // Trait condition that doesn't match
-      var condition2 = TestHelpers.CreateTestCondition(ConditionConditionType.Trait);
+      var condition2 = TestHelpers.CreateTestCondition(RulesengineConditionConditionType.Trait);
       condition2.TraitDefinition = trait.TraitDefinition;
       condition2.TraitValue = "different-value";
-      condition2.Operator = ConditionOperator.Eq;
+      condition2.Operator = RulesengineConditionOperator.Eq;
       
-      rule.Conditions = new List<Condition> { condition1, condition2 };
+      rule.Conditions = new List<RulesengineCondition> { condition1, condition2 };
 
       // Act
       var result = await svc.Check(new CheckScope
@@ -357,10 +357,10 @@ namespace SchematicHQ.Client.Test.RulesEngine
       
       // Create a rule with a credit condition
       var rule = TestHelpers.CreateTestRule();
-            var condition = TestHelpers.CreateTestCondition(ConditionConditionType.Credit);
+            var condition = TestHelpers.CreateTestCondition(RulesengineConditionConditionType.Credit);
       condition.CreditId = creditId;
       condition.ConsumptionRate = 50.0; // Consumption rate less than the balance
-      rule.Conditions = new List<Condition> { condition };
+      rule.Conditions = new List<RulesengineCondition> { condition };
 
       // Act
       var result = await svc.Check(new CheckScope
@@ -390,10 +390,10 @@ namespace SchematicHQ.Client.Test.RulesEngine
       
       // Create a rule with a credit condition
       var rule = TestHelpers.CreateTestRule();
-            var condition = TestHelpers.CreateTestCondition(ConditionConditionType.Credit);
+            var condition = TestHelpers.CreateTestCondition(RulesengineConditionConditionType.Credit);
       condition.CreditId = creditId;
       condition.ConsumptionRate = 50.0; // Consumption rate more than the balance
-      rule.Conditions = new List<Condition> { condition };
+      rule.Conditions = new List<RulesengineCondition> { condition };
 
       // Act
       var result = await svc.Check(new CheckScope
@@ -423,10 +423,10 @@ namespace SchematicHQ.Client.Test.RulesEngine
       
       // Create a rule with a credit condition
       var rule = TestHelpers.CreateTestRule();
-            var condition = TestHelpers.CreateTestCondition(ConditionConditionType.Credit);
+            var condition = TestHelpers.CreateTestCondition(RulesengineConditionConditionType.Credit);
       condition.CreditId = creditId;
       condition.ConsumptionRate = null; // Default consumption rate is 1.0
-      rule.Conditions = new List<Condition> { condition };
+      rule.Conditions = new List<RulesengineCondition> { condition };
 
       // Act
       var result = await svc.Check(new CheckScope
@@ -455,10 +455,10 @@ namespace SchematicHQ.Client.Test.RulesEngine
       
       // Create a rule with a credit condition for a different credit ID
       var rule = TestHelpers.CreateTestRule();
-            var condition = TestHelpers.CreateTestCondition(ConditionConditionType.Credit);
+            var condition = TestHelpers.CreateTestCondition(RulesengineConditionConditionType.Credit);
       condition.CreditId = "non-existent-credit-id"; // Different from the one in company
       condition.ConsumptionRate = 1.0;
-      rule.Conditions = new List<Condition> { condition };
+      rule.Conditions = new List<RulesengineCondition> { condition };
 
       // Act
       var result = await svc.Check(new CheckScope
