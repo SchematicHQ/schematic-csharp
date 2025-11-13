@@ -316,7 +316,7 @@ public partial class Schematic
                         CompanyId = flagResult.CompanyId,
                         UserId = flagResult.UserId,
                         Reason = flagResult.Reason,
-                        Error = flagResult.Error?.Message
+                        Error = flagResult.Err
                     });
                 return flagResult.Value;
             }

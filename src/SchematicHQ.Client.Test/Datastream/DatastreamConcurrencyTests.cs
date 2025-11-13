@@ -2,7 +2,6 @@ using System.Text;
 using System.Text.Json;
 using NUnit.Framework;
 using SchematicHQ.Client.RulesEngine;
-using SchematicHQ.Client.RulesEngine.Models;
 using SchematicHQ.Client.RulesEngine.Utils;
 using SchematicHQ.Client.Datastream;
 using SchematicHQ.Client.Test.Datastream.Mocks;
@@ -140,16 +139,16 @@ namespace SchematicHQ.Client.Test.Datastream
             
             // We'll use a simplified version of the notification pattern used in DatastreamClient
             const int taskCount = 3;
-            var completionSignals = new List<TaskCompletionSource<Company>>();
+            var completionSignals = new List<TaskCompletionSource<RulesengineCompany>>();
             
             // Create completion sources that will be notified
             for (int i = 0; i < taskCount; i++)
             {
-                completionSignals.Add(new TaskCompletionSource<Company>());
+                completionSignals.Add(new TaskCompletionSource<RulesengineCompany>());
             }
             
             // Create the company object that will be used to complete the tasks
-            var company = new Company
+            var company = new RulesengineCompany
             {
                 Id = "comp_123",
                 AccountId = "acc_123",

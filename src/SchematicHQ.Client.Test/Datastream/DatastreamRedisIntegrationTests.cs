@@ -143,14 +143,14 @@ namespace SchematicHQ.Client.Test.Datastream
         {
             // Direct test to verify RulesEngine assembly and types are accessible
 
-            // Act & Assert - Try to load the RulesEngine.Models.Company type directly
+            // Act & Assert - Try to load the RulesEngine types directly
             Type? companyType = null;
             Exception? loadException = null;
 
             try
             {
-                // This is the exact type that was failing to load in the customer's issue
-                companyType = Type.GetType("SchematicHQ.Client.RulesEngine.Models.Company, SchematicHQ.Client");
+                // Load the new OpenAPI-generated RulesengineCompany type
+                companyType = Type.GetType("SchematicHQ.Client.RulesengineCompany, SchematicHQ.Client");
 
                 // If the type is null, try to load from any loaded assembly
                 if (companyType == null)
@@ -160,7 +160,7 @@ namespace SchematicHQ.Client.Test.Datastream
 
                     if (clientAssembly != null)
                     {
-                        companyType = clientAssembly.GetType("SchematicHQ.Client.RulesEngine.Models.Company");
+                        companyType = clientAssembly.GetType("SchematicHQ.Client.RulesengineCompany");
                     }
                 }
             }
@@ -173,16 +173,33 @@ namespace SchematicHQ.Client.Test.Datastream
             Assert.That(loadException, Is.Null,
                 $"Should not throw exception when loading RulesEngine types: {loadException?.Message}");
             Assert.That(companyType, Is.Not.Null,
-                "Should be able to load RulesEngine.Models.Company type");
+                "Should be able to load RulesengineCompany type");
 
             // Verify we can also load other RulesEngine types that DatastreamClient might use
-            var userType = Type.GetType("SchematicHQ.Client.RulesEngine.Models.User, SchematicHQ.Client") ??
+            var userType = Type.GetType("SchematicHQ.Client.RulesengineUser, SchematicHQ.Client") ??
                           AppDomain.CurrentDomain.GetAssemblies()
                               .FirstOrDefault(a => a.GetName().Name == "SchematicHQ.Client")
-                              ?.GetType("SchematicHQ.Client.RulesEngine.Models.User");
+                              ?.GetType("SchematicHQ.Client.RulesengineUser");
 
             Assert.That(userType, Is.Not.Null,
-                "Should be able to load SchematicHQ.Client.RulesEngine.Models.User type");
+                "Should be able to load RulesengineUser type");
+
+            // Verify we can load other key RulesEngine types
+            var flagType = Type.GetType("SchematicHQ.Client.RulesengineFlag, SchematicHQ.Client") ??
+                          AppDomain.CurrentDomain.GetAssemblies()
+                              .FirstOrDefault(a => a.GetName().Name == "SchematicHQ.Client")
+                              ?.GetType("SchematicHQ.Client.RulesengineFlag");
+
+            Assert.That(flagType, Is.Not.Null,
+                "Should be able to load RulesengineFlag type");
+
+            var ruleType = Type.GetType("SchematicHQ.Client.RulesengineRule, SchematicHQ.Client") ??
+                          AppDomain.CurrentDomain.GetAssemblies()
+                              .FirstOrDefault(a => a.GetName().Name == "SchematicHQ.Client")
+                              ?.GetType("SchematicHQ.Client.RulesengineRule");
+
+            Assert.That(ruleType, Is.Not.Null,
+                "Should be able to load RulesengineRule type");
         }
 
     }

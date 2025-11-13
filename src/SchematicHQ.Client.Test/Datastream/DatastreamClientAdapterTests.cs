@@ -209,7 +209,7 @@ namespace SchematicHQ.Client.Test.Datastream
             var flagsCache = flagsCacheField!.GetValue(client);
             
             // Create a test flag
-            var flag = new SchematicHQ.Client.RulesEngine.Models.Flag
+            var flag = new RulesengineFlag
             {
                 Id = "flag_123",
                 Key = "test-flag",
