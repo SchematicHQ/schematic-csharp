@@ -91,10 +91,12 @@ public partial class DataexportsClient
     }
 
     /// <example><code>
-    /// await client.Dataexports.GetDataExportArtifactAsync("data_export_id");
+    /// await client.Dataexports.GetDataExportArtifactAsync(
+    ///     new GetDataExportArtifactRequest { DataExportId = "data_export_id" }
+    /// );
     /// </code></example>
     public async global::System.Threading.Tasks.Task GetDataExportArtifactAsync(
-        string dataExportId,
+        GetDataExportArtifactRequest request,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
@@ -107,7 +109,7 @@ public partial class DataexportsClient
                     Method = HttpMethod.Get,
                     Path = string.Format(
                         "data-exports/{0}/artifact",
-                        ValueConvert.ToPathParameterString(dataExportId)
+                        ValueConvert.ToPathParameterString(request.DataExportId)
                     ),
                     Options = options,
                 },

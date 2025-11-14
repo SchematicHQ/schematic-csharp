@@ -18,7 +18,7 @@ public record ListApiKeysResponse : IJsonOnDeserialized
     /// Input parameters
     /// </summary>
     [JsonPropertyName("params")]
-    public required ListApiKeysParams Params { get; set; }
+    public required ListApiKeysResponseParams Params { get; set; }
 
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();

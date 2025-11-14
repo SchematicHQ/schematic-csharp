@@ -18,7 +18,7 @@ public record CountCreditBundlesResponse : IJsonOnDeserialized
     /// Input parameters
     /// </summary>
     [JsonPropertyName("params")]
-    public required CountCreditBundlesParams Params { get; set; }
+    public required CountCreditBundlesResponseParams Params { get; set; }
 
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();

@@ -18,7 +18,7 @@ public record CountBillingCreditsResponse : IJsonOnDeserialized
     /// Input parameters
     /// </summary>
     [JsonPropertyName("params")]
-    public required CountBillingCreditsParams Params { get; set; }
+    public required CountBillingCreditsResponseParams Params { get; set; }
 
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();

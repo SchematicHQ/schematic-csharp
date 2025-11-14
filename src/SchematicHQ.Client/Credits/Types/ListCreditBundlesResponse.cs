@@ -19,7 +19,7 @@ public record ListCreditBundlesResponse : IJsonOnDeserialized
     /// Input parameters
     /// </summary>
     [JsonPropertyName("params")]
-    public required ListCreditBundlesParams Params { get; set; }
+    public required ListCreditBundlesResponseParams Params { get; set; }
 
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();

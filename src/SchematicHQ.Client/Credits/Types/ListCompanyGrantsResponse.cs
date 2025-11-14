@@ -19,7 +19,7 @@ public record ListCompanyGrantsResponse : IJsonOnDeserialized
     /// Input parameters
     /// </summary>
     [JsonPropertyName("params")]
-    public required ListCompanyGrantsParams Params { get; set; }
+    public required ListCompanyGrantsResponseParams Params { get; set; }
 
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();

@@ -19,12 +19,6 @@ public readonly record struct CreateBillingPlanCreditGrantRequestBodyAutoTopupEx
     public static readonly CreateBillingPlanCreditGrantRequestBodyAutoTopupExpiryType EndOfTrial =
         new(Values.EndOfTrial);
 
-    public static readonly CreateBillingPlanCreditGrantRequestBodyAutoTopupExpiryType EndOfBillingPeriod =
-        new(Values.EndOfBillingPeriod);
-
-    public static readonly CreateBillingPlanCreditGrantRequestBodyAutoTopupExpiryType EndOfNextBillingPeriod =
-        new(Values.EndOfNextBillingPeriod);
-
     public CreateBillingPlanCreditGrantRequestBodyAutoTopupExpiryType(string value)
     {
         Value = value;
@@ -87,9 +81,5 @@ public readonly record struct CreateBillingPlanCreditGrantRequestBodyAutoTopupEx
         public const string NoExpiry = "no_expiry";
 
         public const string EndOfTrial = "end_of_trial";
-
-        public const string EndOfBillingPeriod = "end_of_billing_period";
-
-        public const string EndOfNextBillingPeriod = "end_of_next_billing_period";
     }
 }

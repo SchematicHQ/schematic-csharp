@@ -16,12 +16,14 @@ public partial class PlansClient
 
     /// <example><code>
     /// await client.Plans.UpdateCompanyPlansAsync(
-    ///     "company_plan_id",
-    ///     new UpdateCompanyPlansRequestBody { AddOnIds = new List&lt;string&gt;() { "add_on_ids" } }
+    ///     new UpdateCompanyPlansRequestBody
+    ///     {
+    ///         CompanyPlanId = "company_plan_id",
+    ///         AddOnIds = new List&lt;string&gt;() { "add_on_ids" },
+    ///     }
     /// );
     /// </code></example>
     public async Task<UpdateCompanyPlansResponse> UpdateCompanyPlansAsync(
-        string companyPlanId,
         UpdateCompanyPlansRequestBody request,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
@@ -35,7 +37,7 @@ public partial class PlansClient
                     Method = HttpMethod.Put,
                     Path = string.Format(
                         "company-plans/{0}",
-                        ValueConvert.ToPathParameterString(companyPlanId)
+                        ValueConvert.ToPathParameterString(request.CompanyPlanId)
                     ),
                     Body = request,
                     ContentType = "application/json",
@@ -90,24 +92,7 @@ public partial class PlansClient
     }
 
     /// <example><code>
-    /// await client.Plans.ListPlansAsync(
-    ///     new ListPlansRequest
-    ///     {
-    ///         CompanyId = "company_id",
-    ///         ForFallbackPlan = true,
-    ///         ForInitialPlan = true,
-    ///         ForTrialExpiryPlan = true,
-    ///         HasProductId = true,
-    ///         PlanType = ListPlansRequestPlanType.Plan,
-    ///         Q = "q",
-    ///         RequiresPaymentMethod = true,
-    ///         WithoutEntitlementFor = "without_entitlement_for",
-    ///         WithoutProductId = true,
-    ///         WithoutPaidProductId = true,
-    ///         Limit = 1,
-    ///         Offset = 1,
-    ///     }
-    /// );
+    /// await client.Plans.ListPlansAsync(new ListPlansRequest());
     /// </code></example>
     public async Task<ListPlansResponse> ListPlansAsync(
         ListPlansRequest request,
@@ -145,19 +130,9 @@ public partial class PlansClient
         {
             _query["q"] = request.Q;
         }
-        if (request.RequiresPaymentMethod != null)
-        {
-            _query["requires_payment_method"] = JsonUtils.Serialize(
-                request.RequiresPaymentMethod.Value
-            );
-        }
         if (request.WithoutEntitlementFor != null)
         {
             _query["without_entitlement_for"] = request.WithoutEntitlementFor;
-        }
-        if (request.WithoutProductId != null)
-        {
-            _query["without_product_id"] = JsonUtils.Serialize(request.WithoutProductId.Value);
         }
         if (request.WithoutPaidProductId != null)
         {
@@ -307,10 +282,10 @@ public partial class PlansClient
     }
 
     /// <example><code>
-    /// await client.Plans.GetPlanAsync("plan_id");
+    /// await client.Plans.GetPlanAsync(new GetPlanRequest { PlanId = "plan_id" });
     /// </code></example>
     public async Task<GetPlanResponse> GetPlanAsync(
-        string planId,
+        GetPlanRequest request,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
@@ -321,7 +296,10 @@ public partial class PlansClient
                 {
                     BaseUrl = _client.Options.BaseUrl,
                     Method = HttpMethod.Get,
-                    Path = string.Format("plans/{0}", ValueConvert.ToPathParameterString(planId)),
+                    Path = string.Format(
+                        "plans/{0}",
+                        ValueConvert.ToPathParameterString(request.PlanId)
+                    ),
                     Options = options,
                 },
                 cancellationToken
@@ -371,10 +349,9 @@ public partial class PlansClient
     }
 
     /// <example><code>
-    /// await client.Plans.UpdatePlanAsync("plan_id", new UpdatePlanRequestBody { Name = "name" });
+    /// await client.Plans.UpdatePlanAsync(new UpdatePlanRequestBody { PlanId = "plan_id", Name = "name" });
     /// </code></example>
     public async Task<UpdatePlanResponse> UpdatePlanAsync(
-        string planId,
         UpdatePlanRequestBody request,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
@@ -386,7 +363,10 @@ public partial class PlansClient
                 {
                     BaseUrl = _client.Options.BaseUrl,
                     Method = HttpMethod.Put,
-                    Path = string.Format("plans/{0}", ValueConvert.ToPathParameterString(planId)),
+                    Path = string.Format(
+                        "plans/{0}",
+                        ValueConvert.ToPathParameterString(request.PlanId)
+                    ),
                     Body = request,
                     ContentType = "application/json",
                     Options = options,
@@ -440,10 +420,10 @@ public partial class PlansClient
     }
 
     /// <example><code>
-    /// await client.Plans.DeletePlanAsync("plan_id");
+    /// await client.Plans.DeletePlanAsync(new DeletePlanRequest { PlanId = "plan_id" });
     /// </code></example>
     public async Task<DeletePlanResponse> DeletePlanAsync(
-        string planId,
+        DeletePlanRequest request,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
@@ -454,7 +434,10 @@ public partial class PlansClient
                 {
                     BaseUrl = _client.Options.BaseUrl,
                     Method = HttpMethod.Delete,
-                    Path = string.Format("plans/{0}", ValueConvert.ToPathParameterString(planId)),
+                    Path = string.Format(
+                        "plans/{0}",
+                        ValueConvert.ToPathParameterString(request.PlanId)
+                    ),
                     Options = options,
                 },
                 cancellationToken
@@ -507,16 +490,15 @@ public partial class PlansClient
 
     /// <example><code>
     /// await client.Plans.UpsertBillingProductPlanAsync(
-    ///     "plan_id",
     ///     new UpsertBillingProductRequestBody
     ///     {
+    ///         PlanId = "plan_id",
     ///         ChargeType = UpsertBillingProductRequestBodyChargeType.OneTime,
     ///         IsTrialable = true,
     ///     }
     /// );
     /// </code></example>
     public async Task<UpsertBillingProductPlanResponse> UpsertBillingProductPlanAsync(
-        string planId,
         UpsertBillingProductRequestBody request,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
@@ -530,7 +512,7 @@ public partial class PlansClient
                     Method = HttpMethod.Put,
                     Path = string.Format(
                         "plans/{0}/billing_products",
-                        ValueConvert.ToPathParameterString(planId)
+                        ValueConvert.ToPathParameterString(request.PlanId)
                     ),
                     Body = request,
                     ContentType = "application/json",
@@ -585,24 +567,7 @@ public partial class PlansClient
     }
 
     /// <example><code>
-    /// await client.Plans.CountPlansAsync(
-    ///     new CountPlansRequest
-    ///     {
-    ///         CompanyId = "company_id",
-    ///         ForFallbackPlan = true,
-    ///         ForInitialPlan = true,
-    ///         ForTrialExpiryPlan = true,
-    ///         HasProductId = true,
-    ///         PlanType = CountPlansRequestPlanType.Plan,
-    ///         Q = "q",
-    ///         RequiresPaymentMethod = true,
-    ///         WithoutEntitlementFor = "without_entitlement_for",
-    ///         WithoutProductId = true,
-    ///         WithoutPaidProductId = true,
-    ///         Limit = 1,
-    ///         Offset = 1,
-    ///     }
-    /// );
+    /// await client.Plans.CountPlansAsync(new CountPlansRequest());
     /// </code></example>
     public async Task<CountPlansResponse> CountPlansAsync(
         CountPlansRequest request,
@@ -640,19 +605,9 @@ public partial class PlansClient
         {
             _query["q"] = request.Q;
         }
-        if (request.RequiresPaymentMethod != null)
-        {
-            _query["requires_payment_method"] = JsonUtils.Serialize(
-                request.RequiresPaymentMethod.Value
-            );
-        }
         if (request.WithoutEntitlementFor != null)
         {
             _query["without_entitlement_for"] = request.WithoutEntitlementFor;
-        }
-        if (request.WithoutProductId != null)
-        {
-            _query["without_product_id"] = JsonUtils.Serialize(request.WithoutProductId.Value);
         }
         if (request.WithoutPaidProductId != null)
         {

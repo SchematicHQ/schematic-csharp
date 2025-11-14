@@ -19,7 +19,7 @@ public record ListCompanyMembershipsResponse : IJsonOnDeserialized
     /// Input parameters
     /// </summary>
     [JsonPropertyName("params")]
-    public required ListCompanyMembershipsParams Params { get; set; }
+    public required ListCompanyMembershipsResponseParams Params { get; set; }
 
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();

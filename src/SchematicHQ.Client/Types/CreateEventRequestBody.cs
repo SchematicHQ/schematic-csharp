@@ -13,7 +13,11 @@ public record CreateEventRequestBody : IJsonOnDeserialized
         new Dictionary<string, JsonElement>();
 
     [JsonPropertyName("body")]
-    public OneOf<EventBodyTrack, EventBodyFlagCheck, EventBodyIdentify>? Body { get; set; }
+    public OneOf<
+        CreateEventRequestBodyBodyEvent,
+        CreateEventRequestBodyBodyCompanyId,
+        CreateEventRequestBodyBodyKeys
+    >? Body { get; set; }
 
     /// <summary>
     /// Either 'identify' or 'track'

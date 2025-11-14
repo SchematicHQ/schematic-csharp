@@ -18,7 +18,7 @@ public record CountApiRequestsResponse : IJsonOnDeserialized
     /// Input parameters
     /// </summary>
     [JsonPropertyName("params")]
-    public required CountApiRequestsParams Params { get; set; }
+    public required CountApiRequestsResponseParams Params { get; set; }
 
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();

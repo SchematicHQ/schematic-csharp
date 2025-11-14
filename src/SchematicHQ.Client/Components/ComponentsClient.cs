@@ -15,14 +15,7 @@ public partial class ComponentsClient
     }
 
     /// <example><code>
-    /// await client.Components.ListComponentsAsync(
-    ///     new ListComponentsRequest
-    ///     {
-    ///         Q = "q",
-    ///         Limit = 1,
-    ///         Offset = 1,
-    ///     }
-    /// );
+    /// await client.Components.ListComponentsAsync(new ListComponentsRequest());
     /// </code></example>
     public async Task<ListComponentsResponse> ListComponentsAsync(
         ListComponentsRequest request,
@@ -176,10 +169,10 @@ public partial class ComponentsClient
     }
 
     /// <example><code>
-    /// await client.Components.GetComponentAsync("component_id");
+    /// await client.Components.GetComponentAsync(new GetComponentRequest { ComponentId = "component_id" });
     /// </code></example>
     public async Task<GetComponentResponse> GetComponentAsync(
-        string componentId,
+        GetComponentRequest request,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
@@ -192,7 +185,7 @@ public partial class ComponentsClient
                     Method = HttpMethod.Get,
                     Path = string.Format(
                         "components/{0}",
-                        ValueConvert.ToPathParameterString(componentId)
+                        ValueConvert.ToPathParameterString(request.ComponentId)
                     ),
                     Options = options,
                 },
@@ -243,10 +236,11 @@ public partial class ComponentsClient
     }
 
     /// <example><code>
-    /// await client.Components.UpdateComponentAsync("component_id", new UpdateComponentRequestBody());
+    /// await client.Components.UpdateComponentAsync(
+    ///     new UpdateComponentRequestBody { ComponentId = "component_id" }
+    /// );
     /// </code></example>
     public async Task<UpdateComponentResponse> UpdateComponentAsync(
-        string componentId,
         UpdateComponentRequestBody request,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
@@ -260,7 +254,7 @@ public partial class ComponentsClient
                     Method = HttpMethod.Put,
                     Path = string.Format(
                         "components/{0}",
-                        ValueConvert.ToPathParameterString(componentId)
+                        ValueConvert.ToPathParameterString(request.ComponentId)
                     ),
                     Body = request,
                     ContentType = "application/json",
@@ -315,10 +309,12 @@ public partial class ComponentsClient
     }
 
     /// <example><code>
-    /// await client.Components.DeleteComponentAsync("component_id");
+    /// await client.Components.DeleteComponentAsync(
+    ///     new DeleteComponentRequest { ComponentId = "component_id" }
+    /// );
     /// </code></example>
     public async Task<DeleteComponentResponse> DeleteComponentAsync(
-        string componentId,
+        DeleteComponentRequest request,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
@@ -331,7 +327,7 @@ public partial class ComponentsClient
                     Method = HttpMethod.Delete,
                     Path = string.Format(
                         "components/{0}",
-                        ValueConvert.ToPathParameterString(componentId)
+                        ValueConvert.ToPathParameterString(request.ComponentId)
                     ),
                     Options = options,
                 },
@@ -384,14 +380,7 @@ public partial class ComponentsClient
     }
 
     /// <example><code>
-    /// await client.Components.CountComponentsAsync(
-    ///     new CountComponentsRequest
-    ///     {
-    ///         Q = "q",
-    ///         Limit = 1,
-    ///         Offset = 1,
-    ///     }
-    /// );
+    /// await client.Components.CountComponentsAsync(new CountComponentsRequest());
     /// </code></example>
     public async Task<CountComponentsResponse> CountComponentsAsync(
         CountComponentsRequest request,
@@ -471,9 +460,7 @@ public partial class ComponentsClient
     }
 
     /// <example><code>
-    /// await client.Components.PreviewComponentDataAsync(
-    ///     new PreviewComponentDataRequest { CompanyId = "company_id", ComponentId = "component_id" }
-    /// );
+    /// await client.Components.PreviewComponentDataAsync(new PreviewComponentDataRequest());
     /// </code></example>
     public async Task<PreviewComponentDataResponse> PreviewComponentDataAsync(
         PreviewComponentDataRequest request,

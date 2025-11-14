@@ -15,14 +15,7 @@ public partial class CreditsClient
     }
 
     /// <example><code>
-    /// await client.Credits.ListBillingCreditsAsync(
-    ///     new ListBillingCreditsRequest
-    ///     {
-    ///         Name = "name",
-    ///         Limit = 1,
-    ///         Offset = 1,
-    ///     }
-    /// );
+    /// await client.Credits.ListBillingCreditsAsync(new ListBillingCreditsRequest());
     /// </code></example>
     public async Task<ListBillingCreditsResponse> ListBillingCreditsAsync(
         ListBillingCreditsRequest request,
@@ -178,10 +171,12 @@ public partial class CreditsClient
     }
 
     /// <example><code>
-    /// await client.Credits.GetSingleBillingCreditAsync("credit_id");
+    /// await client.Credits.GetSingleBillingCreditAsync(
+    ///     new GetSingleBillingCreditRequest { CreditId = "credit_id" }
+    /// );
     /// </code></example>
     public async Task<GetSingleBillingCreditResponse> GetSingleBillingCreditAsync(
-        string creditId,
+        GetSingleBillingCreditRequest request,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
@@ -194,7 +189,7 @@ public partial class CreditsClient
                     Method = HttpMethod.Get,
                     Path = string.Format(
                         "billing/credits/{0}",
-                        ValueConvert.ToPathParameterString(creditId)
+                        ValueConvert.ToPathParameterString(request.CreditId)
                     ),
                     Options = options,
                 },
@@ -246,12 +241,15 @@ public partial class CreditsClient
 
     /// <example><code>
     /// await client.Credits.UpdateBillingCreditAsync(
-    ///     "credit_id",
-    ///     new UpdateBillingCreditRequestBody { Description = "description", Name = "name" }
+    ///     new UpdateBillingCreditRequestBody
+    ///     {
+    ///         CreditId = "credit_id",
+    ///         Description = "description",
+    ///         Name = "name",
+    ///     }
     /// );
     /// </code></example>
     public async Task<UpdateBillingCreditResponse> UpdateBillingCreditAsync(
-        string creditId,
         UpdateBillingCreditRequestBody request,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
@@ -265,7 +263,7 @@ public partial class CreditsClient
                     Method = HttpMethod.Put,
                     Path = string.Format(
                         "billing/credits/{0}",
-                        ValueConvert.ToPathParameterString(creditId)
+                        ValueConvert.ToPathParameterString(request.CreditId)
                     ),
                     Body = request,
                     ContentType = "application/json",
@@ -320,10 +318,12 @@ public partial class CreditsClient
     }
 
     /// <example><code>
-    /// await client.Credits.SoftDeleteBillingCreditAsync("credit_id");
+    /// await client.Credits.SoftDeleteBillingCreditAsync(
+    ///     new SoftDeleteBillingCreditRequest { CreditId = "credit_id" }
+    /// );
     /// </code></example>
     public async Task<SoftDeleteBillingCreditResponse> SoftDeleteBillingCreditAsync(
-        string creditId,
+        SoftDeleteBillingCreditRequest request,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
@@ -336,7 +336,7 @@ public partial class CreditsClient
                     Method = HttpMethod.Delete,
                     Path = string.Format(
                         "billing/credits/{0}",
-                        ValueConvert.ToPathParameterString(creditId)
+                        ValueConvert.ToPathParameterString(request.CreditId)
                     ),
                     Options = options,
                 },
@@ -389,16 +389,7 @@ public partial class CreditsClient
     }
 
     /// <example><code>
-    /// await client.Credits.ListCreditBundlesAsync(
-    ///     new ListCreditBundlesRequest
-    ///     {
-    ///         CreditId = "credit_id",
-    ///         Status = ListCreditBundlesRequestStatus.Active,
-    ///         BundleType = "fixed",
-    ///         Limit = 1,
-    ///         Offset = 1,
-    ///     }
-    /// );
+    /// await client.Credits.ListCreditBundlesAsync(new ListCreditBundlesRequest());
     /// </code></example>
     public async Task<ListCreditBundlesResponse> ListCreditBundlesAsync(
         ListCreditBundlesRequest request,
@@ -563,10 +554,10 @@ public partial class CreditsClient
     }
 
     /// <example><code>
-    /// await client.Credits.GetCreditBundleAsync("bundle_id");
+    /// await client.Credits.GetCreditBundleAsync(new GetCreditBundleRequest { BundleId = "bundle_id" });
     /// </code></example>
     public async Task<GetCreditBundleResponse> GetCreditBundleAsync(
-        string bundleId,
+        GetCreditBundleRequest request,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
@@ -579,7 +570,7 @@ public partial class CreditsClient
                     Method = HttpMethod.Get,
                     Path = string.Format(
                         "billing/credits/bundles/{0}",
-                        ValueConvert.ToPathParameterString(bundleId)
+                        ValueConvert.ToPathParameterString(request.BundleId)
                     ),
                     Options = options,
                 },
@@ -631,12 +622,15 @@ public partial class CreditsClient
 
     /// <example><code>
     /// await client.Credits.UpdateCreditBundleDetailsAsync(
-    ///     "bundle_id",
-    ///     new UpdateCreditBundleDetailsRequestBody { BundleName = "bundle_name", PricePerUnit = 1 }
+    ///     new UpdateCreditBundleDetailsRequestBody
+    ///     {
+    ///         BundleId = "bundle_id",
+    ///         BundleName = "bundle_name",
+    ///         PricePerUnit = 1,
+    ///     }
     /// );
     /// </code></example>
     public async Task<UpdateCreditBundleDetailsResponse> UpdateCreditBundleDetailsAsync(
-        string bundleId,
         UpdateCreditBundleDetailsRequestBody request,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
@@ -650,7 +644,7 @@ public partial class CreditsClient
                     Method = HttpMethod.Put,
                     Path = string.Format(
                         "billing/credits/bundles/{0}",
-                        ValueConvert.ToPathParameterString(bundleId)
+                        ValueConvert.ToPathParameterString(request.BundleId)
                     ),
                     Body = request,
                     ContentType = "application/json",
@@ -705,10 +699,12 @@ public partial class CreditsClient
     }
 
     /// <example><code>
-    /// await client.Credits.DeleteCreditBundleAsync("bundle_id");
+    /// await client.Credits.DeleteCreditBundleAsync(
+    ///     new DeleteCreditBundleRequest { BundleId = "bundle_id" }
+    /// );
     /// </code></example>
     public async Task<DeleteCreditBundleResponse> DeleteCreditBundleAsync(
-        string bundleId,
+        DeleteCreditBundleRequest request,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
@@ -721,7 +717,7 @@ public partial class CreditsClient
                     Method = HttpMethod.Delete,
                     Path = string.Format(
                         "billing/credits/bundles/{0}",
-                        ValueConvert.ToPathParameterString(bundleId)
+                        ValueConvert.ToPathParameterString(request.BundleId)
                     ),
                     Options = options,
                 },
@@ -774,16 +770,7 @@ public partial class CreditsClient
     }
 
     /// <example><code>
-    /// await client.Credits.CountCreditBundlesAsync(
-    ///     new CountCreditBundlesRequest
-    ///     {
-    ///         CreditId = "credit_id",
-    ///         Status = CountCreditBundlesRequestStatus.Active,
-    ///         BundleType = "fixed",
-    ///         Limit = 1,
-    ///         Offset = 1,
-    ///     }
-    /// );
+    /// await client.Credits.CountCreditBundlesAsync(new CountCreditBundlesRequest());
     /// </code></example>
     public async Task<CountCreditBundlesResponse> CountCreditBundlesAsync(
         CountCreditBundlesRequest request,
@@ -872,14 +859,7 @@ public partial class CreditsClient
     }
 
     /// <example><code>
-    /// await client.Credits.CountBillingCreditsAsync(
-    ///     new CountBillingCreditsRequest
-    ///     {
-    ///         Name = "name",
-    ///         Limit = 1,
-    ///         Offset = 1,
-    ///     }
-    /// );
+    /// await client.Credits.CountBillingCreditsAsync(new CountBillingCreditsRequest());
     /// </code></example>
     public async Task<CountBillingCreditsResponse> CountBillingCreditsAsync(
         CountBillingCreditsRequest request,
@@ -960,10 +940,9 @@ public partial class CreditsClient
     }
 
     /// <example><code>
-    /// await client.Credits.ZeroOutGrantAsync("grant_id", new ZeroOutGrantRequestBody());
+    /// await client.Credits.ZeroOutGrantAsync(new ZeroOutGrantRequestBody { GrantId = "grant_id" });
     /// </code></example>
     public async Task<ZeroOutGrantResponse> ZeroOutGrantAsync(
-        string grantId,
         ZeroOutGrantRequestBody request,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
@@ -977,7 +956,7 @@ public partial class CreditsClient
                     Method = HttpMethod.Put,
                     Path = string.Format(
                         "billing/credits/grants/{0}/zero-out",
-                        ValueConvert.ToPathParameterString(grantId)
+                        ValueConvert.ToPathParameterString(request.GrantId)
                     ),
                     Body = request,
                     ContentType = "application/json",
@@ -1108,16 +1087,7 @@ public partial class CreditsClient
     }
 
     /// <example><code>
-    /// await client.Credits.ListCompanyGrantsAsync(
-    ///     new ListCompanyGrantsRequest
-    ///     {
-    ///         CompanyId = "company_id",
-    ///         Order = ListCompanyGrantsRequestOrder.CreatedAt,
-    ///         Dir = ListCompanyGrantsRequestDir.Asc,
-    ///         Limit = 1,
-    ///         Offset = 1,
-    ///     }
-    /// );
+    /// await client.Credits.ListCompanyGrantsAsync(new ListCompanyGrantsRequest());
     /// </code></example>
     public async Task<ListCompanyGrantsResponse> ListCompanyGrantsAsync(
         ListCompanyGrantsRequest request,
@@ -1205,14 +1175,7 @@ public partial class CreditsClient
     }
 
     /// <example><code>
-    /// await client.Credits.CountBillingCreditsGrantsAsync(
-    ///     new CountBillingCreditsGrantsRequest
-    ///     {
-    ///         CreditId = "credit_id",
-    ///         Limit = 1,
-    ///         Offset = 1,
-    ///     }
-    /// );
+    /// await client.Credits.CountBillingCreditsGrantsAsync(new CountBillingCreditsGrantsRequest());
     /// </code></example>
     public async Task<CountBillingCreditsGrantsResponse> CountBillingCreditsGrantsAsync(
         CountBillingCreditsGrantsRequest request,
@@ -1293,14 +1256,7 @@ public partial class CreditsClient
     }
 
     /// <example><code>
-    /// await client.Credits.ListGrantsForCreditAsync(
-    ///     new ListGrantsForCreditRequest
-    ///     {
-    ///         CreditId = "credit_id",
-    ///         Limit = 1,
-    ///         Offset = 1,
-    ///     }
-    /// );
+    /// await client.Credits.ListGrantsForCreditAsync(new ListGrantsForCreditRequest());
     /// </code></example>
     public async Task<ListGrantsForCreditResponse> ListGrantsForCreditAsync(
         ListGrantsForCreditRequest request,
@@ -1385,13 +1341,7 @@ public partial class CreditsClient
     ///     new GetEnrichedCreditLedgerRequest
     ///     {
     ///         CompanyId = "company_id",
-    ///         BillingCreditId = "billing_credit_id",
-    ///         FeatureId = "feature_id",
     ///         Period = GetEnrichedCreditLedgerRequestPeriod.Daily,
-    ///         StartTime = "start_time",
-    ///         EndTime = "end_time",
-    ///         Limit = 1,
-    ///         Offset = 1,
     ///     }
     /// );
     /// </code></example>
@@ -1491,13 +1441,7 @@ public partial class CreditsClient
     ///     new CountCreditLedgerRequest
     ///     {
     ///         CompanyId = "company_id",
-    ///         BillingCreditId = "billing_credit_id",
-    ///         FeatureId = "feature_id",
     ///         Period = CountCreditLedgerRequestPeriod.Daily,
-    ///         StartTime = "start_time",
-    ///         EndTime = "end_time",
-    ///         Limit = 1,
-    ///         Offset = 1,
     ///     }
     /// );
     /// </code></example>
@@ -1593,15 +1537,7 @@ public partial class CreditsClient
     }
 
     /// <example><code>
-    /// await client.Credits.ListBillingPlanCreditGrantsAsync(
-    ///     new ListBillingPlanCreditGrantsRequest
-    ///     {
-    ///         CreditId = "credit_id",
-    ///         PlanId = "plan_id",
-    ///         Limit = 1,
-    ///         Offset = 1,
-    ///     }
-    /// );
+    /// await client.Credits.ListBillingPlanCreditGrantsAsync(new ListBillingPlanCreditGrantsRequest());
     /// </code></example>
     public async Task<ListBillingPlanCreditGrantsResponse> ListBillingPlanCreditGrantsAsync(
         ListBillingPlanCreditGrantsRequest request,
@@ -1765,16 +1701,15 @@ public partial class CreditsClient
 
     /// <example><code>
     /// await client.Credits.UpdateBillingPlanCreditGrantAsync(
-    ///     "plan_grant_id",
     ///     new UpdateBillingPlanCreditGrantRequestBody
     ///     {
+    ///         PlanGrantId = "plan_grant_id",
     ///         ResetCadence = UpdateBillingPlanCreditGrantRequestBodyResetCadence.Monthly,
     ///         ResetStart = UpdateBillingPlanCreditGrantRequestBodyResetStart.BillingPeriod,
     ///     }
     /// );
     /// </code></example>
     public async Task<UpdateBillingPlanCreditGrantResponse> UpdateBillingPlanCreditGrantAsync(
-        string planGrantId,
         UpdateBillingPlanCreditGrantRequestBody request,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
@@ -1788,7 +1723,7 @@ public partial class CreditsClient
                     Method = HttpMethod.Put,
                     Path = string.Format(
                         "billing/credits/plan-grants/{0}",
-                        ValueConvert.ToPathParameterString(planGrantId)
+                        ValueConvert.ToPathParameterString(request.PlanGrantId)
                     ),
                     Body = request,
                     ContentType = "application/json",
@@ -1844,12 +1779,10 @@ public partial class CreditsClient
 
     /// <example><code>
     /// await client.Credits.DeleteBillingPlanCreditGrantAsync(
-    ///     "plan_grant_id",
-    ///     new DeleteBillingPlanCreditGrantRequest { ApplyToExisting = true }
+    ///     new DeleteBillingPlanCreditGrantRequest { PlanGrantId = "plan_grant_id" }
     /// );
     /// </code></example>
     public async Task<DeleteBillingPlanCreditGrantResponse> DeleteBillingPlanCreditGrantAsync(
-        string planGrantId,
         DeleteBillingPlanCreditGrantRequest request,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
@@ -1868,7 +1801,7 @@ public partial class CreditsClient
                     Method = HttpMethod.Delete,
                     Path = string.Format(
                         "billing/credits/plan-grants/{0}",
-                        ValueConvert.ToPathParameterString(planGrantId)
+                        ValueConvert.ToPathParameterString(request.PlanGrantId)
                     ),
                     Query = _query,
                     Options = options,
@@ -1922,15 +1855,7 @@ public partial class CreditsClient
     }
 
     /// <example><code>
-    /// await client.Credits.CountBillingPlanCreditGrantsAsync(
-    ///     new CountBillingPlanCreditGrantsRequest
-    ///     {
-    ///         CreditId = "credit_id",
-    ///         PlanId = "plan_id",
-    ///         Limit = 1,
-    ///         Offset = 1,
-    ///     }
-    /// );
+    /// await client.Credits.CountBillingPlanCreditGrantsAsync(new CountBillingPlanCreditGrantsRequest());
     /// </code></example>
     public async Task<CountBillingPlanCreditGrantsResponse> CountBillingPlanCreditGrantsAsync(
         CountBillingPlanCreditGrantsRequest request,

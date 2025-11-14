@@ -15,15 +15,7 @@ public partial class BillingClient
     }
 
     /// <example><code>
-    /// await client.Billing.ListCouponsAsync(
-    ///     new ListCouponsRequest
-    ///     {
-    ///         IsActive = true,
-    ///         Q = "q",
-    ///         Limit = 1,
-    ///         Offset = 1,
-    ///     }
-    /// );
+    /// await client.Billing.ListCouponsAsync(new ListCouponsRequest());
     /// </code></example>
     public async Task<ListCouponsResponse> ListCouponsAsync(
         ListCouponsRequest request,
@@ -265,14 +257,7 @@ public partial class BillingClient
 
     /// <example><code>
     /// await client.Billing.ListCustomersWithSubscriptionsAsync(
-    ///     new ListCustomersWithSubscriptionsRequest
-    ///     {
-    ///         Name = "name",
-    ///         FailedToImport = true,
-    ///         Q = "q",
-    ///         Limit = 1,
-    ///         Offset = 1,
-    ///     }
+    ///     new ListCustomersWithSubscriptionsRequest()
     /// );
     /// </code></example>
     public async Task<ListCustomersWithSubscriptionsResponse> ListCustomersWithSubscriptionsAsync(
@@ -362,16 +347,7 @@ public partial class BillingClient
     }
 
     /// <example><code>
-    /// await client.Billing.CountCustomersAsync(
-    ///     new CountCustomersRequest
-    ///     {
-    ///         Name = "name",
-    ///         FailedToImport = true,
-    ///         Q = "q",
-    ///         Limit = 1,
-    ///         Offset = 1,
-    ///     }
-    /// );
+    /// await client.Billing.CountCustomersAsync(new CountCustomersRequest());
     /// </code></example>
     public async Task<CountCustomersResponse> CountCustomersAsync(
         CountCustomersRequest request,
@@ -463,11 +439,8 @@ public partial class BillingClient
     /// await client.Billing.ListInvoicesAsync(
     ///     new ListInvoicesRequest
     ///     {
-    ///         CompanyId = "company_id",
     ///         CustomerExternalId = "customer_external_id",
     ///         SubscriptionExternalId = "subscription_external_id",
-    ///         Limit = 1,
-    ///         Offset = 1,
     ///     }
     /// );
     /// </code></example>
@@ -630,14 +603,7 @@ public partial class BillingClient
     }
 
     /// <example><code>
-    /// await client.Billing.ListMetersAsync(
-    ///     new ListMetersRequest
-    ///     {
-    ///         DisplayName = "display_name",
-    ///         Limit = 1,
-    ///         Offset = 1,
-    ///     }
-    /// );
+    /// await client.Billing.ListMetersAsync(new ListMetersRequest());
     /// </code></example>
     public async Task<ListMetersResponse> ListMetersAsync(
         ListMetersRequest request,
@@ -794,13 +760,7 @@ public partial class BillingClient
 
     /// <example><code>
     /// await client.Billing.ListPaymentMethodsAsync(
-    ///     new ListPaymentMethodsRequest
-    ///     {
-    ///         CompanyId = "company_id",
-    ///         CustomerExternalId = "customer_external_id",
-    ///         Limit = 1,
-    ///         Offset = 1,
-    ///     }
+    ///     new ListPaymentMethodsRequest { CustomerExternalId = "customer_external_id" }
     /// );
     /// </code></example>
     public async Task<ListPaymentMethodsResponse> ListPaymentMethodsAsync(
@@ -957,31 +917,17 @@ public partial class BillingClient
     }
 
     /// <example><code>
-    /// await client.Billing.SearchBillingPricesAsync(
-    ///     new SearchBillingPricesRequest
-    ///     {
-    ///         ForInitialPlan = true,
-    ///         ForTrialExpiryPlan = true,
-    ///         ProductId = "product_id",
-    ///         Interval = "interval",
-    ///         Price = 1,
-    ///         Q = "q",
-    ///         RequiresPaymentMethod = true,
-    ///         TiersMode = SearchBillingPricesRequestTiersMode.Volume,
-    ///         UsageType = SearchBillingPricesRequestUsageType.Licensed,
-    ///         Limit = 1,
-    ///         Offset = 1,
-    ///     }
-    /// );
+    /// await client.Billing.ListBillingPricesAsync(new ListBillingPricesRequest());
     /// </code></example>
-    public async Task<SearchBillingPricesResponse> SearchBillingPricesAsync(
-        SearchBillingPricesRequest request,
+    public async Task<ListBillingPricesResponse> ListBillingPricesAsync(
+        ListBillingPricesRequest request,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
     {
         var _query = new Dictionary<string, object>();
         _query["ids"] = request.Ids;
+        _query["product_ids"] = request.ProductIds;
         if (request.ForInitialPlan != null)
         {
             _query["for_initial_plan"] = JsonUtils.Serialize(request.ForInitialPlan.Value);
@@ -990,27 +936,25 @@ public partial class BillingClient
         {
             _query["for_trial_expiry_plan"] = JsonUtils.Serialize(request.ForTrialExpiryPlan.Value);
         }
-        if (request.ProductId != null)
-        {
-            _query["product_id"] = request.ProductId;
-        }
         if (request.Interval != null)
         {
             _query["interval"] = request.Interval;
+        }
+        if (request.IsActive != null)
+        {
+            _query["is_active"] = JsonUtils.Serialize(request.IsActive.Value);
         }
         if (request.Price != null)
         {
             _query["price"] = request.Price.Value.ToString();
         }
+        if (request.ProductId != null)
+        {
+            _query["product_id"] = request.ProductId;
+        }
         if (request.Q != null)
         {
             _query["q"] = request.Q;
-        }
-        if (request.RequiresPaymentMethod != null)
-        {
-            _query["requires_payment_method"] = JsonUtils.Serialize(
-                request.RequiresPaymentMethod.Value
-            );
         }
         if (request.TiersMode != null)
         {
@@ -1019,6 +963,10 @@ public partial class BillingClient
         if (request.UsageType != null)
         {
             _query["usage_type"] = request.UsageType.Value.Stringify();
+        }
+        if (request.WithMeter != null)
+        {
+            _query["with_meter"] = JsonUtils.Serialize(request.WithMeter.Value);
         }
         if (request.Limit != null)
         {
@@ -1046,7 +994,7 @@ public partial class BillingClient
             var responseBody = await response.Raw.Content.ReadAsStringAsync();
             try
             {
-                return JsonUtils.Deserialize<SearchBillingPricesResponse>(responseBody)!;
+                return JsonUtils.Deserialize<ListBillingPricesResponse>(responseBody)!;
             }
             catch (JsonException e)
             {
@@ -1172,10 +1120,12 @@ public partial class BillingClient
     }
 
     /// <example><code>
-    /// await client.Billing.DeleteBillingProductAsync("billing_id");
+    /// await client.Billing.DeleteBillingProductAsync(
+    ///     new DeleteBillingProductRequest { BillingId = "billing_id" }
+    /// );
     /// </code></example>
     public async Task<DeleteBillingProductResponse> DeleteBillingProductAsync(
-        string billingId,
+        DeleteBillingProductRequest request,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
@@ -1188,7 +1138,7 @@ public partial class BillingClient
                     Method = HttpMethod.Delete,
                     Path = string.Format(
                         "billing/product/{0}",
-                        ValueConvert.ToPathParameterString(billingId)
+                        ValueConvert.ToPathParameterString(request.BillingId)
                     ),
                     Options = options,
                 },
@@ -1241,63 +1191,56 @@ public partial class BillingClient
     }
 
     /// <example><code>
-    /// await client.Billing.ListProductPricesAsync(
-    ///     new ListProductPricesRequest
-    ///     {
-    ///         Name = "name",
-    ///         Q = "q",
-    ///         PriceUsageType = ListProductPricesRequestPriceUsageType.Licensed,
-    ///         WithoutLinkedToPlan = true,
-    ///         WithOneTimeCharges = true,
-    ///         WithZeroPrice = true,
-    ///         WithPricesOnly = true,
-    ///         IsActive = true,
-    ///         Limit = 1,
-    ///         Offset = 1,
-    ///     }
-    /// );
+    /// await client.Billing.ListBillingProductPricesAsync(new ListBillingProductPricesRequest());
     /// </code></example>
-    public async Task<ListProductPricesResponse> ListProductPricesAsync(
-        ListProductPricesRequest request,
+    public async Task<ListBillingProductPricesResponse> ListBillingProductPricesAsync(
+        ListBillingProductPricesRequest request,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
     {
         var _query = new Dictionary<string, object>();
         _query["ids"] = request.Ids;
-        if (request.Name != null)
+        _query["product_ids"] = request.ProductIds;
+        if (request.ForInitialPlan != null)
         {
-            _query["name"] = request.Name;
+            _query["for_initial_plan"] = JsonUtils.Serialize(request.ForInitialPlan.Value);
+        }
+        if (request.ForTrialExpiryPlan != null)
+        {
+            _query["for_trial_expiry_plan"] = JsonUtils.Serialize(request.ForTrialExpiryPlan.Value);
+        }
+        if (request.Interval != null)
+        {
+            _query["interval"] = request.Interval;
+        }
+        if (request.IsActive != null)
+        {
+            _query["is_active"] = JsonUtils.Serialize(request.IsActive.Value);
+        }
+        if (request.Price != null)
+        {
+            _query["price"] = request.Price.Value.ToString();
+        }
+        if (request.ProductId != null)
+        {
+            _query["product_id"] = request.ProductId;
         }
         if (request.Q != null)
         {
             _query["q"] = request.Q;
         }
-        if (request.PriceUsageType != null)
+        if (request.TiersMode != null)
         {
-            _query["price_usage_type"] = request.PriceUsageType.Value.Stringify();
+            _query["tiers_mode"] = request.TiersMode.Value.Stringify();
         }
-        if (request.WithoutLinkedToPlan != null)
+        if (request.UsageType != null)
         {
-            _query["without_linked_to_plan"] = JsonUtils.Serialize(
-                request.WithoutLinkedToPlan.Value
-            );
+            _query["usage_type"] = request.UsageType.Value.Stringify();
         }
-        if (request.WithOneTimeCharges != null)
+        if (request.WithMeter != null)
         {
-            _query["with_one_time_charges"] = JsonUtils.Serialize(request.WithOneTimeCharges.Value);
-        }
-        if (request.WithZeroPrice != null)
-        {
-            _query["with_zero_price"] = JsonUtils.Serialize(request.WithZeroPrice.Value);
-        }
-        if (request.WithPricesOnly != null)
-        {
-            _query["with_prices_only"] = JsonUtils.Serialize(request.WithPricesOnly.Value);
-        }
-        if (request.IsActive != null)
-        {
-            _query["is_active"] = JsonUtils.Serialize(request.IsActive.Value);
+            _query["with_meter"] = JsonUtils.Serialize(request.WithMeter.Value);
         }
         if (request.Limit != null)
         {
@@ -1325,7 +1268,7 @@ public partial class BillingClient
             var responseBody = await response.Raw.Content.ReadAsStringAsync();
             try
             {
-                return JsonUtils.Deserialize<ListProductPricesResponse>(responseBody)!;
+                return JsonUtils.Deserialize<ListBillingProductPricesResponse>(responseBody)!;
             }
             catch (JsonException e)
             {
@@ -1366,10 +1309,12 @@ public partial class BillingClient
     }
 
     /// <example><code>
-    /// await client.Billing.DeleteProductPriceAsync("billing_id");
+    /// await client.Billing.DeleteProductPriceAsync(
+    ///     new DeleteProductPriceRequest { BillingId = "billing_id" }
+    /// );
     /// </code></example>
     public async Task<DeleteProductPriceResponse> DeleteProductPriceAsync(
-        string billingId,
+        DeleteProductPriceRequest request,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
@@ -1382,7 +1327,7 @@ public partial class BillingClient
                     Method = HttpMethod.Delete,
                     Path = string.Format(
                         "billing/product/prices/{0}",
-                        ValueConvert.ToPathParameterString(billingId)
+                        ValueConvert.ToPathParameterString(request.BillingId)
                     ),
                     Options = options,
                 },
@@ -1510,21 +1455,7 @@ public partial class BillingClient
     }
 
     /// <example><code>
-    /// await client.Billing.ListBillingProductsAsync(
-    ///     new ListBillingProductsRequest
-    ///     {
-    ///         Name = "name",
-    ///         Q = "q",
-    ///         PriceUsageType = ListBillingProductsRequestPriceUsageType.Licensed,
-    ///         WithoutLinkedToPlan = true,
-    ///         WithOneTimeCharges = true,
-    ///         WithZeroPrice = true,
-    ///         WithPricesOnly = true,
-    ///         IsActive = true,
-    ///         Limit = 1,
-    ///         Offset = 1,
-    ///     }
-    /// );
+    /// await client.Billing.ListBillingProductsAsync(new ListBillingProductsRequest());
     /// </code></example>
     public async Task<ListBillingProductsResponse> ListBillingProductsAsync(
         ListBillingProductsRequest request,
@@ -1635,21 +1566,7 @@ public partial class BillingClient
     }
 
     /// <example><code>
-    /// await client.Billing.CountBillingProductsAsync(
-    ///     new CountBillingProductsRequest
-    ///     {
-    ///         Name = "name",
-    ///         Q = "q",
-    ///         PriceUsageType = CountBillingProductsRequestPriceUsageType.Licensed,
-    ///         WithoutLinkedToPlan = true,
-    ///         WithOneTimeCharges = true,
-    ///         WithZeroPrice = true,
-    ///         WithPricesOnly = true,
-    ///         IsActive = true,
-    ///         Limit = 1,
-    ///         Offset = 1,
-    ///     }
-    /// );
+    /// await client.Billing.CountBillingProductsAsync(new CountBillingProductsRequest());
     /// </code></example>
     public async Task<CountBillingProductsResponse> CountBillingProductsAsync(
         CountBillingProductsRequest request,

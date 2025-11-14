@@ -19,7 +19,7 @@ public record GetActiveDealsResponse : IJsonOnDeserialized
     /// Input parameters
     /// </summary>
     [JsonPropertyName("params")]
-    public required GetActiveDealsParams Params { get; set; }
+    public required GetActiveDealsResponseParams Params { get; set; }
 
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();

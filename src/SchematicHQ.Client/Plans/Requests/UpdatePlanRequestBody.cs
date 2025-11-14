@@ -6,6 +6,12 @@ namespace SchematicHQ.Client;
 [Serializable]
 public record UpdatePlanRequestBody
 {
+    /// <summary>
+    /// plan_id
+    /// </summary>
+    [JsonIgnore]
+    public required string PlanId { get; set; }
+
     [JsonPropertyName("description")]
     public string? Description { get; set; }
 

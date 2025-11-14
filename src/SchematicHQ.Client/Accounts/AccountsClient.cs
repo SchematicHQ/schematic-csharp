@@ -15,15 +15,7 @@ public partial class AccountsClient
     }
 
     /// <example><code>
-    /// await client.Accounts.ListApiKeysAsync(
-    ///     new ListApiKeysRequest
-    ///     {
-    ///         EnvironmentId = "environment_id",
-    ///         RequireEnvironment = true,
-    ///         Limit = 1,
-    ///         Offset = 1,
-    ///     }
-    /// );
+    /// await client.Accounts.ListApiKeysAsync(new ListApiKeysRequest { RequireEnvironment = true });
     /// </code></example>
     public async Task<ListApiKeysResponse> ListApiKeysAsync(
         ListApiKeysRequest request,
@@ -172,10 +164,10 @@ public partial class AccountsClient
     }
 
     /// <example><code>
-    /// await client.Accounts.GetApiKeyAsync("api_key_id");
+    /// await client.Accounts.GetApiKeyAsync(new GetApiKeyRequest { ApiKeyId = "api_key_id" });
     /// </code></example>
     public async Task<GetApiKeyResponse> GetApiKeyAsync(
-        string apiKeyId,
+        GetApiKeyRequest request,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
@@ -188,7 +180,7 @@ public partial class AccountsClient
                     Method = HttpMethod.Get,
                     Path = string.Format(
                         "api-keys/{0}",
-                        ValueConvert.ToPathParameterString(apiKeyId)
+                        ValueConvert.ToPathParameterString(request.ApiKeyId)
                     ),
                     Options = options,
                 },
@@ -239,10 +231,9 @@ public partial class AccountsClient
     }
 
     /// <example><code>
-    /// await client.Accounts.UpdateApiKeyAsync("api_key_id", new UpdateApiKeyRequestBody());
+    /// await client.Accounts.UpdateApiKeyAsync(new UpdateApiKeyRequestBody { ApiKeyId = "api_key_id" });
     /// </code></example>
     public async Task<UpdateApiKeyResponse> UpdateApiKeyAsync(
-        string apiKeyId,
         UpdateApiKeyRequestBody request,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
@@ -256,7 +247,7 @@ public partial class AccountsClient
                     Method = HttpMethod.Put,
                     Path = string.Format(
                         "api-keys/{0}",
-                        ValueConvert.ToPathParameterString(apiKeyId)
+                        ValueConvert.ToPathParameterString(request.ApiKeyId)
                     ),
                     Body = request,
                     ContentType = "application/json",
@@ -311,10 +302,10 @@ public partial class AccountsClient
     }
 
     /// <example><code>
-    /// await client.Accounts.DeleteApiKeyAsync("api_key_id");
+    /// await client.Accounts.DeleteApiKeyAsync(new DeleteApiKeyRequest { ApiKeyId = "api_key_id" });
     /// </code></example>
     public async Task<DeleteApiKeyResponse> DeleteApiKeyAsync(
-        string apiKeyId,
+        DeleteApiKeyRequest request,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
@@ -327,7 +318,7 @@ public partial class AccountsClient
                     Method = HttpMethod.Delete,
                     Path = string.Format(
                         "api-keys/{0}",
-                        ValueConvert.ToPathParameterString(apiKeyId)
+                        ValueConvert.ToPathParameterString(request.ApiKeyId)
                     ),
                     Options = options,
                 },
@@ -380,15 +371,7 @@ public partial class AccountsClient
     }
 
     /// <example><code>
-    /// await client.Accounts.CountApiKeysAsync(
-    ///     new CountApiKeysRequest
-    ///     {
-    ///         EnvironmentId = "environment_id",
-    ///         RequireEnvironment = true,
-    ///         Limit = 1,
-    ///         Offset = 1,
-    ///     }
-    /// );
+    /// await client.Accounts.CountApiKeysAsync(new CountApiKeysRequest { RequireEnvironment = true });
     /// </code></example>
     public async Task<CountApiKeysResponse> CountApiKeysAsync(
         CountApiKeysRequest request,
@@ -469,16 +452,7 @@ public partial class AccountsClient
     }
 
     /// <example><code>
-    /// await client.Accounts.ListApiRequestsAsync(
-    ///     new ListApiRequestsRequest
-    ///     {
-    ///         Q = "q",
-    ///         RequestType = "request_type",
-    ///         EnvironmentId = "environment_id",
-    ///         Limit = 1,
-    ///         Offset = 1,
-    ///     }
-    /// );
+    /// await client.Accounts.ListApiRequestsAsync(new ListApiRequestsRequest());
     /// </code></example>
     public async Task<ListApiRequestsResponse> ListApiRequestsAsync(
         ListApiRequestsRequest request,
@@ -566,10 +540,12 @@ public partial class AccountsClient
     }
 
     /// <example><code>
-    /// await client.Accounts.GetApiRequestAsync("api_request_id");
+    /// await client.Accounts.GetApiRequestAsync(
+    ///     new GetApiRequestRequest { ApiRequestId = "api_request_id" }
+    /// );
     /// </code></example>
     public async Task<GetApiRequestResponse> GetApiRequestAsync(
-        string apiRequestId,
+        GetApiRequestRequest request,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
@@ -582,7 +558,7 @@ public partial class AccountsClient
                     Method = HttpMethod.Get,
                     Path = string.Format(
                         "api-requests/{0}",
-                        ValueConvert.ToPathParameterString(apiRequestId)
+                        ValueConvert.ToPathParameterString(request.ApiRequestId)
                     ),
                     Options = options,
                 },
@@ -633,16 +609,7 @@ public partial class AccountsClient
     }
 
     /// <example><code>
-    /// await client.Accounts.CountApiRequestsAsync(
-    ///     new CountApiRequestsRequest
-    ///     {
-    ///         Q = "q",
-    ///         RequestType = "request_type",
-    ///         EnvironmentId = "environment_id",
-    ///         Limit = 1,
-    ///         Offset = 1,
-    ///     }
-    /// );
+    /// await client.Accounts.CountApiRequestsAsync(new CountApiRequestsRequest());
     /// </code></example>
     public async Task<CountApiRequestsResponse> CountApiRequestsAsync(
         CountApiRequestsRequest request,
@@ -730,7 +697,7 @@ public partial class AccountsClient
     }
 
     /// <example><code>
-    /// await client.Accounts.ListEnvironmentsAsync(new ListEnvironmentsRequest { Limit = 1, Offset = 1 });
+    /// await client.Accounts.ListEnvironmentsAsync(new ListEnvironmentsRequest());
     /// </code></example>
     public async Task<ListEnvironmentsResponse> ListEnvironmentsAsync(
         ListEnvironmentsRequest request,
@@ -881,10 +848,12 @@ public partial class AccountsClient
     }
 
     /// <example><code>
-    /// await client.Accounts.GetEnvironmentAsync("environment_id");
+    /// await client.Accounts.GetEnvironmentAsync(
+    ///     new GetEnvironmentRequest { EnvironmentId = "environment_id" }
+    /// );
     /// </code></example>
     public async Task<GetEnvironmentResponse> GetEnvironmentAsync(
-        string environmentId,
+        GetEnvironmentRequest request,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
@@ -897,7 +866,7 @@ public partial class AccountsClient
                     Method = HttpMethod.Get,
                     Path = string.Format(
                         "environments/{0}",
-                        ValueConvert.ToPathParameterString(environmentId)
+                        ValueConvert.ToPathParameterString(request.EnvironmentId)
                     ),
                     Options = options,
                 },
@@ -948,10 +917,11 @@ public partial class AccountsClient
     }
 
     /// <example><code>
-    /// await client.Accounts.UpdateEnvironmentAsync("environment_id", new UpdateEnvironmentRequestBody());
+    /// await client.Accounts.UpdateEnvironmentAsync(
+    ///     new UpdateEnvironmentRequestBody { EnvironmentId = "environment_id" }
+    /// );
     /// </code></example>
     public async Task<UpdateEnvironmentResponse> UpdateEnvironmentAsync(
-        string environmentId,
         UpdateEnvironmentRequestBody request,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
@@ -965,7 +935,7 @@ public partial class AccountsClient
                     Method = HttpMethod.Put,
                     Path = string.Format(
                         "environments/{0}",
-                        ValueConvert.ToPathParameterString(environmentId)
+                        ValueConvert.ToPathParameterString(request.EnvironmentId)
                     ),
                     Body = request,
                     ContentType = "application/json",
@@ -1020,10 +990,12 @@ public partial class AccountsClient
     }
 
     /// <example><code>
-    /// await client.Accounts.DeleteEnvironmentAsync("environment_id");
+    /// await client.Accounts.DeleteEnvironmentAsync(
+    ///     new DeleteEnvironmentRequest { EnvironmentId = "environment_id" }
+    /// );
     /// </code></example>
     public async Task<DeleteEnvironmentResponse> DeleteEnvironmentAsync(
-        string environmentId,
+        DeleteEnvironmentRequest request,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
@@ -1036,7 +1008,7 @@ public partial class AccountsClient
                     Method = HttpMethod.Delete,
                     Path = string.Format(
                         "environments/{0}",
-                        ValueConvert.ToPathParameterString(environmentId)
+                        ValueConvert.ToPathParameterString(request.EnvironmentId)
                     ),
                     Options = options,
                 },

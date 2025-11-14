@@ -18,7 +18,7 @@ public record PreviewComponentDataResponse : IJsonOnDeserialized
     /// Input parameters
     /// </summary>
     [JsonPropertyName("params")]
-    public required PreviewComponentDataParams Params { get; set; }
+    public required PreviewComponentDataResponseParams Params { get; set; }
 
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();

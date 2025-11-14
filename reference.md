@@ -1,5 +1,5 @@
 # Reference
-<details><summary><code>client.<a href="/src/SchematicHQ.Client/Schematic.cs">PutPlanAudiencesPlanAudienceIdAsync</a>(planAudienceId)</code></summary>
+<details><summary><code>client.<a href="/src/SchematicHQ.Client/Schematic.cs">PutPlanAudiencesPlanAudienceIdAsync</a>(PutPlanAudiencesPlanAudienceIdRequest { ... })</code></summary>
 <dl>
 <dd>
 
@@ -12,7 +12,9 @@
 <dd>
 
 ```csharp
-await client.PutPlanAudiencesPlanAudienceIdAsync("plan_audience_id");
+await client.PutPlanAudiencesPlanAudienceIdAsync(
+    new PutPlanAudiencesPlanAudienceIdRequest { PlanAudienceId = "plan_audience_id" }
+);
 ```
 </dd>
 </dl>
@@ -27,7 +29,7 @@ await client.PutPlanAudiencesPlanAudienceIdAsync("plan_audience_id");
 <dl>
 <dd>
 
-**planAudienceId:** `string` 
+**request:** `PutPlanAudiencesPlanAudienceIdRequest` 
     
 </dd>
 </dl>
@@ -39,7 +41,7 @@ await client.PutPlanAudiencesPlanAudienceIdAsync("plan_audience_id");
 </dl>
 </details>
 
-<details><summary><code>client.<a href="/src/SchematicHQ.Client/Schematic.cs">DeletePlanAudiencesPlanAudienceIdAsync</a>(planAudienceId)</code></summary>
+<details><summary><code>client.<a href="/src/SchematicHQ.Client/Schematic.cs">DeletePlanAudiencesPlanAudienceIdAsync</a>(DeletePlanAudiencesPlanAudienceIdRequest { ... })</code></summary>
 <dl>
 <dd>
 
@@ -52,7 +54,9 @@ await client.PutPlanAudiencesPlanAudienceIdAsync("plan_audience_id");
 <dd>
 
 ```csharp
-await client.DeletePlanAudiencesPlanAudienceIdAsync("plan_audience_id");
+await client.DeletePlanAudiencesPlanAudienceIdAsync(
+    new DeletePlanAudiencesPlanAudienceIdRequest { PlanAudienceId = "plan_audience_id" }
+);
 ```
 </dd>
 </dl>
@@ -67,7 +71,7 @@ await client.DeletePlanAudiencesPlanAudienceIdAsync("plan_audience_id");
 <dl>
 <dd>
 
-**planAudienceId:** `string` 
+**request:** `DeletePlanAudiencesPlanAudienceIdRequest` 
     
 </dd>
 </dl>
@@ -93,15 +97,7 @@ await client.DeletePlanAudiencesPlanAudienceIdAsync("plan_audience_id");
 <dd>
 
 ```csharp
-await client.Accounts.ListApiKeysAsync(
-    new ListApiKeysRequest
-    {
-        EnvironmentId = "environment_id",
-        RequireEnvironment = true,
-        Limit = 1,
-        Offset = 1,
-    }
-);
+await client.Accounts.ListApiKeysAsync(new ListApiKeysRequest { RequireEnvironment = true });
 ```
 </dd>
 </dl>
@@ -168,7 +164,7 @@ await client.Accounts.CreateApiKeyAsync(new CreateApiKeyRequestBody { Name = "na
 </dl>
 </details>
 
-<details><summary><code>client.Accounts.<a href="/src/SchematicHQ.Client/Accounts/AccountsClient.cs">GetApiKeyAsync</a>(apiKeyId) -> GetApiKeyResponse</code></summary>
+<details><summary><code>client.Accounts.<a href="/src/SchematicHQ.Client/Accounts/AccountsClient.cs">GetApiKeyAsync</a>(GetApiKeyRequest { ... }) -> GetApiKeyResponse</code></summary>
 <dl>
 <dd>
 
@@ -181,7 +177,7 @@ await client.Accounts.CreateApiKeyAsync(new CreateApiKeyRequestBody { Name = "na
 <dd>
 
 ```csharp
-await client.Accounts.GetApiKeyAsync("api_key_id");
+await client.Accounts.GetApiKeyAsync(new GetApiKeyRequest { ApiKeyId = "api_key_id" });
 ```
 </dd>
 </dl>
@@ -196,7 +192,7 @@ await client.Accounts.GetApiKeyAsync("api_key_id");
 <dl>
 <dd>
 
-**apiKeyId:** `string` — api_key_id
+**request:** `GetApiKeyRequest` 
     
 </dd>
 </dl>
@@ -208,7 +204,7 @@ await client.Accounts.GetApiKeyAsync("api_key_id");
 </dl>
 </details>
 
-<details><summary><code>client.Accounts.<a href="/src/SchematicHQ.Client/Accounts/AccountsClient.cs">UpdateApiKeyAsync</a>(apiKeyId, UpdateApiKeyRequestBody { ... }) -> UpdateApiKeyResponse</code></summary>
+<details><summary><code>client.Accounts.<a href="/src/SchematicHQ.Client/Accounts/AccountsClient.cs">UpdateApiKeyAsync</a>(UpdateApiKeyRequestBody { ... }) -> UpdateApiKeyResponse</code></summary>
 <dl>
 <dd>
 
@@ -221,7 +217,7 @@ await client.Accounts.GetApiKeyAsync("api_key_id");
 <dd>
 
 ```csharp
-await client.Accounts.UpdateApiKeyAsync("api_key_id", new UpdateApiKeyRequestBody());
+await client.Accounts.UpdateApiKeyAsync(new UpdateApiKeyRequestBody { ApiKeyId = "api_key_id" });
 ```
 </dd>
 </dl>
@@ -232,14 +228,6 @@ await client.Accounts.UpdateApiKeyAsync("api_key_id", new UpdateApiKeyRequestBod
 
 <dl>
 <dd>
-
-<dl>
-<dd>
-
-**apiKeyId:** `string` — api_key_id
-    
-</dd>
-</dl>
 
 <dl>
 <dd>
@@ -256,7 +244,7 @@ await client.Accounts.UpdateApiKeyAsync("api_key_id", new UpdateApiKeyRequestBod
 </dl>
 </details>
 
-<details><summary><code>client.Accounts.<a href="/src/SchematicHQ.Client/Accounts/AccountsClient.cs">DeleteApiKeyAsync</a>(apiKeyId) -> DeleteApiKeyResponse</code></summary>
+<details><summary><code>client.Accounts.<a href="/src/SchematicHQ.Client/Accounts/AccountsClient.cs">DeleteApiKeyAsync</a>(DeleteApiKeyRequest { ... }) -> DeleteApiKeyResponse</code></summary>
 <dl>
 <dd>
 
@@ -269,7 +257,7 @@ await client.Accounts.UpdateApiKeyAsync("api_key_id", new UpdateApiKeyRequestBod
 <dd>
 
 ```csharp
-await client.Accounts.DeleteApiKeyAsync("api_key_id");
+await client.Accounts.DeleteApiKeyAsync(new DeleteApiKeyRequest { ApiKeyId = "api_key_id" });
 ```
 </dd>
 </dl>
@@ -284,7 +272,7 @@ await client.Accounts.DeleteApiKeyAsync("api_key_id");
 <dl>
 <dd>
 
-**apiKeyId:** `string` — api_key_id
+**request:** `DeleteApiKeyRequest` 
     
 </dd>
 </dl>
@@ -309,15 +297,7 @@ await client.Accounts.DeleteApiKeyAsync("api_key_id");
 <dd>
 
 ```csharp
-await client.Accounts.CountApiKeysAsync(
-    new CountApiKeysRequest
-    {
-        EnvironmentId = "environment_id",
-        RequireEnvironment = true,
-        Limit = 1,
-        Offset = 1,
-    }
-);
+await client.Accounts.CountApiKeysAsync(new CountApiKeysRequest { RequireEnvironment = true });
 ```
 </dd>
 </dl>
@@ -357,16 +337,7 @@ await client.Accounts.CountApiKeysAsync(
 <dd>
 
 ```csharp
-await client.Accounts.ListApiRequestsAsync(
-    new ListApiRequestsRequest
-    {
-        Q = "q",
-        RequestType = "request_type",
-        EnvironmentId = "environment_id",
-        Limit = 1,
-        Offset = 1,
-    }
-);
+await client.Accounts.ListApiRequestsAsync(new ListApiRequestsRequest());
 ```
 </dd>
 </dl>
@@ -393,7 +364,7 @@ await client.Accounts.ListApiRequestsAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Accounts.<a href="/src/SchematicHQ.Client/Accounts/AccountsClient.cs">GetApiRequestAsync</a>(apiRequestId) -> GetApiRequestResponse</code></summary>
+<details><summary><code>client.Accounts.<a href="/src/SchematicHQ.Client/Accounts/AccountsClient.cs">GetApiRequestAsync</a>(GetApiRequestRequest { ... }) -> GetApiRequestResponse</code></summary>
 <dl>
 <dd>
 
@@ -406,7 +377,9 @@ await client.Accounts.ListApiRequestsAsync(
 <dd>
 
 ```csharp
-await client.Accounts.GetApiRequestAsync("api_request_id");
+await client.Accounts.GetApiRequestAsync(
+    new GetApiRequestRequest { ApiRequestId = "api_request_id" }
+);
 ```
 </dd>
 </dl>
@@ -421,7 +394,7 @@ await client.Accounts.GetApiRequestAsync("api_request_id");
 <dl>
 <dd>
 
-**apiRequestId:** `string` — api_request_id
+**request:** `GetApiRequestRequest` 
     
 </dd>
 </dl>
@@ -446,16 +419,7 @@ await client.Accounts.GetApiRequestAsync("api_request_id");
 <dd>
 
 ```csharp
-await client.Accounts.CountApiRequestsAsync(
-    new CountApiRequestsRequest
-    {
-        Q = "q",
-        RequestType = "request_type",
-        EnvironmentId = "environment_id",
-        Limit = 1,
-        Offset = 1,
-    }
-);
+await client.Accounts.CountApiRequestsAsync(new CountApiRequestsRequest());
 ```
 </dd>
 </dl>
@@ -495,7 +459,7 @@ await client.Accounts.CountApiRequestsAsync(
 <dd>
 
 ```csharp
-await client.Accounts.ListEnvironmentsAsync(new ListEnvironmentsRequest { Limit = 1, Offset = 1 });
+await client.Accounts.ListEnvironmentsAsync(new ListEnvironmentsRequest());
 ```
 </dd>
 </dl>
@@ -568,7 +532,7 @@ await client.Accounts.CreateEnvironmentAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Accounts.<a href="/src/SchematicHQ.Client/Accounts/AccountsClient.cs">GetEnvironmentAsync</a>(environmentId) -> GetEnvironmentResponse</code></summary>
+<details><summary><code>client.Accounts.<a href="/src/SchematicHQ.Client/Accounts/AccountsClient.cs">GetEnvironmentAsync</a>(GetEnvironmentRequest { ... }) -> GetEnvironmentResponse</code></summary>
 <dl>
 <dd>
 
@@ -581,7 +545,9 @@ await client.Accounts.CreateEnvironmentAsync(
 <dd>
 
 ```csharp
-await client.Accounts.GetEnvironmentAsync("environment_id");
+await client.Accounts.GetEnvironmentAsync(
+    new GetEnvironmentRequest { EnvironmentId = "environment_id" }
+);
 ```
 </dd>
 </dl>
@@ -596,7 +562,7 @@ await client.Accounts.GetEnvironmentAsync("environment_id");
 <dl>
 <dd>
 
-**environmentId:** `string` — environment_id
+**request:** `GetEnvironmentRequest` 
     
 </dd>
 </dl>
@@ -608,7 +574,7 @@ await client.Accounts.GetEnvironmentAsync("environment_id");
 </dl>
 </details>
 
-<details><summary><code>client.Accounts.<a href="/src/SchematicHQ.Client/Accounts/AccountsClient.cs">UpdateEnvironmentAsync</a>(environmentId, UpdateEnvironmentRequestBody { ... }) -> UpdateEnvironmentResponse</code></summary>
+<details><summary><code>client.Accounts.<a href="/src/SchematicHQ.Client/Accounts/AccountsClient.cs">UpdateEnvironmentAsync</a>(UpdateEnvironmentRequestBody { ... }) -> UpdateEnvironmentResponse</code></summary>
 <dl>
 <dd>
 
@@ -621,7 +587,9 @@ await client.Accounts.GetEnvironmentAsync("environment_id");
 <dd>
 
 ```csharp
-await client.Accounts.UpdateEnvironmentAsync("environment_id", new UpdateEnvironmentRequestBody());
+await client.Accounts.UpdateEnvironmentAsync(
+    new UpdateEnvironmentRequestBody { EnvironmentId = "environment_id" }
+);
 ```
 </dd>
 </dl>
@@ -632,14 +600,6 @@ await client.Accounts.UpdateEnvironmentAsync("environment_id", new UpdateEnviron
 
 <dl>
 <dd>
-
-<dl>
-<dd>
-
-**environmentId:** `string` — environment_id
-    
-</dd>
-</dl>
 
 <dl>
 <dd>
@@ -656,7 +616,7 @@ await client.Accounts.UpdateEnvironmentAsync("environment_id", new UpdateEnviron
 </dl>
 </details>
 
-<details><summary><code>client.Accounts.<a href="/src/SchematicHQ.Client/Accounts/AccountsClient.cs">DeleteEnvironmentAsync</a>(environmentId) -> DeleteEnvironmentResponse</code></summary>
+<details><summary><code>client.Accounts.<a href="/src/SchematicHQ.Client/Accounts/AccountsClient.cs">DeleteEnvironmentAsync</a>(DeleteEnvironmentRequest { ... }) -> DeleteEnvironmentResponse</code></summary>
 <dl>
 <dd>
 
@@ -669,7 +629,9 @@ await client.Accounts.UpdateEnvironmentAsync("environment_id", new UpdateEnviron
 <dd>
 
 ```csharp
-await client.Accounts.DeleteEnvironmentAsync("environment_id");
+await client.Accounts.DeleteEnvironmentAsync(
+    new DeleteEnvironmentRequest { EnvironmentId = "environment_id" }
+);
 ```
 </dd>
 </dl>
@@ -684,7 +646,7 @@ await client.Accounts.DeleteEnvironmentAsync("environment_id");
 <dl>
 <dd>
 
-**environmentId:** `string` — environment_id
+**request:** `DeleteEnvironmentRequest` 
     
 </dd>
 </dl>
@@ -735,15 +697,7 @@ await client.Accounts.QuickstartAsync();
 <dd>
 
 ```csharp
-await client.Billing.ListCouponsAsync(
-    new ListCouponsRequest
-    {
-        IsActive = true,
-        Q = "q",
-        Limit = 1,
-        Offset = 1,
-    }
-);
+await client.Billing.ListCouponsAsync(new ListCouponsRequest());
 ```
 </dd>
 </dl>
@@ -885,14 +839,7 @@ await client.Billing.UpsertBillingCustomerAsync(
 
 ```csharp
 await client.Billing.ListCustomersWithSubscriptionsAsync(
-    new ListCustomersWithSubscriptionsRequest
-    {
-        Name = "name",
-        FailedToImport = true,
-        Q = "q",
-        Limit = 1,
-        Offset = 1,
-    }
+    new ListCustomersWithSubscriptionsRequest()
 );
 ```
 </dd>
@@ -933,16 +880,7 @@ await client.Billing.ListCustomersWithSubscriptionsAsync(
 <dd>
 
 ```csharp
-await client.Billing.CountCustomersAsync(
-    new CountCustomersRequest
-    {
-        Name = "name",
-        FailedToImport = true,
-        Q = "q",
-        Limit = 1,
-        Offset = 1,
-    }
-);
+await client.Billing.CountCustomersAsync(new CountCustomersRequest());
 ```
 </dd>
 </dl>
@@ -985,11 +923,8 @@ await client.Billing.CountCustomersAsync(
 await client.Billing.ListInvoicesAsync(
     new ListInvoicesRequest
     {
-        CompanyId = "company_id",
         CustomerExternalId = "customer_external_id",
         SubscriptionExternalId = "subscription_external_id",
-        Limit = 1,
-        Offset = 1,
     }
 );
 ```
@@ -1082,14 +1017,7 @@ await client.Billing.UpsertInvoiceAsync(
 <dd>
 
 ```csharp
-await client.Billing.ListMetersAsync(
-    new ListMetersRequest
-    {
-        DisplayName = "display_name",
-        Limit = 1,
-        Offset = 1,
-    }
-);
+await client.Billing.ListMetersAsync(new ListMetersRequest());
 ```
 </dd>
 </dl>
@@ -1178,13 +1106,7 @@ await client.Billing.UpsertBillingMeterAsync(
 
 ```csharp
 await client.Billing.ListPaymentMethodsAsync(
-    new ListPaymentMethodsRequest
-    {
-        CompanyId = "company_id",
-        CustomerExternalId = "customer_external_id",
-        Limit = 1,
-        Offset = 1,
-    }
+    new ListPaymentMethodsRequest { CustomerExternalId = "customer_external_id" }
 );
 ```
 </dd>
@@ -1259,7 +1181,7 @@ await client.Billing.UpsertPaymentMethodAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Billing.<a href="/src/SchematicHQ.Client/Billing/BillingClient.cs">SearchBillingPricesAsync</a>(SearchBillingPricesRequest { ... }) -> SearchBillingPricesResponse</code></summary>
+<details><summary><code>client.Billing.<a href="/src/SchematicHQ.Client/Billing/BillingClient.cs">ListBillingPricesAsync</a>(ListBillingPricesRequest { ... }) -> ListBillingPricesResponse</code></summary>
 <dl>
 <dd>
 
@@ -1272,22 +1194,7 @@ await client.Billing.UpsertPaymentMethodAsync(
 <dd>
 
 ```csharp
-await client.Billing.SearchBillingPricesAsync(
-    new SearchBillingPricesRequest
-    {
-        ForInitialPlan = true,
-        ForTrialExpiryPlan = true,
-        ProductId = "product_id",
-        Interval = "interval",
-        Price = 1,
-        Q = "q",
-        RequiresPaymentMethod = true,
-        TiersMode = SearchBillingPricesRequestTiersMode.Volume,
-        UsageType = SearchBillingPricesRequestUsageType.Licensed,
-        Limit = 1,
-        Offset = 1,
-    }
-);
+await client.Billing.ListBillingPricesAsync(new ListBillingPricesRequest());
 ```
 </dd>
 </dl>
@@ -1302,7 +1209,7 @@ await client.Billing.SearchBillingPricesAsync(
 <dl>
 <dd>
 
-**request:** `SearchBillingPricesRequest` 
+**request:** `ListBillingPricesRequest` 
     
 </dd>
 </dl>
@@ -1371,7 +1278,7 @@ await client.Billing.UpsertBillingPriceAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Billing.<a href="/src/SchematicHQ.Client/Billing/BillingClient.cs">DeleteBillingProductAsync</a>(billingId) -> DeleteBillingProductResponse</code></summary>
+<details><summary><code>client.Billing.<a href="/src/SchematicHQ.Client/Billing/BillingClient.cs">DeleteBillingProductAsync</a>(DeleteBillingProductRequest { ... }) -> DeleteBillingProductResponse</code></summary>
 <dl>
 <dd>
 
@@ -1384,60 +1291,8 @@ await client.Billing.UpsertBillingPriceAsync(
 <dd>
 
 ```csharp
-await client.Billing.DeleteBillingProductAsync("billing_id");
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**billingId:** `string` — billing_id
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Billing.<a href="/src/SchematicHQ.Client/Billing/BillingClient.cs">ListProductPricesAsync</a>(ListProductPricesRequest { ... }) -> ListProductPricesResponse</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```csharp
-await client.Billing.ListProductPricesAsync(
-    new ListProductPricesRequest
-    {
-        Name = "name",
-        Q = "q",
-        PriceUsageType = ListProductPricesRequestPriceUsageType.Licensed,
-        WithoutLinkedToPlan = true,
-        WithOneTimeCharges = true,
-        WithZeroPrice = true,
-        WithPricesOnly = true,
-        IsActive = true,
-        Limit = 1,
-        Offset = 1,
-    }
+await client.Billing.DeleteBillingProductAsync(
+    new DeleteBillingProductRequest { BillingId = "billing_id" }
 );
 ```
 </dd>
@@ -1453,7 +1308,7 @@ await client.Billing.ListProductPricesAsync(
 <dl>
 <dd>
 
-**request:** `ListProductPricesRequest` 
+**request:** `DeleteBillingProductRequest` 
     
 </dd>
 </dl>
@@ -1465,7 +1320,7 @@ await client.Billing.ListProductPricesAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Billing.<a href="/src/SchematicHQ.Client/Billing/BillingClient.cs">DeleteProductPriceAsync</a>(billingId) -> DeleteProductPriceResponse</code></summary>
+<details><summary><code>client.Billing.<a href="/src/SchematicHQ.Client/Billing/BillingClient.cs">ListBillingProductPricesAsync</a>(ListBillingProductPricesRequest { ... }) -> ListBillingProductPricesResponse</code></summary>
 <dl>
 <dd>
 
@@ -1478,7 +1333,7 @@ await client.Billing.ListProductPricesAsync(
 <dd>
 
 ```csharp
-await client.Billing.DeleteProductPriceAsync("billing_id");
+await client.Billing.ListBillingProductPricesAsync(new ListBillingProductPricesRequest());
 ```
 </dd>
 </dl>
@@ -1493,7 +1348,49 @@ await client.Billing.DeleteProductPriceAsync("billing_id");
 <dl>
 <dd>
 
-**billingId:** `string` — billing_id
+**request:** `ListBillingProductPricesRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Billing.<a href="/src/SchematicHQ.Client/Billing/BillingClient.cs">DeleteProductPriceAsync</a>(DeleteProductPriceRequest { ... }) -> DeleteProductPriceResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Billing.DeleteProductPriceAsync(
+    new DeleteProductPriceRequest { BillingId = "billing_id" }
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `DeleteProductPriceRequest` 
     
 </dd>
 </dl>
@@ -1565,21 +1462,7 @@ await client.Billing.UpsertBillingProductAsync(
 <dd>
 
 ```csharp
-await client.Billing.ListBillingProductsAsync(
-    new ListBillingProductsRequest
-    {
-        Name = "name",
-        Q = "q",
-        PriceUsageType = ListBillingProductsRequestPriceUsageType.Licensed,
-        WithoutLinkedToPlan = true,
-        WithOneTimeCharges = true,
-        WithZeroPrice = true,
-        WithPricesOnly = true,
-        IsActive = true,
-        Limit = 1,
-        Offset = 1,
-    }
-);
+await client.Billing.ListBillingProductsAsync(new ListBillingProductsRequest());
 ```
 </dd>
 </dl>
@@ -1619,21 +1502,7 @@ await client.Billing.ListBillingProductsAsync(
 <dd>
 
 ```csharp
-await client.Billing.CountBillingProductsAsync(
-    new CountBillingProductsRequest
-    {
-        Name = "name",
-        Q = "q",
-        PriceUsageType = CountBillingProductsRequestPriceUsageType.Licensed,
-        WithoutLinkedToPlan = true,
-        WithOneTimeCharges = true,
-        WithZeroPrice = true,
-        WithPricesOnly = true,
-        IsActive = true,
-        Limit = 1,
-        Offset = 1,
-    }
-);
+await client.Billing.CountBillingProductsAsync(new CountBillingProductsRequest());
 ```
 </dd>
 </dl>
@@ -1747,14 +1616,7 @@ await client.Billing.UpsertBillingSubscriptionAsync(
 <dd>
 
 ```csharp
-await client.Credits.ListBillingCreditsAsync(
-    new ListBillingCreditsRequest
-    {
-        Name = "name",
-        Limit = 1,
-        Offset = 1,
-    }
-);
+await client.Credits.ListBillingCreditsAsync(new ListBillingCreditsRequest());
 ```
 </dd>
 </dl>
@@ -1828,7 +1690,7 @@ await client.Credits.CreateBillingCreditAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Credits.<a href="/src/SchematicHQ.Client/Credits/CreditsClient.cs">GetSingleBillingCreditAsync</a>(creditId) -> GetSingleBillingCreditResponse</code></summary>
+<details><summary><code>client.Credits.<a href="/src/SchematicHQ.Client/Credits/CreditsClient.cs">GetSingleBillingCreditAsync</a>(GetSingleBillingCreditRequest { ... }) -> GetSingleBillingCreditResponse</code></summary>
 <dl>
 <dd>
 
@@ -1841,49 +1703,8 @@ await client.Credits.CreateBillingCreditAsync(
 <dd>
 
 ```csharp
-await client.Credits.GetSingleBillingCreditAsync("credit_id");
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**creditId:** `string` — credit_id
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Credits.<a href="/src/SchematicHQ.Client/Credits/CreditsClient.cs">UpdateBillingCreditAsync</a>(creditId, UpdateBillingCreditRequestBody { ... }) -> UpdateBillingCreditResponse</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```csharp
-await client.Credits.UpdateBillingCreditAsync(
-    "credit_id",
-    new UpdateBillingCreditRequestBody { Description = "description", Name = "name" }
+await client.Credits.GetSingleBillingCreditAsync(
+    new GetSingleBillingCreditRequest { CreditId = "credit_id" }
 );
 ```
 </dd>
@@ -1899,10 +1720,49 @@ await client.Credits.UpdateBillingCreditAsync(
 <dl>
 <dd>
 
-**creditId:** `string` — credit_id
+**request:** `GetSingleBillingCreditRequest` 
     
 </dd>
 </dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Credits.<a href="/src/SchematicHQ.Client/Credits/CreditsClient.cs">UpdateBillingCreditAsync</a>(UpdateBillingCreditRequestBody { ... }) -> UpdateBillingCreditResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Credits.UpdateBillingCreditAsync(
+    new UpdateBillingCreditRequestBody
+    {
+        CreditId = "credit_id",
+        Description = "description",
+        Name = "name",
+    }
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
 
 <dl>
 <dd>
@@ -1919,7 +1779,7 @@ await client.Credits.UpdateBillingCreditAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Credits.<a href="/src/SchematicHQ.Client/Credits/CreditsClient.cs">SoftDeleteBillingCreditAsync</a>(creditId) -> SoftDeleteBillingCreditResponse</code></summary>
+<details><summary><code>client.Credits.<a href="/src/SchematicHQ.Client/Credits/CreditsClient.cs">SoftDeleteBillingCreditAsync</a>(SoftDeleteBillingCreditRequest { ... }) -> SoftDeleteBillingCreditResponse</code></summary>
 <dl>
 <dd>
 
@@ -1932,7 +1792,9 @@ await client.Credits.UpdateBillingCreditAsync(
 <dd>
 
 ```csharp
-await client.Credits.SoftDeleteBillingCreditAsync("credit_id");
+await client.Credits.SoftDeleteBillingCreditAsync(
+    new SoftDeleteBillingCreditRequest { CreditId = "credit_id" }
+);
 ```
 </dd>
 </dl>
@@ -1947,7 +1809,7 @@ await client.Credits.SoftDeleteBillingCreditAsync("credit_id");
 <dl>
 <dd>
 
-**creditId:** `string` — credit_id
+**request:** `SoftDeleteBillingCreditRequest` 
     
 </dd>
 </dl>
@@ -1972,16 +1834,7 @@ await client.Credits.SoftDeleteBillingCreditAsync("credit_id");
 <dd>
 
 ```csharp
-await client.Credits.ListCreditBundlesAsync(
-    new ListCreditBundlesRequest
-    {
-        CreditId = "credit_id",
-        Status = ListCreditBundlesRequestStatus.Active,
-        BundleType = "fixed",
-        Limit = 1,
-        Offset = 1,
-    }
-);
+await client.Credits.ListCreditBundlesAsync(new ListCreditBundlesRequest());
 ```
 </dd>
 </dl>
@@ -2056,7 +1909,7 @@ await client.Credits.CreateCreditBundleAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Credits.<a href="/src/SchematicHQ.Client/Credits/CreditsClient.cs">GetCreditBundleAsync</a>(bundleId) -> GetCreditBundleResponse</code></summary>
+<details><summary><code>client.Credits.<a href="/src/SchematicHQ.Client/Credits/CreditsClient.cs">GetCreditBundleAsync</a>(GetCreditBundleRequest { ... }) -> GetCreditBundleResponse</code></summary>
 <dl>
 <dd>
 
@@ -2069,7 +1922,7 @@ await client.Credits.CreateCreditBundleAsync(
 <dd>
 
 ```csharp
-await client.Credits.GetCreditBundleAsync("bundle_id");
+await client.Credits.GetCreditBundleAsync(new GetCreditBundleRequest { BundleId = "bundle_id" });
 ```
 </dd>
 </dl>
@@ -2084,7 +1937,7 @@ await client.Credits.GetCreditBundleAsync("bundle_id");
 <dl>
 <dd>
 
-**bundleId:** `string` — bundle_id
+**request:** `GetCreditBundleRequest` 
     
 </dd>
 </dl>
@@ -2096,7 +1949,7 @@ await client.Credits.GetCreditBundleAsync("bundle_id");
 </dl>
 </details>
 
-<details><summary><code>client.Credits.<a href="/src/SchematicHQ.Client/Credits/CreditsClient.cs">UpdateCreditBundleDetailsAsync</a>(bundleId, UpdateCreditBundleDetailsRequestBody { ... }) -> UpdateCreditBundleDetailsResponse</code></summary>
+<details><summary><code>client.Credits.<a href="/src/SchematicHQ.Client/Credits/CreditsClient.cs">UpdateCreditBundleDetailsAsync</a>(UpdateCreditBundleDetailsRequestBody { ... }) -> UpdateCreditBundleDetailsResponse</code></summary>
 <dl>
 <dd>
 
@@ -2110,8 +1963,12 @@ await client.Credits.GetCreditBundleAsync("bundle_id");
 
 ```csharp
 await client.Credits.UpdateCreditBundleDetailsAsync(
-    "bundle_id",
-    new UpdateCreditBundleDetailsRequestBody { BundleName = "bundle_name", PricePerUnit = 1 }
+    new UpdateCreditBundleDetailsRequestBody
+    {
+        BundleId = "bundle_id",
+        BundleName = "bundle_name",
+        PricePerUnit = 1,
+    }
 );
 ```
 </dd>
@@ -2123,14 +1980,6 @@ await client.Credits.UpdateCreditBundleDetailsAsync(
 
 <dl>
 <dd>
-
-<dl>
-<dd>
-
-**bundleId:** `string` — bundle_id
-    
-</dd>
-</dl>
 
 <dl>
 <dd>
@@ -2147,7 +1996,7 @@ await client.Credits.UpdateCreditBundleDetailsAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Credits.<a href="/src/SchematicHQ.Client/Credits/CreditsClient.cs">DeleteCreditBundleAsync</a>(bundleId) -> DeleteCreditBundleResponse</code></summary>
+<details><summary><code>client.Credits.<a href="/src/SchematicHQ.Client/Credits/CreditsClient.cs">DeleteCreditBundleAsync</a>(DeleteCreditBundleRequest { ... }) -> DeleteCreditBundleResponse</code></summary>
 <dl>
 <dd>
 
@@ -2160,7 +2009,9 @@ await client.Credits.UpdateCreditBundleDetailsAsync(
 <dd>
 
 ```csharp
-await client.Credits.DeleteCreditBundleAsync("bundle_id");
+await client.Credits.DeleteCreditBundleAsync(
+    new DeleteCreditBundleRequest { BundleId = "bundle_id" }
+);
 ```
 </dd>
 </dl>
@@ -2175,7 +2026,7 @@ await client.Credits.DeleteCreditBundleAsync("bundle_id");
 <dl>
 <dd>
 
-**bundleId:** `string` — bundle_id
+**request:** `DeleteCreditBundleRequest` 
     
 </dd>
 </dl>
@@ -2200,16 +2051,7 @@ await client.Credits.DeleteCreditBundleAsync("bundle_id");
 <dd>
 
 ```csharp
-await client.Credits.CountCreditBundlesAsync(
-    new CountCreditBundlesRequest
-    {
-        CreditId = "credit_id",
-        Status = CountCreditBundlesRequestStatus.Active,
-        BundleType = "fixed",
-        Limit = 1,
-        Offset = 1,
-    }
-);
+await client.Credits.CountCreditBundlesAsync(new CountCreditBundlesRequest());
 ```
 </dd>
 </dl>
@@ -2249,14 +2091,7 @@ await client.Credits.CountCreditBundlesAsync(
 <dd>
 
 ```csharp
-await client.Credits.CountBillingCreditsAsync(
-    new CountBillingCreditsRequest
-    {
-        Name = "name",
-        Limit = 1,
-        Offset = 1,
-    }
-);
+await client.Credits.CountBillingCreditsAsync(new CountBillingCreditsRequest());
 ```
 </dd>
 </dl>
@@ -2283,7 +2118,7 @@ await client.Credits.CountBillingCreditsAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Credits.<a href="/src/SchematicHQ.Client/Credits/CreditsClient.cs">ZeroOutGrantAsync</a>(grantId, ZeroOutGrantRequestBody { ... }) -> ZeroOutGrantResponse</code></summary>
+<details><summary><code>client.Credits.<a href="/src/SchematicHQ.Client/Credits/CreditsClient.cs">ZeroOutGrantAsync</a>(ZeroOutGrantRequestBody { ... }) -> ZeroOutGrantResponse</code></summary>
 <dl>
 <dd>
 
@@ -2296,7 +2131,7 @@ await client.Credits.CountBillingCreditsAsync(
 <dd>
 
 ```csharp
-await client.Credits.ZeroOutGrantAsync("grant_id", new ZeroOutGrantRequestBody());
+await client.Credits.ZeroOutGrantAsync(new ZeroOutGrantRequestBody { GrantId = "grant_id" });
 ```
 </dd>
 </dl>
@@ -2307,14 +2142,6 @@ await client.Credits.ZeroOutGrantAsync("grant_id", new ZeroOutGrantRequestBody()
 
 <dl>
 <dd>
-
-<dl>
-<dd>
-
-**grantId:** `string` — grant_id
-    
-</dd>
-</dl>
 
 <dl>
 <dd>
@@ -2392,16 +2219,7 @@ await client.Credits.GrantBillingCreditsToCompanyAsync(
 <dd>
 
 ```csharp
-await client.Credits.ListCompanyGrantsAsync(
-    new ListCompanyGrantsRequest
-    {
-        CompanyId = "company_id",
-        Order = ListCompanyGrantsRequestOrder.CreatedAt,
-        Dir = ListCompanyGrantsRequestDir.Asc,
-        Limit = 1,
-        Offset = 1,
-    }
-);
+await client.Credits.ListCompanyGrantsAsync(new ListCompanyGrantsRequest());
 ```
 </dd>
 </dl>
@@ -2441,14 +2259,7 @@ await client.Credits.ListCompanyGrantsAsync(
 <dd>
 
 ```csharp
-await client.Credits.CountBillingCreditsGrantsAsync(
-    new CountBillingCreditsGrantsRequest
-    {
-        CreditId = "credit_id",
-        Limit = 1,
-        Offset = 1,
-    }
-);
+await client.Credits.CountBillingCreditsGrantsAsync(new CountBillingCreditsGrantsRequest());
 ```
 </dd>
 </dl>
@@ -2488,14 +2299,7 @@ await client.Credits.CountBillingCreditsGrantsAsync(
 <dd>
 
 ```csharp
-await client.Credits.ListGrantsForCreditAsync(
-    new ListGrantsForCreditRequest
-    {
-        CreditId = "credit_id",
-        Limit = 1,
-        Offset = 1,
-    }
-);
+await client.Credits.ListGrantsForCreditAsync(new ListGrantsForCreditRequest());
 ```
 </dd>
 </dl>
@@ -2539,13 +2343,7 @@ await client.Credits.GetEnrichedCreditLedgerAsync(
     new GetEnrichedCreditLedgerRequest
     {
         CompanyId = "company_id",
-        BillingCreditId = "billing_credit_id",
-        FeatureId = "feature_id",
         Period = GetEnrichedCreditLedgerRequestPeriod.Daily,
-        StartTime = "start_time",
-        EndTime = "end_time",
-        Limit = 1,
-        Offset = 1,
     }
 );
 ```
@@ -2591,13 +2389,7 @@ await client.Credits.CountCreditLedgerAsync(
     new CountCreditLedgerRequest
     {
         CompanyId = "company_id",
-        BillingCreditId = "billing_credit_id",
-        FeatureId = "feature_id",
         Period = CountCreditLedgerRequestPeriod.Daily,
-        StartTime = "start_time",
-        EndTime = "end_time",
-        Limit = 1,
-        Offset = 1,
     }
 );
 ```
@@ -2639,15 +2431,7 @@ await client.Credits.CountCreditLedgerAsync(
 <dd>
 
 ```csharp
-await client.Credits.ListBillingPlanCreditGrantsAsync(
-    new ListBillingPlanCreditGrantsRequest
-    {
-        CreditId = "credit_id",
-        PlanId = "plan_id",
-        Limit = 1,
-        Offset = 1,
-    }
-);
+await client.Credits.ListBillingPlanCreditGrantsAsync(new ListBillingPlanCreditGrantsRequest());
 ```
 </dd>
 </dl>
@@ -2723,7 +2507,7 @@ await client.Credits.CreateBillingPlanCreditGrantAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Credits.<a href="/src/SchematicHQ.Client/Credits/CreditsClient.cs">UpdateBillingPlanCreditGrantAsync</a>(planGrantId, UpdateBillingPlanCreditGrantRequestBody { ... }) -> UpdateBillingPlanCreditGrantResponse</code></summary>
+<details><summary><code>client.Credits.<a href="/src/SchematicHQ.Client/Credits/CreditsClient.cs">UpdateBillingPlanCreditGrantAsync</a>(UpdateBillingPlanCreditGrantRequestBody { ... }) -> UpdateBillingPlanCreditGrantResponse</code></summary>
 <dl>
 <dd>
 
@@ -2737,9 +2521,9 @@ await client.Credits.CreateBillingPlanCreditGrantAsync(
 
 ```csharp
 await client.Credits.UpdateBillingPlanCreditGrantAsync(
-    "plan_grant_id",
     new UpdateBillingPlanCreditGrantRequestBody
     {
+        PlanGrantId = "plan_grant_id",
         ResetCadence = UpdateBillingPlanCreditGrantRequestBodyResetCadence.Monthly,
         ResetStart = UpdateBillingPlanCreditGrantRequestBodyResetStart.BillingPeriod,
     }
@@ -2758,14 +2542,6 @@ await client.Credits.UpdateBillingPlanCreditGrantAsync(
 <dl>
 <dd>
 
-**planGrantId:** `string` — plan_grant_id
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
 **request:** `UpdateBillingPlanCreditGrantRequestBody` 
     
 </dd>
@@ -2778,7 +2554,7 @@ await client.Credits.UpdateBillingPlanCreditGrantAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Credits.<a href="/src/SchematicHQ.Client/Credits/CreditsClient.cs">DeleteBillingPlanCreditGrantAsync</a>(planGrantId, DeleteBillingPlanCreditGrantRequest { ... }) -> DeleteBillingPlanCreditGrantResponse</code></summary>
+<details><summary><code>client.Credits.<a href="/src/SchematicHQ.Client/Credits/CreditsClient.cs">DeleteBillingPlanCreditGrantAsync</a>(DeleteBillingPlanCreditGrantRequest { ... }) -> DeleteBillingPlanCreditGrantResponse</code></summary>
 <dl>
 <dd>
 
@@ -2792,8 +2568,7 @@ await client.Credits.UpdateBillingPlanCreditGrantAsync(
 
 ```csharp
 await client.Credits.DeleteBillingPlanCreditGrantAsync(
-    "plan_grant_id",
-    new DeleteBillingPlanCreditGrantRequest { ApplyToExisting = true }
+    new DeleteBillingPlanCreditGrantRequest { PlanGrantId = "plan_grant_id" }
 );
 ```
 </dd>
@@ -2805,14 +2580,6 @@ await client.Credits.DeleteBillingPlanCreditGrantAsync(
 
 <dl>
 <dd>
-
-<dl>
-<dd>
-
-**planGrantId:** `string` — plan_grant_id
-    
-</dd>
-</dl>
 
 <dl>
 <dd>
@@ -2842,15 +2609,7 @@ await client.Credits.DeleteBillingPlanCreditGrantAsync(
 <dd>
 
 ```csharp
-await client.Credits.CountBillingPlanCreditGrantsAsync(
-    new CountBillingPlanCreditGrantsRequest
-    {
-        CreditId = "credit_id",
-        PlanId = "plan_id",
-        Limit = 1,
-        Offset = 1,
-    }
-);
+await client.Credits.CountBillingPlanCreditGrantsAsync(new CountBillingPlanCreditGrantsRequest());
 ```
 </dd>
 </dl>
@@ -3148,7 +2907,7 @@ await client.Checkout.PreviewManagePlanAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Checkout.<a href="/src/SchematicHQ.Client/Checkout/CheckoutClient.cs">UpdateCustomerSubscriptionTrialEndAsync</a>(subscriptionId, UpdateTrialEndRequestBody { ... }) -> UpdateCustomerSubscriptionTrialEndResponse</code></summary>
+<details><summary><code>client.Checkout.<a href="/src/SchematicHQ.Client/Checkout/CheckoutClient.cs">CancelSubscriptionAsync</a>(CancelSubscriptionRequest { ... }) -> CancelSubscriptionResponse</code></summary>
 <dl>
 <dd>
 
@@ -3161,9 +2920,8 @@ await client.Checkout.PreviewManagePlanAsync(
 <dd>
 
 ```csharp
-await client.Checkout.UpdateCustomerSubscriptionTrialEndAsync(
-    "subscription_id",
-    new UpdateTrialEndRequestBody()
+await client.Checkout.CancelSubscriptionAsync(
+    new CancelSubscriptionRequest { CompanyId = "company_id" }
 );
 ```
 </dd>
@@ -3179,10 +2937,44 @@ await client.Checkout.UpdateCustomerSubscriptionTrialEndAsync(
 <dl>
 <dd>
 
-**subscriptionId:** `string` — subscription_id
+**request:** `CancelSubscriptionRequest` 
     
 </dd>
 </dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Checkout.<a href="/src/SchematicHQ.Client/Checkout/CheckoutClient.cs">UpdateCustomerSubscriptionTrialEndAsync</a>(UpdateTrialEndRequestBody { ... }) -> UpdateCustomerSubscriptionTrialEndResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Checkout.UpdateCustomerSubscriptionTrialEndAsync(
+    new UpdateTrialEndRequestBody { SubscriptionId = "subscription_id" }
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
 
 <dl>
 <dd>
@@ -3213,18 +3005,7 @@ await client.Checkout.UpdateCustomerSubscriptionTrialEndAsync(
 <dd>
 
 ```csharp
-await client.Companies.ListCompaniesAsync(
-    new ListCompaniesRequest
-    {
-        PlanId = "plan_id",
-        Q = "q",
-        WithoutFeatureOverrideFor = "without_feature_override_for",
-        WithoutPlan = true,
-        WithSubscription = true,
-        Limit = 1,
-        Offset = 1,
-    }
-);
+await client.Companies.ListCompaniesAsync(new ListCompaniesRequest());
 ```
 </dd>
 </dl>
@@ -3293,7 +3074,7 @@ await client.Companies.UpsertCompanyAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Companies.<a href="/src/SchematicHQ.Client/Companies/CompaniesClient.cs">GetCompanyAsync</a>(companyId) -> GetCompanyResponse</code></summary>
+<details><summary><code>client.Companies.<a href="/src/SchematicHQ.Client/Companies/CompaniesClient.cs">GetCompanyAsync</a>(GetCompanyRequest { ... }) -> GetCompanyResponse</code></summary>
 <dl>
 <dd>
 
@@ -3306,7 +3087,7 @@ await client.Companies.UpsertCompanyAsync(
 <dd>
 
 ```csharp
-await client.Companies.GetCompanyAsync("company_id");
+await client.Companies.GetCompanyAsync(new GetCompanyRequest { CompanyId = "company_id" });
 ```
 </dd>
 </dl>
@@ -3321,7 +3102,7 @@ await client.Companies.GetCompanyAsync("company_id");
 <dl>
 <dd>
 
-**companyId:** `string` — company_id
+**request:** `GetCompanyRequest` 
     
 </dd>
 </dl>
@@ -3333,7 +3114,7 @@ await client.Companies.GetCompanyAsync("company_id");
 </dl>
 </details>
 
-<details><summary><code>client.Companies.<a href="/src/SchematicHQ.Client/Companies/CompaniesClient.cs">DeleteCompanyAsync</a>(companyId, DeleteCompanyRequest { ... }) -> DeleteCompanyResponse</code></summary>
+<details><summary><code>client.Companies.<a href="/src/SchematicHQ.Client/Companies/CompaniesClient.cs">DeleteCompanyAsync</a>(DeleteCompanyRequest { ... }) -> DeleteCompanyResponse</code></summary>
 <dl>
 <dd>
 
@@ -3346,10 +3127,7 @@ await client.Companies.GetCompanyAsync("company_id");
 <dd>
 
 ```csharp
-await client.Companies.DeleteCompanyAsync(
-    "company_id",
-    new DeleteCompanyRequest { CancelSubscription = true, Prorate = true }
-);
+await client.Companies.DeleteCompanyAsync(new DeleteCompanyRequest { CompanyId = "company_id" });
 ```
 </dd>
 </dl>
@@ -3360,14 +3138,6 @@ await client.Companies.DeleteCompanyAsync(
 
 <dl>
 <dd>
-
-<dl>
-<dd>
-
-**companyId:** `string` — company_id
-    
-</dd>
-</dl>
 
 <dl>
 <dd>
@@ -3397,18 +3167,7 @@ await client.Companies.DeleteCompanyAsync(
 <dd>
 
 ```csharp
-await client.Companies.CountCompaniesAsync(
-    new CountCompaniesRequest
-    {
-        PlanId = "plan_id",
-        Q = "q",
-        WithoutFeatureOverrideFor = "without_feature_override_for",
-        WithoutPlan = true,
-        WithSubscription = true,
-        Limit = 1,
-        Offset = 1,
-    }
-);
+await client.Companies.CountCompaniesAsync(new CountCompaniesRequest());
 ```
 </dd>
 </dl>
@@ -3449,17 +3208,7 @@ await client.Companies.CountCompaniesAsync(
 
 ```csharp
 await client.Companies.CountCompaniesForAdvancedFilterAsync(
-    new CountCompaniesForAdvancedFilterRequest
-    {
-        MonetizedSubscriptions = true,
-        Q = "q",
-        WithoutPlan = true,
-        WithoutSubscription = true,
-        SortOrderColumn = "sort_order_column",
-        SortOrderDirection = CountCompaniesForAdvancedFilterRequestSortOrderDirection.Asc,
-        Limit = 1,
-        Offset = 1,
-    }
+    new CountCompaniesForAdvancedFilterRequest()
 );
 ```
 </dd>
@@ -3585,17 +3334,7 @@ await client.Companies.DeleteCompanyByKeysAsync(
 
 ```csharp
 await client.Companies.ListCompaniesForAdvancedFilterAsync(
-    new ListCompaniesForAdvancedFilterRequest
-    {
-        MonetizedSubscriptions = true,
-        Q = "q",
-        WithoutPlan = true,
-        WithoutSubscription = true,
-        SortOrderColumn = "sort_order_column",
-        SortOrderDirection = ListCompaniesForAdvancedFilterRequestSortOrderDirection.Asc,
-        Limit = 1,
-        Offset = 1,
-    }
+    new ListCompaniesForAdvancedFilterRequest()
 );
 ```
 </dd>
@@ -3679,13 +3418,7 @@ await client.Companies.LookupCompanyAsync(
 
 ```csharp
 await client.Companies.GetActiveDealsAsync(
-    new GetActiveDealsRequest
-    {
-        CompanyId = "company_id",
-        DealStage = "deal_stage",
-        Limit = 1,
-        Offset = 1,
-    }
+    new GetActiveDealsRequest { CompanyId = "company_id", DealStage = "deal_stage" }
 );
 ```
 </dd>
@@ -3726,15 +3459,7 @@ await client.Companies.GetActiveDealsAsync(
 <dd>
 
 ```csharp
-await client.Companies.ListCompanyMembershipsAsync(
-    new ListCompanyMembershipsRequest
-    {
-        CompanyId = "company_id",
-        UserId = "user_id",
-        Limit = 1,
-        Offset = 1,
-    }
-);
+await client.Companies.ListCompanyMembershipsAsync(new ListCompanyMembershipsRequest());
 ```
 </dd>
 </dl>
@@ -3803,7 +3528,7 @@ await client.Companies.GetOrCreateCompanyMembershipAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Companies.<a href="/src/SchematicHQ.Client/Companies/CompaniesClient.cs">DeleteCompanyMembershipAsync</a>(companyMembershipId) -> DeleteCompanyMembershipResponse</code></summary>
+<details><summary><code>client.Companies.<a href="/src/SchematicHQ.Client/Companies/CompaniesClient.cs">DeleteCompanyMembershipAsync</a>(DeleteCompanyMembershipRequest { ... }) -> DeleteCompanyMembershipResponse</code></summary>
 <dl>
 <dd>
 
@@ -3816,7 +3541,9 @@ await client.Companies.GetOrCreateCompanyMembershipAsync(
 <dd>
 
 ```csharp
-await client.Companies.DeleteCompanyMembershipAsync("company_membership_id");
+await client.Companies.DeleteCompanyMembershipAsync(
+    new DeleteCompanyMembershipRequest { CompanyMembershipId = "company_membership_id" }
+);
 ```
 </dd>
 </dl>
@@ -3831,7 +3558,7 @@ await client.Companies.DeleteCompanyMembershipAsync("company_membership_id");
 <dl>
 <dd>
 
-**companyMembershipId:** `string` — company_membership_id
+**request:** `DeleteCompanyMembershipRequest` 
     
 </dd>
 </dl>
@@ -3856,14 +3583,7 @@ await client.Companies.DeleteCompanyMembershipAsync("company_membership_id");
 <dd>
 
 ```csharp
-await client.Companies.GetActiveCompanySubscriptionAsync(
-    new GetActiveCompanySubscriptionRequest
-    {
-        CompanyId = "company_id",
-        Limit = 1,
-        Offset = 1,
-    }
-);
+await client.Companies.GetActiveCompanySubscriptionAsync(new GetActiveCompanySubscriptionRequest());
 ```
 </dd>
 </dl>
@@ -3949,15 +3669,7 @@ await client.Companies.UpsertCompanyTraitAsync(
 <dd>
 
 ```csharp
-await client.Companies.ListEntityKeyDefinitionsAsync(
-    new ListEntityKeyDefinitionsRequest
-    {
-        EntityType = ListEntityKeyDefinitionsRequestEntityType.Company,
-        Q = "q",
-        Limit = 1,
-        Offset = 1,
-    }
-);
+await client.Companies.ListEntityKeyDefinitionsAsync(new ListEntityKeyDefinitionsRequest());
 ```
 </dd>
 </dl>
@@ -3997,15 +3709,7 @@ await client.Companies.ListEntityKeyDefinitionsAsync(
 <dd>
 
 ```csharp
-await client.Companies.CountEntityKeyDefinitionsAsync(
-    new CountEntityKeyDefinitionsRequest
-    {
-        EntityType = CountEntityKeyDefinitionsRequestEntityType.Company,
-        Q = "q",
-        Limit = 1,
-        Offset = 1,
-    }
-);
+await client.Companies.CountEntityKeyDefinitionsAsync(new CountEntityKeyDefinitionsRequest());
 ```
 </dd>
 </dl>
@@ -4045,16 +3749,7 @@ await client.Companies.CountEntityKeyDefinitionsAsync(
 <dd>
 
 ```csharp
-await client.Companies.ListEntityTraitDefinitionsAsync(
-    new ListEntityTraitDefinitionsRequest
-    {
-        EntityType = ListEntityTraitDefinitionsRequestEntityType.Company,
-        Q = "q",
-        TraitType = ListEntityTraitDefinitionsRequestTraitType.Boolean,
-        Limit = 1,
-        Offset = 1,
-    }
-);
+await client.Companies.ListEntityTraitDefinitionsAsync(new ListEntityTraitDefinitionsRequest());
 ```
 </dd>
 </dl>
@@ -4128,7 +3823,7 @@ await client.Companies.GetOrCreateEntityTraitDefinitionAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Companies.<a href="/src/SchematicHQ.Client/Companies/CompaniesClient.cs">GetEntityTraitDefinitionAsync</a>(entityTraitDefinitionId) -> GetEntityTraitDefinitionResponse</code></summary>
+<details><summary><code>client.Companies.<a href="/src/SchematicHQ.Client/Companies/CompaniesClient.cs">GetEntityTraitDefinitionAsync</a>(GetEntityTraitDefinitionRequest { ... }) -> GetEntityTraitDefinitionResponse</code></summary>
 <dl>
 <dd>
 
@@ -4141,52 +3836,8 @@ await client.Companies.GetOrCreateEntityTraitDefinitionAsync(
 <dd>
 
 ```csharp
-await client.Companies.GetEntityTraitDefinitionAsync("entity_trait_definition_id");
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**entityTraitDefinitionId:** `string` — entity_trait_definition_id
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Companies.<a href="/src/SchematicHQ.Client/Companies/CompaniesClient.cs">UpdateEntityTraitDefinitionAsync</a>(entityTraitDefinitionId, UpdateEntityTraitDefinitionRequestBody { ... }) -> UpdateEntityTraitDefinitionResponse</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```csharp
-await client.Companies.UpdateEntityTraitDefinitionAsync(
-    "entity_trait_definition_id",
-    new UpdateEntityTraitDefinitionRequestBody
-    {
-        TraitType = UpdateEntityTraitDefinitionRequestBodyTraitType.Boolean,
-    }
+await client.Companies.GetEntityTraitDefinitionAsync(
+    new GetEntityTraitDefinitionRequest { EntityTraitDefinitionId = "entity_trait_definition_id" }
 );
 ```
 </dd>
@@ -4202,10 +3853,48 @@ await client.Companies.UpdateEntityTraitDefinitionAsync(
 <dl>
 <dd>
 
-**entityTraitDefinitionId:** `string` — entity_trait_definition_id
+**request:** `GetEntityTraitDefinitionRequest` 
     
 </dd>
 </dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Companies.<a href="/src/SchematicHQ.Client/Companies/CompaniesClient.cs">UpdateEntityTraitDefinitionAsync</a>(UpdateEntityTraitDefinitionRequestBody { ... }) -> UpdateEntityTraitDefinitionResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Companies.UpdateEntityTraitDefinitionAsync(
+    new UpdateEntityTraitDefinitionRequestBody
+    {
+        EntityTraitDefinitionId = "entity_trait_definition_id",
+        TraitType = UpdateEntityTraitDefinitionRequestBodyTraitType.Boolean,
+    }
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
 
 <dl>
 <dd>
@@ -4235,16 +3924,7 @@ await client.Companies.UpdateEntityTraitDefinitionAsync(
 <dd>
 
 ```csharp
-await client.Companies.CountEntityTraitDefinitionsAsync(
-    new CountEntityTraitDefinitionsRequest
-    {
-        EntityType = CountEntityTraitDefinitionsRequestEntityType.Company,
-        Q = "q",
-        TraitType = CountEntityTraitDefinitionsRequestTraitType.Boolean,
-        Limit = 1,
-        Offset = 1,
-    }
-);
+await client.Companies.CountEntityTraitDefinitionsAsync(new CountEntityTraitDefinitionsRequest());
 ```
 </dd>
 </dl>
@@ -4285,13 +3965,7 @@ await client.Companies.CountEntityTraitDefinitionsAsync(
 
 ```csharp
 await client.Companies.GetEntityTraitValuesAsync(
-    new GetEntityTraitValuesRequest
-    {
-        DefinitionId = "definition_id",
-        Q = "q",
-        Limit = 1,
-        Offset = 1,
-    }
+    new GetEntityTraitValuesRequest { DefinitionId = "definition_id" }
 );
 ```
 </dd>
@@ -4332,16 +4006,7 @@ await client.Companies.GetEntityTraitValuesAsync(
 <dd>
 
 ```csharp
-await client.Companies.ListPlanChangesAsync(
-    new ListPlanChangesRequest
-    {
-        Action = "action",
-        BasePlanAction = "base_plan_action",
-        CompanyId = "company_id",
-        Limit = 1,
-        Offset = 1,
-    }
-);
+await client.Companies.ListPlanChangesAsync(new ListPlanChangesRequest());
 ```
 </dd>
 </dl>
@@ -4368,7 +4033,7 @@ await client.Companies.ListPlanChangesAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Companies.<a href="/src/SchematicHQ.Client/Companies/CompaniesClient.cs">GetPlanChangeAsync</a>(planChangeId) -> GetPlanChangeResponse</code></summary>
+<details><summary><code>client.Companies.<a href="/src/SchematicHQ.Client/Companies/CompaniesClient.cs">GetPlanChangeAsync</a>(GetPlanChangeRequest { ... }) -> GetPlanChangeResponse</code></summary>
 <dl>
 <dd>
 
@@ -4381,7 +4046,9 @@ await client.Companies.ListPlanChangesAsync(
 <dd>
 
 ```csharp
-await client.Companies.GetPlanChangeAsync("plan_change_id");
+await client.Companies.GetPlanChangeAsync(
+    new GetPlanChangeRequest { PlanChangeId = "plan_change_id" }
+);
 ```
 </dd>
 </dl>
@@ -4396,7 +4063,7 @@ await client.Companies.GetPlanChangeAsync("plan_change_id");
 <dl>
 <dd>
 
-**planChangeId:** `string` — plan_change_id
+**request:** `GetPlanChangeRequest` 
     
 </dd>
 </dl>
@@ -4421,15 +4088,7 @@ await client.Companies.GetPlanChangeAsync("plan_change_id");
 <dd>
 
 ```csharp
-await client.Companies.ListPlanTraitsAsync(
-    new ListPlanTraitsRequest
-    {
-        PlanId = "plan_id",
-        TraitId = "trait_id",
-        Limit = 1,
-        Offset = 1,
-    }
-);
+await client.Companies.ListPlanTraitsAsync(new ListPlanTraitsRequest());
 ```
 </dd>
 </dl>
@@ -4503,7 +4162,7 @@ await client.Companies.CreatePlanTraitAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Companies.<a href="/src/SchematicHQ.Client/Companies/CompaniesClient.cs">GetPlanTraitAsync</a>(planTraitId) -> GetPlanTraitResponse</code></summary>
+<details><summary><code>client.Companies.<a href="/src/SchematicHQ.Client/Companies/CompaniesClient.cs">GetPlanTraitAsync</a>(GetPlanTraitRequest { ... }) -> GetPlanTraitResponse</code></summary>
 <dl>
 <dd>
 
@@ -4516,7 +4175,7 @@ await client.Companies.CreatePlanTraitAsync(
 <dd>
 
 ```csharp
-await client.Companies.GetPlanTraitAsync("plan_trait_id");
+await client.Companies.GetPlanTraitAsync(new GetPlanTraitRequest { PlanTraitId = "plan_trait_id" });
 ```
 </dd>
 </dl>
@@ -4531,7 +4190,7 @@ await client.Companies.GetPlanTraitAsync("plan_trait_id");
 <dl>
 <dd>
 
-**planTraitId:** `string` — plan_trait_id
+**request:** `GetPlanTraitRequest` 
     
 </dd>
 </dl>
@@ -4543,7 +4202,7 @@ await client.Companies.GetPlanTraitAsync("plan_trait_id");
 </dl>
 </details>
 
-<details><summary><code>client.Companies.<a href="/src/SchematicHQ.Client/Companies/CompaniesClient.cs">UpdatePlanTraitAsync</a>(planTraitId, UpdatePlanTraitRequestBody { ... }) -> UpdatePlanTraitResponse</code></summary>
+<details><summary><code>client.Companies.<a href="/src/SchematicHQ.Client/Companies/CompaniesClient.cs">UpdatePlanTraitAsync</a>(UpdatePlanTraitRequestBody { ... }) -> UpdatePlanTraitResponse</code></summary>
 <dl>
 <dd>
 
@@ -4557,8 +4216,12 @@ await client.Companies.GetPlanTraitAsync("plan_trait_id");
 
 ```csharp
 await client.Companies.UpdatePlanTraitAsync(
-    "plan_trait_id",
-    new UpdatePlanTraitRequestBody { PlanId = "plan_id", TraitValue = "trait_value" }
+    new UpdatePlanTraitRequestBody
+    {
+        PlanTraitId = "plan_trait_id",
+        PlanId = "plan_id",
+        TraitValue = "trait_value",
+    }
 );
 ```
 </dd>
@@ -4570,14 +4233,6 @@ await client.Companies.UpdatePlanTraitAsync(
 
 <dl>
 <dd>
-
-<dl>
-<dd>
-
-**planTraitId:** `string` — plan_trait_id
-    
-</dd>
-</dl>
 
 <dl>
 <dd>
@@ -4594,7 +4249,7 @@ await client.Companies.UpdatePlanTraitAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Companies.<a href="/src/SchematicHQ.Client/Companies/CompaniesClient.cs">DeletePlanTraitAsync</a>(planTraitId) -> DeletePlanTraitResponse</code></summary>
+<details><summary><code>client.Companies.<a href="/src/SchematicHQ.Client/Companies/CompaniesClient.cs">DeletePlanTraitAsync</a>(DeletePlanTraitRequest { ... }) -> DeletePlanTraitResponse</code></summary>
 <dl>
 <dd>
 
@@ -4607,7 +4262,9 @@ await client.Companies.UpdatePlanTraitAsync(
 <dd>
 
 ```csharp
-await client.Companies.DeletePlanTraitAsync("plan_trait_id");
+await client.Companies.DeletePlanTraitAsync(
+    new DeletePlanTraitRequest { PlanTraitId = "plan_trait_id" }
+);
 ```
 </dd>
 </dl>
@@ -4622,7 +4279,7 @@ await client.Companies.DeletePlanTraitAsync("plan_trait_id");
 <dl>
 <dd>
 
-**planTraitId:** `string` — plan_trait_id
+**request:** `DeletePlanTraitRequest` 
     
 </dd>
 </dl>
@@ -4700,15 +4357,7 @@ await client.Companies.UpdatePlanTraitsBulkAsync(
 <dd>
 
 ```csharp
-await client.Companies.CountPlanTraitsAsync(
-    new CountPlanTraitsRequest
-    {
-        PlanId = "plan_id",
-        TraitId = "trait_id",
-        Limit = 1,
-        Offset = 1,
-    }
-);
+await client.Companies.CountPlanTraitsAsync(new CountPlanTraitsRequest());
 ```
 </dd>
 </dl>
@@ -4794,16 +4443,7 @@ await client.Companies.UpsertUserTraitAsync(
 <dd>
 
 ```csharp
-await client.Companies.ListUsersAsync(
-    new ListUsersRequest
-    {
-        CompanyId = "company_id",
-        PlanId = "plan_id",
-        Q = "q",
-        Limit = 1,
-        Offset = 1,
-    }
-);
+await client.Companies.ListUsersAsync(new ListUsersRequest());
 ```
 </dd>
 </dl>
@@ -4872,7 +4512,7 @@ await client.Companies.UpsertUserAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Companies.<a href="/src/SchematicHQ.Client/Companies/CompaniesClient.cs">GetUserAsync</a>(userId) -> GetUserResponse</code></summary>
+<details><summary><code>client.Companies.<a href="/src/SchematicHQ.Client/Companies/CompaniesClient.cs">GetUserAsync</a>(GetUserRequest { ... }) -> GetUserResponse</code></summary>
 <dl>
 <dd>
 
@@ -4885,7 +4525,7 @@ await client.Companies.UpsertUserAsync(
 <dd>
 
 ```csharp
-await client.Companies.GetUserAsync("user_id");
+await client.Companies.GetUserAsync(new GetUserRequest { UserId = "user_id" });
 ```
 </dd>
 </dl>
@@ -4900,7 +4540,7 @@ await client.Companies.GetUserAsync("user_id");
 <dl>
 <dd>
 
-**userId:** `string` — user_id
+**request:** `GetUserRequest` 
     
 </dd>
 </dl>
@@ -4912,7 +4552,7 @@ await client.Companies.GetUserAsync("user_id");
 </dl>
 </details>
 
-<details><summary><code>client.Companies.<a href="/src/SchematicHQ.Client/Companies/CompaniesClient.cs">DeleteUserAsync</a>(userId) -> DeleteUserResponse</code></summary>
+<details><summary><code>client.Companies.<a href="/src/SchematicHQ.Client/Companies/CompaniesClient.cs">DeleteUserAsync</a>(DeleteUserRequest { ... }) -> DeleteUserResponse</code></summary>
 <dl>
 <dd>
 
@@ -4925,7 +4565,7 @@ await client.Companies.GetUserAsync("user_id");
 <dd>
 
 ```csharp
-await client.Companies.DeleteUserAsync("user_id");
+await client.Companies.DeleteUserAsync(new DeleteUserRequest { UserId = "user_id" });
 ```
 </dd>
 </dl>
@@ -4940,7 +4580,7 @@ await client.Companies.DeleteUserAsync("user_id");
 <dl>
 <dd>
 
-**userId:** `string` — user_id
+**request:** `DeleteUserRequest` 
     
 </dd>
 </dl>
@@ -4965,16 +4605,7 @@ await client.Companies.DeleteUserAsync("user_id");
 <dd>
 
 ```csharp
-await client.Companies.CountUsersAsync(
-    new CountUsersRequest
-    {
-        CompanyId = "company_id",
-        PlanId = "plan_id",
-        Q = "q",
-        Limit = 1,
-        Offset = 1,
-    }
-);
+await client.Companies.CountUsersAsync(new CountUsersRequest());
 ```
 </dd>
 </dl>
@@ -5141,17 +4772,7 @@ await client.Companies.LookupUserAsync(
 <dd>
 
 ```csharp
-await client.Entitlements.ListCompanyOverridesAsync(
-    new ListCompanyOverridesRequest
-    {
-        CompanyId = "company_id",
-        FeatureId = "feature_id",
-        WithoutExpired = true,
-        Q = "q",
-        Limit = 1,
-        Offset = 1,
-    }
-);
+await client.Entitlements.ListCompanyOverridesAsync(new ListCompanyOverridesRequest());
 ```
 </dd>
 </dl>
@@ -5225,7 +4846,7 @@ await client.Entitlements.CreateCompanyOverrideAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Entitlements.<a href="/src/SchematicHQ.Client/Entitlements/EntitlementsClient.cs">GetCompanyOverrideAsync</a>(companyOverrideId) -> GetCompanyOverrideResponse</code></summary>
+<details><summary><code>client.Entitlements.<a href="/src/SchematicHQ.Client/Entitlements/EntitlementsClient.cs">GetCompanyOverrideAsync</a>(GetCompanyOverrideRequest { ... }) -> GetCompanyOverrideResponse</code></summary>
 <dl>
 <dd>
 
@@ -5238,7 +4859,9 @@ await client.Entitlements.CreateCompanyOverrideAsync(
 <dd>
 
 ```csharp
-await client.Entitlements.GetCompanyOverrideAsync("company_override_id");
+await client.Entitlements.GetCompanyOverrideAsync(
+    new GetCompanyOverrideRequest { CompanyOverrideId = "company_override_id" }
+);
 ```
 </dd>
 </dl>
@@ -5253,7 +4876,7 @@ await client.Entitlements.GetCompanyOverrideAsync("company_override_id");
 <dl>
 <dd>
 
-**companyOverrideId:** `string` — company_override_id
+**request:** `GetCompanyOverrideRequest` 
     
 </dd>
 </dl>
@@ -5265,7 +4888,7 @@ await client.Entitlements.GetCompanyOverrideAsync("company_override_id");
 </dl>
 </details>
 
-<details><summary><code>client.Entitlements.<a href="/src/SchematicHQ.Client/Entitlements/EntitlementsClient.cs">UpdateCompanyOverrideAsync</a>(companyOverrideId, UpdateCompanyOverrideRequestBody { ... }) -> UpdateCompanyOverrideResponse</code></summary>
+<details><summary><code>client.Entitlements.<a href="/src/SchematicHQ.Client/Entitlements/EntitlementsClient.cs">UpdateCompanyOverrideAsync</a>(UpdateCompanyOverrideRequestBody { ... }) -> UpdateCompanyOverrideResponse</code></summary>
 <dl>
 <dd>
 
@@ -5279,9 +4902,9 @@ await client.Entitlements.GetCompanyOverrideAsync("company_override_id");
 
 ```csharp
 await client.Entitlements.UpdateCompanyOverrideAsync(
-    "company_override_id",
     new UpdateCompanyOverrideRequestBody
     {
+        CompanyOverrideId = "company_override_id",
         ValueType = UpdateCompanyOverrideRequestBodyValueType.Boolean,
     }
 );
@@ -5299,14 +4922,6 @@ await client.Entitlements.UpdateCompanyOverrideAsync(
 <dl>
 <dd>
 
-**companyOverrideId:** `string` — company_override_id
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
 **request:** `UpdateCompanyOverrideRequestBody` 
     
 </dd>
@@ -5319,7 +4934,7 @@ await client.Entitlements.UpdateCompanyOverrideAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Entitlements.<a href="/src/SchematicHQ.Client/Entitlements/EntitlementsClient.cs">DeleteCompanyOverrideAsync</a>(companyOverrideId) -> DeleteCompanyOverrideResponse</code></summary>
+<details><summary><code>client.Entitlements.<a href="/src/SchematicHQ.Client/Entitlements/EntitlementsClient.cs">DeleteCompanyOverrideAsync</a>(DeleteCompanyOverrideRequest { ... }) -> DeleteCompanyOverrideResponse</code></summary>
 <dl>
 <dd>
 
@@ -5332,7 +4947,9 @@ await client.Entitlements.UpdateCompanyOverrideAsync(
 <dd>
 
 ```csharp
-await client.Entitlements.DeleteCompanyOverrideAsync("company_override_id");
+await client.Entitlements.DeleteCompanyOverrideAsync(
+    new DeleteCompanyOverrideRequest { CompanyOverrideId = "company_override_id" }
+);
 ```
 </dd>
 </dl>
@@ -5347,7 +4964,7 @@ await client.Entitlements.DeleteCompanyOverrideAsync("company_override_id");
 <dl>
 <dd>
 
-**companyOverrideId:** `string` — company_override_id
+**request:** `DeleteCompanyOverrideRequest` 
     
 </dd>
 </dl>
@@ -5372,17 +4989,7 @@ await client.Entitlements.DeleteCompanyOverrideAsync("company_override_id");
 <dd>
 
 ```csharp
-await client.Entitlements.CountCompanyOverridesAsync(
-    new CountCompanyOverridesRequest
-    {
-        CompanyId = "company_id",
-        FeatureId = "feature_id",
-        WithoutExpired = true,
-        Q = "q",
-        Limit = 1,
-        Offset = 1,
-    }
-);
+await client.Entitlements.CountCompanyOverridesAsync(new CountCompanyOverridesRequest());
 ```
 </dd>
 </dl>
@@ -5423,13 +5030,7 @@ await client.Entitlements.CountCompanyOverridesAsync(
 
 ```csharp
 await client.Entitlements.ListFeatureCompaniesAsync(
-    new ListFeatureCompaniesRequest
-    {
-        FeatureId = "feature_id",
-        Q = "q",
-        Limit = 1,
-        Offset = 1,
-    }
+    new ListFeatureCompaniesRequest { FeatureId = "feature_id" }
 );
 ```
 </dd>
@@ -5471,13 +5072,7 @@ await client.Entitlements.ListFeatureCompaniesAsync(
 
 ```csharp
 await client.Entitlements.CountFeatureCompaniesAsync(
-    new CountFeatureCompaniesRequest
-    {
-        FeatureId = "feature_id",
-        Q = "q",
-        Limit = 1,
-        Offset = 1,
-    }
+    new CountFeatureCompaniesRequest { FeatureId = "feature_id" }
 );
 ```
 </dd>
@@ -5518,16 +5113,7 @@ await client.Entitlements.CountFeatureCompaniesAsync(
 <dd>
 
 ```csharp
-await client.Entitlements.ListFeatureUsageAsync(
-    new ListFeatureUsageRequest
-    {
-        CompanyId = "company_id",
-        Q = "q",
-        WithoutNegativeEntitlements = true,
-        Limit = 1,
-        Offset = 1,
-    }
-);
+await client.Entitlements.ListFeatureUsageAsync(new ListFeatureUsageRequest());
 ```
 </dd>
 </dl>
@@ -5567,16 +5153,7 @@ await client.Entitlements.ListFeatureUsageAsync(
 <dd>
 
 ```csharp
-await client.Entitlements.CountFeatureUsageAsync(
-    new CountFeatureUsageRequest
-    {
-        CompanyId = "company_id",
-        Q = "q",
-        WithoutNegativeEntitlements = true,
-        Limit = 1,
-        Offset = 1,
-    }
-);
+await client.Entitlements.CountFeatureUsageAsync(new CountFeatureUsageRequest());
 ```
 </dd>
 </dl>
@@ -5617,13 +5194,7 @@ await client.Entitlements.CountFeatureUsageAsync(
 
 ```csharp
 await client.Entitlements.ListFeatureUsersAsync(
-    new ListFeatureUsersRequest
-    {
-        FeatureId = "feature_id",
-        Q = "q",
-        Limit = 1,
-        Offset = 1,
-    }
+    new ListFeatureUsersRequest { FeatureId = "feature_id" }
 );
 ```
 </dd>
@@ -5665,13 +5236,7 @@ await client.Entitlements.ListFeatureUsersAsync(
 
 ```csharp
 await client.Entitlements.CountFeatureUsersAsync(
-    new CountFeatureUsersRequest
-    {
-        FeatureId = "feature_id",
-        Q = "q",
-        Limit = 1,
-        Offset = 1,
-    }
+    new CountFeatureUsersRequest { FeatureId = "feature_id" }
 );
 ```
 </dd>
@@ -5712,17 +5277,7 @@ await client.Entitlements.CountFeatureUsersAsync(
 <dd>
 
 ```csharp
-await client.Entitlements.ListPlanEntitlementsAsync(
-    new ListPlanEntitlementsRequest
-    {
-        FeatureId = "feature_id",
-        PlanId = "plan_id",
-        Q = "q",
-        WithMeteredProducts = true,
-        Limit = 1,
-        Offset = 1,
-    }
-);
+await client.Entitlements.ListPlanEntitlementsAsync(new ListPlanEntitlementsRequest());
 ```
 </dd>
 </dl>
@@ -5796,7 +5351,7 @@ await client.Entitlements.CreatePlanEntitlementAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Entitlements.<a href="/src/SchematicHQ.Client/Entitlements/EntitlementsClient.cs">GetPlanEntitlementAsync</a>(planEntitlementId) -> GetPlanEntitlementResponse</code></summary>
+<details><summary><code>client.Entitlements.<a href="/src/SchematicHQ.Client/Entitlements/EntitlementsClient.cs">GetPlanEntitlementAsync</a>(GetPlanEntitlementRequest { ... }) -> GetPlanEntitlementResponse</code></summary>
 <dl>
 <dd>
 
@@ -5809,7 +5364,9 @@ await client.Entitlements.CreatePlanEntitlementAsync(
 <dd>
 
 ```csharp
-await client.Entitlements.GetPlanEntitlementAsync("plan_entitlement_id");
+await client.Entitlements.GetPlanEntitlementAsync(
+    new GetPlanEntitlementRequest { PlanEntitlementId = "plan_entitlement_id" }
+);
 ```
 </dd>
 </dl>
@@ -5824,7 +5381,7 @@ await client.Entitlements.GetPlanEntitlementAsync("plan_entitlement_id");
 <dl>
 <dd>
 
-**planEntitlementId:** `string` — plan_entitlement_id
+**request:** `GetPlanEntitlementRequest` 
     
 </dd>
 </dl>
@@ -5836,7 +5393,7 @@ await client.Entitlements.GetPlanEntitlementAsync("plan_entitlement_id");
 </dl>
 </details>
 
-<details><summary><code>client.Entitlements.<a href="/src/SchematicHQ.Client/Entitlements/EntitlementsClient.cs">UpdatePlanEntitlementAsync</a>(planEntitlementId, UpdatePlanEntitlementRequestBody { ... }) -> UpdatePlanEntitlementResponse</code></summary>
+<details><summary><code>client.Entitlements.<a href="/src/SchematicHQ.Client/Entitlements/EntitlementsClient.cs">UpdatePlanEntitlementAsync</a>(UpdatePlanEntitlementRequestBody { ... }) -> UpdatePlanEntitlementResponse</code></summary>
 <dl>
 <dd>
 
@@ -5850,9 +5407,9 @@ await client.Entitlements.GetPlanEntitlementAsync("plan_entitlement_id");
 
 ```csharp
 await client.Entitlements.UpdatePlanEntitlementAsync(
-    "plan_entitlement_id",
     new UpdatePlanEntitlementRequestBody
     {
+        PlanEntitlementId = "plan_entitlement_id",
         ValueType = UpdatePlanEntitlementRequestBodyValueType.Boolean,
     }
 );
@@ -5870,14 +5427,6 @@ await client.Entitlements.UpdatePlanEntitlementAsync(
 <dl>
 <dd>
 
-**planEntitlementId:** `string` — plan_entitlement_id
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
 **request:** `UpdatePlanEntitlementRequestBody` 
     
 </dd>
@@ -5890,7 +5439,7 @@ await client.Entitlements.UpdatePlanEntitlementAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Entitlements.<a href="/src/SchematicHQ.Client/Entitlements/EntitlementsClient.cs">DeletePlanEntitlementAsync</a>(planEntitlementId) -> DeletePlanEntitlementResponse</code></summary>
+<details><summary><code>client.Entitlements.<a href="/src/SchematicHQ.Client/Entitlements/EntitlementsClient.cs">DeletePlanEntitlementAsync</a>(DeletePlanEntitlementRequest { ... }) -> DeletePlanEntitlementResponse</code></summary>
 <dl>
 <dd>
 
@@ -5903,7 +5452,9 @@ await client.Entitlements.UpdatePlanEntitlementAsync(
 <dd>
 
 ```csharp
-await client.Entitlements.DeletePlanEntitlementAsync("plan_entitlement_id");
+await client.Entitlements.DeletePlanEntitlementAsync(
+    new DeletePlanEntitlementRequest { PlanEntitlementId = "plan_entitlement_id" }
+);
 ```
 </dd>
 </dl>
@@ -5918,7 +5469,7 @@ await client.Entitlements.DeletePlanEntitlementAsync("plan_entitlement_id");
 <dl>
 <dd>
 
-**planEntitlementId:** `string` — plan_entitlement_id
+**request:** `DeletePlanEntitlementRequest` 
     
 </dd>
 </dl>
@@ -5943,15 +5494,51 @@ await client.Entitlements.DeletePlanEntitlementAsync("plan_entitlement_id");
 <dd>
 
 ```csharp
-await client.Entitlements.CountPlanEntitlementsAsync(
-    new CountPlanEntitlementsRequest
+await client.Entitlements.CountPlanEntitlementsAsync(new CountPlanEntitlementsRequest());
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `CountPlanEntitlementsRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Entitlements.<a href="/src/SchematicHQ.Client/Entitlements/EntitlementsClient.cs">DuplicatePlanEntitlementsAsync</a>(DuplicatePlanEntitlementsRequestBody { ... }) -> DuplicatePlanEntitlementsResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Entitlements.DuplicatePlanEntitlementsAsync(
+    new DuplicatePlanEntitlementsRequestBody
     {
-        FeatureId = "feature_id",
-        PlanId = "plan_id",
-        Q = "q",
-        WithMeteredProducts = true,
-        Limit = 1,
-        Offset = 1,
+        SourcePlanId = "source_plan_id",
+        TargetPlanId = "target_plan_id",
     }
 );
 ```
@@ -5968,7 +5555,7 @@ await client.Entitlements.CountPlanEntitlementsAsync(
 <dl>
 <dd>
 
-**request:** `CountPlanEntitlementsRequest` 
+**request:** `DuplicatePlanEntitlementsRequestBody` 
     
 </dd>
 </dl>
@@ -6026,7 +5613,7 @@ await client.Entitlements.GetFeatureUsageByCompanyAsync(
 </details>
 
 ## plans
-<details><summary><code>client.Plans.<a href="/src/SchematicHQ.Client/Plans/PlansClient.cs">UpdateCompanyPlansAsync</a>(companyPlanId, UpdateCompanyPlansRequestBody { ... }) -> UpdateCompanyPlansResponse</code></summary>
+<details><summary><code>client.Plans.<a href="/src/SchematicHQ.Client/Plans/PlansClient.cs">UpdateCompanyPlansAsync</a>(UpdateCompanyPlansRequestBody { ... }) -> UpdateCompanyPlansResponse</code></summary>
 <dl>
 <dd>
 
@@ -6040,8 +5627,11 @@ await client.Entitlements.GetFeatureUsageByCompanyAsync(
 
 ```csharp
 await client.Plans.UpdateCompanyPlansAsync(
-    "company_plan_id",
-    new UpdateCompanyPlansRequestBody { AddOnIds = new List<string>() { "add_on_ids" } }
+    new UpdateCompanyPlansRequestBody
+    {
+        CompanyPlanId = "company_plan_id",
+        AddOnIds = new List<string>() { "add_on_ids" },
+    }
 );
 ```
 </dd>
@@ -6053,14 +5643,6 @@ await client.Plans.UpdateCompanyPlansAsync(
 
 <dl>
 <dd>
-
-<dl>
-<dd>
-
-**companyPlanId:** `string` — company_plan_id
-    
-</dd>
-</dl>
 
 <dl>
 <dd>
@@ -6090,24 +5672,7 @@ await client.Plans.UpdateCompanyPlansAsync(
 <dd>
 
 ```csharp
-await client.Plans.ListPlansAsync(
-    new ListPlansRequest
-    {
-        CompanyId = "company_id",
-        ForFallbackPlan = true,
-        ForInitialPlan = true,
-        ForTrialExpiryPlan = true,
-        HasProductId = true,
-        PlanType = ListPlansRequestPlanType.Plan,
-        Q = "q",
-        RequiresPaymentMethod = true,
-        WithoutEntitlementFor = "without_entitlement_for",
-        WithoutProductId = true,
-        WithoutPaidProductId = true,
-        Limit = 1,
-        Offset = 1,
-    }
-);
+await client.Plans.ListPlansAsync(new ListPlansRequest());
 ```
 </dd>
 </dl>
@@ -6181,7 +5746,7 @@ await client.Plans.CreatePlanAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Plans.<a href="/src/SchematicHQ.Client/Plans/PlansClient.cs">GetPlanAsync</a>(planId) -> GetPlanResponse</code></summary>
+<details><summary><code>client.Plans.<a href="/src/SchematicHQ.Client/Plans/PlansClient.cs">GetPlanAsync</a>(GetPlanRequest { ... }) -> GetPlanResponse</code></summary>
 <dl>
 <dd>
 
@@ -6194,7 +5759,7 @@ await client.Plans.CreatePlanAsync(
 <dd>
 
 ```csharp
-await client.Plans.GetPlanAsync("plan_id");
+await client.Plans.GetPlanAsync(new GetPlanRequest { PlanId = "plan_id" });
 ```
 </dd>
 </dl>
@@ -6209,7 +5774,7 @@ await client.Plans.GetPlanAsync("plan_id");
 <dl>
 <dd>
 
-**planId:** `string` — plan_id
+**request:** `GetPlanRequest` 
     
 </dd>
 </dl>
@@ -6221,7 +5786,7 @@ await client.Plans.GetPlanAsync("plan_id");
 </dl>
 </details>
 
-<details><summary><code>client.Plans.<a href="/src/SchematicHQ.Client/Plans/PlansClient.cs">UpdatePlanAsync</a>(planId, UpdatePlanRequestBody { ... }) -> UpdatePlanResponse</code></summary>
+<details><summary><code>client.Plans.<a href="/src/SchematicHQ.Client/Plans/PlansClient.cs">UpdatePlanAsync</a>(UpdatePlanRequestBody { ... }) -> UpdatePlanResponse</code></summary>
 <dl>
 <dd>
 
@@ -6234,7 +5799,7 @@ await client.Plans.GetPlanAsync("plan_id");
 <dd>
 
 ```csharp
-await client.Plans.UpdatePlanAsync("plan_id", new UpdatePlanRequestBody { Name = "name" });
+await client.Plans.UpdatePlanAsync(new UpdatePlanRequestBody { PlanId = "plan_id", Name = "name" });
 ```
 </dd>
 </dl>
@@ -6245,14 +5810,6 @@ await client.Plans.UpdatePlanAsync("plan_id", new UpdatePlanRequestBody { Name =
 
 <dl>
 <dd>
-
-<dl>
-<dd>
-
-**planId:** `string` — plan_id
-    
-</dd>
-</dl>
 
 <dl>
 <dd>
@@ -6269,7 +5826,7 @@ await client.Plans.UpdatePlanAsync("plan_id", new UpdatePlanRequestBody { Name =
 </dl>
 </details>
 
-<details><summary><code>client.Plans.<a href="/src/SchematicHQ.Client/Plans/PlansClient.cs">DeletePlanAsync</a>(planId) -> DeletePlanResponse</code></summary>
+<details><summary><code>client.Plans.<a href="/src/SchematicHQ.Client/Plans/PlansClient.cs">DeletePlanAsync</a>(DeletePlanRequest { ... }) -> DeletePlanResponse</code></summary>
 <dl>
 <dd>
 
@@ -6282,7 +5839,7 @@ await client.Plans.UpdatePlanAsync("plan_id", new UpdatePlanRequestBody { Name =
 <dd>
 
 ```csharp
-await client.Plans.DeletePlanAsync("plan_id");
+await client.Plans.DeletePlanAsync(new DeletePlanRequest { PlanId = "plan_id" });
 ```
 </dd>
 </dl>
@@ -6297,7 +5854,7 @@ await client.Plans.DeletePlanAsync("plan_id");
 <dl>
 <dd>
 
-**planId:** `string` — plan_id
+**request:** `DeletePlanRequest` 
     
 </dd>
 </dl>
@@ -6309,7 +5866,7 @@ await client.Plans.DeletePlanAsync("plan_id");
 </dl>
 </details>
 
-<details><summary><code>client.Plans.<a href="/src/SchematicHQ.Client/Plans/PlansClient.cs">UpsertBillingProductPlanAsync</a>(planId, UpsertBillingProductRequestBody { ... }) -> UpsertBillingProductPlanResponse</code></summary>
+<details><summary><code>client.Plans.<a href="/src/SchematicHQ.Client/Plans/PlansClient.cs">UpsertBillingProductPlanAsync</a>(UpsertBillingProductRequestBody { ... }) -> UpsertBillingProductPlanResponse</code></summary>
 <dl>
 <dd>
 
@@ -6323,9 +5880,9 @@ await client.Plans.DeletePlanAsync("plan_id");
 
 ```csharp
 await client.Plans.UpsertBillingProductPlanAsync(
-    "plan_id",
     new UpsertBillingProductRequestBody
     {
+        PlanId = "plan_id",
         ChargeType = UpsertBillingProductRequestBodyChargeType.OneTime,
         IsTrialable = true,
     }
@@ -6340,14 +5897,6 @@ await client.Plans.UpsertBillingProductPlanAsync(
 
 <dl>
 <dd>
-
-<dl>
-<dd>
-
-**planId:** `string` — plan_id
-    
-</dd>
-</dl>
 
 <dl>
 <dd>
@@ -6377,24 +5926,7 @@ await client.Plans.UpsertBillingProductPlanAsync(
 <dd>
 
 ```csharp
-await client.Plans.CountPlansAsync(
-    new CountPlansRequest
-    {
-        CompanyId = "company_id",
-        ForFallbackPlan = true,
-        ForInitialPlan = true,
-        ForTrialExpiryPlan = true,
-        HasProductId = true,
-        PlanType = CountPlansRequestPlanType.Plan,
-        Q = "q",
-        RequiresPaymentMethod = true,
-        WithoutEntitlementFor = "without_entitlement_for",
-        WithoutProductId = true,
-        WithoutPaidProductId = true,
-        Limit = 1,
-        Offset = 1,
-    }
-);
+await client.Plans.CountPlansAsync(new CountPlansRequest());
 ```
 </dd>
 </dl>
@@ -6475,14 +6007,7 @@ await client.Plans.ListPlanIssuesAsync(new ListPlanIssuesRequest { PlanId = "pla
 <dd>
 
 ```csharp
-await client.Components.ListComponentsAsync(
-    new ListComponentsRequest
-    {
-        Q = "q",
-        Limit = 1,
-        Offset = 1,
-    }
-);
+await client.Components.ListComponentsAsync(new ListComponentsRequest());
 ```
 </dd>
 </dl>
@@ -6555,7 +6080,7 @@ await client.Components.CreateComponentAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Components.<a href="/src/SchematicHQ.Client/Components/ComponentsClient.cs">GetComponentAsync</a>(componentId) -> GetComponentResponse</code></summary>
+<details><summary><code>client.Components.<a href="/src/SchematicHQ.Client/Components/ComponentsClient.cs">GetComponentAsync</a>(GetComponentRequest { ... }) -> GetComponentResponse</code></summary>
 <dl>
 <dd>
 
@@ -6568,7 +6093,7 @@ await client.Components.CreateComponentAsync(
 <dd>
 
 ```csharp
-await client.Components.GetComponentAsync("component_id");
+await client.Components.GetComponentAsync(new GetComponentRequest { ComponentId = "component_id" });
 ```
 </dd>
 </dl>
@@ -6583,7 +6108,7 @@ await client.Components.GetComponentAsync("component_id");
 <dl>
 <dd>
 
-**componentId:** `string` — component_id
+**request:** `GetComponentRequest` 
     
 </dd>
 </dl>
@@ -6595,7 +6120,7 @@ await client.Components.GetComponentAsync("component_id");
 </dl>
 </details>
 
-<details><summary><code>client.Components.<a href="/src/SchematicHQ.Client/Components/ComponentsClient.cs">UpdateComponentAsync</a>(componentId, UpdateComponentRequestBody { ... }) -> UpdateComponentResponse</code></summary>
+<details><summary><code>client.Components.<a href="/src/SchematicHQ.Client/Components/ComponentsClient.cs">UpdateComponentAsync</a>(UpdateComponentRequestBody { ... }) -> UpdateComponentResponse</code></summary>
 <dl>
 <dd>
 
@@ -6608,7 +6133,9 @@ await client.Components.GetComponentAsync("component_id");
 <dd>
 
 ```csharp
-await client.Components.UpdateComponentAsync("component_id", new UpdateComponentRequestBody());
+await client.Components.UpdateComponentAsync(
+    new UpdateComponentRequestBody { ComponentId = "component_id" }
+);
 ```
 </dd>
 </dl>
@@ -6619,14 +6146,6 @@ await client.Components.UpdateComponentAsync("component_id", new UpdateComponent
 
 <dl>
 <dd>
-
-<dl>
-<dd>
-
-**componentId:** `string` — component_id
-    
-</dd>
-</dl>
 
 <dl>
 <dd>
@@ -6643,7 +6162,7 @@ await client.Components.UpdateComponentAsync("component_id", new UpdateComponent
 </dl>
 </details>
 
-<details><summary><code>client.Components.<a href="/src/SchematicHQ.Client/Components/ComponentsClient.cs">DeleteComponentAsync</a>(componentId) -> DeleteComponentResponse</code></summary>
+<details><summary><code>client.Components.<a href="/src/SchematicHQ.Client/Components/ComponentsClient.cs">DeleteComponentAsync</a>(DeleteComponentRequest { ... }) -> DeleteComponentResponse</code></summary>
 <dl>
 <dd>
 
@@ -6656,7 +6175,9 @@ await client.Components.UpdateComponentAsync("component_id", new UpdateComponent
 <dd>
 
 ```csharp
-await client.Components.DeleteComponentAsync("component_id");
+await client.Components.DeleteComponentAsync(
+    new DeleteComponentRequest { ComponentId = "component_id" }
+);
 ```
 </dd>
 </dl>
@@ -6671,7 +6192,7 @@ await client.Components.DeleteComponentAsync("component_id");
 <dl>
 <dd>
 
-**componentId:** `string` — component_id
+**request:** `DeleteComponentRequest` 
     
 </dd>
 </dl>
@@ -6696,14 +6217,7 @@ await client.Components.DeleteComponentAsync("component_id");
 <dd>
 
 ```csharp
-await client.Components.CountComponentsAsync(
-    new CountComponentsRequest
-    {
-        Q = "q",
-        Limit = 1,
-        Offset = 1,
-    }
-);
+await client.Components.CountComponentsAsync(new CountComponentsRequest());
 ```
 </dd>
 </dl>
@@ -6743,9 +6257,7 @@ await client.Components.CountComponentsAsync(
 <dd>
 
 ```csharp
-await client.Components.PreviewComponentDataAsync(
-    new PreviewComponentDataRequest { CompanyId = "company_id", ComponentId = "component_id" }
-);
+await client.Components.PreviewComponentDataAsync(new PreviewComponentDataRequest());
 ```
 </dd>
 </dl>
@@ -6928,14 +6440,7 @@ await client.Crm.UpsertCrmDealAsync(
 <dd>
 
 ```csharp
-await client.Crm.ListCrmProductsAsync(
-    new ListCrmProductsRequest
-    {
-        Name = "name",
-        Limit = 1,
-        Offset = 1,
-    }
-);
+await client.Crm.ListCrmProductsAsync(new ListCrmProductsRequest());
 ```
 </dd>
 </dl>
@@ -7062,7 +6567,7 @@ await client.Dataexports.CreateDataExportAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Dataexports.<a href="/src/SchematicHQ.Client/Dataexports/DataexportsClient.cs">GetDataExportArtifactAsync</a>(dataExportId)</code></summary>
+<details><summary><code>client.Dataexports.<a href="/src/SchematicHQ.Client/Dataexports/DataexportsClient.cs">GetDataExportArtifactAsync</a>(GetDataExportArtifactRequest { ... })</code></summary>
 <dl>
 <dd>
 
@@ -7075,7 +6580,9 @@ await client.Dataexports.CreateDataExportAsync(
 <dd>
 
 ```csharp
-await client.Dataexports.GetDataExportArtifactAsync("data_export_id");
+await client.Dataexports.GetDataExportArtifactAsync(
+    new GetDataExportArtifactRequest { DataExportId = "data_export_id" }
+);
 ```
 </dd>
 </dl>
@@ -7090,7 +6597,7 @@ await client.Dataexports.GetDataExportArtifactAsync("data_export_id");
 <dl>
 <dd>
 
-**dataExportId:** `string` — data_export_id
+**request:** `GetDataExportArtifactRequest` 
     
 </dd>
 </dl>
@@ -7164,14 +6671,7 @@ await client.Events.CreateEventBatchAsync(
 <dd>
 
 ```csharp
-await client.Events.GetEventSummariesAsync(
-    new GetEventSummariesRequest
-    {
-        Q = "q",
-        Limit = 1,
-        Offset = 1,
-    }
-);
+await client.Events.GetEventSummariesAsync(new GetEventSummariesRequest());
 ```
 </dd>
 </dl>
@@ -7211,17 +6711,7 @@ await client.Events.GetEventSummariesAsync(
 <dd>
 
 ```csharp
-await client.Events.ListEventsAsync(
-    new ListEventsRequest
-    {
-        CompanyId = "company_id",
-        EventSubtype = "event_subtype",
-        FlagId = "flag_id",
-        UserId = "user_id",
-        Limit = 1,
-        Offset = 1,
-    }
-);
+await client.Events.ListEventsAsync(new ListEventsRequest());
 ```
 </dd>
 </dl>
@@ -7290,7 +6780,7 @@ await client.Events.CreateEventAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Events.<a href="/src/SchematicHQ.Client/Events/EventsClient.cs">GetEventAsync</a>(eventId) -> GetEventResponse</code></summary>
+<details><summary><code>client.Events.<a href="/src/SchematicHQ.Client/Events/EventsClient.cs">GetEventAsync</a>(GetEventRequest { ... }) -> GetEventResponse</code></summary>
 <dl>
 <dd>
 
@@ -7303,7 +6793,7 @@ await client.Events.CreateEventAsync(
 <dd>
 
 ```csharp
-await client.Events.GetEventAsync("event_id");
+await client.Events.GetEventAsync(new GetEventRequest { EventId = "event_id" });
 ```
 </dd>
 </dl>
@@ -7318,7 +6808,7 @@ await client.Events.GetEventAsync("event_id");
 <dl>
 <dd>
 
-**eventId:** `string` — event_id
+**request:** `GetEventRequest` 
     
 </dd>
 </dl>
@@ -7369,17 +6859,7 @@ await client.Events.GetSegmentIntegrationStatusAsync();
 <dd>
 
 ```csharp
-await client.Features.ListFeaturesAsync(
-    new ListFeaturesRequest
-    {
-        Q = "q",
-        WithoutCompanyOverrideFor = "without_company_override_for",
-        WithoutPlanEntitlementFor = "without_plan_entitlement_for",
-        BooleanRequireEvent = true,
-        Limit = 1,
-        Offset = 1,
-    }
-);
+await client.Features.ListFeaturesAsync(new ListFeaturesRequest());
 ```
 </dd>
 </dl>
@@ -7453,7 +6933,7 @@ await client.Features.CreateFeatureAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Features.<a href="/src/SchematicHQ.Client/Features/FeaturesClient.cs">GetFeatureAsync</a>(featureId) -> GetFeatureResponse</code></summary>
+<details><summary><code>client.Features.<a href="/src/SchematicHQ.Client/Features/FeaturesClient.cs">GetFeatureAsync</a>(GetFeatureRequest { ... }) -> GetFeatureResponse</code></summary>
 <dl>
 <dd>
 
@@ -7466,7 +6946,7 @@ await client.Features.CreateFeatureAsync(
 <dd>
 
 ```csharp
-await client.Features.GetFeatureAsync("feature_id");
+await client.Features.GetFeatureAsync(new GetFeatureRequest { FeatureId = "feature_id" });
 ```
 </dd>
 </dl>
@@ -7481,7 +6961,7 @@ await client.Features.GetFeatureAsync("feature_id");
 <dl>
 <dd>
 
-**featureId:** `string` — feature_id
+**request:** `GetFeatureRequest` 
     
 </dd>
 </dl>
@@ -7493,7 +6973,7 @@ await client.Features.GetFeatureAsync("feature_id");
 </dl>
 </details>
 
-<details><summary><code>client.Features.<a href="/src/SchematicHQ.Client/Features/FeaturesClient.cs">UpdateFeatureAsync</a>(featureId, UpdateFeatureRequestBody { ... }) -> UpdateFeatureResponse</code></summary>
+<details><summary><code>client.Features.<a href="/src/SchematicHQ.Client/Features/FeaturesClient.cs">UpdateFeatureAsync</a>(UpdateFeatureRequestBody { ... }) -> UpdateFeatureResponse</code></summary>
 <dl>
 <dd>
 
@@ -7506,7 +6986,7 @@ await client.Features.GetFeatureAsync("feature_id");
 <dd>
 
 ```csharp
-await client.Features.UpdateFeatureAsync("feature_id", new UpdateFeatureRequestBody());
+await client.Features.UpdateFeatureAsync(new UpdateFeatureRequestBody { FeatureId = "feature_id" });
 ```
 </dd>
 </dl>
@@ -7517,14 +6997,6 @@ await client.Features.UpdateFeatureAsync("feature_id", new UpdateFeatureRequestB
 
 <dl>
 <dd>
-
-<dl>
-<dd>
-
-**featureId:** `string` — feature_id
-    
-</dd>
-</dl>
 
 <dl>
 <dd>
@@ -7541,7 +7013,7 @@ await client.Features.UpdateFeatureAsync("feature_id", new UpdateFeatureRequestB
 </dl>
 </details>
 
-<details><summary><code>client.Features.<a href="/src/SchematicHQ.Client/Features/FeaturesClient.cs">DeleteFeatureAsync</a>(featureId) -> DeleteFeatureResponse</code></summary>
+<details><summary><code>client.Features.<a href="/src/SchematicHQ.Client/Features/FeaturesClient.cs">DeleteFeatureAsync</a>(DeleteFeatureRequest { ... }) -> DeleteFeatureResponse</code></summary>
 <dl>
 <dd>
 
@@ -7554,7 +7026,7 @@ await client.Features.UpdateFeatureAsync("feature_id", new UpdateFeatureRequestB
 <dd>
 
 ```csharp
-await client.Features.DeleteFeatureAsync("feature_id");
+await client.Features.DeleteFeatureAsync(new DeleteFeatureRequest { FeatureId = "feature_id" });
 ```
 </dd>
 </dl>
@@ -7569,7 +7041,7 @@ await client.Features.DeleteFeatureAsync("feature_id");
 <dl>
 <dd>
 
-**featureId:** `string` — feature_id
+**request:** `DeleteFeatureRequest` 
     
 </dd>
 </dl>
@@ -7594,17 +7066,7 @@ await client.Features.DeleteFeatureAsync("feature_id");
 <dd>
 
 ```csharp
-await client.Features.CountFeaturesAsync(
-    new CountFeaturesRequest
-    {
-        Q = "q",
-        WithoutCompanyOverrideFor = "without_company_override_for",
-        WithoutPlanEntitlementFor = "without_plan_entitlement_for",
-        BooleanRequireEvent = true,
-        Limit = 1,
-        Offset = 1,
-    }
-);
+await client.Features.CountFeaturesAsync(new CountFeaturesRequest());
 ```
 </dd>
 </dl>
@@ -7644,15 +7106,7 @@ await client.Features.CountFeaturesAsync(
 <dd>
 
 ```csharp
-await client.Features.ListFlagsAsync(
-    new ListFlagsRequest
-    {
-        FeatureId = "feature_id",
-        Q = "q",
-        Limit = 1,
-        Offset = 1,
-    }
-);
+await client.Features.ListFlagsAsync(new ListFlagsRequest());
 ```
 </dd>
 </dl>
@@ -7728,7 +7182,7 @@ await client.Features.CreateFlagAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Features.<a href="/src/SchematicHQ.Client/Features/FeaturesClient.cs">GetFlagAsync</a>(flagId) -> GetFlagResponse</code></summary>
+<details><summary><code>client.Features.<a href="/src/SchematicHQ.Client/Features/FeaturesClient.cs">GetFlagAsync</a>(GetFlagRequest { ... }) -> GetFlagResponse</code></summary>
 <dl>
 <dd>
 
@@ -7741,7 +7195,7 @@ await client.Features.CreateFlagAsync(
 <dd>
 
 ```csharp
-await client.Features.GetFlagAsync("flag_id");
+await client.Features.GetFlagAsync(new GetFlagRequest { FlagId = "flag_id" });
 ```
 </dd>
 </dl>
@@ -7756,7 +7210,7 @@ await client.Features.GetFlagAsync("flag_id");
 <dl>
 <dd>
 
-**flagId:** `string` — flag_id
+**request:** `GetFlagRequest` 
     
 </dd>
 </dl>
@@ -7768,7 +7222,7 @@ await client.Features.GetFlagAsync("flag_id");
 </dl>
 </details>
 
-<details><summary><code>client.Features.<a href="/src/SchematicHQ.Client/Features/FeaturesClient.cs">UpdateFlagAsync</a>(flagId, CreateFlagRequestBody { ... }) -> UpdateFlagResponse</code></summary>
+<details><summary><code>client.Features.<a href="/src/SchematicHQ.Client/Features/FeaturesClient.cs">UpdateFlagAsync</a>(UpdateFlagRequest { ... }) -> UpdateFlagResponse</code></summary>
 <dl>
 <dd>
 
@@ -7782,14 +7236,17 @@ await client.Features.GetFlagAsync("flag_id");
 
 ```csharp
 await client.Features.UpdateFlagAsync(
-    "flag_id",
-    new CreateFlagRequestBody
+    new UpdateFlagRequest
     {
-        DefaultValue = true,
-        Description = "description",
-        FlagType = "boolean",
-        Key = "key",
-        Name = "name",
+        FlagId = "flag_id",
+        Body = new CreateFlagRequestBody
+        {
+            DefaultValue = true,
+            Description = "description",
+            FlagType = "boolean",
+            Key = "key",
+            Name = "name",
+        },
     }
 );
 ```
@@ -7806,15 +7263,7 @@ await client.Features.UpdateFlagAsync(
 <dl>
 <dd>
 
-**flagId:** `string` — flag_id
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request:** `CreateFlagRequestBody` 
+**request:** `UpdateFlagRequest` 
     
 </dd>
 </dl>
@@ -7826,7 +7275,7 @@ await client.Features.UpdateFlagAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Features.<a href="/src/SchematicHQ.Client/Features/FeaturesClient.cs">DeleteFlagAsync</a>(flagId) -> DeleteFlagResponse</code></summary>
+<details><summary><code>client.Features.<a href="/src/SchematicHQ.Client/Features/FeaturesClient.cs">DeleteFlagAsync</a>(DeleteFlagRequest { ... }) -> DeleteFlagResponse</code></summary>
 <dl>
 <dd>
 
@@ -7839,7 +7288,7 @@ await client.Features.UpdateFlagAsync(
 <dd>
 
 ```csharp
-await client.Features.DeleteFlagAsync("flag_id");
+await client.Features.DeleteFlagAsync(new DeleteFlagRequest { FlagId = "flag_id" });
 ```
 </dd>
 </dl>
@@ -7854,7 +7303,7 @@ await client.Features.DeleteFlagAsync("flag_id");
 <dl>
 <dd>
 
-**flagId:** `string` — flag_id
+**request:** `DeleteFlagRequest` 
     
 </dd>
 </dl>
@@ -7866,7 +7315,7 @@ await client.Features.DeleteFlagAsync("flag_id");
 </dl>
 </details>
 
-<details><summary><code>client.Features.<a href="/src/SchematicHQ.Client/Features/FeaturesClient.cs">UpdateFlagRulesAsync</a>(flagId, UpdateFlagRulesRequestBody { ... }) -> UpdateFlagRulesResponse</code></summary>
+<details><summary><code>client.Features.<a href="/src/SchematicHQ.Client/Features/FeaturesClient.cs">UpdateFlagRulesAsync</a>(UpdateFlagRulesRequestBody { ... }) -> UpdateFlagRulesResponse</code></summary>
 <dl>
 <dd>
 
@@ -7880,9 +7329,9 @@ await client.Features.DeleteFlagAsync("flag_id");
 
 ```csharp
 await client.Features.UpdateFlagRulesAsync(
-    "flag_id",
     new UpdateFlagRulesRequestBody
     {
+        FlagId = "flag_id",
         Rules = new List<CreateOrUpdateRuleRequestBody>()
         {
             new CreateOrUpdateRuleRequestBody
@@ -7933,14 +7382,6 @@ await client.Features.UpdateFlagRulesAsync(
 <dl>
 <dd>
 
-**flagId:** `string` — flag_id
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
 **request:** `UpdateFlagRulesRequestBody` 
     
 </dd>
@@ -7953,7 +7394,7 @@ await client.Features.UpdateFlagRulesAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Features.<a href="/src/SchematicHQ.Client/Features/FeaturesClient.cs">CheckFlagAsync</a>(key, CheckFlagRequestBody { ... }) -> CheckFlagResponse</code></summary>
+<details><summary><code>client.Features.<a href="/src/SchematicHQ.Client/Features/FeaturesClient.cs">CheckFlagAsync</a>(CheckFlagRequest { ... }) -> CheckFlagResponse</code></summary>
 <dl>
 <dd>
 
@@ -7966,7 +7407,9 @@ await client.Features.UpdateFlagRulesAsync(
 <dd>
 
 ```csharp
-await client.Features.CheckFlagAsync("key", new CheckFlagRequestBody());
+await client.Features.CheckFlagAsync(
+    new CheckFlagRequest { Key = "key", Body = new CheckFlagRequestBody() }
+);
 ```
 </dd>
 </dl>
@@ -7981,15 +7424,7 @@ await client.Features.CheckFlagAsync("key", new CheckFlagRequestBody());
 <dl>
 <dd>
 
-**key:** `string` — key
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request:** `CheckFlagRequestBody` 
+**request:** `CheckFlagRequest` 
     
 </dd>
 </dl>
@@ -8054,15 +7489,7 @@ await client.Features.CheckFlagsAsync(new CheckFlagRequestBody());
 <dd>
 
 ```csharp
-await client.Features.CountFlagsAsync(
-    new CountFlagsRequest
-    {
-        FeatureId = "feature_id",
-        Q = "q",
-        Limit = 1,
-        Offset = 1,
-    }
-);
+await client.Features.CountFlagsAsync(new CountFlagsRequest());
 ```
 </dd>
 </dl>
@@ -8181,7 +7608,7 @@ await client.Plangroups.CreatePlanGroupAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Plangroups.<a href="/src/SchematicHQ.Client/Plangroups/PlangroupsClient.cs">UpdatePlanGroupAsync</a>(planGroupId, UpdatePlanGroupRequestBody { ... }) -> UpdatePlanGroupResponse</code></summary>
+<details><summary><code>client.Plangroups.<a href="/src/SchematicHQ.Client/Plangroups/PlangroupsClient.cs">UpdatePlanGroupAsync</a>(UpdatePlanGroupRequestBody { ... }) -> UpdatePlanGroupResponse</code></summary>
 <dl>
 <dd>
 
@@ -8195,9 +7622,9 @@ await client.Plangroups.CreatePlanGroupAsync(
 
 ```csharp
 await client.Plangroups.UpdatePlanGroupAsync(
-    "plan_group_id",
     new UpdatePlanGroupRequestBody
     {
+        PlanGroupId = "plan_group_id",
         AddOnIds = new List<string>() { "add_on_ids" },
         CheckoutCollectAddress = true,
         CheckoutCollectEmail = true,
@@ -8232,14 +7659,6 @@ await client.Plangroups.UpdatePlanGroupAsync(
 
 <dl>
 <dd>
-
-<dl>
-<dd>
-
-**planGroupId:** `string` — plan_group_id
-    
-</dd>
-</dl>
 
 <dl>
 <dd>
@@ -8317,15 +7736,7 @@ await client.Accesstokens.IssueTemporaryAccessTokenAsync(
 <dd>
 
 ```csharp
-await client.Webhooks.ListWebhookEventsAsync(
-    new ListWebhookEventsRequest
-    {
-        Q = "q",
-        WebhookId = "webhook_id",
-        Limit = 1,
-        Offset = 1,
-    }
-);
+await client.Webhooks.ListWebhookEventsAsync(new ListWebhookEventsRequest());
 ```
 </dd>
 </dl>
@@ -8352,7 +7763,7 @@ await client.Webhooks.ListWebhookEventsAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Webhooks.<a href="/src/SchematicHQ.Client/Webhooks/WebhooksClient.cs">GetWebhookEventAsync</a>(webhookEventId) -> GetWebhookEventResponse</code></summary>
+<details><summary><code>client.Webhooks.<a href="/src/SchematicHQ.Client/Webhooks/WebhooksClient.cs">GetWebhookEventAsync</a>(GetWebhookEventRequest { ... }) -> GetWebhookEventResponse</code></summary>
 <dl>
 <dd>
 
@@ -8365,7 +7776,9 @@ await client.Webhooks.ListWebhookEventsAsync(
 <dd>
 
 ```csharp
-await client.Webhooks.GetWebhookEventAsync("webhook_event_id");
+await client.Webhooks.GetWebhookEventAsync(
+    new GetWebhookEventRequest { WebhookEventId = "webhook_event_id" }
+);
 ```
 </dd>
 </dl>
@@ -8380,7 +7793,7 @@ await client.Webhooks.GetWebhookEventAsync("webhook_event_id");
 <dl>
 <dd>
 
-**webhookEventId:** `string` — webhook_event_id
+**request:** `GetWebhookEventRequest` 
     
 </dd>
 </dl>
@@ -8405,15 +7818,7 @@ await client.Webhooks.GetWebhookEventAsync("webhook_event_id");
 <dd>
 
 ```csharp
-await client.Webhooks.CountWebhookEventsAsync(
-    new CountWebhookEventsRequest
-    {
-        Q = "q",
-        WebhookId = "webhook_id",
-        Limit = 1,
-        Offset = 1,
-    }
-);
+await client.Webhooks.CountWebhookEventsAsync(new CountWebhookEventsRequest());
 ```
 </dd>
 </dl>
@@ -8453,14 +7858,7 @@ await client.Webhooks.CountWebhookEventsAsync(
 <dd>
 
 ```csharp
-await client.Webhooks.ListWebhooksAsync(
-    new ListWebhooksRequest
-    {
-        Q = "q",
-        Limit = 1,
-        Offset = 1,
-    }
-);
+await client.Webhooks.ListWebhooksAsync(new ListWebhooksRequest());
 ```
 </dd>
 </dl>
@@ -8537,7 +7935,7 @@ await client.Webhooks.CreateWebhookAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Webhooks.<a href="/src/SchematicHQ.Client/Webhooks/WebhooksClient.cs">GetWebhookAsync</a>(webhookId) -> GetWebhookResponse</code></summary>
+<details><summary><code>client.Webhooks.<a href="/src/SchematicHQ.Client/Webhooks/WebhooksClient.cs">GetWebhookAsync</a>(GetWebhookRequest { ... }) -> GetWebhookResponse</code></summary>
 <dl>
 <dd>
 
@@ -8550,7 +7948,7 @@ await client.Webhooks.CreateWebhookAsync(
 <dd>
 
 ```csharp
-await client.Webhooks.GetWebhookAsync("webhook_id");
+await client.Webhooks.GetWebhookAsync(new GetWebhookRequest { WebhookId = "webhook_id" });
 ```
 </dd>
 </dl>
@@ -8565,7 +7963,7 @@ await client.Webhooks.GetWebhookAsync("webhook_id");
 <dl>
 <dd>
 
-**webhookId:** `string` — webhook_id
+**request:** `GetWebhookRequest` 
     
 </dd>
 </dl>
@@ -8577,7 +7975,7 @@ await client.Webhooks.GetWebhookAsync("webhook_id");
 </dl>
 </details>
 
-<details><summary><code>client.Webhooks.<a href="/src/SchematicHQ.Client/Webhooks/WebhooksClient.cs">UpdateWebhookAsync</a>(webhookId, UpdateWebhookRequestBody { ... }) -> UpdateWebhookResponse</code></summary>
+<details><summary><code>client.Webhooks.<a href="/src/SchematicHQ.Client/Webhooks/WebhooksClient.cs">UpdateWebhookAsync</a>(UpdateWebhookRequestBody { ... }) -> UpdateWebhookResponse</code></summary>
 <dl>
 <dd>
 
@@ -8590,7 +7988,7 @@ await client.Webhooks.GetWebhookAsync("webhook_id");
 <dd>
 
 ```csharp
-await client.Webhooks.UpdateWebhookAsync("webhook_id", new UpdateWebhookRequestBody());
+await client.Webhooks.UpdateWebhookAsync(new UpdateWebhookRequestBody { WebhookId = "webhook_id" });
 ```
 </dd>
 </dl>
@@ -8601,14 +7999,6 @@ await client.Webhooks.UpdateWebhookAsync("webhook_id", new UpdateWebhookRequestB
 
 <dl>
 <dd>
-
-<dl>
-<dd>
-
-**webhookId:** `string` — webhook_id
-    
-</dd>
-</dl>
 
 <dl>
 <dd>
@@ -8625,7 +8015,7 @@ await client.Webhooks.UpdateWebhookAsync("webhook_id", new UpdateWebhookRequestB
 </dl>
 </details>
 
-<details><summary><code>client.Webhooks.<a href="/src/SchematicHQ.Client/Webhooks/WebhooksClient.cs">DeleteWebhookAsync</a>(webhookId) -> DeleteWebhookResponse</code></summary>
+<details><summary><code>client.Webhooks.<a href="/src/SchematicHQ.Client/Webhooks/WebhooksClient.cs">DeleteWebhookAsync</a>(DeleteWebhookRequest { ... }) -> DeleteWebhookResponse</code></summary>
 <dl>
 <dd>
 
@@ -8638,7 +8028,7 @@ await client.Webhooks.UpdateWebhookAsync("webhook_id", new UpdateWebhookRequestB
 <dd>
 
 ```csharp
-await client.Webhooks.DeleteWebhookAsync("webhook_id");
+await client.Webhooks.DeleteWebhookAsync(new DeleteWebhookRequest { WebhookId = "webhook_id" });
 ```
 </dd>
 </dl>
@@ -8653,7 +8043,7 @@ await client.Webhooks.DeleteWebhookAsync("webhook_id");
 <dl>
 <dd>
 
-**webhookId:** `string` — webhook_id
+**request:** `DeleteWebhookRequest` 
     
 </dd>
 </dl>
@@ -8678,14 +8068,7 @@ await client.Webhooks.DeleteWebhookAsync("webhook_id");
 <dd>
 
 ```csharp
-await client.Webhooks.CountWebhooksAsync(
-    new CountWebhooksRequest
-    {
-        Q = "q",
-        Limit = 1,
-        Offset = 1,
-    }
-);
+await client.Webhooks.CountWebhooksAsync(new CountWebhooksRequest());
 ```
 </dd>
 </dl>

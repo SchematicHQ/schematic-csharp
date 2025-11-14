@@ -19,7 +19,7 @@ public record GetActiveCompanySubscriptionResponse : IJsonOnDeserialized
     /// Input parameters
     /// </summary>
     [JsonPropertyName("params")]
-    public required GetActiveCompanySubscriptionParams Params { get; set; }
+    public required GetActiveCompanySubscriptionResponseParams Params { get; set; }
 
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();

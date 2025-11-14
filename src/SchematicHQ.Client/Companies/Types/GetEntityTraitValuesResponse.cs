@@ -18,7 +18,7 @@ public record GetEntityTraitValuesResponse : IJsonOnDeserialized
     /// Input parameters
     /// </summary>
     [JsonPropertyName("params")]
-    public required GetEntityTraitValuesParams Params { get; set; }
+    public required GetEntityTraitValuesResponseParams Params { get; set; }
 
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();

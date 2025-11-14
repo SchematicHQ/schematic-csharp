@@ -173,9 +173,9 @@ public partial class PlangroupsClient
 
     /// <example><code>
     /// await client.Plangroups.UpdatePlanGroupAsync(
-    ///     "plan_group_id",
     ///     new UpdatePlanGroupRequestBody
     ///     {
+    ///         PlanGroupId = "plan_group_id",
     ///         AddOnIds = new List&lt;string&gt;() { "add_on_ids" },
     ///         CheckoutCollectAddress = true,
     ///         CheckoutCollectEmail = true,
@@ -202,7 +202,6 @@ public partial class PlangroupsClient
     /// );
     /// </code></example>
     public async Task<UpdatePlanGroupResponse> UpdatePlanGroupAsync(
-        string planGroupId,
         UpdatePlanGroupRequestBody request,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
@@ -216,7 +215,7 @@ public partial class PlangroupsClient
                     Method = HttpMethod.Put,
                     Path = string.Format(
                         "plan-groups/{0}",
-                        ValueConvert.ToPathParameterString(planGroupId)
+                        ValueConvert.ToPathParameterString(request.PlanGroupId)
                     ),
                     Body = request,
                     ContentType = "application/json",

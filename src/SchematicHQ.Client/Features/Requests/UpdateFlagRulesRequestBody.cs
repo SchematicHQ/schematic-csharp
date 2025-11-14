@@ -6,6 +6,12 @@ namespace SchematicHQ.Client;
 [Serializable]
 public record UpdateFlagRulesRequestBody
 {
+    /// <summary>
+    /// flag_id
+    /// </summary>
+    [JsonIgnore]
+    public required string FlagId { get; set; }
+
     [JsonPropertyName("rules")]
     public IEnumerable<CreateOrUpdateRuleRequestBody> Rules { get; set; } =
         new List<CreateOrUpdateRuleRequestBody>();
