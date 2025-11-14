@@ -19,7 +19,7 @@ public record ListBillingCreditsResponse : IJsonOnDeserialized
     /// Input parameters
     /// </summary>
     [JsonPropertyName("params")]
-    public required ListBillingCreditsParams Params { get; set; }
+    public required ListBillingCreditsResponseParams Params { get; set; }
 
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();

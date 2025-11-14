@@ -19,7 +19,7 @@ public record ListCompanyOverridesResponse : IJsonOnDeserialized
     /// Input parameters
     /// </summary>
     [JsonPropertyName("params")]
-    public required ListCompanyOverridesParams Params { get; set; }
+    public required ListCompanyOverridesResponseParams Params { get; set; }
 
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();

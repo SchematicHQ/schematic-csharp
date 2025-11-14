@@ -19,7 +19,7 @@ public record ListBillingPlanCreditGrantsResponse : IJsonOnDeserialized
     /// Input parameters
     /// </summary>
     [JsonPropertyName("params")]
-    public required ListBillingPlanCreditGrantsParams Params { get; set; }
+    public required ListBillingPlanCreditGrantsResponseParams Params { get; set; }
 
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();

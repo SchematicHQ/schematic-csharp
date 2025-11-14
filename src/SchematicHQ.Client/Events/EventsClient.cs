@@ -91,14 +91,7 @@ public partial class EventsClient
     }
 
     /// <example><code>
-    /// await client.Events.GetEventSummariesAsync(
-    ///     new GetEventSummariesRequest
-    ///     {
-    ///         Q = "q",
-    ///         Limit = 1,
-    ///         Offset = 1,
-    ///     }
-    /// );
+    /// await client.Events.GetEventSummariesAsync(new GetEventSummariesRequest());
     /// </code></example>
     public async Task<GetEventSummariesResponse> GetEventSummariesAsync(
         GetEventSummariesRequest request,
@@ -179,17 +172,7 @@ public partial class EventsClient
     }
 
     /// <example><code>
-    /// await client.Events.ListEventsAsync(
-    ///     new ListEventsRequest
-    ///     {
-    ///         CompanyId = "company_id",
-    ///         EventSubtype = "event_subtype",
-    ///         FlagId = "flag_id",
-    ///         UserId = "user_id",
-    ///         Limit = 1,
-    ///         Offset = 1,
-    ///     }
-    /// );
+    /// await client.Events.ListEventsAsync(new ListEventsRequest());
     /// </code></example>
     public async Task<ListEventsResponse> ListEventsAsync(
         ListEventsRequest request,
@@ -352,10 +335,10 @@ public partial class EventsClient
     }
 
     /// <example><code>
-    /// await client.Events.GetEventAsync("event_id");
+    /// await client.Events.GetEventAsync(new GetEventRequest { EventId = "event_id" });
     /// </code></example>
     public async Task<GetEventResponse> GetEventAsync(
-        string eventId,
+        GetEventRequest request,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
@@ -366,7 +349,10 @@ public partial class EventsClient
                 {
                     BaseUrl = _client.Options.BaseUrl,
                     Method = HttpMethod.Get,
-                    Path = string.Format("events/{0}", ValueConvert.ToPathParameterString(eventId)),
+                    Path = string.Format(
+                        "events/{0}",
+                        ValueConvert.ToPathParameterString(request.EventId)
+                    ),
                     Options = options,
                 },
                 cancellationToken

@@ -18,7 +18,7 @@ public record CountPlanEntitlementsResponse : IJsonOnDeserialized
     /// Input parameters
     /// </summary>
     [JsonPropertyName("params")]
-    public required CountPlanEntitlementsParams Params { get; set; }
+    public required CountPlanEntitlementsResponseParams Params { get; set; }
 
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();

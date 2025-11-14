@@ -18,7 +18,7 @@ public record GetFeatureUsageByCompanyResponse : IJsonOnDeserialized
     /// Input parameters
     /// </summary>
     [JsonPropertyName("params")]
-    public required GetFeatureUsageByCompanyParams Params { get; set; }
+    public required GetFeatureUsageByCompanyResponseParams Params { get; set; }
 
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();

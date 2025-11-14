@@ -15,17 +15,7 @@ public partial class FeaturesClient
     }
 
     /// <example><code>
-    /// await client.Features.ListFeaturesAsync(
-    ///     new ListFeaturesRequest
-    ///     {
-    ///         Q = "q",
-    ///         WithoutCompanyOverrideFor = "without_company_override_for",
-    ///         WithoutPlanEntitlementFor = "without_plan_entitlement_for",
-    ///         BooleanRequireEvent = true,
-    ///         Limit = 1,
-    ///         Offset = 1,
-    ///     }
-    /// );
+    /// await client.Features.ListFeaturesAsync(new ListFeaturesRequest());
     /// </code></example>
     public async Task<ListFeaturesResponse> ListFeaturesAsync(
         ListFeaturesRequest request,
@@ -196,10 +186,10 @@ public partial class FeaturesClient
     }
 
     /// <example><code>
-    /// await client.Features.GetFeatureAsync("feature_id");
+    /// await client.Features.GetFeatureAsync(new GetFeatureRequest { FeatureId = "feature_id" });
     /// </code></example>
     public async Task<GetFeatureResponse> GetFeatureAsync(
-        string featureId,
+        GetFeatureRequest request,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
@@ -212,7 +202,7 @@ public partial class FeaturesClient
                     Method = HttpMethod.Get,
                     Path = string.Format(
                         "features/{0}",
-                        ValueConvert.ToPathParameterString(featureId)
+                        ValueConvert.ToPathParameterString(request.FeatureId)
                     ),
                     Options = options,
                 },
@@ -263,10 +253,9 @@ public partial class FeaturesClient
     }
 
     /// <example><code>
-    /// await client.Features.UpdateFeatureAsync("feature_id", new UpdateFeatureRequestBody());
+    /// await client.Features.UpdateFeatureAsync(new UpdateFeatureRequestBody { FeatureId = "feature_id" });
     /// </code></example>
     public async Task<UpdateFeatureResponse> UpdateFeatureAsync(
-        string featureId,
         UpdateFeatureRequestBody request,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
@@ -280,7 +269,7 @@ public partial class FeaturesClient
                     Method = HttpMethod.Put,
                     Path = string.Format(
                         "features/{0}",
-                        ValueConvert.ToPathParameterString(featureId)
+                        ValueConvert.ToPathParameterString(request.FeatureId)
                     ),
                     Body = request,
                     ContentType = "application/json",
@@ -335,10 +324,10 @@ public partial class FeaturesClient
     }
 
     /// <example><code>
-    /// await client.Features.DeleteFeatureAsync("feature_id");
+    /// await client.Features.DeleteFeatureAsync(new DeleteFeatureRequest { FeatureId = "feature_id" });
     /// </code></example>
     public async Task<DeleteFeatureResponse> DeleteFeatureAsync(
-        string featureId,
+        DeleteFeatureRequest request,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
@@ -351,7 +340,7 @@ public partial class FeaturesClient
                     Method = HttpMethod.Delete,
                     Path = string.Format(
                         "features/{0}",
-                        ValueConvert.ToPathParameterString(featureId)
+                        ValueConvert.ToPathParameterString(request.FeatureId)
                     ),
                     Options = options,
                 },
@@ -404,17 +393,7 @@ public partial class FeaturesClient
     }
 
     /// <example><code>
-    /// await client.Features.CountFeaturesAsync(
-    ///     new CountFeaturesRequest
-    ///     {
-    ///         Q = "q",
-    ///         WithoutCompanyOverrideFor = "without_company_override_for",
-    ///         WithoutPlanEntitlementFor = "without_plan_entitlement_for",
-    ///         BooleanRequireEvent = true,
-    ///         Limit = 1,
-    ///         Offset = 1,
-    ///     }
-    /// );
+    /// await client.Features.CountFeaturesAsync(new CountFeaturesRequest());
     /// </code></example>
     public async Task<CountFeaturesResponse> CountFeaturesAsync(
         CountFeaturesRequest request,
@@ -510,15 +489,7 @@ public partial class FeaturesClient
     }
 
     /// <example><code>
-    /// await client.Features.ListFlagsAsync(
-    ///     new ListFlagsRequest
-    ///     {
-    ///         FeatureId = "feature_id",
-    ///         Q = "q",
-    ///         Limit = 1,
-    ///         Offset = 1,
-    ///     }
-    /// );
+    /// await client.Features.ListFlagsAsync(new ListFlagsRequest());
     /// </code></example>
     public async Task<ListFlagsResponse> ListFlagsAsync(
         ListFlagsRequest request,
@@ -680,10 +651,10 @@ public partial class FeaturesClient
     }
 
     /// <example><code>
-    /// await client.Features.GetFlagAsync("flag_id");
+    /// await client.Features.GetFlagAsync(new GetFlagRequest { FlagId = "flag_id" });
     /// </code></example>
     public async Task<GetFlagResponse> GetFlagAsync(
-        string flagId,
+        GetFlagRequest request,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
@@ -694,7 +665,10 @@ public partial class FeaturesClient
                 {
                     BaseUrl = _client.Options.BaseUrl,
                     Method = HttpMethod.Get,
-                    Path = string.Format("flags/{0}", ValueConvert.ToPathParameterString(flagId)),
+                    Path = string.Format(
+                        "flags/{0}",
+                        ValueConvert.ToPathParameterString(request.FlagId)
+                    ),
                     Options = options,
                 },
                 cancellationToken
@@ -745,20 +719,22 @@ public partial class FeaturesClient
 
     /// <example><code>
     /// await client.Features.UpdateFlagAsync(
-    ///     "flag_id",
-    ///     new CreateFlagRequestBody
+    ///     new UpdateFlagRequest
     ///     {
-    ///         DefaultValue = true,
-    ///         Description = "description",
-    ///         FlagType = "boolean",
-    ///         Key = "key",
-    ///         Name = "name",
+    ///         FlagId = "flag_id",
+    ///         Body = new CreateFlagRequestBody
+    ///         {
+    ///             DefaultValue = true,
+    ///             Description = "description",
+    ///             FlagType = "boolean",
+    ///             Key = "key",
+    ///             Name = "name",
+    ///         },
     ///     }
     /// );
     /// </code></example>
     public async Task<UpdateFlagResponse> UpdateFlagAsync(
-        string flagId,
-        CreateFlagRequestBody request,
+        UpdateFlagRequest request,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
@@ -769,8 +745,11 @@ public partial class FeaturesClient
                 {
                     BaseUrl = _client.Options.BaseUrl,
                     Method = HttpMethod.Put,
-                    Path = string.Format("flags/{0}", ValueConvert.ToPathParameterString(flagId)),
-                    Body = request,
+                    Path = string.Format(
+                        "flags/{0}",
+                        ValueConvert.ToPathParameterString(request.FlagId)
+                    ),
+                    Body = request.Body,
                     ContentType = "application/json",
                     Options = options,
                 },
@@ -823,10 +802,10 @@ public partial class FeaturesClient
     }
 
     /// <example><code>
-    /// await client.Features.DeleteFlagAsync("flag_id");
+    /// await client.Features.DeleteFlagAsync(new DeleteFlagRequest { FlagId = "flag_id" });
     /// </code></example>
     public async Task<DeleteFlagResponse> DeleteFlagAsync(
-        string flagId,
+        DeleteFlagRequest request,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
@@ -837,7 +816,10 @@ public partial class FeaturesClient
                 {
                     BaseUrl = _client.Options.BaseUrl,
                     Method = HttpMethod.Delete,
-                    Path = string.Format("flags/{0}", ValueConvert.ToPathParameterString(flagId)),
+                    Path = string.Format(
+                        "flags/{0}",
+                        ValueConvert.ToPathParameterString(request.FlagId)
+                    ),
                     Options = options,
                 },
                 cancellationToken
@@ -890,9 +872,9 @@ public partial class FeaturesClient
 
     /// <example><code>
     /// await client.Features.UpdateFlagRulesAsync(
-    ///     "flag_id",
     ///     new UpdateFlagRulesRequestBody
     ///     {
+    ///         FlagId = "flag_id",
     ///         Rules = new List&lt;CreateOrUpdateRuleRequestBody&gt;()
     ///         {
     ///             new CreateOrUpdateRuleRequestBody
@@ -931,7 +913,6 @@ public partial class FeaturesClient
     /// );
     /// </code></example>
     public async Task<UpdateFlagRulesResponse> UpdateFlagRulesAsync(
-        string flagId,
         UpdateFlagRulesRequestBody request,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
@@ -945,7 +926,7 @@ public partial class FeaturesClient
                     Method = HttpMethod.Put,
                     Path = string.Format(
                         "flags/{0}/rules",
-                        ValueConvert.ToPathParameterString(flagId)
+                        ValueConvert.ToPathParameterString(request.FlagId)
                     ),
                     Body = request,
                     ContentType = "application/json",
@@ -1000,11 +981,12 @@ public partial class FeaturesClient
     }
 
     /// <example><code>
-    /// await client.Features.CheckFlagAsync("key", new CheckFlagRequestBody());
+    /// await client.Features.CheckFlagAsync(
+    ///     new CheckFlagRequest { Key = "key", Body = new CheckFlagRequestBody() }
+    /// );
     /// </code></example>
     public async Task<CheckFlagResponse> CheckFlagAsync(
-        string key,
-        CheckFlagRequestBody request,
+        CheckFlagRequest request,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
@@ -1017,9 +999,9 @@ public partial class FeaturesClient
                     Method = HttpMethod.Post,
                     Path = string.Format(
                         "flags/{0}/check",
-                        ValueConvert.ToPathParameterString(key)
+                        ValueConvert.ToPathParameterString(request.Key)
                     ),
-                    Body = request,
+                    Body = request.Body,
                     ContentType = "application/json",
                     Options = options,
                 },
@@ -1140,15 +1122,7 @@ public partial class FeaturesClient
     }
 
     /// <example><code>
-    /// await client.Features.CountFlagsAsync(
-    ///     new CountFlagsRequest
-    ///     {
-    ///         FeatureId = "feature_id",
-    ///         Q = "q",
-    ///         Limit = 1,
-    ///         Offset = 1,
-    ///     }
-    /// );
+    /// await client.Features.CountFlagsAsync(new CountFlagsRequest());
     /// </code></example>
     public async Task<CountFlagsResponse> CountFlagsAsync(
         CountFlagsRequest request,

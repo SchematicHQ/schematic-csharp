@@ -15,15 +15,7 @@ public partial class WebhooksClient
     }
 
     /// <example><code>
-    /// await client.Webhooks.ListWebhookEventsAsync(
-    ///     new ListWebhookEventsRequest
-    ///     {
-    ///         Q = "q",
-    ///         WebhookId = "webhook_id",
-    ///         Limit = 1,
-    ///         Offset = 1,
-    ///     }
-    /// );
+    /// await client.Webhooks.ListWebhookEventsAsync(new ListWebhookEventsRequest());
     /// </code></example>
     public async Task<ListWebhookEventsResponse> ListWebhookEventsAsync(
         ListWebhookEventsRequest request,
@@ -108,10 +100,12 @@ public partial class WebhooksClient
     }
 
     /// <example><code>
-    /// await client.Webhooks.GetWebhookEventAsync("webhook_event_id");
+    /// await client.Webhooks.GetWebhookEventAsync(
+    ///     new GetWebhookEventRequest { WebhookEventId = "webhook_event_id" }
+    /// );
     /// </code></example>
     public async Task<GetWebhookEventResponse> GetWebhookEventAsync(
-        string webhookEventId,
+        GetWebhookEventRequest request,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
@@ -124,7 +118,7 @@ public partial class WebhooksClient
                     Method = HttpMethod.Get,
                     Path = string.Format(
                         "webhook-events/{0}",
-                        ValueConvert.ToPathParameterString(webhookEventId)
+                        ValueConvert.ToPathParameterString(request.WebhookEventId)
                     ),
                     Options = options,
                 },
@@ -175,15 +169,7 @@ public partial class WebhooksClient
     }
 
     /// <example><code>
-    /// await client.Webhooks.CountWebhookEventsAsync(
-    ///     new CountWebhookEventsRequest
-    ///     {
-    ///         Q = "q",
-    ///         WebhookId = "webhook_id",
-    ///         Limit = 1,
-    ///         Offset = 1,
-    ///     }
-    /// );
+    /// await client.Webhooks.CountWebhookEventsAsync(new CountWebhookEventsRequest());
     /// </code></example>
     public async Task<CountWebhookEventsResponse> CountWebhookEventsAsync(
         CountWebhookEventsRequest request,
@@ -268,14 +254,7 @@ public partial class WebhooksClient
     }
 
     /// <example><code>
-    /// await client.Webhooks.ListWebhooksAsync(
-    ///     new ListWebhooksRequest
-    ///     {
-    ///         Q = "q",
-    ///         Limit = 1,
-    ///         Offset = 1,
-    ///     }
-    /// );
+    /// await client.Webhooks.ListWebhooksAsync(new ListWebhooksRequest());
     /// </code></example>
     public async Task<ListWebhooksResponse> ListWebhooksAsync(
         ListWebhooksRequest request,
@@ -433,10 +412,10 @@ public partial class WebhooksClient
     }
 
     /// <example><code>
-    /// await client.Webhooks.GetWebhookAsync("webhook_id");
+    /// await client.Webhooks.GetWebhookAsync(new GetWebhookRequest { WebhookId = "webhook_id" });
     /// </code></example>
     public async Task<GetWebhookResponse> GetWebhookAsync(
-        string webhookId,
+        GetWebhookRequest request,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
@@ -449,7 +428,7 @@ public partial class WebhooksClient
                     Method = HttpMethod.Get,
                     Path = string.Format(
                         "webhooks/{0}",
-                        ValueConvert.ToPathParameterString(webhookId)
+                        ValueConvert.ToPathParameterString(request.WebhookId)
                     ),
                     Options = options,
                 },
@@ -500,10 +479,9 @@ public partial class WebhooksClient
     }
 
     /// <example><code>
-    /// await client.Webhooks.UpdateWebhookAsync("webhook_id", new UpdateWebhookRequestBody());
+    /// await client.Webhooks.UpdateWebhookAsync(new UpdateWebhookRequestBody { WebhookId = "webhook_id" });
     /// </code></example>
     public async Task<UpdateWebhookResponse> UpdateWebhookAsync(
-        string webhookId,
         UpdateWebhookRequestBody request,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
@@ -517,7 +495,7 @@ public partial class WebhooksClient
                     Method = HttpMethod.Put,
                     Path = string.Format(
                         "webhooks/{0}",
-                        ValueConvert.ToPathParameterString(webhookId)
+                        ValueConvert.ToPathParameterString(request.WebhookId)
                     ),
                     Body = request,
                     ContentType = "application/json",
@@ -572,10 +550,10 @@ public partial class WebhooksClient
     }
 
     /// <example><code>
-    /// await client.Webhooks.DeleteWebhookAsync("webhook_id");
+    /// await client.Webhooks.DeleteWebhookAsync(new DeleteWebhookRequest { WebhookId = "webhook_id" });
     /// </code></example>
     public async Task<DeleteWebhookResponse> DeleteWebhookAsync(
-        string webhookId,
+        DeleteWebhookRequest request,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
@@ -588,7 +566,7 @@ public partial class WebhooksClient
                     Method = HttpMethod.Delete,
                     Path = string.Format(
                         "webhooks/{0}",
-                        ValueConvert.ToPathParameterString(webhookId)
+                        ValueConvert.ToPathParameterString(request.WebhookId)
                     ),
                     Options = options,
                 },
@@ -641,14 +619,7 @@ public partial class WebhooksClient
     }
 
     /// <example><code>
-    /// await client.Webhooks.CountWebhooksAsync(
-    ///     new CountWebhooksRequest
-    ///     {
-    ///         Q = "q",
-    ///         Limit = 1,
-    ///         Offset = 1,
-    ///     }
-    /// );
+    /// await client.Webhooks.CountWebhooksAsync(new CountWebhooksRequest());
     /// </code></example>
     public async Task<CountWebhooksResponse> CountWebhooksAsync(
         CountWebhooksRequest request,

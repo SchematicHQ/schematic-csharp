@@ -19,7 +19,7 @@ public record ListWebhookEventsResponse : IJsonOnDeserialized
     /// Input parameters
     /// </summary>
     [JsonPropertyName("params")]
-    public required ListWebhookEventsParams Params { get; set; }
+    public required ListWebhookEventsResponseParams Params { get; set; }
 
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();

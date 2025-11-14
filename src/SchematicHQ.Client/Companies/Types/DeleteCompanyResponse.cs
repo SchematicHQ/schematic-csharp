@@ -18,7 +18,7 @@ public record DeleteCompanyResponse : IJsonOnDeserialized
     /// Input parameters
     /// </summary>
     [JsonPropertyName("params")]
-    public required DeleteCompanyParams Params { get; set; }
+    public required DeleteCompanyResponseParams Params { get; set; }
 
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();

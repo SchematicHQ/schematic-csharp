@@ -6,6 +6,12 @@ namespace SchematicHQ.Client;
 [Serializable]
 public record UpsertBillingProductRequestBody
 {
+    /// <summary>
+    /// plan_id
+    /// </summary>
+    [JsonIgnore]
+    public required string PlanId { get; set; }
+
     [JsonPropertyName("billing_product_id")]
     public string? BillingProductId { get; set; }
 

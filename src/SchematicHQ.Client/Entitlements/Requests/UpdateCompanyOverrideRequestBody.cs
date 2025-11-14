@@ -6,6 +6,12 @@ namespace SchematicHQ.Client;
 [Serializable]
 public record UpdateCompanyOverrideRequestBody
 {
+    /// <summary>
+    /// company_override_id
+    /// </summary>
+    [JsonIgnore]
+    public required string CompanyOverrideId { get; set; }
+
     [JsonPropertyName("credit_consumption_rate")]
     public double? CreditConsumptionRate { get; set; }
 

@@ -18,7 +18,7 @@ public record CountCreditLedgerResponse : IJsonOnDeserialized
     /// Input parameters
     /// </summary>
     [JsonPropertyName("params")]
-    public required CountCreditLedgerParams Params { get; set; }
+    public required CountCreditLedgerResponseParams Params { get; set; }
 
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();

@@ -19,7 +19,7 @@ public record ListCompaniesForAdvancedFilterResponse : IJsonOnDeserialized
     /// Input parameters
     /// </summary>
     [JsonPropertyName("params")]
-    public required ListCompaniesForAdvancedFilterParams Params { get; set; }
+    public required ListCompaniesForAdvancedFilterResponseParams Params { get; set; }
 
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();

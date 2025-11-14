@@ -6,6 +6,12 @@ namespace SchematicHQ.Client;
 [Serializable]
 public record UpdateEnvironmentRequestBody
 {
+    /// <summary>
+    /// environment_id
+    /// </summary>
+    [JsonIgnore]
+    public required string EnvironmentId { get; set; }
+
     [JsonPropertyName("environment_type")]
     public UpdateEnvironmentRequestBodyEnvironmentType? EnvironmentType { get; set; }
 

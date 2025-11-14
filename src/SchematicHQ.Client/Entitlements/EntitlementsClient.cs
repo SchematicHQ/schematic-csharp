@@ -15,17 +15,7 @@ public partial class EntitlementsClient
     }
 
     /// <example><code>
-    /// await client.Entitlements.ListCompanyOverridesAsync(
-    ///     new ListCompanyOverridesRequest
-    ///     {
-    ///         CompanyId = "company_id",
-    ///         FeatureId = "feature_id",
-    ///         WithoutExpired = true,
-    ///         Q = "q",
-    ///         Limit = 1,
-    ///         Offset = 1,
-    ///     }
-    /// );
+    /// await client.Entitlements.ListCompanyOverridesAsync(new ListCompanyOverridesRequest());
     /// </code></example>
     public async Task<ListCompanyOverridesResponse> ListCompanyOverridesAsync(
         ListCompanyOverridesRequest request,
@@ -195,10 +185,12 @@ public partial class EntitlementsClient
     }
 
     /// <example><code>
-    /// await client.Entitlements.GetCompanyOverrideAsync("company_override_id");
+    /// await client.Entitlements.GetCompanyOverrideAsync(
+    ///     new GetCompanyOverrideRequest { CompanyOverrideId = "company_override_id" }
+    /// );
     /// </code></example>
     public async Task<GetCompanyOverrideResponse> GetCompanyOverrideAsync(
-        string companyOverrideId,
+        GetCompanyOverrideRequest request,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
@@ -211,7 +203,7 @@ public partial class EntitlementsClient
                     Method = HttpMethod.Get,
                     Path = string.Format(
                         "company-overrides/{0}",
-                        ValueConvert.ToPathParameterString(companyOverrideId)
+                        ValueConvert.ToPathParameterString(request.CompanyOverrideId)
                     ),
                     Options = options,
                 },
@@ -263,15 +255,14 @@ public partial class EntitlementsClient
 
     /// <example><code>
     /// await client.Entitlements.UpdateCompanyOverrideAsync(
-    ///     "company_override_id",
     ///     new UpdateCompanyOverrideRequestBody
     ///     {
+    ///         CompanyOverrideId = "company_override_id",
     ///         ValueType = UpdateCompanyOverrideRequestBodyValueType.Boolean,
     ///     }
     /// );
     /// </code></example>
     public async Task<UpdateCompanyOverrideResponse> UpdateCompanyOverrideAsync(
-        string companyOverrideId,
         UpdateCompanyOverrideRequestBody request,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
@@ -285,7 +276,7 @@ public partial class EntitlementsClient
                     Method = HttpMethod.Put,
                     Path = string.Format(
                         "company-overrides/{0}",
-                        ValueConvert.ToPathParameterString(companyOverrideId)
+                        ValueConvert.ToPathParameterString(request.CompanyOverrideId)
                     ),
                     Body = request,
                     ContentType = "application/json",
@@ -340,10 +331,12 @@ public partial class EntitlementsClient
     }
 
     /// <example><code>
-    /// await client.Entitlements.DeleteCompanyOverrideAsync("company_override_id");
+    /// await client.Entitlements.DeleteCompanyOverrideAsync(
+    ///     new DeleteCompanyOverrideRequest { CompanyOverrideId = "company_override_id" }
+    /// );
     /// </code></example>
     public async Task<DeleteCompanyOverrideResponse> DeleteCompanyOverrideAsync(
-        string companyOverrideId,
+        DeleteCompanyOverrideRequest request,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
@@ -356,7 +349,7 @@ public partial class EntitlementsClient
                     Method = HttpMethod.Delete,
                     Path = string.Format(
                         "company-overrides/{0}",
-                        ValueConvert.ToPathParameterString(companyOverrideId)
+                        ValueConvert.ToPathParameterString(request.CompanyOverrideId)
                     ),
                     Options = options,
                 },
@@ -409,17 +402,7 @@ public partial class EntitlementsClient
     }
 
     /// <example><code>
-    /// await client.Entitlements.CountCompanyOverridesAsync(
-    ///     new CountCompanyOverridesRequest
-    ///     {
-    ///         CompanyId = "company_id",
-    ///         FeatureId = "feature_id",
-    ///         WithoutExpired = true,
-    ///         Q = "q",
-    ///         Limit = 1,
-    ///         Offset = 1,
-    ///     }
-    /// );
+    /// await client.Entitlements.CountCompanyOverridesAsync(new CountCompanyOverridesRequest());
     /// </code></example>
     public async Task<CountCompanyOverridesResponse> CountCompanyOverridesAsync(
         CountCompanyOverridesRequest request,
@@ -515,13 +498,7 @@ public partial class EntitlementsClient
 
     /// <example><code>
     /// await client.Entitlements.ListFeatureCompaniesAsync(
-    ///     new ListFeatureCompaniesRequest
-    ///     {
-    ///         FeatureId = "feature_id",
-    ///         Q = "q",
-    ///         Limit = 1,
-    ///         Offset = 1,
-    ///     }
+    ///     new ListFeatureCompaniesRequest { FeatureId = "feature_id" }
     /// );
     /// </code></example>
     public async Task<ListFeatureCompaniesResponse> ListFeatureCompaniesAsync(
@@ -604,13 +581,7 @@ public partial class EntitlementsClient
 
     /// <example><code>
     /// await client.Entitlements.CountFeatureCompaniesAsync(
-    ///     new CountFeatureCompaniesRequest
-    ///     {
-    ///         FeatureId = "feature_id",
-    ///         Q = "q",
-    ///         Limit = 1,
-    ///         Offset = 1,
-    ///     }
+    ///     new CountFeatureCompaniesRequest { FeatureId = "feature_id" }
     /// );
     /// </code></example>
     public async Task<CountFeatureCompaniesResponse> CountFeatureCompaniesAsync(
@@ -692,16 +663,7 @@ public partial class EntitlementsClient
     }
 
     /// <example><code>
-    /// await client.Entitlements.ListFeatureUsageAsync(
-    ///     new ListFeatureUsageRequest
-    ///     {
-    ///         CompanyId = "company_id",
-    ///         Q = "q",
-    ///         WithoutNegativeEntitlements = true,
-    ///         Limit = 1,
-    ///         Offset = 1,
-    ///     }
-    /// );
+    /// await client.Entitlements.ListFeatureUsageAsync(new ListFeatureUsageRequest());
     /// </code></example>
     public async Task<ListFeatureUsageResponse> ListFeatureUsageAsync(
         ListFeatureUsageRequest request,
@@ -796,16 +758,7 @@ public partial class EntitlementsClient
     }
 
     /// <example><code>
-    /// await client.Entitlements.CountFeatureUsageAsync(
-    ///     new CountFeatureUsageRequest
-    ///     {
-    ///         CompanyId = "company_id",
-    ///         Q = "q",
-    ///         WithoutNegativeEntitlements = true,
-    ///         Limit = 1,
-    ///         Offset = 1,
-    ///     }
-    /// );
+    /// await client.Entitlements.CountFeatureUsageAsync(new CountFeatureUsageRequest());
     /// </code></example>
     public async Task<CountFeatureUsageResponse> CountFeatureUsageAsync(
         CountFeatureUsageRequest request,
@@ -901,13 +854,7 @@ public partial class EntitlementsClient
 
     /// <example><code>
     /// await client.Entitlements.ListFeatureUsersAsync(
-    ///     new ListFeatureUsersRequest
-    ///     {
-    ///         FeatureId = "feature_id",
-    ///         Q = "q",
-    ///         Limit = 1,
-    ///         Offset = 1,
-    ///     }
+    ///     new ListFeatureUsersRequest { FeatureId = "feature_id" }
     /// );
     /// </code></example>
     public async Task<ListFeatureUsersResponse> ListFeatureUsersAsync(
@@ -990,13 +937,7 @@ public partial class EntitlementsClient
 
     /// <example><code>
     /// await client.Entitlements.CountFeatureUsersAsync(
-    ///     new CountFeatureUsersRequest
-    ///     {
-    ///         FeatureId = "feature_id",
-    ///         Q = "q",
-    ///         Limit = 1,
-    ///         Offset = 1,
-    ///     }
+    ///     new CountFeatureUsersRequest { FeatureId = "feature_id" }
     /// );
     /// </code></example>
     public async Task<CountFeatureUsersResponse> CountFeatureUsersAsync(
@@ -1078,17 +1019,7 @@ public partial class EntitlementsClient
     }
 
     /// <example><code>
-    /// await client.Entitlements.ListPlanEntitlementsAsync(
-    ///     new ListPlanEntitlementsRequest
-    ///     {
-    ///         FeatureId = "feature_id",
-    ///         PlanId = "plan_id",
-    ///         Q = "q",
-    ///         WithMeteredProducts = true,
-    ///         Limit = 1,
-    ///         Offset = 1,
-    ///     }
-    /// );
+    /// await client.Entitlements.ListPlanEntitlementsAsync(new ListPlanEntitlementsRequest());
     /// </code></example>
     public async Task<ListPlanEntitlementsResponse> ListPlanEntitlementsAsync(
         ListPlanEntitlementsRequest request,
@@ -1260,10 +1191,12 @@ public partial class EntitlementsClient
     }
 
     /// <example><code>
-    /// await client.Entitlements.GetPlanEntitlementAsync("plan_entitlement_id");
+    /// await client.Entitlements.GetPlanEntitlementAsync(
+    ///     new GetPlanEntitlementRequest { PlanEntitlementId = "plan_entitlement_id" }
+    /// );
     /// </code></example>
     public async Task<GetPlanEntitlementResponse> GetPlanEntitlementAsync(
-        string planEntitlementId,
+        GetPlanEntitlementRequest request,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
@@ -1276,7 +1209,7 @@ public partial class EntitlementsClient
                     Method = HttpMethod.Get,
                     Path = string.Format(
                         "plan-entitlements/{0}",
-                        ValueConvert.ToPathParameterString(planEntitlementId)
+                        ValueConvert.ToPathParameterString(request.PlanEntitlementId)
                     ),
                     Options = options,
                 },
@@ -1328,15 +1261,14 @@ public partial class EntitlementsClient
 
     /// <example><code>
     /// await client.Entitlements.UpdatePlanEntitlementAsync(
-    ///     "plan_entitlement_id",
     ///     new UpdatePlanEntitlementRequestBody
     ///     {
+    ///         PlanEntitlementId = "plan_entitlement_id",
     ///         ValueType = UpdatePlanEntitlementRequestBodyValueType.Boolean,
     ///     }
     /// );
     /// </code></example>
     public async Task<UpdatePlanEntitlementResponse> UpdatePlanEntitlementAsync(
-        string planEntitlementId,
         UpdatePlanEntitlementRequestBody request,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
@@ -1350,7 +1282,7 @@ public partial class EntitlementsClient
                     Method = HttpMethod.Put,
                     Path = string.Format(
                         "plan-entitlements/{0}",
-                        ValueConvert.ToPathParameterString(planEntitlementId)
+                        ValueConvert.ToPathParameterString(request.PlanEntitlementId)
                     ),
                     Body = request,
                     ContentType = "application/json",
@@ -1405,10 +1337,12 @@ public partial class EntitlementsClient
     }
 
     /// <example><code>
-    /// await client.Entitlements.DeletePlanEntitlementAsync("plan_entitlement_id");
+    /// await client.Entitlements.DeletePlanEntitlementAsync(
+    ///     new DeletePlanEntitlementRequest { PlanEntitlementId = "plan_entitlement_id" }
+    /// );
     /// </code></example>
     public async Task<DeletePlanEntitlementResponse> DeletePlanEntitlementAsync(
-        string planEntitlementId,
+        DeletePlanEntitlementRequest request,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
@@ -1421,7 +1355,7 @@ public partial class EntitlementsClient
                     Method = HttpMethod.Delete,
                     Path = string.Format(
                         "plan-entitlements/{0}",
-                        ValueConvert.ToPathParameterString(planEntitlementId)
+                        ValueConvert.ToPathParameterString(request.PlanEntitlementId)
                     ),
                     Options = options,
                 },
@@ -1474,17 +1408,7 @@ public partial class EntitlementsClient
     }
 
     /// <example><code>
-    /// await client.Entitlements.CountPlanEntitlementsAsync(
-    ///     new CountPlanEntitlementsRequest
-    ///     {
-    ///         FeatureId = "feature_id",
-    ///         PlanId = "plan_id",
-    ///         Q = "q",
-    ///         WithMeteredProducts = true,
-    ///         Limit = 1,
-    ///         Offset = 1,
-    ///     }
-    /// );
+    /// await client.Entitlements.CountPlanEntitlementsAsync(new CountPlanEntitlementsRequest());
     /// </code></example>
     public async Task<CountPlanEntitlementsResponse> CountPlanEntitlementsAsync(
         CountPlanEntitlementsRequest request,
@@ -1541,6 +1465,80 @@ public partial class EntitlementsClient
             try
             {
                 return JsonUtils.Deserialize<CountPlanEntitlementsResponse>(responseBody)!;
+            }
+            catch (JsonException e)
+            {
+                throw new SchematicException("Failed to deserialize response", e);
+            }
+        }
+
+        {
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            try
+            {
+                switch (response.StatusCode)
+                {
+                    case 400:
+                        throw new BadRequestError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 401:
+                        throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 403:
+                        throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 404:
+                        throw new NotFoundError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 500:
+                        throw new InternalServerError(
+                            JsonUtils.Deserialize<ApiError>(responseBody)
+                        );
+                }
+            }
+            catch (JsonException)
+            {
+                // unable to map error response, throwing generic error
+            }
+            throw new SchematicApiException(
+                $"Error with status code {response.StatusCode}",
+                response.StatusCode,
+                responseBody
+            );
+        }
+    }
+
+    /// <example><code>
+    /// await client.Entitlements.DuplicatePlanEntitlementsAsync(
+    ///     new DuplicatePlanEntitlementsRequestBody
+    ///     {
+    ///         SourcePlanId = "source_plan_id",
+    ///         TargetPlanId = "target_plan_id",
+    ///     }
+    /// );
+    /// </code></example>
+    public async Task<DuplicatePlanEntitlementsResponse> DuplicatePlanEntitlementsAsync(
+        DuplicatePlanEntitlementsRequestBody request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        var response = await _client
+            .SendRequestAsync(
+                new JsonRequest
+                {
+                    BaseUrl = _client.Options.BaseUrl,
+                    Method = HttpMethod.Post,
+                    Path = "plan-entitlements/duplicate",
+                    Body = request,
+                    ContentType = "application/json",
+                    Options = options,
+                },
+                cancellationToken
+            )
+            .ConfigureAwait(false);
+        if (response.StatusCode is >= 200 and < 400)
+        {
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            try
+            {
+                return JsonUtils.Deserialize<DuplicatePlanEntitlementsResponse>(responseBody)!;
             }
             catch (JsonException e)
             {

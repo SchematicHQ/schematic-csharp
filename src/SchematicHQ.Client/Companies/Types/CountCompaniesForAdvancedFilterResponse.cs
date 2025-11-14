@@ -18,7 +18,7 @@ public record CountCompaniesForAdvancedFilterResponse : IJsonOnDeserialized
     /// Input parameters
     /// </summary>
     [JsonPropertyName("params")]
-    public required CountCompaniesForAdvancedFilterParams Params { get; set; }
+    public required CountCompaniesForAdvancedFilterResponseParams Params { get; set; }
 
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();

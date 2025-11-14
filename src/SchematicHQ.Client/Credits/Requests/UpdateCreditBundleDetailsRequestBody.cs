@@ -6,6 +6,12 @@ namespace SchematicHQ.Client;
 [Serializable]
 public record UpdateCreditBundleDetailsRequestBody
 {
+    /// <summary>
+    /// bundle_id
+    /// </summary>
+    [JsonIgnore]
+    public required string BundleId { get; set; }
+
     [JsonPropertyName("bundle_name")]
     public required string BundleName { get; set; }
 

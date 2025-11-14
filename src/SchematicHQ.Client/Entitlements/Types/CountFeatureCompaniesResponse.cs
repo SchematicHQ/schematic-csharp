@@ -18,7 +18,7 @@ public record CountFeatureCompaniesResponse : IJsonOnDeserialized
     /// Input parameters
     /// </summary>
     [JsonPropertyName("params")]
-    public required CountFeatureCompaniesParams Params { get; set; }
+    public required CountFeatureCompaniesResponseParams Params { get; set; }
 
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();

@@ -6,6 +6,12 @@ namespace SchematicHQ.Client;
 [Serializable]
 public record UpdateBillingCreditRequestBody
 {
+    /// <summary>
+    /// credit_id
+    /// </summary>
+    [JsonIgnore]
+    public required string CreditId { get; set; }
+
     [JsonPropertyName("burn_strategy")]
     public UpdateBillingCreditRequestBodyBurnStrategy? BurnStrategy { get; set; }
 

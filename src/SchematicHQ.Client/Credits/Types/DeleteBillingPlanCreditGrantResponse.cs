@@ -18,7 +18,7 @@ public record DeleteBillingPlanCreditGrantResponse : IJsonOnDeserialized
     /// Input parameters
     /// </summary>
     [JsonPropertyName("params")]
-    public required DeleteBillingPlanCreditGrantParams Params { get; set; }
+    public required DeleteBillingPlanCreditGrantResponseParams Params { get; set; }
 
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();

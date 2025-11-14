@@ -6,6 +6,12 @@ namespace SchematicHQ.Client;
 [Serializable]
 public record UpdateWebhookRequestBody
 {
+    /// <summary>
+    /// webhook_id
+    /// </summary>
+    [JsonIgnore]
+    public required string WebhookId { get; set; }
+
     [JsonPropertyName("credit_trigger_configs")]
     public IEnumerable<CreditTriggerConfig>? CreditTriggerConfigs { get; set; }
 

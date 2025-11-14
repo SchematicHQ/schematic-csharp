@@ -6,6 +6,12 @@ namespace SchematicHQ.Client;
 [Serializable]
 public record UpdateComponentRequestBody
 {
+    /// <summary>
+    /// component_id
+    /// </summary>
+    [JsonIgnore]
+    public required string ComponentId { get; set; }
+
     [JsonPropertyName("ast")]
     public Dictionary<string, double>? Ast { get; set; }
 

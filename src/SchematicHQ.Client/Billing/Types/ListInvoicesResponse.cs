@@ -18,7 +18,7 @@ public record ListInvoicesResponse : IJsonOnDeserialized
     /// Input parameters
     /// </summary>
     [JsonPropertyName("params")]
-    public required ListInvoicesParams Params { get; set; }
+    public required ListInvoicesResponseParams Params { get; set; }
 
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();

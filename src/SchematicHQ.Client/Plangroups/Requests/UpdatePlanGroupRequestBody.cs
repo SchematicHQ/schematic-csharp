@@ -6,6 +6,12 @@ namespace SchematicHQ.Client;
 [Serializable]
 public record UpdatePlanGroupRequestBody
 {
+    /// <summary>
+    /// plan_group_id
+    /// </summary>
+    [JsonIgnore]
+    public required string PlanGroupId { get; set; }
+
     [JsonPropertyName("add_on_compatibilities")]
     public IEnumerable<CompatiblePlans>? AddOnCompatibilities { get; set; }
 

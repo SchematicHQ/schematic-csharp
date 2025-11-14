@@ -6,6 +6,12 @@ namespace SchematicHQ.Client;
 [Serializable]
 public record UpdateEntityTraitDefinitionRequestBody
 {
+    /// <summary>
+    /// entity_trait_definition_id
+    /// </summary>
+    [JsonIgnore]
+    public required string EntityTraitDefinitionId { get; set; }
+
     [JsonPropertyName("display_name")]
     public string? DisplayName { get; set; }
 

@@ -19,7 +19,7 @@ public record GetEnrichedCreditLedgerResponse : IJsonOnDeserialized
     /// Input parameters
     /// </summary>
     [JsonPropertyName("params")]
-    public required GetEnrichedCreditLedgerParams Params { get; set; }
+    public required GetEnrichedCreditLedgerResponseParams Params { get; set; }
 
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();

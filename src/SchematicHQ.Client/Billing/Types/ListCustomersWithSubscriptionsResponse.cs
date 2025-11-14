@@ -19,7 +19,7 @@ public record ListCustomersWithSubscriptionsResponse : IJsonOnDeserialized
     /// Input parameters
     /// </summary>
     [JsonPropertyName("params")]
-    public required ListCustomersWithSubscriptionsParams Params { get; set; }
+    public required ListCustomersWithSubscriptionsResponseParams Params { get; set; }
 
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();

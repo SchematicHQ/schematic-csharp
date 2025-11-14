@@ -19,7 +19,7 @@ public record ListPaymentMethodsResponse : IJsonOnDeserialized
     /// Input parameters
     /// </summary>
     [JsonPropertyName("params")]
-    public required ListPaymentMethodsParams Params { get; set; }
+    public required ListPaymentMethodsResponseParams Params { get; set; }
 
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();

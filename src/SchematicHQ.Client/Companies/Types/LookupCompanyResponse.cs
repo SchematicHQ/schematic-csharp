@@ -18,7 +18,7 @@ public record LookupCompanyResponse : IJsonOnDeserialized
     /// Input parameters
     /// </summary>
     [JsonPropertyName("params")]
-    public required LookupCompanyParams Params { get; set; }
+    public required LookupCompanyResponseParams Params { get; set; }
 
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();

@@ -19,7 +19,7 @@ public record ListEntityTraitDefinitionsResponse : IJsonOnDeserialized
     /// Input parameters
     /// </summary>
     [JsonPropertyName("params")]
-    public required ListEntityTraitDefinitionsParams Params { get; set; }
+    public required ListEntityTraitDefinitionsResponseParams Params { get; set; }
 
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();

@@ -18,7 +18,7 @@ public partial class SchematicApi
                 { "X-Fern-Language", "C#" },
                 { "X-Fern-SDK-Name", "SchematicHQ.Client" },
                 { "X-Fern-SDK-Version", Version.Current },
-                { "User-Agent", "SchematicHQ.Client/1.3.0" },
+                { "User-Agent", "SchematicHQ.Client/1.3.1" },
             }
         );
         clientOptions ??= new ClientOptions();
@@ -78,10 +78,12 @@ public partial class SchematicApi
     public WebhooksClient Webhooks { get; }
 
     /// <example><code>
-    /// await client.PutPlanAudiencesPlanAudienceIdAsync("plan_audience_id");
+    /// await client.PutPlanAudiencesPlanAudienceIdAsync(
+    ///     new PutPlanAudiencesPlanAudienceIdRequest { PlanAudienceId = "plan_audience_id" }
+    /// );
     /// </code></example>
     public async global::System.Threading.Tasks.Task PutPlanAudiencesPlanAudienceIdAsync(
-        string planAudienceId,
+        PutPlanAudiencesPlanAudienceIdRequest request,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
@@ -94,7 +96,7 @@ public partial class SchematicApi
                     Method = HttpMethod.Put,
                     Path = string.Format(
                         "plan-audiences/{0}",
-                        ValueConvert.ToPathParameterString(planAudienceId)
+                        ValueConvert.ToPathParameterString(request.PlanAudienceId)
                     ),
                     Options = options,
                 },
@@ -116,10 +118,12 @@ public partial class SchematicApi
     }
 
     /// <example><code>
-    /// await client.DeletePlanAudiencesPlanAudienceIdAsync("plan_audience_id");
+    /// await client.DeletePlanAudiencesPlanAudienceIdAsync(
+    ///     new DeletePlanAudiencesPlanAudienceIdRequest { PlanAudienceId = "plan_audience_id" }
+    /// );
     /// </code></example>
     public async global::System.Threading.Tasks.Task DeletePlanAudiencesPlanAudienceIdAsync(
-        string planAudienceId,
+        DeletePlanAudiencesPlanAudienceIdRequest request,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
@@ -132,7 +136,7 @@ public partial class SchematicApi
                     Method = HttpMethod.Delete,
                     Path = string.Format(
                         "plan-audiences/{0}",
-                        ValueConvert.ToPathParameterString(planAudienceId)
+                        ValueConvert.ToPathParameterString(request.PlanAudienceId)
                     ),
                     Options = options,
                 },

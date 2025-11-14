@@ -18,7 +18,7 @@ public record CountEntityKeyDefinitionsResponse : IJsonOnDeserialized
     /// Input parameters
     /// </summary>
     [JsonPropertyName("params")]
-    public required CountEntityKeyDefinitionsParams Params { get; set; }
+    public required CountEntityKeyDefinitionsResponseParams Params { get; set; }
 
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();

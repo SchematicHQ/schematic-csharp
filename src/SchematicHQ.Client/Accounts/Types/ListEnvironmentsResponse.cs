@@ -19,7 +19,7 @@ public record ListEnvironmentsResponse : IJsonOnDeserialized
     /// Input parameters
     /// </summary>
     [JsonPropertyName("params")]
-    public required ListEnvironmentsParams Params { get; set; }
+    public required ListEnvironmentsResponseParams Params { get; set; }
 
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();

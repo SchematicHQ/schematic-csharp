@@ -18,7 +18,7 @@ public record ListWebhooksResponse : IJsonOnDeserialized
     /// Input parameters
     /// </summary>
     [JsonPropertyName("params")]
-    public required ListWebhooksParams Params { get; set; }
+    public required ListWebhooksResponseParams Params { get; set; }
 
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();

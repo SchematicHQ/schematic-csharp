@@ -6,6 +6,12 @@ namespace SchematicHQ.Client;
 [Serializable]
 public record UpdateFeatureRequestBody
 {
+    /// <summary>
+    /// feature_id
+    /// </summary>
+    [JsonIgnore]
+    public required string FeatureId { get; set; }
+
     [JsonPropertyName("description")]
     public string? Description { get; set; }
 

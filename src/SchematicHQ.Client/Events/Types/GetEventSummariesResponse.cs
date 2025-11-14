@@ -19,7 +19,7 @@ public record GetEventSummariesResponse : IJsonOnDeserialized
     /// Input parameters
     /// </summary>
     [JsonPropertyName("params")]
-    public required GetEventSummariesParams Params { get; set; }
+    public required GetEventSummariesResponseParams Params { get; set; }
 
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();

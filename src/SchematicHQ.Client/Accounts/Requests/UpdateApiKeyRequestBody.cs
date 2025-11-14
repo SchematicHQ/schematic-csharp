@@ -6,6 +6,12 @@ namespace SchematicHQ.Client;
 [Serializable]
 public record UpdateApiKeyRequestBody
 {
+    /// <summary>
+    /// api_key_id
+    /// </summary>
+    [JsonIgnore]
+    public required string ApiKeyId { get; set; }
+
     [JsonPropertyName("description")]
     public string? Description { get; set; }
 

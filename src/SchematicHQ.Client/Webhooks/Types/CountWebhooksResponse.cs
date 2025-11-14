@@ -18,7 +18,7 @@ public record CountWebhooksResponse : IJsonOnDeserialized
     /// Input parameters
     /// </summary>
     [JsonPropertyName("params")]
-    public required CountWebhooksParams Params { get; set; }
+    public required CountWebhooksResponseParams Params { get; set; }
 
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();

@@ -19,7 +19,7 @@ public record ListPlanChangesResponse : IJsonOnDeserialized
     /// Input parameters
     /// </summary>
     [JsonPropertyName("params")]
-    public required ListPlanChangesParams Params { get; set; }
+    public required ListPlanChangesResponseParams Params { get; set; }
 
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();

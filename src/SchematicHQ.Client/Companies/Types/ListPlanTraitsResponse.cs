@@ -19,7 +19,7 @@ public record ListPlanTraitsResponse : IJsonOnDeserialized
     /// Input parameters
     /// </summary>
     [JsonPropertyName("params")]
-    public required ListPlanTraitsParams Params { get; set; }
+    public required ListPlanTraitsResponseParams Params { get; set; }
 
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();
