@@ -5,21 +5,15 @@ using SchematicHQ.Client.Core;
 namespace SchematicHQ.Client;
 
 [Serializable]
-public record ListProductPricesResponse : IJsonOnDeserialized
+public record RulesengineConditionGroup : IJsonOnDeserialized
 {
     [JsonExtensionData]
     private readonly IDictionary<string, JsonElement> _extensionData =
         new Dictionary<string, JsonElement>();
 
-    [JsonPropertyName("data")]
-    public IEnumerable<BillingPriceResponseData> Data { get; set; } =
-        new List<BillingPriceResponseData>();
-
-    /// <summary>
-    /// Input parameters
-    /// </summary>
-    [JsonPropertyName("params")]
-    public required ListProductPricesParams Params { get; set; }
+    [JsonPropertyName("conditions")]
+    public IEnumerable<RulesengineCondition> Conditions { get; set; } =
+        new List<RulesengineCondition>();
 
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();

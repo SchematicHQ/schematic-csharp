@@ -3,17 +3,17 @@ using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
 
-[JsonConverter(typeof(StringEnumSerializer<SearchBillingPricesResponseParamsTiersMode>))]
+[JsonConverter(typeof(StringEnumSerializer<ListBillingProductPricesRequestTiersMode>))]
 [Serializable]
-public readonly record struct SearchBillingPricesResponseParamsTiersMode : IStringEnum
+public readonly record struct ListBillingProductPricesRequestTiersMode : IStringEnum
 {
-    public static readonly SearchBillingPricesResponseParamsTiersMode Volume = new(Values.Volume);
+    public static readonly ListBillingProductPricesRequestTiersMode Volume = new(Values.Volume);
 
-    public static readonly SearchBillingPricesResponseParamsTiersMode Graduated = new(
+    public static readonly ListBillingProductPricesRequestTiersMode Graduated = new(
         Values.Graduated
     );
 
-    public SearchBillingPricesResponseParamsTiersMode(string value)
+    public ListBillingProductPricesRequestTiersMode(string value)
     {
         Value = value;
     }
@@ -26,9 +26,9 @@ public readonly record struct SearchBillingPricesResponseParamsTiersMode : IStri
     /// <summary>
     /// Create a string enum with the given value.
     /// </summary>
-    public static SearchBillingPricesResponseParamsTiersMode FromCustom(string value)
+    public static ListBillingProductPricesRequestTiersMode FromCustom(string value)
     {
-        return new SearchBillingPricesResponseParamsTiersMode(value);
+        return new ListBillingProductPricesRequestTiersMode(value);
     }
 
     public bool Equals(string? other)
@@ -45,19 +45,19 @@ public readonly record struct SearchBillingPricesResponseParamsTiersMode : IStri
     }
 
     public static bool operator ==(
-        SearchBillingPricesResponseParamsTiersMode value1,
+        ListBillingProductPricesRequestTiersMode value1,
         string value2
     ) => value1.Value.Equals(value2);
 
     public static bool operator !=(
-        SearchBillingPricesResponseParamsTiersMode value1,
+        ListBillingProductPricesRequestTiersMode value1,
         string value2
     ) => !value1.Value.Equals(value2);
 
-    public static explicit operator string(SearchBillingPricesResponseParamsTiersMode value) =>
+    public static explicit operator string(ListBillingProductPricesRequestTiersMode value) =>
         value.Value;
 
-    public static explicit operator SearchBillingPricesResponseParamsTiersMode(string value) =>
+    public static explicit operator ListBillingProductPricesRequestTiersMode(string value) =>
         new(value);
 
     /// <summary>
