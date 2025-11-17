@@ -1,6 +1,5 @@
 using SchematicHQ.Client.RulesEngine.Utils;
 using SchematicHQ.Client.RulesEngine.Extensions;
-using SchematicHQ.Client.RulesEngine.Models;
 
 namespace SchematicHQ.Client.RulesEngine
 {

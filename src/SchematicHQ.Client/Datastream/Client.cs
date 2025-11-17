@@ -7,7 +7,6 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using OneOf.Types;
 using SchematicHQ.Client.RulesEngine;
-using SchematicHQ.Client.RulesEngine.Models;
 using SchematicHQ.Client.RulesEngine.Utils;
 using SchematicHQ.Client;
 using SchematicHQ.Client.Cache;

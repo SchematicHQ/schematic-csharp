@@ -1,4 +1,3 @@
-using SchematicHQ.Client.RulesEngine.Models;
 
 namespace SchematicHQ.Client.RulesEngine
 {

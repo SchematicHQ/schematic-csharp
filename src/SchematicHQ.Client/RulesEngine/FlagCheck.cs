@@ -1,4 +1,3 @@
-using SchematicHQ.Client.RulesEngine.Models;
 using SchematicHQ.Client.RulesEngine.Utils;
 using SchematicHQ.Client.RulesEngine.Extensions;
 
