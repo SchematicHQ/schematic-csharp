@@ -66,12 +66,6 @@ public record ListPlansParams : IJsonOnDeserialized
     public string? Q { get; set; }
 
     /// <summary>
-    /// Filter for plans that require a payment method (inverse of ForInitialPlan)
-    /// </summary>
-    [JsonPropertyName("requires_payment_method")]
-    public bool? RequiresPaymentMethod { get; set; }
-
-    /// <summary>
     /// Filter out plans that already have a plan entitlement for the specified feature ID
     /// </summary>
     [JsonPropertyName("without_entitlement_for")]
@@ -82,12 +76,6 @@ public record ListPlansParams : IJsonOnDeserialized
     /// </summary>
     [JsonPropertyName("without_paid_product_id")]
     public bool? WithoutPaidProductId { get; set; }
-
-    /// <summary>
-    /// Filter out plans that have a billing product ID
-    /// </summary>
-    [JsonPropertyName("without_product_id")]
-    public bool? WithoutProductId { get; set; }
 
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();

@@ -957,31 +957,33 @@ public partial class BillingClient
     }
 
     /// <example><code>
-    /// await client.Billing.SearchBillingPricesAsync(
-    ///     new SearchBillingPricesRequest
+    /// await client.Billing.ListBillingPricesAsync(
+    ///     new ListBillingPricesRequest
     ///     {
     ///         ForInitialPlan = true,
     ///         ForTrialExpiryPlan = true,
-    ///         ProductId = "product_id",
     ///         Interval = "interval",
+    ///         IsActive = true,
     ///         Price = 1,
+    ///         ProductId = "product_id",
     ///         Q = "q",
-    ///         RequiresPaymentMethod = true,
-    ///         TiersMode = SearchBillingPricesRequestTiersMode.Volume,
-    ///         UsageType = SearchBillingPricesRequestUsageType.Licensed,
+    ///         TiersMode = ListBillingPricesRequestTiersMode.Volume,
+    ///         UsageType = ListBillingPricesRequestUsageType.Licensed,
+    ///         WithMeter = true,
     ///         Limit = 1,
     ///         Offset = 1,
     ///     }
     /// );
     /// </code></example>
-    public async Task<SearchBillingPricesResponse> SearchBillingPricesAsync(
-        SearchBillingPricesRequest request,
+    public async Task<ListBillingPricesResponse> ListBillingPricesAsync(
+        ListBillingPricesRequest request,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
     {
         var _query = new Dictionary<string, object>();
         _query["ids"] = request.Ids;
+        _query["product_ids"] = request.ProductIds;
         if (request.ForInitialPlan != null)
         {
             _query["for_initial_plan"] = JsonUtils.Serialize(request.ForInitialPlan.Value);
@@ -990,27 +992,25 @@ public partial class BillingClient
         {
             _query["for_trial_expiry_plan"] = JsonUtils.Serialize(request.ForTrialExpiryPlan.Value);
         }
-        if (request.ProductId != null)
-        {
-            _query["product_id"] = request.ProductId;
-        }
         if (request.Interval != null)
         {
             _query["interval"] = request.Interval;
+        }
+        if (request.IsActive != null)
+        {
+            _query["is_active"] = JsonUtils.Serialize(request.IsActive.Value);
         }
         if (request.Price != null)
         {
             _query["price"] = request.Price.Value.ToString();
         }
+        if (request.ProductId != null)
+        {
+            _query["product_id"] = request.ProductId;
+        }
         if (request.Q != null)
         {
             _query["q"] = request.Q;
-        }
-        if (request.RequiresPaymentMethod != null)
-        {
-            _query["requires_payment_method"] = JsonUtils.Serialize(
-                request.RequiresPaymentMethod.Value
-            );
         }
         if (request.TiersMode != null)
         {
@@ -1019,6 +1019,10 @@ public partial class BillingClient
         if (request.UsageType != null)
         {
             _query["usage_type"] = request.UsageType.Value.Stringify();
+        }
+        if (request.WithMeter != null)
+        {
+            _query["with_meter"] = JsonUtils.Serialize(request.WithMeter.Value);
         }
         if (request.Limit != null)
         {
@@ -1046,7 +1050,7 @@ public partial class BillingClient
             var responseBody = await response.Raw.Content.ReadAsStringAsync();
             try
             {
-                return JsonUtils.Deserialize<SearchBillingPricesResponse>(responseBody)!;
+                return JsonUtils.Deserialize<ListBillingPricesResponse>(responseBody)!;
             }
             catch (JsonException e)
             {
@@ -1241,63 +1245,72 @@ public partial class BillingClient
     }
 
     /// <example><code>
-    /// await client.Billing.ListProductPricesAsync(
-    ///     new ListProductPricesRequest
+    /// await client.Billing.ListBillingProductPricesAsync(
+    ///     new ListBillingProductPricesRequest
     ///     {
-    ///         Name = "name",
-    ///         Q = "q",
-    ///         PriceUsageType = ListProductPricesRequestPriceUsageType.Licensed,
-    ///         WithoutLinkedToPlan = true,
-    ///         WithOneTimeCharges = true,
-    ///         WithZeroPrice = true,
-    ///         WithPricesOnly = true,
+    ///         ForInitialPlan = true,
+    ///         ForTrialExpiryPlan = true,
+    ///         Interval = "interval",
     ///         IsActive = true,
+    ///         Price = 1,
+    ///         ProductId = "product_id",
+    ///         Q = "q",
+    ///         TiersMode = ListBillingProductPricesRequestTiersMode.Volume,
+    ///         UsageType = ListBillingProductPricesRequestUsageType.Licensed,
+    ///         WithMeter = true,
     ///         Limit = 1,
     ///         Offset = 1,
     ///     }
     /// );
     /// </code></example>
-    public async Task<ListProductPricesResponse> ListProductPricesAsync(
-        ListProductPricesRequest request,
+    public async Task<ListBillingProductPricesResponse> ListBillingProductPricesAsync(
+        ListBillingProductPricesRequest request,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
     {
         var _query = new Dictionary<string, object>();
         _query["ids"] = request.Ids;
-        if (request.Name != null)
+        _query["product_ids"] = request.ProductIds;
+        if (request.ForInitialPlan != null)
         {
-            _query["name"] = request.Name;
+            _query["for_initial_plan"] = JsonUtils.Serialize(request.ForInitialPlan.Value);
+        }
+        if (request.ForTrialExpiryPlan != null)
+        {
+            _query["for_trial_expiry_plan"] = JsonUtils.Serialize(request.ForTrialExpiryPlan.Value);
+        }
+        if (request.Interval != null)
+        {
+            _query["interval"] = request.Interval;
+        }
+        if (request.IsActive != null)
+        {
+            _query["is_active"] = JsonUtils.Serialize(request.IsActive.Value);
+        }
+        if (request.Price != null)
+        {
+            _query["price"] = request.Price.Value.ToString();
+        }
+        if (request.ProductId != null)
+        {
+            _query["product_id"] = request.ProductId;
         }
         if (request.Q != null)
         {
             _query["q"] = request.Q;
         }
-        if (request.PriceUsageType != null)
+        if (request.TiersMode != null)
         {
-            _query["price_usage_type"] = request.PriceUsageType.Value.Stringify();
+            _query["tiers_mode"] = request.TiersMode.Value.Stringify();
         }
-        if (request.WithoutLinkedToPlan != null)
+        if (request.UsageType != null)
         {
-            _query["without_linked_to_plan"] = JsonUtils.Serialize(
-                request.WithoutLinkedToPlan.Value
-            );
+            _query["usage_type"] = request.UsageType.Value.Stringify();
         }
-        if (request.WithOneTimeCharges != null)
+        if (request.WithMeter != null)
         {
-            _query["with_one_time_charges"] = JsonUtils.Serialize(request.WithOneTimeCharges.Value);
-        }
-        if (request.WithZeroPrice != null)
-        {
-            _query["with_zero_price"] = JsonUtils.Serialize(request.WithZeroPrice.Value);
-        }
-        if (request.WithPricesOnly != null)
-        {
-            _query["with_prices_only"] = JsonUtils.Serialize(request.WithPricesOnly.Value);
-        }
-        if (request.IsActive != null)
-        {
-            _query["is_active"] = JsonUtils.Serialize(request.IsActive.Value);
+            _query["with_meter"] = JsonUtils.Serialize(request.WithMeter.Value);
         }
         if (request.Limit != null)
         {
@@ -1325,7 +1338,7 @@ public partial class BillingClient
             var responseBody = await response.Raw.Content.ReadAsStringAsync();
             try
             {
-                return JsonUtils.Deserialize<ListProductPricesResponse>(responseBody)!;
+                return JsonUtils.Deserialize<ListBillingProductPricesResponse>(responseBody)!;
             }
             catch (JsonException e)
             {
