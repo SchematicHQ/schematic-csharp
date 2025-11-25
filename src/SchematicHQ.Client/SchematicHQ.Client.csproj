@@ -36,9 +36,12 @@
     <PackageReference Include="System.Text.RegularExpressions" Version="[4.3.1,)" />
     <PackageReference Include="moq" Version="4.20.70" />
     <PackageReference Include="Moq.Contrib.HttpClient" Version="1.4.0" />
+    <PackageReference Include="Wasmtime" Version="25.0.3" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\README.md" Pack="true" PackagePath="" />
+    <!-- WASM Rules Engine - Generated from /rulesengine-rust/target/wasm32-unknown-unknown/release/rulesengine.wasm -->
+    <EmbeddedResource Include="RulesEngine\Wasm\rulesengine.wasm" />
   </ItemGroup>
   <ItemGroup>
     <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">

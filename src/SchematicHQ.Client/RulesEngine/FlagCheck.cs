@@ -1,5 +1,6 @@
 using SchematicHQ.Client.RulesEngine.Utils;
 using SchematicHQ.Client.RulesEngine.Extensions;
+using SchematicHQ.Client.RulesEngine.Wasm;
 
 namespace SchematicHQ.Client.RulesEngine
 {
@@ -20,7 +21,33 @@ namespace SchematicHQ.Client.RulesEngine
         public const string ReasonServerError = "Server error; Schematic has been notified";
         public const string ReasonUserNotFound = "User not found";
 
+        /// <summary>
+        /// Checks a flag using the WASM-powered rules engine by default.
+        /// Falls back to traditional logic if WASM is not available.
+        /// </summary>
         public static async Task<RulesengineCheckFlagResult> CheckFlag(
+            RulesengineCompany? company,
+            RulesengineUser? user,
+            RulesengineFlag? flag,
+            CancellationToken cancellationToken = default)
+        {
+            try
+            {
+                // Try using the WASM engine first for better performance
+                using var wasmEngine = new WasmRulesEngine();
+                return await wasmEngine.CheckFlagAsync(company, user, flag, cancellationToken);
+            }
+            catch
+            {
+                // Fall back to traditional logic if WASM fails
+                return await CheckFlagTraditional(company, user, flag, cancellationToken);
+            }
+        }
+
+        /// <summary>
+        /// Traditional flag check implementation used as fallback when WASM is not available.
+        /// </summary>
+        private static async Task<RulesengineCheckFlagResult> CheckFlagTraditional(
             RulesengineCompany? company,
             RulesengineUser? user,
             RulesengineFlag? flag,
