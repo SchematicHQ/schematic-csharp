@@ -18,6 +18,10 @@ public record CountEntityTraitDefinitionsRequest
     [JsonIgnore]
     public CountEntityTraitDefinitionsRequestTraitType? TraitType { get; set; }
 
+    [JsonIgnore]
+    public IEnumerable<CountEntityTraitDefinitionsRequestTraitTypesItem> TraitTypes { get; set; } =
+        new List<CountEntityTraitDefinitionsRequestTraitTypesItem>();
+
     /// <summary>
     /// Page limit (default 100)
     /// </summary>

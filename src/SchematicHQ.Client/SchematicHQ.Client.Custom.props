@@ -18,10 +18,4 @@ Configure additional MSBuild properties for your project in this file:
     <GeneratedModelHashFile>$(MSBuildThisFileDirectory)RulesEngine/Utils/GeneratedModelHash.cs</GeneratedModelHashFile>
   </PropertyGroup>
 
-  <Target Name="GenerateModelHash" BeforeTargets="CoreCompile">
-    <Exec Command="bash $(MSBuildThisFileDirectory)/generate-schema-hash.sh $(MSBuildThisFileDirectory)RulesEngine/Models $(GeneratedModelHashFile)" />
-    <ItemGroup>
-      <Compile Include="$(GeneratedModelHashFile)" />
-    </ItemGroup>
-  </Target>
 </Project>

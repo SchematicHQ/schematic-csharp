@@ -2,10 +2,10 @@ using System;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using NUnit.Framework;
-using SchematicHQ.Client.RulesEngine.Models;
 using SchematicHQ.Client.RulesEngine.Utils;
 using SchematicHQ.Client.RulesEngine;
 using SchematicHQ.Client.Cache;
+using System.Linq;
 
 namespace SchematicHQ.Client.Test.RulesEngine
 {
@@ -76,14 +76,14 @@ namespace SchematicHQ.Client.Test.RulesEngine
 }";
 
             // Act
-            var flag = JsonSerializer.Deserialize<Flag>(flagJson, _jsonOptions);
+            var flag = JsonSerializer.Deserialize<RulesengineFlag>(flagJson, _jsonOptions);
 
             // Assert
             Assert.That(flag, Is.Not.Null);
             Assert.That(flag!.Id, Is.EqualTo("flag_6SB8FaJPR8C"));
             Assert.That(flag.Key, Is.EqualTo("analyze-clicks"));
-            Assert.That(flag.Rules, Has.Count.EqualTo(1));
-            Assert.That(flag.Rules[0].RuleType, Is.EqualTo(RuleRuleType.PlanEntitlement));
+            Assert.That(flag.Rules.Count(), Is.EqualTo(1));
+            Assert.That(flag.Rules.First().RuleType, Is.EqualTo(RulesengineRuleRuleType.PlanEntitlement));
         }
 
         [Test]
@@ -139,12 +139,12 @@ namespace SchematicHQ.Client.Test.RulesEngine
 }";
 
             // Act
-            var company = JsonSerializer.Deserialize<Company>(companyJson, _jsonOptions);
+            var company = JsonSerializer.Deserialize<RulesengineCompany>(companyJson, _jsonOptions);
 
             // Assert
             Assert.That(company, Is.Not.Null);
             Assert.That(company!.Id, Is.EqualTo("comp_DopLPhkmGHU"));
-            Assert.That(company.Traits, Has.Count.EqualTo(3));
+            Assert.That(company.Traits.Count(), Is.EqualTo(3));
             
             // Check that empty string comparable_type is handled correctly
             foreach (var trait in company.Traits)
@@ -285,47 +285,47 @@ namespace SchematicHQ.Client.Test.RulesEngine
         }
 
         [Test]
-        public void RuleType_WithUnknownValue_ShouldFallbackToUnknown()
+        public void RuleType_WithUnknownValue_ShouldCreateCustomEnumValue()
         {
             // Arrange
             var json = @"{""rule_type"": ""unknown_value""}";
 
-            // Act & Assert - Should not throw, should fallback to Unknown
+            // Act & Assert - Should not throw, should create custom enum value
             Assert.DoesNotThrow(() =>
             {
                 var testObj = JsonSerializer.Deserialize<TestRuleTypeObject>(json, _jsonOptions);
-                // Should fallback to Unknown for unrecognized values
-                Assert.That(testObj!.RuleType, Is.EqualTo(RuleRuleType.Unknown));
+                // Should create custom enum value with the original string
+                Assert.That(testObj!.RuleType.Value, Is.EqualTo("unknown_value"));
             });
         }
 
         [Test]
-        public void RuleType_WithEmptyValue_ShouldFallbackToUnknown()
+        public void RuleType_WithEmptyValue_ShouldCreateCustomEnumValue()
         {
             // Arrange
             var json = @"{""rule_type"": """"}";
 
-            // Act & Assert - Should not throw, should fallback to Unknown
+            // Act & Assert - Should not throw, should create custom enum value
             Assert.DoesNotThrow(() =>
             {
                 var testObj = JsonSerializer.Deserialize<TestRuleTypeObject>(json, _jsonOptions);
-                // Should fallback to Unknown for empty values
-                Assert.That(testObj!.RuleType, Is.EqualTo(RuleRuleType.Unknown));
+                // Should create custom enum value with empty string
+                Assert.That(testObj!.RuleType.Value, Is.EqualTo(""));
             });
         }
 
         [Test]
-        public void RuleType_WithInvalidValue_ShouldFallbackToUnknown()
+        public void RuleType_WithInvalidValue_ShouldCreateCustomEnumValue()
         {
             // Arrange
             var json = @"{""rule_type"": ""invalid""}";
 
-            // Act & Assert - Should not throw, should fallback to Unknown
+            // Act & Assert - Should not throw, should create custom enum value
             Assert.DoesNotThrow(() =>
             {
                 var testObj = JsonSerializer.Deserialize<TestRuleTypeObject>(json, _jsonOptions);
-                // Should fallback to Unknown for invalid values
-                Assert.That(testObj!.RuleType, Is.EqualTo(RuleRuleType.Unknown));
+                // Should create custom enum value with the original string
+                Assert.That(testObj!.RuleType.Value, Is.EqualTo("invalid"));
             });
         }
 

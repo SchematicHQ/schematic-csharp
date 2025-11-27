@@ -1259,7 +1259,7 @@ await client.Billing.UpsertPaymentMethodAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Billing.<a href="/src/SchematicHQ.Client/Billing/BillingClient.cs">SearchBillingPricesAsync</a>(SearchBillingPricesRequest { ... }) -> SearchBillingPricesResponse</code></summary>
+<details><summary><code>client.Billing.<a href="/src/SchematicHQ.Client/Billing/BillingClient.cs">ListBillingPricesAsync</a>(ListBillingPricesRequest { ... }) -> ListBillingPricesResponse</code></summary>
 <dl>
 <dd>
 
@@ -1272,18 +1272,19 @@ await client.Billing.UpsertPaymentMethodAsync(
 <dd>
 
 ```csharp
-await client.Billing.SearchBillingPricesAsync(
-    new SearchBillingPricesRequest
+await client.Billing.ListBillingPricesAsync(
+    new ListBillingPricesRequest
     {
         ForInitialPlan = true,
         ForTrialExpiryPlan = true,
-        ProductId = "product_id",
         Interval = "interval",
+        IsActive = true,
         Price = 1,
+        ProductId = "product_id",
         Q = "q",
-        RequiresPaymentMethod = true,
-        TiersMode = SearchBillingPricesRequestTiersMode.Volume,
-        UsageType = SearchBillingPricesRequestUsageType.Licensed,
+        TiersMode = ListBillingPricesRequestTiersMode.Volume,
+        UsageType = ListBillingPricesRequestUsageType.Licensed,
+        WithMeter = true,
         Limit = 1,
         Offset = 1,
     }
@@ -1302,7 +1303,7 @@ await client.Billing.SearchBillingPricesAsync(
 <dl>
 <dd>
 
-**request:** `SearchBillingPricesRequest` 
+**request:** `ListBillingPricesRequest` 
     
 </dd>
 </dl>
@@ -1411,7 +1412,7 @@ await client.Billing.DeleteBillingProductAsync("billing_id");
 </dl>
 </details>
 
-<details><summary><code>client.Billing.<a href="/src/SchematicHQ.Client/Billing/BillingClient.cs">ListProductPricesAsync</a>(ListProductPricesRequest { ... }) -> ListProductPricesResponse</code></summary>
+<details><summary><code>client.Billing.<a href="/src/SchematicHQ.Client/Billing/BillingClient.cs">ListBillingProductPricesAsync</a>(ListBillingProductPricesRequest { ... }) -> ListBillingProductPricesResponse</code></summary>
 <dl>
 <dd>
 
@@ -1424,17 +1425,19 @@ await client.Billing.DeleteBillingProductAsync("billing_id");
 <dd>
 
 ```csharp
-await client.Billing.ListProductPricesAsync(
-    new ListProductPricesRequest
+await client.Billing.ListBillingProductPricesAsync(
+    new ListBillingProductPricesRequest
     {
-        Name = "name",
-        Q = "q",
-        PriceUsageType = ListProductPricesRequestPriceUsageType.Licensed,
-        WithoutLinkedToPlan = true,
-        WithOneTimeCharges = true,
-        WithZeroPrice = true,
-        WithPricesOnly = true,
+        ForInitialPlan = true,
+        ForTrialExpiryPlan = true,
+        Interval = "interval",
         IsActive = true,
+        Price = 1,
+        ProductId = "product_id",
+        Q = "q",
+        TiersMode = ListBillingProductPricesRequestTiersMode.Volume,
+        UsageType = ListBillingProductPricesRequestUsageType.Licensed,
+        WithMeter = true,
         Limit = 1,
         Offset = 1,
     }
@@ -1453,7 +1456,7 @@ await client.Billing.ListProductPricesAsync(
 <dl>
 <dd>
 
-**request:** `ListProductPricesRequest` 
+**request:** `ListBillingProductPricesRequest` 
     
 </dd>
 </dl>
@@ -3137,6 +3140,48 @@ await client.Checkout.PreviewManagePlanAsync(
 <dd>
 
 **request:** `ManagePlanRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Checkout.<a href="/src/SchematicHQ.Client/Checkout/CheckoutClient.cs">CancelSubscriptionAsync</a>(CancelSubscriptionRequest { ... }) -> CancelSubscriptionResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Checkout.CancelSubscriptionAsync(
+    new CancelSubscriptionRequest { CompanyId = "company_id" }
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `CancelSubscriptionRequest` 
     
 </dd>
 </dl>
@@ -5980,6 +6025,52 @@ await client.Entitlements.CountPlanEntitlementsAsync(
 </dl>
 </details>
 
+<details><summary><code>client.Entitlements.<a href="/src/SchematicHQ.Client/Entitlements/EntitlementsClient.cs">DuplicatePlanEntitlementsAsync</a>(DuplicatePlanEntitlementsRequestBody { ... }) -> DuplicatePlanEntitlementsResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Entitlements.DuplicatePlanEntitlementsAsync(
+    new DuplicatePlanEntitlementsRequestBody
+    {
+        SourcePlanId = "source_plan_id",
+        TargetPlanId = "target_plan_id",
+    }
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `DuplicatePlanEntitlementsRequestBody` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.Entitlements.<a href="/src/SchematicHQ.Client/Entitlements/EntitlementsClient.cs">GetFeatureUsageByCompanyAsync</a>(GetFeatureUsageByCompanyRequest { ... }) -> GetFeatureUsageByCompanyResponse</code></summary>
 <dl>
 <dd>
@@ -6100,9 +6191,7 @@ await client.Plans.ListPlansAsync(
         HasProductId = true,
         PlanType = ListPlansRequestPlanType.Plan,
         Q = "q",
-        RequiresPaymentMethod = true,
         WithoutEntitlementFor = "without_entitlement_for",
-        WithoutProductId = true,
         WithoutPaidProductId = true,
         Limit = 1,
         Offset = 1,
@@ -6387,9 +6476,7 @@ await client.Plans.CountPlansAsync(
         HasProductId = true,
         PlanType = CountPlansRequestPlanType.Plan,
         Q = "q",
-        RequiresPaymentMethod = true,
         WithoutEntitlementFor = "without_entitlement_for",
-        WithoutProductId = true,
         WithoutPaidProductId = true,
         Limit = 1,
         Offset = 1,
