@@ -52,12 +52,13 @@ namespace SchematicHQ.Client.Test.Datastream
             // Act
             service.Start();
             
-            // Wait for health check to complete
-            await Task.Delay(100);
+            // Wait for health check to complete by getting cache version
+            var cacheVersion = await service.GetCacheVersionAsync();
 
             // Assert
             Assert.That(service.IsHealthy, Is.True);
             Assert.That(service.CacheVersion, Is.EqualTo("test123"));
+            Assert.That(cacheVersion, Is.EqualTo("test123"));
         }
 
         [Test]
@@ -99,12 +100,13 @@ namespace SchematicHQ.Client.Test.Datastream
             // Act
             service.Start();
             
-            // Wait for health check to complete
-            await Task.Delay(100);
+            // Wait for health check to complete by getting cache version
+            var cacheVersion = await service.GetCacheVersionAsync();
 
             // Assert
             Assert.That(service.IsHealthy, Is.False);
             Assert.That(service.CacheVersion, Is.EqualTo("test123")); // Should still parse cache version
+            Assert.That(cacheVersion, Is.EqualTo("test123"));
         }
 
         [Test]
