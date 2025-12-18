@@ -244,12 +244,6 @@ namespace SchematicHQ.Client.Test.RulesEngine
                 }
                 else
                 {
-                  expected = new DateTime(
-                      now.Year,
-                      now.Month + 1,
-                      futureDay,
-                      12, 0, 0,
-                      DateTimeKind.Utc);
                   if (now.Month == 12)
                   {
                       expected = new DateTime(
@@ -258,6 +252,15 @@ namespace SchematicHQ.Client.Test.RulesEngine
                           futureDay,
                           12, 0, 0,
                           DateTimeKind.Utc);  
+                  }
+                  else
+                  {
+                      expected = new DateTime(
+                          now.Year,
+                          now.Month + 1,
+                          futureDay,
+                          12, 0, 0,
+                          DateTimeKind.Utc);
                   }
                 }
 
@@ -295,22 +298,26 @@ namespace SchematicHQ.Client.Test.RulesEngine
                 Assert.That(result, Is.Not.Null);
 
                 // In this case, the result should be this month's reset date
-                var expected = new DateTime(
-                    now.Year,
-                    now.Month+1,
-                    pastDay,
-                    12, 0, 0,
-                    DateTimeKind.Utc);
+                DateTime expected;
+                int targetYear = now.Year;
+                int targetMonth = now.Month + 1;
                 
                 if (now.Month == 12) // December
                 {
-                    expected = new DateTime(
-                        now.Year + 1,
-                        1, // January
-                        pastDay,
-                        12, 0, 0,
-                        DateTimeKind.Utc);
+                    targetYear = now.Year + 1;
+                    targetMonth = 1; // January
                 }
+                
+                // Ensure the target day exists in the target month
+                int daysInTargetMonth = DateTime.DaysInMonth(targetYear, targetMonth);
+                int safeDay = Math.Min(pastDay, daysInTargetMonth);
+                
+                expected = new DateTime(
+                    targetYear,
+                    targetMonth,
+                    safeDay,
+                    12, 0, 0,
+                    DateTimeKind.Utc);
 
                 Assert.That(result?.Year, Is.EqualTo(expected.Year));
                 Assert.That(result?.Month, Is.EqualTo(expected.Month));
