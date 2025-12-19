@@ -12,19 +12,19 @@ public record BillingCreditResponseData : IJsonOnDeserialized
         new Dictionary<string, JsonElement>();
 
     [JsonPropertyName("burn_strategy")]
-    public required string BurnStrategy { get; set; }
+    public required BillingCreditBurnStrategy BurnStrategy { get; set; }
 
     [JsonPropertyName("created_at")]
     public required DateTime CreatedAt { get; set; }
 
     [JsonPropertyName("default_expiry_unit")]
-    public required string DefaultExpiryUnit { get; set; }
+    public required BillingCreditExpiryUnit DefaultExpiryUnit { get; set; }
 
     [JsonPropertyName("default_expiry_unit_count")]
     public int? DefaultExpiryUnitCount { get; set; }
 
     [JsonPropertyName("default_rollover_policy")]
-    public required string DefaultRolloverPolicy { get; set; }
+    public required BillingCreditRolloverPolicy DefaultRolloverPolicy { get; set; }
 
     [JsonPropertyName("description")]
     public required string Description { get; set; }

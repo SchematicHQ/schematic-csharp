@@ -18,7 +18,7 @@ public record EntityTraitDefinitionResponseData : IJsonOnDeserialized
     public required string DisplayName { get; set; }
 
     [JsonPropertyName("entity_type")]
-    public required string EntityType { get; set; }
+    public required EntityType EntityType { get; set; }
 
     [JsonPropertyName("hierarchy")]
     public IEnumerable<string> Hierarchy { get; set; } = new List<string>();
@@ -27,7 +27,7 @@ public record EntityTraitDefinitionResponseData : IJsonOnDeserialized
     public required string Id { get; set; }
 
     [JsonPropertyName("trait_type")]
-    public required string TraitType { get; set; }
+    public required TraitType TraitType { get; set; }
 
     [JsonPropertyName("updated_at")]
     public required DateTime UpdatedAt { get; set; }

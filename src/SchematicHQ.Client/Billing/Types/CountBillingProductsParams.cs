@@ -39,7 +39,10 @@ public record CountBillingProductsParams : IJsonOnDeserialized
     public int? Offset { get; set; }
 
     [JsonPropertyName("price_usage_type")]
-    public CountBillingProductsResponseParamsPriceUsageType? PriceUsageType { get; set; }
+    public BillingPriceUsageType? PriceUsageType { get; set; }
+
+    [JsonPropertyName("provider_type")]
+    public BillingProviderType? ProviderType { get; set; }
 
     [JsonPropertyName("q")]
     public string? Q { get; set; }

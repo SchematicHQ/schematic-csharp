@@ -46,7 +46,7 @@ public record CreatePlanEntitlementRequestBody
     public required string PlanId { get; set; }
 
     [JsonPropertyName("price_behavior")]
-    public CreatePlanEntitlementRequestBodyPriceBehavior? PriceBehavior { get; set; }
+    public EntitlementPriceBehavior? PriceBehavior { get; set; }
 
     /// <summary>
     /// Use MonthlyPriceTiers or YearlyPriceTiers instead
@@ -58,7 +58,7 @@ public record CreatePlanEntitlementRequestBody
     public int? SoftLimit { get; set; }
 
     [JsonPropertyName("tier_mode")]
-    public string? TierMode { get; set; }
+    public BillingTiersMode? TierMode { get; set; }
 
     [JsonPropertyName("value_bool")]
     public bool? ValueBool { get; set; }
@@ -73,7 +73,7 @@ public record CreatePlanEntitlementRequestBody
     public string? ValueTraitId { get; set; }
 
     [JsonPropertyName("value_type")]
-    public required CreatePlanEntitlementRequestBodyValueType ValueType { get; set; }
+    public required EntitlementValueType ValueType { get; set; }
 
     [JsonPropertyName("yearly_metered_price_id")]
     public string? YearlyMeteredPriceId { get; set; }

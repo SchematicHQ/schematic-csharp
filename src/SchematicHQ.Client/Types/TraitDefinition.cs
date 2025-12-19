@@ -15,7 +15,7 @@ public record TraitDefinition : IJsonOnDeserialized
     public required TraitDefinitionComparableType ComparableType { get; set; }
 
     [JsonPropertyName("entity_type")]
-    public required TraitDefinitionEntityType EntityType { get; set; }
+    public required EntityType EntityType { get; set; }
 
     [JsonPropertyName("id")]
     public required string Id { get; set; }

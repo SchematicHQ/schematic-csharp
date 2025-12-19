@@ -39,7 +39,7 @@ public record CountCreditLedgerParams : IJsonOnDeserialized
     public int? Offset { get; set; }
 
     [JsonPropertyName("period")]
-    public CountCreditLedgerResponseParamsPeriod? Period { get; set; }
+    public CreditLedgerPeriod? Period { get; set; }
 
     [JsonPropertyName("start_time")]
     public string? StartTime { get; set; }
