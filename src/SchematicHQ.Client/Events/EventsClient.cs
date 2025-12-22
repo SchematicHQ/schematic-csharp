@@ -20,7 +20,7 @@ public partial class EventsClient
     ///     {
     ///         Events = new List&lt;CreateEventRequestBody&gt;()
     ///         {
-    ///             new CreateEventRequestBody { EventType = CreateEventRequestBodyEventType.Identify },
+    ///             new CreateEventRequestBody { EventType = EventType.FlagCheck },
     ///         },
     ///     }
     /// );
@@ -283,7 +283,7 @@ public partial class EventsClient
 
     /// <example><code>
     /// await client.Events.CreateEventAsync(
-    ///     new CreateEventRequestBody { EventType = CreateEventRequestBodyEventType.Identify }
+    ///     new CreateEventRequestBody { EventType = EventType.FlagCheck }
     /// );
     /// </code></example>
     public async Task<CreateEventResponse> CreateEventAsync(

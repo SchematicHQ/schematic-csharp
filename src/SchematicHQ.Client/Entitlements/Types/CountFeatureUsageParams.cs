@@ -24,6 +24,12 @@ public record CountFeatureUsageParams : IJsonOnDeserialized
     public IEnumerable<string>? FeatureIds { get; set; }
 
     /// <summary>
+    /// Include time-bucketed usage aggregation (today, this week, this month, billing period) for credit-based entitlements. Defaults to false for performance.
+    /// </summary>
+    [JsonPropertyName("include_usage_aggregation")]
+    public bool? IncludeUsageAggregation { get; set; }
+
+    /// <summary>
     /// Page limit (default 100)
     /// </summary>
     [JsonPropertyName("limit")]

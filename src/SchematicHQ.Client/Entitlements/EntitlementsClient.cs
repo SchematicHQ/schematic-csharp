@@ -125,7 +125,7 @@ public partial class EntitlementsClient
     ///     {
     ///         CompanyId = "company_id",
     ///         FeatureId = "feature_id",
-    ///         ValueType = CreateCompanyOverrideRequestBodyValueType.Boolean,
+    ///         ValueType = EntitlementValueType.Boolean,
     ///     }
     /// );
     /// </code></example>
@@ -264,10 +264,7 @@ public partial class EntitlementsClient
     /// <example><code>
     /// await client.Entitlements.UpdateCompanyOverrideAsync(
     ///     "company_override_id",
-    ///     new UpdateCompanyOverrideRequestBody
-    ///     {
-    ///         ValueType = UpdateCompanyOverrideRequestBodyValueType.Boolean,
-    ///     }
+    ///     new UpdateCompanyOverrideRequestBody { ValueType = EntitlementValueType.Boolean }
     /// );
     /// </code></example>
     public async Task<UpdateCompanyOverrideResponse> UpdateCompanyOverrideAsync(
@@ -696,6 +693,7 @@ public partial class EntitlementsClient
     ///     new ListFeatureUsageRequest
     ///     {
     ///         CompanyId = "company_id",
+    ///         IncludeUsageAggregation = true,
     ///         Q = "q",
     ///         WithoutNegativeEntitlements = true,
     ///         Limit = 1,
@@ -718,6 +716,12 @@ public partial class EntitlementsClient
         if (request.CompanyKeys != null)
         {
             _query["company_keys"] = JsonUtils.Serialize(request.CompanyKeys);
+        }
+        if (request.IncludeUsageAggregation != null)
+        {
+            _query["include_usage_aggregation"] = JsonUtils.Serialize(
+                request.IncludeUsageAggregation.Value
+            );
         }
         if (request.Q != null)
         {
@@ -800,6 +804,7 @@ public partial class EntitlementsClient
     ///     new CountFeatureUsageRequest
     ///     {
     ///         CompanyId = "company_id",
+    ///         IncludeUsageAggregation = true,
     ///         Q = "q",
     ///         WithoutNegativeEntitlements = true,
     ///         Limit = 1,
@@ -822,6 +827,12 @@ public partial class EntitlementsClient
         if (request.CompanyKeys != null)
         {
             _query["company_keys"] = JsonUtils.Serialize(request.CompanyKeys);
+        }
+        if (request.IncludeUsageAggregation != null)
+        {
+            _query["include_usage_aggregation"] = JsonUtils.Serialize(
+                request.IncludeUsageAggregation.Value
+            );
         }
         if (request.Q != null)
         {
@@ -1190,7 +1201,7 @@ public partial class EntitlementsClient
     ///     {
     ///         FeatureId = "feature_id",
     ///         PlanId = "plan_id",
-    ///         ValueType = CreatePlanEntitlementRequestBodyValueType.Boolean,
+    ///         ValueType = EntitlementValueType.Boolean,
     ///     }
     /// );
     /// </code></example>
@@ -1329,10 +1340,7 @@ public partial class EntitlementsClient
     /// <example><code>
     /// await client.Entitlements.UpdatePlanEntitlementAsync(
     ///     "plan_entitlement_id",
-    ///     new UpdatePlanEntitlementRequestBody
-    ///     {
-    ///         ValueType = UpdatePlanEntitlementRequestBodyValueType.Boolean,
-    ///     }
+    ///     new UpdatePlanEntitlementRequestBody { ValueType = EntitlementValueType.Boolean }
     /// );
     /// </code></example>
     public async Task<UpdatePlanEntitlementResponse> UpdatePlanEntitlementAsync(
@@ -1541,6 +1549,80 @@ public partial class EntitlementsClient
             try
             {
                 return JsonUtils.Deserialize<CountPlanEntitlementsResponse>(responseBody)!;
+            }
+            catch (JsonException e)
+            {
+                throw new SchematicException("Failed to deserialize response", e);
+            }
+        }
+
+        {
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            try
+            {
+                switch (response.StatusCode)
+                {
+                    case 400:
+                        throw new BadRequestError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 401:
+                        throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 403:
+                        throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 404:
+                        throw new NotFoundError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 500:
+                        throw new InternalServerError(
+                            JsonUtils.Deserialize<ApiError>(responseBody)
+                        );
+                }
+            }
+            catch (JsonException)
+            {
+                // unable to map error response, throwing generic error
+            }
+            throw new SchematicApiException(
+                $"Error with status code {response.StatusCode}",
+                response.StatusCode,
+                responseBody
+            );
+        }
+    }
+
+    /// <example><code>
+    /// await client.Entitlements.DuplicatePlanEntitlementsAsync(
+    ///     new DuplicatePlanEntitlementsRequestBody
+    ///     {
+    ///         SourcePlanId = "source_plan_id",
+    ///         TargetPlanId = "target_plan_id",
+    ///     }
+    /// );
+    /// </code></example>
+    public async Task<DuplicatePlanEntitlementsResponse> DuplicatePlanEntitlementsAsync(
+        DuplicatePlanEntitlementsRequestBody request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        var response = await _client
+            .SendRequestAsync(
+                new JsonRequest
+                {
+                    BaseUrl = _client.Options.BaseUrl,
+                    Method = HttpMethod.Post,
+                    Path = "plan-entitlements/duplicate",
+                    Body = request,
+                    ContentType = "application/json",
+                    Options = options,
+                },
+                cancellationToken
+            )
+            .ConfigureAwait(false);
+        if (response.StatusCode is >= 200 and < 400)
+        {
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            try
+            {
+                return JsonUtils.Deserialize<DuplicatePlanEntitlementsResponse>(responseBody)!;
             }
             catch (JsonException e)
             {

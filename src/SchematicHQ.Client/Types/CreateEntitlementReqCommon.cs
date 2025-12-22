@@ -36,7 +36,7 @@ public record CreateEntitlementReqCommon : IJsonOnDeserialized
     public string? ValueTraitId { get; set; }
 
     [JsonPropertyName("value_type")]
-    public required CreateEntitlementReqCommonValueType ValueType { get; set; }
+    public required EntitlementValueType ValueType { get; set; }
 
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();

@@ -10,10 +10,13 @@ public record CountCustomersRequest
     public IEnumerable<string> CompanyIds { get; set; } = new List<string>();
 
     [JsonIgnore]
+    public bool? FailedToImport { get; set; }
+
+    [JsonIgnore]
     public string? Name { get; set; }
 
     [JsonIgnore]
-    public bool? FailedToImport { get; set; }
+    public BillingProviderType? ProviderType { get; set; }
 
     [JsonIgnore]
     public string? Q { get; set; }

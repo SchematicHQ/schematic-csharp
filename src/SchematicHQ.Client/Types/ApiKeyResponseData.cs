@@ -30,7 +30,7 @@ public record ApiKeyResponseData : IJsonOnDeserialized
     public required string Name { get; set; }
 
     [JsonPropertyName("scopes")]
-    public IEnumerable<string> Scopes { get; set; } = new List<string>();
+    public IEnumerable<ApiKeyScope> Scopes { get; set; } = new List<ApiKeyScope>();
 
     [JsonPropertyName("updated_at")]
     public required DateTime UpdatedAt { get; set; }

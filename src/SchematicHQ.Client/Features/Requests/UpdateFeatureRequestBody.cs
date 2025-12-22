@@ -13,7 +13,7 @@ public record UpdateFeatureRequestBody
     public string? EventSubtype { get; set; }
 
     [JsonPropertyName("feature_type")]
-    public UpdateFeatureRequestBodyFeatureType? FeatureType { get; set; }
+    public FeatureType? FeatureType { get; set; }
 
     [JsonPropertyName("flag")]
     public CreateOrUpdateFlagRequestBody? Flag { get; set; }
@@ -22,7 +22,7 @@ public record UpdateFeatureRequestBody
     public string? Icon { get; set; }
 
     [JsonPropertyName("lifecycle_phase")]
-    public UpdateFeatureRequestBodyLifecyclePhase? LifecyclePhase { get; set; }
+    public FeatureLifecyclePhase? LifecyclePhase { get; set; }
 
     [JsonPropertyName("maintainer_id")]
     public string? MaintainerId { get; set; }

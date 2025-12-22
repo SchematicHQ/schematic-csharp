@@ -59,6 +59,9 @@ public record CheckoutSubscription : IJsonOnDeserialized
     [JsonPropertyName("period_start")]
     public required int PeriodStart { get; set; }
 
+    [JsonPropertyName("provider_type")]
+    public required BillingProviderType ProviderType { get; set; }
+
     [JsonPropertyName("status")]
     public required string Status { get; set; }
 
@@ -72,7 +75,7 @@ public record CheckoutSubscription : IJsonOnDeserialized
     public int? TrialEnd { get; set; }
 
     [JsonPropertyName("trial_end_setting")]
-    public string? TrialEndSetting { get; set; }
+    public BillingSubscriptionTrialEndSetting? TrialEndSetting { get; set; }
 
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();
