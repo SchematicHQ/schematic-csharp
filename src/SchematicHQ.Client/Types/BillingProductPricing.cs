@@ -45,7 +45,7 @@ public record BillingProductPricing : IJsonOnDeserialized
     public string? SubscriptionItemExternalId { get; set; }
 
     [JsonPropertyName("usage_type")]
-    public required BillingProductPricingUsageType UsageType { get; set; }
+    public required BillingPriceUsageType UsageType { get; set; }
 
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();

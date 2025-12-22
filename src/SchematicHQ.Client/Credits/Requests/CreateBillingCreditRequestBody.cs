@@ -7,19 +7,19 @@ namespace SchematicHQ.Client;
 public record CreateBillingCreditRequestBody
 {
     [JsonPropertyName("burn_strategy")]
-    public CreateBillingCreditRequestBodyBurnStrategy? BurnStrategy { get; set; }
+    public BillingCreditBurnStrategy? BurnStrategy { get; set; }
 
     [JsonPropertyName("currency")]
     public required string Currency { get; set; }
 
     [JsonPropertyName("default_expiry_unit")]
-    public string? DefaultExpiryUnit { get; set; }
+    public BillingCreditExpiryUnit? DefaultExpiryUnit { get; set; }
 
     [JsonPropertyName("default_expiry_unit_count")]
     public int? DefaultExpiryUnitCount { get; set; }
 
     [JsonPropertyName("default_rollover_policy")]
-    public CreateBillingCreditRequestBodyDefaultRolloverPolicy? DefaultRolloverPolicy { get; set; }
+    public BillingCreditRolloverPolicy? DefaultRolloverPolicy { get; set; }
 
     [JsonPropertyName("description")]
     public required string Description { get; set; }

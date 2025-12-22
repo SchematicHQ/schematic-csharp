@@ -6,6 +6,9 @@ namespace SchematicHQ.Client;
 [Serializable]
 public record UpdatePlanTraitBulkRequestBody
 {
+    [JsonPropertyName("apply_to_existing_companies")]
+    public required bool ApplyToExistingCompanies { get; set; }
+
     [JsonPropertyName("plan_id")]
     public required string PlanId { get; set; }
 

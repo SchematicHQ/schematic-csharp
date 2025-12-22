@@ -35,6 +35,9 @@ public record CreditUsage : IJsonOnDeserialized
     [JsonPropertyName("credit_used")]
     public double? CreditUsed { get; set; }
 
+    [JsonPropertyName("usage_aggregation")]
+    public CreditUsageAggregation? UsageAggregation { get; set; }
+
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();
 

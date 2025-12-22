@@ -21,10 +21,10 @@ public record BillingPlanCreditGrantResponseData : IJsonOnDeserialized
     public required bool AutoTopupEnabled { get; set; }
 
     [JsonPropertyName("auto_topup_expiry_type")]
-    public string? AutoTopupExpiryType { get; set; }
+    public BillingCreditExpiryType? AutoTopupExpiryType { get; set; }
 
     [JsonPropertyName("auto_topup_expiry_unit")]
-    public string? AutoTopupExpiryUnit { get; set; }
+    public BillingCreditExpiryUnit? AutoTopupExpiryUnit { get; set; }
 
     [JsonPropertyName("auto_topup_expiry_unit_count")]
     public int? AutoTopupExpiryUnitCount { get; set; }
@@ -51,10 +51,10 @@ public record BillingPlanCreditGrantResponseData : IJsonOnDeserialized
     public string? CreditSingularName { get; set; }
 
     [JsonPropertyName("expiry_type")]
-    public string? ExpiryType { get; set; }
+    public BillingCreditExpiryType? ExpiryType { get; set; }
 
     [JsonPropertyName("expiry_unit")]
-    public string? ExpiryUnit { get; set; }
+    public BillingCreditExpiryUnit? ExpiryUnit { get; set; }
 
     [JsonPropertyName("expiry_unit_count")]
     public int? ExpiryUnitCount { get; set; }
@@ -69,13 +69,13 @@ public record BillingPlanCreditGrantResponseData : IJsonOnDeserialized
     public required string PlanName { get; set; }
 
     [JsonPropertyName("reset_cadence")]
-    public required string ResetCadence { get; set; }
+    public required BillingPlanCreditGrantResetCadence ResetCadence { get; set; }
 
     [JsonPropertyName("reset_start")]
-    public required string ResetStart { get; set; }
+    public required BillingPlanCreditGrantResetStart ResetStart { get; set; }
 
     [JsonPropertyName("reset_type")]
-    public string? ResetType { get; set; }
+    public BillingPlanCreditGrantResetType? ResetType { get; set; }
 
     [JsonPropertyName("updated_at")]
     public required DateTime UpdatedAt { get; set; }

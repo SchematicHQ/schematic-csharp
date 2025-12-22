@@ -24,7 +24,7 @@ public record ListFeaturesParams : IJsonOnDeserialized
     /// Filter by one or more feature types (boolean, event, trait)
     /// </summary>
     [JsonPropertyName("feature_type")]
-    public IEnumerable<string>? FeatureType { get; set; }
+    public IEnumerable<FeatureType>? FeatureType { get; set; }
 
     [JsonPropertyName("ids")]
     public IEnumerable<string>? Ids { get; set; }

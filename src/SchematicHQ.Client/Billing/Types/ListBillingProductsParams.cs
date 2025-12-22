@@ -18,7 +18,7 @@ public record ListBillingProductsParams : IJsonOnDeserialized
     public IEnumerable<string>? Ids { get; set; }
 
     /// <summary>
-    /// Filter products that are active
+    /// Filter products that are active. Defaults to true if not specified
     /// </summary>
     [JsonPropertyName("is_active")]
     public bool? IsActive { get; set; }
@@ -39,7 +39,10 @@ public record ListBillingProductsParams : IJsonOnDeserialized
     public int? Offset { get; set; }
 
     [JsonPropertyName("price_usage_type")]
-    public ListBillingProductsResponseParamsPriceUsageType? PriceUsageType { get; set; }
+    public BillingPriceUsageType? PriceUsageType { get; set; }
+
+    [JsonPropertyName("provider_type")]
+    public BillingProviderType? ProviderType { get; set; }
 
     [JsonPropertyName("q")]
     public string? Q { get; set; }

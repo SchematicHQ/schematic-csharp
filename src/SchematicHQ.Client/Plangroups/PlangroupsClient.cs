@@ -99,10 +99,13 @@ public partial class PlangroupsClient
     ///             new OrderedPlansInGroup { PlanId = "plan_id" },
     ///         },
     ///         PreventDowngradesWhenOverLimit = true,
+    ///         PreventSelfServiceDowngrade = true,
+    ///         ProrationBehavior = ProrationBehavior.CreateProrations,
+    ///         ShowAsMonthlyPrices = true,
     ///         ShowCredits = true,
     ///         ShowPeriodToggle = true,
     ///         ShowZeroPriceAsFree = true,
-    ///         SyncCustomerBillingDetailsForTax = true,
+    ///         SyncCustomerBillingDetails = true,
     ///     }
     /// );
     /// </code></example>
@@ -194,10 +197,13 @@ public partial class PlangroupsClient
     ///             new OrderedPlansInGroup { PlanId = "plan_id" },
     ///         },
     ///         PreventDowngradesWhenOverLimit = true,
+    ///         PreventSelfServiceDowngrade = true,
+    ///         ProrationBehavior = ProrationBehavior.CreateProrations,
+    ///         ShowAsMonthlyPrices = true,
     ///         ShowCredits = true,
     ///         ShowPeriodToggle = true,
     ///         ShowZeroPriceAsFree = true,
-    ///         SyncCustomerBillingDetailsForTax = true,
+    ///         SyncCustomerBillingDetails = true,
     ///     }
     /// );
     /// </code></example>

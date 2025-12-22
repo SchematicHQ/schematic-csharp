@@ -12,7 +12,7 @@ public record BillingPriceView : IJsonOnDeserialized
         new Dictionary<string, JsonElement>();
 
     [JsonPropertyName("billing_scheme")]
-    public required string BillingScheme { get; set; }
+    public required BillingPriceScheme BillingScheme { get; set; }
 
     [JsonPropertyName("created_at")]
     public required DateTime CreatedAt { get; set; }
@@ -24,7 +24,7 @@ public record BillingPriceView : IJsonOnDeserialized
     public required string Id { get; set; }
 
     [JsonPropertyName("interval")]
-    public required string Interval { get; set; }
+    public required BillingProductPriceInterval Interval { get; set; }
 
     [JsonPropertyName("is_active")]
     public required bool IsActive { get; set; }
@@ -66,14 +66,17 @@ public record BillingPriceView : IJsonOnDeserialized
     [JsonPropertyName("product_name")]
     public required string ProductName { get; set; }
 
+    [JsonPropertyName("provider_type")]
+    public required BillingProviderType ProviderType { get; set; }
+
     [JsonPropertyName("tiers_mode")]
-    public string? TiersMode { get; set; }
+    public BillingTiersMode? TiersMode { get; set; }
 
     [JsonPropertyName("updated_at")]
     public required DateTime UpdatedAt { get; set; }
 
     [JsonPropertyName("usage_type")]
-    public required string UsageType { get; set; }
+    public required BillingPriceUsageType UsageType { get; set; }
 
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();

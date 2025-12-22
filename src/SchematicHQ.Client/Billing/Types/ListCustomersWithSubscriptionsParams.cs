@@ -35,6 +35,9 @@ public record ListCustomersWithSubscriptionsParams : IJsonOnDeserialized
     [JsonPropertyName("offset")]
     public int? Offset { get; set; }
 
+    [JsonPropertyName("provider_type")]
+    public BillingProviderType? ProviderType { get; set; }
+
     [JsonPropertyName("q")]
     public string? Q { get; set; }
 

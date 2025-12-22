@@ -59,6 +59,9 @@ public record PaymentMethodResponseData : IJsonOnDeserialized
     [JsonPropertyName("payment_method_type")]
     public required string PaymentMethodType { get; set; }
 
+    [JsonPropertyName("provider_type")]
+    public required BillingProviderType ProviderType { get; set; }
+
     [JsonPropertyName("updated_at")]
     public required DateTime UpdatedAt { get; set; }
 

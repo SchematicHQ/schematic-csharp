@@ -50,6 +50,9 @@ public record BillingCouponResponseData : IJsonOnDeserialized
     [JsonPropertyName("percent_off")]
     public double? PercentOff { get; set; }
 
+    [JsonPropertyName("provider_type")]
+    public required BillingProviderType ProviderType { get; set; }
+
     [JsonPropertyName("times_redeemed")]
     public required int TimesRedeemed { get; set; }
 
