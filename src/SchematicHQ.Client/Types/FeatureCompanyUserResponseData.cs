@@ -23,11 +23,8 @@ public record FeatureCompanyUserResponseData : IJsonOnDeserialized
     [JsonPropertyName("allocation")]
     public int? Allocation { get; set; }
 
-    /// <summary>
-    /// The type of allocation that is being used.
-    /// </summary>
     [JsonPropertyName("allocation_type")]
-    public required FeatureCompanyUserResponseDataAllocationType AllocationType { get; set; }
+    public required EntitlementValueType AllocationType { get; set; }
 
     [JsonPropertyName("company")]
     public CompanyDetailResponseData? Company { get; set; }
@@ -36,7 +33,7 @@ public record FeatureCompanyUserResponseData : IJsonOnDeserialized
     public required string EntitlementId { get; set; }
 
     [JsonPropertyName("entitlement_type")]
-    public required string EntitlementType { get; set; }
+    public required EntitlementType EntitlementType { get; set; }
 
     [JsonPropertyName("feature")]
     public FeatureDetailResponseData? Feature { get; set; }

@@ -16,8 +16,8 @@ public record CreateWebhookRequestBody
     public required string Name { get; set; }
 
     [JsonPropertyName("request_types")]
-    public IEnumerable<CreateWebhookRequestBodyRequestTypesItem> RequestTypes { get; set; } =
-        new List<CreateWebhookRequestBodyRequestTypesItem>();
+    public IEnumerable<WebhookRequestType> RequestTypes { get; set; } =
+        new List<WebhookRequestType>();
 
     [JsonPropertyName("url")]
     public required string Url { get; set; }

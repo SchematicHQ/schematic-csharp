@@ -15,6 +15,12 @@ public record ListFeatureUsageRequest
     [JsonIgnore]
     public IEnumerable<string> FeatureIds { get; set; } = new List<string>();
 
+    /// <summary>
+    /// Include time-bucketed usage aggregation (today, this week, this month, billing period) for credit-based entitlements. Defaults to false for performance.
+    /// </summary>
+    [JsonIgnore]
+    public bool? IncludeUsageAggregation { get; set; }
+
     [JsonIgnore]
     public string? Q { get; set; }
 

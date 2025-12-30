@@ -7,7 +7,7 @@ namespace SchematicHQ.Client;
 public record UpdateEnvironmentRequestBody
 {
     [JsonPropertyName("environment_type")]
-    public UpdateEnvironmentRequestBodyEnvironmentType? EnvironmentType { get; set; }
+    public EnvironmentType? EnvironmentType { get; set; }
 
     [JsonPropertyName("name")]
     public string? Name { get; set; }

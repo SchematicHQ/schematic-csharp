@@ -24,10 +24,10 @@ public record ComponentResponseData : IJsonOnDeserialized
     public required string Name { get; set; }
 
     [JsonPropertyName("state")]
-    public required string State { get; set; }
+    public required ComponentState State { get; set; }
 
     [JsonPropertyName("type")]
-    public required string Type { get; set; }
+    public required ComponentEntityType Type { get; set; }
 
     [JsonPropertyName("updated_at")]
     public required DateTime UpdatedAt { get; set; }

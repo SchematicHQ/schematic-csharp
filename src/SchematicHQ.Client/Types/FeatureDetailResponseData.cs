@@ -24,7 +24,7 @@ public record FeatureDetailResponseData : IJsonOnDeserialized
     public EventSummaryResponseData? EventSummary { get; set; }
 
     [JsonPropertyName("feature_type")]
-    public required string FeatureType { get; set; }
+    public required FeatureType FeatureType { get; set; }
 
     [JsonPropertyName("flags")]
     public IEnumerable<FlagDetailResponseData> Flags { get; set; } =
@@ -37,7 +37,7 @@ public record FeatureDetailResponseData : IJsonOnDeserialized
     public required string Id { get; set; }
 
     [JsonPropertyName("lifecycle_phase")]
-    public string? LifecyclePhase { get; set; }
+    public FeatureLifecyclePhase? LifecyclePhase { get; set; }
 
     [JsonPropertyName("maintainer_id")]
     public string? MaintainerId { get; set; }

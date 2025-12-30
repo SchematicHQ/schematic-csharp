@@ -27,6 +27,9 @@ public record CreateBillingCustomerRequestBody
     [JsonPropertyName("name")]
     public required string Name { get; set; }
 
+    [JsonPropertyName("provider_type")]
+    public BillingProviderType? ProviderType { get; set; }
+
     /// <inheritdoc />
     public override string ToString()
     {
