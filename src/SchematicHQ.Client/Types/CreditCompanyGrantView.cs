@@ -35,20 +35,23 @@ public record CreditCompanyGrantView : IJsonOnDeserialized
     [JsonPropertyName("credit_name")]
     public required string CreditName { get; set; }
 
+    [JsonPropertyName("exhausted_at")]
+    public DateTime? ExhaustedAt { get; set; }
+
     [JsonPropertyName("expires_at")]
     public DateTime? ExpiresAt { get; set; }
 
     [JsonPropertyName("expiry_type")]
-    public string? ExpiryType { get; set; }
+    public BillingCreditExpiryType? ExpiryType { get; set; }
 
     [JsonPropertyName("expiry_unit")]
-    public string? ExpiryUnit { get; set; }
+    public BillingCreditExpiryUnit? ExpiryUnit { get; set; }
 
     [JsonPropertyName("expiry_unit_count")]
     public int? ExpiryUnitCount { get; set; }
 
     [JsonPropertyName("grant_reason")]
-    public required string GrantReason { get; set; }
+    public required BillingCreditGrantReason GrantReason { get; set; }
 
     [JsonPropertyName("id")]
     public required string Id { get; set; }
@@ -74,11 +77,20 @@ public record CreditCompanyGrantView : IJsonOnDeserialized
     [JsonPropertyName("quantity_used")]
     public required double QuantityUsed { get; set; }
 
+    [JsonPropertyName("renewal_enabled")]
+    public required bool RenewalEnabled { get; set; }
+
+    [JsonPropertyName("renewal_period")]
+    public BillingPlanCreditGrantResetCadence? RenewalPeriod { get; set; }
+
     [JsonPropertyName("singular_name")]
     public string? SingularName { get; set; }
 
     [JsonPropertyName("source_label")]
     public required string SourceLabel { get; set; }
+
+    [JsonPropertyName("transfers")]
+    public IEnumerable<CreditTransferView>? Transfers { get; set; }
 
     [JsonPropertyName("updated_at")]
     public required DateTime UpdatedAt { get; set; }
@@ -90,7 +102,7 @@ public record CreditCompanyGrantView : IJsonOnDeserialized
     public DateTime? ZeroedOutDate { get; set; }
 
     [JsonPropertyName("zeroed_out_reason")]
-    public string? ZeroedOutReason { get; set; }
+    public BillingCreditGrantZeroedOutReason? ZeroedOutReason { get; set; }
 
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();

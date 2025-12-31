@@ -23,6 +23,9 @@ public record CreateBillingPriceTierRequestBody : IJsonOnDeserialized
     [JsonPropertyName("price_external_id")]
     public required string PriceExternalId { get; set; }
 
+    [JsonPropertyName("provider_type")]
+    public BillingProviderType? ProviderType { get; set; }
+
     [JsonPropertyName("up_to")]
     public int? UpTo { get; set; }
 

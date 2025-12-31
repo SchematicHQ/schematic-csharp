@@ -27,7 +27,7 @@ public record FlagDetailResponseData : IJsonOnDeserialized
     public string? FeatureId { get; set; }
 
     [JsonPropertyName("flag_type")]
-    public required string FlagType { get; set; }
+    public string FlagType { get; set; } = "boolean";
 
     [JsonPropertyName("id")]
     public required string Id { get; set; }

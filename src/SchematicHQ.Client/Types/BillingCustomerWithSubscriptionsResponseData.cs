@@ -32,6 +32,9 @@ public record BillingCustomerWithSubscriptionsResponseData : IJsonOnDeserialized
     [JsonPropertyName("name")]
     public required string Name { get; set; }
 
+    [JsonPropertyName("provider_type")]
+    public required BillingProviderType ProviderType { get; set; }
+
     [JsonPropertyName("subscriptions")]
     public IEnumerable<BillingCustomerSubscription> Subscriptions { get; set; } =
         new List<BillingCustomerSubscription>();

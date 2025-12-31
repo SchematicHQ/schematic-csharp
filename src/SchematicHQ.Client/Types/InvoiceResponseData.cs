@@ -50,6 +50,9 @@ public record InvoiceResponseData : IJsonOnDeserialized
     [JsonPropertyName("payment_method_external_id")]
     public string? PaymentMethodExternalId { get; set; }
 
+    [JsonPropertyName("provider_type")]
+    public required BillingProviderType ProviderType { get; set; }
+
     [JsonPropertyName("subscription_external_id")]
     public string? SubscriptionExternalId { get; set; }
 

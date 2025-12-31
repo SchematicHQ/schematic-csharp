@@ -30,7 +30,7 @@ public record FeatureUsageDataResponseData : IJsonOnDeserialized
     public required string FeatureName { get; set; }
 
     [JsonPropertyName("feature_type")]
-    public required string FeatureType { get; set; }
+    public required FeatureType FeatureType { get; set; }
 
     [JsonPropertyName("hard_limit")]
     public required string HardLimit { get; set; }

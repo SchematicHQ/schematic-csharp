@@ -9,26 +9,47 @@ public record UpdateBillingPlanCreditGrantRequestBody
     [JsonPropertyName("apply_to_existing")]
     public bool? ApplyToExisting { get; set; }
 
+    [JsonPropertyName("auto_topup_amount")]
+    public int? AutoTopupAmount { get; set; }
+
+    [JsonPropertyName("auto_topup_amount_type")]
+    public string? AutoTopupAmountType { get; set; }
+
+    [JsonPropertyName("auto_topup_enabled")]
+    public bool? AutoTopupEnabled { get; set; }
+
+    [JsonPropertyName("auto_topup_expiry_type")]
+    public BillingCreditExpiryType? AutoTopupExpiryType { get; set; }
+
+    [JsonPropertyName("auto_topup_expiry_unit")]
+    public BillingCreditExpiryUnit? AutoTopupExpiryUnit { get; set; }
+
+    [JsonPropertyName("auto_topup_expiry_unit_count")]
+    public int? AutoTopupExpiryUnitCount { get; set; }
+
+    [JsonPropertyName("auto_topup_threshold_percent")]
+    public int? AutoTopupThresholdPercent { get; set; }
+
     [JsonPropertyName("credit_amount")]
     public int? CreditAmount { get; set; }
 
     [JsonPropertyName("expiry_type")]
-    public UpdateBillingPlanCreditGrantRequestBodyExpiryType? ExpiryType { get; set; }
+    public BillingCreditExpiryType? ExpiryType { get; set; }
 
     [JsonPropertyName("expiry_unit")]
-    public UpdateBillingPlanCreditGrantRequestBodyExpiryUnit? ExpiryUnit { get; set; }
+    public BillingCreditExpiryUnit? ExpiryUnit { get; set; }
 
     [JsonPropertyName("expiry_unit_count")]
     public int? ExpiryUnitCount { get; set; }
 
     [JsonPropertyName("reset_cadence")]
-    public required UpdateBillingPlanCreditGrantRequestBodyResetCadence ResetCadence { get; set; }
+    public required BillingPlanCreditGrantResetCadence ResetCadence { get; set; }
 
     [JsonPropertyName("reset_start")]
-    public required UpdateBillingPlanCreditGrantRequestBodyResetStart ResetStart { get; set; }
+    public required BillingPlanCreditGrantResetStart ResetStart { get; set; }
 
     [JsonPropertyName("reset_type")]
-    public UpdateBillingPlanCreditGrantRequestBodyResetType? ResetType { get; set; }
+    public BillingPlanCreditGrantResetType? ResetType { get; set; }
 
     /// <inheritdoc />
     public override string ToString()

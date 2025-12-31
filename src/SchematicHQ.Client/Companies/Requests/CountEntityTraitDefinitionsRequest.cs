@@ -7,7 +7,7 @@ namespace SchematicHQ.Client;
 public record CountEntityTraitDefinitionsRequest
 {
     [JsonIgnore]
-    public CountEntityTraitDefinitionsRequestEntityType? EntityType { get; set; }
+    public EntityType? EntityType { get; set; }
 
     [JsonIgnore]
     public IEnumerable<string> Ids { get; set; } = new List<string>();
@@ -16,7 +16,10 @@ public record CountEntityTraitDefinitionsRequest
     public string? Q { get; set; }
 
     [JsonIgnore]
-    public CountEntityTraitDefinitionsRequestTraitType? TraitType { get; set; }
+    public TraitType? TraitType { get; set; }
+
+    [JsonIgnore]
+    public IEnumerable<TraitType> TraitTypes { get; set; } = new List<TraitType>();
 
     /// <summary>
     /// Page limit (default 100)

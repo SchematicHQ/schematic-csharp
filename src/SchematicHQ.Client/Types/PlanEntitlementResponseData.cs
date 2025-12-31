@@ -51,7 +51,7 @@ public record PlanEntitlementResponseData : IJsonOnDeserialized
     public required string PlanId { get; set; }
 
     [JsonPropertyName("price_behavior")]
-    public string? PriceBehavior { get; set; }
+    public EntitlementPriceBehavior? PriceBehavior { get; set; }
 
     [JsonPropertyName("rule_id")]
     public required string RuleId { get; set; }
@@ -84,7 +84,7 @@ public record PlanEntitlementResponseData : IJsonOnDeserialized
     public string? ValueTraitId { get; set; }
 
     [JsonPropertyName("value_type")]
-    public required string ValueType { get; set; }
+    public required EntitlementValueType ValueType { get; set; }
 
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();
