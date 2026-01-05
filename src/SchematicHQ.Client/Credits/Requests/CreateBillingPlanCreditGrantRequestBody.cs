@@ -19,10 +19,10 @@ public record CreateBillingPlanCreditGrantRequestBody
     public bool? AutoTopupEnabled { get; set; }
 
     [JsonPropertyName("auto_topup_expiry_type")]
-    public CreateBillingPlanCreditGrantRequestBodyAutoTopupExpiryType? AutoTopupExpiryType { get; set; }
+    public BillingCreditExpiryType? AutoTopupExpiryType { get; set; }
 
     [JsonPropertyName("auto_topup_expiry_unit")]
-    public CreateBillingPlanCreditGrantRequestBodyAutoTopupExpiryUnit? AutoTopupExpiryUnit { get; set; }
+    public BillingCreditExpiryUnit? AutoTopupExpiryUnit { get; set; }
 
     [JsonPropertyName("auto_topup_expiry_unit_count")]
     public int? AutoTopupExpiryUnitCount { get; set; }
@@ -37,10 +37,10 @@ public record CreateBillingPlanCreditGrantRequestBody
     public required string CreditId { get; set; }
 
     [JsonPropertyName("expiry_type")]
-    public CreateBillingPlanCreditGrantRequestBodyExpiryType? ExpiryType { get; set; }
+    public BillingCreditExpiryType? ExpiryType { get; set; }
 
     [JsonPropertyName("expiry_unit")]
-    public CreateBillingPlanCreditGrantRequestBodyExpiryUnit? ExpiryUnit { get; set; }
+    public BillingCreditExpiryUnit? ExpiryUnit { get; set; }
 
     [JsonPropertyName("expiry_unit_count")]
     public int? ExpiryUnitCount { get; set; }
@@ -49,13 +49,13 @@ public record CreateBillingPlanCreditGrantRequestBody
     public required string PlanId { get; set; }
 
     [JsonPropertyName("reset_cadence")]
-    public required CreateBillingPlanCreditGrantRequestBodyResetCadence ResetCadence { get; set; }
+    public required BillingPlanCreditGrantResetCadence ResetCadence { get; set; }
 
     [JsonPropertyName("reset_start")]
-    public required CreateBillingPlanCreditGrantRequestBodyResetStart ResetStart { get; set; }
+    public required BillingPlanCreditGrantResetStart ResetStart { get; set; }
 
     [JsonPropertyName("reset_type")]
-    public CreateBillingPlanCreditGrantRequestBodyResetType? ResetType { get; set; }
+    public BillingPlanCreditGrantResetType? ResetType { get; set; }
 
     /// <inheritdoc />
     public override string ToString()

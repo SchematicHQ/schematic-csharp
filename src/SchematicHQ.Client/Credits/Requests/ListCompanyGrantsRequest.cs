@@ -10,10 +10,10 @@ public record ListCompanyGrantsRequest
     public string? CompanyId { get; set; }
 
     [JsonIgnore]
-    public ListCompanyGrantsRequestOrder? Order { get; set; }
+    public CreditGrantSortOrder? Order { get; set; }
 
     [JsonIgnore]
-    public ListCompanyGrantsRequestDir? Dir { get; set; }
+    public SortDirection? Dir { get; set; }
 
     /// <summary>
     /// Page limit (default 100)

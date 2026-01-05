@@ -10,13 +10,13 @@ public record UpdateComponentRequestBody
     public Dictionary<string, double>? Ast { get; set; }
 
     [JsonPropertyName("entity_type")]
-    public UpdateComponentRequestBodyEntityType? EntityType { get; set; }
+    public ComponentEntityType? EntityType { get; set; }
 
     [JsonPropertyName("name")]
     public string? Name { get; set; }
 
     [JsonPropertyName("state")]
-    public UpdateComponentRequestBodyState? State { get; set; }
+    public ComponentState? State { get; set; }
 
     /// <inheritdoc />
     public override string ToString()

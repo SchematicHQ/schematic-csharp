@@ -10,7 +10,7 @@ public record CreateComponentRequestBody
     public Dictionary<string, double>? Ast { get; set; }
 
     [JsonPropertyName("entity_type")]
-    public required CreateComponentRequestBodyEntityType EntityType { get; set; }
+    public required ComponentEntityType EntityType { get; set; }
 
     [JsonPropertyName("name")]
     public required string Name { get; set; }

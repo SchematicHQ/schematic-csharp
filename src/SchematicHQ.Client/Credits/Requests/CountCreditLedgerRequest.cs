@@ -16,7 +16,7 @@ public record CountCreditLedgerRequest
     public string? FeatureId { get; set; }
 
     [JsonIgnore]
-    public required CountCreditLedgerRequestPeriod Period { get; set; }
+    public required CreditLedgerPeriod Period { get; set; }
 
     [JsonIgnore]
     public string? StartTime { get; set; }

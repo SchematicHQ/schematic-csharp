@@ -10,7 +10,7 @@ public record UpsertBillingProductRequestBody
     public string? BillingProductId { get; set; }
 
     [JsonPropertyName("charge_type")]
-    public required UpsertBillingProductRequestBodyChargeType ChargeType { get; set; }
+    public required ChargeType ChargeType { get; set; }
 
     [JsonPropertyName("currency")]
     public string? Currency { get; set; }

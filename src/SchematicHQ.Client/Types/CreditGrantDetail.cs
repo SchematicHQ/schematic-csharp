@@ -18,7 +18,7 @@ public record CreditGrantDetail : IJsonOnDeserialized
     public DateTime? ExpiresAt { get; set; }
 
     [JsonPropertyName("grant_reason")]
-    public required CreditGrantDetailGrantReason GrantReason { get; set; }
+    public required BillingCreditGrantReason GrantReason { get; set; }
 
     [JsonPropertyName("quantity")]
     public required double Quantity { get; set; }

@@ -13,7 +13,7 @@ public record ListCreditBundlesRequest
     public string? CreditId { get; set; }
 
     [JsonIgnore]
-    public ListCreditBundlesRequestStatus? Status { get; set; }
+    public BillingCreditBundleStatus? Status { get; set; }
 
     [JsonIgnore]
     public string? BundleType { get; set; }

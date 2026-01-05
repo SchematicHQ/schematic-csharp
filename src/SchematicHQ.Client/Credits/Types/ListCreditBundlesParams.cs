@@ -36,7 +36,7 @@ public record ListCreditBundlesParams : IJsonOnDeserialized
     public int? Offset { get; set; }
 
     [JsonPropertyName("status")]
-    public ListCreditBundlesResponseParamsStatus? Status { get; set; }
+    public BillingCreditBundleStatus? Status { get; set; }
 
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();
