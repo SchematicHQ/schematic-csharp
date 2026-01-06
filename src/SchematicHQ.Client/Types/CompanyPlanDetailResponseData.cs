@@ -18,7 +18,7 @@ public record CompanyPlanDetailResponseData : IJsonOnDeserialized
     public BillingProductDetailResponseData? BillingProduct { get; set; }
 
     [JsonPropertyName("charge_type")]
-    public required string ChargeType { get; set; }
+    public required ChargeType ChargeType { get; set; }
 
     [JsonPropertyName("company_can_trial")]
     public required bool CompanyCanTrial { get; set; }
@@ -30,7 +30,7 @@ public record CompanyPlanDetailResponseData : IJsonOnDeserialized
     public IEnumerable<string> CompatiblePlanIds { get; set; } = new List<string>();
 
     [JsonPropertyName("controlled_by")]
-    public required string ControlledBy { get; set; }
+    public required PlanControlledByType ControlledBy { get; set; }
 
     [JsonPropertyName("created_at")]
     public required DateTime CreatedAt { get; set; }
@@ -65,6 +65,9 @@ public record CompanyPlanDetailResponseData : IJsonOnDeserialized
     public IEnumerable<PlanCreditGrantView> IncludedCreditGrants { get; set; } =
         new List<PlanCreditGrantView>();
 
+    [JsonPropertyName("invalid_reason")]
+    public CompanyPlanInvalidReason? InvalidReason { get; set; }
+
     [JsonPropertyName("is_custom")]
     public required bool IsCustom { get; set; }
 
@@ -87,7 +90,7 @@ public record CompanyPlanDetailResponseData : IJsonOnDeserialized
     public BillingPriceResponseData? OneTimePrice { get; set; }
 
     [JsonPropertyName("plan_type")]
-    public required string PlanType { get; set; }
+    public required PlanType PlanType { get; set; }
 
     [JsonPropertyName("trial_days")]
     public int? TrialDays { get; set; }

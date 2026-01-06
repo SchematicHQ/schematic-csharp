@@ -21,7 +21,7 @@ public record WebhookEventDetailResponseData : IJsonOnDeserialized
     public string? Payload { get; set; }
 
     [JsonPropertyName("request_type")]
-    public required string RequestType { get; set; }
+    public required WebhookRequestType RequestType { get; set; }
 
     [JsonPropertyName("response_code")]
     public int? ResponseCode { get; set; }
@@ -30,7 +30,7 @@ public record WebhookEventDetailResponseData : IJsonOnDeserialized
     public DateTime? SentAt { get; set; }
 
     [JsonPropertyName("status")]
-    public required string Status { get; set; }
+    public required WebhookEventStatus Status { get; set; }
 
     [JsonPropertyName("updated_at")]
     public required DateTime UpdatedAt { get; set; }

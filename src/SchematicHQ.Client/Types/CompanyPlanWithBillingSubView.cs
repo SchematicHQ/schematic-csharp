@@ -29,6 +29,10 @@ public record CompanyPlanWithBillingSubView : IJsonOnDeserialized
     [JsonPropertyName("image_url")]
     public string? ImageUrl { get; set; }
 
+    [JsonPropertyName("included_credit_grants")]
+    public IEnumerable<PlanCreditGrantView> IncludedCreditGrants { get; set; } =
+        new List<PlanCreditGrantView>();
+
     [JsonPropertyName("name")]
     public required string Name { get; set; }
 

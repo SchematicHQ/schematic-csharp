@@ -74,23 +74,20 @@ public record CountCompaniesForAdvancedFilterParams : IJsonOnDeserialized
     [JsonPropertyName("sort_order_column")]
     public string? SortOrderColumn { get; set; }
 
-    /// <summary>
-    /// Direction to sort by (asc or desc)
-    /// </summary>
     [JsonPropertyName("sort_order_direction")]
-    public CountCompaniesForAdvancedFilterResponseParamsSortOrderDirection? SortOrderDirection { get; set; }
+    public SortDirection? SortOrderDirection { get; set; }
 
     /// <summary>
     /// Filter companies by one or more subscription statuses (active, canceled, expired, incomplete, incomplete_expired, past_due, paused, trialing, unpaid)
     /// </summary>
     [JsonPropertyName("subscription_statuses")]
-    public IEnumerable<string>? SubscriptionStatuses { get; set; }
+    public IEnumerable<SubscriptionStatus>? SubscriptionStatuses { get; set; }
 
     /// <summary>
     /// Filter companies by one or more subscription types (paid, free, trial)
     /// </summary>
     [JsonPropertyName("subscription_types")]
-    public IEnumerable<string>? SubscriptionTypes { get; set; }
+    public IEnumerable<SubscriptionType>? SubscriptionTypes { get; set; }
 
     /// <summary>
     /// Filter out companies that have a plan

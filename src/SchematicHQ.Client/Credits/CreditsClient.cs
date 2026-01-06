@@ -393,7 +393,7 @@ public partial class CreditsClient
     ///     new ListCreditBundlesRequest
     ///     {
     ///         CreditId = "credit_id",
-    ///         Status = ListCreditBundlesRequestStatus.Active,
+    ///         Status = BillingCreditBundleStatus.Active,
     ///         BundleType = "fixed",
     ///         Limit = 1,
     ///         Offset = 1,
@@ -778,7 +778,7 @@ public partial class CreditsClient
     ///     new CountCreditBundlesRequest
     ///     {
     ///         CreditId = "credit_id",
-    ///         Status = CountCreditBundlesRequestStatus.Active,
+    ///         Status = BillingCreditBundleStatus.Active,
     ///         BundleType = "fixed",
     ///         Limit = 1,
     ///         Offset = 1,
@@ -1038,7 +1038,7 @@ public partial class CreditsClient
     ///         CompanyId = "company_id",
     ///         CreditId = "credit_id",
     ///         Quantity = 1,
-    ///         Reason = "reason",
+    ///         Reason = BillingCreditGrantReason.BillingCreditAutoTopup,
     ///     }
     /// );
     /// </code></example>
@@ -1112,8 +1112,8 @@ public partial class CreditsClient
     ///     new ListCompanyGrantsRequest
     ///     {
     ///         CompanyId = "company_id",
-    ///         Order = ListCompanyGrantsRequestOrder.CreatedAt,
-    ///         Dir = ListCompanyGrantsRequestDir.Asc,
+    ///         Order = CreditGrantSortOrder.CreatedAt,
+    ///         Dir = SortDirection.Asc,
     ///         Limit = 1,
     ///         Offset = 1,
     ///     }
@@ -1387,7 +1387,7 @@ public partial class CreditsClient
     ///         CompanyId = "company_id",
     ///         BillingCreditId = "billing_credit_id",
     ///         FeatureId = "feature_id",
-    ///         Period = GetEnrichedCreditLedgerRequestPeriod.Daily,
+    ///         Period = CreditLedgerPeriod.Daily,
     ///         StartTime = "start_time",
     ///         EndTime = "end_time",
     ///         Limit = 1,
@@ -1493,7 +1493,7 @@ public partial class CreditsClient
     ///         CompanyId = "company_id",
     ///         BillingCreditId = "billing_credit_id",
     ///         FeatureId = "feature_id",
-    ///         Period = CountCreditLedgerRequestPeriod.Daily,
+    ///         Period = CreditLedgerPeriod.Daily,
     ///         StartTime = "start_time",
     ///         EndTime = "end_time",
     ///         Limit = 1,
@@ -1693,8 +1693,8 @@ public partial class CreditsClient
     ///         CreditAmount = 1,
     ///         CreditId = "credit_id",
     ///         PlanId = "plan_id",
-    ///         ResetCadence = CreateBillingPlanCreditGrantRequestBodyResetCadence.Monthly,
-    ///         ResetStart = CreateBillingPlanCreditGrantRequestBodyResetStart.BillingPeriod,
+    ///         ResetCadence = BillingPlanCreditGrantResetCadence.Daily,
+    ///         ResetStart = BillingPlanCreditGrantResetStart.BillingPeriod,
     ///     }
     /// );
     /// </code></example>
@@ -1768,8 +1768,8 @@ public partial class CreditsClient
     ///     "plan_grant_id",
     ///     new UpdateBillingPlanCreditGrantRequestBody
     ///     {
-    ///         ResetCadence = UpdateBillingPlanCreditGrantRequestBodyResetCadence.Monthly,
-    ///         ResetStart = UpdateBillingPlanCreditGrantRequestBodyResetStart.BillingPeriod,
+    ///         ResetCadence = BillingPlanCreditGrantResetCadence.Daily,
+    ///         ResetStart = BillingPlanCreditGrantResetStart.BillingPeriod,
     ///     }
     /// );
     /// </code></example>

@@ -30,7 +30,7 @@ public record PlanResponseData : IJsonOnDeserialized
     public required string Name { get; set; }
 
     [JsonPropertyName("plan_type")]
-    public required string PlanType { get; set; }
+    public required PlanType PlanType { get; set; }
 
     [JsonPropertyName("updated_at")]
     public required DateTime UpdatedAt { get; set; }

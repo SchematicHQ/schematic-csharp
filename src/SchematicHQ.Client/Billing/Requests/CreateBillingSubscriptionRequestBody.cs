@@ -63,7 +63,7 @@ public record CreateBillingSubscriptionRequestBody
     public int? TrialEnd { get; set; }
 
     [JsonPropertyName("trial_end_setting")]
-    public CreateBillingSubscriptionRequestBodyTrialEndSetting? TrialEndSetting { get; set; }
+    public BillingSubscriptionTrialEndSetting? TrialEndSetting { get; set; }
 
     /// <inheritdoc />
     public override string ToString()

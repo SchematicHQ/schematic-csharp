@@ -103,11 +103,7 @@ public partial class ComponentsClient
 
     /// <example><code>
     /// await client.Components.CreateComponentAsync(
-    ///     new CreateComponentRequestBody
-    ///     {
-    ///         EntityType = CreateComponentRequestBodyEntityType.Entitlement,
-    ///         Name = "name",
-    ///     }
+    ///     new CreateComponentRequestBody { EntityType = ComponentEntityType.Billing, Name = "name" }
     /// );
     /// </code></example>
     public async Task<CreateComponentResponse> CreateComponentAsync(

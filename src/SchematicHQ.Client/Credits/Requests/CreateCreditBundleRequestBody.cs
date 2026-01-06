@@ -19,10 +19,10 @@ public record CreateCreditBundleRequestBody
     public required string Currency { get; set; }
 
     [JsonPropertyName("expiry_type")]
-    public CreateCreditBundleRequestBodyExpiryType? ExpiryType { get; set; }
+    public BillingCreditExpiryType? ExpiryType { get; set; }
 
     [JsonPropertyName("expiry_unit")]
-    public CreateCreditBundleRequestBodyExpiryUnit? ExpiryUnit { get; set; }
+    public BillingCreditExpiryUnit? ExpiryUnit { get; set; }
 
     [JsonPropertyName("expiry_unit_count")]
     public int? ExpiryUnitCount { get; set; }
@@ -37,7 +37,7 @@ public record CreateCreditBundleRequestBody
     public int? Quantity { get; set; }
 
     [JsonPropertyName("status")]
-    public CreateCreditBundleRequestBodyStatus? Status { get; set; }
+    public BillingCreditBundleStatus? Status { get; set; }
 
     /// <inheritdoc />
     public override string ToString()
