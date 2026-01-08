@@ -16,10 +16,10 @@ public record UpdateWebhookRequestBody
     public string? Name { get; set; }
 
     [JsonPropertyName("request_types")]
-    public IEnumerable<UpdateWebhookRequestBodyRequestTypesItem>? RequestTypes { get; set; }
+    public IEnumerable<WebhookRequestType>? RequestTypes { get; set; }
 
     [JsonPropertyName("status")]
-    public UpdateWebhookRequestBodyStatus? Status { get; set; }
+    public WebhookStatus? Status { get; set; }
 
     [JsonPropertyName("url")]
     public string? Url { get; set; }

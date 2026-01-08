@@ -34,13 +34,15 @@ public record CountCompaniesForAdvancedFilterRequest
     /// Filter companies by one or more subscription statuses (active, canceled, expired, incomplete, incomplete_expired, past_due, paused, trialing, unpaid)
     /// </summary>
     [JsonIgnore]
-    public IEnumerable<string> SubscriptionStatuses { get; set; } = new List<string>();
+    public IEnumerable<SubscriptionStatus> SubscriptionStatuses { get; set; } =
+        new List<SubscriptionStatus>();
 
     /// <summary>
     /// Filter companies by one or more subscription types (paid, free, trial)
     /// </summary>
     [JsonIgnore]
-    public IEnumerable<string> SubscriptionTypes { get; set; } = new List<string>();
+    public IEnumerable<SubscriptionType> SubscriptionTypes { get; set; } =
+        new List<SubscriptionType>();
 
     /// <summary>
     /// Filter companies that have monetized subscriptions
@@ -76,7 +78,7 @@ public record CountCompaniesForAdvancedFilterRequest
     /// Direction to sort by (asc or desc)
     /// </summary>
     [JsonIgnore]
-    public CountCompaniesForAdvancedFilterRequestSortOrderDirection? SortOrderDirection { get; set; }
+    public SortDirection? SortOrderDirection { get; set; }
 
     /// <summary>
     /// Select the display columns to return (e.g. plan, subscription, users, last_seen_at)

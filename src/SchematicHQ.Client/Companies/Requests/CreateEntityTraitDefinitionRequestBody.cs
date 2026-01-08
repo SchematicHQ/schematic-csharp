@@ -10,13 +10,13 @@ public record CreateEntityTraitDefinitionRequestBody
     public string? DisplayName { get; set; }
 
     [JsonPropertyName("entity_type")]
-    public required CreateEntityTraitDefinitionRequestBodyEntityType EntityType { get; set; }
+    public required EntityType EntityType { get; set; }
 
     [JsonPropertyName("hierarchy")]
     public IEnumerable<string> Hierarchy { get; set; } = new List<string>();
 
     [JsonPropertyName("trait_type")]
-    public required CreateEntityTraitDefinitionRequestBodyTraitType TraitType { get; set; }
+    public required TraitType TraitType { get; set; }
 
     /// <inheritdoc />
     public override string ToString()

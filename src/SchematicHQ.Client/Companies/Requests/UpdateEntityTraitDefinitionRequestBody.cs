@@ -10,7 +10,7 @@ public record UpdateEntityTraitDefinitionRequestBody
     public string? DisplayName { get; set; }
 
     [JsonPropertyName("trait_type")]
-    public required UpdateEntityTraitDefinitionRequestBodyTraitType TraitType { get; set; }
+    public required TraitType TraitType { get; set; }
 
     /// <inheritdoc />
     public override string ToString()

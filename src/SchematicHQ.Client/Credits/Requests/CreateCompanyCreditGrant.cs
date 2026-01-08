@@ -19,10 +19,10 @@ public record CreateCompanyCreditGrant
     public DateTime? ExpiresAt { get; set; }
 
     [JsonPropertyName("expiry_type")]
-    public CreateCompanyCreditGrantExpiryType? ExpiryType { get; set; }
+    public BillingCreditExpiryType? ExpiryType { get; set; }
 
     [JsonPropertyName("expiry_unit")]
-    public CreateCompanyCreditGrantExpiryUnit? ExpiryUnit { get; set; }
+    public BillingCreditExpiryUnit? ExpiryUnit { get; set; }
 
     [JsonPropertyName("expiry_unit_count")]
     public int? ExpiryUnitCount { get; set; }
@@ -31,7 +31,13 @@ public record CreateCompanyCreditGrant
     public required int Quantity { get; set; }
 
     [JsonPropertyName("reason")]
-    public required string Reason { get; set; }
+    public required BillingCreditGrantReason Reason { get; set; }
+
+    [JsonPropertyName("renewal_enabled")]
+    public bool? RenewalEnabled { get; set; }
+
+    [JsonPropertyName("renewal_period")]
+    public BillingPlanCreditGrantResetStart? RenewalPeriod { get; set; }
 
     /// <inheritdoc />
     public override string ToString()

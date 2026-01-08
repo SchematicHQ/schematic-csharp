@@ -13,7 +13,7 @@ public record CountCustomersRequest
     public string? Name { get; set; }
 
     [JsonIgnore]
-    public bool? FailedToImport { get; set; }
+    public BillingProviderType? ProviderType { get; set; }
 
     [JsonIgnore]
     public string? Q { get; set; }

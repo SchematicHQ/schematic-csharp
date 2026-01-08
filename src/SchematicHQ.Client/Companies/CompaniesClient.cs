@@ -459,7 +459,7 @@ public partial class CompaniesClient
     ///         WithoutPlan = true,
     ///         WithoutSubscription = true,
     ///         SortOrderColumn = "sort_order_column",
-    ///         SortOrderDirection = CountCompaniesForAdvancedFilterRequestSortOrderDirection.Asc,
+    ///         SortOrderDirection = SortDirection.Asc,
     ///         Limit = 1,
     ///         Offset = 1,
     ///     }
@@ -476,8 +476,12 @@ public partial class CompaniesClient
         _query["plan_ids"] = request.PlanIds;
         _query["feature_ids"] = request.FeatureIds;
         _query["credit_type_ids"] = request.CreditTypeIds;
-        _query["subscription_statuses"] = request.SubscriptionStatuses;
-        _query["subscription_types"] = request.SubscriptionTypes;
+        _query["subscription_statuses"] = request
+            .SubscriptionStatuses.Select(_value => _value.Stringify())
+            .ToList();
+        _query["subscription_types"] = request
+            .SubscriptionTypes.Select(_value => _value.Stringify())
+            .ToList();
         _query["display_properties"] = request.DisplayProperties;
         if (request.MonetizedSubscriptions != null)
         {
@@ -722,7 +726,7 @@ public partial class CompaniesClient
     ///         WithoutPlan = true,
     ///         WithoutSubscription = true,
     ///         SortOrderColumn = "sort_order_column",
-    ///         SortOrderDirection = ListCompaniesForAdvancedFilterRequestSortOrderDirection.Asc,
+    ///         SortOrderDirection = SortDirection.Asc,
     ///         Limit = 1,
     ///         Offset = 1,
     ///     }
@@ -739,8 +743,12 @@ public partial class CompaniesClient
         _query["plan_ids"] = request.PlanIds;
         _query["feature_ids"] = request.FeatureIds;
         _query["credit_type_ids"] = request.CreditTypeIds;
-        _query["subscription_statuses"] = request.SubscriptionStatuses;
-        _query["subscription_types"] = request.SubscriptionTypes;
+        _query["subscription_statuses"] = request
+            .SubscriptionStatuses.Select(_value => _value.Stringify())
+            .ToList();
+        _query["subscription_types"] = request
+            .SubscriptionTypes.Select(_value => _value.Stringify())
+            .ToList();
         _query["display_properties"] = request.DisplayProperties;
         if (request.MonetizedSubscriptions != null)
         {
@@ -879,92 +887,6 @@ public partial class CompaniesClient
             {
                 switch (response.StatusCode)
                 {
-                    case 401:
-                        throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
-                    case 403:
-                        throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
-                    case 404:
-                        throw new NotFoundError(JsonUtils.Deserialize<ApiError>(responseBody));
-                    case 500:
-                        throw new InternalServerError(
-                            JsonUtils.Deserialize<ApiError>(responseBody)
-                        );
-                }
-            }
-            catch (JsonException)
-            {
-                // unable to map error response, throwing generic error
-            }
-            throw new SchematicApiException(
-                $"Error with status code {response.StatusCode}",
-                response.StatusCode,
-                responseBody
-            );
-        }
-    }
-
-    /// <example><code>
-    /// await client.Companies.GetActiveDealsAsync(
-    ///     new GetActiveDealsRequest
-    ///     {
-    ///         CompanyId = "company_id",
-    ///         DealStage = "deal_stage",
-    ///         Limit = 1,
-    ///         Offset = 1,
-    ///     }
-    /// );
-    /// </code></example>
-    public async Task<GetActiveDealsResponse> GetActiveDealsAsync(
-        GetActiveDealsRequest request,
-        RequestOptions? options = null,
-        CancellationToken cancellationToken = default
-    )
-    {
-        var _query = new Dictionary<string, object>();
-        _query["company_id"] = request.CompanyId;
-        _query["deal_stage"] = request.DealStage;
-        if (request.Limit != null)
-        {
-            _query["limit"] = request.Limit.Value.ToString();
-        }
-        if (request.Offset != null)
-        {
-            _query["offset"] = request.Offset.Value.ToString();
-        }
-        var response = await _client
-            .SendRequestAsync(
-                new JsonRequest
-                {
-                    BaseUrl = _client.Options.BaseUrl,
-                    Method = HttpMethod.Get,
-                    Path = "company-crm-deals",
-                    Query = _query,
-                    Options = options,
-                },
-                cancellationToken
-            )
-            .ConfigureAwait(false);
-        if (response.StatusCode is >= 200 and < 400)
-        {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
-            try
-            {
-                return JsonUtils.Deserialize<GetActiveDealsResponse>(responseBody)!;
-            }
-            catch (JsonException e)
-            {
-                throw new SchematicException("Failed to deserialize response", e);
-            }
-        }
-
-        {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
-            try
-            {
-                switch (response.StatusCode)
-                {
-                    case 400:
-                        throw new BadRequestError(JsonUtils.Deserialize<ApiError>(responseBody));
                     case 401:
                         throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
                     case 403:
@@ -1386,7 +1308,7 @@ public partial class CompaniesClient
     /// await client.Companies.ListEntityKeyDefinitionsAsync(
     ///     new ListEntityKeyDefinitionsRequest
     ///     {
-    ///         EntityType = ListEntityKeyDefinitionsRequestEntityType.Company,
+    ///         EntityType = EntityType.Company,
     ///         Q = "q",
     ///         Limit = 1,
     ///         Offset = 1,
@@ -1479,7 +1401,7 @@ public partial class CompaniesClient
     /// await client.Companies.CountEntityKeyDefinitionsAsync(
     ///     new CountEntityKeyDefinitionsRequest
     ///     {
-    ///         EntityType = CountEntityKeyDefinitionsRequestEntityType.Company,
+    ///         EntityType = EntityType.Company,
     ///         Q = "q",
     ///         Limit = 1,
     ///         Offset = 1,
@@ -1572,9 +1494,9 @@ public partial class CompaniesClient
     /// await client.Companies.ListEntityTraitDefinitionsAsync(
     ///     new ListEntityTraitDefinitionsRequest
     ///     {
-    ///         EntityType = ListEntityTraitDefinitionsRequestEntityType.Company,
+    ///         EntityType = EntityType.Company,
     ///         Q = "q",
-    ///         TraitType = ListEntityTraitDefinitionsRequestTraitType.Boolean,
+    ///         TraitType = TraitType.Boolean,
     ///         Limit = 1,
     ///         Offset = 1,
     ///     }
@@ -1588,6 +1510,7 @@ public partial class CompaniesClient
     {
         var _query = new Dictionary<string, object>();
         _query["ids"] = request.Ids;
+        _query["trait_types"] = request.TraitTypes.Select(_value => _value.Stringify()).ToList();
         if (request.EntityType != null)
         {
             _query["entity_type"] = request.EntityType.Value.Stringify();
@@ -1670,9 +1593,9 @@ public partial class CompaniesClient
     /// await client.Companies.GetOrCreateEntityTraitDefinitionAsync(
     ///     new CreateEntityTraitDefinitionRequestBody
     ///     {
-    ///         EntityType = CreateEntityTraitDefinitionRequestBodyEntityType.Company,
+    ///         EntityType = EntityType.Company,
     ///         Hierarchy = new List&lt;string&gt;() { "hierarchy" },
-    ///         TraitType = CreateEntityTraitDefinitionRequestBodyTraitType.Boolean,
+    ///         TraitType = TraitType.Boolean,
     ///     }
     /// );
     /// </code></example>
@@ -1813,10 +1736,7 @@ public partial class CompaniesClient
     /// <example><code>
     /// await client.Companies.UpdateEntityTraitDefinitionAsync(
     ///     "entity_trait_definition_id",
-    ///     new UpdateEntityTraitDefinitionRequestBody
-    ///     {
-    ///         TraitType = UpdateEntityTraitDefinitionRequestBodyTraitType.Boolean,
-    ///     }
+    ///     new UpdateEntityTraitDefinitionRequestBody { TraitType = TraitType.Boolean }
     /// );
     /// </code></example>
     public async Task<UpdateEntityTraitDefinitionResponse> UpdateEntityTraitDefinitionAsync(
@@ -1892,9 +1812,9 @@ public partial class CompaniesClient
     /// await client.Companies.CountEntityTraitDefinitionsAsync(
     ///     new CountEntityTraitDefinitionsRequest
     ///     {
-    ///         EntityType = CountEntityTraitDefinitionsRequestEntityType.Company,
+    ///         EntityType = EntityType.Company,
     ///         Q = "q",
-    ///         TraitType = CountEntityTraitDefinitionsRequestTraitType.Boolean,
+    ///         TraitType = TraitType.Boolean,
     ///         Limit = 1,
     ///         Offset = 1,
     ///     }
@@ -1908,6 +1828,7 @@ public partial class CompaniesClient
     {
         var _query = new Dictionary<string, object>();
         _query["ids"] = request.Ids;
+        _query["trait_types"] = request.TraitTypes.Select(_value => _value.Stringify()).ToList();
         if (request.EntityType != null)
         {
             _query["entity_type"] = request.EntityType.Value.Stringify();
@@ -2625,6 +2546,7 @@ public partial class CompaniesClient
     /// await client.Companies.UpdatePlanTraitsBulkAsync(
     ///     new UpdatePlanTraitBulkRequestBody
     ///     {
+    ///         ApplyToExistingCompanies = true,
     ///         PlanId = "plan_id",
     ///         Traits = new List&lt;UpdatePlanTraitTraitRequestBody&gt;()
     ///         {

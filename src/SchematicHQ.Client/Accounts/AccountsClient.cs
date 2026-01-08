@@ -810,7 +810,7 @@ public partial class AccountsClient
     /// await client.Accounts.CreateEnvironmentAsync(
     ///     new CreateEnvironmentRequestBody
     ///     {
-    ///         EnvironmentType = CreateEnvironmentRequestBodyEnvironmentType.Development,
+    ///         EnvironmentType = EnvironmentType.Development,
     ///         Name = "name",
     ///     }
     /// );
