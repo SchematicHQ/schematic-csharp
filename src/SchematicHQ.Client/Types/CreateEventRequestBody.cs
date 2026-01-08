@@ -15,11 +15,8 @@ public record CreateEventRequestBody : IJsonOnDeserialized
     [JsonPropertyName("body")]
     public OneOf<EventBodyTrack, EventBodyFlagCheck, EventBodyIdentify>? Body { get; set; }
 
-    /// <summary>
-    /// Either 'identify' or 'track'
-    /// </summary>
     [JsonPropertyName("event_type")]
-    public required CreateEventRequestBodyEventType EventType { get; set; }
+    public required EventType EventType { get; set; }
 
     /// <summary>
     /// Optionally provide a timestamp at which the event was sent to Schematic

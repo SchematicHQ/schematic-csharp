@@ -21,7 +21,7 @@ public record ListEventsParams : IJsonOnDeserialized
     public string? EventSubtype { get; set; }
 
     [JsonPropertyName("event_types")]
-    public IEnumerable<ListEventsResponseParamsEventTypesItem>? EventTypes { get; set; }
+    public IEnumerable<EventType>? EventTypes { get; set; }
 
     [JsonPropertyName("flag_id")]
     public string? FlagId { get; set; }

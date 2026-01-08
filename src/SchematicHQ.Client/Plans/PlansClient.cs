@@ -98,11 +98,9 @@ public partial class PlansClient
     ///         ForInitialPlan = true,
     ///         ForTrialExpiryPlan = true,
     ///         HasProductId = true,
-    ///         PlanType = ListPlansRequestPlanType.Plan,
+    ///         PlanType = PlanType.Plan,
     ///         Q = "q",
-    ///         RequiresPaymentMethod = true,
     ///         WithoutEntitlementFor = "without_entitlement_for",
-    ///         WithoutProductId = true,
     ///         WithoutPaidProductId = true,
     ///         Limit = 1,
     ///         Offset = 1,
@@ -145,19 +143,9 @@ public partial class PlansClient
         {
             _query["q"] = request.Q;
         }
-        if (request.RequiresPaymentMethod != null)
-        {
-            _query["requires_payment_method"] = JsonUtils.Serialize(
-                request.RequiresPaymentMethod.Value
-            );
-        }
         if (request.WithoutEntitlementFor != null)
         {
             _query["without_entitlement_for"] = request.WithoutEntitlementFor;
-        }
-        if (request.WithoutProductId != null)
-        {
-            _query["without_product_id"] = JsonUtils.Serialize(request.WithoutProductId.Value);
         }
         if (request.WithoutPaidProductId != null)
         {
@@ -237,7 +225,7 @@ public partial class PlansClient
     ///     {
     ///         Description = "description",
     ///         Name = "name",
-    ///         PlanType = CreatePlanRequestBodyPlanType.Plan,
+    ///         PlanType = PlanType.Plan,
     ///     }
     /// );
     /// </code></example>
@@ -508,11 +496,7 @@ public partial class PlansClient
     /// <example><code>
     /// await client.Plans.UpsertBillingProductPlanAsync(
     ///     "plan_id",
-    ///     new UpsertBillingProductRequestBody
-    ///     {
-    ///         ChargeType = UpsertBillingProductRequestBodyChargeType.OneTime,
-    ///         IsTrialable = true,
-    ///     }
+    ///     new UpsertBillingProductRequestBody { ChargeType = ChargeType.Free, IsTrialable = true }
     /// );
     /// </code></example>
     public async Task<UpsertBillingProductPlanResponse> UpsertBillingProductPlanAsync(
@@ -593,11 +577,9 @@ public partial class PlansClient
     ///         ForInitialPlan = true,
     ///         ForTrialExpiryPlan = true,
     ///         HasProductId = true,
-    ///         PlanType = CountPlansRequestPlanType.Plan,
+    ///         PlanType = PlanType.Plan,
     ///         Q = "q",
-    ///         RequiresPaymentMethod = true,
     ///         WithoutEntitlementFor = "without_entitlement_for",
-    ///         WithoutProductId = true,
     ///         WithoutPaidProductId = true,
     ///         Limit = 1,
     ///         Offset = 1,
@@ -640,19 +622,9 @@ public partial class PlansClient
         {
             _query["q"] = request.Q;
         }
-        if (request.RequiresPaymentMethod != null)
-        {
-            _query["requires_payment_method"] = JsonUtils.Serialize(
-                request.RequiresPaymentMethod.Value
-            );
-        }
         if (request.WithoutEntitlementFor != null)
         {
             _query["without_entitlement_for"] = request.WithoutEntitlementFor;
-        }
-        if (request.WithoutProductId != null)
-        {
-            _query["without_product_id"] = JsonUtils.Serialize(request.WithoutProductId.Value);
         }
         if (request.WithoutPaidProductId != null)
         {

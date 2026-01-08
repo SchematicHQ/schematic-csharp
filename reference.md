@@ -538,7 +538,7 @@ await client.Accounts.ListEnvironmentsAsync(new ListEnvironmentsRequest { Limit 
 await client.Accounts.CreateEnvironmentAsync(
     new CreateEnvironmentRequestBody
     {
-        EnvironmentType = CreateEnvironmentRequestBodyEnvironmentType.Development,
+        EnvironmentType = EnvironmentType.Development,
         Name = "name",
     }
 );
@@ -840,7 +840,6 @@ await client.Billing.UpsertBillingCustomerAsync(
     {
         Email = "email",
         ExternalId = "external_id",
-        FailedToImport = true,
         Meta = new Dictionary<string, string>() { { "key", "value" } },
         Name = "name",
     }
@@ -888,7 +887,7 @@ await client.Billing.ListCustomersWithSubscriptionsAsync(
     new ListCustomersWithSubscriptionsRequest
     {
         Name = "name",
-        FailedToImport = true,
+        ProviderType = BillingProviderType.Schematic,
         Q = "q",
         Limit = 1,
         Offset = 1,
@@ -937,7 +936,7 @@ await client.Billing.CountCustomersAsync(
     new CountCustomersRequest
     {
         Name = "name",
-        FailedToImport = true,
+        ProviderType = BillingProviderType.Schematic,
         Q = "q",
         Limit = 1,
         Offset = 1,
@@ -1259,7 +1258,7 @@ await client.Billing.UpsertPaymentMethodAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Billing.<a href="/src/SchematicHQ.Client/Billing/BillingClient.cs">SearchBillingPricesAsync</a>(SearchBillingPricesRequest { ... }) -> SearchBillingPricesResponse</code></summary>
+<details><summary><code>client.Billing.<a href="/src/SchematicHQ.Client/Billing/BillingClient.cs">ListBillingPricesAsync</a>(ListBillingPricesRequest { ... }) -> ListBillingPricesResponse</code></summary>
 <dl>
 <dd>
 
@@ -1272,18 +1271,20 @@ await client.Billing.UpsertPaymentMethodAsync(
 <dd>
 
 ```csharp
-await client.Billing.SearchBillingPricesAsync(
-    new SearchBillingPricesRequest
+await client.Billing.ListBillingPricesAsync(
+    new ListBillingPricesRequest
     {
         ForInitialPlan = true,
         ForTrialExpiryPlan = true,
-        ProductId = "product_id",
         Interval = "interval",
+        IsActive = true,
         Price = 1,
+        ProductId = "product_id",
+        ProviderType = BillingProviderType.Schematic,
         Q = "q",
-        RequiresPaymentMethod = true,
-        TiersMode = SearchBillingPricesRequestTiersMode.Volume,
-        UsageType = SearchBillingPricesRequestUsageType.Licensed,
+        TiersMode = BillingTiersMode.Graduated,
+        UsageType = BillingPriceUsageType.Licensed,
+        WithMeter = true,
         Limit = 1,
         Offset = 1,
     }
@@ -1302,7 +1303,7 @@ await client.Billing.SearchBillingPricesAsync(
 <dl>
 <dd>
 
-**request:** `SearchBillingPricesRequest` 
+**request:** `ListBillingPricesRequest` 
     
 </dd>
 </dl>
@@ -1330,7 +1331,7 @@ await client.Billing.SearchBillingPricesAsync(
 await client.Billing.UpsertBillingPriceAsync(
     new CreateBillingPriceRequestBody
     {
-        BillingScheme = CreateBillingPriceRequestBodyBillingScheme.PerUnit,
+        BillingScheme = BillingPriceScheme.PerUnit,
         Currency = "currency",
         ExternalAccountId = "external_account_id",
         Interval = "interval",
@@ -1342,7 +1343,7 @@ await client.Billing.UpsertBillingPriceAsync(
             new CreateBillingPriceTierRequestBody { PriceExternalId = "price_external_id" },
         },
         ProductExternalId = "product_external_id",
-        UsageType = CreateBillingPriceRequestBodyUsageType.Licensed,
+        UsageType = BillingPriceUsageType.Licensed,
     }
 );
 ```
@@ -1411,7 +1412,7 @@ await client.Billing.DeleteBillingProductAsync("billing_id");
 </dl>
 </details>
 
-<details><summary><code>client.Billing.<a href="/src/SchematicHQ.Client/Billing/BillingClient.cs">ListProductPricesAsync</a>(ListProductPricesRequest { ... }) -> ListProductPricesResponse</code></summary>
+<details><summary><code>client.Billing.<a href="/src/SchematicHQ.Client/Billing/BillingClient.cs">ListBillingProductPricesAsync</a>(ListBillingProductPricesRequest { ... }) -> ListBillingProductPricesResponse</code></summary>
 <dl>
 <dd>
 
@@ -1424,17 +1425,20 @@ await client.Billing.DeleteBillingProductAsync("billing_id");
 <dd>
 
 ```csharp
-await client.Billing.ListProductPricesAsync(
-    new ListProductPricesRequest
+await client.Billing.ListBillingProductPricesAsync(
+    new ListBillingProductPricesRequest
     {
-        Name = "name",
-        Q = "q",
-        PriceUsageType = ListProductPricesRequestPriceUsageType.Licensed,
-        WithoutLinkedToPlan = true,
-        WithOneTimeCharges = true,
-        WithZeroPrice = true,
-        WithPricesOnly = true,
+        ForInitialPlan = true,
+        ForTrialExpiryPlan = true,
+        Interval = "interval",
         IsActive = true,
+        Price = 1,
+        ProductId = "product_id",
+        ProviderType = BillingProviderType.Schematic,
+        Q = "q",
+        TiersMode = BillingTiersMode.Graduated,
+        UsageType = BillingPriceUsageType.Licensed,
+        WithMeter = true,
         Limit = 1,
         Offset = 1,
     }
@@ -1453,7 +1457,7 @@ await client.Billing.ListProductPricesAsync(
 <dl>
 <dd>
 
-**request:** `ListProductPricesRequest` 
+**request:** `ListBillingProductPricesRequest` 
     
 </dd>
 </dl>
@@ -1568,14 +1572,15 @@ await client.Billing.UpsertBillingProductAsync(
 await client.Billing.ListBillingProductsAsync(
     new ListBillingProductsRequest
     {
-        Name = "name",
-        Q = "q",
-        PriceUsageType = ListBillingProductsRequestPriceUsageType.Licensed,
-        WithoutLinkedToPlan = true,
-        WithOneTimeCharges = true,
-        WithZeroPrice = true,
-        WithPricesOnly = true,
         IsActive = true,
+        Name = "name",
+        PriceUsageType = BillingPriceUsageType.Licensed,
+        ProviderType = BillingProviderType.Schematic,
+        Q = "q",
+        WithOneTimeCharges = true,
+        WithPricesOnly = true,
+        WithZeroPrice = true,
+        WithoutLinkedToPlan = true,
         Limit = 1,
         Offset = 1,
     }
@@ -1622,14 +1627,15 @@ await client.Billing.ListBillingProductsAsync(
 await client.Billing.CountBillingProductsAsync(
     new CountBillingProductsRequest
     {
-        Name = "name",
-        Q = "q",
-        PriceUsageType = CountBillingProductsRequestPriceUsageType.Licensed,
-        WithoutLinkedToPlan = true,
-        WithOneTimeCharges = true,
-        WithZeroPrice = true,
-        WithPricesOnly = true,
         IsActive = true,
+        Name = "name",
+        PriceUsageType = BillingPriceUsageType.Licensed,
+        ProviderType = BillingProviderType.Schematic,
+        Q = "q",
+        WithOneTimeCharges = true,
+        WithPricesOnly = true,
+        WithZeroPrice = true,
+        WithoutLinkedToPlan = true,
         Limit = 1,
         Offset = 1,
     }
@@ -1700,7 +1706,7 @@ await client.Billing.UpsertBillingSubscriptionAsync(
                 PriceExternalId = "price_external_id",
                 ProductExternalId = "product_external_id",
                 Quantity = 1,
-                UsageType = BillingProductPricingUsageType.Licensed,
+                UsageType = BillingPriceUsageType.Licensed,
             },
         },
         SubscriptionExternalId = "subscription_external_id",
@@ -1976,7 +1982,7 @@ await client.Credits.ListCreditBundlesAsync(
     new ListCreditBundlesRequest
     {
         CreditId = "credit_id",
-        Status = ListCreditBundlesRequestStatus.Active,
+        Status = BillingCreditBundleStatus.Active,
         BundleType = "fixed",
         Limit = 1,
         Offset = 1,
@@ -2204,7 +2210,7 @@ await client.Credits.CountCreditBundlesAsync(
     new CountCreditBundlesRequest
     {
         CreditId = "credit_id",
-        Status = CountCreditBundlesRequestStatus.Active,
+        Status = BillingCreditBundleStatus.Active,
         BundleType = "fixed",
         Limit = 1,
         Offset = 1,
@@ -2350,7 +2356,7 @@ await client.Credits.GrantBillingCreditsToCompanyAsync(
         CompanyId = "company_id",
         CreditId = "credit_id",
         Quantity = 1,
-        Reason = "reason",
+        Reason = BillingCreditGrantReason.BillingCreditAutoTopup,
     }
 );
 ```
@@ -2379,6 +2385,55 @@ await client.Credits.GrantBillingCreditsToCompanyAsync(
 </dl>
 </details>
 
+<details><summary><code>client.Credits.<a href="/src/SchematicHQ.Client/Credits/CreditsClient.cs">CountCompanyGrantsAsync</a>(CountCompanyGrantsRequest { ... }) -> CountCompanyGrantsResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Credits.CountCompanyGrantsAsync(
+    new CountCompanyGrantsRequest
+    {
+        CompanyId = "company_id",
+        Order = CreditGrantSortOrder.CreatedAt,
+        Dir = SortDirection.Asc,
+        Limit = 1,
+        Offset = 1,
+    }
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `CountCompanyGrantsRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.Credits.<a href="/src/SchematicHQ.Client/Credits/CreditsClient.cs">ListCompanyGrantsAsync</a>(ListCompanyGrantsRequest { ... }) -> ListCompanyGrantsResponse</code></summary>
 <dl>
 <dd>
@@ -2396,8 +2451,8 @@ await client.Credits.ListCompanyGrantsAsync(
     new ListCompanyGrantsRequest
     {
         CompanyId = "company_id",
-        Order = ListCompanyGrantsRequestOrder.CreatedAt,
-        Dir = ListCompanyGrantsRequestDir.Asc,
+        Order = CreditGrantSortOrder.CreatedAt,
+        Dir = SortDirection.Asc,
         Limit = 1,
         Offset = 1,
     }
@@ -2541,7 +2596,7 @@ await client.Credits.GetEnrichedCreditLedgerAsync(
         CompanyId = "company_id",
         BillingCreditId = "billing_credit_id",
         FeatureId = "feature_id",
-        Period = GetEnrichedCreditLedgerRequestPeriod.Daily,
+        Period = CreditLedgerPeriod.Daily,
         StartTime = "start_time",
         EndTime = "end_time",
         Limit = 1,
@@ -2593,7 +2648,7 @@ await client.Credits.CountCreditLedgerAsync(
         CompanyId = "company_id",
         BillingCreditId = "billing_credit_id",
         FeatureId = "feature_id",
-        Period = CountCreditLedgerRequestPeriod.Daily,
+        Period = CreditLedgerPeriod.Daily,
         StartTime = "start_time",
         EndTime = "end_time",
         Limit = 1,
@@ -2693,8 +2748,8 @@ await client.Credits.CreateBillingPlanCreditGrantAsync(
         CreditAmount = 1,
         CreditId = "credit_id",
         PlanId = "plan_id",
-        ResetCadence = CreateBillingPlanCreditGrantRequestBodyResetCadence.Monthly,
-        ResetStart = CreateBillingPlanCreditGrantRequestBodyResetStart.BillingPeriod,
+        ResetCadence = BillingPlanCreditGrantResetCadence.Daily,
+        ResetStart = BillingPlanCreditGrantResetStart.BillingPeriod,
     }
 );
 ```
@@ -2740,8 +2795,8 @@ await client.Credits.UpdateBillingPlanCreditGrantAsync(
     "plan_grant_id",
     new UpdateBillingPlanCreditGrantRequestBody
     {
-        ResetCadence = UpdateBillingPlanCreditGrantRequestBodyResetCadence.Monthly,
-        ResetStart = UpdateBillingPlanCreditGrantRequestBodyResetStart.BillingPeriod,
+        ResetCadence = BillingPlanCreditGrantResetCadence.Daily,
+        ResetStart = BillingPlanCreditGrantResetStart.BillingPeriod,
     }
 );
 ```
@@ -3148,6 +3203,48 @@ await client.Checkout.PreviewManagePlanAsync(
 </dl>
 </details>
 
+<details><summary><code>client.Checkout.<a href="/src/SchematicHQ.Client/Checkout/CheckoutClient.cs">CancelSubscriptionAsync</a>(CancelSubscriptionRequest { ... }) -> CancelSubscriptionResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Checkout.CancelSubscriptionAsync(
+    new CancelSubscriptionRequest { CompanyId = "company_id" }
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `CancelSubscriptionRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.Checkout.<a href="/src/SchematicHQ.Client/Checkout/CheckoutClient.cs">UpdateCustomerSubscriptionTrialEndAsync</a>(subscriptionId, UpdateTrialEndRequestBody { ... }) -> UpdateCustomerSubscriptionTrialEndResponse</code></summary>
 <dl>
 <dd>
@@ -3456,7 +3553,7 @@ await client.Companies.CountCompaniesForAdvancedFilterAsync(
         WithoutPlan = true,
         WithoutSubscription = true,
         SortOrderColumn = "sort_order_column",
-        SortOrderDirection = CountCompaniesForAdvancedFilterRequestSortOrderDirection.Asc,
+        SortOrderDirection = SortDirection.Asc,
         Limit = 1,
         Offset = 1,
     }
@@ -3592,7 +3689,7 @@ await client.Companies.ListCompaniesForAdvancedFilterAsync(
         WithoutPlan = true,
         WithoutSubscription = true,
         SortOrderColumn = "sort_order_column",
-        SortOrderDirection = ListCompaniesForAdvancedFilterRequestSortOrderDirection.Asc,
+        SortOrderDirection = SortDirection.Asc,
         Limit = 1,
         Offset = 1,
     }
@@ -3654,54 +3751,6 @@ await client.Companies.LookupCompanyAsync(
 <dd>
 
 **request:** `LookupCompanyRequest` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Companies.<a href="/src/SchematicHQ.Client/Companies/CompaniesClient.cs">GetActiveDealsAsync</a>(GetActiveDealsRequest { ... }) -> GetActiveDealsResponse</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```csharp
-await client.Companies.GetActiveDealsAsync(
-    new GetActiveDealsRequest
-    {
-        CompanyId = "company_id",
-        DealStage = "deal_stage",
-        Limit = 1,
-        Offset = 1,
-    }
-);
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**request:** `GetActiveDealsRequest` 
     
 </dd>
 </dl>
@@ -3952,7 +4001,7 @@ await client.Companies.UpsertCompanyTraitAsync(
 await client.Companies.ListEntityKeyDefinitionsAsync(
     new ListEntityKeyDefinitionsRequest
     {
-        EntityType = ListEntityKeyDefinitionsRequestEntityType.Company,
+        EntityType = EntityType.Company,
         Q = "q",
         Limit = 1,
         Offset = 1,
@@ -4000,7 +4049,7 @@ await client.Companies.ListEntityKeyDefinitionsAsync(
 await client.Companies.CountEntityKeyDefinitionsAsync(
     new CountEntityKeyDefinitionsRequest
     {
-        EntityType = CountEntityKeyDefinitionsRequestEntityType.Company,
+        EntityType = EntityType.Company,
         Q = "q",
         Limit = 1,
         Offset = 1,
@@ -4048,9 +4097,9 @@ await client.Companies.CountEntityKeyDefinitionsAsync(
 await client.Companies.ListEntityTraitDefinitionsAsync(
     new ListEntityTraitDefinitionsRequest
     {
-        EntityType = ListEntityTraitDefinitionsRequestEntityType.Company,
+        EntityType = EntityType.Company,
         Q = "q",
-        TraitType = ListEntityTraitDefinitionsRequestTraitType.Boolean,
+        TraitType = TraitType.Boolean,
         Limit = 1,
         Offset = 1,
     }
@@ -4097,9 +4146,9 @@ await client.Companies.ListEntityTraitDefinitionsAsync(
 await client.Companies.GetOrCreateEntityTraitDefinitionAsync(
     new CreateEntityTraitDefinitionRequestBody
     {
-        EntityType = CreateEntityTraitDefinitionRequestBodyEntityType.Company,
+        EntityType = EntityType.Company,
         Hierarchy = new List<string>() { "hierarchy" },
-        TraitType = CreateEntityTraitDefinitionRequestBodyTraitType.Boolean,
+        TraitType = TraitType.Boolean,
     }
 );
 ```
@@ -4183,10 +4232,7 @@ await client.Companies.GetEntityTraitDefinitionAsync("entity_trait_definition_id
 ```csharp
 await client.Companies.UpdateEntityTraitDefinitionAsync(
     "entity_trait_definition_id",
-    new UpdateEntityTraitDefinitionRequestBody
-    {
-        TraitType = UpdateEntityTraitDefinitionRequestBodyTraitType.Boolean,
-    }
+    new UpdateEntityTraitDefinitionRequestBody { TraitType = TraitType.Boolean }
 );
 ```
 </dd>
@@ -4238,9 +4284,9 @@ await client.Companies.UpdateEntityTraitDefinitionAsync(
 await client.Companies.CountEntityTraitDefinitionsAsync(
     new CountEntityTraitDefinitionsRequest
     {
-        EntityType = CountEntityTraitDefinitionsRequestEntityType.Company,
+        EntityType = EntityType.Company,
         Q = "q",
-        TraitType = CountEntityTraitDefinitionsRequestTraitType.Boolean,
+        TraitType = TraitType.Boolean,
         Limit = 1,
         Offset = 1,
     }
@@ -4650,6 +4696,7 @@ await client.Companies.DeletePlanTraitAsync("plan_trait_id");
 await client.Companies.UpdatePlanTraitsBulkAsync(
     new UpdatePlanTraitBulkRequestBody
     {
+        ApplyToExistingCompanies = true,
         PlanId = "plan_id",
         Traits = new List<UpdatePlanTraitTraitRequestBody>()
         {
@@ -5196,7 +5243,7 @@ await client.Entitlements.CreateCompanyOverrideAsync(
     {
         CompanyId = "company_id",
         FeatureId = "feature_id",
-        ValueType = CreateCompanyOverrideRequestBodyValueType.Boolean,
+        ValueType = EntitlementValueType.Boolean,
     }
 );
 ```
@@ -5280,10 +5327,7 @@ await client.Entitlements.GetCompanyOverrideAsync("company_override_id");
 ```csharp
 await client.Entitlements.UpdateCompanyOverrideAsync(
     "company_override_id",
-    new UpdateCompanyOverrideRequestBody
-    {
-        ValueType = UpdateCompanyOverrideRequestBodyValueType.Boolean,
-    }
+    new UpdateCompanyOverrideRequestBody { ValueType = EntitlementValueType.Boolean }
 );
 ```
 </dd>
@@ -5522,6 +5566,7 @@ await client.Entitlements.ListFeatureUsageAsync(
     new ListFeatureUsageRequest
     {
         CompanyId = "company_id",
+        IncludeUsageAggregation = true,
         Q = "q",
         WithoutNegativeEntitlements = true,
         Limit = 1,
@@ -5571,6 +5616,7 @@ await client.Entitlements.CountFeatureUsageAsync(
     new CountFeatureUsageRequest
     {
         CompanyId = "company_id",
+        IncludeUsageAggregation = true,
         Q = "q",
         WithoutNegativeEntitlements = true,
         Limit = 1,
@@ -5767,7 +5813,7 @@ await client.Entitlements.CreatePlanEntitlementAsync(
     {
         FeatureId = "feature_id",
         PlanId = "plan_id",
-        ValueType = CreatePlanEntitlementRequestBodyValueType.Boolean,
+        ValueType = EntitlementValueType.Boolean,
     }
 );
 ```
@@ -5851,10 +5897,7 @@ await client.Entitlements.GetPlanEntitlementAsync("plan_entitlement_id");
 ```csharp
 await client.Entitlements.UpdatePlanEntitlementAsync(
     "plan_entitlement_id",
-    new UpdatePlanEntitlementRequestBody
-    {
-        ValueType = UpdatePlanEntitlementRequestBodyValueType.Boolean,
-    }
+    new UpdatePlanEntitlementRequestBody { ValueType = EntitlementValueType.Boolean }
 );
 ```
 </dd>
@@ -5969,6 +6012,52 @@ await client.Entitlements.CountPlanEntitlementsAsync(
 <dd>
 
 **request:** `CountPlanEntitlementsRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Entitlements.<a href="/src/SchematicHQ.Client/Entitlements/EntitlementsClient.cs">DuplicatePlanEntitlementsAsync</a>(DuplicatePlanEntitlementsRequestBody { ... }) -> DuplicatePlanEntitlementsResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Entitlements.DuplicatePlanEntitlementsAsync(
+    new DuplicatePlanEntitlementsRequestBody
+    {
+        SourcePlanId = "source_plan_id",
+        TargetPlanId = "target_plan_id",
+    }
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `DuplicatePlanEntitlementsRequestBody` 
     
 </dd>
 </dl>
@@ -6098,11 +6187,9 @@ await client.Plans.ListPlansAsync(
         ForInitialPlan = true,
         ForTrialExpiryPlan = true,
         HasProductId = true,
-        PlanType = ListPlansRequestPlanType.Plan,
+        PlanType = PlanType.Plan,
         Q = "q",
-        RequiresPaymentMethod = true,
         WithoutEntitlementFor = "without_entitlement_for",
-        WithoutProductId = true,
         WithoutPaidProductId = true,
         Limit = 1,
         Offset = 1,
@@ -6152,7 +6239,7 @@ await client.Plans.CreatePlanAsync(
     {
         Description = "description",
         Name = "name",
-        PlanType = CreatePlanRequestBodyPlanType.Plan,
+        PlanType = PlanType.Plan,
     }
 );
 ```
@@ -6324,11 +6411,7 @@ await client.Plans.DeletePlanAsync("plan_id");
 ```csharp
 await client.Plans.UpsertBillingProductPlanAsync(
     "plan_id",
-    new UpsertBillingProductRequestBody
-    {
-        ChargeType = UpsertBillingProductRequestBodyChargeType.OneTime,
-        IsTrialable = true,
-    }
+    new UpsertBillingProductRequestBody { ChargeType = ChargeType.Free, IsTrialable = true }
 );
 ```
 </dd>
@@ -6385,11 +6468,9 @@ await client.Plans.CountPlansAsync(
         ForInitialPlan = true,
         ForTrialExpiryPlan = true,
         HasProductId = true,
-        PlanType = CountPlansRequestPlanType.Plan,
+        PlanType = PlanType.Plan,
         Q = "q",
-        RequiresPaymentMethod = true,
         WithoutEntitlementFor = "without_entitlement_for",
-        WithoutProductId = true,
         WithoutPaidProductId = true,
         Limit = 1,
         Offset = 1,
@@ -6523,11 +6604,7 @@ await client.Components.ListComponentsAsync(
 
 ```csharp
 await client.Components.CreateComponentAsync(
-    new CreateComponentRequestBody
-    {
-        EntityType = CreateComponentRequestBodyEntityType.Entitlement,
-        Name = "name",
-    }
+    new CreateComponentRequestBody { EntityType = ComponentEntityType.Billing, Name = "name" }
 );
 ```
 </dd>
@@ -6772,248 +6849,6 @@ await client.Components.PreviewComponentDataAsync(
 </dl>
 </details>
 
-## crm
-<details><summary><code>client.Crm.<a href="/src/SchematicHQ.Client/Crm/CrmClient.cs">UpsertDealLineItemAssociationAsync</a>(CreateCrmDealLineItemAssociationRequestBody { ... }) -> UpsertDealLineItemAssociationResponse</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```csharp
-await client.Crm.UpsertDealLineItemAssociationAsync(
-    new CreateCrmDealLineItemAssociationRequestBody
-    {
-        DealExternalId = "deal_external_id",
-        LineItemExternalId = "line_item_external_id",
-    }
-);
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**request:** `CreateCrmDealLineItemAssociationRequestBody` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Crm.<a href="/src/SchematicHQ.Client/Crm/CrmClient.cs">UpsertLineItemAsync</a>(CreateCrmLineItemRequestBody { ... }) -> UpsertLineItemResponse</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```csharp
-await client.Crm.UpsertLineItemAsync(
-    new CreateCrmLineItemRequestBody
-    {
-        Amount = "amount",
-        Interval = "interval",
-        LineItemExternalId = "line_item_external_id",
-        ProductExternalId = "product_external_id",
-        Quantity = 1,
-    }
-);
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**request:** `CreateCrmLineItemRequestBody` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Crm.<a href="/src/SchematicHQ.Client/Crm/CrmClient.cs">UpsertCrmDealAsync</a>(CreateCrmDealRequestBody { ... }) -> UpsertCrmDealResponse</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```csharp
-await client.Crm.UpsertCrmDealAsync(
-    new CreateCrmDealRequestBody
-    {
-        CrmCompanyKey = "crm_company_key",
-        CrmType = "crm_type",
-        DealExternalId = "deal_external_id",
-    }
-);
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**request:** `CreateCrmDealRequestBody` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Crm.<a href="/src/SchematicHQ.Client/Crm/CrmClient.cs">ListCrmProductsAsync</a>(ListCrmProductsRequest { ... }) -> ListCrmProductsResponse</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```csharp
-await client.Crm.ListCrmProductsAsync(
-    new ListCrmProductsRequest
-    {
-        Name = "name",
-        Limit = 1,
-        Offset = 1,
-    }
-);
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**request:** `ListCrmProductsRequest` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Crm.<a href="/src/SchematicHQ.Client/Crm/CrmClient.cs">UpsertCrmProductAsync</a>(CreateCrmProductRequestBody { ... }) -> UpsertCrmProductResponse</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```csharp
-await client.Crm.UpsertCrmProductAsync(
-    new CreateCrmProductRequestBody
-    {
-        Currency = "currency",
-        Description = "description",
-        ExternalId = "external_id",
-        Interval = "interval",
-        Name = "name",
-        Price = "price",
-        Quantity = 1,
-        Sku = "sku",
-    }
-);
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**request:** `CreateCrmProductRequestBody` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
 ## dataexports
 <details><summary><code>client.Dataexports.<a href="/src/SchematicHQ.Client/Dataexports/DataexportsClient.cs">CreateDataExportAsync</a>(CreateDataExportRequestBody { ... }) -> CreateDataExportResponse</code></summary>
 <dl>
@@ -7121,7 +6956,7 @@ await client.Events.CreateEventBatchAsync(
     {
         Events = new List<CreateEventRequestBody>()
         {
-            new CreateEventRequestBody { EventType = CreateEventRequestBodyEventType.Identify },
+            new CreateEventRequestBody { EventType = EventType.FlagCheck },
         },
     }
 );
@@ -7262,7 +7097,7 @@ await client.Events.ListEventsAsync(
 
 ```csharp
 await client.Events.CreateEventAsync(
-    new CreateEventRequestBody { EventType = CreateEventRequestBodyEventType.Identify }
+    new CreateEventRequestBody { EventType = EventType.FlagCheck }
 );
 ```
 </dd>
@@ -7423,7 +7258,7 @@ await client.Features.CreateFeatureAsync(
     new CreateFeatureRequestBody
     {
         Description = "description",
-        FeatureType = CreateFeatureRequestBodyFeatureType.Boolean,
+        FeatureType = FeatureType.Boolean,
         Name = "name",
     }
 );
@@ -8041,6 +7876,51 @@ await client.Features.CheckFlagsAsync(new CheckFlagRequestBody());
 </dl>
 </details>
 
+<details><summary><code>client.Features.<a href="/src/SchematicHQ.Client/Features/FeaturesClient.cs">CheckFlagsBulkAsync</a>(CheckFlagsBulkRequestBody { ... }) -> CheckFlagsBulkResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Features.CheckFlagsBulkAsync(
+    new CheckFlagsBulkRequestBody
+    {
+        Contexts = new List<CheckFlagRequestBody>() { new CheckFlagRequestBody() },
+    }
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `CheckFlagsBulkRequestBody` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.Features.<a href="/src/SchematicHQ.Client/Features/FeaturesClient.cs">CountFlagsAsync</a>(CountFlagsRequest { ... }) -> CountFlagsResponse</code></summary>
 <dl>
 <dd>
@@ -8149,10 +8029,13 @@ await client.Plangroups.CreatePlanGroupAsync(
             new OrderedPlansInGroup { PlanId = "plan_id" },
         },
         PreventDowngradesWhenOverLimit = true,
+        PreventSelfServiceDowngrade = true,
+        ProrationBehavior = ProrationBehavior.CreateProrations,
+        ShowAsMonthlyPrices = true,
         ShowCredits = true,
         ShowPeriodToggle = true,
         ShowZeroPriceAsFree = true,
-        SyncCustomerBillingDetailsForTax = true,
+        SyncCustomerBillingDetails = true,
     }
 );
 ```
@@ -8216,10 +8099,13 @@ await client.Plangroups.UpdatePlanGroupAsync(
             new OrderedPlansInGroup { PlanId = "plan_id" },
         },
         PreventDowngradesWhenOverLimit = true,
+        PreventSelfServiceDowngrade = true,
+        ProrationBehavior = ProrationBehavior.CreateProrations,
+        ShowAsMonthlyPrices = true,
         ShowCredits = true,
         ShowPeriodToggle = true,
         ShowZeroPriceAsFree = true,
-        SyncCustomerBillingDetailsForTax = true,
+        SyncCustomerBillingDetails = true,
     }
 );
 ```
@@ -8504,10 +8390,7 @@ await client.Webhooks.CreateWebhookAsync(
     new CreateWebhookRequestBody
     {
         Name = "name",
-        RequestTypes = new List<CreateWebhookRequestBodyRequestTypesItem>()
-        {
-            CreateWebhookRequestBodyRequestTypesItem.CompanyUpdated,
-        },
+        RequestTypes = new List<WebhookRequestType>() { WebhookRequestType.SubscriptionTrialEnded },
         Url = "url",
     }
 );
