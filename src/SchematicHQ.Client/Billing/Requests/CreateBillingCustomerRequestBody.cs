@@ -18,14 +18,14 @@ public record CreateBillingCustomerRequestBody
     [JsonPropertyName("external_id")]
     public required string ExternalId { get; set; }
 
-    [JsonPropertyName("failed_to_import")]
-    public required bool FailedToImport { get; set; }
-
     [JsonPropertyName("meta")]
     public Dictionary<string, string> Meta { get; set; } = new Dictionary<string, string>();
 
     [JsonPropertyName("name")]
     public required string Name { get; set; }
+
+    [JsonPropertyName("provider_type")]
+    public BillingProviderType? ProviderType { get; set; }
 
     /// <inheritdoc />
     public override string ToString()

@@ -48,6 +48,9 @@ public record BillingProductDetailResponseData : IJsonOnDeserialized
     [JsonPropertyName("product_id")]
     public required string ProductId { get; set; }
 
+    [JsonPropertyName("provider_type")]
+    public required BillingProviderType ProviderType { get; set; }
+
     [JsonPropertyName("quantity")]
     public required double Quantity { get; set; }
 

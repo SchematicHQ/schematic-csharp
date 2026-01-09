@@ -9,7 +9,7 @@ public partial class SchematicApi
 {
     private readonly RawClient _client;
 
-    public SchematicApi(string apiKey, ClientOptions? clientOptions = null)
+    public SchematicApi(string? apiKey = null, ClientOptions? clientOptions = null)
     {
         var defaultHeaders = new Headers(
             new Dictionary<string, string>()
@@ -18,7 +18,7 @@ public partial class SchematicApi
                 { "X-Fern-Language", "C#" },
                 { "X-Fern-SDK-Name", "SchematicHQ.Client" },
                 { "X-Fern-SDK-Version", Version.Current },
-                { "User-Agent", "SchematicHQ.Client/1.3.0" },
+                { "User-Agent", "SchematicHQ.Client/AUTO" },
             }
         );
         clientOptions ??= new ClientOptions();
@@ -38,10 +38,10 @@ public partial class SchematicApi
         Entitlements = new EntitlementsClient(_client);
         Plans = new PlansClient(_client);
         Components = new ComponentsClient(_client);
-        Crm = new CrmClient(_client);
         Dataexports = new DataexportsClient(_client);
         Events = new EventsClient(_client);
         Features = new FeaturesClient(_client);
+        Planbundle = new PlanbundleClient(_client);
         Plangroups = new PlangroupsClient(_client);
         Accesstokens = new AccesstokensClient(_client);
         Webhooks = new WebhooksClient(_client);
@@ -63,13 +63,13 @@ public partial class SchematicApi
 
     public ComponentsClient Components { get; }
 
-    public CrmClient Crm { get; }
-
     public DataexportsClient Dataexports { get; }
 
     public EventsClient Events { get; }
 
     public FeaturesClient Features { get; }
+
+    public PlanbundleClient Planbundle { get; }
 
     public PlangroupsClient Plangroups { get; }
 

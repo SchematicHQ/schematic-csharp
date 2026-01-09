@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SchematicHQ.Client", "SchematicHQ.Client\SchematicHQ.Client.csproj", "{56CBBACF-A882-4165-9670-D4EAB5825B14}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SchematicHQ.Client", "SchematicHQ.Client\SchematicHQ.Client.csproj", "{D50A0844-52C1-4C4D-98F6-7D58BB6F5084}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SchematicHQ.Client.Test", "SchematicHQ.Client.Test\SchematicHQ.Client.Test.csproj", "{97DE2575-2931-44C0-8EFD-0FFFE9C95358}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SchematicHQ.Client.Test", "SchematicHQ.Client.Test\SchematicHQ.Client.Test.csproj", "{4E92F132-DB32-4ABE-89A7-61E5BC1593BD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -16,13 +16,13 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{56CBBACF-A882-4165-9670-D4EAB5825B14}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{56CBBACF-A882-4165-9670-D4EAB5825B14}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{56CBBACF-A882-4165-9670-D4EAB5825B14}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{56CBBACF-A882-4165-9670-D4EAB5825B14}.Release|Any CPU.Build.0 = Release|Any CPU
-		{97DE2575-2931-44C0-8EFD-0FFFE9C95358}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{97DE2575-2931-44C0-8EFD-0FFFE9C95358}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{97DE2575-2931-44C0-8EFD-0FFFE9C95358}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{97DE2575-2931-44C0-8EFD-0FFFE9C95358}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D50A0844-52C1-4C4D-98F6-7D58BB6F5084}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D50A0844-52C1-4C4D-98F6-7D58BB6F5084}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D50A0844-52C1-4C4D-98F6-7D58BB6F5084}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D50A0844-52C1-4C4D-98F6-7D58BB6F5084}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4E92F132-DB32-4ABE-89A7-61E5BC1593BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4E92F132-DB32-4ABE-89A7-61E5BC1593BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4E92F132-DB32-4ABE-89A7-61E5BC1593BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4E92F132-DB32-4ABE-89A7-61E5BC1593BD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

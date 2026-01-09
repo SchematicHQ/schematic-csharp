@@ -7,7 +7,7 @@ namespace SchematicHQ.Client;
 public record ZeroOutGrantRequestBody
 {
     [JsonPropertyName("reason")]
-    public ZeroOutGrantRequestBodyReason? Reason { get; set; }
+    public BillingCreditGrantZeroedOutReason? Reason { get; set; }
 
     /// <inheritdoc />
     public override string ToString()

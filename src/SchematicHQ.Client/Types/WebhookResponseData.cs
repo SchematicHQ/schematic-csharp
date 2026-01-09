@@ -27,13 +27,14 @@ public record WebhookResponseData : IJsonOnDeserialized
     public required string Name { get; set; }
 
     [JsonPropertyName("request_types")]
-    public IEnumerable<string> RequestTypes { get; set; } = new List<string>();
+    public IEnumerable<WebhookRequestType> RequestTypes { get; set; } =
+        new List<WebhookRequestType>();
 
     [JsonPropertyName("secret")]
     public required string Secret { get; set; }
 
     [JsonPropertyName("status")]
-    public required string Status { get; set; }
+    public required WebhookStatus Status { get; set; }
 
     [JsonPropertyName("updated_at")]
     public required DateTime UpdatedAt { get; set; }

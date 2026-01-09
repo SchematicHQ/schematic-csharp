@@ -15,7 +15,7 @@ public record EntityKeyDefinitionResponseData : IJsonOnDeserialized
     public required DateTime CreatedAt { get; set; }
 
     [JsonPropertyName("entity_type")]
-    public required string EntityType { get; set; }
+    public required EntityType EntityType { get; set; }
 
     [JsonPropertyName("id")]
     public required string Id { get; set; }

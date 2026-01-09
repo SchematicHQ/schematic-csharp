@@ -7,7 +7,7 @@ namespace SchematicHQ.Client;
 public record CreateBillingPriceRequestBody
 {
     [JsonPropertyName("billing_scheme")]
-    public required CreateBillingPriceRequestBodyBillingScheme BillingScheme { get; set; }
+    public required BillingPriceScheme BillingScheme { get; set; }
 
     [JsonPropertyName("currency")]
     public required string Currency { get; set; }
@@ -43,11 +43,14 @@ public record CreateBillingPriceRequestBody
     [JsonPropertyName("product_external_id")]
     public required string ProductExternalId { get; set; }
 
+    [JsonPropertyName("provider_type")]
+    public BillingProviderType? ProviderType { get; set; }
+
     [JsonPropertyName("tiers_mode")]
-    public CreateBillingPriceRequestBodyTiersMode? TiersMode { get; set; }
+    public BillingTiersMode? TiersMode { get; set; }
 
     [JsonPropertyName("usage_type")]
-    public required CreateBillingPriceRequestBodyUsageType UsageType { get; set; }
+    public required BillingPriceUsageType UsageType { get; set; }
 
     /// <inheritdoc />
     public override string ToString()

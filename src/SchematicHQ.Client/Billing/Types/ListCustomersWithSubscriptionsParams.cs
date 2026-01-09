@@ -17,9 +17,6 @@ public record ListCustomersWithSubscriptionsParams : IJsonOnDeserialized
     [JsonPropertyName("company_ids")]
     public IEnumerable<string>? CompanyIds { get; set; }
 
-    [JsonPropertyName("failed_to_import")]
-    public bool? FailedToImport { get; set; }
-
     /// <summary>
     /// Page limit (default 100)
     /// </summary>
@@ -34,6 +31,9 @@ public record ListCustomersWithSubscriptionsParams : IJsonOnDeserialized
     /// </summary>
     [JsonPropertyName("offset")]
     public int? Offset { get; set; }
+
+    [JsonPropertyName("provider_type")]
+    public BillingProviderType? ProviderType { get; set; }
 
     [JsonPropertyName("q")]
     public string? Q { get; set; }

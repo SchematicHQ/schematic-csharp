@@ -21,7 +21,7 @@ public record BillingPriceResponseData : IJsonOnDeserialized
     public required string Id { get; set; }
 
     [JsonPropertyName("interval")]
-    public required string Interval { get; set; }
+    public required BillingProductPriceInterval Interval { get; set; }
 
     [JsonPropertyName("price")]
     public required int Price { get; set; }
@@ -29,8 +29,11 @@ public record BillingPriceResponseData : IJsonOnDeserialized
     [JsonPropertyName("price_decimal")]
     public string? PriceDecimal { get; set; }
 
+    [JsonPropertyName("provider_type")]
+    public required BillingProviderType ProviderType { get; set; }
+
     [JsonPropertyName("scheme")]
-    public required string Scheme { get; set; }
+    public required BillingPriceScheme Scheme { get; set; }
 
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();

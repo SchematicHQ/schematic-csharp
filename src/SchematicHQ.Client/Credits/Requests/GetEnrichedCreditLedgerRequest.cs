@@ -16,7 +16,7 @@ public record GetEnrichedCreditLedgerRequest
     public string? FeatureId { get; set; }
 
     [JsonIgnore]
-    public required GetEnrichedCreditLedgerRequestPeriod Period { get; set; }
+    public required CreditLedgerPeriod Period { get; set; }
 
     [JsonIgnore]
     public string? StartTime { get; set; }
