@@ -24,7 +24,7 @@ public record EntityKeyDetailResponseData : IJsonOnDeserialized
     public required string EntityId { get; set; }
 
     [JsonPropertyName("entity_type")]
-    public required string EntityType { get; set; }
+    public required EntityType EntityType { get; set; }
 
     [JsonPropertyName("environment_id")]
     public required string EnvironmentId { get; set; }

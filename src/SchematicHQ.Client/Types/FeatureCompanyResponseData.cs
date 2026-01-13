@@ -18,16 +18,13 @@ public record FeatureCompanyResponseData : IJsonOnDeserialized
     public required bool Access { get; set; }
 
     /// <summary>
-    /// The maximum amount of usage that is permitted; a null value indicates that unlimited usage is permitted.
+    /// The maximum amount of usage that is permitted; a null value indicates that unlimited usage is permitted or that this is a credit-based entitlement (use credit_remaining instead).
     /// </summary>
     [JsonPropertyName("allocation")]
     public int? Allocation { get; set; }
 
-    /// <summary>
-    /// The type of allocation that is being used.
-    /// </summary>
     [JsonPropertyName("allocation_type")]
-    public required FeatureCompanyResponseDataAllocationType AllocationType { get; set; }
+    public required EntitlementValueType AllocationType { get; set; }
 
     [JsonPropertyName("company")]
     public CompanyDetailResponseData? Company { get; set; }
@@ -47,15 +44,15 @@ public record FeatureCompanyResponseData : IJsonOnDeserialized
     [JsonPropertyName("credit_grant_details")]
     public IEnumerable<CreditGrantDetail>? CreditGrantDetails { get; set; }
 
-    /// <summary>
-    /// Reason for the credit grant
-    /// </summary>
     [JsonPropertyName("credit_grant_reason")]
-    public FeatureCompanyResponseDataCreditGrantReason? CreditGrantReason { get; set; }
+    public BillingCreditGrantReason? CreditGrantReason { get; set; }
 
     [JsonPropertyName("credit_remaining")]
     public double? CreditRemaining { get; set; }
 
+    /// <summary>
+    /// Deprecated: Use credit_remaining instead.
+    /// </summary>
     [JsonPropertyName("credit_total")]
     public double? CreditTotal { get; set; }
 
@@ -67,6 +64,9 @@ public record FeatureCompanyResponseData : IJsonOnDeserialized
 
     [JsonPropertyName("credit_usage")]
     public CreditUsage? CreditUsage { get; set; }
+
+    [JsonPropertyName("credit_usage_aggregation")]
+    public CreditUsageAggregation? CreditUsageAggregation { get; set; }
 
     [JsonPropertyName("credit_used")]
     public double? CreditUsed { get; set; }
@@ -96,7 +96,7 @@ public record FeatureCompanyResponseData : IJsonOnDeserialized
     public string? EntitlementSource { get; set; }
 
     [JsonPropertyName("entitlement_type")]
-    public required string EntitlementType { get; set; }
+    public required EntitlementType EntitlementType { get; set; }
 
     [JsonPropertyName("feature")]
     public FeatureDetailResponseData? Feature { get; set; }
@@ -153,7 +153,7 @@ public record FeatureCompanyResponseData : IJsonOnDeserialized
     public PlanEntitlementResponseData? PlanEntitlement { get; set; }
 
     [JsonPropertyName("price_behavior")]
-    public string? PriceBehavior { get; set; }
+    public EntitlementPriceBehavior? PriceBehavior { get; set; }
 
     /// <summary>
     /// The soft limit for the feature usage. Available only for overage price behavior
@@ -162,7 +162,7 @@ public record FeatureCompanyResponseData : IJsonOnDeserialized
     public int? SoftLimit { get; set; }
 
     /// <summary>
-    /// The amount of usage that has been consumed; a null value indicates that usage is not being measured.
+    /// The amount of usage that has been consumed; a null value indicates that usage is not being measured or that this is a credit-based entitlement (use credit_used instead).
     /// </summary>
     [JsonPropertyName("usage")]
     public int? Usage { get; set; }

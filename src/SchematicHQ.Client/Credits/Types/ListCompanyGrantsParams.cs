@@ -18,7 +18,7 @@ public record ListCompanyGrantsParams : IJsonOnDeserialized
     public string? CompanyId { get; set; }
 
     [JsonPropertyName("dir")]
-    public ListCompanyGrantsResponseParamsDir? Dir { get; set; }
+    public SortDirection? Dir { get; set; }
 
     /// <summary>
     /// Page limit (default 100)
@@ -33,7 +33,7 @@ public record ListCompanyGrantsParams : IJsonOnDeserialized
     public int? Offset { get; set; }
 
     [JsonPropertyName("order")]
-    public ListCompanyGrantsResponseParamsOrder? Order { get; set; }
+    public CreditGrantSortOrder? Order { get; set; }
 
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();

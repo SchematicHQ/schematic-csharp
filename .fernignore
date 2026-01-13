@@ -29,3 +29,4 @@ src/SchematicHQ.Client/SchematicHQ.Client.Custom.props
 src/SchematicHQ.Client/Webhooks/WebhookUtils/
 src/SchematicHQ.Client/OpenFeature/
 src/SchematicHQ.Client/generate-schema-hash.sh
+changelog.md

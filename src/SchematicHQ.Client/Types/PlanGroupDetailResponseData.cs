@@ -18,6 +18,9 @@ public record PlanGroupDetailResponseData : IJsonOnDeserialized
     [JsonPropertyName("checkout_settings")]
     public required CheckoutSettingsResponseData CheckoutSettings { get; set; }
 
+    [JsonPropertyName("component_settings")]
+    public required ComponentSettingsResponseData ComponentSettings { get; set; }
+
     [JsonPropertyName("custom_plan_config")]
     public CustomPlanViewConfigResponseData? CustomPlanConfig { get; set; }
 
@@ -46,7 +49,7 @@ public record PlanGroupDetailResponseData : IJsonOnDeserialized
     public string? InitialPlanId { get; set; }
 
     [JsonPropertyName("initial_plan_price")]
-    public BillingPriceResponseData? InitialPlanPrice { get; set; }
+    public BillingPriceView? InitialPlanPrice { get; set; }
 
     [JsonPropertyName("initial_plan_price_id")]
     public string? InitialPlanPriceId { get; set; }
@@ -70,6 +73,21 @@ public record PlanGroupDetailResponseData : IJsonOnDeserialized
     [JsonPropertyName("prevent_downgrades_when_over_limit")]
     public required bool PreventDowngradesWhenOverLimit { get; set; }
 
+    [JsonPropertyName("prevent_self_service_downgrade")]
+    public required bool PreventSelfServiceDowngrade { get; set; }
+
+    [JsonPropertyName("prevent_self_service_downgrade_button_text")]
+    public string? PreventSelfServiceDowngradeButtonText { get; set; }
+
+    [JsonPropertyName("prevent_self_service_downgrade_url")]
+    public string? PreventSelfServiceDowngradeUrl { get; set; }
+
+    [JsonPropertyName("proration_behavior")]
+    public required string ProrationBehavior { get; set; }
+
+    [JsonPropertyName("show_as_monthly_prices")]
+    public required bool ShowAsMonthlyPrices { get; set; }
+
     [JsonPropertyName("show_credits")]
     public required bool ShowCredits { get; set; }
 
@@ -79,8 +97,8 @@ public record PlanGroupDetailResponseData : IJsonOnDeserialized
     [JsonPropertyName("show_zero_price_as_free")]
     public required bool ShowZeroPriceAsFree { get; set; }
 
-    [JsonPropertyName("sync_customer_billing_details_for_tax")]
-    public required bool SyncCustomerBillingDetailsForTax { get; set; }
+    [JsonPropertyName("sync_customer_billing_details")]
+    public required bool SyncCustomerBillingDetails { get; set; }
 
     [JsonPropertyName("tax_collection_enabled")]
     public required bool TaxCollectionEnabled { get; set; }
@@ -95,7 +113,7 @@ public record PlanGroupDetailResponseData : IJsonOnDeserialized
     public string? TrialExpiryPlanId { get; set; }
 
     [JsonPropertyName("trial_expiry_plan_price")]
-    public BillingPriceResponseData? TrialExpiryPlanPrice { get; set; }
+    public BillingPriceView? TrialExpiryPlanPrice { get; set; }
 
     [JsonPropertyName("trial_expiry_plan_price_id")]
     public string? TrialExpiryPlanPriceId { get; set; }

@@ -39,7 +39,7 @@ public record GetEnrichedCreditLedgerParams : IJsonOnDeserialized
     public int? Offset { get; set; }
 
     [JsonPropertyName("period")]
-    public GetEnrichedCreditLedgerResponseParamsPeriod? Period { get; set; }
+    public CreditLedgerPeriod? Period { get; set; }
 
     [JsonPropertyName("start_time")]
     public string? StartTime { get; set; }

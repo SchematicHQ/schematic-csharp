@@ -15,7 +15,7 @@ public record BillingCreditBundleResponseData : IJsonOnDeserialized
     public string? BillingInvoiceId { get; set; }
 
     [JsonPropertyName("bundle_type")]
-    public required string BundleType { get; set; }
+    public string BundleType { get; set; } = "fixed";
 
     [JsonPropertyName("created_at")]
     public required DateTime CreatedAt { get; set; }
@@ -33,10 +33,10 @@ public record BillingCreditBundleResponseData : IJsonOnDeserialized
     public required string CreditName { get; set; }
 
     [JsonPropertyName("expiry_type")]
-    public required string ExpiryType { get; set; }
+    public required BillingCreditExpiryType ExpiryType { get; set; }
 
     [JsonPropertyName("expiry_unit")]
-    public required string ExpiryUnit { get; set; }
+    public required BillingCreditExpiryUnit ExpiryUnit { get; set; }
 
     [JsonPropertyName("expiry_unit_count")]
     public int? ExpiryUnitCount { get; set; }
@@ -63,7 +63,7 @@ public record BillingCreditBundleResponseData : IJsonOnDeserialized
     public string? SingularName { get; set; }
 
     [JsonPropertyName("status")]
-    public required string Status { get; set; }
+    public required BillingCreditBundleStatus Status { get; set; }
 
     [JsonPropertyName("unit_price")]
     public BillingPriceResponseData? UnitPrice { get; set; }

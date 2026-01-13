@@ -15,7 +15,7 @@ public record EnvironmentResponseData : IJsonOnDeserialized
     public required DateTime CreatedAt { get; set; }
 
     [JsonPropertyName("environment_type")]
-    public required string EnvironmentType { get; set; }
+    public required EnvironmentType EnvironmentType { get; set; }
 
     [JsonPropertyName("id")]
     public required string Id { get; set; }

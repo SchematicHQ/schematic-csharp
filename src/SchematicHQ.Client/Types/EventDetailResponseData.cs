@@ -60,16 +60,16 @@ public record EventDetailResponseData : IJsonOnDeserialized
     public DateTime? SentAt { get; set; }
 
     [JsonPropertyName("status")]
-    public required string Status { get; set; }
+    public required EventStatus Status { get; set; }
 
     [JsonPropertyName("subtype")]
     public string? Subtype { get; set; }
 
     [JsonPropertyName("type")]
-    public required string Type { get; set; }
+    public required EventType Type { get; set; }
 
     [JsonPropertyName("updated_at")]
-    public required DateTime UpdatedAt { get; set; }
+    public DateTime? UpdatedAt { get; set; }
 
     [JsonPropertyName("user")]
     public PreviewObject? User { get; set; }

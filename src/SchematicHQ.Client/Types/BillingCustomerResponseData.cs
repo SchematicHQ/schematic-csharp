@@ -23,14 +23,14 @@ public record BillingCustomerResponseData : IJsonOnDeserialized
     [JsonPropertyName("external_id")]
     public required string ExternalId { get; set; }
 
-    [JsonPropertyName("failed_to_import")]
-    public required bool FailedToImport { get; set; }
-
     [JsonPropertyName("id")]
     public required string Id { get; set; }
 
     [JsonPropertyName("name")]
     public required string Name { get; set; }
+
+    [JsonPropertyName("provider_type")]
+    public required BillingProviderType ProviderType { get; set; }
 
     [JsonPropertyName("updated_at")]
     public required DateTime UpdatedAt { get; set; }
