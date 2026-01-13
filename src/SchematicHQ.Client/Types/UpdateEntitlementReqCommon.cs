@@ -33,7 +33,7 @@ public record UpdateEntitlementReqCommon : IJsonOnDeserialized
     public string? ValueTraitId { get; set; }
 
     [JsonPropertyName("value_type")]
-    public required UpdateEntitlementReqCommonValueType ValueType { get; set; }
+    public required EntitlementValueType ValueType { get; set; }
 
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();

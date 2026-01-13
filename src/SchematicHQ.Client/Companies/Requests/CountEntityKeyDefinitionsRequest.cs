@@ -7,7 +7,7 @@ namespace SchematicHQ.Client;
 public record CountEntityKeyDefinitionsRequest
 {
     [JsonIgnore]
-    public CountEntityKeyDefinitionsRequestEntityType? EntityType { get; set; }
+    public EntityType? EntityType { get; set; }
 
     [JsonIgnore]
     public IEnumerable<string> Ids { get; set; } = new List<string>();

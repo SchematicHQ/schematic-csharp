@@ -40,7 +40,7 @@ public record CreateCompanyOverrideRequestBody
     public string? ValueTraitId { get; set; }
 
     [JsonPropertyName("value_type")]
-    public required CreateCompanyOverrideRequestBodyValueType ValueType { get; set; }
+    public required EntitlementValueType ValueType { get; set; }
 
     /// <inheritdoc />
     public override string ToString()

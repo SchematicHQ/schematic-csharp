@@ -10,10 +10,10 @@ public record UpdateCreditBundleDetailsRequestBody
     public required string BundleName { get; set; }
 
     [JsonPropertyName("expiry_type")]
-    public UpdateCreditBundleDetailsRequestBodyExpiryType? ExpiryType { get; set; }
+    public BillingCreditExpiryType? ExpiryType { get; set; }
 
     [JsonPropertyName("expiry_unit")]
-    public UpdateCreditBundleDetailsRequestBodyExpiryUnit? ExpiryUnit { get; set; }
+    public BillingCreditExpiryUnit? ExpiryUnit { get; set; }
 
     [JsonPropertyName("expiry_unit_count")]
     public int? ExpiryUnitCount { get; set; }
@@ -28,7 +28,7 @@ public record UpdateCreditBundleDetailsRequestBody
     public int? Quantity { get; set; }
 
     [JsonPropertyName("status")]
-    public UpdateCreditBundleDetailsRequestBodyStatus? Status { get; set; }
+    public BillingCreditBundleStatus? Status { get; set; }
 
     /// <inheritdoc />
     public override string ToString()

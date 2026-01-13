@@ -359,10 +359,7 @@ public partial class WebhooksClient
     ///     new CreateWebhookRequestBody
     ///     {
     ///         Name = "name",
-    ///         RequestTypes = new List&lt;CreateWebhookRequestBodyRequestTypesItem&gt;()
-    ///         {
-    ///             CreateWebhookRequestBodyRequestTypesItem.CompanyUpdated,
-    ///         },
+    ///         RequestTypes = new List&lt;WebhookRequestType&gt;() { WebhookRequestType.SubscriptionTrialEnded },
     ///         Url = "url",
     ///     }
     /// );

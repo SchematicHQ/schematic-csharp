@@ -40,28 +40,16 @@ public record CountPlansRequest
     /// Filter by plan type
     /// </summary>
     [JsonIgnore]
-    public CountPlansRequestPlanType? PlanType { get; set; }
+    public PlanType? PlanType { get; set; }
 
     [JsonIgnore]
     public string? Q { get; set; }
-
-    /// <summary>
-    /// Filter for plans that require a payment method (inverse of ForInitialPlan)
-    /// </summary>
-    [JsonIgnore]
-    public bool? RequiresPaymentMethod { get; set; }
 
     /// <summary>
     /// Filter out plans that already have a plan entitlement for the specified feature ID
     /// </summary>
     [JsonIgnore]
     public string? WithoutEntitlementFor { get; set; }
-
-    /// <summary>
-    /// Filter out plans that have a billing product ID
-    /// </summary>
-    [JsonIgnore]
-    public bool? WithoutProductId { get; set; }
 
     /// <summary>
     /// Filter out plans that have a paid billing product ID

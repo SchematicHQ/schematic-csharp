@@ -50,11 +50,26 @@ public record ComponentHydrateResponseData : IJsonOnDeserialized
     [JsonPropertyName("default_plan")]
     public PlanDetailResponseData? DefaultPlan { get; set; }
 
+    [JsonPropertyName("display_settings")]
+    public required ComponentDisplaySettings DisplaySettings { get; set; }
+
     [JsonPropertyName("feature_usage")]
     public FeatureUsageDetailResponseData? FeatureUsage { get; set; }
 
     [JsonPropertyName("post_trial_plan")]
     public PlanDetailResponseData? PostTrialPlan { get; set; }
+
+    [JsonPropertyName("prevent_self_service_downgrade")]
+    public required bool PreventSelfServiceDowngrade { get; set; }
+
+    [JsonPropertyName("prevent_self_service_downgrade_button_text")]
+    public string? PreventSelfServiceDowngradeButtonText { get; set; }
+
+    [JsonPropertyName("prevent_self_service_downgrade_url")]
+    public string? PreventSelfServiceDowngradeUrl { get; set; }
+
+    [JsonPropertyName("show_as_monthly_prices")]
+    public required bool ShowAsMonthlyPrices { get; set; }
 
     [JsonPropertyName("show_credits")]
     public required bool ShowCredits { get; set; }

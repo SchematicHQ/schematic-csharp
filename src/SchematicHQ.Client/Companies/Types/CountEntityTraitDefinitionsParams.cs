@@ -15,7 +15,7 @@ public record CountEntityTraitDefinitionsParams : IJsonOnDeserialized
         new Dictionary<string, JsonElement>();
 
     [JsonPropertyName("entity_type")]
-    public CountEntityTraitDefinitionsResponseParamsEntityType? EntityType { get; set; }
+    public EntityType? EntityType { get; set; }
 
     [JsonPropertyName("ids")]
     public IEnumerable<string>? Ids { get; set; }
@@ -36,7 +36,10 @@ public record CountEntityTraitDefinitionsParams : IJsonOnDeserialized
     public string? Q { get; set; }
 
     [JsonPropertyName("trait_type")]
-    public CountEntityTraitDefinitionsResponseParamsTraitType? TraitType { get; set; }
+    public TraitType? TraitType { get; set; }
+
+    [JsonPropertyName("trait_types")]
+    public IEnumerable<TraitType>? TraitTypes { get; set; }
 
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();

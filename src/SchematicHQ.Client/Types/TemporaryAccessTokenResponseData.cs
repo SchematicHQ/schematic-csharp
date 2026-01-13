@@ -27,7 +27,7 @@ public record TemporaryAccessTokenResponseData : IJsonOnDeserialized
     public required string Id { get; set; }
 
     [JsonPropertyName("resource_type")]
-    public required string ResourceType { get; set; }
+    public string ResourceType { get; set; } = "company";
 
     [JsonPropertyName("updated_at")]
     public required DateTime UpdatedAt { get; set; }

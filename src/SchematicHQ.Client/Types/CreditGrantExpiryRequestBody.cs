@@ -12,22 +12,22 @@ public record CreditGrantExpiryRequestBody : IJsonOnDeserialized
         new Dictionary<string, JsonElement>();
 
     [JsonPropertyName("expiry_type")]
-    public CreditGrantExpiryRequestBodyExpiryType? ExpiryType { get; set; }
+    public BillingCreditExpiryType? ExpiryType { get; set; }
 
     [JsonPropertyName("expiry_unit")]
-    public CreditGrantExpiryRequestBodyExpiryUnit? ExpiryUnit { get; set; }
+    public BillingCreditExpiryUnit? ExpiryUnit { get; set; }
 
     [JsonPropertyName("expiry_unit_count")]
     public int? ExpiryUnitCount { get; set; }
 
     [JsonPropertyName("reset_cadence")]
-    public required CreditGrantExpiryRequestBodyResetCadence ResetCadence { get; set; }
+    public required BillingPlanCreditGrantResetCadence ResetCadence { get; set; }
 
     [JsonPropertyName("reset_start")]
-    public required CreditGrantExpiryRequestBodyResetStart ResetStart { get; set; }
+    public required BillingPlanCreditGrantResetStart ResetStart { get; set; }
 
     [JsonPropertyName("reset_type")]
-    public CreditGrantExpiryRequestBodyResetType? ResetType { get; set; }
+    public BillingPlanCreditGrantResetType? ResetType { get; set; }
 
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();
