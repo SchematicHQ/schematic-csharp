@@ -184,7 +184,7 @@ namespace SchematicHQ.Client.Cache
         }
 
         private RedisKey GetRedisKey(string key)
-        {
+        {     
             return $"{_keyPrefix}{key}";
         }
     }

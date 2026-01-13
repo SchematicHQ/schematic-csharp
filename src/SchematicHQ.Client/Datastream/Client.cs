@@ -1283,13 +1283,13 @@ namespace SchematicHQ.Client.Datastream
     private string FlagCacheKey(string key)
     {
       var schemaVersion = GetCacheVersion();
-      return $"{CacheKeyPrefix}:{CacheKeyPrefixFlags}:{schemaVersion}:{key}";
+      return $"{CacheKeyPrefix}:{CacheKeyPrefixFlags}:{schemaVersion}:{key.ToLowerInvariant()}";
     }
 
     private string ResourceKeyToCacheKey<T>(string resourceType, string key, string value)
     {
       var schemaVersion = GetCacheVersion();
-      return $"{CacheKeyPrefix}:{resourceType}:{schemaVersion}:{key}:{value}";
+      return $"{CacheKeyPrefix}:{resourceType}:{schemaVersion}:{key.ToLowerInvariant()}:{value.ToLowerInvariant()}";
     }
 
     /// <summary>
