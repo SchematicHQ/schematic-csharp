@@ -290,12 +290,12 @@ namespace SchematicHQ.Client.Test.RulesEngine
             // Arrange
             var json = @"{""rule_type"": ""unknown_value""}";
 
-            // Act & Assert - Should not throw, should fallback to Unknown
+            // Act & Assert - Should not throw, should preserve unknown value
             Assert.DoesNotThrow(() =>
             {
                 var testObj = JsonSerializer.Deserialize<TestRuleTypeObject>(json, _jsonOptions);
-                // Should fallback to Unknown for unrecognized values
-                Assert.That(testObj!.RuleType, Is.EqualTo(RuleRuleType.Unknown));
+                // Should preserve unknown values as-is
+                Assert.That(testObj!.RuleType.Value, Is.EqualTo("unknown_value"));
             });
         }
 
@@ -305,12 +305,12 @@ namespace SchematicHQ.Client.Test.RulesEngine
             // Arrange
             var json = @"{""rule_type"": """"}";
 
-            // Act & Assert - Should not throw, should fallback to Unknown
+            // Act & Assert - Should not throw, should preserve empty string
             Assert.DoesNotThrow(() =>
             {
                 var testObj = JsonSerializer.Deserialize<TestRuleTypeObject>(json, _jsonOptions);
-                // Should fallback to Unknown for empty values
-                Assert.That(testObj!.RuleType, Is.EqualTo(RuleRuleType.Unknown));
+                // Empty string is preserved
+                Assert.That(testObj!.RuleType.Value, Is.EqualTo(""));
             });
         }
 
@@ -320,12 +320,12 @@ namespace SchematicHQ.Client.Test.RulesEngine
             // Arrange
             var json = @"{""rule_type"": ""invalid""}";
 
-            // Act & Assert - Should not throw, should fallback to Unknown
+            // Act & Assert - Should not throw, should preserve unknown value
             Assert.DoesNotThrow(() =>
             {
                 var testObj = JsonSerializer.Deserialize<TestRuleTypeObject>(json, _jsonOptions);
-                // Should fallback to Unknown for invalid values
-                Assert.That(testObj!.RuleType, Is.EqualTo(RuleRuleType.Unknown));
+                // Should preserve unknown values as-is
+                Assert.That(testObj!.RuleType.Value, Is.EqualTo("invalid"));
             });
         }
 

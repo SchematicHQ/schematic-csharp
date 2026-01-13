@@ -94,7 +94,7 @@ namespace SchematicHQ.Client.Test.Datastream
                         TraitDefinition = new TraitDefinition {
                             Id = "trait_123",
                             ComparableType = TraitDefinitionComparableType.String,
-                            EntityType = TraitDefinitionEntityType.Company
+                            EntityType = EntityType.Company
                         } 
                     }
                 }

@@ -266,12 +266,12 @@ namespace SchematicHQ.Client.RulesEngine
             Models.Trait? trait;
             Models.Trait? comparisonTrait;
 
-            if (traitDef.EntityType == TraitDefinitionEntityType.Company && company != null)
+            if (traitDef.EntityType == EntityType.Company && company != null)
             {
                 trait = FindTrait(traitDef, company.Traits);
                 comparisonTrait = FindTrait(condition.ComparisonTraitDefinition, company.Traits);
             }
-            else if (traitDef.EntityType == TraitDefinitionEntityType.User && user != null)
+            else if (traitDef.EntityType == EntityType.User && user != null)
             {
                 trait = FindTrait(traitDef, user.Traits);
                 comparisonTrait = FindTrait(condition.ComparisonTraitDefinition, user.Traits);

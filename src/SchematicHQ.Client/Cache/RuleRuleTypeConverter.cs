@@ -10,18 +10,15 @@ namespace SchematicHQ.Client.Cache
         {
             var value = reader.GetString();
             
-            return value switch
+            // Handle null - return empty string RuleRuleType
+            if (value == null)
             {
-                "" or null => RuleRuleType.Unknown,
-                "default" => RuleRuleType.Default,
-                "global_override" => RuleRuleType.GlobalOverride,
-                "company_override" => RuleRuleType.CompanyOverride,
-                "company_override_usage_exceeded" => RuleRuleType.CompanyOverrideUsageExceeded,
-                "plan_entitlement" => RuleRuleType.PlanEntitlement,
-                "plan_entitlement_usage_exceeded" => RuleRuleType.PlanEntitlementUsageExceeded,
-                "standard" => RuleRuleType.Standard,
-                _ => RuleRuleType.Unknown
-            };
+                return RuleRuleType.FromCustom("");
+            }
+            
+            // For any value (known or unknown, including empty string), just pass it through
+            // RuleRuleType is a string enum that can hold any value
+            return RuleRuleType.FromCustom(value);
         }
 
         public override void Write(Utf8JsonWriter writer, RuleRuleType value, JsonSerializerOptions options)
