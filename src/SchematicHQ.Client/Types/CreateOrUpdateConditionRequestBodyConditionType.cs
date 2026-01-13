@@ -27,10 +27,6 @@ public readonly record struct CreateOrUpdateConditionRequestBodyConditionType : 
         Values.BillingProduct
     );
 
-    public static readonly CreateOrUpdateConditionRequestBodyConditionType CrmProduct = new(
-        Values.CrmProduct
-    );
-
     public static readonly CreateOrUpdateConditionRequestBodyConditionType BasePlan = new(
         Values.BasePlan
     );
@@ -99,8 +95,6 @@ public readonly record struct CreateOrUpdateConditionRequestBodyConditionType : 
         public const string Plan = "plan";
 
         public const string BillingProduct = "billing_product";
-
-        public const string CrmProduct = "crm_product";
 
         public const string BasePlan = "base_plan";
     }

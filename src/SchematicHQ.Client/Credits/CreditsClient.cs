@@ -393,7 +393,7 @@ public partial class CreditsClient
     ///     new ListCreditBundlesRequest
     ///     {
     ///         CreditId = "credit_id",
-    ///         Status = ListCreditBundlesRequestStatus.Active,
+    ///         Status = BillingCreditBundleStatus.Active,
     ///         BundleType = "fixed",
     ///         Limit = 1,
     ///         Offset = 1,
@@ -778,7 +778,7 @@ public partial class CreditsClient
     ///     new CountCreditBundlesRequest
     ///     {
     ///         CreditId = "credit_id",
-    ///         Status = CountCreditBundlesRequestStatus.Active,
+    ///         Status = BillingCreditBundleStatus.Active,
     ///         BundleType = "fixed",
     ///         Limit = 1,
     ///         Offset = 1,
@@ -1038,7 +1038,7 @@ public partial class CreditsClient
     ///         CompanyId = "company_id",
     ///         CreditId = "credit_id",
     ///         Quantity = 1,
-    ///         Reason = "reason",
+    ///         Reason = BillingCreditGrantReason.BillingCreditAutoTopup,
     ///     }
     /// );
     /// </code></example>
@@ -1108,12 +1108,109 @@ public partial class CreditsClient
     }
 
     /// <example><code>
+    /// await client.Credits.CountCompanyGrantsAsync(
+    ///     new CountCompanyGrantsRequest
+    ///     {
+    ///         CompanyId = "company_id",
+    ///         Order = CreditGrantSortOrder.CreatedAt,
+    ///         Dir = SortDirection.Asc,
+    ///         Limit = 1,
+    ///         Offset = 1,
+    ///     }
+    /// );
+    /// </code></example>
+    public async Task<CountCompanyGrantsResponse> CountCompanyGrantsAsync(
+        CountCompanyGrantsRequest request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        var _query = new Dictionary<string, object>();
+        if (request.CompanyId != null)
+        {
+            _query["company_id"] = request.CompanyId;
+        }
+        if (request.Order != null)
+        {
+            _query["order"] = request.Order.Value.Stringify();
+        }
+        if (request.Dir != null)
+        {
+            _query["dir"] = request.Dir.Value.Stringify();
+        }
+        if (request.Limit != null)
+        {
+            _query["limit"] = request.Limit.Value.ToString();
+        }
+        if (request.Offset != null)
+        {
+            _query["offset"] = request.Offset.Value.ToString();
+        }
+        var response = await _client
+            .SendRequestAsync(
+                new JsonRequest
+                {
+                    BaseUrl = _client.Options.BaseUrl,
+                    Method = HttpMethod.Get,
+                    Path = "billing/credits/grants/company/count",
+                    Query = _query,
+                    Options = options,
+                },
+                cancellationToken
+            )
+            .ConfigureAwait(false);
+        if (response.StatusCode is >= 200 and < 400)
+        {
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            try
+            {
+                return JsonUtils.Deserialize<CountCompanyGrantsResponse>(responseBody)!;
+            }
+            catch (JsonException e)
+            {
+                throw new SchematicException("Failed to deserialize response", e);
+            }
+        }
+
+        {
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            try
+            {
+                switch (response.StatusCode)
+                {
+                    case 400:
+                        throw new BadRequestError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 401:
+                        throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 403:
+                        throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 404:
+                        throw new NotFoundError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 500:
+                        throw new InternalServerError(
+                            JsonUtils.Deserialize<ApiError>(responseBody)
+                        );
+                }
+            }
+            catch (JsonException)
+            {
+                // unable to map error response, throwing generic error
+            }
+            throw new SchematicApiException(
+                $"Error with status code {response.StatusCode}",
+                response.StatusCode,
+                responseBody
+            );
+        }
+    }
+
+    /// <example><code>
     /// await client.Credits.ListCompanyGrantsAsync(
     ///     new ListCompanyGrantsRequest
     ///     {
     ///         CompanyId = "company_id",
-    ///         Order = ListCompanyGrantsRequestOrder.CreatedAt,
-    ///         Dir = ListCompanyGrantsRequestDir.Asc,
+    ///         Order = CreditGrantSortOrder.CreatedAt,
+    ///         Dir = SortDirection.Asc,
     ///         Limit = 1,
     ///         Offset = 1,
     ///     }
@@ -1387,7 +1484,7 @@ public partial class CreditsClient
     ///         CompanyId = "company_id",
     ///         BillingCreditId = "billing_credit_id",
     ///         FeatureId = "feature_id",
-    ///         Period = GetEnrichedCreditLedgerRequestPeriod.Daily,
+    ///         Period = CreditLedgerPeriod.Daily,
     ///         StartTime = "start_time",
     ///         EndTime = "end_time",
     ///         Limit = 1,
@@ -1493,7 +1590,7 @@ public partial class CreditsClient
     ///         CompanyId = "company_id",
     ///         BillingCreditId = "billing_credit_id",
     ///         FeatureId = "feature_id",
-    ///         Period = CountCreditLedgerRequestPeriod.Daily,
+    ///         Period = CreditLedgerPeriod.Daily,
     ///         StartTime = "start_time",
     ///         EndTime = "end_time",
     ///         Limit = 1,
@@ -1693,8 +1790,8 @@ public partial class CreditsClient
     ///         CreditAmount = 1,
     ///         CreditId = "credit_id",
     ///         PlanId = "plan_id",
-    ///         ResetCadence = CreateBillingPlanCreditGrantRequestBodyResetCadence.Monthly,
-    ///         ResetStart = CreateBillingPlanCreditGrantRequestBodyResetStart.BillingPeriod,
+    ///         ResetCadence = BillingPlanCreditGrantResetCadence.Daily,
+    ///         ResetStart = BillingPlanCreditGrantResetStart.BillingPeriod,
     ///     }
     /// );
     /// </code></example>
@@ -1768,8 +1865,8 @@ public partial class CreditsClient
     ///     "plan_grant_id",
     ///     new UpdateBillingPlanCreditGrantRequestBody
     ///     {
-    ///         ResetCadence = UpdateBillingPlanCreditGrantRequestBodyResetCadence.Monthly,
-    ///         ResetStart = UpdateBillingPlanCreditGrantRequestBodyResetStart.BillingPeriod,
+    ///         ResetCadence = BillingPlanCreditGrantResetCadence.Daily,
+    ///         ResetStart = BillingPlanCreditGrantResetStart.BillingPeriod,
     ///     }
     /// );
     /// </code></example>

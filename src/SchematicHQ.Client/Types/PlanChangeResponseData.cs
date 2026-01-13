@@ -12,10 +12,10 @@ public record PlanChangeResponseData : IJsonOnDeserialized
         new Dictionary<string, JsonElement>();
 
     [JsonPropertyName("action")]
-    public required PlanChangeResponseDataAction Action { get; set; }
+    public required PlanChangeAction Action { get; set; }
 
     [JsonPropertyName("actor_type")]
-    public required PlanChangeResponseDataActorType ActorType { get; set; }
+    public required PlanChangeActorType ActorType { get; set; }
 
     [JsonPropertyName("add_ons_added")]
     public IEnumerable<PlanSnapshotView> AddOnsAdded { get; set; } = new List<PlanSnapshotView>();
@@ -32,11 +32,8 @@ public record PlanChangeResponseData : IJsonOnDeserialized
     [JsonPropertyName("base_plan")]
     public PlanSnapshotView? BasePlan { get; set; }
 
-    /// <summary>
-    /// Any special behavior that affected the assignment of the base plan during this change.
-    /// </summary>
     [JsonPropertyName("base_plan_action")]
-    public PlanChangeResponseDataBasePlanAction? BasePlanAction { get; set; }
+    public PlanChangeBasePlanAction? BasePlanAction { get; set; }
 
     [JsonPropertyName("company")]
     public CompanyResponseData? Company { get; set; }
@@ -59,11 +56,8 @@ public record PlanChangeResponseData : IJsonOnDeserialized
     [JsonPropertyName("request_id")]
     public string? RequestId { get; set; }
 
-    /// <summary>
-    /// If a subscription was changed as a part of this plan change, indicates the type of change that was made.
-    /// </summary>
     [JsonPropertyName("subscription_change_action")]
-    public PlanChangeResponseDataSubscriptionChangeAction? SubscriptionChangeAction { get; set; }
+    public PlanChangeSubscriptionAction? SubscriptionChangeAction { get; set; }
 
     /// <summary>
     /// Any traits were updated as part of this plan change (via pay-in-advance entitlements).

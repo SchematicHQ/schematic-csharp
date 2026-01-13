@@ -12,7 +12,7 @@ public record BillingProductForSubscriptionResponseData : IJsonOnDeserialized
         new Dictionary<string, JsonElement>();
 
     [JsonPropertyName("billing_scheme")]
-    public required string BillingScheme { get; set; }
+    public required BillingPriceScheme BillingScheme { get; set; }
 
     [JsonPropertyName("billing_threshold")]
     public int? BillingThreshold { get; set; }
@@ -60,6 +60,9 @@ public record BillingProductForSubscriptionResponseData : IJsonOnDeserialized
     public IEnumerable<BillingProductPriceTierResponseData> PriceTier { get; set; } =
         new List<BillingProductPriceTierResponseData>();
 
+    [JsonPropertyName("provider_type")]
+    public required BillingProviderType ProviderType { get; set; }
+
     [JsonPropertyName("quantity")]
     public required double Quantity { get; set; }
 
@@ -73,7 +76,7 @@ public record BillingProductForSubscriptionResponseData : IJsonOnDeserialized
     public required DateTime UpdatedAt { get; set; }
 
     [JsonPropertyName("usage_type")]
-    public required string UsageType { get; set; }
+    public required BillingPriceUsageType UsageType { get; set; }
 
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();

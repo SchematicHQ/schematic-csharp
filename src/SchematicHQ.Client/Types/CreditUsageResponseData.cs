@@ -24,6 +24,9 @@ public record CreditUsageResponseData : IJsonOnDeserialized
     [JsonPropertyName("credit_remaining")]
     public double? CreditRemaining { get; set; }
 
+    /// <summary>
+    /// Deprecated: Use credit_remaining instead.
+    /// </summary>
     [JsonPropertyName("credit_total")]
     public double? CreditTotal { get; set; }
 

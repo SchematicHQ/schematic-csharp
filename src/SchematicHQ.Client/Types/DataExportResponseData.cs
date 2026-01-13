@@ -21,7 +21,7 @@ public record DataExportResponseData : IJsonOnDeserialized
     public required string EnvironmentId { get; set; }
 
     [JsonPropertyName("export_type")]
-    public required string ExportType { get; set; }
+    public string ExportType { get; set; } = "company-feature-usage";
 
     [JsonPropertyName("id")]
     public required string Id { get; set; }
@@ -30,10 +30,10 @@ public record DataExportResponseData : IJsonOnDeserialized
     public required string Metadata { get; set; }
 
     [JsonPropertyName("output_file_type")]
-    public required string OutputFileType { get; set; }
+    public string OutputFileType { get; set; } = "csv";
 
     [JsonPropertyName("status")]
-    public required string Status { get; set; }
+    public required DataExportStatus Status { get; set; }
 
     [JsonPropertyName("updated_at")]
     public required DateTime UpdatedAt { get; set; }

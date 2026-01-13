@@ -36,7 +36,7 @@ public record UsageBasedEntitlementRequestBody : IJsonOnDeserialized
     public string? OverageBillingProductId { get; set; }
 
     [JsonPropertyName("price_behavior")]
-    public UsageBasedEntitlementRequestBodyPriceBehavior? PriceBehavior { get; set; }
+    public EntitlementPriceBehavior? PriceBehavior { get; set; }
 
     /// <summary>
     /// Use MonthlyPriceTiers or YearlyPriceTiers instead
@@ -48,7 +48,7 @@ public record UsageBasedEntitlementRequestBody : IJsonOnDeserialized
     public int? SoftLimit { get; set; }
 
     [JsonPropertyName("tier_mode")]
-    public string? TierMode { get; set; }
+    public BillingTiersMode? TierMode { get; set; }
 
     [JsonPropertyName("yearly_metered_price_id")]
     public string? YearlyMeteredPriceId { get; set; }
