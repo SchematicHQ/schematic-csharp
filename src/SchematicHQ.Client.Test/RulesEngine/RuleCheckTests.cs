@@ -248,7 +248,7 @@ namespace SchematicHQ.Client.Test.RulesEngine
       // Arrange
       var svc = RuleCheckService.NewRuleCheckService();
       var user = TestHelpers.CreateTestUser();
-      var traitDef = TestHelpers.CreateTestTraitDefinition(TraitDefinitionComparableType.String, TraitDefinitionEntityType.User);
+      var traitDef = TestHelpers.CreateTestTraitDefinition(TraitDefinitionComparableType.String, EntityType.User);
       var trait = TestHelpers.CreateTestTrait("user-trait-value", traitDef);
       user.Traits.Add(trait);
 

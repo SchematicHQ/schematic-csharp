@@ -18,7 +18,7 @@ public record RawEventResponseData : IJsonOnDeserialized
     public string? EventId { get; set; }
 
     [JsonPropertyName("remote_addr")]
-    public required string RemoteAddr { get; set; }
+    public string? RemoteAddr { get; set; }
 
     [JsonPropertyName("remote_ip")]
     public required string RemoteIp { get; set; }

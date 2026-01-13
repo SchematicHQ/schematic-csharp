@@ -41,6 +41,9 @@ public record PreviewSubscriptionFinanceResponseData : IJsonOnDeserialized
     [JsonPropertyName("tax_require_billing_details")]
     public required bool TaxRequireBillingDetails { get; set; }
 
+    [JsonPropertyName("total_per_billing_period")]
+    public required int TotalPerBillingPeriod { get; set; }
+
     [JsonPropertyName("trial_end")]
     public DateTime? TrialEnd { get; set; }
 

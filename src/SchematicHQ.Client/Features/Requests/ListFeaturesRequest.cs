@@ -31,7 +31,7 @@ public record ListFeaturesRequest
     /// Filter by one or more feature types (boolean, event, trait)
     /// </summary>
     [JsonIgnore]
-    public IEnumerable<string> FeatureType { get; set; } = new List<string>();
+    public IEnumerable<FeatureType> FeatureType { get; set; } = new List<FeatureType>();
 
     /// <summary>
     /// Only return boolean features if there is an associated event. Automatically includes boolean in the feature types filter.

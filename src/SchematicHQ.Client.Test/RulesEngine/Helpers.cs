@@ -109,7 +109,7 @@ namespace SchematicHQ.Client.Test.RulesEngine
     {
       if (traitDefinition == null)
       {
-        traitDefinition = CreateTestTraitDefinition(TraitDefinitionComparableType.String, TraitDefinitionEntityType.Company);
+        traitDefinition = CreateTestTraitDefinition(TraitDefinitionComparableType.String, EntityType.Company);
       }
 
       return new Trait
@@ -119,7 +119,7 @@ namespace SchematicHQ.Client.Test.RulesEngine
       };
     }
 
-    public static TraitDefinition CreateTestTraitDefinition(TraitDefinitionComparableType comparableType, TraitDefinitionEntityType entityType)
+    public static TraitDefinition CreateTestTraitDefinition(TraitDefinitionComparableType comparableType, EntityType entityType)
     {
       return new TraitDefinition
       {

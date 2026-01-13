@@ -18,6 +18,9 @@ public record CreateBillingProductRequestBody
     [JsonPropertyName("price")]
     public required double Price { get; set; }
 
+    [JsonPropertyName("provider_type")]
+    public BillingProviderType? ProviderType { get; set; }
+
     /// <inheritdoc />
     public override string ToString()
     {

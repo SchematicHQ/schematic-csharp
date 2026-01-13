@@ -15,7 +15,7 @@ public record CountEntityKeyDefinitionsParams : IJsonOnDeserialized
         new Dictionary<string, JsonElement>();
 
     [JsonPropertyName("entity_type")]
-    public CountEntityKeyDefinitionsResponseParamsEntityType? EntityType { get; set; }
+    public EntityType? EntityType { get; set; }
 
     [JsonPropertyName("ids")]
     public IEnumerable<string>? Ids { get; set; }

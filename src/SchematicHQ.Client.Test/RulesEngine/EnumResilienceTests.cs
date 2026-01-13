@@ -35,7 +35,7 @@ namespace SchematicHQ.Client.Test.RulesEngine
             Assert.DoesNotThrow(() =>
             {
                 var result = JsonSerializer.Deserialize<RuleRuleType>(unknownRuleTypeJson, _options);
-                Assert.That(result, Is.EqualTo(RuleRuleType.Unknown)); // Should fallback to Unknown
+                Assert.That(result.Value, Is.EqualTo("unknown_rule_type")); // Should preserve unknown value
             });
         }
 
@@ -127,7 +127,7 @@ namespace SchematicHQ.Client.Test.RulesEngine
             Assert.DoesNotThrow(() =>
             {
                 var result = JsonSerializer.Deserialize<RuleRuleType>("\"invalid_rule\"", _options);
-                Assert.That(result, Is.EqualTo(RuleRuleType.Unknown));
+                Assert.That(result.Value, Is.EqualTo("invalid_rule")); // Should preserve unknown value
             });
         }
 
@@ -138,7 +138,7 @@ namespace SchematicHQ.Client.Test.RulesEngine
             Assert.DoesNotThrow(() =>
             {
                 var result = JsonSerializer.Deserialize<RuleRuleType>("\"nonexistent\"", _options);
-                Assert.That(result, Is.EqualTo(RuleRuleType.Unknown));
+                Assert.That(result.Value, Is.EqualTo("nonexistent")); // Should preserve unknown value
             });
         }
 
@@ -149,7 +149,7 @@ namespace SchematicHQ.Client.Test.RulesEngine
             Assert.DoesNotThrow(() =>
             {
                 var result = JsonSerializer.Deserialize<RuleRuleType>("\"\"", _options);
-                Assert.That(result, Is.EqualTo(RuleRuleType.Unknown));
+                Assert.That(result.Value, Is.EqualTo("")); // Empty string is preserved
             });
         }
 
@@ -183,7 +183,7 @@ namespace SchematicHQ.Client.Test.RulesEngine
         public void RuleType_UnknownSerialization_ShouldSerializeAsEmptyString()
         {
             // Arrange
-            var ruleType = RuleRuleType.Unknown;
+            var ruleType = RuleRuleType.FromCustom("");
 
             // Act
             var json = JsonSerializer.Serialize(ruleType, _options);

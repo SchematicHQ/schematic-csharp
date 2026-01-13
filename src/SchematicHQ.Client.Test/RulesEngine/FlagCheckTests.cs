@@ -179,7 +179,7 @@ namespace SchematicHQ.Client.Test.RulesEngine
             var flag = TestHelpers.CreateTestFlag();
 
             // Create trait
-            var traitDef = TestHelpers.CreateTestTraitDefinition(TraitDefinitionComparableType.Int, TraitDefinitionEntityType.Company);
+            var traitDef = TestHelpers.CreateTestTraitDefinition(TraitDefinitionComparableType.Int, EntityType.Company);
             var trait = TestHelpers.CreateTestTrait("5", traitDef);
             company.Traits = new List<Trait> { trait };
 
@@ -238,7 +238,7 @@ namespace SchematicHQ.Client.Test.RulesEngine
         {
             // Arrange
             var user = TestHelpers.CreateTestUser();
-            var traitDef = TestHelpers.CreateTestTraitDefinition(TraitDefinitionComparableType.String, TraitDefinitionEntityType.User);
+            var traitDef = TestHelpers.CreateTestTraitDefinition(TraitDefinitionComparableType.String, EntityType.User);
             var trait = TestHelpers.CreateTestTrait("test-value", traitDef);
             user.Traits = new List<Trait> { trait };
 

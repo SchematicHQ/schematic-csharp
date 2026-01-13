@@ -31,7 +31,6 @@ public partial class Schematic
     public CheckoutClient Checkout { get; init; }
     public CompaniesClient Companies { get; init; }
     public ComponentsClient Components { get; init; }
-    public CrmClient Crm { get; init; }
     public EntitlementsClient Entitlements { get; init; }
     public EventsClient Events { get; init; }
     public FeaturesClient Features { get; init; }
@@ -99,7 +98,6 @@ public partial class Schematic
         Checkout = API.Checkout;
         Companies = API.Companies;
         Components = API.Components;
-        Crm = API.Crm;
         Entitlements = API.Entitlements;
         Events = API.Events;
         Features = API.Features;
@@ -407,7 +405,7 @@ public partial class Schematic
 
     public void Identify(Dictionary<string, string> keys, EventBodyIdentifyCompany? company = null, string? name = null, Dictionary<string, object?>? traits = null)
     {
-        EnqueueEvent(CreateEventRequestBodyEventType.Identify, new EventBodyIdentify
+        EnqueueEvent(EventType.Identify, new EventBodyIdentify
         {
             Company = company,
             Keys = keys,
@@ -427,7 +425,7 @@ public partial class Schematic
             Quantity = quantity
         };
         
-        EnqueueEvent(CreateEventRequestBodyEventType.Track, eventBody);
+        EnqueueEvent(EventType.Track, eventBody);
         
         // Update company metrics in datastream if available and connected
         if (company != null && UseDatastream() && _datastreamClient != null && _datastreamConnected)
@@ -447,7 +445,7 @@ public partial class Schematic
         }
     }
 
-    private void EnqueueEvent(CreateEventRequestBodyEventType eventType, OneOf<EventBodyTrack, EventBodyFlagCheck, EventBodyIdentify> body)
+    private void EnqueueEvent(EventType eventType, OneOf<EventBodyTrack, EventBodyFlagCheck, EventBodyIdentify> body)
     {
         if (_offline)
             return;
@@ -497,7 +495,7 @@ private void SubmitFlagCheckEvent(
 
         _logger.Debug("Submitting flag check event: {0}", flagKey);
 
-        EnqueueEvent(CreateEventRequestBodyEventType.FlagCheck, eventBody);
+        EnqueueEvent(EventType.FlagCheck, eventBody);
     }
     catch (Exception ex)
     {
