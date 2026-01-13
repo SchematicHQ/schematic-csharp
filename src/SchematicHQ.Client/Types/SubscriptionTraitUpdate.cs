@@ -27,7 +27,7 @@ public record SubscriptionTraitUpdate : IJsonOnDeserialized
     public required string TraitName { get; set; }
 
     [JsonPropertyName("trait_type")]
-    public required string TraitType { get; set; }
+    public required TraitType TraitType { get; set; }
 
     [JsonPropertyName("value")]
     public required string Value { get; set; }

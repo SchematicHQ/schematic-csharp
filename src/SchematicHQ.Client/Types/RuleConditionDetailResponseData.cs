@@ -64,7 +64,7 @@ public record RuleConditionDetailResponseData : IJsonOnDeserialized
     public EntityTraitDefinitionResponseData? Trait { get; set; }
 
     [JsonPropertyName("trait_entity_type")]
-    public string? TraitEntityType { get; set; }
+    public EntityType? TraitEntityType { get; set; }
 
     [JsonPropertyName("trait_id")]
     public string? TraitId { get; set; }

@@ -21,7 +21,7 @@ public record FeatureResponseData : IJsonOnDeserialized
     public string? EventSubtype { get; set; }
 
     [JsonPropertyName("feature_type")]
-    public required string FeatureType { get; set; }
+    public required FeatureType FeatureType { get; set; }
 
     [JsonPropertyName("icon")]
     public required string Icon { get; set; }
@@ -30,7 +30,7 @@ public record FeatureResponseData : IJsonOnDeserialized
     public required string Id { get; set; }
 
     [JsonPropertyName("lifecycle_phase")]
-    public string? LifecyclePhase { get; set; }
+    public FeatureLifecyclePhase? LifecyclePhase { get; set; }
 
     [JsonPropertyName("maintainer_id")]
     public string? MaintainerId { get; set; }

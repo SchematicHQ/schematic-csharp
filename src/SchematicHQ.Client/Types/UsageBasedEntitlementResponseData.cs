@@ -33,7 +33,7 @@ public record UsageBasedEntitlementResponseData : IJsonOnDeserialized
     public BillingPriceView? MonthlyUsageBasedPrice { get; set; }
 
     [JsonPropertyName("price_behavior")]
-    public string? PriceBehavior { get; set; }
+    public EntitlementPriceBehavior? PriceBehavior { get; set; }
 
     [JsonPropertyName("value_bool")]
     public bool? ValueBool { get; set; }
@@ -42,7 +42,7 @@ public record UsageBasedEntitlementResponseData : IJsonOnDeserialized
     public int? ValueNumeric { get; set; }
 
     [JsonPropertyName("value_type")]
-    public required string ValueType { get; set; }
+    public required EntitlementValueType ValueType { get; set; }
 
     [JsonPropertyName("yearly_usage_based_price")]
     public BillingPriceView? YearlyUsageBasedPrice { get; set; }
