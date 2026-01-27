@@ -726,23 +726,6 @@ Replicator mode is an advanced Datastream configuration that maintains a local r
 
 ```csharp
 using SchematicHQ.Client;
-using SchematicHQ.Client.Datastream;
-
-var options = new ClientOptions
-{
-    UseDatastream = true,
-    
-    DatastreamOptions = new DatastreamOptions()
-        .WithReplicatorMode(enabled: true)
-};
-
-var schematic = new Schematic("YOUR_API_KEY", options);
-```
-
-#### Replicator Mode with Cache Configuration
-
-```csharp
-using SchematicHQ.Client;
 using SchematicHQ.Client.Cache;
 using SchematicHQ.Client.Datastream;
 
@@ -751,7 +734,6 @@ var options = new ClientOptions
     UseDatastream = true,
     
     DatastreamOptions = new DatastreamOptions()
-        .WithReplicatorMode(enabled: true)
         .WithRedisCache(new RedisCacheConfig
         {
             Endpoints = new List<string> { "redis://localhost:6379" },
@@ -775,7 +757,6 @@ var options = new ClientOptions
     UseDatastream = true,
     
     DatastreamOptions = new DatastreamOptions()
-        .WithReplicatorMode(enabled: true)
         .WithHealthCheckUrl("https://health.your-app.com/schematic-replicator")
         .WithRedisCache(new RedisCacheConfig
         {
@@ -798,7 +779,6 @@ var schematic = new Schematic("YOUR_API_KEY", options);
 
 | Configuration Method | Description | Example |
 |---------------------|-------------|---------|
-| `.WithReplicatorMode(enabled: true)` | Enables replicator mode with default settings | Basic replicator activation |
 | `.WithHealthCheckUrl(url)` | Sets a custom health check endpoint URL for monitoring replicator status | `"https://health.example.com/replicator"` |
 | `.WithRedisCache(config)` | Configures Redis as the cache provider for replicator data | Required for replicator mode |
 
