@@ -24,8 +24,7 @@ namespace SchematicHQ.Client.Test.RulesEngine
         PlanIds = new List<string> { GenerateTestId("plan") },
         Traits = new List<Trait>(),
         Metrics = new List<CompanyMetric>(),
-        BillingProductIds = new List<string>(),
-        CrmProductIds = new List<string>()
+        BillingProductIds = new List<string>()
       };
     }
 

@@ -1131,7 +1131,6 @@ namespace SchematicHQ.Client.Datastream
             EnvironmentId = company.EnvironmentId,
             BasePlanId = company.BasePlanId,
             BillingProductIds = new List<string>(company.BillingProductIds),
-            CrmProductIds = new List<string>(company.CrmProductIds),
             PlanIds = new List<string>(company.PlanIds),
             Subscription = company.Subscription != null ? new Subscription
             {

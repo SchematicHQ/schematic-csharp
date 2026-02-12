@@ -86,8 +86,6 @@ namespace SchematicHQ.Client.RulesEngine
                 return await CheckUserCondition(user, condition, cancellationToken);
             if (condition.ConditionType == ConditionConditionType.BillingProduct.Value)
                 return await CheckBillingProductCondition(company, condition, cancellationToken);
-            if (condition.ConditionType == ConditionConditionType.CrmProduct.Value)
-                return await CheckCrmProductCondition(company, condition, cancellationToken);
             if (condition.ConditionType == ConditionConditionType.Credit.Value)
                 return await CheckCreditBalanceCondition(company, condition, cancellationToken);
 
@@ -137,23 +135,6 @@ namespace SchematicHQ.Client.RulesEngine
 
             var companyBillingProductIds = Set<string>.NewSet(company.BillingProductIds.ToArray());
             var resourceMatch = Set<string>.NewSet(condition.ResourceIds.ToArray()).Intersection(companyBillingProductIds).Len > 0;
-            if (condition.Operator.ToComparableOperator() == ComparableOperator.Ne)
-            {
-                return Task.FromResult(!resourceMatch);
-            }
-
-            return Task.FromResult(resourceMatch);
-        }
-
-        private Task<bool> CheckCrmProductCondition(Models.Company? company, Condition condition, CancellationToken cancellationToken)
-        {
-            if (condition.ConditionType != ConditionConditionType.CrmProduct || company == null)
-            {
-                return Task.FromResult(false);
-            }
-
-            var companyCrmProductIds = Set<string>.NewSet(company.CrmProductIds.ToArray());
-            var resourceMatch = Set<string>.NewSet(condition.ResourceIds.ToArray()).Intersection(companyCrmProductIds).Len > 0;
             if (condition.Operator.ToComparableOperator() == ComparableOperator.Ne)
             {
                 return Task.FromResult(!resourceMatch);

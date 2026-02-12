@@ -122,7 +122,6 @@ namespace SchematicHQ.Client.Test.RulesEngine
                 EnvironmentId = TestHelpers.GenerateTestId("env"),
                 PlanIds = new List<string> { TestHelpers.GenerateTestId("plan"), TestHelpers.GenerateTestId("plan") },
                 BillingProductIds = new List<string> { TestHelpers.GenerateTestId("bilp"), TestHelpers.GenerateTestId("bilp") },
-                CrmProductIds = new List<string> { TestHelpers.GenerateTestId("crmp"), TestHelpers.GenerateTestId("crmp") },
                 BasePlanId = TestHelpers.GenerateTestId("plan"),
                 Traits = new List<Trait>(),
                 Subscription = new Subscription
