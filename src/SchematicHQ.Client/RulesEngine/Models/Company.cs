@@ -31,6 +31,12 @@ namespace SchematicHQ.Client.RulesEngine.Models
     [JsonPropertyName("traits")]
     public List<Trait> Traits { get; set; } = new List<Trait>();
 
+    [JsonPropertyName("entitlements")]
+    public List<FeatureEntitlement> Entitlements { get; set; } = new List<FeatureEntitlement>();
+
+    [JsonPropertyName("plan_version_ids")]
+    public List<string> PlanVersionIds { get; set; } = new List<string>();
+
     [JsonPropertyName("metrics")]
     public List<CompanyMetric> Metrics { get; set; } = new List<CompanyMetric>();
 

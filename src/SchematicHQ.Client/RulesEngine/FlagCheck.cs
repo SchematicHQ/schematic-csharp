@@ -6,9 +6,11 @@ namespace SchematicHQ.Client.RulesEngine
     public class CheckFlagResult
     {
         public string? CompanyId { get; set; }
+        public Models.FeatureEntitlement? Entitlement { get; set; }
         public Exception? Error { get; set; }
         public long? FeatureAllocation { get; set; }
         public long? FeatureUsage { get; set; }
+        public string? FeatureUsageEvent { get; set; }
         public ConditionMetricPeriod? FeatureUsagePeriod { get; set; }
         public DateTime? FeatureUsageResetAt { get; set; }
         public string? FlagId { get; set; }
@@ -57,6 +59,8 @@ namespace SchematicHQ.Client.RulesEngine
 
             if (usageCondition.ConditionType == ConditionConditionType.Metric)
             {
+                FeatureUsageEvent = usageCondition.EventSubtype;
+
                 if (!string.IsNullOrEmpty(usageCondition.EventSubtype))
                 {
                     var usageMetric = Models.CompanyMetric.Find(
@@ -153,6 +157,11 @@ namespace SchematicHQ.Client.RulesEngine
             if (company != null)
             {
                 resp.CompanyId = company.Id;
+                var entitlement = company.Entitlements?.FirstOrDefault(e => e != null && e.FeatureKey == flag.Key);
+                if (entitlement != null)
+                {
+                    resp.Entitlement = entitlement;
+                }
             }
 
             if (user != null)

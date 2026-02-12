@@ -88,6 +88,8 @@ namespace SchematicHQ.Client.RulesEngine
                 return await CheckBillingProductCondition(company, condition, cancellationToken);
             if (condition.ConditionType == ConditionConditionType.Credit.Value)
                 return await CheckCreditBalanceCondition(company, condition, cancellationToken);
+            if (condition.ConditionType == ConditionConditionTypeExtensions.PlanVersion)
+                return await CheckPlanVersionCondition(company, condition, cancellationToken);
 
             return false;
         }
@@ -184,15 +186,28 @@ namespace SchematicHQ.Client.RulesEngine
 
         private Task<bool> CheckBasePlanCondition(Models.Company? company, Condition condition, CancellationToken cancellationToken)
         {
-            if (condition.ConditionType != ConditionConditionType.BasePlan || company == null || string.IsNullOrEmpty(company.BasePlanId))
+            if (condition.ConditionType != ConditionConditionType.BasePlan || company == null)
             {
                 return Task.FromResult(false);
             }
 
-            var resourceMatch = Set<string>.NewSet(condition.ResourceIds.ToArray()).Contains(company.BasePlanId);
-            if (condition.Operator.ToComparableOperator() == ComparableOperator.Ne)
+            var op = condition.Operator.ToComparableOperator();
+
+            if (op == ComparableOperator.IsEmpty)
             {
-                return Task.FromResult(!resourceMatch);
+                return Task.FromResult(company.BasePlanId == null);
+            }
+
+            if (op == ComparableOperator.NotEmpty)
+            {
+                return Task.FromResult(company.BasePlanId != null);
+            }
+
+            var resourceIds = Set<string>.NewSet(condition.ResourceIds.ToArray());
+            var resourceMatch = company.BasePlanId != null && resourceIds.Contains(company.BasePlanId);
+            if (op == ComparableOperator.Ne)
+            {
+                return Task.FromResult(company.BasePlanId == null || !resourceIds.Contains(company.BasePlanId));
             }
 
             return Task.FromResult(resourceMatch);
@@ -283,6 +298,23 @@ namespace SchematicHQ.Client.RulesEngine
             return  Task.FromResult(resourceMatch);
         }
 
+        private Task<bool> CheckPlanVersionCondition(Models.Company? company, Condition condition, CancellationToken cancellationToken)
+        {
+            if (condition.ConditionType != ConditionConditionTypeExtensions.PlanVersion || company == null)
+            {
+                return Task.FromResult(false);
+            }
+
+            var companyPlanVersionIds = Set<string>.NewSet(company.PlanVersionIds.ToArray());
+            var resourceMatch = Set<string>.NewSet(condition.ResourceIds.ToArray()).Intersection(companyPlanVersionIds).Len > 0;
+            if (condition.Operator.ToComparableOperator() == ComparableOperator.Ne)
+            {
+                return Task.FromResult(!resourceMatch);
+            }
+
+            return Task.FromResult(resourceMatch);
+        }
+
         static private bool CompareTraits(Condition condition, Models.Trait? trait, Models.Trait? comparisonTrait)
         {
             string leftVal = "";
@@ -309,12 +341,18 @@ namespace SchematicHQ.Client.RulesEngine
 
         static private Models.Trait? FindTrait(TraitDefinition? traitDef, List<Models.Trait>? traits)
         {
-            if (traitDef == null || traits == null)
+            if (traitDef == null)
             {
                 return null;
             }
 
-            return traits.Find(t => t.TraitDefinition?.Id == traitDef.Id);
+            var found = traits?.Find(t => t.TraitDefinition?.Id == traitDef.Id);
+            if (found != null)
+            {
+                return found;
+            }
+
+            return new Models.Trait { TraitDefinition = traitDef, Value = "" };
         }
     }
 }
