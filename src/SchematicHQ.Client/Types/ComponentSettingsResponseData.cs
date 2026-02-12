@@ -17,6 +17,9 @@ public record ComponentSettingsResponseData : IJsonOnDeserialized
     [JsonPropertyName("show_credits")]
     public required bool ShowCredits { get; set; }
 
+    [JsonPropertyName("show_feature_description")]
+    public required bool ShowFeatureDescription { get; set; }
+
     [JsonPropertyName("show_period_toggle")]
     public required bool ShowPeriodToggle { get; set; }
 

@@ -57,6 +57,18 @@ public record ListPlanEntitlementsParams : IJsonOnDeserialized
     public IEnumerable<string>? PlanIds { get; set; }
 
     /// <summary>
+    /// Filter plan entitlements by a single plan version ID (starting with plvr_)
+    /// </summary>
+    [JsonPropertyName("plan_version_id")]
+    public string? PlanVersionId { get; set; }
+
+    /// <summary>
+    /// Filter plan entitlements by multiple plan version IDs (starting with plvr_)
+    /// </summary>
+    [JsonPropertyName("plan_version_ids")]
+    public IEnumerable<string>? PlanVersionIds { get; set; }
+
+    /// <summary>
     /// Search for plan entitlements by feature or company name
     /// </summary>
     [JsonPropertyName("q")]

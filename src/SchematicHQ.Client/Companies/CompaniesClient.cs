@@ -18,10 +18,14 @@ public partial class CompaniesClient
     /// await client.Companies.ListCompaniesAsync(
     ///     new ListCompaniesRequest
     ///     {
+    ///         MonetizedSubscriptions = true,
     ///         PlanId = "plan_id",
     ///         Q = "q",
+    ///         SortOrderColumn = "sort_order_column",
+    ///         SortOrderDirection = SortDirection.Asc,
     ///         WithoutFeatureOverrideFor = "without_feature_override_for",
     ///         WithoutPlan = true,
+    ///         WithoutSubscription = true,
     ///         WithSubscription = true,
     ///         Limit = 1,
     ///         Offset = 1,
@@ -35,7 +39,21 @@ public partial class CompaniesClient
     )
     {
         var _query = new Dictionary<string, object>();
+        _query["credit_type_ids"] = request.CreditTypeIds;
         _query["ids"] = request.Ids;
+        _query["plan_ids"] = request.PlanIds;
+        _query["subscription_statuses"] = request
+            .SubscriptionStatuses.Select(_value => _value.Stringify())
+            .ToList();
+        _query["subscription_types"] = request
+            .SubscriptionTypes.Select(_value => _value.Stringify())
+            .ToList();
+        if (request.MonetizedSubscriptions != null)
+        {
+            _query["monetized_subscriptions"] = JsonUtils.Serialize(
+                request.MonetizedSubscriptions.Value
+            );
+        }
         if (request.PlanId != null)
         {
             _query["plan_id"] = request.PlanId;
@@ -44,6 +62,14 @@ public partial class CompaniesClient
         {
             _query["q"] = request.Q;
         }
+        if (request.SortOrderColumn != null)
+        {
+            _query["sort_order_column"] = request.SortOrderColumn;
+        }
+        if (request.SortOrderDirection != null)
+        {
+            _query["sort_order_direction"] = request.SortOrderDirection.Value.Stringify();
+        }
         if (request.WithoutFeatureOverrideFor != null)
         {
             _query["without_feature_override_for"] = request.WithoutFeatureOverrideFor;
@@ -51,6 +77,10 @@ public partial class CompaniesClient
         if (request.WithoutPlan != null)
         {
             _query["without_plan"] = JsonUtils.Serialize(request.WithoutPlan.Value);
+        }
+        if (request.WithoutSubscription != null)
+        {
+            _query["without_subscription"] = JsonUtils.Serialize(request.WithoutSubscription.Value);
         }
         if (request.WithSubscription != null)
         {
@@ -346,10 +376,14 @@ public partial class CompaniesClient
     /// await client.Companies.CountCompaniesAsync(
     ///     new CountCompaniesRequest
     ///     {
+    ///         MonetizedSubscriptions = true,
     ///         PlanId = "plan_id",
     ///         Q = "q",
+    ///         SortOrderColumn = "sort_order_column",
+    ///         SortOrderDirection = SortDirection.Asc,
     ///         WithoutFeatureOverrideFor = "without_feature_override_for",
     ///         WithoutPlan = true,
+    ///         WithoutSubscription = true,
     ///         WithSubscription = true,
     ///         Limit = 1,
     ///         Offset = 1,
@@ -363,7 +397,21 @@ public partial class CompaniesClient
     )
     {
         var _query = new Dictionary<string, object>();
+        _query["credit_type_ids"] = request.CreditTypeIds;
         _query["ids"] = request.Ids;
+        _query["plan_ids"] = request.PlanIds;
+        _query["subscription_statuses"] = request
+            .SubscriptionStatuses.Select(_value => _value.Stringify())
+            .ToList();
+        _query["subscription_types"] = request
+            .SubscriptionTypes.Select(_value => _value.Stringify())
+            .ToList();
+        if (request.MonetizedSubscriptions != null)
+        {
+            _query["monetized_subscriptions"] = JsonUtils.Serialize(
+                request.MonetizedSubscriptions.Value
+            );
+        }
         if (request.PlanId != null)
         {
             _query["plan_id"] = request.PlanId;
@@ -372,6 +420,14 @@ public partial class CompaniesClient
         {
             _query["q"] = request.Q;
         }
+        if (request.SortOrderColumn != null)
+        {
+            _query["sort_order_column"] = request.SortOrderColumn;
+        }
+        if (request.SortOrderDirection != null)
+        {
+            _query["sort_order_direction"] = request.SortOrderDirection.Value.Stringify();
+        }
         if (request.WithoutFeatureOverrideFor != null)
         {
             _query["without_feature_override_for"] = request.WithoutFeatureOverrideFor;
@@ -379,6 +435,10 @@ public partial class CompaniesClient
         if (request.WithoutPlan != null)
         {
             _query["without_plan"] = JsonUtils.Serialize(request.WithoutPlan.Value);
+        }
+        if (request.WithoutSubscription != null)
+        {
+            _query["without_subscription"] = JsonUtils.Serialize(request.WithoutSubscription.Value);
         }
         if (request.WithSubscription != null)
         {

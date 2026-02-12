@@ -69,11 +69,20 @@ public record UpdatePlanGroupRequestBody
     [JsonPropertyName("proration_behavior")]
     public required ProrationBehavior ProrationBehavior { get; set; }
 
+    [JsonPropertyName("scheduled_downgrade_behavior")]
+    public ScheduledDowngradeConfigBehavior? ScheduledDowngradeBehavior { get; set; }
+
+    [JsonPropertyName("scheduled_downgrade_prevent_when_over_limit")]
+    public bool? ScheduledDowngradePreventWhenOverLimit { get; set; }
+
     [JsonPropertyName("show_as_monthly_prices")]
     public required bool ShowAsMonthlyPrices { get; set; }
 
     [JsonPropertyName("show_credits")]
     public required bool ShowCredits { get; set; }
+
+    [JsonPropertyName("show_feature_description")]
+    public required bool ShowFeatureDescription { get; set; }
 
     [JsonPropertyName("show_period_toggle")]
     public required bool ShowPeriodToggle { get; set; }

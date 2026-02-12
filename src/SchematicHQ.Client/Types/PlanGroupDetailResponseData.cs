@@ -85,6 +85,12 @@ public record PlanGroupDetailResponseData : IJsonOnDeserialized
     [JsonPropertyName("proration_behavior")]
     public required string ProrationBehavior { get; set; }
 
+    [JsonPropertyName("scheduled_downgrade_behavior")]
+    public string? ScheduledDowngradeBehavior { get; set; }
+
+    [JsonPropertyName("scheduled_downgrade_prevent_when_over_limit")]
+    public bool? ScheduledDowngradePreventWhenOverLimit { get; set; }
+
     [JsonPropertyName("show_as_monthly_prices")]
     public required bool ShowAsMonthlyPrices { get; set; }
 

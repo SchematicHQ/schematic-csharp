@@ -62,11 +62,11 @@ public record PlanCreditGrantView : IJsonOnDeserialized
     [JsonPropertyName("id")]
     public required string Id { get; set; }
 
+    [JsonPropertyName("plan")]
+    public GenericPreviewObject? Plan { get; set; }
+
     [JsonPropertyName("plan_id")]
     public required string PlanId { get; set; }
-
-    [JsonPropertyName("plan_name")]
-    public required string PlanName { get; set; }
 
     [JsonPropertyName("plural_name")]
     public string? PluralName { get; set; }

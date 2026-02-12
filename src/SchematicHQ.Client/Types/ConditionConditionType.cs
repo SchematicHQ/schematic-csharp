@@ -15,11 +15,11 @@ public readonly record struct ConditionConditionType : IStringEnum
 
     public static readonly ConditionConditionType Credit = new(Values.Credit);
 
-    public static readonly ConditionConditionType CrmProduct = new(Values.CrmProduct);
-
     public static readonly ConditionConditionType Metric = new(Values.Metric);
 
     public static readonly ConditionConditionType Plan = new(Values.Plan);
+
+    public static readonly ConditionConditionType PlanVersion = new(Values.PlanVersion);
 
     public static readonly ConditionConditionType Trait = new(Values.Trait);
 
@@ -80,11 +80,11 @@ public readonly record struct ConditionConditionType : IStringEnum
 
         public const string Credit = "credit";
 
-        public const string CrmProduct = "crm_product";
-
         public const string Metric = "metric";
 
         public const string Plan = "plan";
+
+        public const string PlanVersion = "plan_version";
 
         public const string Trait = "trait";
 

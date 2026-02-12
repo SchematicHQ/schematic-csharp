@@ -24,8 +24,8 @@ public record RulesengineCompany : IJsonOnDeserialized
     public Dictionary<string, double> CreditBalances { get; set; } =
         new Dictionary<string, double>();
 
-    [JsonPropertyName("crm_product_ids")]
-    public IEnumerable<string> CrmProductIds { get; set; } = new List<string>();
+    [JsonPropertyName("entitlements")]
+    public IEnumerable<RulesengineFeatureEntitlement>? Entitlements { get; set; }
 
     [JsonPropertyName("environment_id")]
     public required string EnvironmentId { get; set; }
@@ -42,6 +42,9 @@ public record RulesengineCompany : IJsonOnDeserialized
 
     [JsonPropertyName("plan_ids")]
     public IEnumerable<string> PlanIds { get; set; } = new List<string>();
+
+    [JsonPropertyName("plan_version_ids")]
+    public IEnumerable<string> PlanVersionIds { get; set; } = new List<string>();
 
     [JsonPropertyName("rules")]
     public IEnumerable<RulesengineRule> Rules { get; set; } = new List<RulesengineRule>();

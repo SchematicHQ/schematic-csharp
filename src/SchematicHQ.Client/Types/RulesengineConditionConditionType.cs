@@ -17,11 +17,11 @@ public readonly record struct RulesengineConditionConditionType : IStringEnum
 
     public static readonly RulesengineConditionConditionType Credit = new(Values.Credit);
 
-    public static readonly RulesengineConditionConditionType CrmProduct = new(Values.CrmProduct);
-
     public static readonly RulesengineConditionConditionType Metric = new(Values.Metric);
 
     public static readonly RulesengineConditionConditionType Plan = new(Values.Plan);
+
+    public static readonly RulesengineConditionConditionType PlanVersion = new(Values.PlanVersion);
 
     public static readonly RulesengineConditionConditionType Trait = new(Values.Trait);
 
@@ -82,11 +82,11 @@ public readonly record struct RulesengineConditionConditionType : IStringEnum
 
         public const string Credit = "credit";
 
-        public const string CrmProduct = "crm_product";
-
         public const string Metric = "metric";
 
         public const string Plan = "plan";
+
+        public const string PlanVersion = "plan_version";
 
         public const string Trait = "trait";
 

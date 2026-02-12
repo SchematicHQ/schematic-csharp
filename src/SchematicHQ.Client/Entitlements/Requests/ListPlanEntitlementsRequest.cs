@@ -37,6 +37,18 @@ public record ListPlanEntitlementsRequest
     public IEnumerable<string> PlanIds { get; set; } = new List<string>();
 
     /// <summary>
+    /// Filter plan entitlements by a single plan version ID (starting with plvr_)
+    /// </summary>
+    [JsonIgnore]
+    public string? PlanVersionId { get; set; }
+
+    /// <summary>
+    /// Filter plan entitlements by multiple plan version IDs (starting with plvr_)
+    /// </summary>
+    [JsonIgnore]
+    public IEnumerable<string> PlanVersionIds { get; set; } = new List<string>();
+
+    /// <summary>
     /// Search for plan entitlements by feature or company name
     /// </summary>
     [JsonIgnore]

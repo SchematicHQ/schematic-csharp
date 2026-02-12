@@ -15,7 +15,7 @@ public record PlanChangeResponseData : IJsonOnDeserialized
     public required PlanChangeAction Action { get; set; }
 
     [JsonPropertyName("actor_type")]
-    public required PlanChangeActorType ActorType { get; set; }
+    public required ActorType ActorType { get; set; }
 
     [JsonPropertyName("add_ons_added")]
     public IEnumerable<PlanSnapshotView> AddOnsAdded { get; set; } = new List<PlanSnapshotView>();
