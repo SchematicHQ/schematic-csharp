@@ -1,4 +1,3 @@
-using SchematicHQ.Client.RulesEngine.Models;
 using SchematicHQ.Client.RulesEngine;
 using NUnit.Framework;
 
@@ -12,7 +11,7 @@ namespace SchematicHQ.Client.Test.RulesEngine
         {
             // Test for CurrentDay
             {
-                var result = Metrics.GetCurrentMetricPeriodStartForCalendarMetricPeriod(ConditionMetricPeriod.CurrentDay);
+                var result = Metrics.GetCurrentMetricPeriodStartForCalendarMetricPeriod(RulesengineConditionMetricPeriod.CurrentDay);
                 Assert.That(result, Is.Not.Null);
 
                 var expected = DateTime.UtcNow.Date;
@@ -26,7 +25,7 @@ namespace SchematicHQ.Client.Test.RulesEngine
 
             // Test for CurrentWeek
             {
-                var result = Metrics.GetCurrentMetricPeriodStartForCalendarMetricPeriod(ConditionMetricPeriod.CurrentWeek);
+                var result = Metrics.GetCurrentMetricPeriodStartForCalendarMetricPeriod(RulesengineConditionMetricPeriod.CurrentWeek);
                 Assert.That(result, Is.Not.Null);
 
                 var now = DateTime.UtcNow;
@@ -43,7 +42,7 @@ namespace SchematicHQ.Client.Test.RulesEngine
 
             // Test for CurrentMonth
             {
-                var result = Metrics.GetCurrentMetricPeriodStartForCalendarMetricPeriod(ConditionMetricPeriod.CurrentMonth);
+                var result = Metrics.GetCurrentMetricPeriodStartForCalendarMetricPeriod(RulesengineConditionMetricPeriod.CurrentMonth);
                 Assert.That(result, Is.Not.Null);
 
                 var now = DateTime.UtcNow;
@@ -59,7 +58,7 @@ namespace SchematicHQ.Client.Test.RulesEngine
 
             // Test for AllTime
             {
-                var result = Metrics.GetCurrentMetricPeriodStartForCalendarMetricPeriod(ConditionMetricPeriod.AllTime);
+                var result = Metrics.GetCurrentMetricPeriodStartForCalendarMetricPeriod(RulesengineConditionMetricPeriod.AllTime);
                 Assert.That(result, Is.Null);
             }
         }
@@ -96,7 +95,7 @@ namespace SchematicHQ.Client.Test.RulesEngine
             // Test for subscription period start in future
             {
                 var company = TestHelpers.CreateTestCompany();
-                company.Subscription = new Subscription
+                company.Subscription = new RulesengineSubscription
                 {
                     Id = "test-subscription",
                     PeriodStart = DateTime.UtcNow.AddDays(7),
@@ -125,7 +124,7 @@ namespace SchematicHQ.Client.Test.RulesEngine
                     futureDay = 5;
                 }
 
-                company.Subscription = new Subscription
+                company.Subscription = new RulesengineSubscription
                 {
                     Id = "test-subscription",
                     PeriodStart = new DateTime(
@@ -166,7 +165,7 @@ namespace SchematicHQ.Client.Test.RulesEngine
                           1, // January
                           futureDay,
                           12, 0, 0,
-                          DateTimeKind.Utc);  
+                          DateTimeKind.Utc);
                   }
                 }
 
@@ -188,7 +187,7 @@ namespace SchematicHQ.Client.Test.RulesEngine
                     pastDay = 1;
                 }
 
-                company.Subscription = new Subscription
+                company.Subscription = new RulesengineSubscription
                 {
                     Id = "test-subscription",
                     PeriodStart = new DateTime(
@@ -210,7 +209,7 @@ namespace SchematicHQ.Client.Test.RulesEngine
                     pastDay,
                     12, 0, 0,
                     DateTimeKind.Utc);
-                
+
                 if (now.Month == 12) // December
                 {
                     expected = new DateTime(
@@ -234,7 +233,7 @@ namespace SchematicHQ.Client.Test.RulesEngine
 
                 var periodStart = now.AddMonths(-6);
                 // Set a recent subscription start date (10 days ago)
-                company.Subscription = new Subscription
+                company.Subscription = new RulesengineSubscription
                 {
                     Id = "test-subscription",
                     PeriodStart = periodStart,
@@ -257,7 +256,7 @@ namespace SchematicHQ.Client.Test.RulesEngine
         {
             // Test for CurrentDay
             {
-                var result = Metrics.GetNextMetricPeriodStartForCalendarMetricPeriod(ConditionMetricPeriod.CurrentDay);
+                var result = Metrics.GetNextMetricPeriodStartForCalendarMetricPeriod(RulesengineConditionMetricPeriod.CurrentDay);
                 Assert.That(result, Is.Not.Null);
 
                 var expected = DateTime.UtcNow.Date.AddDays(1);
@@ -271,7 +270,7 @@ namespace SchematicHQ.Client.Test.RulesEngine
 
             // Test for CurrentWeek
             {
-                var result = Metrics.GetNextMetricPeriodStartForCalendarMetricPeriod(ConditionMetricPeriod.CurrentWeek);
+                var result = Metrics.GetNextMetricPeriodStartForCalendarMetricPeriod(RulesengineConditionMetricPeriod.CurrentWeek);
                 Assert.That(result, Is.Not.Null);
 
                 var now = DateTime.UtcNow;
@@ -290,7 +289,7 @@ namespace SchematicHQ.Client.Test.RulesEngine
 
             // Test for CurrentMonth
             {
-                var result = Metrics.GetNextMetricPeriodStartForCalendarMetricPeriod(ConditionMetricPeriod.CurrentMonth);
+                var result = Metrics.GetNextMetricPeriodStartForCalendarMetricPeriod(RulesengineConditionMetricPeriod.CurrentMonth);
                 Assert.That(result, Is.Not.Null);
 
                 var now = DateTime.UtcNow;
@@ -307,7 +306,7 @@ namespace SchematicHQ.Client.Test.RulesEngine
 
             // Test for AllTime
             {
-                var result = Metrics.GetNextMetricPeriodStartForCalendarMetricPeriod(ConditionMetricPeriod.AllTime);
+                var result = Metrics.GetNextMetricPeriodStartForCalendarMetricPeriod(RulesengineConditionMetricPeriod.AllTime);
                 Assert.That(result, Is.Null);
             }
         }
@@ -349,7 +348,7 @@ namespace SchematicHQ.Client.Test.RulesEngine
                 var now = DateTime.UtcNow;
 
                 // Set subscription to start 7 days from now
-                company.Subscription = new Subscription
+                company.Subscription = new RulesengineSubscription
                 {
                     Id = "test-subscription",
                     PeriodStart = now.AddDays(7),
@@ -381,7 +380,7 @@ namespace SchematicHQ.Client.Test.RulesEngine
                 var now = DateTime.UtcNow;
 
                 // Set subscription to have started some time ago
-                company.Subscription = new Subscription
+                company.Subscription = new RulesengineSubscription
                 {
                     Id = "test-subscription",
                     PeriodStart = now.AddMonths(-6),
@@ -407,7 +406,7 @@ namespace SchematicHQ.Client.Test.RulesEngine
                     pastDay = 1;
                 }
 
-                company.Subscription = new Subscription
+                company.Subscription = new RulesengineSubscription
                 {
                     Id = "test-subscription",
                     PeriodStart = new DateTime(
@@ -462,8 +461,8 @@ namespace SchematicHQ.Client.Test.RulesEngine
                     // If we can't get a future day this month, use a day earlier this month
                     // and expect next month's reset date instead
                     futureDay = Math.Max(1, now.Day - 2);
-                    
-                    company.Subscription = new Subscription
+
+                    company.Subscription = new RulesengineSubscription
                     {
                         Id = "test-subscription",
                         PeriodStart = new DateTime(
@@ -506,7 +505,7 @@ namespace SchematicHQ.Client.Test.RulesEngine
                 }
                 else
                 {
-                    company.Subscription = new Subscription
+                    company.Subscription = new RulesengineSubscription
                     {
                         Id = "test-subscription",
                         PeriodStart = new DateTime(
@@ -548,14 +547,14 @@ namespace SchematicHQ.Client.Test.RulesEngine
 
             // Test for condition that is not metric type
             {
-                var condition = TestHelpers.CreateTestCondition(ConditionConditionType.Trait);
+                var condition = TestHelpers.CreateTestCondition(RulesengineConditionConditionType.Trait);
                 var result = Metrics.GetNextMetricPeriodStartFromCondition(condition, null);
                 Assert.That(result, Is.Null);
             }
 
             // Test for metric period is null
             {
-                var condition = TestHelpers.CreateTestCondition(ConditionConditionType.Metric);
+                var condition = TestHelpers.CreateTestCondition(RulesengineConditionConditionType.Metric);
                 condition.MetricPeriod = null;
                 var result = Metrics.GetNextMetricPeriodStartFromCondition(condition, null);
                 Assert.That(result, Is.Null);
@@ -563,8 +562,8 @@ namespace SchematicHQ.Client.Test.RulesEngine
 
             // Test for metric period is all time
             {
-                var condition = TestHelpers.CreateTestCondition(ConditionConditionType.Metric);
-                condition.MetricPeriod = ConditionMetricPeriod.AllTime;
+                var condition = TestHelpers.CreateTestCondition(RulesengineConditionConditionType.Metric);
+                condition.MetricPeriod = RulesengineConditionMetricPeriod.AllTime;
                 var result = Metrics.GetNextMetricPeriodStartFromCondition(condition, null);
                 Assert.That(result, Is.Null);
             }
@@ -572,16 +571,16 @@ namespace SchematicHQ.Client.Test.RulesEngine
             // Test for metric period is current month with billing cycle reset
             {
                 var company = TestHelpers.CreateTestCompany();
-                company.Subscription = new Subscription
+                company.Subscription = new RulesengineSubscription
                 {
                     Id = "test-subscription",
                     PeriodStart = DateTime.UtcNow.AddMonths(-1),
                     PeriodEnd = DateTime.UtcNow.AddMonths(1)
                 };
 
-                var condition = TestHelpers.CreateTestCondition(ConditionConditionType.Metric);
-                condition.MetricPeriod = ConditionMetricPeriod.CurrentMonth;
-                condition.MetricPeriodMonthReset = ConditionMetricPeriodMonthReset.BillingCycle;
+                var condition = TestHelpers.CreateTestCondition(RulesengineConditionConditionType.Metric);
+                condition.MetricPeriod = RulesengineConditionMetricPeriod.CurrentMonth;
+                condition.MetricPeriodMonthReset = RulesengineConditionMetricPeriodMonthReset.BillingCycle;
 
                 var result = Metrics.GetNextMetricPeriodStartFromCondition(condition, company);
                 var expected = Metrics.GetNextMetricPeriodStartForCompanyBillingSubscription(company);
@@ -592,11 +591,11 @@ namespace SchematicHQ.Client.Test.RulesEngine
 
             // Test for metric period is calendar-based
             {
-                var condition = TestHelpers.CreateTestCondition(ConditionConditionType.Metric);
-                condition.MetricPeriod = ConditionMetricPeriod.CurrentDay;
-                
+                var condition = TestHelpers.CreateTestCondition(RulesengineConditionConditionType.Metric);
+                condition.MetricPeriod = RulesengineConditionMetricPeriod.CurrentDay;
+
                 var result = Metrics.GetNextMetricPeriodStartFromCondition(condition, null);
-                var expected = Metrics.GetNextMetricPeriodStartForCalendarMetricPeriod(ConditionMetricPeriod.CurrentDay);
+                var expected = Metrics.GetNextMetricPeriodStartForCalendarMetricPeriod(RulesengineConditionMetricPeriod.CurrentDay);
 
                 Assert.That(result, Is.Not.Null);
                 Assert.That(result, Is.EqualTo(expected));

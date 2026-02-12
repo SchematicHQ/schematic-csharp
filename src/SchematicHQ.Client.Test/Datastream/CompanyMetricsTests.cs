@@ -7,7 +7,6 @@ using SchematicHQ.Client.Cache;
 using SchematicHQ.Client.Test.Datastream.Mocks;
 using SchematicHQ.Client.Core;
 using SchematicHQ.Client.Datastream;
-using SchematicHQ.Client.RulesEngine.Models;
 
 namespace SchematicHQ.Client.Test.Datastream
 {
@@ -30,7 +29,7 @@ namespace SchematicHQ.Client.Test.Datastream
 
         // Client and dependencies
     private DatastreamClient _client;
-    private ICacheProvider<Company> _companyCache;
+    private ICacheProvider<RulesengineCompany> _companyCache;
     private ICacheProvider<string> _companyLookupCache;
 
         [SetUp]
@@ -41,7 +40,7 @@ namespace SchematicHQ.Client.Test.Datastream
             _client = client;
             // Use reflection to get the private cache fields
             var cacheField = typeof(DatastreamClient).GetField("_companyCache", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-            _companyCache = (ICacheProvider<Company>?)cacheField?.GetValue(_client) ?? throw new Exception("Could not get company cache");
+            _companyCache = (ICacheProvider<RulesengineCompany>?)cacheField?.GetValue(_client) ?? throw new Exception("Could not get company cache");
 
             var lookupCacheField = typeof(DatastreamClient).GetField("_companyLookupCache", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
             _companyLookupCache = (ICacheProvider<string>?)lookupCacheField?.GetValue(_client) ?? throw new Exception("Could not get company lookup cache");
@@ -64,7 +63,7 @@ namespace SchematicHQ.Client.Test.Datastream
         {
             var method = typeof(DatastreamClient).GetMethod("ResourceKeyToCacheKey",
                 System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-            var genericMethod = method!.MakeGenericMethod(typeof(Company));
+            var genericMethod = method!.MakeGenericMethod(typeof(RulesengineCompany));
             return (string)genericMethod.Invoke(_client, new object[] { CacheKeyPrefixCompany, keyName, keyValue })!;
         }
 
@@ -83,7 +82,7 @@ namespace SchematicHQ.Client.Test.Datastream
         /// </summary>
         private void SetupCompanyInCache(string companyJson)
         {
-            var company = JsonSerializer.Deserialize<Company>(companyJson, new JsonSerializerOptions
+            var company = JsonSerializer.Deserialize<RulesengineCompany>(companyJson, new JsonSerializerOptions
             {
                 PropertyNameCaseInsensitive = true
             });
@@ -108,7 +107,7 @@ namespace SchematicHQ.Client.Test.Datastream
         /// <summary>
         /// Helper method to get a company from cache using two-step lookup
         /// </summary>
-        private Company? GetCompanyFromCache(Dictionary<string, string> keys)
+        private RulesengineCompany? GetCompanyFromCache(Dictionary<string, string> keys)
         {
             if (keys.Count == 0) return null;
 
@@ -181,6 +180,9 @@ namespace SchematicHQ.Client.Test.Datastream
                 ],
                 ""metrics"": [
                     {
+                        ""account_id"": ""acc123"",
+                        ""company_id"": ""company123"",
+                        ""environment_id"": ""env123"",
                         ""event_subtype"": ""metric1"",
                         ""period"": ""all_time"",
                         ""month_reset"": ""first_of_month"",
@@ -223,6 +225,9 @@ namespace SchematicHQ.Client.Test.Datastream
                 ],
                 ""metrics"": [
                     {
+                        ""account_id"": ""acc123"",
+                        ""company_id"": ""company123"",
+                        ""environment_id"": ""env123"",
                         ""event_subtype"": ""metric1"",
                         ""period"": ""all_time"",
                         ""month_reset"": ""first_of_month"",
@@ -271,6 +276,9 @@ namespace SchematicHQ.Client.Test.Datastream
                 ],
                 ""metrics"": [
                     {
+                        ""account_id"": ""acc123"",
+                        ""company_id"": ""company123"",
+                        ""environment_id"": ""env123"",
                         ""event_subtype"": ""metric1"",
                         ""period"": ""all_time"",
                         ""month_reset"": ""first_of_month"",
@@ -320,6 +328,9 @@ namespace SchematicHQ.Client.Test.Datastream
                 ],
                 ""metrics"": [
                     {
+                        ""account_id"": ""acc123"",
+                        ""company_id"": ""company123"",
+                        ""environment_id"": ""env123"",
                         ""event_subtype"": ""metric1"",
                         ""period"": ""all_time"",
                         ""month_reset"": ""first_of_month"",
@@ -378,6 +389,9 @@ namespace SchematicHQ.Client.Test.Datastream
                 ],
                 ""metrics"": [
                     {
+                        ""account_id"": ""acc123"",
+                        ""company_id"": ""company123"",
+                        ""environment_id"": ""env123"",
                         ""event_subtype"": ""metric1"",
                         ""period"": ""all_time"",
                         ""month_reset"": ""first_of_month"",
@@ -385,6 +399,9 @@ namespace SchematicHQ.Client.Test.Datastream
                         ""created_at"": ""2023-01-01T00:00:00Z""
                     },
                     {
+                        ""account_id"": ""acc123"",
+                        ""company_id"": ""company123"",
+                        ""environment_id"": ""env123"",
                         ""event_subtype"": ""metric1"",
                         ""period"": ""current_month"",
                         ""month_reset"": ""first_of_month"",
@@ -392,6 +409,9 @@ namespace SchematicHQ.Client.Test.Datastream
                         ""created_at"": ""2023-01-01T00:00:00Z""
                     },
                     {
+                        ""account_id"": ""acc123"",
+                        ""company_id"": ""company123"",
+                        ""environment_id"": ""env123"",
                         ""event_subtype"": ""metric2"",
                         ""period"": ""all_time"",
                         ""month_reset"": ""first_of_month"",

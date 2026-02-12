@@ -44,7 +44,7 @@ namespace SchematicHQ.Client.RulesEngine.Utils
   // Extension methods to convert from generated types to utility types
   public static class ComparableTypeExtensions
   {
-    public static ComparableOperator ToComparableOperator(this ConditionOperator op)
+    public static ComparableOperator ToComparableOperator(this RulesengineConditionOperator op)
     {
       return op.Value switch
       {
@@ -60,7 +60,7 @@ namespace SchematicHQ.Client.RulesEngine.Utils
       };
     }
 
-    public static ComparableType ToComparableType(this TraitDefinitionComparableType comparableType)
+    public static ComparableType ToComparableType(this RulesengineTraitDefinitionComparableType comparableType)
     {
       return comparableType.Value switch
       {
