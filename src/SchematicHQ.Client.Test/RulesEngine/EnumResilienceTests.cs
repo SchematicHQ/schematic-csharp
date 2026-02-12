@@ -34,7 +34,7 @@ namespace SchematicHQ.Client.Test.RulesEngine
             // Act & Assert
             Assert.DoesNotThrow(() =>
             {
-                var result = JsonSerializer.Deserialize<RuleRuleType>(unknownRuleTypeJson, _options);
+                var result = JsonSerializer.Deserialize<RulesengineRuleRuleType>(unknownRuleTypeJson, _options);
                 Assert.That(result.Value, Is.EqualTo("unknown_rule_type")); // Should preserve unknown value
             });
         }
@@ -74,10 +74,10 @@ namespace SchematicHQ.Client.Test.RulesEngine
             string validRuleTypeJson = "\"standard\"";
 
             // Act
-            var result = JsonSerializer.Deserialize<RuleRuleType>(validRuleTypeJson, _options);
+            var result = JsonSerializer.Deserialize<RulesengineRuleRuleType>(validRuleTypeJson, _options);
 
             // Assert
-            Assert.That(result, Is.EqualTo(RuleRuleType.Standard));
+            Assert.That(result, Is.EqualTo(RulesengineRuleRuleType.Standard));
         }
 
         [Test]
@@ -100,10 +100,10 @@ namespace SchematicHQ.Client.Test.RulesEngine
             string snakeCaseRuleTypeJson = "\"global_override\"";
 
             // Act
-            var result = JsonSerializer.Deserialize<RuleRuleType>(snakeCaseRuleTypeJson, _options);
+            var result = JsonSerializer.Deserialize<RulesengineRuleRuleType>(snakeCaseRuleTypeJson, _options);
 
             // Assert
-            Assert.That(result, Is.EqualTo(RuleRuleType.GlobalOverride));
+            Assert.That(result, Is.EqualTo(RulesengineRuleRuleType.GlobalOverride));
         }
 
         [Test]
@@ -126,7 +126,7 @@ namespace SchematicHQ.Client.Test.RulesEngine
             // Act & Assert
             Assert.DoesNotThrow(() =>
             {
-                var result = JsonSerializer.Deserialize<RuleRuleType>("\"invalid_rule\"", _options);
+                var result = JsonSerializer.Deserialize<RulesengineRuleRuleType>("\"invalid_rule\"", _options);
                 Assert.That(result.Value, Is.EqualTo("invalid_rule")); // Should preserve unknown value
             });
         }
@@ -137,7 +137,7 @@ namespace SchematicHQ.Client.Test.RulesEngine
             // Act & Assert
             Assert.DoesNotThrow(() =>
             {
-                var result = JsonSerializer.Deserialize<RuleRuleType>("\"nonexistent\"", _options);
+                var result = JsonSerializer.Deserialize<RulesengineRuleRuleType>("\"nonexistent\"", _options);
                 Assert.That(result.Value, Is.EqualTo("nonexistent")); // Should preserve unknown value
             });
         }
@@ -148,7 +148,7 @@ namespace SchematicHQ.Client.Test.RulesEngine
             // Act & Assert
             Assert.DoesNotThrow(() =>
             {
-                var result = JsonSerializer.Deserialize<RuleRuleType>("\"\"", _options);
+                var result = JsonSerializer.Deserialize<RulesengineRuleRuleType>("\"\"", _options);
                 Assert.That(result.Value, Is.EqualTo("")); // Empty string is preserved
             });
         }
@@ -170,7 +170,7 @@ namespace SchematicHQ.Client.Test.RulesEngine
         public void RuleType_Serialization_ShouldUseSnakeCase()
         {
             // Arrange
-            var ruleType = RuleRuleType.GlobalOverride;
+            var ruleType = RulesengineRuleRuleType.GlobalOverride;
 
             // Act
             var json = JsonSerializer.Serialize(ruleType, _options);
@@ -183,7 +183,7 @@ namespace SchematicHQ.Client.Test.RulesEngine
         public void RuleType_UnknownSerialization_ShouldSerializeAsEmptyString()
         {
             // Arrange
-            var ruleType = RuleRuleType.FromCustom("");
+            var ruleType = RulesengineRuleRuleType.FromCustom("");
 
             // Act
             var json = JsonSerializer.Serialize(ruleType, _options);

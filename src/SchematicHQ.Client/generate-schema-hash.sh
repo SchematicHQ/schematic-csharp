@@ -18,8 +18,13 @@ fi
 # Ensure output directory exists
 mkdir -p "$(dirname "$OUTPUT_FILE")"
 
-# Find all .cs files in the models directory, sort them for consistency
-FILES=$(find "$MODELS_DIR" -name "*.cs" | sort)
+# Find all Rulesengine*.cs files in the directory, sort them for consistency
+FILES=$(find "$MODELS_DIR" -name "Rulesengine*.cs" | sort)
+
+if [ -z "$FILES" ]; then
+    echo "Error: No Rulesengine*.cs files found in: $MODELS_DIR"
+    exit 1
+fi
 
 # Hash creation
 echo "Hashing files in $MODELS_DIR..."
