@@ -6,6 +6,12 @@ namespace SchematicHQ.Client.RulesEngine
   // Note: All enum types now use the generated types from SchematicHQ.Client namespace
   // (RuleRuleType, ConditionConditionType, ConditionMetricPeriod, etc.)
 
+  // Condition types not yet present in the generated ConditionConditionType enum
+  public static class ConditionConditionTypeExtensions
+  {
+    public static readonly ConditionConditionType PlanVersion = new("plan_version");
+  }
+
   public static class RuleRuleTypeExtensions
   {
     public static string DisplayName(this RuleRuleType ruleType)

@@ -72,7 +72,7 @@ int cacheTtlMs = int.TryParse(Environment.GetEnvironmentVariable("CACHE_TTL_MS")
 var redisConfig = new RedisCacheConfig
 {
     Endpoints = new List<string> { redisUrl },
-    KeyPrefix = redisKeyPrefix
+    KeyPrefix = ""
 };
 
 var datastreamOptions = new DatastreamOptions
