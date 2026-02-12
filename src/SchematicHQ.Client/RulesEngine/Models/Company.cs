@@ -25,9 +25,6 @@ namespace SchematicHQ.Client.RulesEngine.Models
     [JsonPropertyName("credit_balances")]
     public IDictionary<string, double> CreditBalances { get; set; } = new Dictionary<string, double>();
 
-    [JsonPropertyName("crm_product_ids")]
-    public List<string> CrmProductIds { get; set; } = new List<string>();
-
     [JsonPropertyName("keys")]
     public IDictionary<string, string> Keys { get; set; } = new Dictionary<string, string>();
 

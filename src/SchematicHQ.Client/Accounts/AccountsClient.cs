@@ -730,6 +730,267 @@ public partial class AccountsClient
     }
 
     /// <example><code>
+    /// await client.Accounts.ListAuditLogsAsync(
+    ///     new ListAuditLogsRequest
+    ///     {
+    ///         ActorType = ActorType.ApiKey,
+    ///         EnvironmentId = "environment_id",
+    ///         Q = "q",
+    ///         Limit = 1,
+    ///         Offset = 1,
+    ///     }
+    /// );
+    /// </code></example>
+    public async Task<ListAuditLogsResponse> ListAuditLogsAsync(
+        ListAuditLogsRequest request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        var _query = new Dictionary<string, object>();
+        if (request.ActorType != null)
+        {
+            _query["actor_type"] = request.ActorType.Value.Stringify();
+        }
+        if (request.EnvironmentId != null)
+        {
+            _query["environment_id"] = request.EnvironmentId;
+        }
+        if (request.Q != null)
+        {
+            _query["q"] = request.Q;
+        }
+        if (request.Limit != null)
+        {
+            _query["limit"] = request.Limit.Value.ToString();
+        }
+        if (request.Offset != null)
+        {
+            _query["offset"] = request.Offset.Value.ToString();
+        }
+        var response = await _client
+            .SendRequestAsync(
+                new JsonRequest
+                {
+                    BaseUrl = _client.Options.BaseUrl,
+                    Method = HttpMethod.Get,
+                    Path = "audit-log",
+                    Query = _query,
+                    Options = options,
+                },
+                cancellationToken
+            )
+            .ConfigureAwait(false);
+        if (response.StatusCode is >= 200 and < 400)
+        {
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            try
+            {
+                return JsonUtils.Deserialize<ListAuditLogsResponse>(responseBody)!;
+            }
+            catch (JsonException e)
+            {
+                throw new SchematicException("Failed to deserialize response", e);
+            }
+        }
+
+        {
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            try
+            {
+                switch (response.StatusCode)
+                {
+                    case 400:
+                        throw new BadRequestError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 401:
+                        throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 403:
+                        throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 404:
+                        throw new NotFoundError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 500:
+                        throw new InternalServerError(
+                            JsonUtils.Deserialize<ApiError>(responseBody)
+                        );
+                }
+            }
+            catch (JsonException)
+            {
+                // unable to map error response, throwing generic error
+            }
+            throw new SchematicApiException(
+                $"Error with status code {response.StatusCode}",
+                response.StatusCode,
+                responseBody
+            );
+        }
+    }
+
+    /// <example><code>
+    /// await client.Accounts.GetAuditLogAsync("audit_log_id");
+    /// </code></example>
+    public async Task<GetAuditLogResponse> GetAuditLogAsync(
+        string auditLogId,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        var response = await _client
+            .SendRequestAsync(
+                new JsonRequest
+                {
+                    BaseUrl = _client.Options.BaseUrl,
+                    Method = HttpMethod.Get,
+                    Path = string.Format(
+                        "audit-log/{0}",
+                        ValueConvert.ToPathParameterString(auditLogId)
+                    ),
+                    Options = options,
+                },
+                cancellationToken
+            )
+            .ConfigureAwait(false);
+        if (response.StatusCode is >= 200 and < 400)
+        {
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            try
+            {
+                return JsonUtils.Deserialize<GetAuditLogResponse>(responseBody)!;
+            }
+            catch (JsonException e)
+            {
+                throw new SchematicException("Failed to deserialize response", e);
+            }
+        }
+
+        {
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            try
+            {
+                switch (response.StatusCode)
+                {
+                    case 401:
+                        throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 403:
+                        throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 404:
+                        throw new NotFoundError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 500:
+                        throw new InternalServerError(
+                            JsonUtils.Deserialize<ApiError>(responseBody)
+                        );
+                }
+            }
+            catch (JsonException)
+            {
+                // unable to map error response, throwing generic error
+            }
+            throw new SchematicApiException(
+                $"Error with status code {response.StatusCode}",
+                response.StatusCode,
+                responseBody
+            );
+        }
+    }
+
+    /// <example><code>
+    /// await client.Accounts.CountAuditLogsAsync(
+    ///     new CountAuditLogsRequest
+    ///     {
+    ///         ActorType = ActorType.ApiKey,
+    ///         EnvironmentId = "environment_id",
+    ///         Q = "q",
+    ///         Limit = 1,
+    ///         Offset = 1,
+    ///     }
+    /// );
+    /// </code></example>
+    public async Task<CountAuditLogsResponse> CountAuditLogsAsync(
+        CountAuditLogsRequest request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        var _query = new Dictionary<string, object>();
+        if (request.ActorType != null)
+        {
+            _query["actor_type"] = request.ActorType.Value.Stringify();
+        }
+        if (request.EnvironmentId != null)
+        {
+            _query["environment_id"] = request.EnvironmentId;
+        }
+        if (request.Q != null)
+        {
+            _query["q"] = request.Q;
+        }
+        if (request.Limit != null)
+        {
+            _query["limit"] = request.Limit.Value.ToString();
+        }
+        if (request.Offset != null)
+        {
+            _query["offset"] = request.Offset.Value.ToString();
+        }
+        var response = await _client
+            .SendRequestAsync(
+                new JsonRequest
+                {
+                    BaseUrl = _client.Options.BaseUrl,
+                    Method = HttpMethod.Get,
+                    Path = "audit-log/count",
+                    Query = _query,
+                    Options = options,
+                },
+                cancellationToken
+            )
+            .ConfigureAwait(false);
+        if (response.StatusCode is >= 200 and < 400)
+        {
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            try
+            {
+                return JsonUtils.Deserialize<CountAuditLogsResponse>(responseBody)!;
+            }
+            catch (JsonException e)
+            {
+                throw new SchematicException("Failed to deserialize response", e);
+            }
+        }
+
+        {
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            try
+            {
+                switch (response.StatusCode)
+                {
+                    case 400:
+                        throw new BadRequestError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 401:
+                        throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 403:
+                        throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 404:
+                        throw new NotFoundError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 500:
+                        throw new InternalServerError(
+                            JsonUtils.Deserialize<ApiError>(responseBody)
+                        );
+                }
+            }
+            catch (JsonException)
+            {
+                // unable to map error response, throwing generic error
+            }
+            throw new SchematicApiException(
+                $"Error with status code {response.StatusCode}",
+                response.StatusCode,
+                responseBody
+            );
+        }
+    }
+
+    /// <example><code>
     /// await client.Accounts.ListEnvironmentsAsync(new ListEnvironmentsRequest { Limit = 1, Offset = 1 });
     /// </code></example>
     public async Task<ListEnvironmentsResponse> ListEnvironmentsAsync(

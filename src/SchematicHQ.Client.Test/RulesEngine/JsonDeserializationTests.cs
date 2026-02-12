@@ -96,7 +96,6 @@ namespace SchematicHQ.Client.Test.RulesEngine
     ""environment_id"": ""env_cns2asuKAG2"",
     ""base_plan_id"": ""plan_fuNSdNd3qym"",
     ""billing_product_ids"": [],
-    ""crm_product_ids"": null,
     ""keys"": {
         ""clerk_id"": ""org_2qJAWIjMZyEvs01LD74D9RLJ4Jz"",
         ""clerkid"": ""org_2qJAWIjMZyEvs01LD74D9RLJ4Jz"",

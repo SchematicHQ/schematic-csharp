@@ -482,6 +482,144 @@ await client.Accounts.CountApiRequestsAsync(
 </dl>
 </details>
 
+<details><summary><code>client.Accounts.<a href="/src/SchematicHQ.Client/Accounts/AccountsClient.cs">ListAuditLogsAsync</a>(ListAuditLogsRequest { ... }) -> ListAuditLogsResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Accounts.ListAuditLogsAsync(
+    new ListAuditLogsRequest
+    {
+        ActorType = ActorType.ApiKey,
+        EnvironmentId = "environment_id",
+        Q = "q",
+        Limit = 1,
+        Offset = 1,
+    }
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `ListAuditLogsRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Accounts.<a href="/src/SchematicHQ.Client/Accounts/AccountsClient.cs">GetAuditLogAsync</a>(auditLogId) -> GetAuditLogResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Accounts.GetAuditLogAsync("audit_log_id");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**auditLogId:** `string` — audit_log_id
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Accounts.<a href="/src/SchematicHQ.Client/Accounts/AccountsClient.cs">CountAuditLogsAsync</a>(CountAuditLogsRequest { ... }) -> CountAuditLogsResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Accounts.CountAuditLogsAsync(
+    new CountAuditLogsRequest
+    {
+        ActorType = ActorType.ApiKey,
+        EnvironmentId = "environment_id",
+        Q = "q",
+        Limit = 1,
+        Offset = 1,
+    }
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `CountAuditLogsRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.Accounts.<a href="/src/SchematicHQ.Client/Accounts/AccountsClient.cs">ListEnvironmentsAsync</a>(ListEnvironmentsRequest { ... }) -> ListEnvironmentsResponse</code></summary>
 <dl>
 <dd>
@@ -3313,10 +3451,14 @@ await client.Checkout.UpdateCustomerSubscriptionTrialEndAsync(
 await client.Companies.ListCompaniesAsync(
     new ListCompaniesRequest
     {
+        MonetizedSubscriptions = true,
         PlanId = "plan_id",
         Q = "q",
+        SortOrderColumn = "sort_order_column",
+        SortOrderDirection = SortDirection.Asc,
         WithoutFeatureOverrideFor = "without_feature_override_for",
         WithoutPlan = true,
+        WithoutSubscription = true,
         WithSubscription = true,
         Limit = 1,
         Offset = 1,
@@ -3497,10 +3639,14 @@ await client.Companies.DeleteCompanyAsync(
 await client.Companies.CountCompaniesAsync(
     new CountCompaniesRequest
     {
+        MonetizedSubscriptions = true,
         PlanId = "plan_id",
         Q = "q",
+        SortOrderColumn = "sort_order_column",
+        SortOrderDirection = SortDirection.Asc,
         WithoutFeatureOverrideFor = "without_feature_override_for",
         WithoutPlan = true,
+        WithoutSubscription = true,
         WithSubscription = true,
         Limit = 1,
         Offset = 1,
@@ -5599,6 +5745,55 @@ await client.Entitlements.ListFeatureUsageAsync(
 </dl>
 </details>
 
+<details><summary><code>client.Entitlements.<a href="/src/SchematicHQ.Client/Entitlements/EntitlementsClient.cs">GetFeatureUsageTimeSeriesAsync</a>(GetFeatureUsageTimeSeriesRequest { ... }) -> GetFeatureUsageTimeSeriesResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Entitlements.GetFeatureUsageTimeSeriesAsync(
+    new GetFeatureUsageTimeSeriesRequest
+    {
+        CompanyId = "company_id",
+        EndTime = new DateTime(2024, 01, 15, 09, 30, 00, 000),
+        FeatureId = "feature_id",
+        Granularity = TimeSeriesGranularity.Daily,
+        StartTime = new DateTime(2024, 01, 15, 09, 30, 00, 000),
+    }
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `GetFeatureUsageTimeSeriesRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.Entitlements.<a href="/src/SchematicHQ.Client/Entitlements/EntitlementsClient.cs">CountFeatureUsageAsync</a>(CountFeatureUsageRequest { ... }) -> CountFeatureUsageResponse</code></summary>
 <dl>
 <dd>
@@ -5763,6 +5958,7 @@ await client.Entitlements.ListPlanEntitlementsAsync(
     {
         FeatureId = "feature_id",
         PlanId = "plan_id",
+        PlanVersionId = "plan_version_id",
         Q = "q",
         WithMeteredProducts = true,
         Limit = 1,
@@ -5991,6 +6187,7 @@ await client.Entitlements.CountPlanEntitlementsAsync(
     {
         FeatureId = "feature_id",
         PlanId = "plan_id",
+        PlanVersionId = "plan_version_id",
         Q = "q",
         WithMeteredProducts = true,
         Limit = 1,
@@ -8139,6 +8336,7 @@ await client.Plangroups.CreatePlanGroupAsync(
         ProrationBehavior = ProrationBehavior.CreateProrations,
         ShowAsMonthlyPrices = true,
         ShowCredits = true,
+        ShowFeatureDescription = true,
         ShowPeriodToggle = true,
         ShowZeroPriceAsFree = true,
         SyncCustomerBillingDetails = true,
@@ -8209,6 +8407,7 @@ await client.Plangroups.UpdatePlanGroupAsync(
         ProrationBehavior = ProrationBehavior.CreateProrations,
         ShowAsMonthlyPrices = true,
         ShowCredits = true,
+        ShowFeatureDescription = true,
         ShowPeriodToggle = true,
         ShowZeroPriceAsFree = true,
         SyncCustomerBillingDetails = true,

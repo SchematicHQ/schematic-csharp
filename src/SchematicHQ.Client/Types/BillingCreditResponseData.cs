@@ -14,6 +14,9 @@ public record BillingCreditResponseData : IJsonOnDeserialized
     [JsonPropertyName("burn_strategy")]
     public required BillingCreditBurnStrategy BurnStrategy { get; set; }
 
+    [JsonPropertyName("cost_editable")]
+    public required bool CostEditable { get; set; }
+
     [JsonPropertyName("created_at")]
     public required DateTime CreatedAt { get; set; }
 

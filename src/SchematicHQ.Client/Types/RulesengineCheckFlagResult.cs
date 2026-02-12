@@ -14,6 +14,9 @@ public record RulesengineCheckFlagResult : IJsonOnDeserialized
     [JsonPropertyName("company_id")]
     public string? CompanyId { get; set; }
 
+    [JsonPropertyName("entitlement")]
+    public RulesengineFeatureEntitlement? Entitlement { get; set; }
+
     [JsonPropertyName("err")]
     public string? Err { get; set; }
 

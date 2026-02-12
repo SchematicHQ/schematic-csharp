@@ -31,6 +31,10 @@ public record CompanyViewWithFeatureUsageResponseData : IJsonOnDeserialized
     [JsonPropertyName("default_payment_method")]
     public PaymentMethodResponseData? DefaultPaymentMethod { get; set; }
 
+    [JsonPropertyName("entitlements")]
+    public IEnumerable<FeatureEntitlement> Entitlements { get; set; } =
+        new List<FeatureEntitlement>();
+
     [JsonPropertyName("entity_traits")]
     public IEnumerable<EntityTraitDetailResponseData> EntityTraits { get; set; } =
         new List<EntityTraitDetailResponseData>();

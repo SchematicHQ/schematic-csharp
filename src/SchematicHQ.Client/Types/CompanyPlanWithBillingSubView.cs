@@ -42,6 +42,9 @@ public record CompanyPlanWithBillingSubView : IJsonOnDeserialized
     [JsonPropertyName("plan_price")]
     public int? PlanPrice { get; set; }
 
+    [JsonPropertyName("plan_version_id")]
+    public string? PlanVersionId { get; set; }
+
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();
 

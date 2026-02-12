@@ -62,9 +62,15 @@ public record BillingPlanCreditGrantResponseData : IJsonOnDeserialized
     [JsonPropertyName("id")]
     public required string Id { get; set; }
 
+    [JsonPropertyName("plan")]
+    public PreviewObjectResponseData? Plan { get; set; }
+
     [JsonPropertyName("plan_id")]
     public required string PlanId { get; set; }
 
+    /// <summary>
+    /// Use plan.name from the nested plan object instead
+    /// </summary>
     [JsonPropertyName("plan_name")]
     public required string PlanName { get; set; }
 
