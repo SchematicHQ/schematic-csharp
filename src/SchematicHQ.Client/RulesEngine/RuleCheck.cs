@@ -1,13 +1,12 @@
-using SchematicHQ.Client.RulesEngine.Models;
 using SchematicHQ.Client.RulesEngine.Utils;
 
 namespace SchematicHQ.Client.RulesEngine
 {
     public class CheckScope
     {
-        public Models.Company? Company { get; set; }
-        public Rule? Rule { get; set; }
-        public Models.User? User { get; set; }
+        public RulesengineCompany? Company { get; set; }
+        public RulesengineRule? Rule { get; set; }
+        public RulesengineUser? User { get; set; }
     }
 
     public class CheckResult
@@ -35,14 +34,14 @@ namespace SchematicHQ.Client.RulesEngine
                 return res;
             }
 
-            if (scope.Rule.RuleType == RuleRuleType.Default.Value || scope.Rule.RuleType == RuleRuleType.GlobalOverride.Value)
+            if (scope.Rule.RuleType == RulesengineRuleRuleType.Default.Value || scope.Rule.RuleType == RulesengineRuleRuleType.GlobalOverride.Value)
             {
                 res.Match = true;
                 return res;
             }
 
             bool match;
-            foreach (var condition in scope.Rule.Conditions ?? Enumerable.Empty<Condition>())
+            foreach (var condition in scope.Rule.Conditions ?? Enumerable.Empty<RulesengineCondition>())
             {
                 match = await CheckCondition(scope.Company, scope.User, condition, cancellationToken);
                 if (!match)
@@ -51,7 +50,7 @@ namespace SchematicHQ.Client.RulesEngine
                 }
             }
 
-            foreach (var group in scope.Rule.ConditionGroups ?? Enumerable.Empty<ConditionGroup>())
+            foreach (var group in scope.Rule.ConditionGroups ?? Enumerable.Empty<RulesengineConditionGroup>())
             {
                 match = await CheckConditionGroup(scope.Company, scope.User, group, cancellationToken);
                 if (!match)
@@ -64,35 +63,36 @@ namespace SchematicHQ.Client.RulesEngine
             return res;
         }
 
-        private async Task<bool> CheckCondition(Models.Company? company, Models.User? user, Condition condition, CancellationToken cancellationToken)
+        private async Task<bool> CheckCondition(RulesengineCompany? company, RulesengineUser? user, RulesengineCondition condition, CancellationToken cancellationToken)
         {
             if (condition == null)
             {
                 return false;
             }
 
-            // Use generated enum values directly
-            if (condition.ConditionType == ConditionConditionType.Company)
+            if (condition.ConditionType == RulesengineConditionConditionType.Company)
                 return await CheckCompanyCondition(company, condition, cancellationToken);
-            if (condition.ConditionType == ConditionConditionType.Metric.Value)
+            if (condition.ConditionType == RulesengineConditionConditionType.Metric.Value)
                 return await CheckMetricCondition(company, condition, cancellationToken);
-            if (condition.ConditionType == ConditionConditionType.BasePlan.Value)
+            if (condition.ConditionType == RulesengineConditionConditionType.BasePlan.Value)
                 return await CheckBasePlanCondition(company, condition, cancellationToken);
-            if (condition.ConditionType == ConditionConditionType.Plan.Value)
+            if (condition.ConditionType == RulesengineConditionConditionType.Plan.Value)
                 return await CheckPlanCondition(company, condition, cancellationToken);
-            if (condition.ConditionType == ConditionConditionType.Trait.Value)
+            if (condition.ConditionType == RulesengineConditionConditionType.Trait.Value)
                 return await CheckTraitCondition(company, user, condition, cancellationToken);
-            if (condition.ConditionType == ConditionConditionType.User.Value)
+            if (condition.ConditionType == RulesengineConditionConditionType.User.Value)
                 return await CheckUserCondition(user, condition, cancellationToken);
-            if (condition.ConditionType == ConditionConditionType.BillingProduct.Value)
+            if (condition.ConditionType == RulesengineConditionConditionType.BillingProduct.Value)
                 return await CheckBillingProductCondition(company, condition, cancellationToken);
-            if (condition.ConditionType == ConditionConditionType.Credit.Value)
+            if (condition.ConditionType == RulesengineConditionConditionType.Credit.Value)
                 return await CheckCreditBalanceCondition(company, condition, cancellationToken);
+            if (condition.ConditionType == RulesengineConditionConditionType.PlanVersion.Value)
+                return await CheckPlanVersionCondition(company, condition, cancellationToken);
 
             return false;
         }
 
-        private async Task<bool> CheckConditionGroup(Models.Company? company, Models.User? user, ConditionGroup group, CancellationToken cancellationToken)
+        private async Task<bool> CheckConditionGroup(RulesengineCompany? company, RulesengineUser? user, RulesengineConditionGroup group, CancellationToken cancellationToken)
         {
             if (group == null || !group.Conditions.Any())
             {
@@ -110,9 +110,9 @@ namespace SchematicHQ.Client.RulesEngine
             return false;
         }
 
-        private Task<bool> CheckCompanyCondition(Models.Company? company, Condition condition, CancellationToken cancellationToken)
+        private Task<bool> CheckCompanyCondition(RulesengineCompany? company, RulesengineCondition condition, CancellationToken cancellationToken)
         {
-            if (condition.ConditionType != ConditionConditionType.Company || company == null)
+            if (condition.ConditionType != RulesengineConditionConditionType.Company || company == null)
             {
               return Task.FromResult(false);
             }
@@ -126,9 +126,9 @@ namespace SchematicHQ.Client.RulesEngine
             return Task.FromResult(resourceMatch);
         }
 
-        private Task<bool> CheckBillingProductCondition(Models.Company? company, Condition condition, CancellationToken cancellationToken)
+        private Task<bool> CheckBillingProductCondition(RulesengineCompany? company, RulesengineCondition condition, CancellationToken cancellationToken)
         {
-            if (condition.ConditionType != ConditionConditionType.BillingProduct || company == null)
+            if (condition.ConditionType != RulesengineConditionConditionType.BillingProduct || company == null)
             {
                 return Task.FromResult(false);
             }
@@ -143,9 +143,9 @@ namespace SchematicHQ.Client.RulesEngine
             return Task.FromResult(resourceMatch);
         }
 
-        private Task<bool> CheckCreditBalanceCondition(Models.Company? company, Condition condition, CancellationToken cancellationToken)
+        private Task<bool> CheckCreditBalanceCondition(RulesengineCompany? company, RulesengineCondition condition, CancellationToken cancellationToken)
         {
-            if (condition.ConditionType != ConditionConditionType.Credit || company == null || string.IsNullOrEmpty(condition.CreditId))
+            if (condition.ConditionType != RulesengineConditionConditionType.Credit || company == null || string.IsNullOrEmpty(condition.CreditId))
             {
                 return Task.FromResult(false);
             }
@@ -165,9 +165,9 @@ namespace SchematicHQ.Client.RulesEngine
             return Task.FromResult(creditBalance >= consumptionCost);
         }
 
-        private Task<bool> CheckPlanCondition(Models.Company? company, Condition condition, CancellationToken cancellationToken)
+        private Task<bool> CheckPlanCondition(RulesengineCompany? company, RulesengineCondition condition, CancellationToken cancellationToken)
         {
-            if (condition.ConditionType != ConditionConditionType.Plan || company == null)
+            if (condition.ConditionType != RulesengineConditionConditionType.Plan || company == null)
             {
                 return Task.FromResult(false);
             }
@@ -182,31 +182,44 @@ namespace SchematicHQ.Client.RulesEngine
             return Task.FromResult(resourceMatch);
         }
 
-        private Task<bool> CheckBasePlanCondition(Models.Company? company, Condition condition, CancellationToken cancellationToken)
+        private Task<bool> CheckBasePlanCondition(RulesengineCompany? company, RulesengineCondition condition, CancellationToken cancellationToken)
         {
-            if (condition.ConditionType != ConditionConditionType.BasePlan || company == null || string.IsNullOrEmpty(company.BasePlanId))
+            if (condition.ConditionType != RulesengineConditionConditionType.BasePlan || company == null)
             {
                 return Task.FromResult(false);
             }
 
-            var resourceMatch = Set<string>.NewSet(condition.ResourceIds.ToArray()).Contains(company.BasePlanId);
-            if (condition.Operator.ToComparableOperator() == ComparableOperator.Ne)
+            var op = condition.Operator.ToComparableOperator();
+
+            if (op == ComparableOperator.IsEmpty)
             {
-                return Task.FromResult(!resourceMatch);
+                return Task.FromResult(company.BasePlanId == null);
+            }
+
+            if (op == ComparableOperator.NotEmpty)
+            {
+                return Task.FromResult(company.BasePlanId != null);
+            }
+
+            var resourceIds = Set<string>.NewSet(condition.ResourceIds.ToArray());
+            var resourceMatch = company.BasePlanId != null && resourceIds.Contains(company.BasePlanId);
+            if (op == ComparableOperator.Ne)
+            {
+                return Task.FromResult(company.BasePlanId == null || !resourceIds.Contains(company.BasePlanId));
             }
 
             return Task.FromResult(resourceMatch);
         }
 
-        private Task<bool> CheckMetricCondition(Models.Company? company, Condition condition, CancellationToken cancellationToken)
+        private Task<bool> CheckMetricCondition(RulesengineCompany? company, RulesengineCondition condition, CancellationToken cancellationToken)
         {
-            if (condition == null || condition.ConditionType != ConditionConditionType.Metric || company == null || string.IsNullOrEmpty(condition.EventSubtype))
+            if (condition == null || condition.ConditionType != RulesengineConditionConditionType.Metric || company == null || string.IsNullOrEmpty(condition.EventSubtype))
             {
                 return Task.FromResult(false);
             }
 
             long leftVal = 0;
-            var metric = Models.CompanyMetric.Find(company.Metrics, condition.EventSubtype, condition.MetricPeriod, condition.MetricPeriodMonthReset);
+            var metric = CompanyMetricExtensions.Find(company.Metrics, condition.EventSubtype, condition.MetricPeriod, condition.MetricPeriodMonthReset);
             if (metric != null)
             {
                 leftVal = metric.Value;
@@ -236,23 +249,23 @@ namespace SchematicHQ.Client.RulesEngine
             return Task.FromResult(resourceMatch);
         }
 
-        private Task<bool> CheckTraitCondition(Models.Company? company, Models.User? user, Condition condition, CancellationToken cancellationToken)
+        private Task<bool> CheckTraitCondition(RulesengineCompany? company, RulesengineUser? user, RulesengineCondition condition, CancellationToken cancellationToken)
         {
-            if (condition == null || condition.ConditionType != ConditionConditionType.Trait || condition.TraitDefinition == null)
+            if (condition == null || condition.ConditionType != RulesengineConditionConditionType.Trait || condition.TraitDefinition == null)
             {
                 return Task.FromResult(false);
             }
 
             var traitDef = condition.TraitDefinition;
-            Models.Trait? trait;
-            Models.Trait? comparisonTrait;
+            RulesengineTrait? trait;
+            RulesengineTrait? comparisonTrait;
 
-            if (traitDef.EntityType == EntityType.Company && company != null)
+            if (traitDef.EntityType == RulesengineEntityType.Company && company != null)
             {
                 trait = FindTrait(traitDef, company.Traits);
                 comparisonTrait = FindTrait(condition.ComparisonTraitDefinition, company.Traits);
             }
-            else if (traitDef.EntityType == EntityType.User && user != null)
+            else if (traitDef.EntityType == RulesengineEntityType.User && user != null)
             {
                 trait = FindTrait(traitDef, user.Traits);
                 comparisonTrait = FindTrait(condition.ComparisonTraitDefinition, user.Traits);
@@ -267,9 +280,9 @@ namespace SchematicHQ.Client.RulesEngine
             return Task.FromResult(resourceMatch);
         }
 
-        private Task<bool> CheckUserCondition(Models.User? user, Condition condition, CancellationToken cancellationToken)
+        private Task<bool> CheckUserCondition(RulesengineUser? user, RulesengineCondition condition, CancellationToken cancellationToken)
         {
-            if (condition.ConditionType != ConditionConditionType.User || user == null)
+            if (condition.ConditionType != RulesengineConditionConditionType.User || user == null)
             {
                 return Task.FromResult(false);
             }
@@ -283,7 +296,24 @@ namespace SchematicHQ.Client.RulesEngine
             return  Task.FromResult(resourceMatch);
         }
 
-        static private bool CompareTraits(Condition condition, Models.Trait? trait, Models.Trait? comparisonTrait)
+        private Task<bool> CheckPlanVersionCondition(RulesengineCompany? company, RulesengineCondition condition, CancellationToken cancellationToken)
+        {
+            if (condition.ConditionType != RulesengineConditionConditionType.PlanVersion || company == null)
+            {
+                return Task.FromResult(false);
+            }
+
+            var companyPlanVersionIds = Set<string>.NewSet(company.PlanVersionIds.ToArray());
+            var resourceMatch = Set<string>.NewSet(condition.ResourceIds.ToArray()).Intersection(companyPlanVersionIds).Len > 0;
+            if (condition.Operator.ToComparableOperator() == ComparableOperator.Ne)
+            {
+                return Task.FromResult(!resourceMatch);
+            }
+
+            return Task.FromResult(resourceMatch);
+        }
+
+        static private bool CompareTraits(RulesengineCondition condition, RulesengineTrait? trait, RulesengineTrait? comparisonTrait)
         {
             string leftVal = "";
             string rightVal = condition.TraitValue ?? "";
@@ -307,14 +337,20 @@ namespace SchematicHQ.Client.RulesEngine
             return TypeConverter.Compare(leftVal, rightVal, comparableType, condition.Operator.ToComparableOperator());
         }
 
-        static private Models.Trait? FindTrait(TraitDefinition? traitDef, List<Models.Trait>? traits)
+        static private RulesengineTrait? FindTrait(RulesengineTraitDefinition? traitDef, IEnumerable<RulesengineTrait>? traits)
         {
-            if (traitDef == null || traits == null)
+            if (traitDef == null)
             {
                 return null;
             }
 
-            return traits.Find(t => t.TraitDefinition?.Id == traitDef.Id);
+            var found = traits?.FirstOrDefault(t => t.TraitDefinition?.Id == traitDef.Id);
+            if (found != null)
+            {
+                return found;
+            }
+
+            return new RulesengineTrait { TraitDefinition = traitDef, Value = "" };
         }
     }
 }

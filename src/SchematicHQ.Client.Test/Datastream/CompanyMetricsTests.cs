@@ -7,7 +7,6 @@ using SchematicHQ.Client.Cache;
 using SchematicHQ.Client.Test.Datastream.Mocks;
 using SchematicHQ.Client.Core;
 using SchematicHQ.Client.Datastream;
-using SchematicHQ.Client.RulesEngine.Models;
 
 namespace SchematicHQ.Client.Test.Datastream
 {
@@ -30,7 +29,7 @@ namespace SchematicHQ.Client.Test.Datastream
 
         // Client and dependencies
     private DatastreamClient _client;
-    private ICacheProvider<Company> _companyCache;
+    private ICacheProvider<RulesengineCompany> _companyCache;
 
         [SetUp]
         public void Setup()
@@ -40,7 +39,7 @@ namespace SchematicHQ.Client.Test.Datastream
             _client = client;
             // Use reflection to get the private _companyCache field
             var cacheField = typeof(DatastreamClient).GetField("_companyCache", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-            _companyCache = (ICacheProvider<Company>?)cacheField?.GetValue(_client) ?? throw new Exception("Could not get company cache");
+            _companyCache = (ICacheProvider<RulesengineCompany>?)cacheField?.GetValue(_client) ?? throw new Exception("Could not get company cache");
         }
 
         [TearDown]
@@ -78,23 +77,20 @@ namespace SchematicHQ.Client.Test.Datastream
         /// </summary>
         private void SetupCompanyInCache(string companyJson)
         {
-            var company = JsonSerializer.Deserialize<Company>(companyJson, new JsonSerializerOptions
+            var company = JsonSerializer.Deserialize<RulesengineCompany>(companyJson, new JsonSerializerOptions
             {
                 PropertyNameCaseInsensitive = true
             });
             // Cache the company for each key in the JSON keys dictionary
             if (company != null)
             {
-                var keysProp = company.GetType().GetProperty("Keys");
-                var keysDict = keysProp?.GetValue(company) as IDictionary<string, object>;
-                if (keysDict != null)
+                if (company.Keys != null && company.Keys.Count > 0)
                 {
-                    foreach (var key in keysDict)
+                    foreach (var key in company.Keys)
                     {
-                        var keyValueStr = key.Value?.ToString() ?? string.Empty;
-                        if (!string.IsNullOrEmpty(keyValueStr))
+                        if (!string.IsNullOrEmpty(key.Value))
                         {
-                            var cacheKey = ResourceKeyToCacheKey(key.Key, keyValueStr);
+                            var cacheKey = ResourceKeyToCacheKey(key.Key, key.Value);
                             _companyCache.Set(cacheKey, company);
                         }
                     }
@@ -111,7 +107,7 @@ namespace SchematicHQ.Client.Test.Datastream
         /// <summary>
         /// Helper method to get a company from cache
         /// </summary>
-        private Company? GetCompanyFromCache(Dictionary<string, string> keys)
+        private RulesengineCompany? GetCompanyFromCache(Dictionary<string, string> keys)
         {
             if (keys.Count == 0) return null;
             
@@ -174,6 +170,9 @@ namespace SchematicHQ.Client.Test.Datastream
                 ],
                 ""metrics"": [
                     {
+                        ""account_id"": ""acc123"",
+                        ""company_id"": ""company123"",
+                        ""environment_id"": ""env123"",
                         ""event_subtype"": ""metric1"",
                         ""period"": ""all_time"",
                         ""month_reset"": ""first_of_month"",
@@ -182,9 +181,9 @@ namespace SchematicHQ.Client.Test.Datastream
                     }
                 ]
             }";
-            
+
             SetupCompanyInCache(companyJson);
-            
+
             // Act
             var result = UpdateCompanyMetrics(SingleCompanyKey, "metric2", "all_time");
             
@@ -216,6 +215,9 @@ namespace SchematicHQ.Client.Test.Datastream
                 ],
                 ""metrics"": [
                     {
+                        ""account_id"": ""acc123"",
+                        ""company_id"": ""company123"",
+                        ""environment_id"": ""env123"",
                         ""event_subtype"": ""metric1"",
                         ""period"": ""all_time"",
                         ""month_reset"": ""first_of_month"",
@@ -224,17 +226,17 @@ namespace SchematicHQ.Client.Test.Datastream
                     }
                 ]
             }";
-            
+
             SetupCompanyInCache(companyJson);
-            
+
             // Act
             var result = UpdateCompanyMetrics(SingleCompanyKey, "metric1", "all_time");
-            
+
             // Assert
             Assert.That(result, Is.True, "Should return true when metric is updated");
             var company = GetCompanyFromCache(SingleCompanyKey);
             Assert.That(company, Is.Not.Null);
-            
+
             var metric = company?.Metrics?.FirstOrDefault(m => m.EventSubtype == "metric1" && m.Period.Value == "all_time");
             Assert.That(metric, Is.Not.Null);
             Assert.That(metric?.Value, Is.EqualTo(101)); // Default quantity is 1
@@ -264,6 +266,9 @@ namespace SchematicHQ.Client.Test.Datastream
                 ],
                 ""metrics"": [
                     {
+                        ""account_id"": ""acc123"",
+                        ""company_id"": ""company123"",
+                        ""environment_id"": ""env123"",
                         ""event_subtype"": ""metric1"",
                         ""period"": ""all_time"",
                         ""month_reset"": ""first_of_month"",
@@ -272,17 +277,17 @@ namespace SchematicHQ.Client.Test.Datastream
                     }
                 ]
             }";
-            
+
             SetupCompanyInCache(companyJson);
-            
+
             // Act
             var result = UpdateCompanyMetrics(SingleCompanyKey, "metric1", "all_time", 5);
-            
+
             // Assert
             Assert.That(result, Is.True, "Should return true when metric is updated");
             var company = GetCompanyFromCache(SingleCompanyKey);
             Assert.That(company, Is.Not.Null);
-            
+
             var metric = company?.Metrics?.FirstOrDefault(m => m.EventSubtype == "metric1" && m.Period.Value == "all_time");
             Assert.That(metric, Is.Not.Null);
             Assert.That(metric?.Value, Is.EqualTo(105)); // 100 + 5
@@ -313,6 +318,9 @@ namespace SchematicHQ.Client.Test.Datastream
                 ],
                 ""metrics"": [
                     {
+                        ""account_id"": ""acc123"",
+                        ""company_id"": ""company123"",
+                        ""environment_id"": ""env123"",
                         ""event_subtype"": ""metric1"",
                         ""period"": ""all_time"",
                         ""month_reset"": ""first_of_month"",
@@ -321,9 +329,9 @@ namespace SchematicHQ.Client.Test.Datastream
                     }
                 ]
             }";
-            
+
             SetupCompanyInCache(companyJson);
-            
+
             // Act
             var result = UpdateCompanyMetrics(MultipleCompanyKeys, "metric1", "all_time", 5);
             
@@ -371,6 +379,9 @@ namespace SchematicHQ.Client.Test.Datastream
                 ],
                 ""metrics"": [
                     {
+                        ""account_id"": ""acc123"",
+                        ""company_id"": ""company123"",
+                        ""environment_id"": ""env123"",
                         ""event_subtype"": ""metric1"",
                         ""period"": ""all_time"",
                         ""month_reset"": ""first_of_month"",
@@ -378,6 +389,9 @@ namespace SchematicHQ.Client.Test.Datastream
                         ""created_at"": ""2023-01-01T00:00:00Z""
                     },
                     {
+                        ""account_id"": ""acc123"",
+                        ""company_id"": ""company123"",
+                        ""environment_id"": ""env123"",
                         ""event_subtype"": ""metric1"",
                         ""period"": ""current_month"",
                         ""month_reset"": ""first_of_month"",
@@ -385,6 +399,9 @@ namespace SchematicHQ.Client.Test.Datastream
                         ""created_at"": ""2023-01-01T00:00:00Z""
                     },
                     {
+                        ""account_id"": ""acc123"",
+                        ""company_id"": ""company123"",
+                        ""environment_id"": ""env123"",
                         ""event_subtype"": ""metric2"",
                         ""period"": ""all_time"",
                         ""month_reset"": ""first_of_month"",

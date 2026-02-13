@@ -1,28 +1,26 @@
-using SchematicHQ.Client.RulesEngine.Models;
-
 namespace SchematicHQ.Client.RulesEngine
 {
   public static class Metrics
   {
 
-    public static DateTime? GetCurrentMetricPeriodStartForCalendarMetricPeriod(ConditionMetricPeriod? metricPeriod)
+    public static DateTime? GetCurrentMetricPeriodStartForCalendarMetricPeriod(RulesengineConditionMetricPeriod? metricPeriod)
     {
       if (metricPeriod == null) return null;
 
       var now = DateTime.UtcNow;
 
-      if (metricPeriod == ConditionMetricPeriod.CurrentDay)
+      if (metricPeriod == RulesengineConditionMetricPeriod.CurrentDay)
         // UTC midnight for the current day
         return now.Date;
 
-      if (metricPeriod == ConditionMetricPeriod.CurrentWeek)
+      if (metricPeriod == RulesengineConditionMetricPeriod.CurrentWeek)
       {
         // UTC midnight for the current week's Monday
         int daysSinceMonday = ((int)now.DayOfWeek - (int)DayOfWeek.Monday + 7) % 7;
         return now.Date.AddDays(-daysSinceMonday);
       }
 
-      if (metricPeriod == ConditionMetricPeriod.CurrentMonth)
+      if (metricPeriod == RulesengineConditionMetricPeriod.CurrentMonth)
         // UTC midnight for the first day of current month
         return new DateTime(now.Year, now.Month, 1, 0, 0, 0, DateTimeKind.Utc);
 
@@ -32,12 +30,12 @@ namespace SchematicHQ.Client.RulesEngine
     /// <summary>
     /// Given a company, determine the current metric period start based on the company's billing subscription.
     /// </summary>
-    public static DateTime? GetCurrentMetricPeriodStartForCompanyBillingSubscription(Models.Company? company)
+    public static DateTime? GetCurrentMetricPeriodStartForCompanyBillingSubscription(RulesengineCompany? company)
     {
       // If no subscription exists, we use calendar month reset
       if (company == null || company.Subscription == null)
       {
-        return GetCurrentMetricPeriodStartForCalendarMetricPeriod(ConditionMetricPeriod.CurrentMonth);
+        return GetCurrentMetricPeriodStartForCalendarMetricPeriod(RulesengineConditionMetricPeriod.CurrentMonth);
       }
 
       var now = DateTime.UtcNow;
@@ -48,7 +46,7 @@ namespace SchematicHQ.Client.RulesEngine
       // the end of the current calendar month or the start of the billing period, whichever comes first
       if (periodStart > now)
       {
-        DateTime? startOfNextMonth = GetCurrentMetricPeriodStartForCalendarMetricPeriod(ConditionMetricPeriod.CurrentMonth);
+        DateTime? startOfNextMonth = GetCurrentMetricPeriodStartForCalendarMetricPeriod(RulesengineConditionMetricPeriod.CurrentMonth);
         if (periodStart > startOfNextMonth)
         {
           return startOfNextMonth;
@@ -97,15 +95,15 @@ namespace SchematicHQ.Client.RulesEngine
       return currentPeriodStart;
     }
 
-    public static DateTime? GetNextMetricPeriodStartForCalendarMetricPeriod(ConditionMetricPeriod? metricPeriod)
+    public static DateTime? GetNextMetricPeriodStartForCalendarMetricPeriod(RulesengineConditionMetricPeriod? metricPeriod)
     {
       if (metricPeriod == null) return null;
 
-      if (metricPeriod == ConditionMetricPeriod.CurrentDay)
+      if (metricPeriod == RulesengineConditionMetricPeriod.CurrentDay)
         // UTC midnight for upcoming day
         return DateTime.UtcNow.Date.AddDays(1);
 
-      if (metricPeriod == ConditionMetricPeriod.CurrentWeek)
+      if (metricPeriod == RulesengineConditionMetricPeriod.CurrentWeek)
       {
         // UTC midnight for upcoming Monday (C# uses Monday as first day, Go example used Sunday)
         var now = DateTime.UtcNow;
@@ -115,7 +113,7 @@ namespace SchematicHQ.Client.RulesEngine
         return now.Date.AddDays(daysUntilMonday);
       }
 
-      if (metricPeriod == ConditionMetricPeriod.CurrentMonth)
+      if (metricPeriod == RulesengineConditionMetricPeriod.CurrentMonth)
       {
         // UTC midnight for the first day of next month
         var currentDate = DateTime.UtcNow;
@@ -124,17 +122,17 @@ namespace SchematicHQ.Client.RulesEngine
 
       return null;
     }
-    
+
 
     /// <summary>
     /// Given a company, determine the next metric period start based on the company's billing subscription.
     /// </summary>
-    public static DateTime? GetNextMetricPeriodStartForCompanyBillingSubscription(Models.Company? company)
+    public static DateTime? GetNextMetricPeriodStartForCompanyBillingSubscription(RulesengineCompany? company)
     {
       // If no subscription exists, we use calendar month reset
       if (company == null || company.Subscription == null)
       {
-        return GetNextMetricPeriodStartForCalendarMetricPeriod(ConditionMetricPeriod.CurrentMonth);
+        return GetNextMetricPeriodStartForCalendarMetricPeriod(RulesengineConditionMetricPeriod.CurrentMonth);
       }
 
       var now = DateTime.UtcNow;
@@ -145,7 +143,7 @@ namespace SchematicHQ.Client.RulesEngine
       // the end of the current calendar month or the start of the billing period, whichever comes first
       if (periodStart > now)
       {
-        var startOfNextMonth = GetNextMetricPeriodStartForCalendarMetricPeriod(ConditionMetricPeriod.CurrentMonth);
+        var startOfNextMonth = GetNextMetricPeriodStartForCalendarMetricPeriod(RulesengineConditionMetricPeriod.CurrentMonth);
         if (periodStart > startOfNextMonth)
         {
           return startOfNextMonth;
@@ -185,10 +183,10 @@ namespace SchematicHQ.Client.RulesEngine
     /// Given a rule condition and a company, determine the next metric period start.
     /// Will return null if the condition is not a metric condition.
     /// </summary>
-    public static DateTime? GetNextMetricPeriodStartFromCondition(Condition? condition, Models.Company? company)
+    public static DateTime? GetNextMetricPeriodStartFromCondition(RulesengineCondition? condition, RulesengineCompany? company)
     {
       // Only metric conditions have a metric period that can reset
-      if (condition == null || condition.ConditionType != ConditionConditionType.Metric || condition.MetricPeriod == null)
+      if (condition == null || condition.ConditionType != RulesengineConditionConditionType.Metric || condition.MetricPeriod == null)
       {
         return null;
       }
@@ -196,15 +194,15 @@ namespace SchematicHQ.Client.RulesEngine
       var metricPeriod = condition.MetricPeriod;
 
       // If the metric period is all-time, no reset
-      if (metricPeriod == ConditionMetricPeriod.AllTime)
+      if (metricPeriod == RulesengineConditionMetricPeriod.AllTime)
       {
         return null;
       }
 
       // Metric period current month with billing cycle reset
-      if (metricPeriod == ConditionMetricPeriod.CurrentMonth &&
+      if (metricPeriod == RulesengineConditionMetricPeriod.CurrentMonth &&
           condition.MetricPeriodMonthReset.HasValue &&
-          condition.MetricPeriodMonthReset == ConditionMetricPeriodMonthReset.BillingCycle)
+          condition.MetricPeriodMonthReset == RulesengineConditionMetricPeriodMonthReset.BillingCycle)
       {
         return GetNextMetricPeriodStartForCompanyBillingSubscription(company);
       }
