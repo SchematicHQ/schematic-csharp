@@ -32,6 +32,8 @@ namespace SchematicHQ.Client.Datastream
     private readonly ICacheProvider<Flag> _flagsCache;
     private readonly ICacheProvider<Company> _companyCache;
     private readonly ICacheProvider<User> _userCache;
+    private readonly ICacheProvider<string> _companyLookupCache;
+    private readonly ICacheProvider<string> _userLookupCache;
     
     // Cache version provider (optional, for replicator mode)
     private readonly Func<string?>? _cacheVersionProvider;
@@ -115,6 +117,8 @@ namespace SchematicHQ.Client.Datastream
           // We need to use the Cache namespace version, but cast it to the Client namespace interface
           _companyCache = new RedisCache<Company>(options.RedisConfig);
           _userCache = new RedisCache<User>(options.RedisConfig);
+          _companyLookupCache = new RedisCache<string>(options.RedisConfig);
+          _userLookupCache = new RedisCache<string>(options.RedisConfig);
           var flagConfig = options.RedisConfig;
           flagConfig.CacheTTL = flagTTL; // Set TTL for flags cache
           _flagsCache = new RedisCache<Flag>(flagConfig);
@@ -124,6 +128,8 @@ namespace SchematicHQ.Client.Datastream
           _logger.Error("Failed to initialize Redis cache: {0}. Falling back to local cache.", ex.Message);
           _companyCache = new LocalCache<Company>(options.LocalCacheCapacity, _cacheTtl);
           _userCache = new LocalCache<User>(options.LocalCacheCapacity, _cacheTtl);
+          _companyLookupCache = new LocalCache<string>(options.LocalCacheCapacity, _cacheTtl);
+          _userLookupCache = new LocalCache<string>(options.LocalCacheCapacity, _cacheTtl);
           _flagsCache = new LocalCache<Flag>(options.LocalCacheCapacity, flagTTL);
         }
       }
@@ -132,6 +138,8 @@ namespace SchematicHQ.Client.Datastream
         // Use local cache (default)
         _companyCache = new LocalCache<Company>(options.LocalCacheCapacity, _cacheTtl);
         _userCache = new LocalCache<User>(options.LocalCacheCapacity, _cacheTtl);
+        _companyLookupCache = new LocalCache<string>(options.LocalCacheCapacity, _cacheTtl);
+        _userLookupCache = new LocalCache<string>(options.LocalCacheCapacity, _cacheTtl);
         _flagsCache = new LocalCache<Flag>(options.LocalCacheCapacity, flagTTL);
       }
 
@@ -660,22 +668,20 @@ namespace SchematicHQ.Client.Datastream
           {
             if (response.MessageType == MessageType.Delete)
             {
-              // Handle deletion by removing company from cache
+              // Handle deletion: remove ID key from data cache and resource keys from lookup cache
+              var idKey = CompanyIdCacheKey(company.Id);
+              _companyCache.Delete(idKey);
               foreach (var key in company.Keys)
               {
-                var cacheKey = ResourceKeyToCacheKey<Company>(CacheKeyPrefixCompany, key.Key, key.Value);
-                _companyCache.Delete(cacheKey);
+                var resourceKey = ResourceKeyToCacheKey<Company>(CacheKeyPrefixCompany, key.Key, key.Value);
+                _companyLookupCache.Delete(resourceKey);
               }
 
               return;
             }
 
-            // Update cache (inside the lock to prevent race conditions)
-            foreach (var key in company.Keys)
-            {
-              var cacheKey = ResourceKeyToCacheKey<Company>(CacheKeyPrefixCompany, key.Key, key.Value);
-              _companyCache.Set(cacheKey, company);
-            }
+            // Update cache using two-layer approach (inside the lock to prevent race conditions)
+            CacheCompanyForKeys(company);
 
             // Notify pending requests
             NotifyPendingRequests(company, company.Keys, CacheKeyPrefixCompany, _pendingCompanyRequests);
@@ -726,22 +732,20 @@ namespace SchematicHQ.Client.Datastream
 
         if (response.MessageType == MessageType.Delete)
         {
-          // Handle deletion by removing user from cache
+          // Handle deletion: remove ID key from data cache and resource keys from lookup cache
+          var idKey = UserIdCacheKey(user.Id);
+          _userCache.Delete(idKey);
           foreach (var key in user.Keys)
           {
-            var cacheKey = ResourceKeyToCacheKey<User>(CacheKeyPrefixUser, key.Key, key.Value);
-            _userCache.Delete(cacheKey);
-            _logger.Debug("Deleted user from cache with key: {0}", cacheKey);
+            var resourceKey = ResourceKeyToCacheKey<User>(CacheKeyPrefixUser, key.Key, key.Value);
+            _userLookupCache.Delete(resourceKey);
+            _logger.Debug("Deleted user from cache with key: {0}", resourceKey);
           }
           return;
         }
 
-        // Update cache
-        foreach (var key in user.Keys)
-        {
-          var cacheKey = ResourceKeyToCacheKey<User>(CacheKeyPrefixUser, key.Key, key.Value);
-          _userCache.Set(cacheKey, user);
-        }
+        // Update cache using two-layer approach
+        CacheUserForKeys(user);
 
         // Notify pending requests
         NotifyPendingRequests(user, user.Keys, CacheKeyPrefixUser, _pendingUserRequests);
@@ -1005,11 +1009,16 @@ namespace SchematicHQ.Client.Datastream
     {
       foreach (var key in keys)
       {
-        var cacheKey = ResourceKeyToCacheKey<Company>(CacheKeyPrefixCompany, key.Key, key.Value);
-        var company = _companyCache.Get(cacheKey);
-        if (company != null)
+        var resourceKey = ResourceKeyToCacheKey<Company>(CacheKeyPrefixCompany, key.Key, key.Value);
+        var companyId = _companyLookupCache.Get(resourceKey);
+        if (companyId != null)
         {
-          return company;
+          var idKey = CompanyIdCacheKey(companyId);
+          var company = _companyCache.Get(idKey);
+          if (company != null)
+          {
+            return company;
+          }
         }
       }
       return null;
@@ -1019,11 +1028,16 @@ namespace SchematicHQ.Client.Datastream
     {
       foreach (var key in keys)
       {
-        var cacheKey = ResourceKeyToCacheKey<User>(CacheKeyPrefixUser, key.Key, key.Value);
-        var user = _userCache.Get(cacheKey);
-        if (user != null)
+        var resourceKey = ResourceKeyToCacheKey<User>(CacheKeyPrefixUser, key.Key, key.Value);
+        var userId = _userLookupCache.Get(resourceKey);
+        if (userId != null)
         {
-          return user;
+          var idKey = UserIdCacheKey(userId);
+          var user = _userCache.Get(idKey);
+          if (user != null)
+          {
+            return user;
+          }
         }
       }
       return null;
@@ -1098,23 +1112,18 @@ namespace SchematicHQ.Client.Datastream
                     return false;
                 }
 
-                // Cache the updated company for all keys (still inside the lock)
-                bool cacheSuccess = true;
-                foreach (var key in companyCopy.Keys)
+                // Cache the updated company using two-layer approach (still inside the lock)
+                try
                 {
-                    try
-                    {
-                        var cacheKey = ResourceKeyToCacheKey<Company>(CacheKeyPrefixCompany, key.Key, key.Value);
-                        _companyCache.Set(cacheKey, companyCopy);
-                    }
-                    catch (Exception ex)
-                    {
-                        _logger.Warn($"Failed to cache company metric for key '{key.Key}': {ex.Message}");
-                        cacheSuccess = false;
-                    }
+                    CacheCompanyForKeys(companyCopy);
+                }
+                catch (Exception ex)
+                {
+                    _logger.Warn($"Failed to cache company metrics: {ex.Message}");
+                    return false;
                 }
 
-                return cacheSuccess;
+                return true;
             }
             finally
             {
@@ -1328,6 +1337,46 @@ namespace SchematicHQ.Client.Datastream
       return $"{CacheKeyPrefix}:{resourceType}:{schemaVersion}:{key.ToLowerInvariant()}:{value.ToLowerInvariant()}";
     }
 
+    private string CompanyIdCacheKey(string id)
+    {
+      var schemaVersion = GetCacheVersion();
+      return $"{CacheKeyPrefix}:{CacheKeyPrefixCompany}:{schemaVersion}:{id}";
+    }
+
+    private string UserIdCacheKey(string id)
+    {
+      var schemaVersion = GetCacheVersion();
+      return $"{CacheKeyPrefix}:{CacheKeyPrefixUser}:{schemaVersion}:{id}";
+    }
+
+    private void CacheCompanyForKeys(Company company)
+    {
+      // Store the company object at the ID-based key
+      var idKey = CompanyIdCacheKey(company.Id);
+      _companyCache.Set(idKey, company);
+
+      // Store the company ID string at each resource key
+      foreach (var key in company.Keys)
+      {
+        var resourceKey = ResourceKeyToCacheKey<Company>(CacheKeyPrefixCompany, key.Key, key.Value);
+        _companyLookupCache.Set(resourceKey, company.Id);
+      }
+    }
+
+    private void CacheUserForKeys(User user)
+    {
+      // Store the user object at the ID-based key
+      var idKey = UserIdCacheKey(user.Id);
+      _userCache.Set(idKey, user);
+
+      // Store the user ID string at each resource key
+      foreach (var key in user.Keys)
+      {
+        var resourceKey = ResourceKeyToCacheKey<User>(CacheKeyPrefixUser, key.Key, key.Value);
+        _userLookupCache.Set(resourceKey, user.Id);
+      }
+    }
+
     /// <summary>
     /// Gets or creates a per-company lock for synchronizing updates to company data.
     /// This ensures that concurrent modifications to the same company are serialized.
@@ -1452,7 +1501,13 @@ namespace SchematicHQ.Client.Datastream
         _reconnectSemaphore.Dispose();
         _cancellationTokenSource.Dispose();
         _readCancellationSource.Dispose();
-        
+
+        // Dispose lookup caches if they implement IDisposable
+        if (_companyLookupCache is IDisposable companyLookupDisposable)
+          companyLookupDisposable.Dispose();
+        if (_userLookupCache is IDisposable userLookupDisposable)
+          userLookupDisposable.Dispose();
+
         // Clean up company locks
         foreach (var lockEntry in _companyUpdateLocks)
         {
