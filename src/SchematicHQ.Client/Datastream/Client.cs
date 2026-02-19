@@ -64,6 +64,9 @@ namespace SchematicHQ.Client.Datastream
     private const string CacheKeyPrefixFlags = "flags";
     private const string CacheKeyPrefixUser = "user";
 
+    // Authentication error close code
+    private const int AuthErrorCloseCode = 4001;
+
     private static readonly Random _jitterRandom = new Random();
     private static readonly object _randomLock = new object();
 
@@ -213,19 +216,31 @@ namespace SchematicHQ.Client.Datastream
             // Start reading messages
             var readTask = ReadMessagesAsync();
 
-            // Request all flags immediately after connection
-            try
-            {
-              await GetAllFlagsAsync(_cancellationTokenSource.Token);
-            }
-            catch (Exception flagEx)
-            {
-              // Log the error and retry connection
-              throw new Exception($"Failed to retrieve initial flags: {flagEx.Message}");
-            }
+            // Request all flags, but race against readTask so that if the
+            // connection closes (e.g. auth error) we surface it immediately
+            // instead of waiting for the flags timeout.
+            var flagsTask = GetAllFlagsAsync(_cancellationTokenSource.Token);
+            var completed = await Task.WhenAny(flagsTask, readTask);
 
-            // Wait for the read task to complete, which happens on disconnection
-            await readTask;
+            if (completed == readTask)
+            {
+              // readTask finished first — either the connection dropped or
+              // an exception was thrown (e.g. WebSocketAuthenticationException).
+              // Await it to propagate any exception.
+              await readTask;
+
+              // If readTask completed without error the connection simply closed;
+              // fall through to trigger reconnection.
+            }
+            else
+            {
+              // flagsTask finished first — propagate any flags error
+              await flagsTask;
+
+              // Flags loaded successfully; now wait for the read loop
+              // to finish (disconnection or error).
+              await readTask;
+            }
 
             _readCancellationSource.Token.ThrowIfCancellationRequested();
           }
@@ -256,6 +271,13 @@ namespace SchematicHQ.Client.Datastream
               }
             }
           }
+        }
+        catch (WebSocketAuthenticationException authEx)
+        {
+          _reconnectSemaphore.Release();
+          _logger.Error(authEx.Message);
+          _connectionStateCallback(false);
+          return;
         }
         catch (Exception connectionEx)
         {
@@ -323,6 +345,13 @@ namespace SchematicHQ.Client.Datastream
 
               if (result.MessageType == WebSocketMessageType.Close)
               {
+                // Check for authentication error (close code 4001)
+                if (result.CloseStatus.HasValue && (int)result.CloseStatus.Value == AuthErrorCloseCode)
+                {
+                  throw new WebSocketAuthenticationException(
+                      (int)result.CloseStatus.Value,
+                      result.CloseStatusDescription);
+                }
                 return;
               }
 
@@ -358,12 +387,20 @@ namespace SchematicHQ.Client.Datastream
             _logger.Info("WebSocket read operation was cancelled");
             return;
           }
+          catch (WebSocketAuthenticationException)
+          {
+            throw; // Let auth errors propagate
+          }
           catch (Exception ex)
           {
             _logger.Error("Error reading from WebSocket: {0}", ex.Message);
             return; // Exit and trigger reconnection
           }
         }
+      }
+      catch (WebSocketAuthenticationException)
+      {
+        throw; // Let auth errors propagate
       }
       catch (Exception ex)
       {
