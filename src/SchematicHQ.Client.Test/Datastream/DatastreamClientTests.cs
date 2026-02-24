@@ -100,27 +100,10 @@ namespace SchematicHQ.Client.Test.Datastream
                 }
             };
             
-            // Access private field _companyCache and directly insert the company
-            var companyCacheField = typeof(DatastreamClient).GetField("_companyCache", 
+            // Use CacheCompanyForKeys to populate both cache layers
+            var cacheCompanyMethod = typeof(DatastreamClient).GetMethod("CacheCompanyForKeys",
                 System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-            Assert.That(companyCacheField, Is.Not.Null, "Could not find _companyCache field");
-            
-            var companyCache = companyCacheField?.GetValue(_client);
-            Assert.That(companyCache, Is.Not.Null, "Cache should not be null");
-            
-            // Calculate the cache key
-            var resourceKeyToCacheKeyMethod = typeof(DatastreamClient).GetMethod("ResourceKeyToCacheKey", 
-                System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-            Assert.That(resourceKeyToCacheKeyMethod, Is.Not.Null, "ResourceKeyToCacheKey method not found");
-            
-            // Call the generic method with reflection
-            var genericMethod = resourceKeyToCacheKeyMethod!.MakeGenericMethod(typeof(Company));
-            var cacheKey = (string)genericMethod.Invoke(_client, new object[] { "company", "id", "company-123" })!;
-            
-            // Add company directly to the cache
-            var setMethod = companyCache!.GetType().GetMethod("Set");
-            Assert.That(setMethod, Is.Not.Null, "Cache Set method not found");
-            setMethod!.Invoke(companyCache, new object[] { cacheKey, testCompany, Type.Missing });
+            cacheCompanyMethod!.Invoke(_client, new object[] { testCompany });
             
             // Verify company is in cache
             var companyKeys = new Dictionary<string, string> { { "id", "company-123" } };
@@ -150,7 +133,6 @@ namespace SchematicHQ.Client.Test.Datastream
             
             // Set the flag in cache
             var flagSetMethod = flagsCache!.GetType().GetMethod("Set");
-            Assert.That(flagSetMethod, Is.Not.Null, "Cache Set method not found");
             flagSetMethod!.Invoke(flagsCache, new object[] { flagCacheKey!, testFlag, Type.Missing });
             
             // Verify flag is in cache now

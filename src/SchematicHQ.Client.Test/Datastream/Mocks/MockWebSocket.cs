@@ -96,6 +96,17 @@ namespace SchematicHQ.Client.Test.Datastream.Mocks
                 "Closed"));
         }
 
+        public void SetupToReceiveClose(WebSocketCloseStatus closeStatus, string description)
+        {
+            _messagesToSend.Enqueue(Array.Empty<byte>());
+            _receiveResults.Enqueue(new WebSocketReceiveResult(
+                0,
+                WebSocketMessageType.Close,
+                true,
+                closeStatus,
+                description));
+        }
+
         public void SetState(WebSocketState state)
         {
             _state = state;

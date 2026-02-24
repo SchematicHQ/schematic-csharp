@@ -129,7 +129,10 @@ public class EventBuffer<T> : IEventBuffer<T>
             if (!_isRunning) throw new InvalidOperationException("Buffer is not running.");
         }
 
-        await FlushBufferAsync();
+        while (!_queue.IsEmpty)
+        {
+            await FlushBufferAsync();
+        }
         _logger.Info("Buffer flushed manually.");
     }
 

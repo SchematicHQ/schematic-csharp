@@ -132,6 +132,38 @@ namespace SchematicHQ.Client.Test.Datastream
         }
         
         [Test]
+        public async Task AuthenticationError_StopsReconnection()
+        {
+            // Arrange - Create a client that tracks connection states
+            var reportedStates = new List<bool>();
+            var localTestSetup = DatastreamClientTestFactory.CreateClientWithMocks(
+                connectionCallback: state => reportedStates.Add(state));
+            var localClient = localTestSetup.Client;
+            var mockWebSocket = localTestSetup.WebSocket;
+            var mockLogger = localTestSetup.Logger;
+
+            // Setup the mock to return a 4001 close frame (authentication error)
+            mockWebSocket.SetupToReceiveClose(
+                (WebSocketCloseStatus)4001,
+                "unauthorized");
+
+            // Act - Start the client which will connect and read
+            localClient.Start();
+
+            // Auth error should surface almost immediately now (no waiting for ResourceTimeout)
+            await Task.Delay(500);
+
+            // Assert - Should log the authentication error and not attempt reconnection
+            Assert.That(mockLogger.HasLogEntry(LogLevel.Error, "WebSocket authentication failed (close code 4001)"), Is.True,
+                "Should log the WebSocketAuthenticationException message");
+            // Should NOT have attempted reconnection (no backoff/retry messages)
+            Assert.That(mockLogger.HasLogEntry(LogLevel.Error, "Unable to connect to server after"), Is.False,
+                "Should not have exhausted reconnect attempts - should exit immediately");
+
+            localClient.Dispose();
+        }
+
+        [Test]
         public void DisposingClient_ReportsDisconnected()
         {
             // Create a list to track connection state changes
