@@ -17,6 +17,9 @@ public record ListAuditLogsParams : IJsonOnDeserialized
     [JsonPropertyName("actor_type")]
     public ActorType? ActorType { get; set; }
 
+    [JsonPropertyName("end_time")]
+    public DateTime? EndTime { get; set; }
+
     [JsonPropertyName("environment_id")]
     public string? EnvironmentId { get; set; }
 
@@ -34,6 +37,9 @@ public record ListAuditLogsParams : IJsonOnDeserialized
 
     [JsonPropertyName("q")]
     public string? Q { get; set; }
+
+    [JsonPropertyName("start_time")]
+    public DateTime? StartTime { get; set; }
 
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();

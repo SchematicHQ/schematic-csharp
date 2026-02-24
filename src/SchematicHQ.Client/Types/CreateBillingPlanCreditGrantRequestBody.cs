@@ -53,6 +53,9 @@ public record CreateBillingPlanCreditGrantRequestBody : IJsonOnDeserialized
     [JsonPropertyName("plan_id")]
     public required string PlanId { get; set; }
 
+    [JsonPropertyName("plan_version_id")]
+    public string? PlanVersionId { get; set; }
+
     [JsonPropertyName("reset_cadence")]
     public required BillingPlanCreditGrantResetCadence ResetCadence { get; set; }
 

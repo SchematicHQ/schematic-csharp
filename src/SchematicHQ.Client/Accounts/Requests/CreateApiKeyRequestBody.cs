@@ -15,6 +15,9 @@ public record CreateApiKeyRequestBody
     [JsonPropertyName("name")]
     public required string Name { get; set; }
 
+    [JsonPropertyName("readonly")]
+    public bool? Readonly { get; set; }
+
     /// <inheritdoc />
     public override string ToString()
     {

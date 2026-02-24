@@ -29,6 +29,9 @@ public record UpsertCompanyRequestBody : IJsonOnDeserialized
     [JsonPropertyName("name")]
     public string? Name { get; set; }
 
+    [JsonPropertyName("prevent_key_remap")]
+    public bool? PreventKeyRemap { get; set; }
+
     /// <summary>
     /// A map of trait names to trait values
     /// </summary>

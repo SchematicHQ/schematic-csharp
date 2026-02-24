@@ -57,6 +57,12 @@ public record ListCompaniesParams : IJsonOnDeserialized
     public IEnumerable<string>? PlanIds { get; set; }
 
     /// <summary>
+    /// Filter companies by plan version ID (starts with plvr_)
+    /// </summary>
+    [JsonPropertyName("plan_version_id")]
+    public string? PlanVersionId { get; set; }
+
+    /// <summary>
     /// Search for companies by name, keys or string traits
     /// </summary>
     [JsonPropertyName("q")]
@@ -82,6 +88,12 @@ public record ListCompaniesParams : IJsonOnDeserialized
     /// </summary>
     [JsonPropertyName("subscription_types")]
     public IEnumerable<SubscriptionType>? SubscriptionTypes { get; set; }
+
+    /// <summary>
+    /// Filter companies that have an entitlement (plan entitlement or company override) for the specified feature ID
+    /// </summary>
+    [JsonPropertyName("with_entitlement_for")]
+    public string? WithEntitlementFor { get; set; }
 
     /// <summary>
     /// Filter companies that have a subscription

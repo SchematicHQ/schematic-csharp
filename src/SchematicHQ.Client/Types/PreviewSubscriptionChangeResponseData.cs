@@ -20,6 +20,9 @@ public record PreviewSubscriptionChangeResponseData : IJsonOnDeserialized
     [JsonPropertyName("finance")]
     public PreviewSubscriptionFinanceResponseData? Finance { get; set; }
 
+    [JsonPropertyName("is_scheduled_downgrade")]
+    public required bool IsScheduledDowngrade { get; set; }
+
     [JsonPropertyName("new_charges")]
     public required int NewCharges { get; set; }
 
@@ -37,6 +40,9 @@ public record PreviewSubscriptionChangeResponseData : IJsonOnDeserialized
 
     [JsonPropertyName("proration")]
     public required int Proration { get; set; }
+
+    [JsonPropertyName("scheduled_change_time")]
+    public DateTime? ScheduledChangeTime { get; set; }
 
     [JsonPropertyName("trial_end")]
     public DateTime? TrialEnd { get; set; }

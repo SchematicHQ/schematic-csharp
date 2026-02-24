@@ -344,144 +344,6 @@ await client.Accounts.CountApiKeysAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Accounts.<a href="/src/SchematicHQ.Client/Accounts/AccountsClient.cs">ListApiRequestsAsync</a>(ListApiRequestsRequest { ... }) -> ListApiRequestsResponse</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```csharp
-await client.Accounts.ListApiRequestsAsync(
-    new ListApiRequestsRequest
-    {
-        Q = "q",
-        RequestType = "request_type",
-        EnvironmentId = "environment_id",
-        Limit = 1,
-        Offset = 1,
-    }
-);
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**request:** `ListApiRequestsRequest` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Accounts.<a href="/src/SchematicHQ.Client/Accounts/AccountsClient.cs">GetApiRequestAsync</a>(apiRequestId) -> GetApiRequestResponse</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```csharp
-await client.Accounts.GetApiRequestAsync("api_request_id");
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**apiRequestId:** `string` — api_request_id
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Accounts.<a href="/src/SchematicHQ.Client/Accounts/AccountsClient.cs">CountApiRequestsAsync</a>(CountApiRequestsRequest { ... }) -> CountApiRequestsResponse</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```csharp
-await client.Accounts.CountApiRequestsAsync(
-    new CountApiRequestsRequest
-    {
-        Q = "q",
-        RequestType = "request_type",
-        EnvironmentId = "environment_id",
-        Limit = 1,
-        Offset = 1,
-    }
-);
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**request:** `CountApiRequestsRequest` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
 <details><summary><code>client.Accounts.<a href="/src/SchematicHQ.Client/Accounts/AccountsClient.cs">ListAuditLogsAsync</a>(ListAuditLogsRequest { ... }) -> ListAuditLogsResponse</code></summary>
 <dl>
 <dd>
@@ -499,8 +361,10 @@ await client.Accounts.ListAuditLogsAsync(
     new ListAuditLogsRequest
     {
         ActorType = ActorType.ApiKey,
+        EndTime = new DateTime(2024, 01, 15, 09, 30, 00, 000),
         EnvironmentId = "environment_id",
         Q = "q",
+        StartTime = new DateTime(2024, 01, 15, 09, 30, 00, 000),
         Limit = 1,
         Offset = 1,
     }
@@ -588,8 +452,10 @@ await client.Accounts.CountAuditLogsAsync(
     new CountAuditLogsRequest
     {
         ActorType = ActorType.ApiKey,
+        EndTime = new DateTime(2024, 01, 15, 09, 30, 00, 000),
         EnvironmentId = "environment_id",
         Q = "q",
+        StartTime = new DateTime(2024, 01, 15, 09, 30, 00, 000),
         Limit = 1,
         Offset = 1,
     }
@@ -848,6 +714,31 @@ await client.Accounts.DeleteEnvironmentAsync("environment_id");
 
 ```csharp
 await client.Accounts.QuickstartAsync();
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Accounts.<a href="/src/SchematicHQ.Client/Accounts/AccountsClient.cs">GetWhoAmIAsync</a>() -> GetWhoAmIResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Accounts.GetWhoAmIAsync();
 ```
 </dd>
 </dl>
@@ -2837,6 +2728,7 @@ await client.Credits.ListBillingPlanCreditGrantsAsync(
     {
         CreditId = "credit_id",
         PlanId = "plan_id",
+        PlanVersionId = "plan_version_id",
         Limit = 1,
         Offset = 1,
     }
@@ -3040,6 +2932,7 @@ await client.Credits.CountBillingPlanCreditGrantsAsync(
     {
         CreditId = "credit_id",
         PlanId = "plan_id",
+        PlanVersionId = "plan_version_id",
         Limit = 1,
         Offset = 1,
     }
@@ -3453,9 +3346,11 @@ await client.Companies.ListCompaniesAsync(
     {
         MonetizedSubscriptions = true,
         PlanId = "plan_id",
+        PlanVersionId = "plan_version_id",
         Q = "q",
         SortOrderColumn = "sort_order_column",
         SortOrderDirection = SortDirection.Asc,
+        WithEntitlementFor = "with_entitlement_for",
         WithoutFeatureOverrideFor = "without_feature_override_for",
         WithoutPlan = true,
         WithoutSubscription = true,
@@ -3641,9 +3536,11 @@ await client.Companies.CountCompaniesAsync(
     {
         MonetizedSubscriptions = true,
         PlanId = "plan_id",
+        PlanVersionId = "plan_version_id",
         Q = "q",
         SortOrderColumn = "sort_order_column",
         SortOrderDirection = SortDirection.Asc,
+        WithEntitlementFor = "with_entitlement_for",
         WithoutFeatureOverrideFor = "without_feature_override_for",
         WithoutPlan = true,
         WithoutSubscription = true,
@@ -3667,58 +3564,6 @@ await client.Companies.CountCompaniesAsync(
 <dd>
 
 **request:** `CountCompaniesRequest` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Companies.<a href="/src/SchematicHQ.Client/Companies/CompaniesClient.cs">CountCompaniesForAdvancedFilterAsync</a>(CountCompaniesForAdvancedFilterRequest { ... }) -> CountCompaniesForAdvancedFilterResponse</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```csharp
-await client.Companies.CountCompaniesForAdvancedFilterAsync(
-    new CountCompaniesForAdvancedFilterRequest
-    {
-        MonetizedSubscriptions = true,
-        Q = "q",
-        WithoutPlan = true,
-        WithoutSubscription = true,
-        SortOrderColumn = "sort_order_column",
-        SortOrderDirection = SortDirection.Asc,
-        Limit = 1,
-        Offset = 1,
-    }
-);
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**request:** `CountCompaniesForAdvancedFilterRequest` 
     
 </dd>
 </dl>
@@ -3803,58 +3648,6 @@ await client.Companies.DeleteCompanyByKeysAsync(
 <dd>
 
 **request:** `KeysRequestBody` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Companies.<a href="/src/SchematicHQ.Client/Companies/CompaniesClient.cs">ListCompaniesForAdvancedFilterAsync</a>(ListCompaniesForAdvancedFilterRequest { ... }) -> ListCompaniesForAdvancedFilterResponse</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```csharp
-await client.Companies.ListCompaniesForAdvancedFilterAsync(
-    new ListCompaniesForAdvancedFilterRequest
-    {
-        MonetizedSubscriptions = true,
-        Q = "q",
-        WithoutPlan = true,
-        WithoutSubscription = true,
-        SortOrderColumn = "sort_order_column",
-        SortOrderDirection = SortDirection.Asc,
-        Limit = 1,
-        Offset = 1,
-    }
-);
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**request:** `ListCompaniesForAdvancedFilterRequest` 
     
 </dd>
 </dl>
@@ -6465,7 +6258,7 @@ await client.Plans.CreatePlanAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Plans.<a href="/src/SchematicHQ.Client/Plans/PlansClient.cs">GetPlanAsync</a>(planId) -> GetPlanResponse</code></summary>
+<details><summary><code>client.Plans.<a href="/src/SchematicHQ.Client/Plans/PlansClient.cs">GetPlanAsync</a>(planId, GetPlanRequest { ... }) -> GetPlanResponse</code></summary>
 <dl>
 <dd>
 
@@ -6478,7 +6271,10 @@ await client.Plans.CreatePlanAsync(
 <dd>
 
 ```csharp
-await client.Plans.GetPlanAsync("plan_id");
+await client.Plans.GetPlanAsync(
+    "plan_id",
+    new GetPlanRequest { PlanVersionId = "plan_version_id" }
+);
 ```
 </dd>
 </dl>
@@ -6494,6 +6290,14 @@ await client.Plans.GetPlanAsync("plan_id");
 <dd>
 
 **planId:** `string` — plan_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `GetPlanRequest` 
     
 </dd>
 </dl>
@@ -6712,7 +6516,9 @@ await client.Plans.CountPlansAsync(
 <dd>
 
 ```csharp
-await client.Plans.ListPlanIssuesAsync(new ListPlanIssuesRequest { PlanId = "plan_id" });
+await client.Plans.ListPlanIssuesAsync(
+    new ListPlanIssuesRequest { PlanId = "plan_id", PlanVersionId = "plan_version_id" }
+);
 ```
 </dd>
 </dl>
@@ -6728,6 +6534,101 @@ await client.Plans.ListPlanIssuesAsync(new ListPlanIssuesRequest { PlanId = "pla
 <dd>
 
 **request:** `ListPlanIssuesRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Plans.<a href="/src/SchematicHQ.Client/Plans/PlansClient.cs">DeletePlanVersionAsync</a>(planId) -> DeletePlanVersionResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Plans.DeletePlanVersionAsync("plan_id");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**planId:** `string` — plan_id
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Plans.<a href="/src/SchematicHQ.Client/Plans/PlansClient.cs">PublishPlanVersionAsync</a>(planId, PublishPlanVersionRequestBody { ... }) -> PublishPlanVersionResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Plans.PublishPlanVersionAsync(
+    "plan_id",
+    new PublishPlanVersionRequestBody
+    {
+        ExcludedCompanyIds = new List<string>() { "excluded_company_ids" },
+        MigrationStrategy = PlanVersionMigrationStrategy.Immediate,
+    }
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**planId:** `string` — plan_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `PublishPlanVersionRequestBody` 
     
 </dd>
 </dl>
@@ -7406,6 +7307,7 @@ await client.Features.ListFeaturesAsync(
     {
         Q = "q",
         WithoutCompanyOverrideFor = "without_company_override_for",
+        PlanVersionId = "plan_version_id",
         WithoutPlanEntitlementFor = "without_plan_entitlement_for",
         BooleanRequireEvent = true,
         Limit = 1,
@@ -7631,6 +7533,7 @@ await client.Features.CountFeaturesAsync(
     {
         Q = "q",
         WithoutCompanyOverrideFor = "without_company_override_for",
+        PlanVersionId = "plan_version_id",
         WithoutPlanEntitlementFor = "without_plan_entitlement_for",
         BooleanRequireEvent = true,
         Limit = 1,
@@ -8436,6 +8339,455 @@ await client.Plangroups.UpdatePlanGroupAsync(
 <dd>
 
 **request:** `UpdatePlanGroupRequestBody` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## planmigrations
+<details><summary><code>client.Planmigrations.<a href="/src/SchematicHQ.Client/Planmigrations/PlanmigrationsClient.cs">ListCompanyMigrationsAsync</a>(ListCompanyMigrationsRequest { ... }) -> ListCompanyMigrationsResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Planmigrations.ListCompanyMigrationsAsync(
+    new ListCompanyMigrationsRequest
+    {
+        MigrationId = "migration_id",
+        Q = "q",
+        Status = PlanVersionCompanyMigrationStatus.Completed,
+        Limit = 1,
+        Offset = 1,
+    }
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `ListCompanyMigrationsRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Planmigrations.<a href="/src/SchematicHQ.Client/Planmigrations/PlanmigrationsClient.cs">CountCompanyMigrationsAsync</a>(CountCompanyMigrationsRequest { ... }) -> CountCompanyMigrationsResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Planmigrations.CountCompanyMigrationsAsync(
+    new CountCompanyMigrationsRequest
+    {
+        MigrationId = "migration_id",
+        Q = "q",
+        Status = PlanVersionCompanyMigrationStatus.Completed,
+        Limit = 1,
+        Offset = 1,
+    }
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `CountCompanyMigrationsRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Planmigrations.<a href="/src/SchematicHQ.Client/Planmigrations/PlanmigrationsClient.cs">ListMigrationsAsync</a>(ListMigrationsRequest { ... }) -> ListMigrationsResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Planmigrations.ListMigrationsAsync(
+    new ListMigrationsRequest
+    {
+        PlanVersionId = "plan_version_id",
+        Status = PlanVersionMigrationStatus.Completed,
+        Limit = 1,
+        Offset = 1,
+    }
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `ListMigrationsRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Planmigrations.<a href="/src/SchematicHQ.Client/Planmigrations/PlanmigrationsClient.cs">GetMigrationAsync</a>(planVersionMigrationId) -> GetMigrationResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Planmigrations.GetMigrationAsync("plan_version_migration_id");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**planVersionMigrationId:** `string` — plan_version_migration_id
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Planmigrations.<a href="/src/SchematicHQ.Client/Planmigrations/PlanmigrationsClient.cs">CountMigrationsAsync</a>(CountMigrationsRequest { ... }) -> CountMigrationsResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Planmigrations.CountMigrationsAsync(
+    new CountMigrationsRequest
+    {
+        PlanVersionId = "plan_version_id",
+        Status = PlanVersionMigrationStatus.Completed,
+        Limit = 1,
+        Offset = 1,
+    }
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `CountMigrationsRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## componentspublic
+<details><summary><code>client.Componentspublic.<a href="/src/SchematicHQ.Client/Componentspublic/ComponentspublicClient.cs">GetPublicPlansAsync</a>() -> GetPublicPlansResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Componentspublic.GetPublicPlansAsync();
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## scheduledcheckout
+<details><summary><code>client.Scheduledcheckout.<a href="/src/SchematicHQ.Client/Scheduledcheckout/ScheduledcheckoutClient.cs">ListScheduledCheckoutsAsync</a>(ListScheduledCheckoutsRequest { ... }) -> ListScheduledCheckoutsResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Scheduledcheckout.ListScheduledCheckoutsAsync(
+    new ListScheduledCheckoutsRequest
+    {
+        CompanyId = "company_id",
+        Status = ScheduledCheckoutStatus.Cancelled,
+        Limit = 1,
+        Offset = 1,
+    }
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `ListScheduledCheckoutsRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Scheduledcheckout.<a href="/src/SchematicHQ.Client/Scheduledcheckout/ScheduledcheckoutClient.cs">CreateScheduledCheckoutAsync</a>(CreateScheduledCheckoutRequest { ... }) -> CreateScheduledCheckoutResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Scheduledcheckout.CreateScheduledCheckoutAsync(
+    new CreateScheduledCheckoutRequest
+    {
+        CompanyId = "company_id",
+        ExecuteAfter = new DateTime(2024, 01, 15, 09, 30, 00, 000),
+        FromPlanId = "from_plan_id",
+        ToPlanId = "to_plan_id",
+    }
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `CreateScheduledCheckoutRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Scheduledcheckout.<a href="/src/SchematicHQ.Client/Scheduledcheckout/ScheduledcheckoutClient.cs">GetScheduledCheckoutAsync</a>(scheduledCheckoutId) -> GetScheduledCheckoutResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Scheduledcheckout.GetScheduledCheckoutAsync("scheduled_checkout_id");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**scheduledCheckoutId:** `string` — scheduled_checkout_id
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Scheduledcheckout.<a href="/src/SchematicHQ.Client/Scheduledcheckout/ScheduledcheckoutClient.cs">UpdateScheduledCheckoutAsync</a>(scheduledCheckoutId, UpdateScheduledCheckoutRequest { ... }) -> UpdateScheduledCheckoutResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Scheduledcheckout.UpdateScheduledCheckoutAsync(
+    "scheduled_checkout_id",
+    new UpdateScheduledCheckoutRequest()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**scheduledCheckoutId:** `string` — scheduled_checkout_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `UpdateScheduledCheckoutRequest` 
     
 </dd>
 </dl>

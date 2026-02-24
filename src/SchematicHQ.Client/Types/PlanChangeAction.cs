@@ -25,6 +25,8 @@ public readonly record struct PlanChangeAction : IStringEnum
 
     public static readonly PlanChangeAction PlanTraitChange = new(Values.PlanTraitChange);
 
+    public static readonly PlanChangeAction PlanVersionMigration = new(Values.PlanVersionMigration);
+
     public static readonly PlanChangeAction Quickstart = new(Values.Quickstart);
 
     public static readonly PlanChangeAction SubscriptionChange = new(Values.SubscriptionChange);
@@ -91,6 +93,8 @@ public readonly record struct PlanChangeAction : IStringEnum
         public const string PlanDeleted = "plan_deleted";
 
         public const string PlanTraitChange = "plan_trait_change";
+
+        public const string PlanVersionMigration = "plan_version_migration";
 
         public const string Quickstart = "quickstart";
 

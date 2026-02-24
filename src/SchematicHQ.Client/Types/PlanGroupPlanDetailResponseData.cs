@@ -11,6 +11,9 @@ public record PlanGroupPlanDetailResponseData : IJsonOnDeserialized
     private readonly IDictionary<string, JsonElement> _extensionData =
         new Dictionary<string, JsonElement>();
 
+    [JsonPropertyName("active_version")]
+    public PlanVersionResponseData? ActiveVersion { get; set; }
+
     [JsonPropertyName("audience_type")]
     public string? AudienceType { get; set; }
 
@@ -37,6 +40,9 @@ public record PlanGroupPlanDetailResponseData : IJsonOnDeserialized
 
     [JsonPropertyName("description")]
     public required string Description { get; set; }
+
+    [JsonPropertyName("draft_version")]
+    public PlanVersionResponseData? DraftVersion { get; set; }
 
     [JsonPropertyName("entitlements")]
     public IEnumerable<PlanEntitlementResponseData> Entitlements { get; set; } =

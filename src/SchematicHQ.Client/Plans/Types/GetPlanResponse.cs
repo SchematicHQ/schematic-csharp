@@ -18,7 +18,7 @@ public record GetPlanResponse : IJsonOnDeserialized
     /// Input parameters
     /// </summary>
     [JsonPropertyName("params")]
-    public Dictionary<string, object?> Params { get; set; } = new Dictionary<string, object?>();
+    public required GetPlanParams Params { get; set; }
 
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();

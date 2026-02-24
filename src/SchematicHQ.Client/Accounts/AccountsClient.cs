@@ -469,273 +469,14 @@ public partial class AccountsClient
     }
 
     /// <example><code>
-    /// await client.Accounts.ListApiRequestsAsync(
-    ///     new ListApiRequestsRequest
-    ///     {
-    ///         Q = "q",
-    ///         RequestType = "request_type",
-    ///         EnvironmentId = "environment_id",
-    ///         Limit = 1,
-    ///         Offset = 1,
-    ///     }
-    /// );
-    /// </code></example>
-    public async Task<ListApiRequestsResponse> ListApiRequestsAsync(
-        ListApiRequestsRequest request,
-        RequestOptions? options = null,
-        CancellationToken cancellationToken = default
-    )
-    {
-        var _query = new Dictionary<string, object>();
-        if (request.Q != null)
-        {
-            _query["q"] = request.Q;
-        }
-        if (request.RequestType != null)
-        {
-            _query["request_type"] = request.RequestType;
-        }
-        if (request.EnvironmentId != null)
-        {
-            _query["environment_id"] = request.EnvironmentId;
-        }
-        if (request.Limit != null)
-        {
-            _query["limit"] = request.Limit.Value.ToString();
-        }
-        if (request.Offset != null)
-        {
-            _query["offset"] = request.Offset.Value.ToString();
-        }
-        var response = await _client
-            .SendRequestAsync(
-                new JsonRequest
-                {
-                    BaseUrl = _client.Options.BaseUrl,
-                    Method = HttpMethod.Get,
-                    Path = "api-requests",
-                    Query = _query,
-                    Options = options,
-                },
-                cancellationToken
-            )
-            .ConfigureAwait(false);
-        if (response.StatusCode is >= 200 and < 400)
-        {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
-            try
-            {
-                return JsonUtils.Deserialize<ListApiRequestsResponse>(responseBody)!;
-            }
-            catch (JsonException e)
-            {
-                throw new SchematicException("Failed to deserialize response", e);
-            }
-        }
-
-        {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
-            try
-            {
-                switch (response.StatusCode)
-                {
-                    case 400:
-                        throw new BadRequestError(JsonUtils.Deserialize<ApiError>(responseBody));
-                    case 401:
-                        throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
-                    case 403:
-                        throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
-                    case 404:
-                        throw new NotFoundError(JsonUtils.Deserialize<ApiError>(responseBody));
-                    case 500:
-                        throw new InternalServerError(
-                            JsonUtils.Deserialize<ApiError>(responseBody)
-                        );
-                }
-            }
-            catch (JsonException)
-            {
-                // unable to map error response, throwing generic error
-            }
-            throw new SchematicApiException(
-                $"Error with status code {response.StatusCode}",
-                response.StatusCode,
-                responseBody
-            );
-        }
-    }
-
-    /// <example><code>
-    /// await client.Accounts.GetApiRequestAsync("api_request_id");
-    /// </code></example>
-    public async Task<GetApiRequestResponse> GetApiRequestAsync(
-        string apiRequestId,
-        RequestOptions? options = null,
-        CancellationToken cancellationToken = default
-    )
-    {
-        var response = await _client
-            .SendRequestAsync(
-                new JsonRequest
-                {
-                    BaseUrl = _client.Options.BaseUrl,
-                    Method = HttpMethod.Get,
-                    Path = string.Format(
-                        "api-requests/{0}",
-                        ValueConvert.ToPathParameterString(apiRequestId)
-                    ),
-                    Options = options,
-                },
-                cancellationToken
-            )
-            .ConfigureAwait(false);
-        if (response.StatusCode is >= 200 and < 400)
-        {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
-            try
-            {
-                return JsonUtils.Deserialize<GetApiRequestResponse>(responseBody)!;
-            }
-            catch (JsonException e)
-            {
-                throw new SchematicException("Failed to deserialize response", e);
-            }
-        }
-
-        {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
-            try
-            {
-                switch (response.StatusCode)
-                {
-                    case 401:
-                        throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
-                    case 403:
-                        throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
-                    case 404:
-                        throw new NotFoundError(JsonUtils.Deserialize<ApiError>(responseBody));
-                    case 500:
-                        throw new InternalServerError(
-                            JsonUtils.Deserialize<ApiError>(responseBody)
-                        );
-                }
-            }
-            catch (JsonException)
-            {
-                // unable to map error response, throwing generic error
-            }
-            throw new SchematicApiException(
-                $"Error with status code {response.StatusCode}",
-                response.StatusCode,
-                responseBody
-            );
-        }
-    }
-
-    /// <example><code>
-    /// await client.Accounts.CountApiRequestsAsync(
-    ///     new CountApiRequestsRequest
-    ///     {
-    ///         Q = "q",
-    ///         RequestType = "request_type",
-    ///         EnvironmentId = "environment_id",
-    ///         Limit = 1,
-    ///         Offset = 1,
-    ///     }
-    /// );
-    /// </code></example>
-    public async Task<CountApiRequestsResponse> CountApiRequestsAsync(
-        CountApiRequestsRequest request,
-        RequestOptions? options = null,
-        CancellationToken cancellationToken = default
-    )
-    {
-        var _query = new Dictionary<string, object>();
-        if (request.Q != null)
-        {
-            _query["q"] = request.Q;
-        }
-        if (request.RequestType != null)
-        {
-            _query["request_type"] = request.RequestType;
-        }
-        if (request.EnvironmentId != null)
-        {
-            _query["environment_id"] = request.EnvironmentId;
-        }
-        if (request.Limit != null)
-        {
-            _query["limit"] = request.Limit.Value.ToString();
-        }
-        if (request.Offset != null)
-        {
-            _query["offset"] = request.Offset.Value.ToString();
-        }
-        var response = await _client
-            .SendRequestAsync(
-                new JsonRequest
-                {
-                    BaseUrl = _client.Options.BaseUrl,
-                    Method = HttpMethod.Get,
-                    Path = "api-requests/count",
-                    Query = _query,
-                    Options = options,
-                },
-                cancellationToken
-            )
-            .ConfigureAwait(false);
-        if (response.StatusCode is >= 200 and < 400)
-        {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
-            try
-            {
-                return JsonUtils.Deserialize<CountApiRequestsResponse>(responseBody)!;
-            }
-            catch (JsonException e)
-            {
-                throw new SchematicException("Failed to deserialize response", e);
-            }
-        }
-
-        {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
-            try
-            {
-                switch (response.StatusCode)
-                {
-                    case 400:
-                        throw new BadRequestError(JsonUtils.Deserialize<ApiError>(responseBody));
-                    case 401:
-                        throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
-                    case 403:
-                        throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
-                    case 404:
-                        throw new NotFoundError(JsonUtils.Deserialize<ApiError>(responseBody));
-                    case 500:
-                        throw new InternalServerError(
-                            JsonUtils.Deserialize<ApiError>(responseBody)
-                        );
-                }
-            }
-            catch (JsonException)
-            {
-                // unable to map error response, throwing generic error
-            }
-            throw new SchematicApiException(
-                $"Error with status code {response.StatusCode}",
-                response.StatusCode,
-                responseBody
-            );
-        }
-    }
-
-    /// <example><code>
     /// await client.Accounts.ListAuditLogsAsync(
     ///     new ListAuditLogsRequest
     ///     {
     ///         ActorType = ActorType.ApiKey,
+    ///         EndTime = new DateTime(2024, 01, 15, 09, 30, 00, 000),
     ///         EnvironmentId = "environment_id",
     ///         Q = "q",
+    ///         StartTime = new DateTime(2024, 01, 15, 09, 30, 00, 000),
     ///         Limit = 1,
     ///         Offset = 1,
     ///     }
@@ -752,6 +493,10 @@ public partial class AccountsClient
         {
             _query["actor_type"] = request.ActorType.Value.Stringify();
         }
+        if (request.EndTime != null)
+        {
+            _query["end_time"] = request.EndTime.Value.ToString(Constants.DateTimeFormat);
+        }
         if (request.EnvironmentId != null)
         {
             _query["environment_id"] = request.EnvironmentId;
@@ -759,6 +504,10 @@ public partial class AccountsClient
         if (request.Q != null)
         {
             _query["q"] = request.Q;
+        }
+        if (request.StartTime != null)
+        {
+            _query["start_time"] = request.StartTime.Value.ToString(Constants.DateTimeFormat);
         }
         if (request.Limit != null)
         {
@@ -898,8 +647,10 @@ public partial class AccountsClient
     ///     new CountAuditLogsRequest
     ///     {
     ///         ActorType = ActorType.ApiKey,
+    ///         EndTime = new DateTime(2024, 01, 15, 09, 30, 00, 000),
     ///         EnvironmentId = "environment_id",
     ///         Q = "q",
+    ///         StartTime = new DateTime(2024, 01, 15, 09, 30, 00, 000),
     ///         Limit = 1,
     ///         Offset = 1,
     ///     }
@@ -916,6 +667,10 @@ public partial class AccountsClient
         {
             _query["actor_type"] = request.ActorType.Value.Stringify();
         }
+        if (request.EndTime != null)
+        {
+            _query["end_time"] = request.EndTime.Value.ToString(Constants.DateTimeFormat);
+        }
         if (request.EnvironmentId != null)
         {
             _query["environment_id"] = request.EnvironmentId;
@@ -923,6 +678,10 @@ public partial class AccountsClient
         if (request.Q != null)
         {
             _query["q"] = request.Q;
+        }
+        if (request.StartTime != null)
+        {
+            _query["start_time"] = request.StartTime.Value.ToString(Constants.DateTimeFormat);
         }
         if (request.Limit != null)
         {
@@ -1390,6 +1149,69 @@ public partial class AccountsClient
                 {
                     case 400:
                         throw new BadRequestError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 401:
+                        throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 403:
+                        throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 404:
+                        throw new NotFoundError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 500:
+                        throw new InternalServerError(
+                            JsonUtils.Deserialize<ApiError>(responseBody)
+                        );
+                }
+            }
+            catch (JsonException)
+            {
+                // unable to map error response, throwing generic error
+            }
+            throw new SchematicApiException(
+                $"Error with status code {response.StatusCode}",
+                response.StatusCode,
+                responseBody
+            );
+        }
+    }
+
+    /// <example><code>
+    /// await client.Accounts.GetWhoAmIAsync();
+    /// </code></example>
+    public async Task<GetWhoAmIResponse> GetWhoAmIAsync(
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        var response = await _client
+            .SendRequestAsync(
+                new JsonRequest
+                {
+                    BaseUrl = _client.Options.BaseUrl,
+                    Method = HttpMethod.Get,
+                    Path = "whoami",
+                    Options = options,
+                },
+                cancellationToken
+            )
+            .ConfigureAwait(false);
+        if (response.StatusCode is >= 200 and < 400)
+        {
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            try
+            {
+                return JsonUtils.Deserialize<GetWhoAmIResponse>(responseBody)!;
+            }
+            catch (JsonException e)
+            {
+                throw new SchematicException("Failed to deserialize response", e);
+            }
+        }
+
+        {
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            try
+            {
+                switch (response.StatusCode)
+                {
                     case 401:
                         throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
                     case 403:

@@ -37,6 +37,12 @@ public record CountCompaniesRequest
     public IEnumerable<string> PlanIds { get; set; } = new List<string>();
 
     /// <summary>
+    /// Filter companies by plan version ID (starts with plvr_)
+    /// </summary>
+    [JsonIgnore]
+    public string? PlanVersionId { get; set; }
+
+    /// <summary>
     /// Search for companies by name, keys or string traits
     /// </summary>
     [JsonIgnore]
@@ -67,6 +73,12 @@ public record CountCompaniesRequest
     [JsonIgnore]
     public IEnumerable<SubscriptionType> SubscriptionTypes { get; set; } =
         new List<SubscriptionType>();
+
+    /// <summary>
+    /// Filter companies that have an entitlement (plan entitlement or company override) for the specified feature ID
+    /// </summary>
+    [JsonIgnore]
+    public string? WithEntitlementFor { get; set; }
 
     /// <summary>
     /// Filter out companies that already have a company override for the specified feature ID

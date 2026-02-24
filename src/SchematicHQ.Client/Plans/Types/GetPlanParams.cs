@@ -4,21 +4,21 @@ using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
 
+/// <summary>
+/// Input parameters
+/// </summary>
 [Serializable]
-public record CountApiRequestsResponse : IJsonOnDeserialized
+public record GetPlanParams : IJsonOnDeserialized
 {
     [JsonExtensionData]
     private readonly IDictionary<string, JsonElement> _extensionData =
         new Dictionary<string, JsonElement>();
 
-    [JsonPropertyName("data")]
-    public required CountResponse Data { get; set; }
-
     /// <summary>
-    /// Input parameters
+    /// Fetch billing settings for a specific plan version
     /// </summary>
-    [JsonPropertyName("params")]
-    public required CountApiRequestsParams Params { get; set; }
+    [JsonPropertyName("plan_version_id")]
+    public string? PlanVersionId { get; set; }
 
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();
