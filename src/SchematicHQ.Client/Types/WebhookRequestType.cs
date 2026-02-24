@@ -95,6 +95,8 @@ public readonly record struct WebhookRequestType : IStringEnum
 
     public static readonly WebhookRequestType PlanUpdated = new(Values.PlanUpdated);
 
+    public static readonly WebhookRequestType PlanVersionDeleted = new(Values.PlanVersionDeleted);
+
     public static readonly WebhookRequestType RuleDeleted = new(Values.RuleDeleted);
 
     public static readonly WebhookRequestType TestSend = new(Values.TestSend);
@@ -219,6 +221,8 @@ public readonly record struct WebhookRequestType : IStringEnum
         public const string PlanEntitlementUpdated = "plan.entitlement.updated";
 
         public const string PlanUpdated = "plan.updated";
+
+        public const string PlanVersionDeleted = "plan_version.deleted";
 
         public const string RuleDeleted = "rule.deleted";
 

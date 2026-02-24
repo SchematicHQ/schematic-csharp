@@ -9,6 +9,9 @@ public record ListPlanIssuesRequest
     [JsonIgnore]
     public required string PlanId { get; set; }
 
+    [JsonIgnore]
+    public string? PlanVersionId { get; set; }
+
     /// <inheritdoc />
     public override string ToString()
     {

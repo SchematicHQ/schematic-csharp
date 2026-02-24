@@ -68,6 +68,9 @@ public record ComponentHydrateResponseData : IJsonOnDeserialized
     [JsonPropertyName("prevent_self_service_downgrade_url")]
     public string? PreventSelfServiceDowngradeUrl { get; set; }
 
+    [JsonPropertyName("scheduled_downgrade")]
+    public ScheduledDowngradeResponseData? ScheduledDowngrade { get; set; }
+
     [JsonPropertyName("show_as_monthly_prices")]
     public required bool ShowAsMonthlyPrices { get; set; }
 

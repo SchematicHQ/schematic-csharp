@@ -4,16 +4,13 @@ using SchematicHQ.Client.Core;
 namespace SchematicHQ.Client;
 
 [Serializable]
-public record ListApiRequestsRequest
+public record ListMigrationsRequest
 {
     [JsonIgnore]
-    public string? Q { get; set; }
+    public string? PlanVersionId { get; set; }
 
     [JsonIgnore]
-    public string? RequestType { get; set; }
-
-    [JsonIgnore]
-    public string? EnvironmentId { get; set; }
+    public PlanVersionMigrationStatus? Status { get; set; }
 
     /// <summary>
     /// Page limit (default 100)

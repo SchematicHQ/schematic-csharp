@@ -10,10 +10,16 @@ public record CountAuditLogsRequest
     public ActorType? ActorType { get; set; }
 
     [JsonIgnore]
+    public DateTime? EndTime { get; set; }
+
+    [JsonIgnore]
     public string? EnvironmentId { get; set; }
 
     [JsonIgnore]
     public string? Q { get; set; }
+
+    [JsonIgnore]
+    public DateTime? StartTime { get; set; }
 
     /// <summary>
     /// Page limit (default 100)

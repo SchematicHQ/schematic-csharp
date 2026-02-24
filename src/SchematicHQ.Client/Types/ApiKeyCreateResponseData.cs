@@ -29,6 +29,9 @@ public record ApiKeyCreateResponseData : IJsonOnDeserialized
     [JsonPropertyName("name")]
     public required string Name { get; set; }
 
+    [JsonPropertyName("readonly")]
+    public required bool Readonly { get; set; }
+
     [JsonPropertyName("scopes")]
     public IEnumerable<ApiKeyScope> Scopes { get; set; } = new List<ApiKeyScope>();
 

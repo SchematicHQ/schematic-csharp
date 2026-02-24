@@ -295,14 +295,23 @@ public partial class PlansClient
     }
 
     /// <example><code>
-    /// await client.Plans.GetPlanAsync("plan_id");
+    /// await client.Plans.GetPlanAsync(
+    ///     "plan_id",
+    ///     new GetPlanRequest { PlanVersionId = "plan_version_id" }
+    /// );
     /// </code></example>
     public async Task<GetPlanResponse> GetPlanAsync(
         string planId,
+        GetPlanRequest request,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
     {
+        var _query = new Dictionary<string, object>();
+        if (request.PlanVersionId != null)
+        {
+            _query["plan_version_id"] = request.PlanVersionId;
+        }
         var response = await _client
             .SendRequestAsync(
                 new JsonRequest
@@ -310,6 +319,7 @@ public partial class PlansClient
                     BaseUrl = _client.Options.BaseUrl,
                     Method = HttpMethod.Get,
                     Path = string.Format("plans/{0}", ValueConvert.ToPathParameterString(planId)),
+                    Query = _query,
                     Options = options,
                 },
                 cancellationToken
@@ -699,7 +709,9 @@ public partial class PlansClient
     }
 
     /// <example><code>
-    /// await client.Plans.ListPlanIssuesAsync(new ListPlanIssuesRequest { PlanId = "plan_id" });
+    /// await client.Plans.ListPlanIssuesAsync(
+    ///     new ListPlanIssuesRequest { PlanId = "plan_id", PlanVersionId = "plan_version_id" }
+    /// );
     /// </code></example>
     public async Task<ListPlanIssuesResponse> ListPlanIssuesAsync(
         ListPlanIssuesRequest request,
@@ -709,6 +721,10 @@ public partial class PlansClient
     {
         var _query = new Dictionary<string, object>();
         _query["plan_id"] = request.PlanId;
+        if (request.PlanVersionId != null)
+        {
+            _query["plan_version_id"] = request.PlanVersionId;
+        }
         var response = await _client
             .SendRequestAsync(
                 new JsonRequest
@@ -728,6 +744,154 @@ public partial class PlansClient
             try
             {
                 return JsonUtils.Deserialize<ListPlanIssuesResponse>(responseBody)!;
+            }
+            catch (JsonException e)
+            {
+                throw new SchematicException("Failed to deserialize response", e);
+            }
+        }
+
+        {
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            try
+            {
+                switch (response.StatusCode)
+                {
+                    case 400:
+                        throw new BadRequestError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 401:
+                        throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 403:
+                        throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 404:
+                        throw new NotFoundError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 500:
+                        throw new InternalServerError(
+                            JsonUtils.Deserialize<ApiError>(responseBody)
+                        );
+                }
+            }
+            catch (JsonException)
+            {
+                // unable to map error response, throwing generic error
+            }
+            throw new SchematicApiException(
+                $"Error with status code {response.StatusCode}",
+                response.StatusCode,
+                responseBody
+            );
+        }
+    }
+
+    /// <example><code>
+    /// await client.Plans.DeletePlanVersionAsync("plan_id");
+    /// </code></example>
+    public async Task<DeletePlanVersionResponse> DeletePlanVersionAsync(
+        string planId,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        var response = await _client
+            .SendRequestAsync(
+                new JsonRequest
+                {
+                    BaseUrl = _client.Options.BaseUrl,
+                    Method = HttpMethod.Delete,
+                    Path = string.Format(
+                        "plans/version/{0}",
+                        ValueConvert.ToPathParameterString(planId)
+                    ),
+                    Options = options,
+                },
+                cancellationToken
+            )
+            .ConfigureAwait(false);
+        if (response.StatusCode is >= 200 and < 400)
+        {
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            try
+            {
+                return JsonUtils.Deserialize<DeletePlanVersionResponse>(responseBody)!;
+            }
+            catch (JsonException e)
+            {
+                throw new SchematicException("Failed to deserialize response", e);
+            }
+        }
+
+        {
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            try
+            {
+                switch (response.StatusCode)
+                {
+                    case 400:
+                        throw new BadRequestError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 401:
+                        throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 403:
+                        throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 404:
+                        throw new NotFoundError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 500:
+                        throw new InternalServerError(
+                            JsonUtils.Deserialize<ApiError>(responseBody)
+                        );
+                }
+            }
+            catch (JsonException)
+            {
+                // unable to map error response, throwing generic error
+            }
+            throw new SchematicApiException(
+                $"Error with status code {response.StatusCode}",
+                response.StatusCode,
+                responseBody
+            );
+        }
+    }
+
+    /// <example><code>
+    /// await client.Plans.PublishPlanVersionAsync(
+    ///     "plan_id",
+    ///     new PublishPlanVersionRequestBody
+    ///     {
+    ///         ExcludedCompanyIds = new List&lt;string&gt;() { "excluded_company_ids" },
+    ///         MigrationStrategy = PlanVersionMigrationStrategy.Immediate,
+    ///     }
+    /// );
+    /// </code></example>
+    public async Task<PublishPlanVersionResponse> PublishPlanVersionAsync(
+        string planId,
+        PublishPlanVersionRequestBody request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        var response = await _client
+            .SendRequestAsync(
+                new JsonRequest
+                {
+                    BaseUrl = _client.Options.BaseUrl,
+                    Method = HttpMethod.Put,
+                    Path = string.Format(
+                        "plans/version/{0}/publish",
+                        ValueConvert.ToPathParameterString(planId)
+                    ),
+                    Body = request,
+                    ContentType = "application/json",
+                    Options = options,
+                },
+                cancellationToken
+            )
+            .ConfigureAwait(false);
+        if (response.StatusCode is >= 200 and < 400)
+        {
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            try
+            {
+                return JsonUtils.Deserialize<PublishPlanVersionResponse>(responseBody)!;
             }
             catch (JsonException e)
             {

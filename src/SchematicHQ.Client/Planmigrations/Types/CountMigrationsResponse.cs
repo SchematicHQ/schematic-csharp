@@ -5,21 +5,20 @@ using SchematicHQ.Client.Core;
 namespace SchematicHQ.Client;
 
 [Serializable]
-public record ListApiRequestsResponse : IJsonOnDeserialized
+public record CountMigrationsResponse : IJsonOnDeserialized
 {
     [JsonExtensionData]
     private readonly IDictionary<string, JsonElement> _extensionData =
         new Dictionary<string, JsonElement>();
 
     [JsonPropertyName("data")]
-    public IEnumerable<ApiKeyRequestListResponseData> Data { get; set; } =
-        new List<ApiKeyRequestListResponseData>();
+    public required CountResponse Data { get; set; }
 
     /// <summary>
     /// Input parameters
     /// </summary>
     [JsonPropertyName("params")]
-    public required ListApiRequestsParams Params { get; set; }
+    public required CountMigrationsParams Params { get; set; }
 
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();

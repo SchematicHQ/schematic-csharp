@@ -1695,6 +1695,7 @@ public partial class CreditsClient
     ///     {
     ///         CreditId = "credit_id",
     ///         PlanId = "plan_id",
+    ///         PlanVersionId = "plan_version_id",
     ///         Limit = 1,
     ///         Offset = 1,
     ///     }
@@ -1707,8 +1708,8 @@ public partial class CreditsClient
     )
     {
         var _query = new Dictionary<string, object>();
-        _query["plan_ids"] = request.PlanIds;
         _query["ids"] = request.Ids;
+        _query["plan_ids"] = request.PlanIds;
         if (request.CreditId != null)
         {
             _query["credit_id"] = request.CreditId;
@@ -1716,6 +1717,10 @@ public partial class CreditsClient
         if (request.PlanId != null)
         {
             _query["plan_id"] = request.PlanId;
+        }
+        if (request.PlanVersionId != null)
+        {
+            _query["plan_version_id"] = request.PlanVersionId;
         }
         if (request.Limit != null)
         {
@@ -2024,6 +2029,7 @@ public partial class CreditsClient
     ///     {
     ///         CreditId = "credit_id",
     ///         PlanId = "plan_id",
+    ///         PlanVersionId = "plan_version_id",
     ///         Limit = 1,
     ///         Offset = 1,
     ///     }
@@ -2036,8 +2042,8 @@ public partial class CreditsClient
     )
     {
         var _query = new Dictionary<string, object>();
-        _query["plan_ids"] = request.PlanIds;
         _query["ids"] = request.Ids;
+        _query["plan_ids"] = request.PlanIds;
         if (request.CreditId != null)
         {
             _query["credit_id"] = request.CreditId;
@@ -2045,6 +2051,10 @@ public partial class CreditsClient
         if (request.PlanId != null)
         {
             _query["plan_id"] = request.PlanId;
+        }
+        if (request.PlanVersionId != null)
+        {
+            _query["plan_version_id"] = request.PlanVersionId;
         }
         if (request.Limit != null)
         {

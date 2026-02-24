@@ -4,36 +4,22 @@ using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
 
-/// <summary>
-/// Input parameters
-/// </summary>
 [Serializable]
-public record ListApiRequestsParams : IJsonOnDeserialized
+public record ListCompanyMigrationsResponse : IJsonOnDeserialized
 {
     [JsonExtensionData]
     private readonly IDictionary<string, JsonElement> _extensionData =
         new Dictionary<string, JsonElement>();
 
-    [JsonPropertyName("environment_id")]
-    public string? EnvironmentId { get; set; }
+    [JsonPropertyName("data")]
+    public IEnumerable<PlanVersionCompanyMigrationResponseData> Data { get; set; } =
+        new List<PlanVersionCompanyMigrationResponseData>();
 
     /// <summary>
-    /// Page limit (default 100)
+    /// Input parameters
     /// </summary>
-    [JsonPropertyName("limit")]
-    public int? Limit { get; set; }
-
-    /// <summary>
-    /// Page offset (default 0)
-    /// </summary>
-    [JsonPropertyName("offset")]
-    public int? Offset { get; set; }
-
-    [JsonPropertyName("q")]
-    public string? Q { get; set; }
-
-    [JsonPropertyName("request_type")]
-    public string? RequestType { get; set; }
+    [JsonPropertyName("params")]
+    public required ListCompanyMigrationsParams Params { get; set; }
 
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();

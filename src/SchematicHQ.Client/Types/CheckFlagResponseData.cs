@@ -17,6 +17,9 @@ public record CheckFlagResponseData : IJsonOnDeserialized
     [JsonPropertyName("company_id")]
     public string? CompanyId { get; set; }
 
+    [JsonPropertyName("entitlement")]
+    public FeatureEntitlement? Entitlement { get; set; }
+
     /// <summary>
     /// If an error occurred while checking the flag, the error message
     /// </summary>
@@ -24,31 +27,31 @@ public record CheckFlagResponseData : IJsonOnDeserialized
     public string? Error { get; set; }
 
     /// <summary>
-    /// If a numeric feature entitlement rule was matched, its allocation
+    /// Deprecated: Use Entitlement.Allocation instead.
     /// </summary>
     [JsonPropertyName("feature_allocation")]
     public int? FeatureAllocation { get; set; }
 
     /// <summary>
-    /// If a numeric feature entitlement rule was matched, the company's usage
+    /// Deprecated: Use Entitlement.Usage instead.
     /// </summary>
     [JsonPropertyName("feature_usage")]
     public int? FeatureUsage { get; set; }
 
     /// <summary>
-    /// If an event-based numeric feature entitlement rule was matched, the event used to track its usage
+    /// Deprecated: Use Entitlement.EventName instead.
     /// </summary>
     [JsonPropertyName("feature_usage_event")]
     public string? FeatureUsageEvent { get; set; }
 
     /// <summary>
-    /// For event-based feature entitlement rules, the period over which usage is tracked (current_month, current_day, current_week, all_time)
+    /// Deprecated: Use Entitlement.MetricPeriod instead.
     /// </summary>
     [JsonPropertyName("feature_usage_period")]
     public string? FeatureUsagePeriod { get; set; }
 
     /// <summary>
-    /// For event-based feature entitlement rules, when the usage period will reset
+    /// Deprecated: Use Entitlement.MetricResetAt instead.
     /// </summary>
     [JsonPropertyName("feature_usage_reset_at")]
     public DateTime? FeatureUsageResetAt { get; set; }

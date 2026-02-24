@@ -22,6 +22,12 @@ public record CountFeaturesRequest
     public string? WithoutCompanyOverrideFor { get; set; }
 
     /// <summary>
+    /// Filter by plan version ID when used with without_plan_entitlement_for; if not provided, the latest published version is used
+    /// </summary>
+    [JsonIgnore]
+    public string? PlanVersionId { get; set; }
+
+    /// <summary>
     /// Filter out features that already have a plan entitlement for the specified plan ID
     /// </summary>
     [JsonIgnore]

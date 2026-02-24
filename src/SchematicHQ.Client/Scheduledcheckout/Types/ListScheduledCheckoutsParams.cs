@@ -8,14 +8,14 @@ namespace SchematicHQ.Client;
 /// Input parameters
 /// </summary>
 [Serializable]
-public record CountApiRequestsParams : IJsonOnDeserialized
+public record ListScheduledCheckoutsParams : IJsonOnDeserialized
 {
     [JsonExtensionData]
     private readonly IDictionary<string, JsonElement> _extensionData =
         new Dictionary<string, JsonElement>();
 
-    [JsonPropertyName("environment_id")]
-    public string? EnvironmentId { get; set; }
+    [JsonPropertyName("company_id")]
+    public string? CompanyId { get; set; }
 
     /// <summary>
     /// Page limit (default 100)
@@ -29,11 +29,8 @@ public record CountApiRequestsParams : IJsonOnDeserialized
     [JsonPropertyName("offset")]
     public int? Offset { get; set; }
 
-    [JsonPropertyName("q")]
-    public string? Q { get; set; }
-
-    [JsonPropertyName("request_type")]
-    public string? RequestType { get; set; }
+    [JsonPropertyName("status")]
+    public ScheduledCheckoutStatus? Status { get; set; }
 
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();

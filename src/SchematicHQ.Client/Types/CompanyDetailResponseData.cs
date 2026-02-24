@@ -75,6 +75,9 @@ public record CompanyDetailResponseData : IJsonOnDeserialized
     [JsonPropertyName("rules")]
     public IEnumerable<Rule> Rules { get; set; } = new List<Rule>();
 
+    [JsonPropertyName("scheduled_downgrade")]
+    public ScheduledDowngradeResponseData? ScheduledDowngrade { get; set; }
+
     /// <summary>
     /// A map of trait names to trait values
     /// </summary>

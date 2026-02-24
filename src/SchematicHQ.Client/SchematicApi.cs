@@ -18,7 +18,7 @@ public partial class SchematicApi
                 { "X-Fern-Language", "C#" },
                 { "X-Fern-SDK-Name", "SchematicHQ.Client" },
                 { "X-Fern-SDK-Version", Version.Current },
-                { "User-Agent", "SchematicHQ.Client/1.3.2" },
+                { "User-Agent", "SchematicHQ.Client/1.4.0" },
             }
         );
         clientOptions ??= new ClientOptions();
@@ -43,6 +43,9 @@ public partial class SchematicApi
         Features = new FeaturesClient(_client);
         Planbundle = new PlanbundleClient(_client);
         Plangroups = new PlangroupsClient(_client);
+        Planmigrations = new PlanmigrationsClient(_client);
+        Componentspublic = new ComponentspublicClient(_client);
+        Scheduledcheckout = new ScheduledcheckoutClient(_client);
         Accesstokens = new AccesstokensClient(_client);
         Webhooks = new WebhooksClient(_client);
     }
@@ -72,6 +75,12 @@ public partial class SchematicApi
     public PlanbundleClient Planbundle { get; }
 
     public PlangroupsClient Plangroups { get; }
+
+    public PlanmigrationsClient Planmigrations { get; }
+
+    public ComponentspublicClient Componentspublic { get; }
+
+    public ScheduledcheckoutClient Scheduledcheckout { get; }
 
     public AccesstokensClient Accesstokens { get; }
 

@@ -42,6 +42,12 @@ public record CountFeaturesParams : IJsonOnDeserialized
     public int? Offset { get; set; }
 
     /// <summary>
+    /// Filter by plan version ID when used with without_plan_entitlement_for; if not provided, the latest published version is used
+    /// </summary>
+    [JsonPropertyName("plan_version_id")]
+    public string? PlanVersionId { get; set; }
+
+    /// <summary>
     /// Search by feature name or ID
     /// </summary>
     [JsonPropertyName("q")]

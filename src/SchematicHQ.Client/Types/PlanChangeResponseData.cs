@@ -26,8 +26,8 @@ public record PlanChangeResponseData : IJsonOnDeserialized
     [JsonPropertyName("api_key")]
     public ApiKeyResponseData? ApiKey { get; set; }
 
-    [JsonPropertyName("api_key_request")]
-    public ApiKeyRequestListResponseData? ApiKeyRequest { get; set; }
+    [JsonPropertyName("audit_log")]
+    public AuditLogListResponseData? AuditLog { get; set; }
 
     [JsonPropertyName("base_plan")]
     public PlanSnapshotView? BasePlan { get; set; }

@@ -10,13 +10,16 @@ public record CountBillingPlanCreditGrantsRequest
     public string? CreditId { get; set; }
 
     [JsonIgnore]
+    public IEnumerable<string> Ids { get; set; } = new List<string>();
+
+    [JsonIgnore]
     public string? PlanId { get; set; }
 
     [JsonIgnore]
     public IEnumerable<string> PlanIds { get; set; } = new List<string>();
 
     [JsonIgnore]
-    public IEnumerable<string> Ids { get; set; } = new List<string>();
+    public string? PlanVersionId { get; set; }
 
     /// <summary>
     /// Page limit (default 100)

@@ -20,6 +20,7 @@ public partial class FeaturesClient
     ///     {
     ///         Q = "q",
     ///         WithoutCompanyOverrideFor = "without_company_override_for",
+    ///         PlanVersionId = "plan_version_id",
     ///         WithoutPlanEntitlementFor = "without_plan_entitlement_for",
     ///         BooleanRequireEvent = true,
     ///         Limit = 1,
@@ -43,6 +44,10 @@ public partial class FeaturesClient
         if (request.WithoutCompanyOverrideFor != null)
         {
             _query["without_company_override_for"] = request.WithoutCompanyOverrideFor;
+        }
+        if (request.PlanVersionId != null)
+        {
+            _query["plan_version_id"] = request.PlanVersionId;
         }
         if (request.WithoutPlanEntitlementFor != null)
         {
@@ -409,6 +414,7 @@ public partial class FeaturesClient
     ///     {
     ///         Q = "q",
     ///         WithoutCompanyOverrideFor = "without_company_override_for",
+    ///         PlanVersionId = "plan_version_id",
     ///         WithoutPlanEntitlementFor = "without_plan_entitlement_for",
     ///         BooleanRequireEvent = true,
     ///         Limit = 1,
@@ -432,6 +438,10 @@ public partial class FeaturesClient
         if (request.WithoutCompanyOverrideFor != null)
         {
             _query["without_company_override_for"] = request.WithoutCompanyOverrideFor;
+        }
+        if (request.PlanVersionId != null)
+        {
+            _query["plan_version_id"] = request.PlanVersionId;
         }
         if (request.WithoutPlanEntitlementFor != null)
         {

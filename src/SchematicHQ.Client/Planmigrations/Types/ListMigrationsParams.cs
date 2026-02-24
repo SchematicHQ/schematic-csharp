@@ -4,21 +4,33 @@ using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
 
+/// <summary>
+/// Input parameters
+/// </summary>
 [Serializable]
-public record CountCompaniesForAdvancedFilterResponse : IJsonOnDeserialized
+public record ListMigrationsParams : IJsonOnDeserialized
 {
     [JsonExtensionData]
     private readonly IDictionary<string, JsonElement> _extensionData =
         new Dictionary<string, JsonElement>();
 
-    [JsonPropertyName("data")]
-    public required CountResponse Data { get; set; }
+    /// <summary>
+    /// Page limit (default 100)
+    /// </summary>
+    [JsonPropertyName("limit")]
+    public int? Limit { get; set; }
 
     /// <summary>
-    /// Input parameters
+    /// Page offset (default 0)
     /// </summary>
-    [JsonPropertyName("params")]
-    public required CountCompaniesForAdvancedFilterParams Params { get; set; }
+    [JsonPropertyName("offset")]
+    public int? Offset { get; set; }
+
+    [JsonPropertyName("plan_version_id")]
+    public string? PlanVersionId { get; set; }
+
+    [JsonPropertyName("status")]
+    public PlanVersionMigrationStatus? Status { get; set; }
 
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();
