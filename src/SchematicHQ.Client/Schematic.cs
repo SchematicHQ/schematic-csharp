@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using SchematicHQ.Client.Datastream;
 using SchematicHQ.Client.Cache;
 using SchematicHQ.Client.Core;
+using SchematicHQ.Client.RulesEngine;
 
 #nullable enable
 
@@ -283,13 +284,23 @@ public partial class Schematic
 
     public async Task<bool> CheckFlag(string flagKey, Dictionary<string, string>? company = null, Dictionary<string, string>? user = null)
     {
+        var resp = await CheckFlagWithEntitlement(flagKey, company, user);
+        return resp.Value;
+    }
+
+    public async Task<CheckFlagWithEntitlementResponse> CheckFlagWithEntitlement(string flagKey, Dictionary<string, string>? company = null, Dictionary<string, string>? user = null)
+    {
         if (_offline)
-            return GetFlagDefault(flagKey);
+            return new CheckFlagWithEntitlementResponse
+            {
+                FlagKey = flagKey,
+                Value = GetFlagDefault(flagKey),
+                Reason = "offline mode"
+            };
 
         // Try datastream first if enabled
         if (_datastreamClient != null)
         {
-
             try
             {
                 var request = new CheckFlagRequestBody
@@ -298,6 +309,8 @@ public partial class Schematic
                     User = user
                 };
                 var flagResult = await _datastreamClient.CheckFlag(request, flagKey);
+
+                var response = CheckFlagWithEntitlementResponse.FromCheckFlagResult(flagResult);
 
                 // Submit flag check event for successful datastream evaluation
                 SubmitFlagCheckEvent(
@@ -316,21 +329,21 @@ public partial class Schematic
                         Reason = flagResult.Reason,
                         Error = flagResult.Error?.Message
                     });
-                return flagResult.Value;
+                return response;
             }
             catch (Exception ex)
             {
                 // Fall back to API if datastream fails
                 _logger.Debug("Datastream flag check failed ({0}), falling back to API", ex.Message);
-                return await CheckFlagApi(flagKey, company, user);
+                return await CheckFlagWithEntitlementApi(flagKey, company, user);
             }
         }
 
         // Fall back to API request
-        return await CheckFlagApi(flagKey, company, user);
+        return await CheckFlagWithEntitlementApi(flagKey, company, user);
     }
 
-    private async Task<bool> CheckFlagApi(string flagKey, Dictionary<string, string>? company, Dictionary<string, string>? user)
+    private async Task<CheckFlagWithEntitlementResponse> CheckFlagWithEntitlementApi(string flagKey, Dictionary<string, string>? company, Dictionary<string, string>? user)
     {
         try
         {
@@ -350,17 +363,27 @@ public partial class Schematic
                 {
                     // Submit flag check event for cached value
                     SubmitFlagCheckEventForValue(flagKey, cachedValue, company, user, "cache");
-                    return cachedValue;
+                    return new CheckFlagWithEntitlementResponse
+                    {
+                        FlagKey = flagKey,
+                        Value = cachedValue,
+                        Reason = "cache"
+                    };
                 }
             }
 
             // Make API request
-            var response = await API.Features.CheckFlagAsync(flagKey, requestBody);
+            var apiResponse = await API.Features.CheckFlagAsync(flagKey, requestBody);
 
-            if (response == null)
+            if (apiResponse == null)
             {
                 // If the client was not initialized with an API key, we'll have a no-op here which returns an empty response
-                return GetFlagDefault(flagKey);
+                return new CheckFlagWithEntitlementResponse
+                {
+                    FlagKey = flagKey,
+                    Value = GetFlagDefault(flagKey),
+                    Reason = "no response"
+                };
             }
 
             // Cache the result
@@ -368,7 +391,7 @@ public partial class Schematic
             {
                 try
                 {
-                    provider.Set(cacheKey, response.Data.Value);
+                    provider.Set(cacheKey, apiResponse.Data.Value);
                 }
                 catch (Exception cacheEx)
                 {
@@ -376,12 +399,17 @@ public partial class Schematic
                 }
             }
 
-            return response.Data.Value;
+            return CheckFlagWithEntitlementResponse.FromApiResponse(apiResponse.Data, flagKey);
         }
         catch (Exception ex)
         {
             _logger.Error("Error checking flag via API: {0}", ex.Message);
-            return GetFlagDefault(flagKey);
+            return new CheckFlagWithEntitlementResponse
+            {
+                FlagKey = flagKey,
+                Value = GetFlagDefault(flagKey),
+                Reason = ex.Message
+            };
         }
     }
 
