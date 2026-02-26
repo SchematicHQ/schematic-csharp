@@ -1,8 +1,10 @@
+using System.Runtime.CompilerServices;
+
 namespace SchematicHQ.Client.RulesEngine
 {
     public static class RulesengineCompanyExtensions
     {
-        private static readonly object MetricsLock = new object();
+        private static readonly ConditionalWeakTable<RulesengineCompany, object> MetricsLocks = new ConditionalWeakTable<RulesengineCompany, object>();
 
         public static RulesengineTrait? GetTraitByDefinitionId(this RulesengineCompany company, string definitionId)
         {
@@ -25,7 +27,8 @@ namespace SchematicHQ.Client.RulesEngine
                 company.Metrics = metricsList;
             }
 
-            lock (MetricsLock)
+            var metricsLock = MetricsLocks.GetOrCreateValue(company);
+            lock (metricsLock)
             {
                 var existingMetricIndex = metricsList.FindIndex(m =>
                     m.EventSubtype == metric.EventSubtype &&
