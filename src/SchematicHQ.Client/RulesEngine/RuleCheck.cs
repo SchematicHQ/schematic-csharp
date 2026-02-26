@@ -339,18 +339,12 @@ namespace SchematicHQ.Client.RulesEngine
 
         static private RulesengineTrait? FindTrait(RulesengineTraitDefinition? traitDef, IEnumerable<RulesengineTrait>? traits)
         {
-            if (traitDef == null)
+            if (traitDef == null || traits == null)
             {
                 return null;
             }
 
-            var found = traits?.FirstOrDefault(t => t.TraitDefinition?.Id == traitDef.Id);
-            if (found != null)
-            {
-                return found;
-            }
-
-            return new RulesengineTrait { TraitDefinition = traitDef, Value = "" };
+            return traits.FirstOrDefault(t => t.TraitDefinition?.Id == traitDef.Id);
         }
     }
 }
