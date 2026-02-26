@@ -1,6 +1,7 @@
 using System.Net.Http;
 using SchematicHQ.Client.Core;
 using SchematicHQ.Client.Cache;
+using SchematicHQ.Client.RulesEngine;
 
 #nullable enable
 
@@ -10,7 +11,7 @@ public partial class ClientOptions
 {
     public Dictionary<string, bool> FlagDefaults { get; set; } = new Dictionary<string, bool>();
     public ISchematicLogger Logger { get; set; } = new ConsoleLogger();
-    public List<ICacheProvider<bool?>> CacheProviders { get; set; } = new List<ICacheProvider<bool?>>();
+    public List<ICacheProvider<CheckFlagWithEntitlementResponse?>> CacheProviders { get; set; } = new List<ICacheProvider<CheckFlagWithEntitlementResponse?>>();
     public CacheConfiguration? CacheConfiguration { get; set; }
     public bool Offline { get; set; }
 
@@ -99,7 +100,7 @@ public static class ClientOptionsExtensions
     /// <returns>Updated client options</returns>
     public static ClientOptions WithLocalCache(
         this ClientOptions options,
-        int capacity = Cache.LocalCache<bool?>.DEFAULT_CACHE_CAPACITY,
+        int capacity = Cache.LocalCache<CheckFlagWithEntitlementResponse?>.DEFAULT_CACHE_CAPACITY,
         TimeSpan? ttl = null)
     {
         options.CacheConfiguration = new Cache.CacheConfiguration

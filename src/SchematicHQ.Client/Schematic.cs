@@ -18,7 +18,7 @@ public partial class Schematic
     private readonly ClientOptions _options;
     private readonly IEventBuffer<CreateEventRequestBody> _eventBuffer;
     private readonly ISchematicLogger _logger;
-    private readonly List<ICacheProvider<bool?>> _flagCheckCacheProviders;
+    private readonly List<ICacheProvider<CheckFlagWithEntitlementResponse?>> _flagCheckCacheProviders;
     private readonly bool _offline;
     private readonly DatastreamClientAdapter? _datastreamClient;
     private readonly bool _replicatorMode;
@@ -76,7 +76,7 @@ public partial class Schematic
             {
                 foreach (var provider in _options.CacheProviders)
                 {
-                    if (provider is RedisCache<bool?>)
+                    if (provider is RedisCache<CheckFlagWithEntitlementResponse?>)
                     {
                         hasRedisCache = true;
                         break;
@@ -129,7 +129,7 @@ public partial class Schematic
         else if (_options.CacheConfiguration != null)
         {
             // Create cache providers based on configuration
-            _flagCheckCacheProviders = new List<ICacheProvider<bool?>>();
+            _flagCheckCacheProviders = new List<ICacheProvider<CheckFlagWithEntitlementResponse?>>();
 
             switch (_options.CacheConfiguration.ProviderType)
             {
@@ -137,7 +137,7 @@ public partial class Schematic
                     if (_options.CacheConfiguration.RedisConfig == null)
                     {
                         _logger.Warn("Redis configuration not provided, falling back to local cache");
-                        _flagCheckCacheProviders.Add(new LocalCache<bool?>());
+                        _flagCheckCacheProviders.Add(new LocalCache<CheckFlagWithEntitlementResponse?>());
                     }
                     else
                     {
@@ -147,14 +147,14 @@ public partial class Schematic
                             _options.CacheConfiguration.RedisConfig.CacheTTL = _options.CacheConfiguration.CacheTtl;
                         }
 
-                        RedisCache<bool?> redisCache = new RedisCache<bool?>(_options.CacheConfiguration.RedisConfig);
+                        RedisCache<CheckFlagWithEntitlementResponse?> redisCache = new RedisCache<CheckFlagWithEntitlementResponse?>(_options.CacheConfiguration.RedisConfig);
                         _flagCheckCacheProviders.Add(redisCache);
                     }
                     break;
 
                 case CacheProviderType.Local:
                 default:
-                    _flagCheckCacheProviders.Add(new LocalCache<bool?>(
+                    _flagCheckCacheProviders.Add(new LocalCache<CheckFlagWithEntitlementResponse?>(
                         _options.CacheConfiguration.LocalCacheCapacity,
                         _options.CacheConfiguration.CacheTtl
                     ));
@@ -164,9 +164,9 @@ public partial class Schematic
         else
         {
             // Default to local cache
-            _flagCheckCacheProviders = new List<ICacheProvider<bool?>>
+            _flagCheckCacheProviders = new List<ICacheProvider<CheckFlagWithEntitlementResponse?>>
             {
-                new LocalCache<bool?>()
+                new LocalCache<CheckFlagWithEntitlementResponse?>()
             };
         }
 
@@ -359,16 +359,12 @@ public partial class Schematic
             // Check cache first
             foreach (var provider in _flagCheckCacheProviders)
             {
-                if (provider.Get(cacheKey) is bool cachedValue)
+                var cachedResponse = provider.Get(cacheKey);
+                if (cachedResponse != null)
                 {
                     // Submit flag check event for cached value
-                    SubmitFlagCheckEventForValue(flagKey, cachedValue, company, user, "cache");
-                    return new CheckFlagWithEntitlementResponse
-                    {
-                        FlagKey = flagKey,
-                        Value = cachedValue,
-                        Reason = "cache"
-                    };
+                    SubmitFlagCheckEventForValue(flagKey, cachedResponse.Value, company, user, "cache");
+                    return cachedResponse;
                 }
             }
 
@@ -386,12 +382,14 @@ public partial class Schematic
                 };
             }
 
+            var result = CheckFlagWithEntitlementResponse.FromApiResponse(apiResponse.Data, flagKey);
+
             // Cache the result
             foreach (var provider in _flagCheckCacheProviders)
             {
                 try
                 {
-                    provider.Set(cacheKey, apiResponse.Data.Value);
+                    provider.Set(cacheKey, result);
                 }
                 catch (Exception cacheEx)
                 {
@@ -399,7 +397,7 @@ public partial class Schematic
                 }
             }
 
-            return CheckFlagWithEntitlementResponse.FromApiResponse(apiResponse.Data, flagKey);
+            return result;
         }
         catch (Exception ex)
         {

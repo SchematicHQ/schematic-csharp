@@ -7,6 +7,7 @@ using System.Text;
 using OneOf;
 using SchematicHQ.Client.Core;
 using SchematicHQ.Client.Cache;
+using SchematicHQ.Client.RulesEngine;
 
 namespace SchematicHQ.Client.Test
 {
@@ -83,7 +84,7 @@ namespace SchematicHQ.Client.Test
                 Offline = isOffline,
                 FlagDefaults = flagDefaults ?? new Dictionary<string, bool>(),
                 DefaultEventBufferPeriod = TimeSpan.FromSeconds(_defaultEventBufferPeriod),
-                CacheProviders = new List<ICacheProvider<bool?>> { new LocalCache<bool?>() }
+                CacheProviders = new List<ICacheProvider<CheckFlagWithEntitlementResponse?>> { new LocalCache<CheckFlagWithEntitlementResponse?>() }
             };
 
             if (!_options.Offline)
@@ -122,7 +123,9 @@ namespace SchematicHQ.Client.Test
             Assert.That(result, Is.True);
             foreach (var cacheProvider in _options.CacheProviders)
             {
-                Assert.That(cacheProvider.Get(flagKey), Is.EqualTo(true));
+                var cached = cacheProvider.Get(flagKey);
+                Assert.That(cached, Is.Not.Null);
+                Assert.That(cached!.Value, Is.True);
             }
         }
 
@@ -135,7 +138,7 @@ namespace SchematicHQ.Client.Test
             string cacheKey = "test_flag:c-name=test_company:u-id=unique_id";
             foreach (var cacheProvider in _options.CacheProviders)
             {
-                cacheProvider.Set(cacheKey, true);
+                cacheProvider.Set(cacheKey, new CheckFlagWithEntitlementResponse { FlagKey = flagKey, Value = true, Reason = "cache" });
             }
 
             // Act
@@ -157,7 +160,7 @@ namespace SchematicHQ.Client.Test
             string flagKey = "test_flag";
             foreach (var cacheProvider in _options.CacheProviders)
             {
-                cacheProvider.Set(flagKey, true);
+                cacheProvider.Set(flagKey, new CheckFlagWithEntitlementResponse { FlagKey = flagKey, Value = true, Reason = "cache" });
             }
 
             // Act
@@ -404,10 +407,14 @@ namespace SchematicHQ.Client.Test
             var result1 = await _schematic.CheckFlagWithEntitlement(flagKey);
             Assert.That(result1.Value, Is.True);
 
-            // Verify cache was populated
+            // Verify cache was populated with full response
             foreach (var cacheProvider in _options.CacheProviders)
             {
-                Assert.That(cacheProvider.Get(flagKey), Is.EqualTo(true));
+                var cached = cacheProvider.Get(flagKey);
+                Assert.That(cached, Is.Not.Null);
+                Assert.That(cached!.Value, Is.True);
+                Assert.That(cached.FlagKey, Is.EqualTo(flagKey));
+                Assert.That(cached.Reason, Is.EqualTo("matched entitlement rule"));
             }
         }
     }
