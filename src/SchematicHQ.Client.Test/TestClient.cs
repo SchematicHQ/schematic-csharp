@@ -7,6 +7,7 @@ using System.Text;
 using OneOf;
 using SchematicHQ.Client.Core;
 using SchematicHQ.Client.Cache;
+using SchematicHQ.Client.RulesEngine;
 
 namespace SchematicHQ.Client.Test
 {
@@ -27,6 +28,30 @@ namespace SchematicHQ.Client.Test
                     Flag = "test_flag",
                     Reason = "test_reason",
                     Value = flagValue
+                }
+            };
+            var serializedResponse = JsonSerializer.Serialize(response, new JsonSerializerOptions { WriteIndented = true });
+            return new HttpResponseMessage(code)
+            {
+                Content = new StringContent(serializedResponse, Encoding.UTF8, "application/json")
+            };
+        }
+
+        private HttpResponseMessage CreateCheckFlagResponseWithEntitlement(HttpStatusCode code, bool flagValue, FeatureEntitlement? entitlement = null, string? companyId = null, string? userId = null, string? flagId = null, string? ruleId = null, string? ruleType = null, string? reason = null)
+        {
+            var response = new CheckFlagResponse
+            {
+                Data = new CheckFlagResponseData
+                {
+                    Flag = "test_flag",
+                    Reason = reason ?? "matched entitlement rule",
+                    Value = flagValue,
+                    Entitlement = entitlement,
+                    CompanyId = companyId,
+                    UserId = userId,
+                    FlagId = flagId,
+                    RuleId = ruleId,
+                    RuleType = ruleType
                 }
             };
             var serializedResponse = JsonSerializer.Serialize(response, new JsonSerializerOptions { WriteIndented = true });
@@ -59,7 +84,7 @@ namespace SchematicHQ.Client.Test
                 Offline = isOffline,
                 FlagDefaults = flagDefaults ?? new Dictionary<string, bool>(),
                 DefaultEventBufferPeriod = TimeSpan.FromSeconds(_defaultEventBufferPeriod),
-                CacheProviders = new List<ICacheProvider<bool?>> { new LocalCache<bool?>() }
+                CacheProviders = new List<ICacheProvider<CheckFlagWithEntitlementResponse?>> { new LocalCache<CheckFlagWithEntitlementResponse?>() }
             };
 
             if (!_options.Offline)
@@ -98,7 +123,9 @@ namespace SchematicHQ.Client.Test
             Assert.That(result, Is.True);
             foreach (var cacheProvider in _options.CacheProviders)
             {
-                Assert.That(cacheProvider.Get(flagKey), Is.EqualTo(true));
+                var cached = cacheProvider.Get(flagKey);
+                Assert.That(cached, Is.Not.Null);
+                Assert.That(cached!.Value, Is.True);
             }
         }
 
@@ -111,7 +138,7 @@ namespace SchematicHQ.Client.Test
             string cacheKey = "test_flag:c-name=test_company:u-id=unique_id";
             foreach (var cacheProvider in _options.CacheProviders)
             {
-                cacheProvider.Set(cacheKey, true);
+                cacheProvider.Set(cacheKey, new CheckFlagWithEntitlementResponse { FlagKey = flagKey, Value = true, Reason = "cache" });
             }
 
             // Act
@@ -133,7 +160,7 @@ namespace SchematicHQ.Client.Test
             string flagKey = "test_flag";
             foreach (var cacheProvider in _options.CacheProviders)
             {
-                cacheProvider.Set(flagKey, true);
+                cacheProvider.Set(flagKey, new CheckFlagWithEntitlementResponse { FlagKey = flagKey, Value = true, Reason = "cache" });
             }
 
             // Act
@@ -263,6 +290,132 @@ namespace SchematicHQ.Client.Test
 
             // Assert
             Assert.That(result, Is.True);
+        }
+
+        [Test]
+        public async Task CheckFlagWithEntitlement_ReturnsResponseWithEntitlement()
+        {
+            // Arrange
+            var entitlement = new FeatureEntitlement
+            {
+                FeatureId = "feat_123",
+                FeatureKey = "test_feature",
+                ValueType = EntitlementValueType.Numeric,
+                Allocation = 100,
+                Usage = 50
+            };
+            SetupSchematicTestClient(
+                isOffline: false,
+                response: CreateCheckFlagResponseWithEntitlement(
+                    HttpStatusCode.OK,
+                    true,
+                    entitlement: entitlement,
+                    companyId: "comp_123",
+                    flagId: "flag_123",
+                    ruleId: "rule_123",
+                    ruleType: "entitlement"
+                )
+            );
+
+            // Act
+            var result = await _schematic.CheckFlagWithEntitlement("test_flag");
+
+            // Assert
+            Assert.That(result.Value, Is.True);
+            Assert.That(result.FlagKey, Is.EqualTo("test_flag"));
+            Assert.That(result.Reason, Is.EqualTo("matched entitlement rule"));
+            Assert.That(result.CompanyId, Is.EqualTo("comp_123"));
+            Assert.That(result.FlagId, Is.EqualTo("flag_123"));
+            Assert.That(result.RuleId, Is.EqualTo("rule_123"));
+            Assert.That(result.RuleType, Is.EqualTo("entitlement"));
+            Assert.That(result.Entitlement, Is.Not.Null);
+            Assert.That(result.Entitlement!.FeatureId, Is.EqualTo("feat_123"));
+            Assert.That(result.Entitlement.FeatureKey, Is.EqualTo("test_feature"));
+            Assert.That(result.Entitlement.Allocation, Is.EqualTo(100));
+            Assert.That(result.Entitlement.Usage, Is.EqualTo(50));
+        }
+
+        [Test]
+        public async Task CheckFlagWithEntitlement_OfflineModeReturnsDefault()
+        {
+            // Arrange
+            SetupSchematicTestClient(
+                isOffline: true,
+                response: CreateCheckFlagResponse(HttpStatusCode.OK, false),
+                flagDefaults: new Dictionary<string, bool> { { "test_flag_key", true } }
+            );
+
+            // Act
+            var result = await _schematic.CheckFlagWithEntitlement("test_flag_key");
+
+            // Assert
+            Assert.That(result.Value, Is.True);
+            Assert.That(result.FlagKey, Is.EqualTo("test_flag_key"));
+            Assert.That(result.Reason, Is.EqualTo("offline mode"));
+            Assert.That(result.Entitlement, Is.Null);
+        }
+
+        [Test]
+        public async Task CheckFlagWithEntitlement_ReturnsResponseWithNoEntitlement()
+        {
+            // Arrange
+            SetupSchematicTestClient(
+                isOffline: false,
+                response: CreateCheckFlagResponseWithEntitlement(HttpStatusCode.OK, false)
+            );
+
+            // Act
+            var result = await _schematic.CheckFlagWithEntitlement("test_flag");
+
+            // Assert
+            Assert.That(result.Value, Is.False);
+            Assert.That(result.FlagKey, Is.EqualTo("test_flag"));
+            Assert.That(result.Entitlement, Is.Null);
+        }
+
+        [Test]
+        public async Task CheckFlagWithEntitlement_ReturnsDefaultOnError()
+        {
+            // Arrange
+            string flagKey = "error_flag";
+            SetupSchematicTestClient(
+                isOffline: false,
+                response: CreateCheckFlagResponse(HttpStatusCode.InternalServerError, false),
+                flagDefaults: new Dictionary<string, bool> { { flagKey, true } }
+            );
+
+            // Act
+            var result = await _schematic.CheckFlagWithEntitlement(flagKey);
+
+            // Assert
+            Assert.That(result.Value, Is.True);
+            Assert.That(result.FlagKey, Is.EqualTo(flagKey));
+            Assert.That(result.Entitlement, Is.Null);
+        }
+
+        [Test]
+        public async Task CheckFlagWithEntitlement_CachesAndReturnsCachedResponse()
+        {
+            // Arrange
+            SetupSchematicTestClient(
+                isOffline: false,
+                response: CreateCheckFlagResponseWithEntitlement(HttpStatusCode.OK, true)
+            );
+            string flagKey = "test_flag";
+
+            // First call should hit the API and cache
+            var result1 = await _schematic.CheckFlagWithEntitlement(flagKey);
+            Assert.That(result1.Value, Is.True);
+
+            // Verify cache was populated with full response
+            foreach (var cacheProvider in _options.CacheProviders)
+            {
+                var cached = cacheProvider.Get(flagKey);
+                Assert.That(cached, Is.Not.Null);
+                Assert.That(cached!.Value, Is.True);
+                Assert.That(cached.FlagKey, Is.EqualTo(flagKey));
+                Assert.That(cached.Reason, Is.EqualTo("matched entitlement rule"));
+            }
         }
     }
 }

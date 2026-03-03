@@ -2,7 +2,6 @@ using System;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using NUnit.Framework;
-using SchematicHQ.Client.RulesEngine.Models;
 using SchematicHQ.Client.RulesEngine.Utils;
 using SchematicHQ.Client.RulesEngine;
 using SchematicHQ.Client.Cache;
@@ -17,11 +16,11 @@ namespace SchematicHQ.Client.Test.RulesEngine
         [SetUp]
         public void SetUp()
         {
-            _jsonOptions = new JsonSerializerOptions 
-            { 
+            _jsonOptions = new JsonSerializerOptions
+            {
                 WriteIndented = false,
                 PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower,
-                Converters = { 
+                Converters = {
                     new ComparableTypeConverter(),
                     new ResilientEnumConverter(),
                     new JsonStringEnumConverter(JsonNamingPolicy.SnakeCaseLower, true)
@@ -76,14 +75,14 @@ namespace SchematicHQ.Client.Test.RulesEngine
 }";
 
             // Act
-            var flag = JsonSerializer.Deserialize<Flag>(flagJson, _jsonOptions);
+            var flag = JsonSerializer.Deserialize<RulesengineFlag>(flagJson, _jsonOptions);
 
             // Assert
             Assert.That(flag, Is.Not.Null);
             Assert.That(flag!.Id, Is.EqualTo("flag_6SB8FaJPR8C"));
             Assert.That(flag.Key, Is.EqualTo("analyze-clicks"));
-            Assert.That(flag.Rules, Has.Count.EqualTo(1));
-            Assert.That(flag.Rules[0].RuleType, Is.EqualTo(RuleRuleType.PlanEntitlement));
+            Assert.That(flag.Rules.Count(), Is.EqualTo(1));
+            Assert.That(flag.Rules.First().RuleType, Is.EqualTo(RulesengineRuleRuleType.PlanEntitlement));
         }
 
         [Test]
@@ -138,17 +137,17 @@ namespace SchematicHQ.Client.Test.RulesEngine
 }";
 
             // Act
-            var company = JsonSerializer.Deserialize<Company>(companyJson, _jsonOptions);
+            var company = JsonSerializer.Deserialize<RulesengineCompany>(companyJson, _jsonOptions);
 
             // Assert
             Assert.That(company, Is.Not.Null);
             Assert.That(company!.Id, Is.EqualTo("comp_DopLPhkmGHU"));
-            Assert.That(company.Traits, Has.Count.EqualTo(3));
-            
+            Assert.That(company.Traits.Count(), Is.EqualTo(3));
+
             // Check that empty string comparable_type is handled correctly
             foreach (var trait in company.Traits)
             {
-                // Empty string should create a TraitDefinitionComparableType with empty string value
+                // Empty string should create a RulesengineTraitDefinitionComparableType with empty string value
                 Assert.That(trait.TraitDefinition?.ComparableType.Value, Is.EqualTo(""));
             }
         }
@@ -176,7 +175,7 @@ namespace SchematicHQ.Client.Test.RulesEngine
             var testObj = JsonSerializer.Deserialize<TestTraitDefinitionComparableTypeObject>(json, _jsonOptions);
 
             // Assert
-            Assert.That(testObj!.ComparableType, Is.EqualTo(TraitDefinitionComparableType.String));
+            Assert.That(testObj!.ComparableType, Is.EqualTo(RulesengineTraitDefinitionComparableType.String));
         }
 
         [Test]
@@ -189,7 +188,7 @@ namespace SchematicHQ.Client.Test.RulesEngine
             var testObj = JsonSerializer.Deserialize<TestTraitDefinitionComparableTypeObject>(json, _jsonOptions);
 
             // Assert
-            Assert.That(testObj!.ComparableType, Is.EqualTo(TraitDefinitionComparableType.Int));
+            Assert.That(testObj!.ComparableType, Is.EqualTo(RulesengineTraitDefinitionComparableType.Int));
         }
 
         [Test]
@@ -202,7 +201,7 @@ namespace SchematicHQ.Client.Test.RulesEngine
             var testObj = JsonSerializer.Deserialize<TestTraitDefinitionComparableTypeObject>(json, _jsonOptions);
 
             // Assert
-            Assert.That(testObj!.ComparableType, Is.EqualTo(TraitDefinitionComparableType.Bool));
+            Assert.That(testObj!.ComparableType, Is.EqualTo(RulesengineTraitDefinitionComparableType.Bool));
         }
 
         [Test]
@@ -215,7 +214,7 @@ namespace SchematicHQ.Client.Test.RulesEngine
             var testObj = JsonSerializer.Deserialize<TestTraitDefinitionComparableTypeObject>(json, _jsonOptions);
 
             // Assert
-            Assert.That(testObj!.ComparableType, Is.EqualTo(TraitDefinitionComparableType.Date));
+            Assert.That(testObj!.ComparableType, Is.EqualTo(RulesengineTraitDefinitionComparableType.Date));
         }
 
         [Test]
@@ -228,7 +227,7 @@ namespace SchematicHQ.Client.Test.RulesEngine
             var testObj = JsonSerializer.Deserialize<TestRuleTypeObject>(json, _jsonOptions);
 
             // Assert
-            Assert.That(testObj!.RuleType, Is.EqualTo(RuleRuleType.PlanEntitlement));
+            Assert.That(testObj!.RuleType, Is.EqualTo(RulesengineRuleRuleType.PlanEntitlement));
         }
 
         [Test]
@@ -241,7 +240,7 @@ namespace SchematicHQ.Client.Test.RulesEngine
             var testObj = JsonSerializer.Deserialize<TestRuleTypeObject>(json, _jsonOptions);
 
             // Assert
-            Assert.That(testObj!.RuleType, Is.EqualTo(RuleRuleType.GlobalOverride));
+            Assert.That(testObj!.RuleType, Is.EqualTo(RulesengineRuleRuleType.GlobalOverride));
         }
 
         [Test]
@@ -254,7 +253,7 @@ namespace SchematicHQ.Client.Test.RulesEngine
             var testObj = JsonSerializer.Deserialize<TestRuleTypeObject>(json, _jsonOptions);
 
             // Assert
-            Assert.That(testObj!.RuleType, Is.EqualTo(RuleRuleType.CompanyOverride));
+            Assert.That(testObj!.RuleType, Is.EqualTo(RulesengineRuleRuleType.CompanyOverride));
         }
 
         [Test]
@@ -267,7 +266,7 @@ namespace SchematicHQ.Client.Test.RulesEngine
             var testObj = JsonSerializer.Deserialize<TestRuleTypeObject>(json, _jsonOptions);
 
             // Assert
-            Assert.That(testObj!.RuleType, Is.EqualTo(RuleRuleType.Standard));
+            Assert.That(testObj!.RuleType, Is.EqualTo(RulesengineRuleRuleType.Standard));
         }
 
         [Test]
@@ -280,7 +279,7 @@ namespace SchematicHQ.Client.Test.RulesEngine
             var testObj = JsonSerializer.Deserialize<TestRuleTypeObject>(json, _jsonOptions);
 
             // Assert
-            Assert.That(testObj!.RuleType, Is.EqualTo(RuleRuleType.Default));
+            Assert.That(testObj!.RuleType, Is.EqualTo(RulesengineRuleRuleType.Default));
         }
 
         [Test]
@@ -338,13 +337,13 @@ namespace SchematicHQ.Client.Test.RulesEngine
         private class TestTraitDefinitionComparableTypeObject
         {
             [JsonPropertyName("comparable_type")]
-            public TraitDefinitionComparableType ComparableType { get; set; }
+            public RulesengineTraitDefinitionComparableType ComparableType { get; set; }
         }
 
         private class TestRuleTypeObject
         {
             [JsonPropertyName("rule_type")]
-            public RuleRuleType RuleType { get; set; }
+            public RulesengineRuleRuleType RuleType { get; set; }
         }
     }
 }

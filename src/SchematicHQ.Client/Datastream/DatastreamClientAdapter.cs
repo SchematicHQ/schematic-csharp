@@ -1,6 +1,5 @@
 using Microsoft.Extensions.Logging;
 using SchematicHQ.Client.RulesEngine;
-using SchematicHQ.Client.RulesEngine.Models;
 using System;
 using System.Collections.Generic;
 using System.Threading;
@@ -202,8 +201,8 @@ namespace SchematicHQ.Client.Datastream
 
       // Always try to get cached resources first
       var cachedFlag = _client.GetFlag(flagKey);
-      Company? cachedCompany = null;
-      User? cachedUser = null;
+      RulesengineCompany? cachedCompany = null;
+      RulesengineUser? cachedUser = null;
 
       if (needsCompany && request.Company != null)
       {
@@ -299,8 +298,8 @@ namespace SchematicHQ.Client.Datastream
         // Fetch missing company/user data from datastream
         try
         {
-          Company? company = cachedCompany;
-          User? user = cachedUser;
+          RulesengineCompany? company = cachedCompany;
+          RulesengineUser? user = cachedUser;
 
           if (needsCompany && company == null && request.Company != null)
           {

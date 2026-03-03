@@ -1,4 +1,3 @@
-using SchematicHQ.Client.RulesEngine.Models;
 using SchematicHQ.Client.RulesEngine;
 using System.Diagnostics;
 using NUnit.Framework;
@@ -13,14 +12,14 @@ namespace SchematicHQ.Client.Test.RulesEngine
         {
             // Arrange
             var company = TestHelpers.CreateTestCompany();
-            int initialCount = company.Metrics.Count;
+            int initialCount = company.Metrics.Count();
 
             // Act
-            var metric = TestHelpers.CreateTestMetric(company, "test-event", ConditionMetricPeriod.AllTime, 5);
+            var metric = TestHelpers.CreateTestMetric(company, "test-event", RulesengineConditionMetricPeriod.AllTime, 5);
             company.AddMetric(metric);
 
             // Assert
-            Assert.That(company.Metrics.Count, Is.EqualTo(initialCount + 1));
+            Assert.That(company.Metrics.Count(), Is.EqualTo(initialCount + 1));
             Assert.That(company.Metrics, Does.Contain(metric));
         }
 
@@ -32,12 +31,12 @@ namespace SchematicHQ.Client.Test.RulesEngine
 
             // Add initial metric
             string eventSubtype = "test-event";
-            var period = ConditionMetricPeriod.AllTime;
-            ConditionMetricPeriodMonthReset monthReset = ConditionMetricPeriodMonthReset.FirstOfMonth;
+            var period = RulesengineConditionMetricPeriod.AllTime;
+            RulesengineConditionMetricPeriodMonthReset monthReset = RulesengineConditionMetricPeriodMonthReset.FirstOfMonth;
 
             var initialMetric = TestHelpers.CreateTestMetric(company, eventSubtype, period, 5);
             company.AddMetric(initialMetric);
-            int initialCount = company.Metrics.Count;
+            int initialCount = company.Metrics.Count();
 
             // Act - Add metric with same constraints but different value
             var newMetric = TestHelpers.CreateTestMetric(company, eventSubtype, period, 10);
@@ -45,12 +44,12 @@ namespace SchematicHQ.Client.Test.RulesEngine
 
             // Assert
             // Verify the length hasn't changed but the new metric replaced the old one
-            Assert.That(company.Metrics.Count, Is.EqualTo(initialCount));
+            Assert.That(company.Metrics.Count(), Is.EqualTo(initialCount));
             Assert.That(company.Metrics, Does.Contain(newMetric));
             Assert.That(company.Metrics, Does.Not.Contain(initialMetric));
 
             // Find the metric and verify it has the new value
-            var foundMetric = CompanyMetric.Find(company.Metrics, eventSubtype, period, monthReset);
+            var foundMetric = CompanyMetricExtensions.Find(company.Metrics, eventSubtype, period, monthReset);
             Assert.That(foundMetric, Is.Not.Null);
             Assert.That(foundMetric!.Value, Is.EqualTo(10));
         }
@@ -73,7 +72,7 @@ namespace SchematicHQ.Client.Test.RulesEngine
                 {
                     // Create a metric with a unique event subtype to avoid collision
                     string uniqueSubtype = $"test-event-{DateTime.Now.Ticks}-{index}";
-                    var metric = TestHelpers.CreateTestMetric(company, uniqueSubtype, ConditionMetricPeriod.AllTime, index);
+                    var metric = TestHelpers.CreateTestMetric(company, uniqueSubtype, RulesengineConditionMetricPeriod.AllTime, index);
 
                     // Add the metric
                     company.AddMetric(metric);
@@ -87,15 +86,25 @@ namespace SchematicHQ.Client.Test.RulesEngine
             Task.WaitAll(tasks.ToArray());
 
             // Assert
-            Assert.That(company.Metrics.Count, Is.GreaterThanOrEqualTo(numTasks));
+            Assert.That(company.Metrics.Count(), Is.GreaterThanOrEqualTo(numTasks));
         }
 
         [Test]
         public void AddMetric_NullCompany_DoesNotThrow()
         {
             // Arrange
-            Company? company = null;
-            var metric = new CompanyMetric { EventSubtype = "test" };
+            RulesengineCompany? company = null;
+            var metric = new RulesengineCompanyMetric
+            {
+                AccountId = "acct",
+                EnvironmentId = "env",
+                CompanyId = "comp",
+                EventSubtype = "test",
+                Value = 0,
+                Period = new RulesengineCompanyMetricPeriod("all_time"),
+                MonthReset = RulesengineCompanyMetricMonthReset.FirstOfMonth,
+                CreatedAt = DateTime.UtcNow
+            };
 
             // Act & Assert
             Assert.DoesNotThrow(() => company?.AddMetric(metric));
@@ -115,7 +124,7 @@ namespace SchematicHQ.Client.Test.RulesEngine
         public void AddMetric_CompanyWithNoMetrics_DoesNotThrow()
         {
             // Arrange
-            var company = new Company
+            var company = new RulesengineCompany
             {
                 Id = TestHelpers.GenerateTestId("comp"),
                 AccountId = TestHelpers.GenerateTestId("acct"),
@@ -123,8 +132,8 @@ namespace SchematicHQ.Client.Test.RulesEngine
                 PlanIds = new List<string> { TestHelpers.GenerateTestId("plan"), TestHelpers.GenerateTestId("plan") },
                 BillingProductIds = new List<string> { TestHelpers.GenerateTestId("bilp"), TestHelpers.GenerateTestId("bilp") },
                 BasePlanId = TestHelpers.GenerateTestId("plan"),
-                Traits = new List<Trait>(),
-                Subscription = new Subscription
+                Traits = new List<RulesengineTrait>(),
+                Subscription = new RulesengineSubscription
                 {
                     Id = TestHelpers.GenerateTestId("bilsub"),
                     PeriodStart = DateTime.UtcNow.AddDays(-30),
@@ -134,12 +143,12 @@ namespace SchematicHQ.Client.Test.RulesEngine
                 Metrics = null!
             };
 
-            var metric = TestHelpers.CreateTestMetric(company, "foo", ConditionMetricPeriod.AllTime, 1);
+            var metric = TestHelpers.CreateTestMetric(company, "foo", RulesengineConditionMetricPeriod.AllTime, 1);
 
             // Act & Assert
             Assert.DoesNotThrow(() => company.AddMetric(metric));
             Assert.That(company.Metrics, Is.Not.Null);
-            Assert.That(company.Metrics.Count, Is.EqualTo(1));
+            Assert.That(company.Metrics.Count(), Is.EqualTo(1));
         }
     }
 }

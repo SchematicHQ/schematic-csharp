@@ -1,5 +1,5 @@
 # Specify files that shouldn't be modified by Fern
-.claude/settings.json
+.claude/
 .github/CODEOWNERS
 .github/workflows/claude-code.yml
 CLAUDE.md

@@ -1,6 +1,5 @@
 using System.Text.Json;
 using NUnit.Framework;
-using SchematicHQ.Client.RulesEngine.Models;
 using SchematicHQ.Client.Datastream;
 using SchematicHQ.Client.Test.Datastream.Mocks;
 
@@ -22,14 +21,14 @@ namespace SchematicHQ.Client.Test.Datastream
             _mockLogger = testSetup.Logger;
         }
 
-        private void PopulateTwoLayerCompanyCache(Company company)
+        private void PopulateTwoLayerCompanyCache(RulesengineCompany company)
         {
             var method = typeof(DatastreamClient).GetMethod("CacheCompanyForKeys",
                 System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
             method!.Invoke(_client, new object[] { company });
         }
 
-        private void PopulateTwoLayerUserCache(User user)
+        private void PopulateTwoLayerUserCache(RulesengineUser user)
         {
             var method = typeof(DatastreamClient).GetMethod("CacheUserForKeys",
                 System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
@@ -41,7 +40,7 @@ namespace SchematicHQ.Client.Test.Datastream
         {
             var companyKey = "company-123";
 
-            var company = new Company
+            var company = new RulesengineCompany
             {
                 AccountId = "acc_123",
                 EnvironmentId = "env_123",
@@ -66,7 +65,7 @@ namespace SchematicHQ.Client.Test.Datastream
         [Test]
         public void TwoStepCompanyLookup_CacheAndRetrieve()
         {
-            var company = new Company
+            var company = new RulesengineCompany
             {
                 AccountId = "acc_123",
                 EnvironmentId = "env_123",
@@ -87,7 +86,7 @@ namespace SchematicHQ.Client.Test.Datastream
         [Test]
         public void TwoStepUserLookup_CacheAndRetrieve()
         {
-            var user = new User
+            var user = new RulesengineUser
             {
                 AccountId = "acc_123",
                 EnvironmentId = "env_123",
@@ -108,7 +107,7 @@ namespace SchematicHQ.Client.Test.Datastream
         [Test]
         public void MultipleResourceKeys_ResolveToSameObject()
         {
-            var company = new Company
+            var company = new RulesengineCompany
             {
                 AccountId = "acc_123",
                 EnvironmentId = "env_123",

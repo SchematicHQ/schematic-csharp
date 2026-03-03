@@ -1,5 +1,4 @@
 using SchematicHQ.Client.Datastream;
-using SchematicHQ.Client.RulesEngine.Models;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
@@ -13,7 +12,7 @@ namespace SchematicHQ.Client.Test.Datastream.Mocks
         /// <summary>
         /// Provides a way to get a company from a MockWebSocket's cache - only for testing!
         /// </summary>
-        public static Company? GetCompanyFromTestCache(MockWebSocket mockSocket, Dictionary<string, string> keys)
+        public static RulesengineCompany? GetCompanyFromTestCache(MockWebSocket mockSocket, Dictionary<string, string> keys)
         {
             foreach (var key in keys)
             {
@@ -25,11 +24,11 @@ namespace SchematicHQ.Client.Test.Datastream.Mocks
                         PropertyNameCaseInsensitive = true,
                         Converters = { new JsonStringEnumConverter(JsonNamingPolicy.SnakeCaseLower, false) }
                     };
-                    
-                    return JsonSerializer.Deserialize<Company>(companyJson, options);
+
+                    return JsonSerializer.Deserialize<RulesengineCompany>(companyJson, options);
                 }
             }
-            
+
             return null;
         }
     }
