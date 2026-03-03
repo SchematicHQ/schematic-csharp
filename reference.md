@@ -1552,12 +1552,7 @@ await client.Billing.DeleteProductPriceAsync("billing_id");
 
 ```csharp
 await client.Billing.UpsertBillingProductAsync(
-    new CreateBillingProductRequestBody
-    {
-        ExternalId = "external_id",
-        Name = "name",
-        Price = 1.1,
-    }
+    new CreateBillingProductRequestBody { ExternalId = "external_id", Price = 1.1 }
 );
 ```
 </dd>
@@ -2952,6 +2947,110 @@ await client.Credits.CountBillingPlanCreditGrantsAsync(
 <dd>
 
 **request:** `CountBillingPlanCreditGrantsRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Credits.<a href="/src/SchematicHQ.Client/Credits/CreditsClient.cs">ListCreditEventLedgerAsync</a>(ListCreditEventLedgerRequest { ... }) -> ListCreditEventLedgerResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Credits.ListCreditEventLedgerAsync(
+    new ListCreditEventLedgerRequest
+    {
+        BillingCreditId = "billing_credit_id",
+        CompanyId = "company_id",
+        EndTime = "end_time",
+        EventType = CreditEventType.Grant,
+        FeatureId = "feature_id",
+        StartTime = "start_time",
+        Limit = 1,
+        Offset = 1,
+    }
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `ListCreditEventLedgerRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Credits.<a href="/src/SchematicHQ.Client/Credits/CreditsClient.cs">CountCreditEventLedgerAsync</a>(CountCreditEventLedgerRequest { ... }) -> CountCreditEventLedgerResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Credits.CountCreditEventLedgerAsync(
+    new CountCreditEventLedgerRequest
+    {
+        BillingCreditId = "billing_credit_id",
+        CompanyId = "company_id",
+        EndTime = "end_time",
+        EventType = CreditEventType.Grant,
+        FeatureId = "feature_id",
+        StartTime = "start_time",
+        Limit = 1,
+        Offset = 1,
+    }
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `CountCreditEventLedgerRequest` 
     
 </dd>
 </dl>
@@ -8240,6 +8339,7 @@ await client.Plangroups.CreatePlanGroupAsync(
         ShowAsMonthlyPrices = true,
         ShowCredits = true,
         ShowFeatureDescription = true,
+        ShowHardLimit = true,
         ShowPeriodToggle = true,
         ShowZeroPriceAsFree = true,
         SyncCustomerBillingDetails = true,
@@ -8311,6 +8411,7 @@ await client.Plangroups.UpdatePlanGroupAsync(
         ShowAsMonthlyPrices = true,
         ShowCredits = true,
         ShowFeatureDescription = true,
+        ShowHardLimit = true,
         ShowPeriodToggle = true,
         ShowZeroPriceAsFree = true,
         SyncCustomerBillingDetails = true,

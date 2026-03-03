@@ -89,6 +89,9 @@ public record FeatureEntitlement : IJsonOnDeserialized
     [JsonPropertyName("usage")]
     public int? Usage { get; set; }
 
+    /// <summary>
+    /// The type of the entitlement value
+    /// </summary>
     [JsonPropertyName("value_type")]
     public required EntitlementValueType ValueType { get; set; }
 

@@ -23,6 +23,9 @@ public record FeatureUsageResponseData : IJsonOnDeserialized
     [JsonPropertyName("allocation")]
     public int? Allocation { get; set; }
 
+    /// <summary>
+    /// The type of allocation that is being used.
+    /// </summary>
     [JsonPropertyName("allocation_type")]
     public required EntitlementValueType AllocationType { get; set; }
 
@@ -41,6 +44,9 @@ public record FeatureUsageResponseData : IJsonOnDeserialized
     [JsonPropertyName("credit_grant_details")]
     public IEnumerable<CreditGrantDetail>? CreditGrantDetails { get; set; }
 
+    /// <summary>
+    /// Reason for the credit grant
+    /// </summary>
     [JsonPropertyName("credit_grant_reason")]
     public BillingCreditGrantReason? CreditGrantReason { get; set; }
 
@@ -59,6 +65,9 @@ public record FeatureUsageResponseData : IJsonOnDeserialized
     [JsonPropertyName("credit_type_icon")]
     public string? CreditTypeIcon { get; set; }
 
+    /// <summary>
+    /// Aggregated credit usage by time period (day, week, month, billing period)
+    /// </summary>
     [JsonPropertyName("credit_usage_aggregation")]
     public CreditUsageAggregation? CreditUsageAggregation { get; set; }
 

@@ -33,6 +33,9 @@ public record CreateInvoiceRequestBody
     [JsonPropertyName("payment_method_external_id")]
     public string? PaymentMethodExternalId { get; set; }
 
+    [JsonPropertyName("status")]
+    public InvoiceStatus? Status { get; set; }
+
     [JsonPropertyName("subscription_external_id")]
     public string? SubscriptionExternalId { get; set; }
 

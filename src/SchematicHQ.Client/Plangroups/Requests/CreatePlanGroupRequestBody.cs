@@ -84,6 +84,9 @@ public record CreatePlanGroupRequestBody
     [JsonPropertyName("show_feature_description")]
     public required bool ShowFeatureDescription { get; set; }
 
+    [JsonPropertyName("show_hard_limit")]
+    public required bool ShowHardLimit { get; set; }
+
     [JsonPropertyName("show_period_toggle")]
     public required bool ShowPeriodToggle { get; set; }
 

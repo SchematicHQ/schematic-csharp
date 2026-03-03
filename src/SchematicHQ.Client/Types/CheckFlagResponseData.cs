@@ -17,6 +17,9 @@ public record CheckFlagResponseData : IJsonOnDeserialized
     [JsonPropertyName("company_id")]
     public string? CompanyId { get; set; }
 
+    /// <summary>
+    /// If a feature entitlement rule was matched, its entitlement details
+    /// </summary>
     [JsonPropertyName("entitlement")]
     public FeatureEntitlement? Entitlement { get; set; }
 

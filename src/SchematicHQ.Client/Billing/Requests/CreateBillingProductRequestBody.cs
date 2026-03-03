@@ -13,7 +13,7 @@ public record CreateBillingProductRequestBody
     public bool? IsActive { get; set; }
 
     [JsonPropertyName("name")]
-    public required string Name { get; set; }
+    public string? Name { get; set; }
 
     [JsonPropertyName("price")]
     public required double Price { get; set; }

@@ -2121,4 +2121,222 @@ public partial class CreditsClient
             );
         }
     }
+
+    /// <example><code>
+    /// await client.Credits.ListCreditEventLedgerAsync(
+    ///     new ListCreditEventLedgerRequest
+    ///     {
+    ///         BillingCreditId = "billing_credit_id",
+    ///         CompanyId = "company_id",
+    ///         EndTime = "end_time",
+    ///         EventType = CreditEventType.Grant,
+    ///         FeatureId = "feature_id",
+    ///         StartTime = "start_time",
+    ///         Limit = 1,
+    ///         Offset = 1,
+    ///     }
+    /// );
+    /// </code></example>
+    public async Task<ListCreditEventLedgerResponse> ListCreditEventLedgerAsync(
+        ListCreditEventLedgerRequest request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        var _query = new Dictionary<string, object>();
+        _query["company_id"] = request.CompanyId;
+        if (request.BillingCreditId != null)
+        {
+            _query["billing_credit_id"] = request.BillingCreditId;
+        }
+        if (request.EndTime != null)
+        {
+            _query["end_time"] = request.EndTime;
+        }
+        if (request.EventType != null)
+        {
+            _query["event_type"] = request.EventType.Value.Stringify();
+        }
+        if (request.FeatureId != null)
+        {
+            _query["feature_id"] = request.FeatureId;
+        }
+        if (request.StartTime != null)
+        {
+            _query["start_time"] = request.StartTime;
+        }
+        if (request.Limit != null)
+        {
+            _query["limit"] = request.Limit.Value.ToString();
+        }
+        if (request.Offset != null)
+        {
+            _query["offset"] = request.Offset.Value.ToString();
+        }
+        var response = await _client
+            .SendRequestAsync(
+                new JsonRequest
+                {
+                    BaseUrl = _client.Options.BaseUrl,
+                    Method = HttpMethod.Get,
+                    Path = "v2/billing/credits/ledger",
+                    Query = _query,
+                    Options = options,
+                },
+                cancellationToken
+            )
+            .ConfigureAwait(false);
+        if (response.StatusCode is >= 200 and < 400)
+        {
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            try
+            {
+                return JsonUtils.Deserialize<ListCreditEventLedgerResponse>(responseBody)!;
+            }
+            catch (JsonException e)
+            {
+                throw new SchematicException("Failed to deserialize response", e);
+            }
+        }
+
+        {
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            try
+            {
+                switch (response.StatusCode)
+                {
+                    case 400:
+                        throw new BadRequestError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 401:
+                        throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 403:
+                        throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 404:
+                        throw new NotFoundError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 500:
+                        throw new InternalServerError(
+                            JsonUtils.Deserialize<ApiError>(responseBody)
+                        );
+                }
+            }
+            catch (JsonException)
+            {
+                // unable to map error response, throwing generic error
+            }
+            throw new SchematicApiException(
+                $"Error with status code {response.StatusCode}",
+                response.StatusCode,
+                responseBody
+            );
+        }
+    }
+
+    /// <example><code>
+    /// await client.Credits.CountCreditEventLedgerAsync(
+    ///     new CountCreditEventLedgerRequest
+    ///     {
+    ///         BillingCreditId = "billing_credit_id",
+    ///         CompanyId = "company_id",
+    ///         EndTime = "end_time",
+    ///         EventType = CreditEventType.Grant,
+    ///         FeatureId = "feature_id",
+    ///         StartTime = "start_time",
+    ///         Limit = 1,
+    ///         Offset = 1,
+    ///     }
+    /// );
+    /// </code></example>
+    public async Task<CountCreditEventLedgerResponse> CountCreditEventLedgerAsync(
+        CountCreditEventLedgerRequest request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        var _query = new Dictionary<string, object>();
+        _query["company_id"] = request.CompanyId;
+        if (request.BillingCreditId != null)
+        {
+            _query["billing_credit_id"] = request.BillingCreditId;
+        }
+        if (request.EndTime != null)
+        {
+            _query["end_time"] = request.EndTime;
+        }
+        if (request.EventType != null)
+        {
+            _query["event_type"] = request.EventType.Value.Stringify();
+        }
+        if (request.FeatureId != null)
+        {
+            _query["feature_id"] = request.FeatureId;
+        }
+        if (request.StartTime != null)
+        {
+            _query["start_time"] = request.StartTime;
+        }
+        if (request.Limit != null)
+        {
+            _query["limit"] = request.Limit.Value.ToString();
+        }
+        if (request.Offset != null)
+        {
+            _query["offset"] = request.Offset.Value.ToString();
+        }
+        var response = await _client
+            .SendRequestAsync(
+                new JsonRequest
+                {
+                    BaseUrl = _client.Options.BaseUrl,
+                    Method = HttpMethod.Get,
+                    Path = "v2/billing/credits/ledger/count",
+                    Query = _query,
+                    Options = options,
+                },
+                cancellationToken
+            )
+            .ConfigureAwait(false);
+        if (response.StatusCode is >= 200 and < 400)
+        {
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            try
+            {
+                return JsonUtils.Deserialize<CountCreditEventLedgerResponse>(responseBody)!;
+            }
+            catch (JsonException e)
+            {
+                throw new SchematicException("Failed to deserialize response", e);
+            }
+        }
+
+        {
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            try
+            {
+                switch (response.StatusCode)
+                {
+                    case 400:
+                        throw new BadRequestError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 401:
+                        throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 403:
+                        throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 404:
+                        throw new NotFoundError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 500:
+                        throw new InternalServerError(
+                            JsonUtils.Deserialize<ApiError>(responseBody)
+                        );
+                }
+            }
+            catch (JsonException)
+            {
+                // unable to map error response, throwing generic error
+            }
+            throw new SchematicApiException(
+                $"Error with status code {response.StatusCode}",
+                response.StatusCode,
+                responseBody
+            );
+        }
+    }
 }

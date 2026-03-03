@@ -56,6 +56,9 @@ public record ListPlansParams : IJsonOnDeserialized
     [JsonPropertyName("offset")]
     public int? Offset { get; set; }
 
+    /// <summary>
+    /// Filter by plan type
+    /// </summary>
     [JsonPropertyName("plan_type")]
     public PlanType? PlanType { get; set; }
 
