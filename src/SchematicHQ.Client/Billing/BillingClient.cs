@@ -1458,12 +1458,7 @@ public partial class BillingClient
 
     /// <example><code>
     /// await client.Billing.UpsertBillingProductAsync(
-    ///     new CreateBillingProductRequestBody
-    ///     {
-    ///         ExternalId = "external_id",
-    ///         Name = "name",
-    ///         Price = 1.1,
-    ///     }
+    ///     new CreateBillingProductRequestBody { ExternalId = "external_id", Price = 1.1 }
     /// );
     /// </code></example>
     public async Task<UpsertBillingProductResponse> UpsertBillingProductAsync(

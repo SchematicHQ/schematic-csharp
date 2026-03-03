@@ -35,18 +35,30 @@ public record BillingPlanCreditGrantResponseData : IJsonOnDeserialized
     [JsonPropertyName("created_at")]
     public required DateTime CreatedAt { get; set; }
 
+    [JsonPropertyName("credit")]
+    public BillingCreditResponseData? Credit { get; set; }
+
     [JsonPropertyName("credit_amount")]
     public required int CreditAmount { get; set; }
 
     [JsonPropertyName("credit_id")]
     public required string CreditId { get; set; }
 
+    /// <summary>
+    /// Use credit.name from the nested credit object instead
+    /// </summary>
     [JsonPropertyName("credit_name")]
     public required string CreditName { get; set; }
 
+    /// <summary>
+    /// Use plural_name from the nested credit object instead
+    /// </summary>
     [JsonPropertyName("credit_plural_name")]
     public string? CreditPluralName { get; set; }
 
+    /// <summary>
+    /// Use singular_name from the nested credit object instead
+    /// </summary>
     [JsonPropertyName("credit_singular_name")]
     public string? CreditSingularName { get; set; }
 
@@ -78,10 +90,10 @@ public record BillingPlanCreditGrantResponseData : IJsonOnDeserialized
     public string? PlanVersionId { get; set; }
 
     [JsonPropertyName("reset_cadence")]
-    public required BillingPlanCreditGrantResetCadence ResetCadence { get; set; }
+    public BillingPlanCreditGrantResetCadence? ResetCadence { get; set; }
 
     [JsonPropertyName("reset_start")]
-    public required BillingPlanCreditGrantResetStart ResetStart { get; set; }
+    public BillingPlanCreditGrantResetStart? ResetStart { get; set; }
 
     [JsonPropertyName("reset_type")]
     public BillingPlanCreditGrantResetType? ResetType { get; set; }

@@ -74,6 +74,9 @@ public record ListCompaniesParams : IJsonOnDeserialized
     [JsonPropertyName("sort_order_column")]
     public string? SortOrderColumn { get; set; }
 
+    /// <summary>
+    /// Direction to sort by (asc or desc)
+    /// </summary>
     [JsonPropertyName("sort_order_direction")]
     public SortDirection? SortOrderDirection { get; set; }
 

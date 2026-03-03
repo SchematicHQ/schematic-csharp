@@ -23,6 +23,9 @@ public record FeatureCompanyUserResponseData : IJsonOnDeserialized
     [JsonPropertyName("allocation")]
     public int? Allocation { get; set; }
 
+    /// <summary>
+    /// The type of allocation that is being used.
+    /// </summary>
     [JsonPropertyName("allocation_type")]
     public required EntitlementValueType AllocationType { get; set; }
 

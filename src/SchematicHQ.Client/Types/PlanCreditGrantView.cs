@@ -35,18 +35,30 @@ public record PlanCreditGrantView : IJsonOnDeserialized
     [JsonPropertyName("created_at")]
     public required DateTime CreatedAt { get; set; }
 
+    [JsonPropertyName("credit")]
+    public BillingCreditView? Credit { get; set; }
+
     [JsonPropertyName("credit_amount")]
     public required int CreditAmount { get; set; }
 
+    /// <summary>
+    /// Deprecated field, will be removed in the future. Use Credit.Description instead.
+    /// </summary>
     [JsonPropertyName("credit_description")]
     public required string CreditDescription { get; set; }
 
+    /// <summary>
+    /// Deprecated field, will be removed in the future. Use Credit.Icon instead.
+    /// </summary>
     [JsonPropertyName("credit_icon")]
     public string? CreditIcon { get; set; }
 
     [JsonPropertyName("credit_id")]
     public required string CreditId { get; set; }
 
+    /// <summary>
+    /// Deprecated field, will be removed in the future. Use Credit.Name instead.
+    /// </summary>
     [JsonPropertyName("credit_name")]
     public required string CreditName { get; set; }
 
@@ -71,18 +83,24 @@ public record PlanCreditGrantView : IJsonOnDeserialized
     [JsonPropertyName("plan_version_id")]
     public string? PlanVersionId { get; set; }
 
+    /// <summary>
+    /// Deprecated field, will be removed in the future. Use Credit.PluralName instead.
+    /// </summary>
     [JsonPropertyName("plural_name")]
     public string? PluralName { get; set; }
 
     [JsonPropertyName("reset_cadence")]
-    public required BillingPlanCreditGrantResetCadence ResetCadence { get; set; }
+    public BillingPlanCreditGrantResetCadence? ResetCadence { get; set; }
 
     [JsonPropertyName("reset_start")]
-    public required BillingPlanCreditGrantResetStart ResetStart { get; set; }
+    public BillingPlanCreditGrantResetStart? ResetStart { get; set; }
 
     [JsonPropertyName("reset_type")]
     public required BillingPlanCreditGrantResetType ResetType { get; set; }
 
+    /// <summary>
+    /// Deprecated field, will be removed in the future. Use Credit.SingularName instead.
+    /// </summary>
     [JsonPropertyName("singular_name")]
     public string? SingularName { get; set; }
 
