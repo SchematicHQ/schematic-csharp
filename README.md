@@ -189,6 +189,29 @@ bool flagValue = await schematic.CheckFlag(
 );
 ```
 
+### Checking flags with entitlement details
+
+If you need more detail about how a flag check was resolved, including any entitlement associated with the check, use `CheckFlagWithEntitlement`. This returns a response object with the flag value, the reason for the evaluation result, and entitlement details such as usage, allocation, and credit balances when applicable.
+
+```csharp
+Schematic schematic = new Schematic("YOUR_API_KEY");
+
+var resp = await schematic.CheckFlagWithEntitlement(
+    "some-flag-key",
+    company: new Dictionary<string, string> { { "id", "your-company-id" } },
+    user: new Dictionary<string, string> { { "user_id", "your-user-id" } }
+);
+
+Console.WriteLine($"Flag: {resp.FlagKey}, Value: {resp.Value}, Reason: {resp.Reason}");
+
+if (resp.Entitlement != null)
+{
+    Console.WriteLine($"Entitlement type: {resp.Entitlement.ValueType}");
+    Console.WriteLine($"Usage: {resp.Entitlement.Usage}, Allocation: {resp.Entitlement.Allocation}");
+    Console.WriteLine($"Credit remaining: {resp.Entitlement.CreditRemaining}");
+}
+```
+
 ### OpenFeature Integration
 
 The Schematic .NET SDK includes built-in support for [OpenFeature](https://openfeature.dev/), allowing you to use Schematic's feature flags through the OpenFeature standard API.
