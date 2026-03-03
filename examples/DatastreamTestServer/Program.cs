@@ -149,7 +149,7 @@ app.MapPost("/checkflag", async (CheckFlagRequestBody request) =>
     try 
     {
         var startTime = DateTime.UtcNow;
-        var result = await schematic.CheckFlag(request.FlagKey, request.Company, request.User);
+        var result = await schematic.CheckFlagWithEntitlement(request.FlagKey, request.Company, request.User);
         var duration = DateTime.UtcNow - startTime;
         
         return Results.Ok(new { 
