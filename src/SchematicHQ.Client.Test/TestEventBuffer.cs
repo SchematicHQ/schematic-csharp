@@ -206,6 +206,116 @@ namespace SchematicHQ.Client.Tests
             Assert.That(_processedItems.Count, Is.EqualTo(1000));
         }
 
+        [Test]
+        public void SizeBasedFlush_TriggersWhenMaxSizeReached()
+        {
+            var autoResetEvent = new AutoResetEvent(false);
+            var flushedItems = new List<int>();
+            var maxSize = 5;
+            _buffer = new EventBuffer<int>(async items =>
+            {
+                lock (flushedItems)
+                {
+                    flushedItems.AddRange(items);
+                }
+                autoResetEvent.Set();
+                await Task.CompletedTask;
+            }, _mockLogger.Object, maxSize, TimeSpan.FromSeconds(60));
+
+            _buffer.Start();
+
+            for (int i = 0; i < maxSize; i++)
+            {
+                _buffer.Push(i);
+            }
+
+            Assert.That(autoResetEvent.WaitOne(5000), Is.True);
+            lock (flushedItems)
+            {
+                Assert.That(flushedItems.Count, Is.EqualTo(maxSize));
+            }
+        }
+
+        [Test]
+        public async Task Flush_RetriesOnTransientFailure()
+        {
+            var callCount = 0;
+            var flushedItems = new List<int>();
+            _buffer = new EventBuffer<int>(async items =>
+            {
+                var attempt = Interlocked.Increment(ref callCount);
+                if (attempt == 1)
+                {
+                    throw new Exception("Transient failure");
+                }
+                lock (flushedItems)
+                {
+                    flushedItems.AddRange(items);
+                }
+                await Task.CompletedTask;
+            }, _mockLogger.Object);
+
+            _buffer.Start();
+            _buffer.Push(1);
+            _buffer.Push(2);
+            await _buffer.Flush();
+
+            Assert.That(callCount, Is.EqualTo(2));
+            lock (flushedItems)
+            {
+                Assert.That(flushedItems.Count, Is.EqualTo(2));
+            }
+        }
+
+        [Test]
+        public async Task Flush_DiscardsAfterMaxRetries()
+        {
+            var callCount = 0;
+            _buffer = new EventBuffer<int>(async items =>
+            {
+                Interlocked.Increment(ref callCount);
+                await Task.CompletedTask;
+                throw new Exception("Persistent failure");
+            }, _mockLogger.Object);
+
+            _buffer.Start();
+            _buffer.Push(1);
+            _buffer.Push(2);
+            await _buffer.Flush();
+
+            // 1 initial attempt + 3 retries = 4 total calls
+            Assert.That(callCount, Is.EqualTo(4));
+            // Events should be discarded, not re-queued
+            Assert.That(_buffer.GetEventCount(), Is.EqualTo(0));
+        }
+
+        [Test]
+        public async Task Stop_FlushesRemainingEvents()
+        {
+            var flushedItems = new List<int>();
+            _buffer = new EventBuffer<int>(async items =>
+            {
+                lock (flushedItems)
+                {
+                    flushedItems.AddRange(items);
+                }
+                await Task.CompletedTask;
+            }, _mockLogger.Object, 100, TimeSpan.FromSeconds(60));
+
+            _buffer.Start();
+            _buffer.Push(1);
+            _buffer.Push(2);
+            _buffer.Push(3);
+
+            await _buffer.Stop();
+
+            lock (flushedItems)
+            {
+                Assert.That(flushedItems.Count, Is.EqualTo(3));
+                Assert.That(flushedItems, Is.EquivalentTo(new[] { 1, 2, 3 }));
+            }
+        }
+
         private bool IsSemaphoreSlimDisposed(SemaphoreSlim semaphore)
         {
             try

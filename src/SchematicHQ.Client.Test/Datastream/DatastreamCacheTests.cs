@@ -1,4 +1,5 @@
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using NUnit.Framework;
 using SchematicHQ.Client.Datastream;
 using SchematicHQ.Client.Test.Datastream.Mocks;
@@ -138,5 +139,107 @@ namespace SchematicHQ.Client.Test.Datastream
             Assert.That(byOrg, Is.SameAs(bySlug));
             Assert.That(bySlug, Is.SameAs(byExternal));
         }
+
+        [Test]
+        public async Task DeleteMessage_RemovesCompanyFromCache()
+        {
+            // Arrange - First populate the cache with a company
+            var company = new RulesengineCompany
+            {
+                AccountId = "acc_123",
+                EnvironmentId = "env_123",
+                Id = "comp_del_1",
+                Keys = new Dictionary<string, string> { { "org_id", "org-to-delete" } }
+            };
+
+            PopulateTwoLayerCompanyCache(company);
+
+            // Verify company is in cache before deletion
+            var keys = new Dictionary<string, string> { { "org_id", "org-to-delete" } };
+            var cachedBefore = _client.GetCompanyFromCache(keys);
+            Assert.That(cachedBefore, Is.Not.Null, "Company should be in cache before delete message");
+            Assert.That(cachedBefore!.Id, Is.EqualTo("comp_del_1"));
+
+            // Arrange - Construct a delete message for this company
+            var jsonOptions = new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true,
+                Converters = { new JsonStringEnumConverter(JsonNamingPolicy.SnakeCaseLower, false) }
+            };
+
+            var deleteResponse = new DataStreamResponse
+            {
+                MessageType = MessageType.Delete,
+                EntityType = SchematicHQ.Client.Datastream.EntityType.Company,
+                Data = JsonDocument.Parse(JsonSerializer.Serialize(company, jsonOptions)).RootElement
+            };
+
+            _mockWebSocket.SetupToReceive(JsonSerializer.Serialize(deleteResponse));
+
+            // Act - Start the client to process the delete message
+            _client.Start();
+
+            // Give time for the async message processing to complete
+            await Task.Delay(200);
+
+            // Assert - Company should be removed from cache
+            var cachedAfter = _client.GetCompanyFromCache(keys);
+            Assert.That(cachedAfter, Is.Null, "Company should be removed from cache after delete message");
+        }
+
+        [Test]
+        public async Task DeleteMessage_RemovesUserFromCache()
+        {
+            // Arrange - First populate the cache with a user
+            var user = new RulesengineUser
+            {
+                AccountId = "acc_123",
+                EnvironmentId = "env_123",
+                Id = "user_del_1",
+                Keys = new Dictionary<string, string> { { "email", "delete-me@example.com" } }
+            };
+
+            PopulateTwoLayerUserCache(user);
+
+            // Verify user is in cache before deletion
+            var keys = new Dictionary<string, string> { { "email", "delete-me@example.com" } };
+            var cachedBefore = _client.GetUserFromCache(keys);
+            Assert.That(cachedBefore, Is.Not.Null, "User should be in cache before delete message");
+            Assert.That(cachedBefore!.Id, Is.EqualTo("user_del_1"));
+
+            // Arrange - Construct a delete message for this user
+            var jsonOptions = new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true,
+                Converters = { new JsonStringEnumConverter(JsonNamingPolicy.SnakeCaseLower, false) }
+            };
+
+            var deleteResponse = new DataStreamResponse
+            {
+                MessageType = MessageType.Delete,
+                EntityType = SchematicHQ.Client.Datastream.EntityType.User,
+                Data = JsonDocument.Parse(JsonSerializer.Serialize(user, jsonOptions)).RootElement
+            };
+
+            _mockWebSocket.SetupToReceive(JsonSerializer.Serialize(deleteResponse));
+
+            // Act - Start the client to process the delete message
+            _client.Start();
+
+            // Give time for the async message processing to complete
+            await Task.Delay(200);
+
+            // Assert - User should be removed from cache
+            var cachedAfter = _client.GetUserFromCache(keys);
+            Assert.That(cachedAfter, Is.Null, "User should be removed from cache after delete message");
+        }
+
+        // NOTE: Partial entity message merging test is intentionally omitted.
+        // The source code in HandleCompanyMessage and HandleUserMessage does NOT perform
+        // any merging for MessageType.Partial messages. Both Full and Partial messages
+        // are handled identically: the entity is deserialized and cached, replacing any
+        // existing cache entry entirely. There is no field-level merge logic in the
+        // current implementation, so there is no distinct behavior to test for Partial
+        // messages beyond what the Full message tests already cover.
     }
 }

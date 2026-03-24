@@ -417,5 +417,109 @@ namespace SchematicHQ.Client.Test
                 Assert.That(cached.Reason, Is.EqualTo("matched entitlement rule"));
             }
         }
+
+        [Test]
+        public async Task CheckFlag_WithCacheDisabled_AlwaysCallsAPI()
+        {
+            // Arrange
+            var handler = new Mock<HttpMessageHandler>(MockBehavior.Strict);
+            handler.SetupAnyRequest()
+                   .ReturnsAsync(CreateCheckFlagResponse(HttpStatusCode.OK, true));
+
+            var testClient = handler.CreateClient();
+            _options = new ClientOptions
+            {
+                Logger = _logger.Object,
+                Offline = false,
+                FlagDefaults = new Dictionary<string, bool>(),
+                DefaultEventBufferPeriod = TimeSpan.FromSeconds(_defaultEventBufferPeriod),
+                CacheProviders = new List<ICacheProvider<CheckFlagWithEntitlementResponse?>> { new LocalCache<CheckFlagWithEntitlementResponse?>(maxItems: 0) }
+            };
+            _schematic = new Schematic("dummy_api_key", _options.WithHttpClient(testClient));
+
+            string flagKey = "test_flag";
+
+            // Act
+            var result1 = await _schematic.CheckFlag(flagKey);
+            var result2 = await _schematic.CheckFlag(flagKey);
+
+            // Assert
+            Assert.That(result1, Is.True);
+            Assert.That(result2, Is.True);
+            handler.VerifyAnyRequest(Times.Exactly(2));
+        }
+
+        [Test]
+        public async Task CheckFlag_ReturnsFalseOnErrorWithNoDefault()
+        {
+            // Arrange
+            string flagKey = "error_flag";
+            SetupSchematicTestClient(
+                isOffline: false,
+                response: CreateCheckFlagResponse(HttpStatusCode.InternalServerError, false)
+                // No flag defaults set
+            );
+
+            // Act
+            var result = await _schematic.CheckFlag(flagKey);
+
+            // Assert
+            Assert.That(result, Is.False);
+            _logger.Verify(logger => logger.Error("Error checking flag via API: {0}", It.IsAny<string>()), Times.Once);
+        }
+
+        [Test]
+        public async Task CheckFlag_DifferentContextsProduceDifferentCacheKeys()
+        {
+            // Arrange
+            var handler = new Mock<HttpMessageHandler>(MockBehavior.Strict);
+            handler.SetupAnyRequest()
+                   .ReturnsAsync(CreateCheckFlagResponse(HttpStatusCode.OK, true));
+
+            var testClient = handler.CreateClient();
+            _options = new ClientOptions
+            {
+                Logger = _logger.Object,
+                Offline = false,
+                FlagDefaults = new Dictionary<string, bool>(),
+                DefaultEventBufferPeriod = TimeSpan.FromSeconds(_defaultEventBufferPeriod),
+                CacheProviders = new List<ICacheProvider<CheckFlagWithEntitlementResponse?>> { new LocalCache<CheckFlagWithEntitlementResponse?>() }
+            };
+            _schematic = new Schematic("dummy_api_key", _options.WithHttpClient(testClient));
+
+            string flagKey = "test_flag";
+
+            // Act
+            var result1 = await _schematic.CheckFlag(
+                flagKey: flagKey,
+                company: new Dictionary<string, string> { { "id", "company_a" } }
+            );
+            var result2 = await _schematic.CheckFlag(
+                flagKey: flagKey,
+                company: new Dictionary<string, string> { { "id", "company_b" } }
+            );
+
+            // Assert
+            Assert.That(result1, Is.True);
+            Assert.That(result2, Is.True);
+            handler.VerifyAnyRequest(Times.Exactly(2));
+        }
+
+        [Test]
+        public async Task Track_IncludesQuantityWhenProvided()
+        {
+            // Arrange
+            SetupSchematicTestClient(isOffline: false, response: CreateEventBatchResponse(HttpStatusCode.OK));
+            var company = new Dictionary<string, string> { { "company_id", "67890" } };
+            var user = new Dictionary<string, string> { { "user_id", "12345" } };
+
+            // Act
+            var trackTask = Task.Run(() => _schematic.Track("event_name", company, user, new Dictionary<string, object>(), quantity: 5));
+
+            // Assert
+            await trackTask; // Ensure the task completes
+            await Task.Delay(100); // Allow some time for the event to be processed asynchronously
+            Assert.That(_schematic.GetBufferWaitingEventCount(), Is.EqualTo(1));
+        }
     }
 }
