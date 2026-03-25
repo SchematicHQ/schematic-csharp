@@ -1306,22 +1306,84 @@ namespace SchematicHQ.Client.Test.Cache
                 maxItems: 0,
                 ttl: TimeSpan.FromHours(1),
                 enableBackgroundCleanup: true);
-            
+
             // Act - Try to use the cache
             cache.Set("key1", "value1");
             cache.Set("key2", "value2");
-            
+
             // Assert - Nothing should be stored
             Assert.That(cache.Get("key1"), Is.Null);
             Assert.That(cache.Get("key2"), Is.Null);
-            
+
             // Try delete
             bool deleteResult = cache.Delete("key1");
             Assert.That(deleteResult, Is.False, "Delete on zero-capacity cache should return false");
-            
+
             // Try DeleteMissing
             cache.DeleteMissing(new[] { "key1" });
-            
+
+            // Cleanup
+            cache.Dispose();
+        }
+
+        [Test]
+        public void Delete_RemovesKeyFromCache()
+        {
+            // Arrange
+            var cache = new LocalCache<string>(
+                maxItems: 100,
+                ttl: TimeSpan.FromHours(1),
+                enableBackgroundCleanup: false);
+
+            string key = "myKey";
+            string value = "myValue";
+            cache.Set(key, value);
+
+            // Verify it exists
+            Assert.That(cache.Get(key), Is.EqualTo(value));
+
+            // Act
+            cache.Delete(key);
+
+            // Assert
+            Assert.That(cache.Get(key), Is.Null, "Key should return null after deletion");
+
+            // Cleanup
+            cache.Dispose();
+        }
+
+        [Test]
+        public void DeleteMissing_RemovesOnlyUnlistedKeys()
+        {
+            // Arrange
+            var cache = new LocalCache<string>(
+                maxItems: 100,
+                ttl: TimeSpan.FromHours(1),
+                enableBackgroundCleanup: false);
+
+            // Set multiple keys
+            cache.Set("keep1", "value1");
+            cache.Set("keep2", "value2");
+            cache.Set("remove1", "value3");
+            cache.Set("remove2", "value4");
+
+            // Verify all keys exist
+            Assert.That(cache.Get("keep1"), Is.Not.Null);
+            Assert.That(cache.Get("keep2"), Is.Not.Null);
+            Assert.That(cache.Get("remove1"), Is.Not.Null);
+            Assert.That(cache.Get("remove2"), Is.Not.Null);
+
+            // Act - Only keep "keep1" and "keep2"
+            cache.DeleteMissing(new List<string> { "keep1", "keep2" });
+
+            // Assert - Kept keys remain
+            Assert.That(cache.Get("keep1"), Is.EqualTo("value1"), "Key 'keep1' should still be present");
+            Assert.That(cache.Get("keep2"), Is.EqualTo("value2"), "Key 'keep2' should still be present");
+
+            // Assert - Unlisted keys are gone
+            Assert.That(cache.Get("remove1"), Is.Null, "Key 'remove1' should be removed");
+            Assert.That(cache.Get("remove2"), Is.Null, "Key 'remove2' should be removed");
+
             // Cleanup
             cache.Dispose();
         }
