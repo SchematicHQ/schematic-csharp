@@ -643,7 +643,44 @@ namespace SchematicHQ.Client.Datastream
         };
 
         var jsonString = response.Data.ToString() ?? string.Empty;
-        var company = JsonSerializer.Deserialize<RulesengineCompany>(jsonString, options);
+
+        RulesengineCompany? company;
+
+        if (response.MessageType == MessageType.Partial)
+        {
+          string id;
+          try
+          {
+            id = Merge.ExtractIdFromJson(jsonString);
+          }
+          catch (Exception ex)
+          {
+            _logger.Error("Failed to extract company ID from partial message: {0}", ex.Message);
+            return;
+          }
+
+          var existingIdKey = CompanyIdCacheKey(id);
+          var existing = _companyCache.Get(existingIdKey);
+          if (existing == null)
+          {
+            _logger.Warn("Cache miss for partial company '{0}', skipping", id);
+            return;
+          }
+
+          try
+          {
+            company = Merge.PartialCompany(existing, jsonString);
+          }
+          catch (Exception ex)
+          {
+            _logger.Error("Failed to merge partial company: {0}", ex.Message);
+            return;
+          }
+        }
+        else
+        {
+          company = JsonSerializer.Deserialize<RulesengineCompany>(jsonString, options);
+        }
 
         if (company == null)
         {
@@ -653,7 +690,7 @@ namespace SchematicHQ.Client.Datastream
 
         // Get the company-specific lock to coordinate with UpdateCompanyMetrics
         var companyLock = GetCompanyLock(company.Keys);
-        
+
         try
         {
           // Wait for the lock with a reasonable timeout
@@ -721,7 +758,44 @@ namespace SchematicHQ.Client.Datastream
           }
         };
         var jsonString = response.Data.ToString() ?? string.Empty;
-        var user = JsonSerializer.Deserialize<RulesengineUser>(jsonString, options);
+
+        RulesengineUser? user;
+
+        if (response.MessageType == MessageType.Partial)
+        {
+          string id;
+          try
+          {
+            id = Merge.ExtractIdFromJson(jsonString);
+          }
+          catch (Exception ex)
+          {
+            _logger.Error("Failed to extract user ID from partial message: {0}", ex.Message);
+            return;
+          }
+
+          var existingIdKey = UserIdCacheKey(id);
+          var existing = _userCache.Get(existingIdKey);
+          if (existing == null)
+          {
+            _logger.Warn("Cache miss for partial user '{0}', skipping", id);
+            return;
+          }
+
+          try
+          {
+            user = Merge.PartialUser(existing, jsonString);
+          }
+          catch (Exception ex)
+          {
+            _logger.Error("Failed to merge partial user: {0}", ex.Message);
+            return;
+          }
+        }
+        else
+        {
+          user = JsonSerializer.Deserialize<RulesengineUser>(jsonString, options);
+        }
 
         if (user == null)
         {
@@ -1168,81 +1242,7 @@ namespace SchematicHQ.Client.Datastream
             return null;
         }
 
-        // Create a new company instance
-        var metricsCopy = new List<RulesengineCompanyMetric>();
-        var traitsCopy = new List<RulesengineTrait>();
-        var keysCopy = new Dictionary<string, string>();
-
-        // Copy the keys dictionary
-        foreach (var key in company.Keys)
-        {
-            keysCopy[key.Key] = key.Value;
-        }
-
-        // Deep copy metrics
-        foreach (var metric in company.Metrics)
-        {
-            if (metric == null)
-            {
-                // Skip null metrics
-                continue;
-            }
-
-            var metricCopy = new RulesengineCompanyMetric
-            {
-                AccountId = metric.AccountId,
-                EnvironmentId = metric.EnvironmentId,
-                CompanyId = metric.CompanyId,
-                EventSubtype = metric.EventSubtype,
-                Period = metric.Period,
-                MonthReset = metric.MonthReset,
-                Value = metric.Value,
-                CreatedAt = metric.CreatedAt,
-                ValidUntil = metric.ValidUntil
-            };
-
-            metricsCopy.Add(metricCopy);
-        }
-
-        // Copy traits
-        foreach (var trait in company.Traits)
-        {
-            if (trait == null)
-            {
-                // Skip null traits
-                continue;
-            }
-
-            // Create a new trait instance
-            var traitCopy = new RulesengineTrait
-            {
-                Value = trait.Value,
-                TraitDefinition = trait.TraitDefinition
-            };
-
-            traitsCopy.Add(traitCopy);
-        }
-
-        var companyCopy = new RulesengineCompany
-        {
-            Id = company.Id,
-            AccountId = company.AccountId,
-            EnvironmentId = company.EnvironmentId,
-            BasePlanId = company.BasePlanId,
-            BillingProductIds = new List<string>(company.BillingProductIds),
-            PlanIds = new List<string>(company.PlanIds),
-            Subscription = company.Subscription != null ? new RulesengineSubscription
-            {
-                Id = company.Subscription.Id,
-                PeriodStart = company.Subscription.PeriodStart,
-                PeriodEnd = company.Subscription.PeriodEnd
-            } : null,
-            Keys = keysCopy,
-            Metrics = metricsCopy,
-            Traits = traitsCopy
-        };
-
-        return companyCopy;
+        return Merge.DeepCopyCompany(company);
     }
 
 
