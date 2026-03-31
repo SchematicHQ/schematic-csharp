@@ -32,11 +32,17 @@ public partial class Schematic
     public CheckoutClient Checkout { get; init; }
     public CompaniesClient Companies { get; init; }
     public ComponentsClient Components { get; init; }
+    public ComponentspublicClient Componentspublic { get; init; }
+    public CreditsClient Credits { get; init; }
+    public DataexportsClient Dataexports { get; init; }
     public EntitlementsClient Entitlements { get; init; }
     public EventsClient Events { get; init; }
     public FeaturesClient Features { get; init; }
+    public PlanbundleClient Planbundle { get; init; }
     public PlangroupsClient Plangroups { get; init; }
+    public PlanmigrationsClient Planmigrations { get; init; }
     public PlansClient Plans { get; init; }
+    public ScheduledcheckoutClient Scheduledcheckout { get; init; }
     public WebhooksClient Webhooks { get; init; }
 
     public Schematic(string apiKey, ClientOptions? options = null)
@@ -99,11 +105,17 @@ public partial class Schematic
         Checkout = (CheckoutClient)API.Checkout;
         Companies = (CompaniesClient)API.Companies;
         Components = (ComponentsClient)API.Components;
+        Componentspublic = (ComponentspublicClient)API.Componentspublic;
+        Credits = (CreditsClient)API.Credits;
+        Dataexports = (DataexportsClient)API.Dataexports;
         Entitlements = (EntitlementsClient)API.Entitlements;
         Events = (EventsClient)API.Events;
         Features = (FeaturesClient)API.Features;
+        Planbundle = (PlanbundleClient)API.Planbundle;
         Plangroups = (PlangroupsClient)API.Plangroups;
+        Planmigrations = (PlanmigrationsClient)API.Planmigrations;
         Plans = (PlansClient)API.Plans;
+        Scheduledcheckout = (ScheduledcheckoutClient)API.Scheduledcheckout;
         Webhooks = (WebhooksClient)API.Webhooks;
 
         _eventBuffer = _options.EventBuffer ?? new EventBuffer<CreateEventRequestBody>(
