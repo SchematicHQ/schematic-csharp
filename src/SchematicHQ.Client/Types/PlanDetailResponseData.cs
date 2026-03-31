@@ -1,5 +1,5 @@
-using System.Text.Json;
-using System.Text.Json.Serialization;
+using global::System.Text.Json;
+using global::System.Text.Json.Serialization;
 using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
@@ -24,13 +24,17 @@ public record PlanDetailResponseData : IJsonOnDeserialized
     public required ChargeType ChargeType { get; set; }
 
     [JsonPropertyName("company_count")]
-    public required int CompanyCount { get; set; }
+    public required long CompanyCount { get; set; }
 
     [JsonPropertyName("controlled_by")]
     public required PlanControlledByType ControlledBy { get; set; }
 
     [JsonPropertyName("created_at")]
     public required DateTime CreatedAt { get; set; }
+
+    [JsonPropertyName("currency_prices")]
+    public IEnumerable<PlanCurrencyPricesResponseData> CurrencyPrices { get; set; } =
+        new List<PlanCurrencyPricesResponseData>();
 
     [JsonPropertyName("description")]
     public required string Description { get; set; }
@@ -73,7 +77,7 @@ public record PlanDetailResponseData : IJsonOnDeserialized
     public required PlanType PlanType { get; set; }
 
     [JsonPropertyName("trial_days")]
-    public int? TrialDays { get; set; }
+    public long? TrialDays { get; set; }
 
     [JsonPropertyName("updated_at")]
     public required DateTime UpdatedAt { get; set; }

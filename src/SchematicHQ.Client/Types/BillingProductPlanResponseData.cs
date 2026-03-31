@@ -1,5 +1,5 @@
-using System.Text.Json;
-using System.Text.Json.Serialization;
+using global::System.Text.Json;
+using global::System.Text.Json.Serialization;
 using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
@@ -39,7 +39,7 @@ public record BillingProductPlanResponseData : IJsonOnDeserialized
     public required string PlanId { get; set; }
 
     [JsonPropertyName("trial_days")]
-    public int? TrialDays { get; set; }
+    public long? TrialDays { get; set; }
 
     [JsonPropertyName("yearly_price_id")]
     public string? YearlyPriceId { get; set; }

@@ -1,5 +1,5 @@
-using System.Text.Json;
-using System.Text.Json.Serialization;
+using global::System.Text.Json;
+using global::System.Text.Json.Serialization;
 using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
@@ -12,13 +12,13 @@ public record PreviewSubscriptionFinanceResponseData : IJsonOnDeserialized
         new Dictionary<string, JsonElement>();
 
     [JsonPropertyName("amount_off")]
-    public required int AmountOff { get; set; }
+    public required long AmountOff { get; set; }
 
     [JsonPropertyName("due_now")]
-    public required int DueNow { get; set; }
+    public required long DueNow { get; set; }
 
     [JsonPropertyName("new_charges")]
-    public required int NewCharges { get; set; }
+    public required long NewCharges { get; set; }
 
     [JsonPropertyName("percent_off")]
     public required double PercentOff { get; set; }
@@ -30,10 +30,10 @@ public record PreviewSubscriptionFinanceResponseData : IJsonOnDeserialized
     public required bool PromoCodeApplied { get; set; }
 
     [JsonPropertyName("proration")]
-    public required int Proration { get; set; }
+    public required long Proration { get; set; }
 
     [JsonPropertyName("tax_amount")]
-    public int? TaxAmount { get; set; }
+    public long? TaxAmount { get; set; }
 
     [JsonPropertyName("tax_display_name")]
     public string? TaxDisplayName { get; set; }
@@ -42,7 +42,7 @@ public record PreviewSubscriptionFinanceResponseData : IJsonOnDeserialized
     public required bool TaxRequireBillingDetails { get; set; }
 
     [JsonPropertyName("total_per_billing_period")]
-    public required int TotalPerBillingPeriod { get; set; }
+    public required long TotalPerBillingPeriod { get; set; }
 
     [JsonPropertyName("trial_end")]
     public DateTime? TrialEnd { get; set; }

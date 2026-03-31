@@ -80,7 +80,7 @@ await client.DeletePlanAudiencesPlanAudienceIdAsync("plan_audience_id");
 </details>
 
 ## accounts
-<details><summary><code>client.Accounts.<a href="/src/SchematicHQ.Client/Accounts/AccountsClient.cs">ListApiKeysAsync</a>(ListApiKeysRequest { ... }) -> ListApiKeysResponse</code></summary>
+<details><summary><code>client.Accounts.<a href="/src/SchematicHQ.Client/Accounts/AccountsClient.cs">ListApiKeysAsync</a>(ListApiKeysRequest { ... }) -> WithRawResponseTask&lt;ListApiKeysResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -98,8 +98,8 @@ await client.Accounts.ListApiKeysAsync(
     {
         EnvironmentId = "environment_id",
         RequireEnvironment = true,
-        Limit = 1,
-        Offset = 1,
+        Limit = 1000000,
+        Offset = 1000000,
     }
 );
 ```
@@ -128,7 +128,7 @@ await client.Accounts.ListApiKeysAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Accounts.<a href="/src/SchematicHQ.Client/Accounts/AccountsClient.cs">CreateApiKeyAsync</a>(CreateApiKeyRequestBody { ... }) -> CreateApiKeyResponse</code></summary>
+<details><summary><code>client.Accounts.<a href="/src/SchematicHQ.Client/Accounts/AccountsClient.cs">CreateApiKeyAsync</a>(CreateApiKeyRequestBody { ... }) -> WithRawResponseTask&lt;CreateApiKeyResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -168,7 +168,7 @@ await client.Accounts.CreateApiKeyAsync(new CreateApiKeyRequestBody { Name = "na
 </dl>
 </details>
 
-<details><summary><code>client.Accounts.<a href="/src/SchematicHQ.Client/Accounts/AccountsClient.cs">GetApiKeyAsync</a>(apiKeyId) -> GetApiKeyResponse</code></summary>
+<details><summary><code>client.Accounts.<a href="/src/SchematicHQ.Client/Accounts/AccountsClient.cs">GetApiKeyAsync</a>(apiKeyId) -> WithRawResponseTask&lt;GetApiKeyResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -208,7 +208,7 @@ await client.Accounts.GetApiKeyAsync("api_key_id");
 </dl>
 </details>
 
-<details><summary><code>client.Accounts.<a href="/src/SchematicHQ.Client/Accounts/AccountsClient.cs">UpdateApiKeyAsync</a>(apiKeyId, UpdateApiKeyRequestBody { ... }) -> UpdateApiKeyResponse</code></summary>
+<details><summary><code>client.Accounts.<a href="/src/SchematicHQ.Client/Accounts/AccountsClient.cs">UpdateApiKeyAsync</a>(apiKeyId, UpdateApiKeyRequestBody { ... }) -> WithRawResponseTask&lt;UpdateApiKeyResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -256,7 +256,7 @@ await client.Accounts.UpdateApiKeyAsync("api_key_id", new UpdateApiKeyRequestBod
 </dl>
 </details>
 
-<details><summary><code>client.Accounts.<a href="/src/SchematicHQ.Client/Accounts/AccountsClient.cs">DeleteApiKeyAsync</a>(apiKeyId) -> DeleteApiKeyResponse</code></summary>
+<details><summary><code>client.Accounts.<a href="/src/SchematicHQ.Client/Accounts/AccountsClient.cs">DeleteApiKeyAsync</a>(apiKeyId) -> WithRawResponseTask&lt;DeleteApiKeyResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -296,7 +296,7 @@ await client.Accounts.DeleteApiKeyAsync("api_key_id");
 </dl>
 </details>
 
-<details><summary><code>client.Accounts.<a href="/src/SchematicHQ.Client/Accounts/AccountsClient.cs">CountApiKeysAsync</a>(CountApiKeysRequest { ... }) -> CountApiKeysResponse</code></summary>
+<details><summary><code>client.Accounts.<a href="/src/SchematicHQ.Client/Accounts/AccountsClient.cs">CountApiKeysAsync</a>(CountApiKeysRequest { ... }) -> WithRawResponseTask&lt;CountApiKeysResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -314,8 +314,8 @@ await client.Accounts.CountApiKeysAsync(
     {
         EnvironmentId = "environment_id",
         RequireEnvironment = true,
-        Limit = 1,
-        Offset = 1,
+        Limit = 1000000,
+        Offset = 1000000,
     }
 );
 ```
@@ -344,7 +344,7 @@ await client.Accounts.CountApiKeysAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Accounts.<a href="/src/SchematicHQ.Client/Accounts/AccountsClient.cs">ListAuditLogsAsync</a>(ListAuditLogsRequest { ... }) -> ListAuditLogsResponse</code></summary>
+<details><summary><code>client.Accounts.<a href="/src/SchematicHQ.Client/Accounts/AccountsClient.cs">ListAuditLogsAsync</a>(ListAuditLogsRequest { ... }) -> WithRawResponseTask&lt;ListAuditLogsResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -365,8 +365,8 @@ await client.Accounts.ListAuditLogsAsync(
         EnvironmentId = "environment_id",
         Q = "q",
         StartTime = new DateTime(2024, 01, 15, 09, 30, 00, 000),
-        Limit = 1,
-        Offset = 1,
+        Limit = 1000000,
+        Offset = 1000000,
     }
 );
 ```
@@ -395,7 +395,7 @@ await client.Accounts.ListAuditLogsAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Accounts.<a href="/src/SchematicHQ.Client/Accounts/AccountsClient.cs">GetAuditLogAsync</a>(auditLogId) -> GetAuditLogResponse</code></summary>
+<details><summary><code>client.Accounts.<a href="/src/SchematicHQ.Client/Accounts/AccountsClient.cs">GetAuditLogAsync</a>(auditLogId) -> WithRawResponseTask&lt;GetAuditLogResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -435,7 +435,7 @@ await client.Accounts.GetAuditLogAsync("audit_log_id");
 </dl>
 </details>
 
-<details><summary><code>client.Accounts.<a href="/src/SchematicHQ.Client/Accounts/AccountsClient.cs">CountAuditLogsAsync</a>(CountAuditLogsRequest { ... }) -> CountAuditLogsResponse</code></summary>
+<details><summary><code>client.Accounts.<a href="/src/SchematicHQ.Client/Accounts/AccountsClient.cs">CountAuditLogsAsync</a>(CountAuditLogsRequest { ... }) -> WithRawResponseTask&lt;CountAuditLogsResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -456,8 +456,8 @@ await client.Accounts.CountAuditLogsAsync(
         EnvironmentId = "environment_id",
         Q = "q",
         StartTime = new DateTime(2024, 01, 15, 09, 30, 00, 000),
-        Limit = 1,
-        Offset = 1,
+        Limit = 1000000,
+        Offset = 1000000,
     }
 );
 ```
@@ -486,7 +486,7 @@ await client.Accounts.CountAuditLogsAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Accounts.<a href="/src/SchematicHQ.Client/Accounts/AccountsClient.cs">ListEnvironmentsAsync</a>(ListEnvironmentsRequest { ... }) -> ListEnvironmentsResponse</code></summary>
+<details><summary><code>client.Accounts.<a href="/src/SchematicHQ.Client/Accounts/AccountsClient.cs">ListEnvironmentsAsync</a>(ListEnvironmentsRequest { ... }) -> WithRawResponseTask&lt;ListEnvironmentsResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -499,7 +499,9 @@ await client.Accounts.CountAuditLogsAsync(
 <dd>
 
 ```csharp
-await client.Accounts.ListEnvironmentsAsync(new ListEnvironmentsRequest { Limit = 1, Offset = 1 });
+await client.Accounts.ListEnvironmentsAsync(
+    new ListEnvironmentsRequest { Limit = 1000000, Offset = 1000000 }
+);
 ```
 </dd>
 </dl>
@@ -526,7 +528,7 @@ await client.Accounts.ListEnvironmentsAsync(new ListEnvironmentsRequest { Limit 
 </dl>
 </details>
 
-<details><summary><code>client.Accounts.<a href="/src/SchematicHQ.Client/Accounts/AccountsClient.cs">CreateEnvironmentAsync</a>(CreateEnvironmentRequestBody { ... }) -> CreateEnvironmentResponse</code></summary>
+<details><summary><code>client.Accounts.<a href="/src/SchematicHQ.Client/Accounts/AccountsClient.cs">CreateEnvironmentAsync</a>(CreateEnvironmentRequestBody { ... }) -> WithRawResponseTask&lt;CreateEnvironmentResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -572,7 +574,7 @@ await client.Accounts.CreateEnvironmentAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Accounts.<a href="/src/SchematicHQ.Client/Accounts/AccountsClient.cs">GetEnvironmentAsync</a>(environmentId) -> GetEnvironmentResponse</code></summary>
+<details><summary><code>client.Accounts.<a href="/src/SchematicHQ.Client/Accounts/AccountsClient.cs">GetEnvironmentAsync</a>(environmentId) -> WithRawResponseTask&lt;GetEnvironmentResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -612,7 +614,7 @@ await client.Accounts.GetEnvironmentAsync("environment_id");
 </dl>
 </details>
 
-<details><summary><code>client.Accounts.<a href="/src/SchematicHQ.Client/Accounts/AccountsClient.cs">UpdateEnvironmentAsync</a>(environmentId, UpdateEnvironmentRequestBody { ... }) -> UpdateEnvironmentResponse</code></summary>
+<details><summary><code>client.Accounts.<a href="/src/SchematicHQ.Client/Accounts/AccountsClient.cs">UpdateEnvironmentAsync</a>(environmentId, UpdateEnvironmentRequestBody { ... }) -> WithRawResponseTask&lt;UpdateEnvironmentResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -660,7 +662,7 @@ await client.Accounts.UpdateEnvironmentAsync("environment_id", new UpdateEnviron
 </dl>
 </details>
 
-<details><summary><code>client.Accounts.<a href="/src/SchematicHQ.Client/Accounts/AccountsClient.cs">DeleteEnvironmentAsync</a>(environmentId) -> DeleteEnvironmentResponse</code></summary>
+<details><summary><code>client.Accounts.<a href="/src/SchematicHQ.Client/Accounts/AccountsClient.cs">DeleteEnvironmentAsync</a>(environmentId) -> WithRawResponseTask&lt;DeleteEnvironmentResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -700,7 +702,7 @@ await client.Accounts.DeleteEnvironmentAsync("environment_id");
 </dl>
 </details>
 
-<details><summary><code>client.Accounts.<a href="/src/SchematicHQ.Client/Accounts/AccountsClient.cs">QuickstartAsync</a>() -> QuickstartResponse</code></summary>
+<details><summary><code>client.Accounts.<a href="/src/SchematicHQ.Client/Accounts/AccountsClient.cs">QuickstartAsync</a>() -> WithRawResponseTask&lt;QuickstartResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -725,7 +727,7 @@ await client.Accounts.QuickstartAsync();
 </dl>
 </details>
 
-<details><summary><code>client.Accounts.<a href="/src/SchematicHQ.Client/Accounts/AccountsClient.cs">GetWhoAmIAsync</a>() -> GetWhoAmIResponse</code></summary>
+<details><summary><code>client.Accounts.<a href="/src/SchematicHQ.Client/Accounts/AccountsClient.cs">GetWhoAmIAsync</a>() -> WithRawResponseTask&lt;GetWhoAmIResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -751,7 +753,7 @@ await client.Accounts.GetWhoAmIAsync();
 </details>
 
 ## billing
-<details><summary><code>client.Billing.<a href="/src/SchematicHQ.Client/Billing/BillingClient.cs">ListCouponsAsync</a>(ListCouponsRequest { ... }) -> ListCouponsResponse</code></summary>
+<details><summary><code>client.Billing.<a href="/src/SchematicHQ.Client/Billing/BillingClient.cs">ListCouponsAsync</a>(ListCouponsRequest { ... }) -> WithRawResponseTask&lt;ListCouponsResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -769,8 +771,8 @@ await client.Billing.ListCouponsAsync(
     {
         IsActive = true,
         Q = "q",
-        Limit = 1,
-        Offset = 1,
+        Limit = 1000000,
+        Offset = 1000000,
     }
 );
 ```
@@ -799,7 +801,7 @@ await client.Billing.ListCouponsAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Billing.<a href="/src/SchematicHQ.Client/Billing/BillingClient.cs">UpsertBillingCouponAsync</a>(CreateCouponRequestBody { ... }) -> UpsertBillingCouponResponse</code></summary>
+<details><summary><code>client.Billing.<a href="/src/SchematicHQ.Client/Billing/BillingClient.cs">UpsertBillingCouponAsync</a>(CreateCouponRequestBody { ... }) -> WithRawResponseTask&lt;UpsertBillingCouponResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -815,14 +817,14 @@ await client.Billing.ListCouponsAsync(
 await client.Billing.UpsertBillingCouponAsync(
     new CreateCouponRequestBody
     {
-        AmountOff = 1,
+        AmountOff = 1000000,
         Duration = "duration",
-        DurationInMonths = 1,
+        DurationInMonths = 1000000,
         ExternalId = "external_id",
-        MaxRedemptions = 1,
+        MaxRedemptions = 1000000,
         Name = "name",
         PercentOff = 1.1,
-        TimesRedeemed = 1,
+        TimesRedeemed = 1000000,
     }
 );
 ```
@@ -851,7 +853,7 @@ await client.Billing.UpsertBillingCouponAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Billing.<a href="/src/SchematicHQ.Client/Billing/BillingClient.cs">UpsertBillingCustomerAsync</a>(CreateBillingCustomerRequestBody { ... }) -> UpsertBillingCustomerResponse</code></summary>
+<details><summary><code>client.Billing.<a href="/src/SchematicHQ.Client/Billing/BillingClient.cs">UpsertBillingCustomerAsync</a>(CreateBillingCustomerRequestBody { ... }) -> WithRawResponseTask&lt;UpsertBillingCustomerResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -899,7 +901,7 @@ await client.Billing.UpsertBillingCustomerAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Billing.<a href="/src/SchematicHQ.Client/Billing/BillingClient.cs">ListCustomersWithSubscriptionsAsync</a>(ListCustomersWithSubscriptionsRequest { ... }) -> ListCustomersWithSubscriptionsResponse</code></summary>
+<details><summary><code>client.Billing.<a href="/src/SchematicHQ.Client/Billing/BillingClient.cs">ListCustomersWithSubscriptionsAsync</a>(ListCustomersWithSubscriptionsRequest { ... }) -> WithRawResponseTask&lt;ListCustomersWithSubscriptionsResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -918,8 +920,8 @@ await client.Billing.ListCustomersWithSubscriptionsAsync(
         Name = "name",
         ProviderType = BillingProviderType.Schematic,
         Q = "q",
-        Limit = 1,
-        Offset = 1,
+        Limit = 1000000,
+        Offset = 1000000,
     }
 );
 ```
@@ -948,7 +950,7 @@ await client.Billing.ListCustomersWithSubscriptionsAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Billing.<a href="/src/SchematicHQ.Client/Billing/BillingClient.cs">CountCustomersAsync</a>(CountCustomersRequest { ... }) -> CountCustomersResponse</code></summary>
+<details><summary><code>client.Billing.<a href="/src/SchematicHQ.Client/Billing/BillingClient.cs">CountCustomersAsync</a>(CountCustomersRequest { ... }) -> WithRawResponseTask&lt;CountCustomersResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -967,8 +969,8 @@ await client.Billing.CountCustomersAsync(
         Name = "name",
         ProviderType = BillingProviderType.Schematic,
         Q = "q",
-        Limit = 1,
-        Offset = 1,
+        Limit = 1000000,
+        Offset = 1000000,
     }
 );
 ```
@@ -997,7 +999,7 @@ await client.Billing.CountCustomersAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Billing.<a href="/src/SchematicHQ.Client/Billing/BillingClient.cs">ListInvoicesAsync</a>(ListInvoicesRequest { ... }) -> ListInvoicesResponse</code></summary>
+<details><summary><code>client.Billing.<a href="/src/SchematicHQ.Client/Billing/BillingClient.cs">ListInvoicesAsync</a>(ListInvoicesRequest { ... }) -> WithRawResponseTask&lt;ListInvoicesResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -1016,8 +1018,8 @@ await client.Billing.ListInvoicesAsync(
         CompanyId = "company_id",
         CustomerExternalId = "customer_external_id",
         SubscriptionExternalId = "subscription_external_id",
-        Limit = 1,
-        Offset = 1,
+        Limit = 1000000,
+        Offset = 1000000,
     }
 );
 ```
@@ -1046,7 +1048,7 @@ await client.Billing.ListInvoicesAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Billing.<a href="/src/SchematicHQ.Client/Billing/BillingClient.cs">UpsertInvoiceAsync</a>(CreateInvoiceRequestBody { ... }) -> UpsertInvoiceResponse</code></summary>
+<details><summary><code>client.Billing.<a href="/src/SchematicHQ.Client/Billing/BillingClient.cs">UpsertInvoiceAsync</a>(CreateInvoiceRequestBody { ... }) -> WithRawResponseTask&lt;UpsertInvoiceResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -1062,13 +1064,13 @@ await client.Billing.ListInvoicesAsync(
 await client.Billing.UpsertInvoiceAsync(
     new CreateInvoiceRequestBody
     {
-        AmountDue = 1,
-        AmountPaid = 1,
-        AmountRemaining = 1,
+        AmountDue = 1000000,
+        AmountPaid = 1000000,
+        AmountRemaining = 1000000,
         CollectionMethod = "collection_method",
         Currency = "currency",
         CustomerExternalId = "customer_external_id",
-        Subtotal = 1,
+        Subtotal = 1000000,
     }
 );
 ```
@@ -1097,7 +1099,7 @@ await client.Billing.UpsertInvoiceAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Billing.<a href="/src/SchematicHQ.Client/Billing/BillingClient.cs">ListMetersAsync</a>(ListMetersRequest { ... }) -> ListMetersResponse</code></summary>
+<details><summary><code>client.Billing.<a href="/src/SchematicHQ.Client/Billing/BillingClient.cs">ListMetersAsync</a>(ListMetersRequest { ... }) -> WithRawResponseTask&lt;ListMetersResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -1114,8 +1116,8 @@ await client.Billing.ListMetersAsync(
     new ListMetersRequest
     {
         DisplayName = "display_name",
-        Limit = 1,
-        Offset = 1,
+        Limit = 1000000,
+        Offset = 1000000,
     }
 );
 ```
@@ -1144,7 +1146,7 @@ await client.Billing.ListMetersAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Billing.<a href="/src/SchematicHQ.Client/Billing/BillingClient.cs">UpsertBillingMeterAsync</a>(CreateMeterRequestBody { ... }) -> UpsertBillingMeterResponse</code></summary>
+<details><summary><code>client.Billing.<a href="/src/SchematicHQ.Client/Billing/BillingClient.cs">UpsertBillingMeterAsync</a>(CreateMeterRequestBody { ... }) -> WithRawResponseTask&lt;UpsertBillingMeterResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -1192,7 +1194,7 @@ await client.Billing.UpsertBillingMeterAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Billing.<a href="/src/SchematicHQ.Client/Billing/BillingClient.cs">ListPaymentMethodsAsync</a>(ListPaymentMethodsRequest { ... }) -> ListPaymentMethodsResponse</code></summary>
+<details><summary><code>client.Billing.<a href="/src/SchematicHQ.Client/Billing/BillingClient.cs">ListPaymentMethodsAsync</a>(ListPaymentMethodsRequest { ... }) -> WithRawResponseTask&lt;ListPaymentMethodsResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -1210,8 +1212,8 @@ await client.Billing.ListPaymentMethodsAsync(
     {
         CompanyId = "company_id",
         CustomerExternalId = "customer_external_id",
-        Limit = 1,
-        Offset = 1,
+        Limit = 1000000,
+        Offset = 1000000,
     }
 );
 ```
@@ -1240,7 +1242,7 @@ await client.Billing.ListPaymentMethodsAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Billing.<a href="/src/SchematicHQ.Client/Billing/BillingClient.cs">UpsertPaymentMethodAsync</a>(CreatePaymentMethodRequestBody { ... }) -> UpsertPaymentMethodResponse</code></summary>
+<details><summary><code>client.Billing.<a href="/src/SchematicHQ.Client/Billing/BillingClient.cs">UpsertPaymentMethodAsync</a>(CreatePaymentMethodRequestBody { ... }) -> WithRawResponseTask&lt;UpsertPaymentMethodResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -1287,7 +1289,7 @@ await client.Billing.UpsertPaymentMethodAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Billing.<a href="/src/SchematicHQ.Client/Billing/BillingClient.cs">ListBillingPricesAsync</a>(ListBillingPricesRequest { ... }) -> ListBillingPricesResponse</code></summary>
+<details><summary><code>client.Billing.<a href="/src/SchematicHQ.Client/Billing/BillingClient.cs">ListBillingPricesAsync</a>(ListBillingPricesRequest { ... }) -> WithRawResponseTask&lt;ListBillingPricesResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -1303,19 +1305,20 @@ await client.Billing.UpsertPaymentMethodAsync(
 await client.Billing.ListBillingPricesAsync(
     new ListBillingPricesRequest
     {
+        Currency = "currency",
         ForInitialPlan = true,
         ForTrialExpiryPlan = true,
         Interval = "interval",
         IsActive = true,
-        Price = 1,
+        Price = 1000000,
         ProductId = "product_id",
         ProviderType = BillingProviderType.Schematic,
         Q = "q",
         TiersMode = BillingTiersMode.Graduated,
         UsageType = BillingPriceUsageType.Licensed,
         WithMeter = true,
-        Limit = 1,
-        Offset = 1,
+        Limit = 1000000,
+        Offset = 1000000,
     }
 );
 ```
@@ -1344,7 +1347,7 @@ await client.Billing.ListBillingPricesAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Billing.<a href="/src/SchematicHQ.Client/Billing/BillingClient.cs">UpsertBillingPriceAsync</a>(CreateBillingPriceRequestBody { ... }) -> UpsertBillingPriceResponse</code></summary>
+<details><summary><code>client.Billing.<a href="/src/SchematicHQ.Client/Billing/BillingClient.cs">UpsertBillingPriceAsync</a>(CreateBillingPriceRequestBody { ... }) -> WithRawResponseTask&lt;UpsertBillingPriceResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -1365,7 +1368,7 @@ await client.Billing.UpsertBillingPriceAsync(
         ExternalAccountId = "external_account_id",
         Interval = "interval",
         IsActive = true,
-        Price = 1,
+        Price = 1000000,
         PriceExternalId = "price_external_id",
         PriceTiers = new List<CreateBillingPriceTierRequestBody>()
         {
@@ -1401,7 +1404,7 @@ await client.Billing.UpsertBillingPriceAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Billing.<a href="/src/SchematicHQ.Client/Billing/BillingClient.cs">DeleteBillingProductAsync</a>(billingId) -> DeleteBillingProductResponse</code></summary>
+<details><summary><code>client.Billing.<a href="/src/SchematicHQ.Client/Billing/BillingClient.cs">DeleteBillingProductAsync</a>(billingId) -> WithRawResponseTask&lt;DeleteBillingProductResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -1441,7 +1444,7 @@ await client.Billing.DeleteBillingProductAsync("billing_id");
 </dl>
 </details>
 
-<details><summary><code>client.Billing.<a href="/src/SchematicHQ.Client/Billing/BillingClient.cs">ListBillingProductPricesAsync</a>(ListBillingProductPricesRequest { ... }) -> ListBillingProductPricesResponse</code></summary>
+<details><summary><code>client.Billing.<a href="/src/SchematicHQ.Client/Billing/BillingClient.cs">ListBillingProductPricesAsync</a>(ListBillingProductPricesRequest { ... }) -> WithRawResponseTask&lt;ListBillingProductPricesResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -1457,19 +1460,20 @@ await client.Billing.DeleteBillingProductAsync("billing_id");
 await client.Billing.ListBillingProductPricesAsync(
     new ListBillingProductPricesRequest
     {
+        Currency = "currency",
         ForInitialPlan = true,
         ForTrialExpiryPlan = true,
         Interval = "interval",
         IsActive = true,
-        Price = 1,
+        Price = 1000000,
         ProductId = "product_id",
         ProviderType = BillingProviderType.Schematic,
         Q = "q",
         TiersMode = BillingTiersMode.Graduated,
         UsageType = BillingPriceUsageType.Licensed,
         WithMeter = true,
-        Limit = 1,
-        Offset = 1,
+        Limit = 1000000,
+        Offset = 1000000,
     }
 );
 ```
@@ -1498,7 +1502,7 @@ await client.Billing.ListBillingProductPricesAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Billing.<a href="/src/SchematicHQ.Client/Billing/BillingClient.cs">DeleteProductPriceAsync</a>(billingId) -> DeleteProductPriceResponse</code></summary>
+<details><summary><code>client.Billing.<a href="/src/SchematicHQ.Client/Billing/BillingClient.cs">DeleteProductPriceAsync</a>(billingId) -> WithRawResponseTask&lt;DeleteProductPriceResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -1538,7 +1542,7 @@ await client.Billing.DeleteProductPriceAsync("billing_id");
 </dl>
 </details>
 
-<details><summary><code>client.Billing.<a href="/src/SchematicHQ.Client/Billing/BillingClient.cs">UpsertBillingProductAsync</a>(CreateBillingProductRequestBody { ... }) -> UpsertBillingProductResponse</code></summary>
+<details><summary><code>client.Billing.<a href="/src/SchematicHQ.Client/Billing/BillingClient.cs">UpsertBillingProductAsync</a>(CreateBillingProductRequestBody { ... }) -> WithRawResponseTask&lt;UpsertBillingProductResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -1580,7 +1584,7 @@ await client.Billing.UpsertBillingProductAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Billing.<a href="/src/SchematicHQ.Client/Billing/BillingClient.cs">ListBillingProductsAsync</a>(ListBillingProductsRequest { ... }) -> ListBillingProductsResponse</code></summary>
+<details><summary><code>client.Billing.<a href="/src/SchematicHQ.Client/Billing/BillingClient.cs">ListBillingProductsAsync</a>(ListBillingProductsRequest { ... }) -> WithRawResponseTask&lt;ListBillingProductsResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -1605,8 +1609,8 @@ await client.Billing.ListBillingProductsAsync(
         WithPricesOnly = true,
         WithZeroPrice = true,
         WithoutLinkedToPlan = true,
-        Limit = 1,
-        Offset = 1,
+        Limit = 1000000,
+        Offset = 1000000,
     }
 );
 ```
@@ -1635,7 +1639,7 @@ await client.Billing.ListBillingProductsAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Billing.<a href="/src/SchematicHQ.Client/Billing/BillingClient.cs">CountBillingProductsAsync</a>(CountBillingProductsRequest { ... }) -> CountBillingProductsResponse</code></summary>
+<details><summary><code>client.Billing.<a href="/src/SchematicHQ.Client/Billing/BillingClient.cs">CountBillingProductsAsync</a>(CountBillingProductsRequest { ... }) -> WithRawResponseTask&lt;CountBillingProductsResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -1660,8 +1664,8 @@ await client.Billing.CountBillingProductsAsync(
         WithPricesOnly = true,
         WithZeroPrice = true,
         WithoutLinkedToPlan = true,
-        Limit = 1,
-        Offset = 1,
+        Limit = 1000000,
+        Offset = 1000000,
     }
 );
 ```
@@ -1690,7 +1694,7 @@ await client.Billing.CountBillingProductsAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Billing.<a href="/src/SchematicHQ.Client/Billing/BillingClient.cs">UpsertBillingSubscriptionAsync</a>(CreateBillingSubscriptionRequestBody { ... }) -> UpsertBillingSubscriptionResponse</code></summary>
+<details><summary><code>client.Billing.<a href="/src/SchematicHQ.Client/Billing/BillingClient.cs">UpsertBillingSubscriptionAsync</a>(CreateBillingSubscriptionRequestBody { ... }) -> WithRawResponseTask&lt;UpsertBillingSubscriptionResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -1726,15 +1730,15 @@ await client.Billing.UpsertBillingSubscriptionAsync(
             {
                 Currency = "currency",
                 Interval = "interval",
-                Price = 1,
+                Price = 1000000,
                 PriceExternalId = "price_external_id",
                 ProductExternalId = "product_external_id",
-                Quantity = 1,
+                Quantity = 1000000,
                 UsageType = BillingPriceUsageType.Licensed,
             },
         },
         SubscriptionExternalId = "subscription_external_id",
-        TotalPrice = 1,
+        TotalPrice = 1000000,
     }
 );
 ```
@@ -1764,7 +1768,7 @@ await client.Billing.UpsertBillingSubscriptionAsync(
 </details>
 
 ## credits
-<details><summary><code>client.Credits.<a href="/src/SchematicHQ.Client/Credits/CreditsClient.cs">ListBillingCreditsAsync</a>(ListBillingCreditsRequest { ... }) -> ListBillingCreditsResponse</code></summary>
+<details><summary><code>client.Credits.<a href="/src/SchematicHQ.Client/Credits/CreditsClient.cs">ListBillingCreditsAsync</a>(ListBillingCreditsRequest { ... }) -> WithRawResponseTask&lt;ListBillingCreditsResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -1781,8 +1785,8 @@ await client.Credits.ListBillingCreditsAsync(
     new ListBillingCreditsRequest
     {
         Name = "name",
-        Limit = 1,
-        Offset = 1,
+        Limit = 1000000,
+        Offset = 1000000,
     }
 );
 ```
@@ -1811,7 +1815,7 @@ await client.Credits.ListBillingCreditsAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Credits.<a href="/src/SchematicHQ.Client/Credits/CreditsClient.cs">CreateBillingCreditAsync</a>(CreateBillingCreditRequestBody { ... }) -> CreateBillingCreditResponse</code></summary>
+<details><summary><code>client.Credits.<a href="/src/SchematicHQ.Client/Credits/CreditsClient.cs">CreateBillingCreditAsync</a>(CreateBillingCreditRequestBody { ... }) -> WithRawResponseTask&lt;CreateBillingCreditResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -1858,7 +1862,7 @@ await client.Credits.CreateBillingCreditAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Credits.<a href="/src/SchematicHQ.Client/Credits/CreditsClient.cs">GetSingleBillingCreditAsync</a>(creditId) -> GetSingleBillingCreditResponse</code></summary>
+<details><summary><code>client.Credits.<a href="/src/SchematicHQ.Client/Credits/CreditsClient.cs">GetSingleBillingCreditAsync</a>(creditId) -> WithRawResponseTask&lt;GetSingleBillingCreditResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -1898,7 +1902,7 @@ await client.Credits.GetSingleBillingCreditAsync("credit_id");
 </dl>
 </details>
 
-<details><summary><code>client.Credits.<a href="/src/SchematicHQ.Client/Credits/CreditsClient.cs">UpdateBillingCreditAsync</a>(creditId, UpdateBillingCreditRequestBody { ... }) -> UpdateBillingCreditResponse</code></summary>
+<details><summary><code>client.Credits.<a href="/src/SchematicHQ.Client/Credits/CreditsClient.cs">UpdateBillingCreditAsync</a>(creditId, UpdateBillingCreditRequestBody { ... }) -> WithRawResponseTask&lt;UpdateBillingCreditResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -1949,7 +1953,7 @@ await client.Credits.UpdateBillingCreditAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Credits.<a href="/src/SchematicHQ.Client/Credits/CreditsClient.cs">SoftDeleteBillingCreditAsync</a>(creditId) -> SoftDeleteBillingCreditResponse</code></summary>
+<details><summary><code>client.Credits.<a href="/src/SchematicHQ.Client/Credits/CreditsClient.cs">SoftDeleteBillingCreditAsync</a>(creditId) -> WithRawResponseTask&lt;SoftDeleteBillingCreditResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -1989,7 +1993,7 @@ await client.Credits.SoftDeleteBillingCreditAsync("credit_id");
 </dl>
 </details>
 
-<details><summary><code>client.Credits.<a href="/src/SchematicHQ.Client/Credits/CreditsClient.cs">ListCreditBundlesAsync</a>(ListCreditBundlesRequest { ... }) -> ListCreditBundlesResponse</code></summary>
+<details><summary><code>client.Credits.<a href="/src/SchematicHQ.Client/Credits/CreditsClient.cs">ListCreditBundlesAsync</a>(ListCreditBundlesRequest { ... }) -> WithRawResponseTask&lt;ListCreditBundlesResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -2008,8 +2012,8 @@ await client.Credits.ListCreditBundlesAsync(
         CreditId = "credit_id",
         Status = BillingCreditBundleStatus.Active,
         BundleType = "fixed",
-        Limit = 1,
-        Offset = 1,
+        Limit = 1000000,
+        Offset = 1000000,
     }
 );
 ```
@@ -2038,7 +2042,7 @@ await client.Credits.ListCreditBundlesAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Credits.<a href="/src/SchematicHQ.Client/Credits/CreditsClient.cs">CreateCreditBundleAsync</a>(CreateCreditBundleRequestBody { ... }) -> CreateCreditBundleResponse</code></summary>
+<details><summary><code>client.Credits.<a href="/src/SchematicHQ.Client/Credits/CreditsClient.cs">CreateCreditBundleAsync</a>(CreateCreditBundleRequestBody { ... }) -> WithRawResponseTask&lt;CreateCreditBundleResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -2057,7 +2061,7 @@ await client.Credits.CreateCreditBundleAsync(
         BundleName = "bundle_name",
         CreditId = "credit_id",
         Currency = "currency",
-        PricePerUnit = 1,
+        PricePerUnit = 1000000,
     }
 );
 ```
@@ -2086,7 +2090,7 @@ await client.Credits.CreateCreditBundleAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Credits.<a href="/src/SchematicHQ.Client/Credits/CreditsClient.cs">GetCreditBundleAsync</a>(bundleId) -> GetCreditBundleResponse</code></summary>
+<details><summary><code>client.Credits.<a href="/src/SchematicHQ.Client/Credits/CreditsClient.cs">GetCreditBundleAsync</a>(bundleId) -> WithRawResponseTask&lt;GetCreditBundleResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -2126,7 +2130,7 @@ await client.Credits.GetCreditBundleAsync("bundle_id");
 </dl>
 </details>
 
-<details><summary><code>client.Credits.<a href="/src/SchematicHQ.Client/Credits/CreditsClient.cs">UpdateCreditBundleDetailsAsync</a>(bundleId, UpdateCreditBundleDetailsRequestBody { ... }) -> UpdateCreditBundleDetailsResponse</code></summary>
+<details><summary><code>client.Credits.<a href="/src/SchematicHQ.Client/Credits/CreditsClient.cs">UpdateCreditBundleDetailsAsync</a>(bundleId, UpdateCreditBundleDetailsRequestBody { ... }) -> WithRawResponseTask&lt;UpdateCreditBundleDetailsResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -2141,7 +2145,7 @@ await client.Credits.GetCreditBundleAsync("bundle_id");
 ```csharp
 await client.Credits.UpdateCreditBundleDetailsAsync(
     "bundle_id",
-    new UpdateCreditBundleDetailsRequestBody { BundleName = "bundle_name", PricePerUnit = 1 }
+    new UpdateCreditBundleDetailsRequestBody { BundleName = "bundle_name", PricePerUnit = 1000000 }
 );
 ```
 </dd>
@@ -2177,7 +2181,7 @@ await client.Credits.UpdateCreditBundleDetailsAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Credits.<a href="/src/SchematicHQ.Client/Credits/CreditsClient.cs">DeleteCreditBundleAsync</a>(bundleId) -> DeleteCreditBundleResponse</code></summary>
+<details><summary><code>client.Credits.<a href="/src/SchematicHQ.Client/Credits/CreditsClient.cs">DeleteCreditBundleAsync</a>(bundleId) -> WithRawResponseTask&lt;DeleteCreditBundleResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -2217,7 +2221,7 @@ await client.Credits.DeleteCreditBundleAsync("bundle_id");
 </dl>
 </details>
 
-<details><summary><code>client.Credits.<a href="/src/SchematicHQ.Client/Credits/CreditsClient.cs">CountCreditBundlesAsync</a>(CountCreditBundlesRequest { ... }) -> CountCreditBundlesResponse</code></summary>
+<details><summary><code>client.Credits.<a href="/src/SchematicHQ.Client/Credits/CreditsClient.cs">CountCreditBundlesAsync</a>(CountCreditBundlesRequest { ... }) -> WithRawResponseTask&lt;CountCreditBundlesResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -2236,8 +2240,8 @@ await client.Credits.CountCreditBundlesAsync(
         CreditId = "credit_id",
         Status = BillingCreditBundleStatus.Active,
         BundleType = "fixed",
-        Limit = 1,
-        Offset = 1,
+        Limit = 1000000,
+        Offset = 1000000,
     }
 );
 ```
@@ -2266,7 +2270,7 @@ await client.Credits.CountCreditBundlesAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Credits.<a href="/src/SchematicHQ.Client/Credits/CreditsClient.cs">CountBillingCreditsAsync</a>(CountBillingCreditsRequest { ... }) -> CountBillingCreditsResponse</code></summary>
+<details><summary><code>client.Credits.<a href="/src/SchematicHQ.Client/Credits/CreditsClient.cs">CountBillingCreditsAsync</a>(CountBillingCreditsRequest { ... }) -> WithRawResponseTask&lt;CountBillingCreditsResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -2283,8 +2287,8 @@ await client.Credits.CountBillingCreditsAsync(
     new CountBillingCreditsRequest
     {
         Name = "name",
-        Limit = 1,
-        Offset = 1,
+        Limit = 1000000,
+        Offset = 1000000,
     }
 );
 ```
@@ -2313,7 +2317,7 @@ await client.Credits.CountBillingCreditsAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Credits.<a href="/src/SchematicHQ.Client/Credits/CreditsClient.cs">ZeroOutGrantAsync</a>(grantId, ZeroOutGrantRequestBody { ... }) -> ZeroOutGrantResponse</code></summary>
+<details><summary><code>client.Credits.<a href="/src/SchematicHQ.Client/Credits/CreditsClient.cs">ZeroOutGrantAsync</a>(grantId, ZeroOutGrantRequestBody { ... }) -> WithRawResponseTask&lt;ZeroOutGrantResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -2361,7 +2365,7 @@ await client.Credits.ZeroOutGrantAsync("grant_id", new ZeroOutGrantRequestBody()
 </dl>
 </details>
 
-<details><summary><code>client.Credits.<a href="/src/SchematicHQ.Client/Credits/CreditsClient.cs">GrantBillingCreditsToCompanyAsync</a>(CreateCompanyCreditGrant { ... }) -> GrantBillingCreditsToCompanyResponse</code></summary>
+<details><summary><code>client.Credits.<a href="/src/SchematicHQ.Client/Credits/CreditsClient.cs">GrantBillingCreditsToCompanyAsync</a>(CreateCompanyCreditGrant { ... }) -> WithRawResponseTask&lt;GrantBillingCreditsToCompanyResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -2379,7 +2383,7 @@ await client.Credits.GrantBillingCreditsToCompanyAsync(
     {
         CompanyId = "company_id",
         CreditId = "credit_id",
-        Quantity = 1,
+        Quantity = 1000000,
         Reason = BillingCreditGrantReason.BillingCreditAutoTopup,
     }
 );
@@ -2409,7 +2413,7 @@ await client.Credits.GrantBillingCreditsToCompanyAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Credits.<a href="/src/SchematicHQ.Client/Credits/CreditsClient.cs">CountCompanyGrantsAsync</a>(CountCompanyGrantsRequest { ... }) -> CountCompanyGrantsResponse</code></summary>
+<details><summary><code>client.Credits.<a href="/src/SchematicHQ.Client/Credits/CreditsClient.cs">CountCompanyGrantsAsync</a>(CountCompanyGrantsRequest { ... }) -> WithRawResponseTask&lt;CountCompanyGrantsResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -2428,8 +2432,8 @@ await client.Credits.CountCompanyGrantsAsync(
         CompanyId = "company_id",
         Order = CreditGrantSortOrder.CreatedAt,
         Dir = SortDirection.Asc,
-        Limit = 1,
-        Offset = 1,
+        Limit = 1000000,
+        Offset = 1000000,
     }
 );
 ```
@@ -2458,7 +2462,7 @@ await client.Credits.CountCompanyGrantsAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Credits.<a href="/src/SchematicHQ.Client/Credits/CreditsClient.cs">ListCompanyGrantsAsync</a>(ListCompanyGrantsRequest { ... }) -> ListCompanyGrantsResponse</code></summary>
+<details><summary><code>client.Credits.<a href="/src/SchematicHQ.Client/Credits/CreditsClient.cs">ListCompanyGrantsAsync</a>(ListCompanyGrantsRequest { ... }) -> WithRawResponseTask&lt;ListCompanyGrantsResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -2477,8 +2481,8 @@ await client.Credits.ListCompanyGrantsAsync(
         CompanyId = "company_id",
         Order = CreditGrantSortOrder.CreatedAt,
         Dir = SortDirection.Asc,
-        Limit = 1,
-        Offset = 1,
+        Limit = 1000000,
+        Offset = 1000000,
     }
 );
 ```
@@ -2507,7 +2511,7 @@ await client.Credits.ListCompanyGrantsAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Credits.<a href="/src/SchematicHQ.Client/Credits/CreditsClient.cs">CountBillingCreditsGrantsAsync</a>(CountBillingCreditsGrantsRequest { ... }) -> CountBillingCreditsGrantsResponse</code></summary>
+<details><summary><code>client.Credits.<a href="/src/SchematicHQ.Client/Credits/CreditsClient.cs">CountBillingCreditsGrantsAsync</a>(CountBillingCreditsGrantsRequest { ... }) -> WithRawResponseTask&lt;CountBillingCreditsGrantsResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -2524,8 +2528,8 @@ await client.Credits.CountBillingCreditsGrantsAsync(
     new CountBillingCreditsGrantsRequest
     {
         CreditId = "credit_id",
-        Limit = 1,
-        Offset = 1,
+        Limit = 1000000,
+        Offset = 1000000,
     }
 );
 ```
@@ -2554,7 +2558,7 @@ await client.Credits.CountBillingCreditsGrantsAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Credits.<a href="/src/SchematicHQ.Client/Credits/CreditsClient.cs">ListGrantsForCreditAsync</a>(ListGrantsForCreditRequest { ... }) -> ListGrantsForCreditResponse</code></summary>
+<details><summary><code>client.Credits.<a href="/src/SchematicHQ.Client/Credits/CreditsClient.cs">ListGrantsForCreditAsync</a>(ListGrantsForCreditRequest { ... }) -> WithRawResponseTask&lt;ListGrantsForCreditResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -2571,8 +2575,8 @@ await client.Credits.ListGrantsForCreditAsync(
     new ListGrantsForCreditRequest
     {
         CreditId = "credit_id",
-        Limit = 1,
-        Offset = 1,
+        Limit = 1000000,
+        Offset = 1000000,
     }
 );
 ```
@@ -2601,7 +2605,7 @@ await client.Credits.ListGrantsForCreditAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Credits.<a href="/src/SchematicHQ.Client/Credits/CreditsClient.cs">GetEnrichedCreditLedgerAsync</a>(GetEnrichedCreditLedgerRequest { ... }) -> GetEnrichedCreditLedgerResponse</code></summary>
+<details><summary><code>client.Credits.<a href="/src/SchematicHQ.Client/Credits/CreditsClient.cs">GetEnrichedCreditLedgerAsync</a>(GetEnrichedCreditLedgerRequest { ... }) -> WithRawResponseTask&lt;GetEnrichedCreditLedgerResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -2623,8 +2627,8 @@ await client.Credits.GetEnrichedCreditLedgerAsync(
         Period = CreditLedgerPeriod.Daily,
         StartTime = "start_time",
         EndTime = "end_time",
-        Limit = 1,
-        Offset = 1,
+        Limit = 1000000,
+        Offset = 1000000,
     }
 );
 ```
@@ -2653,7 +2657,7 @@ await client.Credits.GetEnrichedCreditLedgerAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Credits.<a href="/src/SchematicHQ.Client/Credits/CreditsClient.cs">CountCreditLedgerAsync</a>(CountCreditLedgerRequest { ... }) -> CountCreditLedgerResponse</code></summary>
+<details><summary><code>client.Credits.<a href="/src/SchematicHQ.Client/Credits/CreditsClient.cs">CountCreditLedgerAsync</a>(CountCreditLedgerRequest { ... }) -> WithRawResponseTask&lt;CountCreditLedgerResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -2675,8 +2679,8 @@ await client.Credits.CountCreditLedgerAsync(
         Period = CreditLedgerPeriod.Daily,
         StartTime = "start_time",
         EndTime = "end_time",
-        Limit = 1,
-        Offset = 1,
+        Limit = 1000000,
+        Offset = 1000000,
     }
 );
 ```
@@ -2705,7 +2709,7 @@ await client.Credits.CountCreditLedgerAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Credits.<a href="/src/SchematicHQ.Client/Credits/CreditsClient.cs">ListBillingPlanCreditGrantsAsync</a>(ListBillingPlanCreditGrantsRequest { ... }) -> ListBillingPlanCreditGrantsResponse</code></summary>
+<details><summary><code>client.Credits.<a href="/src/SchematicHQ.Client/Credits/CreditsClient.cs">ListBillingPlanCreditGrantsAsync</a>(ListBillingPlanCreditGrantsRequest { ... }) -> WithRawResponseTask&lt;ListBillingPlanCreditGrantsResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -2724,8 +2728,8 @@ await client.Credits.ListBillingPlanCreditGrantsAsync(
         CreditId = "credit_id",
         PlanId = "plan_id",
         PlanVersionId = "plan_version_id",
-        Limit = 1,
-        Offset = 1,
+        Limit = 1000000,
+        Offset = 1000000,
     }
 );
 ```
@@ -2754,7 +2758,7 @@ await client.Credits.ListBillingPlanCreditGrantsAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Credits.<a href="/src/SchematicHQ.Client/Credits/CreditsClient.cs">CreateBillingPlanCreditGrantAsync</a>(CreateBillingPlanCreditGrantRequestBody { ... }) -> CreateBillingPlanCreditGrantResponse</code></summary>
+<details><summary><code>client.Credits.<a href="/src/SchematicHQ.Client/Credits/CreditsClient.cs">CreateBillingPlanCreditGrantAsync</a>(CreateBillingPlanCreditGrantRequestBody { ... }) -> WithRawResponseTask&lt;CreateBillingPlanCreditGrantResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -2770,7 +2774,7 @@ await client.Credits.ListBillingPlanCreditGrantsAsync(
 await client.Credits.CreateBillingPlanCreditGrantAsync(
     new CreateBillingPlanCreditGrantRequestBody
     {
-        CreditAmount = 1,
+        CreditAmount = 1000000,
         CreditId = "credit_id",
         PlanId = "plan_id",
         ResetCadence = BillingPlanCreditGrantResetCadence.Daily,
@@ -2803,7 +2807,7 @@ await client.Credits.CreateBillingPlanCreditGrantAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Credits.<a href="/src/SchematicHQ.Client/Credits/CreditsClient.cs">UpdateBillingPlanCreditGrantAsync</a>(planGrantId, UpdateBillingPlanCreditGrantRequestBody { ... }) -> UpdateBillingPlanCreditGrantResponse</code></summary>
+<details><summary><code>client.Credits.<a href="/src/SchematicHQ.Client/Credits/CreditsClient.cs">UpdateBillingPlanCreditGrantAsync</a>(planGrantId, UpdateBillingPlanCreditGrantRequestBody { ... }) -> WithRawResponseTask&lt;UpdateBillingPlanCreditGrantResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -2858,7 +2862,7 @@ await client.Credits.UpdateBillingPlanCreditGrantAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Credits.<a href="/src/SchematicHQ.Client/Credits/CreditsClient.cs">DeleteBillingPlanCreditGrantAsync</a>(planGrantId, DeleteBillingPlanCreditGrantRequest { ... }) -> DeleteBillingPlanCreditGrantResponse</code></summary>
+<details><summary><code>client.Credits.<a href="/src/SchematicHQ.Client/Credits/CreditsClient.cs">DeleteBillingPlanCreditGrantAsync</a>(planGrantId, DeleteBillingPlanCreditGrantRequest { ... }) -> WithRawResponseTask&lt;DeleteBillingPlanCreditGrantResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -2909,7 +2913,7 @@ await client.Credits.DeleteBillingPlanCreditGrantAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Credits.<a href="/src/SchematicHQ.Client/Credits/CreditsClient.cs">CountBillingPlanCreditGrantsAsync</a>(CountBillingPlanCreditGrantsRequest { ... }) -> CountBillingPlanCreditGrantsResponse</code></summary>
+<details><summary><code>client.Credits.<a href="/src/SchematicHQ.Client/Credits/CreditsClient.cs">CountBillingPlanCreditGrantsAsync</a>(CountBillingPlanCreditGrantsRequest { ... }) -> WithRawResponseTask&lt;CountBillingPlanCreditGrantsResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -2928,8 +2932,8 @@ await client.Credits.CountBillingPlanCreditGrantsAsync(
         CreditId = "credit_id",
         PlanId = "plan_id",
         PlanVersionId = "plan_version_id",
-        Limit = 1,
-        Offset = 1,
+        Limit = 1000000,
+        Offset = 1000000,
     }
 );
 ```
@@ -2958,7 +2962,7 @@ await client.Credits.CountBillingPlanCreditGrantsAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Credits.<a href="/src/SchematicHQ.Client/Credits/CreditsClient.cs">ListCreditEventLedgerAsync</a>(ListCreditEventLedgerRequest { ... }) -> ListCreditEventLedgerResponse</code></summary>
+<details><summary><code>client.Credits.<a href="/src/SchematicHQ.Client/Credits/CreditsClient.cs">ListCreditEventLedgerAsync</a>(ListCreditEventLedgerRequest { ... }) -> WithRawResponseTask&lt;ListCreditEventLedgerResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -2980,8 +2984,8 @@ await client.Credits.ListCreditEventLedgerAsync(
         EventType = CreditEventType.Grant,
         FeatureId = "feature_id",
         StartTime = "start_time",
-        Limit = 1,
-        Offset = 1,
+        Limit = 1000000,
+        Offset = 1000000,
     }
 );
 ```
@@ -3010,7 +3014,7 @@ await client.Credits.ListCreditEventLedgerAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Credits.<a href="/src/SchematicHQ.Client/Credits/CreditsClient.cs">CountCreditEventLedgerAsync</a>(CountCreditEventLedgerRequest { ... }) -> CountCreditEventLedgerResponse</code></summary>
+<details><summary><code>client.Credits.<a href="/src/SchematicHQ.Client/Credits/CreditsClient.cs">CountCreditEventLedgerAsync</a>(CountCreditEventLedgerRequest { ... }) -> WithRawResponseTask&lt;CountCreditEventLedgerResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -3032,8 +3036,8 @@ await client.Credits.CountCreditEventLedgerAsync(
         EventType = CreditEventType.Grant,
         FeatureId = "feature_id",
         StartTime = "start_time",
-        Limit = 1,
-        Offset = 1,
+        Limit = 1000000,
+        Offset = 1000000,
     }
 );
 ```
@@ -3063,7 +3067,7 @@ await client.Credits.CountCreditEventLedgerAsync(
 </details>
 
 ## checkout
-<details><summary><code>client.Checkout.<a href="/src/SchematicHQ.Client/Checkout/CheckoutClient.cs">InternalAsync</a>(ChangeSubscriptionInternalRequestBody { ... }) -> CheckoutInternalResponse</code></summary>
+<details><summary><code>client.Checkout.<a href="/src/SchematicHQ.Client/Checkout/CheckoutClient.cs">InternalAsync</a>(ChangeSubscriptionInternalRequestBody { ... }) -> WithRawResponseTask&lt;CheckoutInternalResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -3086,13 +3090,13 @@ await client.Checkout.InternalAsync(
         CompanyId = "company_id",
         CreditBundles = new List<UpdateCreditBundleRequestBody>()
         {
-            new UpdateCreditBundleRequestBody { BundleId = "bundle_id", Quantity = 1 },
+            new UpdateCreditBundleRequestBody { BundleId = "bundle_id", Quantity = 1000000 },
         },
         NewPlanId = "new_plan_id",
         NewPriceId = "new_price_id",
         PayInAdvance = new List<UpdatePayInAdvanceRequestBody>()
         {
-            new UpdatePayInAdvanceRequestBody { PriceId = "price_id", Quantity = 1 },
+            new UpdatePayInAdvanceRequestBody { PriceId = "price_id", Quantity = 1000000 },
         },
         SkipTrial = true,
     }
@@ -3123,7 +3127,7 @@ await client.Checkout.InternalAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Checkout.<a href="/src/SchematicHQ.Client/Checkout/CheckoutClient.cs">GetCheckoutDataAsync</a>(CheckoutDataRequestBody { ... }) -> GetCheckoutDataResponse</code></summary>
+<details><summary><code>client.Checkout.<a href="/src/SchematicHQ.Client/Checkout/CheckoutClient.cs">GetCheckoutDataAsync</a>(CheckoutDataRequestBody { ... }) -> WithRawResponseTask&lt;GetCheckoutDataResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -3165,7 +3169,7 @@ await client.Checkout.GetCheckoutDataAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Checkout.<a href="/src/SchematicHQ.Client/Checkout/CheckoutClient.cs">PreviewCheckoutInternalAsync</a>(ChangeSubscriptionInternalRequestBody { ... }) -> PreviewCheckoutInternalResponse</code></summary>
+<details><summary><code>client.Checkout.<a href="/src/SchematicHQ.Client/Checkout/CheckoutClient.cs">PreviewCheckoutInternalAsync</a>(ChangeSubscriptionInternalRequestBody { ... }) -> WithRawResponseTask&lt;PreviewCheckoutInternalResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -3188,13 +3192,13 @@ await client.Checkout.PreviewCheckoutInternalAsync(
         CompanyId = "company_id",
         CreditBundles = new List<UpdateCreditBundleRequestBody>()
         {
-            new UpdateCreditBundleRequestBody { BundleId = "bundle_id", Quantity = 1 },
+            new UpdateCreditBundleRequestBody { BundleId = "bundle_id", Quantity = 1000000 },
         },
         NewPlanId = "new_plan_id",
         NewPriceId = "new_price_id",
         PayInAdvance = new List<UpdatePayInAdvanceRequestBody>()
         {
-            new UpdatePayInAdvanceRequestBody { PriceId = "price_id", Quantity = 1 },
+            new UpdatePayInAdvanceRequestBody { PriceId = "price_id", Quantity = 1000000 },
         },
         SkipTrial = true,
     }
@@ -3225,7 +3229,7 @@ await client.Checkout.PreviewCheckoutInternalAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Checkout.<a href="/src/SchematicHQ.Client/Checkout/CheckoutClient.cs">ManagePlanAsync</a>(ManagePlanRequest { ... }) -> ManagePlanResponse</code></summary>
+<details><summary><code>client.Checkout.<a href="/src/SchematicHQ.Client/Checkout/CheckoutClient.cs">ManagePlanAsync</a>(ManagePlanRequest { ... }) -> WithRawResponseTask&lt;ManagePlanResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -3245,11 +3249,11 @@ await client.Checkout.ManagePlanAsync(
         CompanyId = "company_id",
         CreditBundles = new List<UpdateCreditBundleRequestBody>()
         {
-            new UpdateCreditBundleRequestBody { BundleId = "bundle_id", Quantity = 1 },
+            new UpdateCreditBundleRequestBody { BundleId = "bundle_id", Quantity = 1000000 },
         },
         PayInAdvanceEntitlements = new List<UpdatePayInAdvanceRequestBody>()
         {
-            new UpdatePayInAdvanceRequestBody { PriceId = "price_id", Quantity = 1 },
+            new UpdatePayInAdvanceRequestBody { PriceId = "price_id", Quantity = 1000000 },
         },
     }
 );
@@ -3279,7 +3283,7 @@ await client.Checkout.ManagePlanAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Checkout.<a href="/src/SchematicHQ.Client/Checkout/CheckoutClient.cs">PreviewManagePlanAsync</a>(ManagePlanRequest { ... }) -> PreviewManagePlanResponse</code></summary>
+<details><summary><code>client.Checkout.<a href="/src/SchematicHQ.Client/Checkout/CheckoutClient.cs">PreviewManagePlanAsync</a>(ManagePlanRequest { ... }) -> WithRawResponseTask&lt;PreviewManagePlanResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -3299,11 +3303,11 @@ await client.Checkout.PreviewManagePlanAsync(
         CompanyId = "company_id",
         CreditBundles = new List<UpdateCreditBundleRequestBody>()
         {
-            new UpdateCreditBundleRequestBody { BundleId = "bundle_id", Quantity = 1 },
+            new UpdateCreditBundleRequestBody { BundleId = "bundle_id", Quantity = 1000000 },
         },
         PayInAdvanceEntitlements = new List<UpdatePayInAdvanceRequestBody>()
         {
-            new UpdatePayInAdvanceRequestBody { PriceId = "price_id", Quantity = 1 },
+            new UpdatePayInAdvanceRequestBody { PriceId = "price_id", Quantity = 1000000 },
         },
     }
 );
@@ -3333,7 +3337,7 @@ await client.Checkout.PreviewManagePlanAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Checkout.<a href="/src/SchematicHQ.Client/Checkout/CheckoutClient.cs">CancelSubscriptionAsync</a>(CancelSubscriptionRequest { ... }) -> CancelSubscriptionResponse</code></summary>
+<details><summary><code>client.Checkout.<a href="/src/SchematicHQ.Client/Checkout/CheckoutClient.cs">CancelSubscriptionAsync</a>(CancelSubscriptionRequest { ... }) -> WithRawResponseTask&lt;CancelSubscriptionResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -3375,7 +3379,7 @@ await client.Checkout.CancelSubscriptionAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Checkout.<a href="/src/SchematicHQ.Client/Checkout/CheckoutClient.cs">UpdateCustomerSubscriptionTrialEndAsync</a>(subscriptionId, UpdateTrialEndRequestBody { ... }) -> UpdateCustomerSubscriptionTrialEndResponse</code></summary>
+<details><summary><code>client.Checkout.<a href="/src/SchematicHQ.Client/Checkout/CheckoutClient.cs">UpdateCustomerSubscriptionTrialEndAsync</a>(subscriptionId, UpdateTrialEndRequestBody { ... }) -> WithRawResponseTask&lt;UpdateCustomerSubscriptionTrialEndResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -3427,7 +3431,7 @@ await client.Checkout.UpdateCustomerSubscriptionTrialEndAsync(
 </details>
 
 ## companies
-<details><summary><code>client.Companies.<a href="/src/SchematicHQ.Client/Companies/CompaniesClient.cs">ListCompaniesAsync</a>(ListCompaniesRequest { ... }) -> ListCompaniesResponse</code></summary>
+<details><summary><code>client.Companies.<a href="/src/SchematicHQ.Client/Companies/CompaniesClient.cs">ListCompaniesAsync</a>(ListCompaniesRequest { ... }) -> WithRawResponseTask&lt;ListCompaniesResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -3454,8 +3458,8 @@ await client.Companies.ListCompaniesAsync(
         WithoutPlan = true,
         WithoutSubscription = true,
         WithSubscription = true,
-        Limit = 1,
-        Offset = 1,
+        Limit = 1000000,
+        Offset = 1000000,
     }
 );
 ```
@@ -3484,7 +3488,7 @@ await client.Companies.ListCompaniesAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Companies.<a href="/src/SchematicHQ.Client/Companies/CompaniesClient.cs">UpsertCompanyAsync</a>(UpsertCompanyRequestBody { ... }) -> UpsertCompanyResponse</code></summary>
+<details><summary><code>client.Companies.<a href="/src/SchematicHQ.Client/Companies/CompaniesClient.cs">UpsertCompanyAsync</a>(UpsertCompanyRequestBody { ... }) -> WithRawResponseTask&lt;UpsertCompanyResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -3526,7 +3530,7 @@ await client.Companies.UpsertCompanyAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Companies.<a href="/src/SchematicHQ.Client/Companies/CompaniesClient.cs">GetCompanyAsync</a>(companyId) -> GetCompanyResponse</code></summary>
+<details><summary><code>client.Companies.<a href="/src/SchematicHQ.Client/Companies/CompaniesClient.cs">GetCompanyAsync</a>(companyId) -> WithRawResponseTask&lt;GetCompanyResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -3566,7 +3570,7 @@ await client.Companies.GetCompanyAsync("company_id");
 </dl>
 </details>
 
-<details><summary><code>client.Companies.<a href="/src/SchematicHQ.Client/Companies/CompaniesClient.cs">DeleteCompanyAsync</a>(companyId, DeleteCompanyRequest { ... }) -> DeleteCompanyResponse</code></summary>
+<details><summary><code>client.Companies.<a href="/src/SchematicHQ.Client/Companies/CompaniesClient.cs">DeleteCompanyAsync</a>(companyId, DeleteCompanyRequest { ... }) -> WithRawResponseTask&lt;DeleteCompanyResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -3617,7 +3621,7 @@ await client.Companies.DeleteCompanyAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Companies.<a href="/src/SchematicHQ.Client/Companies/CompaniesClient.cs">CountCompaniesAsync</a>(CountCompaniesRequest { ... }) -> CountCompaniesResponse</code></summary>
+<details><summary><code>client.Companies.<a href="/src/SchematicHQ.Client/Companies/CompaniesClient.cs">CountCompaniesAsync</a>(CountCompaniesRequest { ... }) -> WithRawResponseTask&lt;CountCompaniesResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -3644,8 +3648,8 @@ await client.Companies.CountCompaniesAsync(
         WithoutPlan = true,
         WithoutSubscription = true,
         WithSubscription = true,
-        Limit = 1,
-        Offset = 1,
+        Limit = 1000000,
+        Offset = 1000000,
     }
 );
 ```
@@ -3674,7 +3678,7 @@ await client.Companies.CountCompaniesAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Companies.<a href="/src/SchematicHQ.Client/Companies/CompaniesClient.cs">CreateCompanyAsync</a>(UpsertCompanyRequestBody { ... }) -> CreateCompanyResponse</code></summary>
+<details><summary><code>client.Companies.<a href="/src/SchematicHQ.Client/Companies/CompaniesClient.cs">CreateCompanyAsync</a>(UpsertCompanyRequestBody { ... }) -> WithRawResponseTask&lt;CreateCompanyResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -3716,7 +3720,7 @@ await client.Companies.CreateCompanyAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Companies.<a href="/src/SchematicHQ.Client/Companies/CompaniesClient.cs">DeleteCompanyByKeysAsync</a>(KeysRequestBody { ... }) -> DeleteCompanyByKeysResponse</code></summary>
+<details><summary><code>client.Companies.<a href="/src/SchematicHQ.Client/Companies/CompaniesClient.cs">DeleteCompanyByKeysAsync</a>(KeysRequestBody { ... }) -> WithRawResponseTask&lt;DeleteCompanyByKeysResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -3758,9 +3762,27 @@ await client.Companies.DeleteCompanyByKeysAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Companies.<a href="/src/SchematicHQ.Client/Companies/CompaniesClient.cs">LookupCompanyAsync</a>(LookupCompanyRequest { ... }) -> LookupCompanyResponse</code></summary>
+<details><summary><code>client.Companies.<a href="/src/SchematicHQ.Client/Companies/CompaniesClient.cs">LookupCompanyAsync</a>(LookupCompanyRequest { ... }) -> WithRawResponseTask&lt;LookupCompanyResponse&gt;</code></summary>
 <dl>
 <dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Company lookup is determined to resolve a company from its keys, similar to how many of our other apis work. 
+The following approaches will all work to resolve a company and any of them are appropriate:
+1. `/companies/lookup?keys={"foo": "bar", "fizz": "buzz"}`
+2. `/companies/lookup?keys[foo]=bar&keys[fizz]=buzz`
+2. `/companies/lookup?foo=bar&fizz=buzz`
+</dd>
+</dl>
+</dd>
+</dl>
 
 #### 🔌 Usage
 
@@ -3800,7 +3822,7 @@ await client.Companies.LookupCompanyAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Companies.<a href="/src/SchematicHQ.Client/Companies/CompaniesClient.cs">ListCompanyMembershipsAsync</a>(ListCompanyMembershipsRequest { ... }) -> ListCompanyMembershipsResponse</code></summary>
+<details><summary><code>client.Companies.<a href="/src/SchematicHQ.Client/Companies/CompaniesClient.cs">ListCompanyMembershipsAsync</a>(ListCompanyMembershipsRequest { ... }) -> WithRawResponseTask&lt;ListCompanyMembershipsResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -3818,8 +3840,8 @@ await client.Companies.ListCompanyMembershipsAsync(
     {
         CompanyId = "company_id",
         UserId = "user_id",
-        Limit = 1,
-        Offset = 1,
+        Limit = 1000000,
+        Offset = 1000000,
     }
 );
 ```
@@ -3848,7 +3870,7 @@ await client.Companies.ListCompanyMembershipsAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Companies.<a href="/src/SchematicHQ.Client/Companies/CompaniesClient.cs">GetOrCreateCompanyMembershipAsync</a>(GetOrCreateCompanyMembershipRequestBody { ... }) -> GetOrCreateCompanyMembershipResponse</code></summary>
+<details><summary><code>client.Companies.<a href="/src/SchematicHQ.Client/Companies/CompaniesClient.cs">GetOrCreateCompanyMembershipAsync</a>(GetOrCreateCompanyMembershipRequestBody { ... }) -> WithRawResponseTask&lt;GetOrCreateCompanyMembershipResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -3890,7 +3912,7 @@ await client.Companies.GetOrCreateCompanyMembershipAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Companies.<a href="/src/SchematicHQ.Client/Companies/CompaniesClient.cs">DeleteCompanyMembershipAsync</a>(companyMembershipId) -> DeleteCompanyMembershipResponse</code></summary>
+<details><summary><code>client.Companies.<a href="/src/SchematicHQ.Client/Companies/CompaniesClient.cs">DeleteCompanyMembershipAsync</a>(companyMembershipId) -> WithRawResponseTask&lt;DeleteCompanyMembershipResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -3930,7 +3952,7 @@ await client.Companies.DeleteCompanyMembershipAsync("company_membership_id");
 </dl>
 </details>
 
-<details><summary><code>client.Companies.<a href="/src/SchematicHQ.Client/Companies/CompaniesClient.cs">GetActiveCompanySubscriptionAsync</a>(GetActiveCompanySubscriptionRequest { ... }) -> GetActiveCompanySubscriptionResponse</code></summary>
+<details><summary><code>client.Companies.<a href="/src/SchematicHQ.Client/Companies/CompaniesClient.cs">GetActiveCompanySubscriptionAsync</a>(GetActiveCompanySubscriptionRequest { ... }) -> WithRawResponseTask&lt;GetActiveCompanySubscriptionResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -3947,8 +3969,8 @@ await client.Companies.GetActiveCompanySubscriptionAsync(
     new GetActiveCompanySubscriptionRequest
     {
         CompanyId = "company_id",
-        Limit = 1,
-        Offset = 1,
+        Limit = 1000000,
+        Offset = 1000000,
     }
 );
 ```
@@ -3977,7 +3999,7 @@ await client.Companies.GetActiveCompanySubscriptionAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Companies.<a href="/src/SchematicHQ.Client/Companies/CompaniesClient.cs">UpsertCompanyTraitAsync</a>(UpsertTraitRequestBody { ... }) -> UpsertCompanyTraitResponse</code></summary>
+<details><summary><code>client.Companies.<a href="/src/SchematicHQ.Client/Companies/CompaniesClient.cs">UpsertCompanyTraitAsync</a>(UpsertTraitRequestBody { ... }) -> WithRawResponseTask&lt;UpsertCompanyTraitResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -4023,7 +4045,7 @@ await client.Companies.UpsertCompanyTraitAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Companies.<a href="/src/SchematicHQ.Client/Companies/CompaniesClient.cs">ListEntityKeyDefinitionsAsync</a>(ListEntityKeyDefinitionsRequest { ... }) -> ListEntityKeyDefinitionsResponse</code></summary>
+<details><summary><code>client.Companies.<a href="/src/SchematicHQ.Client/Companies/CompaniesClient.cs">ListEntityKeyDefinitionsAsync</a>(ListEntityKeyDefinitionsRequest { ... }) -> WithRawResponseTask&lt;ListEntityKeyDefinitionsResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -4041,8 +4063,8 @@ await client.Companies.ListEntityKeyDefinitionsAsync(
     {
         EntityType = EntityType.Company,
         Q = "q",
-        Limit = 1,
-        Offset = 1,
+        Limit = 1000000,
+        Offset = 1000000,
     }
 );
 ```
@@ -4071,7 +4093,7 @@ await client.Companies.ListEntityKeyDefinitionsAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Companies.<a href="/src/SchematicHQ.Client/Companies/CompaniesClient.cs">CountEntityKeyDefinitionsAsync</a>(CountEntityKeyDefinitionsRequest { ... }) -> CountEntityKeyDefinitionsResponse</code></summary>
+<details><summary><code>client.Companies.<a href="/src/SchematicHQ.Client/Companies/CompaniesClient.cs">CountEntityKeyDefinitionsAsync</a>(CountEntityKeyDefinitionsRequest { ... }) -> WithRawResponseTask&lt;CountEntityKeyDefinitionsResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -4089,8 +4111,8 @@ await client.Companies.CountEntityKeyDefinitionsAsync(
     {
         EntityType = EntityType.Company,
         Q = "q",
-        Limit = 1,
-        Offset = 1,
+        Limit = 1000000,
+        Offset = 1000000,
     }
 );
 ```
@@ -4119,7 +4141,7 @@ await client.Companies.CountEntityKeyDefinitionsAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Companies.<a href="/src/SchematicHQ.Client/Companies/CompaniesClient.cs">ListEntityTraitDefinitionsAsync</a>(ListEntityTraitDefinitionsRequest { ... }) -> ListEntityTraitDefinitionsResponse</code></summary>
+<details><summary><code>client.Companies.<a href="/src/SchematicHQ.Client/Companies/CompaniesClient.cs">ListEntityTraitDefinitionsAsync</a>(ListEntityTraitDefinitionsRequest { ... }) -> WithRawResponseTask&lt;ListEntityTraitDefinitionsResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -4138,8 +4160,8 @@ await client.Companies.ListEntityTraitDefinitionsAsync(
         EntityType = EntityType.Company,
         Q = "q",
         TraitType = TraitType.Boolean,
-        Limit = 1,
-        Offset = 1,
+        Limit = 1000000,
+        Offset = 1000000,
     }
 );
 ```
@@ -4168,7 +4190,7 @@ await client.Companies.ListEntityTraitDefinitionsAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Companies.<a href="/src/SchematicHQ.Client/Companies/CompaniesClient.cs">GetOrCreateEntityTraitDefinitionAsync</a>(CreateEntityTraitDefinitionRequestBody { ... }) -> GetOrCreateEntityTraitDefinitionResponse</code></summary>
+<details><summary><code>client.Companies.<a href="/src/SchematicHQ.Client/Companies/CompaniesClient.cs">GetOrCreateEntityTraitDefinitionAsync</a>(CreateEntityTraitDefinitionRequestBody { ... }) -> WithRawResponseTask&lt;GetOrCreateEntityTraitDefinitionResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -4215,7 +4237,7 @@ await client.Companies.GetOrCreateEntityTraitDefinitionAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Companies.<a href="/src/SchematicHQ.Client/Companies/CompaniesClient.cs">GetEntityTraitDefinitionAsync</a>(entityTraitDefinitionId) -> GetEntityTraitDefinitionResponse</code></summary>
+<details><summary><code>client.Companies.<a href="/src/SchematicHQ.Client/Companies/CompaniesClient.cs">GetEntityTraitDefinitionAsync</a>(entityTraitDefinitionId) -> WithRawResponseTask&lt;GetEntityTraitDefinitionResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -4255,7 +4277,7 @@ await client.Companies.GetEntityTraitDefinitionAsync("entity_trait_definition_id
 </dl>
 </details>
 
-<details><summary><code>client.Companies.<a href="/src/SchematicHQ.Client/Companies/CompaniesClient.cs">UpdateEntityTraitDefinitionAsync</a>(entityTraitDefinitionId, UpdateEntityTraitDefinitionRequestBody { ... }) -> UpdateEntityTraitDefinitionResponse</code></summary>
+<details><summary><code>client.Companies.<a href="/src/SchematicHQ.Client/Companies/CompaniesClient.cs">UpdateEntityTraitDefinitionAsync</a>(entityTraitDefinitionId, UpdateEntityTraitDefinitionRequestBody { ... }) -> WithRawResponseTask&lt;UpdateEntityTraitDefinitionResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -4306,7 +4328,7 @@ await client.Companies.UpdateEntityTraitDefinitionAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Companies.<a href="/src/SchematicHQ.Client/Companies/CompaniesClient.cs">CountEntityTraitDefinitionsAsync</a>(CountEntityTraitDefinitionsRequest { ... }) -> CountEntityTraitDefinitionsResponse</code></summary>
+<details><summary><code>client.Companies.<a href="/src/SchematicHQ.Client/Companies/CompaniesClient.cs">CountEntityTraitDefinitionsAsync</a>(CountEntityTraitDefinitionsRequest { ... }) -> WithRawResponseTask&lt;CountEntityTraitDefinitionsResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -4325,8 +4347,8 @@ await client.Companies.CountEntityTraitDefinitionsAsync(
         EntityType = EntityType.Company,
         Q = "q",
         TraitType = TraitType.Boolean,
-        Limit = 1,
-        Offset = 1,
+        Limit = 1000000,
+        Offset = 1000000,
     }
 );
 ```
@@ -4355,7 +4377,7 @@ await client.Companies.CountEntityTraitDefinitionsAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Companies.<a href="/src/SchematicHQ.Client/Companies/CompaniesClient.cs">GetEntityTraitValuesAsync</a>(GetEntityTraitValuesRequest { ... }) -> GetEntityTraitValuesResponse</code></summary>
+<details><summary><code>client.Companies.<a href="/src/SchematicHQ.Client/Companies/CompaniesClient.cs">GetEntityTraitValuesAsync</a>(GetEntityTraitValuesRequest { ... }) -> WithRawResponseTask&lt;GetEntityTraitValuesResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -4373,8 +4395,8 @@ await client.Companies.GetEntityTraitValuesAsync(
     {
         DefinitionId = "definition_id",
         Q = "q",
-        Limit = 1,
-        Offset = 1,
+        Limit = 1000000,
+        Offset = 1000000,
     }
 );
 ```
@@ -4403,7 +4425,7 @@ await client.Companies.GetEntityTraitValuesAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Companies.<a href="/src/SchematicHQ.Client/Companies/CompaniesClient.cs">ListPlanChangesAsync</a>(ListPlanChangesRequest { ... }) -> ListPlanChangesResponse</code></summary>
+<details><summary><code>client.Companies.<a href="/src/SchematicHQ.Client/Companies/CompaniesClient.cs">ListPlanChangesAsync</a>(ListPlanChangesRequest { ... }) -> WithRawResponseTask&lt;ListPlanChangesResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -4422,8 +4444,8 @@ await client.Companies.ListPlanChangesAsync(
         Action = "action",
         BasePlanAction = "base_plan_action",
         CompanyId = "company_id",
-        Limit = 1,
-        Offset = 1,
+        Limit = 1000000,
+        Offset = 1000000,
     }
 );
 ```
@@ -4452,7 +4474,7 @@ await client.Companies.ListPlanChangesAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Companies.<a href="/src/SchematicHQ.Client/Companies/CompaniesClient.cs">GetPlanChangeAsync</a>(planChangeId) -> GetPlanChangeResponse</code></summary>
+<details><summary><code>client.Companies.<a href="/src/SchematicHQ.Client/Companies/CompaniesClient.cs">GetPlanChangeAsync</a>(planChangeId) -> WithRawResponseTask&lt;GetPlanChangeResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -4492,7 +4514,7 @@ await client.Companies.GetPlanChangeAsync("plan_change_id");
 </dl>
 </details>
 
-<details><summary><code>client.Companies.<a href="/src/SchematicHQ.Client/Companies/CompaniesClient.cs">ListPlanTraitsAsync</a>(ListPlanTraitsRequest { ... }) -> ListPlanTraitsResponse</code></summary>
+<details><summary><code>client.Companies.<a href="/src/SchematicHQ.Client/Companies/CompaniesClient.cs">ListPlanTraitsAsync</a>(ListPlanTraitsRequest { ... }) -> WithRawResponseTask&lt;ListPlanTraitsResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -4510,8 +4532,8 @@ await client.Companies.ListPlanTraitsAsync(
     {
         PlanId = "plan_id",
         TraitId = "trait_id",
-        Limit = 1,
-        Offset = 1,
+        Limit = 1000000,
+        Offset = 1000000,
     }
 );
 ```
@@ -4540,7 +4562,7 @@ await client.Companies.ListPlanTraitsAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Companies.<a href="/src/SchematicHQ.Client/Companies/CompaniesClient.cs">CreatePlanTraitAsync</a>(CreatePlanTraitRequestBody { ... }) -> CreatePlanTraitResponse</code></summary>
+<details><summary><code>client.Companies.<a href="/src/SchematicHQ.Client/Companies/CompaniesClient.cs">CreatePlanTraitAsync</a>(CreatePlanTraitRequestBody { ... }) -> WithRawResponseTask&lt;CreatePlanTraitResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -4587,7 +4609,7 @@ await client.Companies.CreatePlanTraitAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Companies.<a href="/src/SchematicHQ.Client/Companies/CompaniesClient.cs">GetPlanTraitAsync</a>(planTraitId) -> GetPlanTraitResponse</code></summary>
+<details><summary><code>client.Companies.<a href="/src/SchematicHQ.Client/Companies/CompaniesClient.cs">GetPlanTraitAsync</a>(planTraitId) -> WithRawResponseTask&lt;GetPlanTraitResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -4627,7 +4649,7 @@ await client.Companies.GetPlanTraitAsync("plan_trait_id");
 </dl>
 </details>
 
-<details><summary><code>client.Companies.<a href="/src/SchematicHQ.Client/Companies/CompaniesClient.cs">UpdatePlanTraitAsync</a>(planTraitId, UpdatePlanTraitRequestBody { ... }) -> UpdatePlanTraitResponse</code></summary>
+<details><summary><code>client.Companies.<a href="/src/SchematicHQ.Client/Companies/CompaniesClient.cs">UpdatePlanTraitAsync</a>(planTraitId, UpdatePlanTraitRequestBody { ... }) -> WithRawResponseTask&lt;UpdatePlanTraitResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -4678,7 +4700,7 @@ await client.Companies.UpdatePlanTraitAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Companies.<a href="/src/SchematicHQ.Client/Companies/CompaniesClient.cs">DeletePlanTraitAsync</a>(planTraitId) -> DeletePlanTraitResponse</code></summary>
+<details><summary><code>client.Companies.<a href="/src/SchematicHQ.Client/Companies/CompaniesClient.cs">DeletePlanTraitAsync</a>(planTraitId) -> WithRawResponseTask&lt;DeletePlanTraitResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -4718,7 +4740,7 @@ await client.Companies.DeletePlanTraitAsync("plan_trait_id");
 </dl>
 </details>
 
-<details><summary><code>client.Companies.<a href="/src/SchematicHQ.Client/Companies/CompaniesClient.cs">UpdatePlanTraitsBulkAsync</a>(UpdatePlanTraitBulkRequestBody { ... }) -> UpdatePlanTraitsBulkResponse</code></summary>
+<details><summary><code>client.Companies.<a href="/src/SchematicHQ.Client/Companies/CompaniesClient.cs">UpdatePlanTraitsBulkAsync</a>(UpdatePlanTraitBulkRequestBody { ... }) -> WithRawResponseTask&lt;UpdatePlanTraitsBulkResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -4772,7 +4794,7 @@ await client.Companies.UpdatePlanTraitsBulkAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Companies.<a href="/src/SchematicHQ.Client/Companies/CompaniesClient.cs">CountPlanTraitsAsync</a>(CountPlanTraitsRequest { ... }) -> CountPlanTraitsResponse</code></summary>
+<details><summary><code>client.Companies.<a href="/src/SchematicHQ.Client/Companies/CompaniesClient.cs">CountPlanTraitsAsync</a>(CountPlanTraitsRequest { ... }) -> WithRawResponseTask&lt;CountPlanTraitsResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -4790,8 +4812,8 @@ await client.Companies.CountPlanTraitsAsync(
     {
         PlanId = "plan_id",
         TraitId = "trait_id",
-        Limit = 1,
-        Offset = 1,
+        Limit = 1000000,
+        Offset = 1000000,
     }
 );
 ```
@@ -4820,7 +4842,7 @@ await client.Companies.CountPlanTraitsAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Companies.<a href="/src/SchematicHQ.Client/Companies/CompaniesClient.cs">UpsertUserTraitAsync</a>(UpsertTraitRequestBody { ... }) -> UpsertUserTraitResponse</code></summary>
+<details><summary><code>client.Companies.<a href="/src/SchematicHQ.Client/Companies/CompaniesClient.cs">UpsertUserTraitAsync</a>(UpsertTraitRequestBody { ... }) -> WithRawResponseTask&lt;UpsertUserTraitResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -4866,7 +4888,7 @@ await client.Companies.UpsertUserTraitAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Companies.<a href="/src/SchematicHQ.Client/Companies/CompaniesClient.cs">ListUsersAsync</a>(ListUsersRequest { ... }) -> ListUsersResponse</code></summary>
+<details><summary><code>client.Companies.<a href="/src/SchematicHQ.Client/Companies/CompaniesClient.cs">ListUsersAsync</a>(ListUsersRequest { ... }) -> WithRawResponseTask&lt;ListUsersResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -4885,8 +4907,8 @@ await client.Companies.ListUsersAsync(
         CompanyId = "company_id",
         PlanId = "plan_id",
         Q = "q",
-        Limit = 1,
-        Offset = 1,
+        Limit = 1000000,
+        Offset = 1000000,
     }
 );
 ```
@@ -4915,7 +4937,7 @@ await client.Companies.ListUsersAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Companies.<a href="/src/SchematicHQ.Client/Companies/CompaniesClient.cs">UpsertUserAsync</a>(UpsertUserRequestBody { ... }) -> UpsertUserResponse</code></summary>
+<details><summary><code>client.Companies.<a href="/src/SchematicHQ.Client/Companies/CompaniesClient.cs">UpsertUserAsync</a>(UpsertUserRequestBody { ... }) -> WithRawResponseTask&lt;UpsertUserResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -4957,7 +4979,7 @@ await client.Companies.UpsertUserAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Companies.<a href="/src/SchematicHQ.Client/Companies/CompaniesClient.cs">GetUserAsync</a>(userId) -> GetUserResponse</code></summary>
+<details><summary><code>client.Companies.<a href="/src/SchematicHQ.Client/Companies/CompaniesClient.cs">GetUserAsync</a>(userId) -> WithRawResponseTask&lt;GetUserResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -4997,7 +5019,7 @@ await client.Companies.GetUserAsync("user_id");
 </dl>
 </details>
 
-<details><summary><code>client.Companies.<a href="/src/SchematicHQ.Client/Companies/CompaniesClient.cs">DeleteUserAsync</a>(userId) -> DeleteUserResponse</code></summary>
+<details><summary><code>client.Companies.<a href="/src/SchematicHQ.Client/Companies/CompaniesClient.cs">DeleteUserAsync</a>(userId) -> WithRawResponseTask&lt;DeleteUserResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -5037,7 +5059,7 @@ await client.Companies.DeleteUserAsync("user_id");
 </dl>
 </details>
 
-<details><summary><code>client.Companies.<a href="/src/SchematicHQ.Client/Companies/CompaniesClient.cs">CountUsersAsync</a>(CountUsersRequest { ... }) -> CountUsersResponse</code></summary>
+<details><summary><code>client.Companies.<a href="/src/SchematicHQ.Client/Companies/CompaniesClient.cs">CountUsersAsync</a>(CountUsersRequest { ... }) -> WithRawResponseTask&lt;CountUsersResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -5056,8 +5078,8 @@ await client.Companies.CountUsersAsync(
         CompanyId = "company_id",
         PlanId = "plan_id",
         Q = "q",
-        Limit = 1,
-        Offset = 1,
+        Limit = 1000000,
+        Offset = 1000000,
     }
 );
 ```
@@ -5086,7 +5108,7 @@ await client.Companies.CountUsersAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Companies.<a href="/src/SchematicHQ.Client/Companies/CompaniesClient.cs">CreateUserAsync</a>(UpsertUserRequestBody { ... }) -> CreateUserResponse</code></summary>
+<details><summary><code>client.Companies.<a href="/src/SchematicHQ.Client/Companies/CompaniesClient.cs">CreateUserAsync</a>(UpsertUserRequestBody { ... }) -> WithRawResponseTask&lt;CreateUserResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -5128,7 +5150,7 @@ await client.Companies.CreateUserAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Companies.<a href="/src/SchematicHQ.Client/Companies/CompaniesClient.cs">DeleteUserByKeysAsync</a>(KeysRequestBody { ... }) -> DeleteUserByKeysResponse</code></summary>
+<details><summary><code>client.Companies.<a href="/src/SchematicHQ.Client/Companies/CompaniesClient.cs">DeleteUserByKeysAsync</a>(KeysRequestBody { ... }) -> WithRawResponseTask&lt;DeleteUserByKeysResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -5170,7 +5192,7 @@ await client.Companies.DeleteUserByKeysAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Companies.<a href="/src/SchematicHQ.Client/Companies/CompaniesClient.cs">LookupUserAsync</a>(LookupUserRequest { ... }) -> LookupUserResponse</code></summary>
+<details><summary><code>client.Companies.<a href="/src/SchematicHQ.Client/Companies/CompaniesClient.cs">LookupUserAsync</a>(LookupUserRequest { ... }) -> WithRawResponseTask&lt;LookupUserResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -5213,7 +5235,7 @@ await client.Companies.LookupUserAsync(
 </details>
 
 ## entitlements
-<details><summary><code>client.Entitlements.<a href="/src/SchematicHQ.Client/Entitlements/EntitlementsClient.cs">ListCompanyOverridesAsync</a>(ListCompanyOverridesRequest { ... }) -> ListCompanyOverridesResponse</code></summary>
+<details><summary><code>client.Entitlements.<a href="/src/SchematicHQ.Client/Entitlements/EntitlementsClient.cs">ListCompanyOverridesAsync</a>(ListCompanyOverridesRequest { ... }) -> WithRawResponseTask&lt;ListCompanyOverridesResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -5233,8 +5255,8 @@ await client.Entitlements.ListCompanyOverridesAsync(
         FeatureId = "feature_id",
         WithoutExpired = true,
         Q = "q",
-        Limit = 1,
-        Offset = 1,
+        Limit = 1000000,
+        Offset = 1000000,
     }
 );
 ```
@@ -5263,7 +5285,7 @@ await client.Entitlements.ListCompanyOverridesAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Entitlements.<a href="/src/SchematicHQ.Client/Entitlements/EntitlementsClient.cs">CreateCompanyOverrideAsync</a>(CreateCompanyOverrideRequestBody { ... }) -> CreateCompanyOverrideResponse</code></summary>
+<details><summary><code>client.Entitlements.<a href="/src/SchematicHQ.Client/Entitlements/EntitlementsClient.cs">CreateCompanyOverrideAsync</a>(CreateCompanyOverrideRequestBody { ... }) -> WithRawResponseTask&lt;CreateCompanyOverrideResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -5310,7 +5332,7 @@ await client.Entitlements.CreateCompanyOverrideAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Entitlements.<a href="/src/SchematicHQ.Client/Entitlements/EntitlementsClient.cs">GetCompanyOverrideAsync</a>(companyOverrideId) -> GetCompanyOverrideResponse</code></summary>
+<details><summary><code>client.Entitlements.<a href="/src/SchematicHQ.Client/Entitlements/EntitlementsClient.cs">GetCompanyOverrideAsync</a>(companyOverrideId) -> WithRawResponseTask&lt;GetCompanyOverrideResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -5350,7 +5372,7 @@ await client.Entitlements.GetCompanyOverrideAsync("company_override_id");
 </dl>
 </details>
 
-<details><summary><code>client.Entitlements.<a href="/src/SchematicHQ.Client/Entitlements/EntitlementsClient.cs">UpdateCompanyOverrideAsync</a>(companyOverrideId, UpdateCompanyOverrideRequestBody { ... }) -> UpdateCompanyOverrideResponse</code></summary>
+<details><summary><code>client.Entitlements.<a href="/src/SchematicHQ.Client/Entitlements/EntitlementsClient.cs">UpdateCompanyOverrideAsync</a>(companyOverrideId, UpdateCompanyOverrideRequestBody { ... }) -> WithRawResponseTask&lt;UpdateCompanyOverrideResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -5401,7 +5423,7 @@ await client.Entitlements.UpdateCompanyOverrideAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Entitlements.<a href="/src/SchematicHQ.Client/Entitlements/EntitlementsClient.cs">DeleteCompanyOverrideAsync</a>(companyOverrideId) -> DeleteCompanyOverrideResponse</code></summary>
+<details><summary><code>client.Entitlements.<a href="/src/SchematicHQ.Client/Entitlements/EntitlementsClient.cs">DeleteCompanyOverrideAsync</a>(companyOverrideId) -> WithRawResponseTask&lt;DeleteCompanyOverrideResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -5441,7 +5463,7 @@ await client.Entitlements.DeleteCompanyOverrideAsync("company_override_id");
 </dl>
 </details>
 
-<details><summary><code>client.Entitlements.<a href="/src/SchematicHQ.Client/Entitlements/EntitlementsClient.cs">CountCompanyOverridesAsync</a>(CountCompanyOverridesRequest { ... }) -> CountCompanyOverridesResponse</code></summary>
+<details><summary><code>client.Entitlements.<a href="/src/SchematicHQ.Client/Entitlements/EntitlementsClient.cs">CountCompanyOverridesAsync</a>(CountCompanyOverridesRequest { ... }) -> WithRawResponseTask&lt;CountCompanyOverridesResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -5461,8 +5483,8 @@ await client.Entitlements.CountCompanyOverridesAsync(
         FeatureId = "feature_id",
         WithoutExpired = true,
         Q = "q",
-        Limit = 1,
-        Offset = 1,
+        Limit = 1000000,
+        Offset = 1000000,
     }
 );
 ```
@@ -5491,7 +5513,7 @@ await client.Entitlements.CountCompanyOverridesAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Entitlements.<a href="/src/SchematicHQ.Client/Entitlements/EntitlementsClient.cs">ListFeatureCompaniesAsync</a>(ListFeatureCompaniesRequest { ... }) -> ListFeatureCompaniesResponse</code></summary>
+<details><summary><code>client.Entitlements.<a href="/src/SchematicHQ.Client/Entitlements/EntitlementsClient.cs">ListFeatureCompaniesAsync</a>(ListFeatureCompaniesRequest { ... }) -> WithRawResponseTask&lt;ListFeatureCompaniesResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -5509,8 +5531,8 @@ await client.Entitlements.ListFeatureCompaniesAsync(
     {
         FeatureId = "feature_id",
         Q = "q",
-        Limit = 1,
-        Offset = 1,
+        Limit = 1000000,
+        Offset = 1000000,
     }
 );
 ```
@@ -5539,7 +5561,7 @@ await client.Entitlements.ListFeatureCompaniesAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Entitlements.<a href="/src/SchematicHQ.Client/Entitlements/EntitlementsClient.cs">CountFeatureCompaniesAsync</a>(CountFeatureCompaniesRequest { ... }) -> CountFeatureCompaniesResponse</code></summary>
+<details><summary><code>client.Entitlements.<a href="/src/SchematicHQ.Client/Entitlements/EntitlementsClient.cs">CountFeatureCompaniesAsync</a>(CountFeatureCompaniesRequest { ... }) -> WithRawResponseTask&lt;CountFeatureCompaniesResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -5557,8 +5579,8 @@ await client.Entitlements.CountFeatureCompaniesAsync(
     {
         FeatureId = "feature_id",
         Q = "q",
-        Limit = 1,
-        Offset = 1,
+        Limit = 1000000,
+        Offset = 1000000,
     }
 );
 ```
@@ -5587,7 +5609,7 @@ await client.Entitlements.CountFeatureCompaniesAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Entitlements.<a href="/src/SchematicHQ.Client/Entitlements/EntitlementsClient.cs">ListFeatureUsageAsync</a>(ListFeatureUsageRequest { ... }) -> ListFeatureUsageResponse</code></summary>
+<details><summary><code>client.Entitlements.<a href="/src/SchematicHQ.Client/Entitlements/EntitlementsClient.cs">ListFeatureUsageAsync</a>(ListFeatureUsageRequest { ... }) -> WithRawResponseTask&lt;ListFeatureUsageResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -5607,8 +5629,8 @@ await client.Entitlements.ListFeatureUsageAsync(
         IncludeUsageAggregation = true,
         Q = "q",
         WithoutNegativeEntitlements = true,
-        Limit = 1,
-        Offset = 1,
+        Limit = 1000000,
+        Offset = 1000000,
     }
 );
 ```
@@ -5637,7 +5659,7 @@ await client.Entitlements.ListFeatureUsageAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Entitlements.<a href="/src/SchematicHQ.Client/Entitlements/EntitlementsClient.cs">GetFeatureUsageTimeSeriesAsync</a>(GetFeatureUsageTimeSeriesRequest { ... }) -> GetFeatureUsageTimeSeriesResponse</code></summary>
+<details><summary><code>client.Entitlements.<a href="/src/SchematicHQ.Client/Entitlements/EntitlementsClient.cs">GetFeatureUsageTimeSeriesAsync</a>(GetFeatureUsageTimeSeriesRequest { ... }) -> WithRawResponseTask&lt;GetFeatureUsageTimeSeriesResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -5686,7 +5708,7 @@ await client.Entitlements.GetFeatureUsageTimeSeriesAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Entitlements.<a href="/src/SchematicHQ.Client/Entitlements/EntitlementsClient.cs">CountFeatureUsageAsync</a>(CountFeatureUsageRequest { ... }) -> CountFeatureUsageResponse</code></summary>
+<details><summary><code>client.Entitlements.<a href="/src/SchematicHQ.Client/Entitlements/EntitlementsClient.cs">CountFeatureUsageAsync</a>(CountFeatureUsageRequest { ... }) -> WithRawResponseTask&lt;CountFeatureUsageResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -5706,8 +5728,8 @@ await client.Entitlements.CountFeatureUsageAsync(
         IncludeUsageAggregation = true,
         Q = "q",
         WithoutNegativeEntitlements = true,
-        Limit = 1,
-        Offset = 1,
+        Limit = 1000000,
+        Offset = 1000000,
     }
 );
 ```
@@ -5736,7 +5758,7 @@ await client.Entitlements.CountFeatureUsageAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Entitlements.<a href="/src/SchematicHQ.Client/Entitlements/EntitlementsClient.cs">ListFeatureUsersAsync</a>(ListFeatureUsersRequest { ... }) -> ListFeatureUsersResponse</code></summary>
+<details><summary><code>client.Entitlements.<a href="/src/SchematicHQ.Client/Entitlements/EntitlementsClient.cs">ListFeatureUsersAsync</a>(ListFeatureUsersRequest { ... }) -> WithRawResponseTask&lt;ListFeatureUsersResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -5754,8 +5776,8 @@ await client.Entitlements.ListFeatureUsersAsync(
     {
         FeatureId = "feature_id",
         Q = "q",
-        Limit = 1,
-        Offset = 1,
+        Limit = 1000000,
+        Offset = 1000000,
     }
 );
 ```
@@ -5784,7 +5806,7 @@ await client.Entitlements.ListFeatureUsersAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Entitlements.<a href="/src/SchematicHQ.Client/Entitlements/EntitlementsClient.cs">CountFeatureUsersAsync</a>(CountFeatureUsersRequest { ... }) -> CountFeatureUsersResponse</code></summary>
+<details><summary><code>client.Entitlements.<a href="/src/SchematicHQ.Client/Entitlements/EntitlementsClient.cs">CountFeatureUsersAsync</a>(CountFeatureUsersRequest { ... }) -> WithRawResponseTask&lt;CountFeatureUsersResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -5802,8 +5824,8 @@ await client.Entitlements.CountFeatureUsersAsync(
     {
         FeatureId = "feature_id",
         Q = "q",
-        Limit = 1,
-        Offset = 1,
+        Limit = 1000000,
+        Offset = 1000000,
     }
 );
 ```
@@ -5832,7 +5854,7 @@ await client.Entitlements.CountFeatureUsersAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Entitlements.<a href="/src/SchematicHQ.Client/Entitlements/EntitlementsClient.cs">ListPlanEntitlementsAsync</a>(ListPlanEntitlementsRequest { ... }) -> ListPlanEntitlementsResponse</code></summary>
+<details><summary><code>client.Entitlements.<a href="/src/SchematicHQ.Client/Entitlements/EntitlementsClient.cs">ListPlanEntitlementsAsync</a>(ListPlanEntitlementsRequest { ... }) -> WithRawResponseTask&lt;ListPlanEntitlementsResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -5853,8 +5875,8 @@ await client.Entitlements.ListPlanEntitlementsAsync(
         PlanVersionId = "plan_version_id",
         Q = "q",
         WithMeteredProducts = true,
-        Limit = 1,
-        Offset = 1,
+        Limit = 1000000,
+        Offset = 1000000,
     }
 );
 ```
@@ -5883,7 +5905,7 @@ await client.Entitlements.ListPlanEntitlementsAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Entitlements.<a href="/src/SchematicHQ.Client/Entitlements/EntitlementsClient.cs">CreatePlanEntitlementAsync</a>(CreatePlanEntitlementRequestBody { ... }) -> CreatePlanEntitlementResponse</code></summary>
+<details><summary><code>client.Entitlements.<a href="/src/SchematicHQ.Client/Entitlements/EntitlementsClient.cs">CreatePlanEntitlementAsync</a>(CreatePlanEntitlementRequestBody { ... }) -> WithRawResponseTask&lt;CreatePlanEntitlementResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -5930,7 +5952,7 @@ await client.Entitlements.CreatePlanEntitlementAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Entitlements.<a href="/src/SchematicHQ.Client/Entitlements/EntitlementsClient.cs">GetPlanEntitlementAsync</a>(planEntitlementId) -> GetPlanEntitlementResponse</code></summary>
+<details><summary><code>client.Entitlements.<a href="/src/SchematicHQ.Client/Entitlements/EntitlementsClient.cs">GetPlanEntitlementAsync</a>(planEntitlementId) -> WithRawResponseTask&lt;GetPlanEntitlementResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -5970,7 +5992,7 @@ await client.Entitlements.GetPlanEntitlementAsync("plan_entitlement_id");
 </dl>
 </details>
 
-<details><summary><code>client.Entitlements.<a href="/src/SchematicHQ.Client/Entitlements/EntitlementsClient.cs">UpdatePlanEntitlementAsync</a>(planEntitlementId, UpdatePlanEntitlementRequestBody { ... }) -> UpdatePlanEntitlementResponse</code></summary>
+<details><summary><code>client.Entitlements.<a href="/src/SchematicHQ.Client/Entitlements/EntitlementsClient.cs">UpdatePlanEntitlementAsync</a>(planEntitlementId, UpdatePlanEntitlementRequestBody { ... }) -> WithRawResponseTask&lt;UpdatePlanEntitlementResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -6021,7 +6043,7 @@ await client.Entitlements.UpdatePlanEntitlementAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Entitlements.<a href="/src/SchematicHQ.Client/Entitlements/EntitlementsClient.cs">DeletePlanEntitlementAsync</a>(planEntitlementId) -> DeletePlanEntitlementResponse</code></summary>
+<details><summary><code>client.Entitlements.<a href="/src/SchematicHQ.Client/Entitlements/EntitlementsClient.cs">DeletePlanEntitlementAsync</a>(planEntitlementId) -> WithRawResponseTask&lt;DeletePlanEntitlementResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -6061,7 +6083,7 @@ await client.Entitlements.DeletePlanEntitlementAsync("plan_entitlement_id");
 </dl>
 </details>
 
-<details><summary><code>client.Entitlements.<a href="/src/SchematicHQ.Client/Entitlements/EntitlementsClient.cs">CountPlanEntitlementsAsync</a>(CountPlanEntitlementsRequest { ... }) -> CountPlanEntitlementsResponse</code></summary>
+<details><summary><code>client.Entitlements.<a href="/src/SchematicHQ.Client/Entitlements/EntitlementsClient.cs">CountPlanEntitlementsAsync</a>(CountPlanEntitlementsRequest { ... }) -> WithRawResponseTask&lt;CountPlanEntitlementsResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -6082,8 +6104,8 @@ await client.Entitlements.CountPlanEntitlementsAsync(
         PlanVersionId = "plan_version_id",
         Q = "q",
         WithMeteredProducts = true,
-        Limit = 1,
-        Offset = 1,
+        Limit = 1000000,
+        Offset = 1000000,
     }
 );
 ```
@@ -6112,7 +6134,7 @@ await client.Entitlements.CountPlanEntitlementsAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Entitlements.<a href="/src/SchematicHQ.Client/Entitlements/EntitlementsClient.cs">DuplicatePlanEntitlementsAsync</a>(DuplicatePlanEntitlementsRequestBody { ... }) -> DuplicatePlanEntitlementsResponse</code></summary>
+<details><summary><code>client.Entitlements.<a href="/src/SchematicHQ.Client/Entitlements/EntitlementsClient.cs">DuplicatePlanEntitlementsAsync</a>(DuplicatePlanEntitlementsRequestBody { ... }) -> WithRawResponseTask&lt;DuplicatePlanEntitlementsResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -6158,7 +6180,7 @@ await client.Entitlements.DuplicatePlanEntitlementsAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Entitlements.<a href="/src/SchematicHQ.Client/Entitlements/EntitlementsClient.cs">GetFeatureUsageByCompanyAsync</a>(GetFeatureUsageByCompanyRequest { ... }) -> GetFeatureUsageByCompanyResponse</code></summary>
+<details><summary><code>client.Entitlements.<a href="/src/SchematicHQ.Client/Entitlements/EntitlementsClient.cs">GetFeatureUsageByCompanyAsync</a>(GetFeatureUsageByCompanyRequest { ... }) -> WithRawResponseTask&lt;GetFeatureUsageByCompanyResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -6204,7 +6226,7 @@ await client.Entitlements.GetFeatureUsageByCompanyAsync(
 </details>
 
 ## plans
-<details><summary><code>client.Plans.<a href="/src/SchematicHQ.Client/Plans/PlansClient.cs">UpdateCompanyPlansAsync</a>(companyPlanId, UpdateCompanyPlansRequestBody { ... }) -> UpdateCompanyPlansResponse</code></summary>
+<details><summary><code>client.Plans.<a href="/src/SchematicHQ.Client/Plans/PlansClient.cs">UpdateCompanyPlansAsync</a>(companyPlanId, UpdateCompanyPlansRequestBody { ... }) -> WithRawResponseTask&lt;UpdateCompanyPlansResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -6255,7 +6277,7 @@ await client.Plans.UpdateCompanyPlansAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Plans.<a href="/src/SchematicHQ.Client/Plans/PlansClient.cs">ListPlansAsync</a>(ListPlansRequest { ... }) -> ListPlansResponse</code></summary>
+<details><summary><code>client.Plans.<a href="/src/SchematicHQ.Client/Plans/PlansClient.cs">ListPlansAsync</a>(ListPlansRequest { ... }) -> WithRawResponseTask&lt;ListPlansResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -6276,12 +6298,13 @@ await client.Plans.ListPlansAsync(
         ForInitialPlan = true,
         ForTrialExpiryPlan = true,
         HasProductId = true,
+        IncludeDraftVersions = true,
         PlanType = PlanType.Plan,
         Q = "q",
         WithoutEntitlementFor = "without_entitlement_for",
         WithoutPaidProductId = true,
-        Limit = 1,
-        Offset = 1,
+        Limit = 1000000,
+        Offset = 1000000,
     }
 );
 ```
@@ -6310,7 +6333,7 @@ await client.Plans.ListPlansAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Plans.<a href="/src/SchematicHQ.Client/Plans/PlansClient.cs">CreatePlanAsync</a>(CreatePlanRequestBody { ... }) -> CreatePlanResponse</code></summary>
+<details><summary><code>client.Plans.<a href="/src/SchematicHQ.Client/Plans/PlansClient.cs">CreatePlanAsync</a>(CreatePlanRequestBody { ... }) -> WithRawResponseTask&lt;CreatePlanResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -6357,7 +6380,7 @@ await client.Plans.CreatePlanAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Plans.<a href="/src/SchematicHQ.Client/Plans/PlansClient.cs">GetPlanAsync</a>(planId, GetPlanRequest { ... }) -> GetPlanResponse</code></summary>
+<details><summary><code>client.Plans.<a href="/src/SchematicHQ.Client/Plans/PlansClient.cs">GetPlanAsync</a>(planId, GetPlanRequest { ... }) -> WithRawResponseTask&lt;GetPlanResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -6408,7 +6431,7 @@ await client.Plans.GetPlanAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Plans.<a href="/src/SchematicHQ.Client/Plans/PlansClient.cs">UpdatePlanAsync</a>(planId, UpdatePlanRequestBody { ... }) -> UpdatePlanResponse</code></summary>
+<details><summary><code>client.Plans.<a href="/src/SchematicHQ.Client/Plans/PlansClient.cs">UpdatePlanAsync</a>(planId, UpdatePlanRequestBody { ... }) -> WithRawResponseTask&lt;UpdatePlanResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -6456,7 +6479,7 @@ await client.Plans.UpdatePlanAsync("plan_id", new UpdatePlanRequestBody { Name =
 </dl>
 </details>
 
-<details><summary><code>client.Plans.<a href="/src/SchematicHQ.Client/Plans/PlansClient.cs">DeletePlanAsync</a>(planId) -> DeletePlanResponse</code></summary>
+<details><summary><code>client.Plans.<a href="/src/SchematicHQ.Client/Plans/PlansClient.cs">DeletePlanAsync</a>(planId) -> WithRawResponseTask&lt;DeletePlanResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -6496,7 +6519,7 @@ await client.Plans.DeletePlanAsync("plan_id");
 </dl>
 </details>
 
-<details><summary><code>client.Plans.<a href="/src/SchematicHQ.Client/Plans/PlansClient.cs">UpsertBillingProductPlanAsync</a>(planId, UpsertBillingProductRequestBody { ... }) -> UpsertBillingProductPlanResponse</code></summary>
+<details><summary><code>client.Plans.<a href="/src/SchematicHQ.Client/Plans/PlansClient.cs">UpsertBillingProductPlanAsync</a>(planId, UpsertBillingProductRequestBody { ... }) -> WithRawResponseTask&lt;UpsertBillingProductPlanResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -6547,7 +6570,7 @@ await client.Plans.UpsertBillingProductPlanAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Plans.<a href="/src/SchematicHQ.Client/Plans/PlansClient.cs">CountPlansAsync</a>(CountPlansRequest { ... }) -> CountPlansResponse</code></summary>
+<details><summary><code>client.Plans.<a href="/src/SchematicHQ.Client/Plans/PlansClient.cs">CountPlansAsync</a>(CountPlansRequest { ... }) -> WithRawResponseTask&lt;CountPlansResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -6568,12 +6591,13 @@ await client.Plans.CountPlansAsync(
         ForInitialPlan = true,
         ForTrialExpiryPlan = true,
         HasProductId = true,
+        IncludeDraftVersions = true,
         PlanType = PlanType.Plan,
         Q = "q",
         WithoutEntitlementFor = "without_entitlement_for",
         WithoutPaidProductId = true,
-        Limit = 1,
-        Offset = 1,
+        Limit = 1000000,
+        Offset = 1000000,
     }
 );
 ```
@@ -6602,7 +6626,7 @@ await client.Plans.CountPlansAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Plans.<a href="/src/SchematicHQ.Client/Plans/PlansClient.cs">ListPlanIssuesAsync</a>(ListPlanIssuesRequest { ... }) -> ListPlanIssuesResponse</code></summary>
+<details><summary><code>client.Plans.<a href="/src/SchematicHQ.Client/Plans/PlansClient.cs">ListPlanIssuesAsync</a>(ListPlanIssuesRequest { ... }) -> WithRawResponseTask&lt;ListPlanIssuesResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -6644,7 +6668,7 @@ await client.Plans.ListPlanIssuesAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Plans.<a href="/src/SchematicHQ.Client/Plans/PlansClient.cs">DeletePlanVersionAsync</a>(planId) -> DeletePlanVersionResponse</code></summary>
+<details><summary><code>client.Plans.<a href="/src/SchematicHQ.Client/Plans/PlansClient.cs">DeletePlanVersionAsync</a>(planId) -> WithRawResponseTask&lt;DeletePlanVersionResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -6684,7 +6708,7 @@ await client.Plans.DeletePlanVersionAsync("plan_id");
 </dl>
 </details>
 
-<details><summary><code>client.Plans.<a href="/src/SchematicHQ.Client/Plans/PlansClient.cs">PublishPlanVersionAsync</a>(planId, PublishPlanVersionRequestBody { ... }) -> PublishPlanVersionResponse</code></summary>
+<details><summary><code>client.Plans.<a href="/src/SchematicHQ.Client/Plans/PlansClient.cs">PublishPlanVersionAsync</a>(planId, PublishPlanVersionRequestBody { ... }) -> WithRawResponseTask&lt;PublishPlanVersionResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -6740,7 +6764,7 @@ await client.Plans.PublishPlanVersionAsync(
 </details>
 
 ## components
-<details><summary><code>client.Components.<a href="/src/SchematicHQ.Client/Components/ComponentsClient.cs">ListComponentsAsync</a>(ListComponentsRequest { ... }) -> ListComponentsResponse</code></summary>
+<details><summary><code>client.Components.<a href="/src/SchematicHQ.Client/Components/ComponentsClient.cs">ListComponentsAsync</a>(ListComponentsRequest { ... }) -> WithRawResponseTask&lt;ListComponentsResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -6757,8 +6781,8 @@ await client.Components.ListComponentsAsync(
     new ListComponentsRequest
     {
         Q = "q",
-        Limit = 1,
-        Offset = 1,
+        Limit = 1000000,
+        Offset = 1000000,
     }
 );
 ```
@@ -6787,7 +6811,7 @@ await client.Components.ListComponentsAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Components.<a href="/src/SchematicHQ.Client/Components/ComponentsClient.cs">CreateComponentAsync</a>(CreateComponentRequestBody { ... }) -> CreateComponentResponse</code></summary>
+<details><summary><code>client.Components.<a href="/src/SchematicHQ.Client/Components/ComponentsClient.cs">CreateComponentAsync</a>(CreateComponentRequestBody { ... }) -> WithRawResponseTask&lt;CreateComponentResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -6829,7 +6853,7 @@ await client.Components.CreateComponentAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Components.<a href="/src/SchematicHQ.Client/Components/ComponentsClient.cs">GetComponentAsync</a>(componentId) -> GetComponentResponse</code></summary>
+<details><summary><code>client.Components.<a href="/src/SchematicHQ.Client/Components/ComponentsClient.cs">GetComponentAsync</a>(componentId) -> WithRawResponseTask&lt;GetComponentResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -6869,7 +6893,7 @@ await client.Components.GetComponentAsync("component_id");
 </dl>
 </details>
 
-<details><summary><code>client.Components.<a href="/src/SchematicHQ.Client/Components/ComponentsClient.cs">UpdateComponentAsync</a>(componentId, UpdateComponentRequestBody { ... }) -> UpdateComponentResponse</code></summary>
+<details><summary><code>client.Components.<a href="/src/SchematicHQ.Client/Components/ComponentsClient.cs">UpdateComponentAsync</a>(componentId, UpdateComponentRequestBody { ... }) -> WithRawResponseTask&lt;UpdateComponentResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -6917,7 +6941,7 @@ await client.Components.UpdateComponentAsync("component_id", new UpdateComponent
 </dl>
 </details>
 
-<details><summary><code>client.Components.<a href="/src/SchematicHQ.Client/Components/ComponentsClient.cs">DeleteComponentAsync</a>(componentId) -> DeleteComponentResponse</code></summary>
+<details><summary><code>client.Components.<a href="/src/SchematicHQ.Client/Components/ComponentsClient.cs">DeleteComponentAsync</a>(componentId) -> WithRawResponseTask&lt;DeleteComponentResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -6957,7 +6981,7 @@ await client.Components.DeleteComponentAsync("component_id");
 </dl>
 </details>
 
-<details><summary><code>client.Components.<a href="/src/SchematicHQ.Client/Components/ComponentsClient.cs">CountComponentsAsync</a>(CountComponentsRequest { ... }) -> CountComponentsResponse</code></summary>
+<details><summary><code>client.Components.<a href="/src/SchematicHQ.Client/Components/ComponentsClient.cs">CountComponentsAsync</a>(CountComponentsRequest { ... }) -> WithRawResponseTask&lt;CountComponentsResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -6974,8 +6998,8 @@ await client.Components.CountComponentsAsync(
     new CountComponentsRequest
     {
         Q = "q",
-        Limit = 1,
-        Offset = 1,
+        Limit = 1000000,
+        Offset = 1000000,
     }
 );
 ```
@@ -7004,7 +7028,7 @@ await client.Components.CountComponentsAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Components.<a href="/src/SchematicHQ.Client/Components/ComponentsClient.cs">PreviewComponentDataAsync</a>(PreviewComponentDataRequest { ... }) -> PreviewComponentDataResponse</code></summary>
+<details><summary><code>client.Components.<a href="/src/SchematicHQ.Client/Components/ComponentsClient.cs">PreviewComponentDataAsync</a>(PreviewComponentDataRequest { ... }) -> WithRawResponseTask&lt;PreviewComponentDataResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -7047,7 +7071,7 @@ await client.Components.PreviewComponentDataAsync(
 </details>
 
 ## dataexports
-<details><summary><code>client.Dataexports.<a href="/src/SchematicHQ.Client/Dataexports/DataexportsClient.cs">CreateDataExportAsync</a>(CreateDataExportRequestBody { ... }) -> CreateDataExportResponse</code></summary>
+<details><summary><code>client.Dataexports.<a href="/src/SchematicHQ.Client/Dataexports/DataexportsClient.cs">CreateDataExportAsync</a>(CreateDataExportRequestBody { ... }) -> WithRawResponseTask&lt;CreateDataExportResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -7094,7 +7118,7 @@ await client.Dataexports.CreateDataExportAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Dataexports.<a href="/src/SchematicHQ.Client/Dataexports/DataexportsClient.cs">GetDataExportArtifactAsync</a>(dataExportId)</code></summary>
+<details><summary><code>client.Dataexports.<a href="/src/SchematicHQ.Client/Dataexports/DataexportsClient.cs">GetDataExportArtifactAsync</a>(dataExportId) -> WithRawResponseTask&lt;Stream&gt;</code></summary>
 <dl>
 <dd>
 
@@ -7135,7 +7159,7 @@ await client.Dataexports.GetDataExportArtifactAsync("data_export_id");
 </details>
 
 ## events
-<details><summary><code>client.Events.<a href="/src/SchematicHQ.Client/Events/EventsClient.cs">CreateEventBatchAsync</a>(CreateEventBatchRequestBody { ... }) -> CreateEventBatchResponse</code></summary>
+<details><summary><code>client.Events.<a href="/src/SchematicHQ.Client/Events/EventsClient.cs">CreateEventBatchAsync</a>(CreateEventBatchRequestBody { ... }) -> WithRawResponseTask&lt;CreateEventBatchResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -7183,7 +7207,7 @@ await client.Events.CreateEventBatchAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Events.<a href="/src/SchematicHQ.Client/Events/EventsClient.cs">GetEventSummariesAsync</a>(GetEventSummariesRequest { ... }) -> GetEventSummariesResponse</code></summary>
+<details><summary><code>client.Events.<a href="/src/SchematicHQ.Client/Events/EventsClient.cs">GetEventSummariesAsync</a>(GetEventSummariesRequest { ... }) -> WithRawResponseTask&lt;GetEventSummariesResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -7200,8 +7224,8 @@ await client.Events.GetEventSummariesAsync(
     new GetEventSummariesRequest
     {
         Q = "q",
-        Limit = 1,
-        Offset = 1,
+        Limit = 1000000,
+        Offset = 1000000,
     }
 );
 ```
@@ -7230,7 +7254,7 @@ await client.Events.GetEventSummariesAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Events.<a href="/src/SchematicHQ.Client/Events/EventsClient.cs">ListEventsAsync</a>(ListEventsRequest { ... }) -> ListEventsResponse</code></summary>
+<details><summary><code>client.Events.<a href="/src/SchematicHQ.Client/Events/EventsClient.cs">ListEventsAsync</a>(ListEventsRequest { ... }) -> WithRawResponseTask&lt;ListEventsResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -7250,8 +7274,8 @@ await client.Events.ListEventsAsync(
         EventSubtype = "event_subtype",
         FlagId = "flag_id",
         UserId = "user_id",
-        Limit = 1,
-        Offset = 1,
+        Limit = 1000000,
+        Offset = 1000000,
     }
 );
 ```
@@ -7280,7 +7304,7 @@ await client.Events.ListEventsAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Events.<a href="/src/SchematicHQ.Client/Events/EventsClient.cs">CreateEventAsync</a>(CreateEventRequestBody { ... }) -> CreateEventResponse</code></summary>
+<details><summary><code>client.Events.<a href="/src/SchematicHQ.Client/Events/EventsClient.cs">CreateEventAsync</a>(CreateEventRequestBody { ... }) -> WithRawResponseTask&lt;CreateEventResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -7322,7 +7346,7 @@ await client.Events.CreateEventAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Events.<a href="/src/SchematicHQ.Client/Events/EventsClient.cs">GetEventAsync</a>(eventId) -> GetEventResponse</code></summary>
+<details><summary><code>client.Events.<a href="/src/SchematicHQ.Client/Events/EventsClient.cs">GetEventAsync</a>(eventId) -> WithRawResponseTask&lt;GetEventResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -7362,7 +7386,7 @@ await client.Events.GetEventAsync("event_id");
 </dl>
 </details>
 
-<details><summary><code>client.Events.<a href="/src/SchematicHQ.Client/Events/EventsClient.cs">GetSegmentIntegrationStatusAsync</a>() -> GetSegmentIntegrationStatusResponse</code></summary>
+<details><summary><code>client.Events.<a href="/src/SchematicHQ.Client/Events/EventsClient.cs">GetSegmentIntegrationStatusAsync</a>() -> WithRawResponseTask&lt;GetSegmentIntegrationStatusResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -7388,7 +7412,7 @@ await client.Events.GetSegmentIntegrationStatusAsync();
 </details>
 
 ## features
-<details><summary><code>client.Features.<a href="/src/SchematicHQ.Client/Features/FeaturesClient.cs">ListFeaturesAsync</a>(ListFeaturesRequest { ... }) -> ListFeaturesResponse</code></summary>
+<details><summary><code>client.Features.<a href="/src/SchematicHQ.Client/Features/FeaturesClient.cs">ListFeaturesAsync</a>(ListFeaturesRequest { ... }) -> WithRawResponseTask&lt;ListFeaturesResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -7409,8 +7433,8 @@ await client.Features.ListFeaturesAsync(
         PlanVersionId = "plan_version_id",
         WithoutPlanEntitlementFor = "without_plan_entitlement_for",
         BooleanRequireEvent = true,
-        Limit = 1,
-        Offset = 1,
+        Limit = 1000000,
+        Offset = 1000000,
     }
 );
 ```
@@ -7439,7 +7463,7 @@ await client.Features.ListFeaturesAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Features.<a href="/src/SchematicHQ.Client/Features/FeaturesClient.cs">CreateFeatureAsync</a>(CreateFeatureRequestBody { ... }) -> CreateFeatureResponse</code></summary>
+<details><summary><code>client.Features.<a href="/src/SchematicHQ.Client/Features/FeaturesClient.cs">CreateFeatureAsync</a>(CreateFeatureRequestBody { ... }) -> WithRawResponseTask&lt;CreateFeatureResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -7486,7 +7510,7 @@ await client.Features.CreateFeatureAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Features.<a href="/src/SchematicHQ.Client/Features/FeaturesClient.cs">GetFeatureAsync</a>(featureId) -> GetFeatureResponse</code></summary>
+<details><summary><code>client.Features.<a href="/src/SchematicHQ.Client/Features/FeaturesClient.cs">GetFeatureAsync</a>(featureId) -> WithRawResponseTask&lt;GetFeatureResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -7526,7 +7550,7 @@ await client.Features.GetFeatureAsync("feature_id");
 </dl>
 </details>
 
-<details><summary><code>client.Features.<a href="/src/SchematicHQ.Client/Features/FeaturesClient.cs">UpdateFeatureAsync</a>(featureId, UpdateFeatureRequestBody { ... }) -> UpdateFeatureResponse</code></summary>
+<details><summary><code>client.Features.<a href="/src/SchematicHQ.Client/Features/FeaturesClient.cs">UpdateFeatureAsync</a>(featureId, UpdateFeatureRequestBody { ... }) -> WithRawResponseTask&lt;UpdateFeatureResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -7574,7 +7598,7 @@ await client.Features.UpdateFeatureAsync("feature_id", new UpdateFeatureRequestB
 </dl>
 </details>
 
-<details><summary><code>client.Features.<a href="/src/SchematicHQ.Client/Features/FeaturesClient.cs">DeleteFeatureAsync</a>(featureId) -> DeleteFeatureResponse</code></summary>
+<details><summary><code>client.Features.<a href="/src/SchematicHQ.Client/Features/FeaturesClient.cs">DeleteFeatureAsync</a>(featureId) -> WithRawResponseTask&lt;DeleteFeatureResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -7614,7 +7638,7 @@ await client.Features.DeleteFeatureAsync("feature_id");
 </dl>
 </details>
 
-<details><summary><code>client.Features.<a href="/src/SchematicHQ.Client/Features/FeaturesClient.cs">CountFeaturesAsync</a>(CountFeaturesRequest { ... }) -> CountFeaturesResponse</code></summary>
+<details><summary><code>client.Features.<a href="/src/SchematicHQ.Client/Features/FeaturesClient.cs">CountFeaturesAsync</a>(CountFeaturesRequest { ... }) -> WithRawResponseTask&lt;CountFeaturesResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -7635,8 +7659,8 @@ await client.Features.CountFeaturesAsync(
         PlanVersionId = "plan_version_id",
         WithoutPlanEntitlementFor = "without_plan_entitlement_for",
         BooleanRequireEvent = true,
-        Limit = 1,
-        Offset = 1,
+        Limit = 1000000,
+        Offset = 1000000,
     }
 );
 ```
@@ -7665,7 +7689,7 @@ await client.Features.CountFeaturesAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Features.<a href="/src/SchematicHQ.Client/Features/FeaturesClient.cs">ListFlagsAsync</a>(ListFlagsRequest { ... }) -> ListFlagsResponse</code></summary>
+<details><summary><code>client.Features.<a href="/src/SchematicHQ.Client/Features/FeaturesClient.cs">ListFlagsAsync</a>(ListFlagsRequest { ... }) -> WithRawResponseTask&lt;ListFlagsResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -7683,8 +7707,8 @@ await client.Features.ListFlagsAsync(
     {
         FeatureId = "feature_id",
         Q = "q",
-        Limit = 1,
-        Offset = 1,
+        Limit = 1000000,
+        Offset = 1000000,
     }
 );
 ```
@@ -7713,7 +7737,7 @@ await client.Features.ListFlagsAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Features.<a href="/src/SchematicHQ.Client/Features/FeaturesClient.cs">CreateFlagAsync</a>(CreateFlagRequestBody { ... }) -> CreateFlagResponse</code></summary>
+<details><summary><code>client.Features.<a href="/src/SchematicHQ.Client/Features/FeaturesClient.cs">CreateFlagAsync</a>(CreateFlagRequestBody { ... }) -> WithRawResponseTask&lt;CreateFlagResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -7762,7 +7786,7 @@ await client.Features.CreateFlagAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Features.<a href="/src/SchematicHQ.Client/Features/FeaturesClient.cs">GetFlagAsync</a>(flagId) -> GetFlagResponse</code></summary>
+<details><summary><code>client.Features.<a href="/src/SchematicHQ.Client/Features/FeaturesClient.cs">GetFlagAsync</a>(flagId) -> WithRawResponseTask&lt;GetFlagResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -7802,7 +7826,7 @@ await client.Features.GetFlagAsync("flag_id");
 </dl>
 </details>
 
-<details><summary><code>client.Features.<a href="/src/SchematicHQ.Client/Features/FeaturesClient.cs">UpdateFlagAsync</a>(flagId, CreateFlagRequestBody { ... }) -> UpdateFlagResponse</code></summary>
+<details><summary><code>client.Features.<a href="/src/SchematicHQ.Client/Features/FeaturesClient.cs">UpdateFlagAsync</a>(flagId, CreateFlagRequestBody { ... }) -> WithRawResponseTask&lt;UpdateFlagResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -7860,7 +7884,7 @@ await client.Features.UpdateFlagAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Features.<a href="/src/SchematicHQ.Client/Features/FeaturesClient.cs">DeleteFlagAsync</a>(flagId) -> DeleteFlagResponse</code></summary>
+<details><summary><code>client.Features.<a href="/src/SchematicHQ.Client/Features/FeaturesClient.cs">DeleteFlagAsync</a>(flagId) -> WithRawResponseTask&lt;DeleteFlagResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -7900,7 +7924,7 @@ await client.Features.DeleteFlagAsync("flag_id");
 </dl>
 </details>
 
-<details><summary><code>client.Features.<a href="/src/SchematicHQ.Client/Features/FeaturesClient.cs">UpdateFlagRulesAsync</a>(flagId, UpdateFlagRulesRequestBody { ... }) -> UpdateFlagRulesResponse</code></summary>
+<details><summary><code>client.Features.<a href="/src/SchematicHQ.Client/Features/FeaturesClient.cs">UpdateFlagRulesAsync</a>(flagId, UpdateFlagRulesRequestBody { ... }) -> WithRawResponseTask&lt;UpdateFlagRulesResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -7947,7 +7971,7 @@ await client.Features.UpdateFlagRulesAsync(
                     },
                 },
                 Name = "name",
-                Priority = 1,
+                Priority = 1000000,
                 Value = true,
             },
         },
@@ -7987,7 +8011,7 @@ await client.Features.UpdateFlagRulesAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Features.<a href="/src/SchematicHQ.Client/Features/FeaturesClient.cs">CheckFlagAsync</a>(key, CheckFlagRequestBody { ... }) -> CheckFlagResponse</code></summary>
+<details><summary><code>client.Features.<a href="/src/SchematicHQ.Client/Features/FeaturesClient.cs">CheckFlagAsync</a>(key, CheckFlagRequestBody { ... }) -> WithRawResponseTask&lt;CheckFlagResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -8035,7 +8059,7 @@ await client.Features.CheckFlagAsync("key", new CheckFlagRequestBody());
 </dl>
 </details>
 
-<details><summary><code>client.Features.<a href="/src/SchematicHQ.Client/Features/FeaturesClient.cs">CheckFlagsAsync</a>(CheckFlagRequestBody { ... }) -> CheckFlagsResponse</code></summary>
+<details><summary><code>client.Features.<a href="/src/SchematicHQ.Client/Features/FeaturesClient.cs">CheckFlagsAsync</a>(CheckFlagRequestBody { ... }) -> WithRawResponseTask&lt;CheckFlagsResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -8075,7 +8099,7 @@ await client.Features.CheckFlagsAsync(new CheckFlagRequestBody());
 </dl>
 </details>
 
-<details><summary><code>client.Features.<a href="/src/SchematicHQ.Client/Features/FeaturesClient.cs">CheckFlagsBulkAsync</a>(CheckFlagsBulkRequestBody { ... }) -> CheckFlagsBulkResponse</code></summary>
+<details><summary><code>client.Features.<a href="/src/SchematicHQ.Client/Features/FeaturesClient.cs">CheckFlagsBulkAsync</a>(CheckFlagsBulkRequestBody { ... }) -> WithRawResponseTask&lt;CheckFlagsBulkResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -8120,7 +8144,7 @@ await client.Features.CheckFlagsBulkAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Features.<a href="/src/SchematicHQ.Client/Features/FeaturesClient.cs">CountFlagsAsync</a>(CountFlagsRequest { ... }) -> CountFlagsResponse</code></summary>
+<details><summary><code>client.Features.<a href="/src/SchematicHQ.Client/Features/FeaturesClient.cs">CountFlagsAsync</a>(CountFlagsRequest { ... }) -> WithRawResponseTask&lt;CountFlagsResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -8138,8 +8162,8 @@ await client.Features.CountFlagsAsync(
     {
         FeatureId = "feature_id",
         Q = "q",
-        Limit = 1,
-        Offset = 1,
+        Limit = 1000000,
+        Offset = 1000000,
     }
 );
 ```
@@ -8169,7 +8193,7 @@ await client.Features.CountFlagsAsync(
 </details>
 
 ## planbundle
-<details><summary><code>client.Planbundle.<a href="/src/SchematicHQ.Client/Planbundle/PlanbundleClient.cs">CreatePlanBundleAsync</a>(CreatePlanBundleRequestBody { ... }) -> CreatePlanBundleResponse</code></summary>
+<details><summary><code>client.Planbundle.<a href="/src/SchematicHQ.Client/Planbundle/PlanbundleClient.cs">CreatePlanBundleAsync</a>(CreatePlanBundleRequestBody { ... }) -> WithRawResponseTask&lt;CreatePlanBundleResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -8217,7 +8241,7 @@ await client.Planbundle.CreatePlanBundleAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Planbundle.<a href="/src/SchematicHQ.Client/Planbundle/PlanbundleClient.cs">UpdatePlanBundleAsync</a>(planBundleId, UpdatePlanBundleRequestBody { ... }) -> UpdatePlanBundleResponse</code></summary>
+<details><summary><code>client.Planbundle.<a href="/src/SchematicHQ.Client/Planbundle/PlanbundleClient.cs">UpdatePlanBundleAsync</a>(planBundleId, UpdatePlanBundleRequestBody { ... }) -> WithRawResponseTask&lt;UpdatePlanBundleResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -8275,7 +8299,7 @@ await client.Planbundle.UpdatePlanBundleAsync(
 </details>
 
 ## plangroups
-<details><summary><code>client.Plangroups.<a href="/src/SchematicHQ.Client/Plangroups/PlangroupsClient.cs">GetPlanGroupAsync</a>() -> GetPlanGroupResponse</code></summary>
+<details><summary><code>client.Plangroups.<a href="/src/SchematicHQ.Client/Plangroups/PlangroupsClient.cs">GetPlanGroupAsync</a>(GetPlanGroupRequest { ... }) -> WithRawResponseTask&lt;GetPlanGroupResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -8288,8 +8312,23 @@ await client.Planbundle.UpdatePlanBundleAsync(
 <dd>
 
 ```csharp
-await client.Plangroups.GetPlanGroupAsync();
+await client.Plangroups.GetPlanGroupAsync(new GetPlanGroupRequest { IncludeCompanyCounts = true });
 ```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `GetPlanGroupRequest` 
+    
 </dd>
 </dl>
 </dd>
@@ -8300,7 +8339,7 @@ await client.Plangroups.GetPlanGroupAsync();
 </dl>
 </details>
 
-<details><summary><code>client.Plangroups.<a href="/src/SchematicHQ.Client/Plangroups/PlangroupsClient.cs">CreatePlanGroupAsync</a>(CreatePlanGroupRequestBody { ... }) -> CreatePlanGroupResponse</code></summary>
+<details><summary><code>client.Plangroups.<a href="/src/SchematicHQ.Client/Plangroups/PlangroupsClient.cs">CreatePlanGroupAsync</a>(CreatePlanGroupRequestBody { ... }) -> WithRawResponseTask&lt;CreatePlanGroupResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -8371,7 +8410,7 @@ await client.Plangroups.CreatePlanGroupAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Plangroups.<a href="/src/SchematicHQ.Client/Plangroups/PlangroupsClient.cs">UpdatePlanGroupAsync</a>(planGroupId, UpdatePlanGroupRequestBody { ... }) -> UpdatePlanGroupResponse</code></summary>
+<details><summary><code>client.Plangroups.<a href="/src/SchematicHQ.Client/Plangroups/PlangroupsClient.cs">UpdatePlanGroupAsync</a>(planGroupId, UpdatePlanGroupRequestBody { ... }) -> WithRawResponseTask&lt;UpdatePlanGroupResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -8452,7 +8491,7 @@ await client.Plangroups.UpdatePlanGroupAsync(
 </details>
 
 ## planmigrations
-<details><summary><code>client.Planmigrations.<a href="/src/SchematicHQ.Client/Planmigrations/PlanmigrationsClient.cs">ListCompanyMigrationsAsync</a>(ListCompanyMigrationsRequest { ... }) -> ListCompanyMigrationsResponse</code></summary>
+<details><summary><code>client.Planmigrations.<a href="/src/SchematicHQ.Client/Planmigrations/PlanmigrationsClient.cs">ListCompanyMigrationsAsync</a>(ListCompanyMigrationsRequest { ... }) -> WithRawResponseTask&lt;ListCompanyMigrationsResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -8471,8 +8510,8 @@ await client.Planmigrations.ListCompanyMigrationsAsync(
         MigrationId = "migration_id",
         Q = "q",
         Status = PlanVersionCompanyMigrationStatus.Completed,
-        Limit = 1,
-        Offset = 1,
+        Limit = 1000000,
+        Offset = 1000000,
     }
 );
 ```
@@ -8501,7 +8540,7 @@ await client.Planmigrations.ListCompanyMigrationsAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Planmigrations.<a href="/src/SchematicHQ.Client/Planmigrations/PlanmigrationsClient.cs">CountCompanyMigrationsAsync</a>(CountCompanyMigrationsRequest { ... }) -> CountCompanyMigrationsResponse</code></summary>
+<details><summary><code>client.Planmigrations.<a href="/src/SchematicHQ.Client/Planmigrations/PlanmigrationsClient.cs">CountCompanyMigrationsAsync</a>(CountCompanyMigrationsRequest { ... }) -> WithRawResponseTask&lt;CountCompanyMigrationsResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -8520,8 +8559,8 @@ await client.Planmigrations.CountCompanyMigrationsAsync(
         MigrationId = "migration_id",
         Q = "q",
         Status = PlanVersionCompanyMigrationStatus.Completed,
-        Limit = 1,
-        Offset = 1,
+        Limit = 1000000,
+        Offset = 1000000,
     }
 );
 ```
@@ -8550,7 +8589,7 @@ await client.Planmigrations.CountCompanyMigrationsAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Planmigrations.<a href="/src/SchematicHQ.Client/Planmigrations/PlanmigrationsClient.cs">ListMigrationsAsync</a>(ListMigrationsRequest { ... }) -> ListMigrationsResponse</code></summary>
+<details><summary><code>client.Planmigrations.<a href="/src/SchematicHQ.Client/Planmigrations/PlanmigrationsClient.cs">ListMigrationsAsync</a>(ListMigrationsRequest { ... }) -> WithRawResponseTask&lt;ListMigrationsResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -8568,8 +8607,8 @@ await client.Planmigrations.ListMigrationsAsync(
     {
         PlanVersionId = "plan_version_id",
         Status = PlanVersionMigrationStatus.Completed,
-        Limit = 1,
-        Offset = 1,
+        Limit = 1000000,
+        Offset = 1000000,
     }
 );
 ```
@@ -8598,7 +8637,7 @@ await client.Planmigrations.ListMigrationsAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Planmigrations.<a href="/src/SchematicHQ.Client/Planmigrations/PlanmigrationsClient.cs">GetMigrationAsync</a>(planVersionMigrationId) -> GetMigrationResponse</code></summary>
+<details><summary><code>client.Planmigrations.<a href="/src/SchematicHQ.Client/Planmigrations/PlanmigrationsClient.cs">GetMigrationAsync</a>(planVersionMigrationId) -> WithRawResponseTask&lt;GetMigrationResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -8638,7 +8677,7 @@ await client.Planmigrations.GetMigrationAsync("plan_version_migration_id");
 </dl>
 </details>
 
-<details><summary><code>client.Planmigrations.<a href="/src/SchematicHQ.Client/Planmigrations/PlanmigrationsClient.cs">CountMigrationsAsync</a>(CountMigrationsRequest { ... }) -> CountMigrationsResponse</code></summary>
+<details><summary><code>client.Planmigrations.<a href="/src/SchematicHQ.Client/Planmigrations/PlanmigrationsClient.cs">CountMigrationsAsync</a>(CountMigrationsRequest { ... }) -> WithRawResponseTask&lt;CountMigrationsResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -8656,8 +8695,8 @@ await client.Planmigrations.CountMigrationsAsync(
     {
         PlanVersionId = "plan_version_id",
         Status = PlanVersionMigrationStatus.Completed,
-        Limit = 1,
-        Offset = 1,
+        Limit = 1000000,
+        Offset = 1000000,
     }
 );
 ```
@@ -8687,7 +8726,7 @@ await client.Planmigrations.CountMigrationsAsync(
 </details>
 
 ## componentspublic
-<details><summary><code>client.Componentspublic.<a href="/src/SchematicHQ.Client/Componentspublic/ComponentspublicClient.cs">GetPublicPlansAsync</a>() -> GetPublicPlansResponse</code></summary>
+<details><summary><code>client.Componentspublic.<a href="/src/SchematicHQ.Client/Componentspublic/ComponentspublicClient.cs">GetPublicPlansAsync</a>() -> WithRawResponseTask&lt;GetPublicPlansResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -8713,7 +8752,7 @@ await client.Componentspublic.GetPublicPlansAsync();
 </details>
 
 ## scheduledcheckout
-<details><summary><code>client.Scheduledcheckout.<a href="/src/SchematicHQ.Client/Scheduledcheckout/ScheduledcheckoutClient.cs">ListScheduledCheckoutsAsync</a>(ListScheduledCheckoutsRequest { ... }) -> ListScheduledCheckoutsResponse</code></summary>
+<details><summary><code>client.Scheduledcheckout.<a href="/src/SchematicHQ.Client/Scheduledcheckout/ScheduledcheckoutClient.cs">ListScheduledCheckoutsAsync</a>(ListScheduledCheckoutsRequest { ... }) -> WithRawResponseTask&lt;ListScheduledCheckoutsResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -8731,8 +8770,8 @@ await client.Scheduledcheckout.ListScheduledCheckoutsAsync(
     {
         CompanyId = "company_id",
         Status = ScheduledCheckoutStatus.Cancelled,
-        Limit = 1,
-        Offset = 1,
+        Limit = 1000000,
+        Offset = 1000000,
     }
 );
 ```
@@ -8761,7 +8800,7 @@ await client.Scheduledcheckout.ListScheduledCheckoutsAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Scheduledcheckout.<a href="/src/SchematicHQ.Client/Scheduledcheckout/ScheduledcheckoutClient.cs">CreateScheduledCheckoutAsync</a>(CreateScheduledCheckoutRequest { ... }) -> CreateScheduledCheckoutResponse</code></summary>
+<details><summary><code>client.Scheduledcheckout.<a href="/src/SchematicHQ.Client/Scheduledcheckout/ScheduledcheckoutClient.cs">CreateScheduledCheckoutAsync</a>(CreateScheduledCheckoutRequest { ... }) -> WithRawResponseTask&lt;CreateScheduledCheckoutResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -8809,7 +8848,7 @@ await client.Scheduledcheckout.CreateScheduledCheckoutAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Scheduledcheckout.<a href="/src/SchematicHQ.Client/Scheduledcheckout/ScheduledcheckoutClient.cs">GetScheduledCheckoutAsync</a>(scheduledCheckoutId) -> GetScheduledCheckoutResponse</code></summary>
+<details><summary><code>client.Scheduledcheckout.<a href="/src/SchematicHQ.Client/Scheduledcheckout/ScheduledcheckoutClient.cs">GetScheduledCheckoutAsync</a>(scheduledCheckoutId) -> WithRawResponseTask&lt;GetScheduledCheckoutResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -8849,7 +8888,7 @@ await client.Scheduledcheckout.GetScheduledCheckoutAsync("scheduled_checkout_id"
 </dl>
 </details>
 
-<details><summary><code>client.Scheduledcheckout.<a href="/src/SchematicHQ.Client/Scheduledcheckout/ScheduledcheckoutClient.cs">UpdateScheduledCheckoutAsync</a>(scheduledCheckoutId, UpdateScheduledCheckoutRequest { ... }) -> UpdateScheduledCheckoutResponse</code></summary>
+<details><summary><code>client.Scheduledcheckout.<a href="/src/SchematicHQ.Client/Scheduledcheckout/ScheduledcheckoutClient.cs">UpdateScheduledCheckoutAsync</a>(scheduledCheckoutId, UpdateScheduledCheckoutRequest { ... }) -> WithRawResponseTask&lt;UpdateScheduledCheckoutResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -8901,7 +8940,7 @@ await client.Scheduledcheckout.UpdateScheduledCheckoutAsync(
 </details>
 
 ## accesstokens
-<details><summary><code>client.Accesstokens.<a href="/src/SchematicHQ.Client/Accesstokens/AccesstokensClient.cs">IssueTemporaryAccessTokenAsync</a>(IssueTemporaryAccessTokenRequestBody { ... }) -> IssueTemporaryAccessTokenResponse</code></summary>
+<details><summary><code>client.Accesstokens.<a href="/src/SchematicHQ.Client/Accesstokens/AccesstokensClient.cs">IssueTemporaryAccessTokenAsync</a>(IssueTemporaryAccessTokenRequestBody { ... }) -> WithRawResponseTask&lt;IssueTemporaryAccessTokenResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -8948,7 +8987,7 @@ await client.Accesstokens.IssueTemporaryAccessTokenAsync(
 </details>
 
 ## webhooks
-<details><summary><code>client.Webhooks.<a href="/src/SchematicHQ.Client/Webhooks/WebhooksClient.cs">ListWebhookEventsAsync</a>(ListWebhookEventsRequest { ... }) -> ListWebhookEventsResponse</code></summary>
+<details><summary><code>client.Webhooks.<a href="/src/SchematicHQ.Client/Webhooks/WebhooksClient.cs">ListWebhookEventsAsync</a>(ListWebhookEventsRequest { ... }) -> WithRawResponseTask&lt;ListWebhookEventsResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -8966,8 +9005,8 @@ await client.Webhooks.ListWebhookEventsAsync(
     {
         Q = "q",
         WebhookId = "webhook_id",
-        Limit = 1,
-        Offset = 1,
+        Limit = 1000000,
+        Offset = 1000000,
     }
 );
 ```
@@ -8996,7 +9035,7 @@ await client.Webhooks.ListWebhookEventsAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Webhooks.<a href="/src/SchematicHQ.Client/Webhooks/WebhooksClient.cs">GetWebhookEventAsync</a>(webhookEventId) -> GetWebhookEventResponse</code></summary>
+<details><summary><code>client.Webhooks.<a href="/src/SchematicHQ.Client/Webhooks/WebhooksClient.cs">GetWebhookEventAsync</a>(webhookEventId) -> WithRawResponseTask&lt;GetWebhookEventResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -9036,7 +9075,7 @@ await client.Webhooks.GetWebhookEventAsync("webhook_event_id");
 </dl>
 </details>
 
-<details><summary><code>client.Webhooks.<a href="/src/SchematicHQ.Client/Webhooks/WebhooksClient.cs">CountWebhookEventsAsync</a>(CountWebhookEventsRequest { ... }) -> CountWebhookEventsResponse</code></summary>
+<details><summary><code>client.Webhooks.<a href="/src/SchematicHQ.Client/Webhooks/WebhooksClient.cs">CountWebhookEventsAsync</a>(CountWebhookEventsRequest { ... }) -> WithRawResponseTask&lt;CountWebhookEventsResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -9054,8 +9093,8 @@ await client.Webhooks.CountWebhookEventsAsync(
     {
         Q = "q",
         WebhookId = "webhook_id",
-        Limit = 1,
-        Offset = 1,
+        Limit = 1000000,
+        Offset = 1000000,
     }
 );
 ```
@@ -9084,7 +9123,7 @@ await client.Webhooks.CountWebhookEventsAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Webhooks.<a href="/src/SchematicHQ.Client/Webhooks/WebhooksClient.cs">ListWebhooksAsync</a>(ListWebhooksRequest { ... }) -> ListWebhooksResponse</code></summary>
+<details><summary><code>client.Webhooks.<a href="/src/SchematicHQ.Client/Webhooks/WebhooksClient.cs">ListWebhooksAsync</a>(ListWebhooksRequest { ... }) -> WithRawResponseTask&lt;ListWebhooksResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -9101,8 +9140,8 @@ await client.Webhooks.ListWebhooksAsync(
     new ListWebhooksRequest
     {
         Q = "q",
-        Limit = 1,
-        Offset = 1,
+        Limit = 1000000,
+        Offset = 1000000,
     }
 );
 ```
@@ -9131,7 +9170,7 @@ await client.Webhooks.ListWebhooksAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Webhooks.<a href="/src/SchematicHQ.Client/Webhooks/WebhooksClient.cs">CreateWebhookAsync</a>(CreateWebhookRequestBody { ... }) -> CreateWebhookResponse</code></summary>
+<details><summary><code>client.Webhooks.<a href="/src/SchematicHQ.Client/Webhooks/WebhooksClient.cs">CreateWebhookAsync</a>(CreateWebhookRequestBody { ... }) -> WithRawResponseTask&lt;CreateWebhookResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -9178,7 +9217,7 @@ await client.Webhooks.CreateWebhookAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Webhooks.<a href="/src/SchematicHQ.Client/Webhooks/WebhooksClient.cs">GetWebhookAsync</a>(webhookId) -> GetWebhookResponse</code></summary>
+<details><summary><code>client.Webhooks.<a href="/src/SchematicHQ.Client/Webhooks/WebhooksClient.cs">GetWebhookAsync</a>(webhookId) -> WithRawResponseTask&lt;GetWebhookResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -9218,7 +9257,7 @@ await client.Webhooks.GetWebhookAsync("webhook_id");
 </dl>
 </details>
 
-<details><summary><code>client.Webhooks.<a href="/src/SchematicHQ.Client/Webhooks/WebhooksClient.cs">UpdateWebhookAsync</a>(webhookId, UpdateWebhookRequestBody { ... }) -> UpdateWebhookResponse</code></summary>
+<details><summary><code>client.Webhooks.<a href="/src/SchematicHQ.Client/Webhooks/WebhooksClient.cs">UpdateWebhookAsync</a>(webhookId, UpdateWebhookRequestBody { ... }) -> WithRawResponseTask&lt;UpdateWebhookResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -9266,7 +9305,7 @@ await client.Webhooks.UpdateWebhookAsync("webhook_id", new UpdateWebhookRequestB
 </dl>
 </details>
 
-<details><summary><code>client.Webhooks.<a href="/src/SchematicHQ.Client/Webhooks/WebhooksClient.cs">DeleteWebhookAsync</a>(webhookId) -> DeleteWebhookResponse</code></summary>
+<details><summary><code>client.Webhooks.<a href="/src/SchematicHQ.Client/Webhooks/WebhooksClient.cs">DeleteWebhookAsync</a>(webhookId) -> WithRawResponseTask&lt;DeleteWebhookResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -9306,7 +9345,7 @@ await client.Webhooks.DeleteWebhookAsync("webhook_id");
 </dl>
 </details>
 
-<details><summary><code>client.Webhooks.<a href="/src/SchematicHQ.Client/Webhooks/WebhooksClient.cs">CountWebhooksAsync</a>(CountWebhooksRequest { ... }) -> CountWebhooksResponse</code></summary>
+<details><summary><code>client.Webhooks.<a href="/src/SchematicHQ.Client/Webhooks/WebhooksClient.cs">CountWebhooksAsync</a>(CountWebhooksRequest { ... }) -> WithRawResponseTask&lt;CountWebhooksResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -9323,8 +9362,8 @@ await client.Webhooks.CountWebhooksAsync(
     new CountWebhooksRequest
     {
         Q = "q",
-        Limit = 1,
-        Offset = 1,
+        Limit = 1000000,
+        Offset = 1000000,
     }
 );
 ```
@@ -9352,3 +9391,4 @@ await client.Webhooks.CountWebhooksAsync(
 </dd>
 </dl>
 </details>
+

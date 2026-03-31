@@ -1,5 +1,5 @@
-using System.Text.Json;
-using System.Text.Json.Serialization;
+using global::System.Text.Json;
+using global::System.Text.Json.Serialization;
 using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
@@ -35,7 +35,7 @@ public record RulesengineRule : IJsonOnDeserialized
     public required string Name { get; set; }
 
     [JsonPropertyName("priority")]
-    public required int Priority { get; set; }
+    public required long Priority { get; set; }
 
     [JsonPropertyName("rule_type")]
     public required RulesengineRuleRuleType RuleType { get; set; }

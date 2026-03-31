@@ -1,5 +1,5 @@
-using System.Text.Json;
-using System.Text.Json.Serialization;
+using global::System.Text.Json;
+using global::System.Text.Json.Serialization;
 using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
@@ -86,7 +86,7 @@ public record PlanGroupResponseData : IJsonOnDeserialized
     public required bool TaxCollectionEnabled { get; set; }
 
     [JsonPropertyName("trial_days")]
-    public int? TrialDays { get; set; }
+    public long? TrialDays { get; set; }
 
     [JsonPropertyName("trial_expiry_plan_id")]
     public string? TrialExpiryPlanId { get; set; }

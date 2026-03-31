@@ -1,42 +1,39 @@
-using System.Net.Http;
-using System.Text.Json;
-using System.Threading;
+using global::System.Text.Json;
 using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
 
-public partial class AccesstokensClient
+public partial class AccesstokensClient : IAccesstokensClient
 {
-    private RawClient _client;
+    private readonly RawClient _client;
 
     internal AccesstokensClient(RawClient client)
     {
         _client = client;
     }
 
-    /// <example><code>
-    /// await client.Accesstokens.IssueTemporaryAccessTokenAsync(
-    ///     new IssueTemporaryAccessTokenRequestBody
-    ///     {
-    ///         Lookup = new Dictionary&lt;string, string&gt;() { { "key", "value" } },
-    ///         ResourceType = "company",
-    ///     }
-    /// );
-    /// </code></example>
-    public async Task<IssueTemporaryAccessTokenResponse> IssueTemporaryAccessTokenAsync(
+    private async Task<
+        WithRawResponse<IssueTemporaryAccessTokenResponse>
+    > IssueTemporaryAccessTokenAsyncCore(
         IssueTemporaryAccessTokenRequestBody request,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
     {
+        var _headers = await new SchematicHQ.Client.Core.HeadersBuilder.Builder()
+            .Add(_client.Options.Headers)
+            .Add(_client.Options.AdditionalHeaders)
+            .Add(options?.AdditionalHeaders)
+            .BuildAsync()
+            .ConfigureAwait(false);
         var response = await _client
             .SendRequestAsync(
                 new JsonRequest
                 {
-                    BaseUrl = _client.Options.BaseUrl,
                     Method = HttpMethod.Post,
                     Path = "temporary-access-tokens",
                     Body = request,
+                    Headers = _headers,
                     ContentType = "application/json",
                     Options = options,
                 },
@@ -45,19 +42,39 @@ public partial class AccesstokensClient
             .ConfigureAwait(false);
         if (response.StatusCode is >= 200 and < 400)
         {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
             try
             {
-                return JsonUtils.Deserialize<IssueTemporaryAccessTokenResponse>(responseBody)!;
+                var responseData = JsonUtils.Deserialize<IssueTemporaryAccessTokenResponse>(
+                    responseBody
+                )!;
+                return new WithRawResponse<IssueTemporaryAccessTokenResponse>()
+                {
+                    Data = responseData,
+                    RawResponse = new RawResponse()
+                    {
+                        StatusCode = response.Raw.StatusCode,
+                        Url = response.Raw.RequestMessage?.RequestUri ?? new Uri("about:blank"),
+                        Headers = ResponseHeaders.FromHttpResponseMessage(response.Raw),
+                    },
+                };
             }
             catch (JsonException e)
             {
-                throw new SchematicException("Failed to deserialize response", e);
+                throw new SchematicApiException(
+                    "Failed to deserialize response",
+                    response.StatusCode,
+                    responseBody,
+                    e
+                );
             }
         }
-
         {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
             try
             {
                 switch (response.StatusCode)
@@ -86,5 +103,25 @@ public partial class AccesstokensClient
                 responseBody
             );
         }
+    }
+
+    /// <example><code>
+    /// await client.Accesstokens.IssueTemporaryAccessTokenAsync(
+    ///     new IssueTemporaryAccessTokenRequestBody
+    ///     {
+    ///         Lookup = new Dictionary&lt;string, string&gt;() { { "key", "value" } },
+    ///         ResourceType = "company",
+    ///     }
+    /// );
+    /// </code></example>
+    public WithRawResponseTask<IssueTemporaryAccessTokenResponse> IssueTemporaryAccessTokenAsync(
+        IssueTemporaryAccessTokenRequestBody request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        return new WithRawResponseTask<IssueTemporaryAccessTokenResponse>(
+            IssueTemporaryAccessTokenAsyncCore(request, options, cancellationToken)
+        );
     }
 }

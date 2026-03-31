@@ -1,5 +1,5 @@
-using System.Text.Json;
-using System.Text.Json.Serialization;
+using global::System.Text.Json;
+using global::System.Text.Json.Serialization;
 using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
@@ -15,7 +15,7 @@ public record FeatureEntitlement : IJsonOnDeserialized
     /// If the company has a numeric entitlement for this feature, the allocated amount
     /// </summary>
     [JsonPropertyName("allocation")]
-    public int? Allocation { get; set; }
+    public long? Allocation { get; set; }
 
     /// <summary>
     /// If the company has a credit-based entitlement for this feature, the ID of the credit
@@ -81,13 +81,13 @@ public record FeatureEntitlement : IJsonOnDeserialized
     /// For usage-based pricing, the soft limit for overage charges or the next tier boundary
     /// </summary>
     [JsonPropertyName("soft_limit")]
-    public int? SoftLimit { get; set; }
+    public long? SoftLimit { get; set; }
 
     /// <summary>
     /// If the company has a numeric entitlement for this feature, the current usage amount
     /// </summary>
     [JsonPropertyName("usage")]
-    public int? Usage { get; set; }
+    public long? Usage { get; set; }
 
     /// <summary>
     /// The type of the entitlement value

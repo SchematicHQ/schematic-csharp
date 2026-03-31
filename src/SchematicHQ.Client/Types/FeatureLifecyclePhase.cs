@@ -1,9 +1,10 @@
-using System.Text.Json.Serialization;
+using global::System.Text.Json;
+using global::System.Text.Json.Serialization;
 using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
 
-[JsonConverter(typeof(StringEnumSerializer<FeatureLifecyclePhase>))]
+[JsonConverter(typeof(FeatureLifecyclePhase.FeatureLifecyclePhaseSerializer))]
 [Serializable]
 public readonly record struct FeatureLifecyclePhase : IStringEnum
 {
@@ -65,6 +66,55 @@ public readonly record struct FeatureLifecyclePhase : IStringEnum
     public static explicit operator string(FeatureLifecyclePhase value) => value.Value;
 
     public static explicit operator FeatureLifecyclePhase(string value) => new(value);
+
+    internal class FeatureLifecyclePhaseSerializer : JsonConverter<FeatureLifecyclePhase>
+    {
+        public override FeatureLifecyclePhase Read(
+            ref Utf8JsonReader reader,
+            Type typeToConvert,
+            JsonSerializerOptions options
+        )
+        {
+            var stringValue =
+                reader.GetString()
+                ?? throw new global::System.Exception(
+                    "The JSON value could not be read as a string."
+                );
+            return new FeatureLifecyclePhase(stringValue);
+        }
+
+        public override void Write(
+            Utf8JsonWriter writer,
+            FeatureLifecyclePhase value,
+            JsonSerializerOptions options
+        )
+        {
+            writer.WriteStringValue(value.Value);
+        }
+
+        public override FeatureLifecyclePhase ReadAsPropertyName(
+            ref Utf8JsonReader reader,
+            Type typeToConvert,
+            JsonSerializerOptions options
+        )
+        {
+            var stringValue =
+                reader.GetString()
+                ?? throw new global::System.Exception(
+                    "The JSON property name could not be read as a string."
+                );
+            return new FeatureLifecyclePhase(stringValue);
+        }
+
+        public override void WriteAsPropertyName(
+            Utf8JsonWriter writer,
+            FeatureLifecyclePhase value,
+            JsonSerializerOptions options
+        )
+        {
+            writer.WritePropertyName(value.Value);
+        }
+    }
 
     /// <summary>
     /// Constant strings for enum values

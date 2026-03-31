@@ -1,5 +1,5 @@
-using System.Text.Json;
-using System.Text.Json.Serialization;
+using global::System.Text.Json;
+using global::System.Text.Json.Serialization;
 using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
@@ -20,11 +20,15 @@ public record BillingCreditResponseData : IJsonOnDeserialized
     [JsonPropertyName("created_at")]
     public required DateTime CreatedAt { get; set; }
 
+    [JsonPropertyName("currency_prices")]
+    public IEnumerable<CreditCurrencyPriceResponseData> CurrencyPrices { get; set; } =
+        new List<CreditCurrencyPriceResponseData>();
+
     [JsonPropertyName("default_expiry_unit")]
     public required BillingCreditExpiryUnit DefaultExpiryUnit { get; set; }
 
     [JsonPropertyName("default_expiry_unit_count")]
-    public int? DefaultExpiryUnitCount { get; set; }
+    public long? DefaultExpiryUnitCount { get; set; }
 
     [JsonPropertyName("default_rollover_policy")]
     public required BillingCreditRolloverPolicy DefaultRolloverPolicy { get; set; }

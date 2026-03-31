@@ -1,9 +1,10 @@
-using System.Text.Json.Serialization;
+using global::System.Text.Json;
+using global::System.Text.Json.Serialization;
 using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
 
-[JsonConverter(typeof(StringEnumSerializer<CreditLedgerPeriod>))]
+[JsonConverter(typeof(CreditLedgerPeriod.CreditLedgerPeriodSerializer))]
 [Serializable]
 public readonly record struct CreditLedgerPeriod : IStringEnum
 {
@@ -55,6 +56,55 @@ public readonly record struct CreditLedgerPeriod : IStringEnum
     public static explicit operator string(CreditLedgerPeriod value) => value.Value;
 
     public static explicit operator CreditLedgerPeriod(string value) => new(value);
+
+    internal class CreditLedgerPeriodSerializer : JsonConverter<CreditLedgerPeriod>
+    {
+        public override CreditLedgerPeriod Read(
+            ref Utf8JsonReader reader,
+            Type typeToConvert,
+            JsonSerializerOptions options
+        )
+        {
+            var stringValue =
+                reader.GetString()
+                ?? throw new global::System.Exception(
+                    "The JSON value could not be read as a string."
+                );
+            return new CreditLedgerPeriod(stringValue);
+        }
+
+        public override void Write(
+            Utf8JsonWriter writer,
+            CreditLedgerPeriod value,
+            JsonSerializerOptions options
+        )
+        {
+            writer.WriteStringValue(value.Value);
+        }
+
+        public override CreditLedgerPeriod ReadAsPropertyName(
+            ref Utf8JsonReader reader,
+            Type typeToConvert,
+            JsonSerializerOptions options
+        )
+        {
+            var stringValue =
+                reader.GetString()
+                ?? throw new global::System.Exception(
+                    "The JSON property name could not be read as a string."
+                );
+            return new CreditLedgerPeriod(stringValue);
+        }
+
+        public override void WriteAsPropertyName(
+            Utf8JsonWriter writer,
+            CreditLedgerPeriod value,
+            JsonSerializerOptions options
+        )
+        {
+            writer.WritePropertyName(value.Value);
+        }
+    }
 
     /// <summary>
     /// Constant strings for enum values

@@ -1,9 +1,10 @@
-using System.Text.Json.Serialization;
+using global::System.Text.Json;
+using global::System.Text.Json.Serialization;
 using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
 
-[JsonConverter(typeof(StringEnumSerializer<BillingPriceScheme>))]
+[JsonConverter(typeof(BillingPriceScheme.BillingPriceSchemeSerializer))]
 [Serializable]
 public readonly record struct BillingPriceScheme : IStringEnum
 {
@@ -51,6 +52,55 @@ public readonly record struct BillingPriceScheme : IStringEnum
     public static explicit operator string(BillingPriceScheme value) => value.Value;
 
     public static explicit operator BillingPriceScheme(string value) => new(value);
+
+    internal class BillingPriceSchemeSerializer : JsonConverter<BillingPriceScheme>
+    {
+        public override BillingPriceScheme Read(
+            ref Utf8JsonReader reader,
+            Type typeToConvert,
+            JsonSerializerOptions options
+        )
+        {
+            var stringValue =
+                reader.GetString()
+                ?? throw new global::System.Exception(
+                    "The JSON value could not be read as a string."
+                );
+            return new BillingPriceScheme(stringValue);
+        }
+
+        public override void Write(
+            Utf8JsonWriter writer,
+            BillingPriceScheme value,
+            JsonSerializerOptions options
+        )
+        {
+            writer.WriteStringValue(value.Value);
+        }
+
+        public override BillingPriceScheme ReadAsPropertyName(
+            ref Utf8JsonReader reader,
+            Type typeToConvert,
+            JsonSerializerOptions options
+        )
+        {
+            var stringValue =
+                reader.GetString()
+                ?? throw new global::System.Exception(
+                    "The JSON property name could not be read as a string."
+                );
+            return new BillingPriceScheme(stringValue);
+        }
+
+        public override void WriteAsPropertyName(
+            Utf8JsonWriter writer,
+            BillingPriceScheme value,
+            JsonSerializerOptions options
+        )
+        {
+            writer.WritePropertyName(value.Value);
+        }
+    }
 
     /// <summary>
     /// Constant strings for enum values

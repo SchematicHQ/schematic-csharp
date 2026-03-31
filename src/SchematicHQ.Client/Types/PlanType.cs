@@ -1,9 +1,10 @@
-using System.Text.Json.Serialization;
+using global::System.Text.Json;
+using global::System.Text.Json.Serialization;
 using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
 
-[JsonConverter(typeof(StringEnumSerializer<PlanType>))]
+[JsonConverter(typeof(PlanType.PlanTypeSerializer))]
 [Serializable]
 public readonly record struct PlanType : IStringEnum
 {
@@ -49,6 +50,55 @@ public readonly record struct PlanType : IStringEnum
     public static explicit operator string(PlanType value) => value.Value;
 
     public static explicit operator PlanType(string value) => new(value);
+
+    internal class PlanTypeSerializer : JsonConverter<PlanType>
+    {
+        public override PlanType Read(
+            ref Utf8JsonReader reader,
+            Type typeToConvert,
+            JsonSerializerOptions options
+        )
+        {
+            var stringValue =
+                reader.GetString()
+                ?? throw new global::System.Exception(
+                    "The JSON value could not be read as a string."
+                );
+            return new PlanType(stringValue);
+        }
+
+        public override void Write(
+            Utf8JsonWriter writer,
+            PlanType value,
+            JsonSerializerOptions options
+        )
+        {
+            writer.WriteStringValue(value.Value);
+        }
+
+        public override PlanType ReadAsPropertyName(
+            ref Utf8JsonReader reader,
+            Type typeToConvert,
+            JsonSerializerOptions options
+        )
+        {
+            var stringValue =
+                reader.GetString()
+                ?? throw new global::System.Exception(
+                    "The JSON property name could not be read as a string."
+                );
+            return new PlanType(stringValue);
+        }
+
+        public override void WriteAsPropertyName(
+            Utf8JsonWriter writer,
+            PlanType value,
+            JsonSerializerOptions options
+        )
+        {
+            writer.WritePropertyName(value.Value);
+        }
+    }
 
     /// <summary>
     /// Constant strings for enum values

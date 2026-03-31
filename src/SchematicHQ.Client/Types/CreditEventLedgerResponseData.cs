@@ -1,5 +1,5 @@
-using System.Text.Json;
-using System.Text.Json.Serialization;
+using global::System.Text.Json;
+using global::System.Text.Json.Serialization;
 using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
@@ -54,7 +54,7 @@ public record CreditEventLedgerResponseData : IJsonOnDeserialized
     public BillingCreditExpiryUnit? ExpiryUnit { get; set; }
 
     [JsonPropertyName("expiry_unit_count")]
-    public int? ExpiryUnitCount { get; set; }
+    public long? ExpiryUnitCount { get; set; }
 
     [JsonPropertyName("feature")]
     public FeatureLedgerResponseData? Feature { get; set; }
@@ -72,7 +72,7 @@ public record CreditEventLedgerResponseData : IJsonOnDeserialized
     public string? GrantId { get; set; }
 
     [JsonPropertyName("grant_quantity")]
-    public int? GrantQuantity { get; set; }
+    public long? GrantQuantity { get; set; }
 
     [JsonPropertyName("grant_quantity_remaining")]
     public double? GrantQuantityRemaining { get; set; }
@@ -93,7 +93,7 @@ public record CreditEventLedgerResponseData : IJsonOnDeserialized
     public double? QuantityRemainingAtZeroOut { get; set; }
 
     [JsonPropertyName("source_id")]
-    public required int SourceId { get; set; }
+    public required long SourceId { get; set; }
 
     [JsonPropertyName("to_grant_id")]
     public string? ToGrantId { get; set; }

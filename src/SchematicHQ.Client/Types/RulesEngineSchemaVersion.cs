@@ -1,13 +1,14 @@
-using System.Text.Json.Serialization;
+using global::System.Text.Json;
+using global::System.Text.Json.Serialization;
 using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
 
-[JsonConverter(typeof(StringEnumSerializer<RulesEngineSchemaVersion>))]
+[JsonConverter(typeof(RulesEngineSchemaVersion.RulesEngineSchemaVersionSerializer))]
 [Serializable]
 public readonly record struct RulesEngineSchemaVersion : IStringEnum
 {
-    public static readonly RulesEngineSchemaVersion V0F048Dd3 = new(Values.V0F048Dd3);
+    public static readonly RulesEngineSchemaVersion V5F633Cc3 = new(Values.V5F633Cc3);
 
     public static readonly RulesEngineSchemaVersion PlaceholderForFernCompatibility = new(
         Values.PlaceholderForFernCompatibility
@@ -54,13 +55,62 @@ public readonly record struct RulesEngineSchemaVersion : IStringEnum
 
     public static explicit operator RulesEngineSchemaVersion(string value) => new(value);
 
+    internal class RulesEngineSchemaVersionSerializer : JsonConverter<RulesEngineSchemaVersion>
+    {
+        public override RulesEngineSchemaVersion Read(
+            ref Utf8JsonReader reader,
+            Type typeToConvert,
+            JsonSerializerOptions options
+        )
+        {
+            var stringValue =
+                reader.GetString()
+                ?? throw new global::System.Exception(
+                    "The JSON value could not be read as a string."
+                );
+            return new RulesEngineSchemaVersion(stringValue);
+        }
+
+        public override void Write(
+            Utf8JsonWriter writer,
+            RulesEngineSchemaVersion value,
+            JsonSerializerOptions options
+        )
+        {
+            writer.WriteStringValue(value.Value);
+        }
+
+        public override RulesEngineSchemaVersion ReadAsPropertyName(
+            ref Utf8JsonReader reader,
+            Type typeToConvert,
+            JsonSerializerOptions options
+        )
+        {
+            var stringValue =
+                reader.GetString()
+                ?? throw new global::System.Exception(
+                    "The JSON property name could not be read as a string."
+                );
+            return new RulesEngineSchemaVersion(stringValue);
+        }
+
+        public override void WriteAsPropertyName(
+            Utf8JsonWriter writer,
+            RulesEngineSchemaVersion value,
+            JsonSerializerOptions options
+        )
+        {
+            writer.WritePropertyName(value.Value);
+        }
+    }
+
     /// <summary>
     /// Constant strings for enum values
     /// </summary>
     [Serializable]
     public static class Values
     {
-        public const string V0F048Dd3 = "v0f048dd3";
+        public const string V5F633Cc3 = "v5f633cc3";
 
         public const string PlaceholderForFernCompatibility = "placeholder-for-fern-compatibility";
     }

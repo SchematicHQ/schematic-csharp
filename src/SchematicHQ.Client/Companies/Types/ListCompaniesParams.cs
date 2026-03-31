@@ -1,5 +1,5 @@
-using System.Text.Json;
-using System.Text.Json.Serialization;
+using global::System.Text.Json;
+using global::System.Text.Json.Serialization;
 using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
@@ -30,7 +30,7 @@ public record ListCompaniesParams : IJsonOnDeserialized
     /// Page limit (default 100)
     /// </summary>
     [JsonPropertyName("limit")]
-    public int? Limit { get; set; }
+    public long? Limit { get; set; }
 
     /// <summary>
     /// Filter companies that have monetized subscriptions
@@ -42,7 +42,7 @@ public record ListCompaniesParams : IJsonOnDeserialized
     /// Page offset (default 0)
     /// </summary>
     [JsonPropertyName("offset")]
-    public int? Offset { get; set; }
+    public long? Offset { get; set; }
 
     /// <summary>
     /// Filter companies by plan ID (starts with plan_)

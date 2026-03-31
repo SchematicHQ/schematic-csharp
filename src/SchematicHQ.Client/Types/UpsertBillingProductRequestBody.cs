@@ -1,5 +1,5 @@
-using System.Text.Json;
-using System.Text.Json.Serialization;
+using global::System.Text.Json;
+using global::System.Text.Json.Serialization;
 using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
@@ -20,26 +20,29 @@ public record UpsertBillingProductRequestBody : IJsonOnDeserialized
     [JsonPropertyName("currency")]
     public string? Currency { get; set; }
 
+    [JsonPropertyName("currency_prices")]
+    public IEnumerable<PlanCurrencyPriceRequestBody>? CurrencyPrices { get; set; }
+
     [JsonPropertyName("is_trialable")]
     public required bool IsTrialable { get; set; }
 
     [JsonPropertyName("monthly_price")]
-    public int? MonthlyPrice { get; set; }
+    public long? MonthlyPrice { get; set; }
 
     [JsonPropertyName("monthly_price_id")]
     public string? MonthlyPriceId { get; set; }
 
     [JsonPropertyName("one_time_price")]
-    public int? OneTimePrice { get; set; }
+    public long? OneTimePrice { get; set; }
 
     [JsonPropertyName("one_time_price_id")]
     public string? OneTimePriceId { get; set; }
 
     [JsonPropertyName("trial_days")]
-    public int? TrialDays { get; set; }
+    public long? TrialDays { get; set; }
 
     [JsonPropertyName("yearly_price")]
-    public int? YearlyPrice { get; set; }
+    public long? YearlyPrice { get; set; }
 
     [JsonPropertyName("yearly_price_id")]
     public string? YearlyPriceId { get; set; }

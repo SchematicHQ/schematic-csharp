@@ -1,9 +1,12 @@
-using System.Text.Json.Serialization;
+using global::System.Text.Json;
+using global::System.Text.Json.Serialization;
 using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
 
-[JsonConverter(typeof(StringEnumSerializer<BillingPlanCreditGrantResetCadence>))]
+[JsonConverter(
+    typeof(BillingPlanCreditGrantResetCadence.BillingPlanCreditGrantResetCadenceSerializer)
+)]
 [Serializable]
 public readonly record struct BillingPlanCreditGrantResetCadence : IStringEnum
 {
@@ -55,6 +58,56 @@ public readonly record struct BillingPlanCreditGrantResetCadence : IStringEnum
     public static explicit operator string(BillingPlanCreditGrantResetCadence value) => value.Value;
 
     public static explicit operator BillingPlanCreditGrantResetCadence(string value) => new(value);
+
+    internal class BillingPlanCreditGrantResetCadenceSerializer
+        : JsonConverter<BillingPlanCreditGrantResetCadence>
+    {
+        public override BillingPlanCreditGrantResetCadence Read(
+            ref Utf8JsonReader reader,
+            Type typeToConvert,
+            JsonSerializerOptions options
+        )
+        {
+            var stringValue =
+                reader.GetString()
+                ?? throw new global::System.Exception(
+                    "The JSON value could not be read as a string."
+                );
+            return new BillingPlanCreditGrantResetCadence(stringValue);
+        }
+
+        public override void Write(
+            Utf8JsonWriter writer,
+            BillingPlanCreditGrantResetCadence value,
+            JsonSerializerOptions options
+        )
+        {
+            writer.WriteStringValue(value.Value);
+        }
+
+        public override BillingPlanCreditGrantResetCadence ReadAsPropertyName(
+            ref Utf8JsonReader reader,
+            Type typeToConvert,
+            JsonSerializerOptions options
+        )
+        {
+            var stringValue =
+                reader.GetString()
+                ?? throw new global::System.Exception(
+                    "The JSON property name could not be read as a string."
+                );
+            return new BillingPlanCreditGrantResetCadence(stringValue);
+        }
+
+        public override void WriteAsPropertyName(
+            Utf8JsonWriter writer,
+            BillingPlanCreditGrantResetCadence value,
+            JsonSerializerOptions options
+        )
+        {
+            writer.WritePropertyName(value.Value);
+        }
+    }
 
     /// <summary>
     /// Constant strings for enum values

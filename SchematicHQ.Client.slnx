@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="src/SchematicHQ.Client.Test/SchematicHQ.Client.Test.csproj" />
+  <Project Path="src/SchematicHQ.Client/SchematicHQ.Client.csproj" />
+</Solution>

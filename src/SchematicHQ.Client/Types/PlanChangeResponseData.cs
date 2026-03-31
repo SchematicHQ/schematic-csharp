@@ -1,5 +1,5 @@
-using System.Text.Json;
-using System.Text.Json.Serialization;
+using global::System.Text.Json;
+using global::System.Text.Json.Serialization;
 using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
@@ -38,6 +38,12 @@ public record PlanChangeResponseData : IJsonOnDeserialized
     [JsonPropertyName("base_plan_action")]
     public PlanChangeBasePlanAction? BasePlanAction { get; set; }
 
+    /// <summary>
+    /// The plan version that was assigned during this change.
+    /// </summary>
+    [JsonPropertyName("base_plan_version")]
+    public PlanVersionSnapshotView? BasePlanVersion { get; set; }
+
     [JsonPropertyName("company")]
     public CompanyResponseData? Company { get; set; }
 
@@ -55,6 +61,12 @@ public record PlanChangeResponseData : IJsonOnDeserialized
 
     [JsonPropertyName("previous_base_plan")]
     public PlanSnapshotView? PreviousBasePlan { get; set; }
+
+    /// <summary>
+    /// The plan version of the previous base plan before this change.
+    /// </summary>
+    [JsonPropertyName("previous_base_plan_version")]
+    public PlanVersionSnapshotView? PreviousBasePlanVersion { get; set; }
 
     [JsonPropertyName("request_id")]
     public string? RequestId { get; set; }

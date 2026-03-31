@@ -1,9 +1,10 @@
-using System.Text.Json.Serialization;
+using global::System.Text.Json;
+using global::System.Text.Json.Serialization;
 using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
 
-[JsonConverter(typeof(StringEnumSerializer<RulesengineConditionOperator>))]
+[JsonConverter(typeof(RulesengineConditionOperator.RulesengineConditionOperatorSerializer))]
 [Serializable]
 public readonly record struct RulesengineConditionOperator : IStringEnum
 {
@@ -63,6 +64,56 @@ public readonly record struct RulesengineConditionOperator : IStringEnum
     public static explicit operator string(RulesengineConditionOperator value) => value.Value;
 
     public static explicit operator RulesengineConditionOperator(string value) => new(value);
+
+    internal class RulesengineConditionOperatorSerializer
+        : JsonConverter<RulesengineConditionOperator>
+    {
+        public override RulesengineConditionOperator Read(
+            ref Utf8JsonReader reader,
+            Type typeToConvert,
+            JsonSerializerOptions options
+        )
+        {
+            var stringValue =
+                reader.GetString()
+                ?? throw new global::System.Exception(
+                    "The JSON value could not be read as a string."
+                );
+            return new RulesengineConditionOperator(stringValue);
+        }
+
+        public override void Write(
+            Utf8JsonWriter writer,
+            RulesengineConditionOperator value,
+            JsonSerializerOptions options
+        )
+        {
+            writer.WriteStringValue(value.Value);
+        }
+
+        public override RulesengineConditionOperator ReadAsPropertyName(
+            ref Utf8JsonReader reader,
+            Type typeToConvert,
+            JsonSerializerOptions options
+        )
+        {
+            var stringValue =
+                reader.GetString()
+                ?? throw new global::System.Exception(
+                    "The JSON property name could not be read as a string."
+                );
+            return new RulesengineConditionOperator(stringValue);
+        }
+
+        public override void WriteAsPropertyName(
+            Utf8JsonWriter writer,
+            RulesengineConditionOperator value,
+            JsonSerializerOptions options
+        )
+        {
+            writer.WritePropertyName(value.Value);
+        }
+    }
 
     /// <summary>
     /// Constant strings for enum values

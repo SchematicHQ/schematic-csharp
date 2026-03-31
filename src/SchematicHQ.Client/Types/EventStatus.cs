@@ -1,9 +1,10 @@
-using System.Text.Json.Serialization;
+using global::System.Text.Json;
+using global::System.Text.Json.Serialization;
 using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
 
-[JsonConverter(typeof(StringEnumSerializer<EventStatus>))]
+[JsonConverter(typeof(EventStatus.EventStatusSerializer))]
 [Serializable]
 public readonly record struct EventStatus : IStringEnum
 {
@@ -57,6 +58,55 @@ public readonly record struct EventStatus : IStringEnum
     public static explicit operator string(EventStatus value) => value.Value;
 
     public static explicit operator EventStatus(string value) => new(value);
+
+    internal class EventStatusSerializer : JsonConverter<EventStatus>
+    {
+        public override EventStatus Read(
+            ref Utf8JsonReader reader,
+            Type typeToConvert,
+            JsonSerializerOptions options
+        )
+        {
+            var stringValue =
+                reader.GetString()
+                ?? throw new global::System.Exception(
+                    "The JSON value could not be read as a string."
+                );
+            return new EventStatus(stringValue);
+        }
+
+        public override void Write(
+            Utf8JsonWriter writer,
+            EventStatus value,
+            JsonSerializerOptions options
+        )
+        {
+            writer.WriteStringValue(value.Value);
+        }
+
+        public override EventStatus ReadAsPropertyName(
+            ref Utf8JsonReader reader,
+            Type typeToConvert,
+            JsonSerializerOptions options
+        )
+        {
+            var stringValue =
+                reader.GetString()
+                ?? throw new global::System.Exception(
+                    "The JSON property name could not be read as a string."
+                );
+            return new EventStatus(stringValue);
+        }
+
+        public override void WriteAsPropertyName(
+            Utf8JsonWriter writer,
+            EventStatus value,
+            JsonSerializerOptions options
+        )
+        {
+            writer.WritePropertyName(value.Value);
+        }
+    }
 
     /// <summary>
     /// Constant strings for enum values

@@ -1,5 +1,5 @@
-using System.Text.Json;
-using System.Text.Json.Serialization;
+using global::System.Text.Json;
+using global::System.Text.Json.Serialization;
 using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
@@ -24,10 +24,10 @@ public record BillingCustomerSubscription : IJsonOnDeserialized
     public required bool MeteredUsage { get; set; }
 
     [JsonPropertyName("per_unit_price")]
-    public required int PerUnitPrice { get; set; }
+    public required long PerUnitPrice { get; set; }
 
     [JsonPropertyName("total_price")]
-    public required int TotalPrice { get; set; }
+    public required long TotalPrice { get; set; }
 
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();

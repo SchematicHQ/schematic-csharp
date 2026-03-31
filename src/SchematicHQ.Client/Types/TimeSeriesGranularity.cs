@@ -1,9 +1,10 @@
-using System.Text.Json.Serialization;
+using global::System.Text.Json;
+using global::System.Text.Json.Serialization;
 using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
 
-[JsonConverter(typeof(StringEnumSerializer<TimeSeriesGranularity>))]
+[JsonConverter(typeof(TimeSeriesGranularity.TimeSeriesGranularitySerializer))]
 [Serializable]
 public readonly record struct TimeSeriesGranularity : IStringEnum
 {
@@ -55,6 +56,55 @@ public readonly record struct TimeSeriesGranularity : IStringEnum
     public static explicit operator string(TimeSeriesGranularity value) => value.Value;
 
     public static explicit operator TimeSeriesGranularity(string value) => new(value);
+
+    internal class TimeSeriesGranularitySerializer : JsonConverter<TimeSeriesGranularity>
+    {
+        public override TimeSeriesGranularity Read(
+            ref Utf8JsonReader reader,
+            Type typeToConvert,
+            JsonSerializerOptions options
+        )
+        {
+            var stringValue =
+                reader.GetString()
+                ?? throw new global::System.Exception(
+                    "The JSON value could not be read as a string."
+                );
+            return new TimeSeriesGranularity(stringValue);
+        }
+
+        public override void Write(
+            Utf8JsonWriter writer,
+            TimeSeriesGranularity value,
+            JsonSerializerOptions options
+        )
+        {
+            writer.WriteStringValue(value.Value);
+        }
+
+        public override TimeSeriesGranularity ReadAsPropertyName(
+            ref Utf8JsonReader reader,
+            Type typeToConvert,
+            JsonSerializerOptions options
+        )
+        {
+            var stringValue =
+                reader.GetString()
+                ?? throw new global::System.Exception(
+                    "The JSON property name could not be read as a string."
+                );
+            return new TimeSeriesGranularity(stringValue);
+        }
+
+        public override void WriteAsPropertyName(
+            Utf8JsonWriter writer,
+            TimeSeriesGranularity value,
+            JsonSerializerOptions options
+        )
+        {
+            writer.WritePropertyName(value.Value);
+        }
+    }
 
     /// <summary>
     /// Constant strings for enum values

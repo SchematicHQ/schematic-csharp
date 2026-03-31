@@ -1,5 +1,5 @@
-using System.Text.Json;
-using System.Text.Json.Serialization;
+using global::System.Text.Json;
+using global::System.Text.Json.Serialization;
 using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
@@ -42,7 +42,7 @@ public record CompanyEventPeriodMetricsResponseData : IJsonOnDeserialized
     public DateTime? ValidUntil { get; set; }
 
     [JsonPropertyName("value")]
-    public required int Value { get; set; }
+    public required long Value { get; set; }
 
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();

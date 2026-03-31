@@ -1,5 +1,5 @@
-using System.Text.Json;
-using System.Text.Json.Serialization;
+using global::System.Text.Json;
+using global::System.Text.Json.Serialization;
 using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
@@ -15,7 +15,7 @@ public record UpdateBillingPlanCreditGrantRequestBody : IJsonOnDeserialized
     public bool? ApplyToExisting { get; set; }
 
     [JsonPropertyName("auto_topup_amount")]
-    public int? AutoTopupAmount { get; set; }
+    public long? AutoTopupAmount { get; set; }
 
     [JsonPropertyName("auto_topup_amount_type")]
     public string? AutoTopupAmountType { get; set; }
@@ -30,13 +30,13 @@ public record UpdateBillingPlanCreditGrantRequestBody : IJsonOnDeserialized
     public BillingCreditExpiryUnit? AutoTopupExpiryUnit { get; set; }
 
     [JsonPropertyName("auto_topup_expiry_unit_count")]
-    public int? AutoTopupExpiryUnitCount { get; set; }
+    public long? AutoTopupExpiryUnitCount { get; set; }
 
     [JsonPropertyName("auto_topup_threshold_percent")]
-    public int? AutoTopupThresholdPercent { get; set; }
+    public long? AutoTopupThresholdPercent { get; set; }
 
     [JsonPropertyName("credit_amount")]
-    public int? CreditAmount { get; set; }
+    public long? CreditAmount { get; set; }
 
     [JsonPropertyName("expiry_type")]
     public BillingCreditExpiryType? ExpiryType { get; set; }
@@ -45,7 +45,7 @@ public record UpdateBillingPlanCreditGrantRequestBody : IJsonOnDeserialized
     public BillingCreditExpiryUnit? ExpiryUnit { get; set; }
 
     [JsonPropertyName("expiry_unit_count")]
-    public int? ExpiryUnitCount { get; set; }
+    public long? ExpiryUnitCount { get; set; }
 
     [JsonPropertyName("reset_cadence")]
     public required BillingPlanCreditGrantResetCadence ResetCadence { get; set; }

@@ -1,5 +1,5 @@
-using System.Text.Json;
-using System.Text.Json.Serialization;
+using global::System.Text.Json;
+using global::System.Text.Json.Serialization;
 using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
@@ -39,7 +39,7 @@ public record ScheduledCheckoutResponseData : IJsonOnDeserialized
     public string? ScheduledInterval { get; set; }
 
     [JsonPropertyName("scheduled_price")]
-    public int? ScheduledPrice { get; set; }
+    public long? ScheduledPrice { get; set; }
 
     [JsonPropertyName("started_at")]
     public DateTime? StartedAt { get; set; }

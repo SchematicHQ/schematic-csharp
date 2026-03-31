@@ -1,5 +1,5 @@
-using System.Text.Json;
-using System.Text.Json.Serialization;
+using global::System.Text.Json;
+using global::System.Text.Json.Serialization;
 using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
@@ -12,7 +12,7 @@ public record BillingSubscriptionDiscountView : IJsonOnDeserialized
         new Dictionary<string, JsonElement>();
 
     [JsonPropertyName("amount_off")]
-    public int? AmountOff { get; set; }
+    public long? AmountOff { get; set; }
 
     [JsonPropertyName("coupon_id")]
     public required string CouponId { get; set; }
@@ -33,7 +33,7 @@ public record BillingSubscriptionDiscountView : IJsonOnDeserialized
     public required string Duration { get; set; }
 
     [JsonPropertyName("duration_in_months")]
-    public int? DurationInMonths { get; set; }
+    public long? DurationInMonths { get; set; }
 
     [JsonPropertyName("ended_at")]
     public DateTime? EndedAt { get; set; }

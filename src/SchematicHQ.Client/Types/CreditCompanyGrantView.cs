@@ -1,5 +1,5 @@
-using System.Text.Json;
-using System.Text.Json.Serialization;
+using global::System.Text.Json;
+using global::System.Text.Json.Serialization;
 using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
@@ -35,6 +35,9 @@ public record CreditCompanyGrantView : IJsonOnDeserialized
     [JsonPropertyName("credit_name")]
     public required string CreditName { get; set; }
 
+    [JsonPropertyName("currency")]
+    public string? Currency { get; set; }
+
     [JsonPropertyName("exhausted_at")]
     public DateTime? ExhaustedAt { get; set; }
 
@@ -48,7 +51,7 @@ public record CreditCompanyGrantView : IJsonOnDeserialized
     public BillingCreditExpiryUnit? ExpiryUnit { get; set; }
 
     [JsonPropertyName("expiry_unit_count")]
-    public int? ExpiryUnitCount { get; set; }
+    public long? ExpiryUnitCount { get; set; }
 
     [JsonPropertyName("grant_reason")]
     public required BillingCreditGrantReason GrantReason { get; set; }
@@ -69,7 +72,7 @@ public record CreditCompanyGrantView : IJsonOnDeserialized
     public BillingProductPriceResponseData? Price { get; set; }
 
     [JsonPropertyName("quantity")]
-    public required int Quantity { get; set; }
+    public required long Quantity { get; set; }
 
     [JsonPropertyName("quantity_remaining")]
     public required double QuantityRemaining { get; set; }

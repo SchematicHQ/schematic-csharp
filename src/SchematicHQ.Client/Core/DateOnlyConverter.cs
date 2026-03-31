@@ -610,7 +610,7 @@ namespace SchematicHQ.Client.Core
             };
         }
 
-        private static Exception GetInvalidOperationException(
+        private static global::System.Exception GetInvalidOperationException(
             string message,
             JsonTokenType tokenType
         )

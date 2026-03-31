@@ -1,5 +1,5 @@
-using System.Text.Json;
-using System.Text.Json.Serialization;
+using global::System.Text.Json;
+using global::System.Text.Json.Serialization;
 using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
@@ -12,13 +12,13 @@ public record EventSummaryResponseData : IJsonOnDeserialized
         new Dictionary<string, JsonElement>();
 
     [JsonPropertyName("company_count")]
-    public required int CompanyCount { get; set; }
+    public required long CompanyCount { get; set; }
 
     [JsonPropertyName("environment_id")]
     public required string EnvironmentId { get; set; }
 
     [JsonPropertyName("event_count")]
-    public required int EventCount { get; set; }
+    public required long EventCount { get; set; }
 
     [JsonPropertyName("event_subtype")]
     public required string EventSubtype { get; set; }
@@ -27,7 +27,7 @@ public record EventSummaryResponseData : IJsonOnDeserialized
     public DateTime? LastSeenAt { get; set; }
 
     [JsonPropertyName("user_count")]
-    public required int UserCount { get; set; }
+    public required long UserCount { get; set; }
 
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();

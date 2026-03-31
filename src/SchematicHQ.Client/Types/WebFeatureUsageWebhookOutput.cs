@@ -1,5 +1,5 @@
-using System.Text.Json;
-using System.Text.Json.Serialization;
+using global::System.Text.Json;
+using global::System.Text.Json.Serialization;
 using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
@@ -12,7 +12,7 @@ public record WebFeatureUsageWebhookOutput : IJsonOnDeserialized
         new Dictionary<string, JsonElement>();
 
     [JsonPropertyName("Allocation")]
-    public int? Allocation { get; set; }
+    public long? Allocation { get; set; }
 
     [JsonPropertyName("CreditUsage")]
     public CreditUsage? CreditUsage { get; set; }
@@ -27,7 +27,7 @@ public record WebFeatureUsageWebhookOutput : IJsonOnDeserialized
     public DateTime? MetricResetAt { get; set; }
 
     [JsonPropertyName("Usage")]
-    public int? Usage { get; set; }
+    public long? Usage { get; set; }
 
     [JsonPropertyName("company")]
     public CompanyDetailResponseData? Company { get; set; }

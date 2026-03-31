@@ -1,5 +1,5 @@
-using System.Text.Json;
-using System.Text.Json.Serialization;
+using global::System.Text.Json;
+using global::System.Text.Json.Serialization;
 using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
@@ -12,7 +12,7 @@ public record BillingProductPricing : IJsonOnDeserialized
         new Dictionary<string, JsonElement>();
 
     [JsonPropertyName("billing_threshold")]
-    public int? BillingThreshold { get; set; }
+    public long? BillingThreshold { get; set; }
 
     [JsonPropertyName("currency")]
     public required string Currency { get; set; }
@@ -24,10 +24,10 @@ public record BillingProductPricing : IJsonOnDeserialized
     public string? MeterId { get; set; }
 
     [JsonPropertyName("package_size")]
-    public int? PackageSize { get; set; }
+    public long? PackageSize { get; set; }
 
     [JsonPropertyName("price")]
-    public required int Price { get; set; }
+    public required long Price { get; set; }
 
     [JsonPropertyName("price_decimal")]
     public string? PriceDecimal { get; set; }
@@ -39,7 +39,7 @@ public record BillingProductPricing : IJsonOnDeserialized
     public required string ProductExternalId { get; set; }
 
     [JsonPropertyName("quantity")]
-    public required int Quantity { get; set; }
+    public required long Quantity { get; set; }
 
     [JsonPropertyName("subscription_item_external_id")]
     public string? SubscriptionItemExternalId { get; set; }

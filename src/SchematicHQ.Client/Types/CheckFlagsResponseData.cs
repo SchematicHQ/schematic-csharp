@@ -1,5 +1,5 @@
-using System.Text.Json;
-using System.Text.Json.Serialization;
+using global::System.Text.Json;
+using global::System.Text.Json.Serialization;
 using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
@@ -14,6 +14,9 @@ public record CheckFlagsResponseData : IJsonOnDeserialized
     [JsonPropertyName("flags")]
     public IEnumerable<CheckFlagResponseData> Flags { get; set; } =
         new List<CheckFlagResponseData>();
+
+    [JsonPropertyName("plan")]
+    public DatastreamCompanyPlan? Plan { get; set; }
 
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();

@@ -1,4 +1,4 @@
-using System.Text.Json.Serialization;
+using global::System.Text.Json.Serialization;
 using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
@@ -7,13 +7,16 @@ namespace SchematicHQ.Client;
 public record CreateCompanyCreditGrant
 {
     [JsonPropertyName("billing_periods_count")]
-    public int? BillingPeriodsCount { get; set; }
+    public long? BillingPeriodsCount { get; set; }
 
     [JsonPropertyName("company_id")]
     public required string CompanyId { get; set; }
 
     [JsonPropertyName("credit_id")]
     public required string CreditId { get; set; }
+
+    [JsonPropertyName("currency")]
+    public string? Currency { get; set; }
 
     [JsonPropertyName("expires_at")]
     public DateTime? ExpiresAt { get; set; }
@@ -25,10 +28,10 @@ public record CreateCompanyCreditGrant
     public BillingCreditExpiryUnit? ExpiryUnit { get; set; }
 
     [JsonPropertyName("expiry_unit_count")]
-    public int? ExpiryUnitCount { get; set; }
+    public long? ExpiryUnitCount { get; set; }
 
     [JsonPropertyName("quantity")]
-    public required int Quantity { get; set; }
+    public required long Quantity { get; set; }
 
     [JsonPropertyName("reason")]
     public required BillingCreditGrantReason Reason { get; set; }

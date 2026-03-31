@@ -1,5 +1,5 @@
-using System.Text.Json;
-using System.Text.Json.Serialization;
+using global::System.Text.Json;
+using global::System.Text.Json.Serialization;
 using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
@@ -16,6 +16,9 @@ public record PlanSelection : IJsonOnDeserialized
 
     [JsonPropertyName("price_id")]
     public string? PriceId { get; set; }
+
+    [JsonPropertyName("version_id")]
+    public string? VersionId { get; set; }
 
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();

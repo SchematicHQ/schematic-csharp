@@ -1,5 +1,5 @@
-using System.Text.Json;
-using System.Text.Json.Serialization;
+using global::System.Text.Json;
+using global::System.Text.Json.Serialization;
 using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
@@ -55,7 +55,7 @@ public record BillingProductDetailResponseData : IJsonOnDeserialized
     public required double Quantity { get; set; }
 
     [JsonPropertyName("subscription_count")]
-    public required int SubscriptionCount { get; set; }
+    public required long SubscriptionCount { get; set; }
 
     [JsonPropertyName("updated_at")]
     public required DateTime UpdatedAt { get; set; }

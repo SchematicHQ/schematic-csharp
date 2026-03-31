@@ -1,5 +1,5 @@
-using System.Text.Json;
-using System.Text.Json.Serialization;
+using global::System.Text.Json;
+using global::System.Text.Json.Serialization;
 using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
@@ -12,13 +12,17 @@ public record PlanEntitlementResponseData : IJsonOnDeserialized
         new Dictionary<string, JsonElement>();
 
     [JsonPropertyName("billing_threshold")]
-    public int? BillingThreshold { get; set; }
+    public long? BillingThreshold { get; set; }
 
     [JsonPropertyName("consumption_rate")]
     public double? ConsumptionRate { get; set; }
 
     [JsonPropertyName("created_at")]
     public required DateTime CreatedAt { get; set; }
+
+    [JsonPropertyName("currency_prices")]
+    public IEnumerable<EntitlementCurrencyPricesResponseData> CurrencyPrices { get; set; } =
+        new List<EntitlementCurrencyPricesResponseData>();
 
     [JsonPropertyName("environment_id")]
     public required string EnvironmentId { get; set; }
@@ -60,7 +64,7 @@ public record PlanEntitlementResponseData : IJsonOnDeserialized
     public string? RuleIdUsageExceeded { get; set; }
 
     [JsonPropertyName("soft_limit")]
-    public int? SoftLimit { get; set; }
+    public long? SoftLimit { get; set; }
 
     [JsonPropertyName("updated_at")]
     public required DateTime UpdatedAt { get; set; }
@@ -75,7 +79,7 @@ public record PlanEntitlementResponseData : IJsonOnDeserialized
     public BillingCreditResponseData? ValueCredit { get; set; }
 
     [JsonPropertyName("value_numeric")]
-    public int? ValueNumeric { get; set; }
+    public long? ValueNumeric { get; set; }
 
     [JsonPropertyName("value_trait")]
     public EntityTraitDefinitionResponseData? ValueTrait { get; set; }

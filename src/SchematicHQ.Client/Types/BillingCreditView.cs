@@ -1,5 +1,5 @@
-using System.Text.Json;
-using System.Text.Json.Serialization;
+using global::System.Text.Json;
+using global::System.Text.Json.Serialization;
 using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
@@ -27,7 +27,7 @@ public record BillingCreditView : IJsonOnDeserialized
     public required BillingCreditExpiryUnit DefaultExpiryUnit { get; set; }
 
     [JsonPropertyName("default_expiry_unit_count")]
-    public int? DefaultExpiryUnitCount { get; set; }
+    public long? DefaultExpiryUnitCount { get; set; }
 
     [JsonPropertyName("default_rollover_policy")]
     public required BillingCreditRolloverPolicy DefaultRolloverPolicy { get; set; }
@@ -54,7 +54,7 @@ public record BillingCreditView : IJsonOnDeserialized
     public BillingPriceView? Price { get; set; }
 
     [JsonPropertyName("price_per_unit")]
-    public int? PricePerUnit { get; set; }
+    public long? PricePerUnit { get; set; }
 
     [JsonPropertyName("price_per_unit_decimal")]
     public string? PricePerUnitDecimal { get; set; }

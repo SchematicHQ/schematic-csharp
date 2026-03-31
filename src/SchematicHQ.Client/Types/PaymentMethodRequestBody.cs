@@ -1,5 +1,5 @@
-using System.Text.Json;
-using System.Text.Json.Serialization;
+using global::System.Text.Json;
+using global::System.Text.Json.Serialization;
 using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
@@ -30,10 +30,10 @@ public record PaymentMethodRequestBody : IJsonOnDeserialized
     public string? CardBrand { get; set; }
 
     [JsonPropertyName("card_exp_month")]
-    public int? CardExpMonth { get; set; }
+    public long? CardExpMonth { get; set; }
 
     [JsonPropertyName("card_exp_year")]
-    public int? CardExpYear { get; set; }
+    public long? CardExpYear { get; set; }
 
     [JsonPropertyName("card_last4")]
     public string? CardLast4 { get; set; }
