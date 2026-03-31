@@ -93,18 +93,18 @@ public partial class Schematic
 
         var httpClient = _offline ? new HttpClient(new OfflineHttpMessageHandler()) : _options.HttpClient;
         API = new SchematicApi(apiKey, _options.WithHttpClient(httpClient));
-        Accesstokens = API.Accesstokens;
-        Accounts = API.Accounts;
-        Billing = API.Billing;
-        Checkout = API.Checkout;
-        Companies = API.Companies;
-        Components = API.Components;
-        Entitlements = API.Entitlements;
-        Events = API.Events;
-        Features = API.Features;
-        Plangroups = API.Plangroups;
-        Plans = API.Plans;
-        Webhooks = API.Webhooks;
+        Accesstokens = (AccesstokensClient)API.Accesstokens;
+        Accounts = (AccountsClient)API.Accounts;
+        Billing = (BillingClient)API.Billing;
+        Checkout = (CheckoutClient)API.Checkout;
+        Companies = (CompaniesClient)API.Companies;
+        Components = (ComponentsClient)API.Components;
+        Entitlements = (EntitlementsClient)API.Entitlements;
+        Events = (EventsClient)API.Events;
+        Features = (FeaturesClient)API.Features;
+        Plangroups = (PlangroupsClient)API.Plangroups;
+        Plans = (PlansClient)API.Plans;
+        Webhooks = (WebhooksClient)API.Webhooks;
 
         _eventBuffer = _options.EventBuffer ?? new EventBuffer<CreateEventRequestBody>(
             async items =>
