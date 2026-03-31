@@ -1,9 +1,10 @@
-using System.Text.Json.Serialization;
+using global::System.Text.Json;
+using global::System.Text.Json.Serialization;
 using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
 
-[JsonConverter(typeof(StringEnumSerializer<FeatureEntitlementMetricPeriod>))]
+[JsonConverter(typeof(FeatureEntitlementMetricPeriod.FeatureEntitlementMetricPeriodSerializer))]
 [Serializable]
 public readonly record struct FeatureEntitlementMetricPeriod : IStringEnum
 {
@@ -55,6 +56,56 @@ public readonly record struct FeatureEntitlementMetricPeriod : IStringEnum
     public static explicit operator string(FeatureEntitlementMetricPeriod value) => value.Value;
 
     public static explicit operator FeatureEntitlementMetricPeriod(string value) => new(value);
+
+    internal class FeatureEntitlementMetricPeriodSerializer
+        : JsonConverter<FeatureEntitlementMetricPeriod>
+    {
+        public override FeatureEntitlementMetricPeriod Read(
+            ref Utf8JsonReader reader,
+            Type typeToConvert,
+            JsonSerializerOptions options
+        )
+        {
+            var stringValue =
+                reader.GetString()
+                ?? throw new global::System.Exception(
+                    "The JSON value could not be read as a string."
+                );
+            return new FeatureEntitlementMetricPeriod(stringValue);
+        }
+
+        public override void Write(
+            Utf8JsonWriter writer,
+            FeatureEntitlementMetricPeriod value,
+            JsonSerializerOptions options
+        )
+        {
+            writer.WriteStringValue(value.Value);
+        }
+
+        public override FeatureEntitlementMetricPeriod ReadAsPropertyName(
+            ref Utf8JsonReader reader,
+            Type typeToConvert,
+            JsonSerializerOptions options
+        )
+        {
+            var stringValue =
+                reader.GetString()
+                ?? throw new global::System.Exception(
+                    "The JSON property name could not be read as a string."
+                );
+            return new FeatureEntitlementMetricPeriod(stringValue);
+        }
+
+        public override void WriteAsPropertyName(
+            Utf8JsonWriter writer,
+            FeatureEntitlementMetricPeriod value,
+            JsonSerializerOptions options
+        )
+        {
+            writer.WritePropertyName(value.Value);
+        }
+    }
 
     /// <summary>
     /// Constant strings for enum values

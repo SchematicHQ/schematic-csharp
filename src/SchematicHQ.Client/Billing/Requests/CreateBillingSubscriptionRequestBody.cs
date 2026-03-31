@@ -1,4 +1,4 @@
-using System.Text.Json.Serialization;
+using global::System.Text.Json.Serialization;
 using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
@@ -10,7 +10,7 @@ public record CreateBillingSubscriptionRequestBody
     public string? ApplicationId { get; set; }
 
     [JsonPropertyName("cancel_at")]
-    public int? CancelAt { get; set; }
+    public long? CancelAt { get; set; }
 
     [JsonPropertyName("cancel_at_period_end")]
     public required bool CancelAtPeriodEnd { get; set; }
@@ -41,10 +41,10 @@ public record CreateBillingSubscriptionRequestBody
     public Dictionary<string, object?>? Metadata { get; set; }
 
     [JsonPropertyName("period_end")]
-    public int? PeriodEnd { get; set; }
+    public long? PeriodEnd { get; set; }
 
     [JsonPropertyName("period_start")]
-    public int? PeriodStart { get; set; }
+    public long? PeriodStart { get; set; }
 
     [JsonPropertyName("product_external_ids")]
     public IEnumerable<BillingProductPricing> ProductExternalIds { get; set; } =
@@ -57,10 +57,10 @@ public record CreateBillingSubscriptionRequestBody
     public required string SubscriptionExternalId { get; set; }
 
     [JsonPropertyName("total_price")]
-    public required int TotalPrice { get; set; }
+    public required long TotalPrice { get; set; }
 
     [JsonPropertyName("trial_end")]
-    public int? TrialEnd { get; set; }
+    public long? TrialEnd { get; set; }
 
     [JsonPropertyName("trial_end_setting")]
     public BillingSubscriptionTrialEndSetting? TrialEndSetting { get; set; }

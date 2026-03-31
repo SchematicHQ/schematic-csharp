@@ -1,5 +1,5 @@
-using System.Text.Json;
-using System.Text.Json.Serialization;
+using global::System.Text.Json;
+using global::System.Text.Json.Serialization;
 using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
@@ -13,6 +13,12 @@ public record ListBillingProductPricesParams : IJsonOnDeserialized
     [JsonExtensionData]
     private readonly IDictionary<string, JsonElement> _extensionData =
         new Dictionary<string, JsonElement>();
+
+    /// <summary>
+    /// Filter for prices in a specific currency (e.g. usd, eur)
+    /// </summary>
+    [JsonPropertyName("currency")]
+    public string? Currency { get; set; }
 
     /// <summary>
     /// Filter for prices valid for initial plans (free prices only)
@@ -42,16 +48,16 @@ public record ListBillingProductPricesParams : IJsonOnDeserialized
     /// Page limit (default 100)
     /// </summary>
     [JsonPropertyName("limit")]
-    public int? Limit { get; set; }
+    public long? Limit { get; set; }
 
     /// <summary>
     /// Page offset (default 0)
     /// </summary>
     [JsonPropertyName("offset")]
-    public int? Offset { get; set; }
+    public long? Offset { get; set; }
 
     [JsonPropertyName("price")]
-    public int? Price { get; set; }
+    public long? Price { get; set; }
 
     [JsonPropertyName("product_id")]
     public string? ProductId { get; set; }

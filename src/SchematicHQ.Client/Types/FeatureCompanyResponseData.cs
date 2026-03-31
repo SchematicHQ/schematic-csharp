@@ -1,5 +1,5 @@
-using System.Text.Json;
-using System.Text.Json.Serialization;
+using global::System.Text.Json;
+using global::System.Text.Json.Serialization;
 using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
@@ -21,7 +21,7 @@ public record FeatureCompanyResponseData : IJsonOnDeserialized
     /// The maximum amount of usage that is permitted; a null value indicates that unlimited usage is permitted or that this is a credit-based entitlement (use credit_remaining instead).
     /// </summary>
     [JsonPropertyName("allocation")]
-    public int? Allocation { get; set; }
+    public long? Allocation { get; set; }
 
     /// <summary>
     /// The type of allocation that is being used.
@@ -84,7 +84,7 @@ public record FeatureCompanyResponseData : IJsonOnDeserialized
     /// Effective limit for usage calculations. For overage pricing, this is the soft limit where overage charges begin. For tiered pricing, this is the first tier boundary. For other pricing models, this is the base allocation. Used to calculate usage percentages and determine access thresholds.
     /// </summary>
     [JsonPropertyName("effective_limit")]
-    public int? EffectiveLimit { get; set; }
+    public long? EffectiveLimit { get; set; }
 
     /// <summary>
     /// Per-unit price for current usage scenario
@@ -141,7 +141,7 @@ public record FeatureCompanyResponseData : IJsonOnDeserialized
     /// Amount of usage exceeding soft limit (overage pricing only)
     /// </summary>
     [JsonPropertyName("overuse")]
-    public int? Overuse { get; set; }
+    public long? Overuse { get; set; }
 
     /// <summary>
     /// Percentage of allocation consumed (0-100+)
@@ -168,13 +168,13 @@ public record FeatureCompanyResponseData : IJsonOnDeserialized
     /// The soft limit for the feature usage. Available only for overage price behavior
     /// </summary>
     [JsonPropertyName("soft_limit")]
-    public int? SoftLimit { get; set; }
+    public long? SoftLimit { get; set; }
 
     /// <summary>
     /// The amount of usage that has been consumed; a null value indicates that usage is not being measured or that this is a credit-based entitlement (use credit_used instead).
     /// </summary>
     [JsonPropertyName("usage")]
-    public int? Usage { get; set; }
+    public long? Usage { get; set; }
 
     [JsonPropertyName("yearly_usage_based_price")]
     public BillingPriceView? YearlyUsageBasedPrice { get; set; }

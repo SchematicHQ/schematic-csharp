@@ -1,9 +1,12 @@
-using System.Text.Json.Serialization;
+using global::System.Text.Json;
+using global::System.Text.Json.Serialization;
 using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
 
-[JsonConverter(typeof(StringEnumSerializer<CreateOrUpdateConditionRequestBodyMetricPeriod>))]
+[JsonConverter(
+    typeof(CreateOrUpdateConditionRequestBodyMetricPeriod.CreateOrUpdateConditionRequestBodyMetricPeriodSerializer)
+)]
 [Serializable]
 public readonly record struct CreateOrUpdateConditionRequestBodyMetricPeriod : IStringEnum
 {
@@ -69,6 +72,56 @@ public readonly record struct CreateOrUpdateConditionRequestBodyMetricPeriod : I
 
     public static explicit operator CreateOrUpdateConditionRequestBodyMetricPeriod(string value) =>
         new(value);
+
+    internal class CreateOrUpdateConditionRequestBodyMetricPeriodSerializer
+        : JsonConverter<CreateOrUpdateConditionRequestBodyMetricPeriod>
+    {
+        public override CreateOrUpdateConditionRequestBodyMetricPeriod Read(
+            ref Utf8JsonReader reader,
+            Type typeToConvert,
+            JsonSerializerOptions options
+        )
+        {
+            var stringValue =
+                reader.GetString()
+                ?? throw new global::System.Exception(
+                    "The JSON value could not be read as a string."
+                );
+            return new CreateOrUpdateConditionRequestBodyMetricPeriod(stringValue);
+        }
+
+        public override void Write(
+            Utf8JsonWriter writer,
+            CreateOrUpdateConditionRequestBodyMetricPeriod value,
+            JsonSerializerOptions options
+        )
+        {
+            writer.WriteStringValue(value.Value);
+        }
+
+        public override CreateOrUpdateConditionRequestBodyMetricPeriod ReadAsPropertyName(
+            ref Utf8JsonReader reader,
+            Type typeToConvert,
+            JsonSerializerOptions options
+        )
+        {
+            var stringValue =
+                reader.GetString()
+                ?? throw new global::System.Exception(
+                    "The JSON property name could not be read as a string."
+                );
+            return new CreateOrUpdateConditionRequestBodyMetricPeriod(stringValue);
+        }
+
+        public override void WriteAsPropertyName(
+            Utf8JsonWriter writer,
+            CreateOrUpdateConditionRequestBodyMetricPeriod value,
+            JsonSerializerOptions options
+        )
+        {
+            writer.WritePropertyName(value.Value);
+        }
+    }
 
     /// <summary>
     /// Constant strings for enum values

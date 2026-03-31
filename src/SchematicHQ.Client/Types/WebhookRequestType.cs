@@ -1,9 +1,10 @@
-using System.Text.Json.Serialization;
+using global::System.Text.Json;
+using global::System.Text.Json.Serialization;
 using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
 
-[JsonConverter(typeof(StringEnumSerializer<WebhookRequestType>))]
+[JsonConverter(typeof(WebhookRequestType.WebhookRequestTypeSerializer))]
 [Serializable]
 public readonly record struct WebhookRequestType : IStringEnum
 {
@@ -32,6 +33,10 @@ public readonly record struct WebhookRequestType : IStringEnum
     );
 
     public static readonly WebhookRequestType CompanyPlanChanged = new(Values.CompanyPlanChanged);
+
+    public static readonly WebhookRequestType CompanyScheduledDowngrade = new(
+        Values.CompanyScheduledDowngrade
+    );
 
     public static readonly WebhookRequestType CompanyUpdated = new(Values.CompanyUpdated);
 
@@ -156,6 +161,55 @@ public readonly record struct WebhookRequestType : IStringEnum
 
     public static explicit operator WebhookRequestType(string value) => new(value);
 
+    internal class WebhookRequestTypeSerializer : JsonConverter<WebhookRequestType>
+    {
+        public override WebhookRequestType Read(
+            ref Utf8JsonReader reader,
+            Type typeToConvert,
+            JsonSerializerOptions options
+        )
+        {
+            var stringValue =
+                reader.GetString()
+                ?? throw new global::System.Exception(
+                    "The JSON value could not be read as a string."
+                );
+            return new WebhookRequestType(stringValue);
+        }
+
+        public override void Write(
+            Utf8JsonWriter writer,
+            WebhookRequestType value,
+            JsonSerializerOptions options
+        )
+        {
+            writer.WriteStringValue(value.Value);
+        }
+
+        public override WebhookRequestType ReadAsPropertyName(
+            ref Utf8JsonReader reader,
+            Type typeToConvert,
+            JsonSerializerOptions options
+        )
+        {
+            var stringValue =
+                reader.GetString()
+                ?? throw new global::System.Exception(
+                    "The JSON property name could not be read as a string."
+                );
+            return new WebhookRequestType(stringValue);
+        }
+
+        public override void WriteAsPropertyName(
+            Utf8JsonWriter writer,
+            WebhookRequestType value,
+            JsonSerializerOptions options
+        )
+        {
+            writer.WritePropertyName(value.Value);
+        }
+    }
+
     /// <summary>
     /// Constant strings for enum values
     /// </summary>
@@ -177,6 +231,8 @@ public readonly record struct WebhookRequestType : IStringEnum
         public const string CompanyOverrideUpdated = "company.override.updated";
 
         public const string CompanyPlanChanged = "company.plan_changed";
+
+        public const string CompanyScheduledDowngrade = "company.scheduled_downgrade";
 
         public const string CompanyUpdated = "company.updated";
 

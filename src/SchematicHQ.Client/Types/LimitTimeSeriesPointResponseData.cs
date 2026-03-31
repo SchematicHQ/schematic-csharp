@@ -1,5 +1,5 @@
-using System.Text.Json;
-using System.Text.Json.Serialization;
+using global::System.Text.Json;
+using global::System.Text.Json.Serialization;
 using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
@@ -21,7 +21,7 @@ public record LimitTimeSeriesPointResponseData : IJsonOnDeserialized
     public required EntitlementType LimitSource { get; set; }
 
     [JsonPropertyName("limit_value")]
-    public int? LimitValue { get; set; }
+    public long? LimitValue { get; set; }
 
     [JsonPropertyName("plan_id")]
     public string? PlanId { get; set; }

@@ -1,5 +1,5 @@
-using System.Text.Json;
-using System.Text.Json.Serialization;
+using global::System.Text.Json;
+using global::System.Text.Json.Serialization;
 using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
@@ -15,7 +15,7 @@ public record CheckoutSubscription : IJsonOnDeserialized
     public string? ApplicationId { get; set; }
 
     [JsonPropertyName("cancel_at")]
-    public int? CancelAt { get; set; }
+    public long? CancelAt { get; set; }
 
     [JsonPropertyName("cancel_at_period_end")]
     public required bool CancelAtPeriodEnd { get; set; }
@@ -54,10 +54,10 @@ public record CheckoutSubscription : IJsonOnDeserialized
     public Dictionary<string, object?>? Metadata { get; set; }
 
     [JsonPropertyName("period_end")]
-    public required int PeriodEnd { get; set; }
+    public required long PeriodEnd { get; set; }
 
     [JsonPropertyName("period_start")]
-    public required int PeriodStart { get; set; }
+    public required long PeriodStart { get; set; }
 
     [JsonPropertyName("provider_type")]
     public required BillingProviderType ProviderType { get; set; }
@@ -69,10 +69,10 @@ public record CheckoutSubscription : IJsonOnDeserialized
     public required string SubscriptionExternalId { get; set; }
 
     [JsonPropertyName("total_price")]
-    public required int TotalPrice { get; set; }
+    public required long TotalPrice { get; set; }
 
     [JsonPropertyName("trial_end")]
-    public int? TrialEnd { get; set; }
+    public long? TrialEnd { get; set; }
 
     [JsonPropertyName("trial_end_setting")]
     public BillingSubscriptionTrialEndSetting? TrialEndSetting { get; set; }

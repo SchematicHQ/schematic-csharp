@@ -1,5 +1,5 @@
-using System.Text.Json;
-using System.Text.Json.Serialization;
+using global::System.Text.Json;
+using global::System.Text.Json.Serialization;
 using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
@@ -62,13 +62,10 @@ public record ConditionView : IJsonOnDeserialized
     public string? MetricPeriodMonthReset { get; set; }
 
     [JsonPropertyName("metric_value")]
-    public int? MetricValue { get; set; }
+    public long? MetricValue { get; set; }
 
     [JsonPropertyName("operator")]
     public required string Operator { get; set; }
-
-    [JsonPropertyName("plan_version_id")]
-    public string? PlanVersionId { get; set; }
 
     [JsonPropertyName("plan_versions")]
     public IEnumerable<GenericPreviewObject> PlanVersions { get; set; } =
@@ -102,7 +99,7 @@ public record ConditionView : IJsonOnDeserialized
     public DateTime? TraitValueDate { get; set; }
 
     [JsonPropertyName("trait_value_int")]
-    public required int TraitValueInt { get; set; }
+    public required long TraitValueInt { get; set; }
 
     [JsonPropertyName("updated_at")]
     public required DateTime UpdatedAt { get; set; }

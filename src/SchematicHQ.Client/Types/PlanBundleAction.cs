@@ -1,9 +1,10 @@
-using System.Text.Json.Serialization;
+using global::System.Text.Json;
+using global::System.Text.Json.Serialization;
 using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
 
-[JsonConverter(typeof(StringEnumSerializer<PlanBundleAction>))]
+[JsonConverter(typeof(PlanBundleAction.PlanBundleActionSerializer))]
 [Serializable]
 public readonly record struct PlanBundleAction : IStringEnum
 {
@@ -53,6 +54,55 @@ public readonly record struct PlanBundleAction : IStringEnum
     public static explicit operator string(PlanBundleAction value) => value.Value;
 
     public static explicit operator PlanBundleAction(string value) => new(value);
+
+    internal class PlanBundleActionSerializer : JsonConverter<PlanBundleAction>
+    {
+        public override PlanBundleAction Read(
+            ref Utf8JsonReader reader,
+            Type typeToConvert,
+            JsonSerializerOptions options
+        )
+        {
+            var stringValue =
+                reader.GetString()
+                ?? throw new global::System.Exception(
+                    "The JSON value could not be read as a string."
+                );
+            return new PlanBundleAction(stringValue);
+        }
+
+        public override void Write(
+            Utf8JsonWriter writer,
+            PlanBundleAction value,
+            JsonSerializerOptions options
+        )
+        {
+            writer.WriteStringValue(value.Value);
+        }
+
+        public override PlanBundleAction ReadAsPropertyName(
+            ref Utf8JsonReader reader,
+            Type typeToConvert,
+            JsonSerializerOptions options
+        )
+        {
+            var stringValue =
+                reader.GetString()
+                ?? throw new global::System.Exception(
+                    "The JSON property name could not be read as a string."
+                );
+            return new PlanBundleAction(stringValue);
+        }
+
+        public override void WriteAsPropertyName(
+            Utf8JsonWriter writer,
+            PlanBundleAction value,
+            JsonSerializerOptions options
+        )
+        {
+            writer.WritePropertyName(value.Value);
+        }
+    }
 
     /// <summary>
     /// Constant strings for enum values

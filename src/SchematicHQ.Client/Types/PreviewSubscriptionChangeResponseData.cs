@@ -1,5 +1,5 @@
-using System.Text.Json;
-using System.Text.Json.Serialization;
+using global::System.Text.Json;
+using global::System.Text.Json.Serialization;
 using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
@@ -12,10 +12,10 @@ public record PreviewSubscriptionChangeResponseData : IJsonOnDeserialized
         new Dictionary<string, JsonElement>();
 
     [JsonPropertyName("amount_off")]
-    public required int AmountOff { get; set; }
+    public required long AmountOff { get; set; }
 
     [JsonPropertyName("due_now")]
-    public required int DueNow { get; set; }
+    public required long DueNow { get; set; }
 
     [JsonPropertyName("finance")]
     public PreviewSubscriptionFinanceResponseData? Finance { get; set; }
@@ -24,7 +24,7 @@ public record PreviewSubscriptionChangeResponseData : IJsonOnDeserialized
     public required bool IsScheduledDowngrade { get; set; }
 
     [JsonPropertyName("new_charges")]
-    public required int NewCharges { get; set; }
+    public required long NewCharges { get; set; }
 
     [JsonPropertyName("payment_method_required")]
     public required bool PaymentMethodRequired { get; set; }
@@ -39,7 +39,7 @@ public record PreviewSubscriptionChangeResponseData : IJsonOnDeserialized
     public required bool PromoCodeApplied { get; set; }
 
     [JsonPropertyName("proration")]
-    public required int Proration { get; set; }
+    public required long Proration { get; set; }
 
     [JsonPropertyName("scheduled_change_time")]
     public DateTime? ScheduledChangeTime { get; set; }

@@ -1,5 +1,5 @@
-using System.Text.Json;
-using System.Text.Json.Serialization;
+using global::System.Text.Json;
+using global::System.Text.Json.Serialization;
 using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
@@ -24,7 +24,7 @@ public record WebhookEventDetailResponseData : IJsonOnDeserialized
     public required WebhookRequestType RequestType { get; set; }
 
     [JsonPropertyName("response_code")]
-    public int? ResponseCode { get; set; }
+    public long? ResponseCode { get; set; }
 
     [JsonPropertyName("sent_at")]
     public DateTime? SentAt { get; set; }

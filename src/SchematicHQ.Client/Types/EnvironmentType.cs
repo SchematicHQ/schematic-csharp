@@ -1,9 +1,10 @@
-using System.Text.Json.Serialization;
+using global::System.Text.Json;
+using global::System.Text.Json.Serialization;
 using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
 
-[JsonConverter(typeof(StringEnumSerializer<EnvironmentType>))]
+[JsonConverter(typeof(EnvironmentType.EnvironmentTypeSerializer))]
 [Serializable]
 public readonly record struct EnvironmentType : IStringEnum
 {
@@ -53,6 +54,55 @@ public readonly record struct EnvironmentType : IStringEnum
     public static explicit operator string(EnvironmentType value) => value.Value;
 
     public static explicit operator EnvironmentType(string value) => new(value);
+
+    internal class EnvironmentTypeSerializer : JsonConverter<EnvironmentType>
+    {
+        public override EnvironmentType Read(
+            ref Utf8JsonReader reader,
+            Type typeToConvert,
+            JsonSerializerOptions options
+        )
+        {
+            var stringValue =
+                reader.GetString()
+                ?? throw new global::System.Exception(
+                    "The JSON value could not be read as a string."
+                );
+            return new EnvironmentType(stringValue);
+        }
+
+        public override void Write(
+            Utf8JsonWriter writer,
+            EnvironmentType value,
+            JsonSerializerOptions options
+        )
+        {
+            writer.WriteStringValue(value.Value);
+        }
+
+        public override EnvironmentType ReadAsPropertyName(
+            ref Utf8JsonReader reader,
+            Type typeToConvert,
+            JsonSerializerOptions options
+        )
+        {
+            var stringValue =
+                reader.GetString()
+                ?? throw new global::System.Exception(
+                    "The JSON property name could not be read as a string."
+                );
+            return new EnvironmentType(stringValue);
+        }
+
+        public override void WriteAsPropertyName(
+            Utf8JsonWriter writer,
+            EnvironmentType value,
+            JsonSerializerOptions options
+        )
+        {
+            writer.WritePropertyName(value.Value);
+        }
+    }
 
     /// <summary>
     /// Constant strings for enum values

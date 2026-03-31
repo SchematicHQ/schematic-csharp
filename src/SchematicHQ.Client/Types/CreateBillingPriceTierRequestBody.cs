@@ -1,5 +1,5 @@
-using System.Text.Json;
-using System.Text.Json.Serialization;
+using global::System.Text.Json;
+using global::System.Text.Json.Serialization;
 using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
@@ -12,13 +12,13 @@ public record CreateBillingPriceTierRequestBody : IJsonOnDeserialized
         new Dictionary<string, JsonElement>();
 
     [JsonPropertyName("flat_amount")]
-    public int? FlatAmount { get; set; }
+    public long? FlatAmount { get; set; }
 
     [JsonPropertyName("per_unit_decimal")]
     public string? PerUnitDecimal { get; set; }
 
     [JsonPropertyName("per_unit_price")]
-    public int? PerUnitPrice { get; set; }
+    public long? PerUnitPrice { get; set; }
 
     [JsonPropertyName("price_external_id")]
     public required string PriceExternalId { get; set; }
@@ -27,7 +27,7 @@ public record CreateBillingPriceTierRequestBody : IJsonOnDeserialized
     public BillingProviderType? ProviderType { get; set; }
 
     [JsonPropertyName("up_to")]
-    public int? UpTo { get; set; }
+    public long? UpTo { get; set; }
 
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();

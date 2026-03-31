@@ -1,80 +1,49 @@
-using System.Net.Http;
-using System.Text.Json;
-using System.Threading;
+using global::System.Text.Json;
 using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
 
-public partial class FeaturesClient
+public partial class FeaturesClient : IFeaturesClient
 {
-    private RawClient _client;
+    private readonly RawClient _client;
 
     internal FeaturesClient(RawClient client)
     {
         _client = client;
     }
 
-    /// <example><code>
-    /// await client.Features.ListFeaturesAsync(
-    ///     new ListFeaturesRequest
-    ///     {
-    ///         Q = "q",
-    ///         WithoutCompanyOverrideFor = "without_company_override_for",
-    ///         PlanVersionId = "plan_version_id",
-    ///         WithoutPlanEntitlementFor = "without_plan_entitlement_for",
-    ///         BooleanRequireEvent = true,
-    ///         Limit = 1,
-    ///         Offset = 1,
-    ///     }
-    /// );
-    /// </code></example>
-    public async Task<ListFeaturesResponse> ListFeaturesAsync(
+    private async Task<WithRawResponse<ListFeaturesResponse>> ListFeaturesAsyncCore(
         ListFeaturesRequest request,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
     {
-        var _query = new Dictionary<string, object>();
-        _query["ids"] = request.Ids;
-        _query["feature_type"] = request.FeatureType.Select(_value => _value.Stringify()).ToList();
-        if (request.Q != null)
-        {
-            _query["q"] = request.Q;
-        }
-        if (request.WithoutCompanyOverrideFor != null)
-        {
-            _query["without_company_override_for"] = request.WithoutCompanyOverrideFor;
-        }
-        if (request.PlanVersionId != null)
-        {
-            _query["plan_version_id"] = request.PlanVersionId;
-        }
-        if (request.WithoutPlanEntitlementFor != null)
-        {
-            _query["without_plan_entitlement_for"] = request.WithoutPlanEntitlementFor;
-        }
-        if (request.BooleanRequireEvent != null)
-        {
-            _query["boolean_require_event"] = JsonUtils.Serialize(
-                request.BooleanRequireEvent.Value
-            );
-        }
-        if (request.Limit != null)
-        {
-            _query["limit"] = request.Limit.Value.ToString();
-        }
-        if (request.Offset != null)
-        {
-            _query["offset"] = request.Offset.Value.ToString();
-        }
+        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 9)
+            .Add("ids", request.Ids)
+            .Add("q", request.Q)
+            .Add("without_company_override_for", request.WithoutCompanyOverrideFor)
+            .Add("plan_version_id", request.PlanVersionId)
+            .Add("without_plan_entitlement_for", request.WithoutPlanEntitlementFor)
+            .Add("feature_type", request.FeatureType)
+            .Add("boolean_require_event", request.BooleanRequireEvent)
+            .Add("limit", request.Limit)
+            .Add("offset", request.Offset)
+            .MergeAdditional(options?.AdditionalQueryParameters)
+            .Build();
+        var _headers = await new SchematicHQ.Client.Core.HeadersBuilder.Builder()
+            .Add(_client.Options.Headers)
+            .Add(_client.Options.AdditionalHeaders)
+            .Add(options?.AdditionalHeaders)
+            .BuildAsync()
+            .ConfigureAwait(false);
         var response = await _client
             .SendRequestAsync(
                 new JsonRequest
                 {
-                    BaseUrl = _client.Options.BaseUrl,
                     Method = HttpMethod.Get,
                     Path = "features",
-                    Query = _query,
+                    QueryString = _queryString,
+                    Headers = _headers,
                     Options = options,
                 },
                 cancellationToken
@@ -82,19 +51,37 @@ public partial class FeaturesClient
             .ConfigureAwait(false);
         if (response.StatusCode is >= 200 and < 400)
         {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
             try
             {
-                return JsonUtils.Deserialize<ListFeaturesResponse>(responseBody)!;
+                var responseData = JsonUtils.Deserialize<ListFeaturesResponse>(responseBody)!;
+                return new WithRawResponse<ListFeaturesResponse>()
+                {
+                    Data = responseData,
+                    RawResponse = new RawResponse()
+                    {
+                        StatusCode = response.Raw.StatusCode,
+                        Url = response.Raw.RequestMessage?.RequestUri ?? new Uri("about:blank"),
+                        Headers = ResponseHeaders.FromHttpResponseMessage(response.Raw),
+                    },
+                };
             }
             catch (JsonException e)
             {
-                throw new SchematicException("Failed to deserialize response", e);
+                throw new SchematicApiException(
+                    "Failed to deserialize response",
+                    response.StatusCode,
+                    responseBody,
+                    e
+                );
             }
         }
-
         {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
             try
             {
                 switch (response.StatusCode)
@@ -123,6 +110,1398 @@ public partial class FeaturesClient
                 responseBody
             );
         }
+    }
+
+    private async Task<WithRawResponse<CreateFeatureResponse>> CreateFeatureAsyncCore(
+        CreateFeatureRequestBody request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        var _headers = await new SchematicHQ.Client.Core.HeadersBuilder.Builder()
+            .Add(_client.Options.Headers)
+            .Add(_client.Options.AdditionalHeaders)
+            .Add(options?.AdditionalHeaders)
+            .BuildAsync()
+            .ConfigureAwait(false);
+        var response = await _client
+            .SendRequestAsync(
+                new JsonRequest
+                {
+                    Method = HttpMethod.Post,
+                    Path = "features",
+                    Body = request,
+                    Headers = _headers,
+                    ContentType = "application/json",
+                    Options = options,
+                },
+                cancellationToken
+            )
+            .ConfigureAwait(false);
+        if (response.StatusCode is >= 200 and < 400)
+        {
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
+            try
+            {
+                var responseData = JsonUtils.Deserialize<CreateFeatureResponse>(responseBody)!;
+                return new WithRawResponse<CreateFeatureResponse>()
+                {
+                    Data = responseData,
+                    RawResponse = new RawResponse()
+                    {
+                        StatusCode = response.Raw.StatusCode,
+                        Url = response.Raw.RequestMessage?.RequestUri ?? new Uri("about:blank"),
+                        Headers = ResponseHeaders.FromHttpResponseMessage(response.Raw),
+                    },
+                };
+            }
+            catch (JsonException e)
+            {
+                throw new SchematicApiException(
+                    "Failed to deserialize response",
+                    response.StatusCode,
+                    responseBody,
+                    e
+                );
+            }
+        }
+        {
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
+            try
+            {
+                switch (response.StatusCode)
+                {
+                    case 400:
+                        throw new BadRequestError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 401:
+                        throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 403:
+                        throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 404:
+                        throw new NotFoundError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 500:
+                        throw new InternalServerError(
+                            JsonUtils.Deserialize<ApiError>(responseBody)
+                        );
+                }
+            }
+            catch (JsonException)
+            {
+                // unable to map error response, throwing generic error
+            }
+            throw new SchematicApiException(
+                $"Error with status code {response.StatusCode}",
+                response.StatusCode,
+                responseBody
+            );
+        }
+    }
+
+    private async Task<WithRawResponse<GetFeatureResponse>> GetFeatureAsyncCore(
+        string featureId,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        var _headers = await new SchematicHQ.Client.Core.HeadersBuilder.Builder()
+            .Add(_client.Options.Headers)
+            .Add(_client.Options.AdditionalHeaders)
+            .Add(options?.AdditionalHeaders)
+            .BuildAsync()
+            .ConfigureAwait(false);
+        var response = await _client
+            .SendRequestAsync(
+                new JsonRequest
+                {
+                    Method = HttpMethod.Get,
+                    Path = string.Format(
+                        "features/{0}",
+                        ValueConvert.ToPathParameterString(featureId)
+                    ),
+                    Headers = _headers,
+                    Options = options,
+                },
+                cancellationToken
+            )
+            .ConfigureAwait(false);
+        if (response.StatusCode is >= 200 and < 400)
+        {
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
+            try
+            {
+                var responseData = JsonUtils.Deserialize<GetFeatureResponse>(responseBody)!;
+                return new WithRawResponse<GetFeatureResponse>()
+                {
+                    Data = responseData,
+                    RawResponse = new RawResponse()
+                    {
+                        StatusCode = response.Raw.StatusCode,
+                        Url = response.Raw.RequestMessage?.RequestUri ?? new Uri("about:blank"),
+                        Headers = ResponseHeaders.FromHttpResponseMessage(response.Raw),
+                    },
+                };
+            }
+            catch (JsonException e)
+            {
+                throw new SchematicApiException(
+                    "Failed to deserialize response",
+                    response.StatusCode,
+                    responseBody,
+                    e
+                );
+            }
+        }
+        {
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
+            try
+            {
+                switch (response.StatusCode)
+                {
+                    case 401:
+                        throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 403:
+                        throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 404:
+                        throw new NotFoundError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 500:
+                        throw new InternalServerError(
+                            JsonUtils.Deserialize<ApiError>(responseBody)
+                        );
+                }
+            }
+            catch (JsonException)
+            {
+                // unable to map error response, throwing generic error
+            }
+            throw new SchematicApiException(
+                $"Error with status code {response.StatusCode}",
+                response.StatusCode,
+                responseBody
+            );
+        }
+    }
+
+    private async Task<WithRawResponse<UpdateFeatureResponse>> UpdateFeatureAsyncCore(
+        string featureId,
+        UpdateFeatureRequestBody request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        var _headers = await new SchematicHQ.Client.Core.HeadersBuilder.Builder()
+            .Add(_client.Options.Headers)
+            .Add(_client.Options.AdditionalHeaders)
+            .Add(options?.AdditionalHeaders)
+            .BuildAsync()
+            .ConfigureAwait(false);
+        var response = await _client
+            .SendRequestAsync(
+                new JsonRequest
+                {
+                    Method = HttpMethod.Put,
+                    Path = string.Format(
+                        "features/{0}",
+                        ValueConvert.ToPathParameterString(featureId)
+                    ),
+                    Body = request,
+                    Headers = _headers,
+                    ContentType = "application/json",
+                    Options = options,
+                },
+                cancellationToken
+            )
+            .ConfigureAwait(false);
+        if (response.StatusCode is >= 200 and < 400)
+        {
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
+            try
+            {
+                var responseData = JsonUtils.Deserialize<UpdateFeatureResponse>(responseBody)!;
+                return new WithRawResponse<UpdateFeatureResponse>()
+                {
+                    Data = responseData,
+                    RawResponse = new RawResponse()
+                    {
+                        StatusCode = response.Raw.StatusCode,
+                        Url = response.Raw.RequestMessage?.RequestUri ?? new Uri("about:blank"),
+                        Headers = ResponseHeaders.FromHttpResponseMessage(response.Raw),
+                    },
+                };
+            }
+            catch (JsonException e)
+            {
+                throw new SchematicApiException(
+                    "Failed to deserialize response",
+                    response.StatusCode,
+                    responseBody,
+                    e
+                );
+            }
+        }
+        {
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
+            try
+            {
+                switch (response.StatusCode)
+                {
+                    case 400:
+                        throw new BadRequestError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 401:
+                        throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 403:
+                        throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 404:
+                        throw new NotFoundError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 500:
+                        throw new InternalServerError(
+                            JsonUtils.Deserialize<ApiError>(responseBody)
+                        );
+                }
+            }
+            catch (JsonException)
+            {
+                // unable to map error response, throwing generic error
+            }
+            throw new SchematicApiException(
+                $"Error with status code {response.StatusCode}",
+                response.StatusCode,
+                responseBody
+            );
+        }
+    }
+
+    private async Task<WithRawResponse<DeleteFeatureResponse>> DeleteFeatureAsyncCore(
+        string featureId,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        var _headers = await new SchematicHQ.Client.Core.HeadersBuilder.Builder()
+            .Add(_client.Options.Headers)
+            .Add(_client.Options.AdditionalHeaders)
+            .Add(options?.AdditionalHeaders)
+            .BuildAsync()
+            .ConfigureAwait(false);
+        var response = await _client
+            .SendRequestAsync(
+                new JsonRequest
+                {
+                    Method = HttpMethod.Delete,
+                    Path = string.Format(
+                        "features/{0}",
+                        ValueConvert.ToPathParameterString(featureId)
+                    ),
+                    Headers = _headers,
+                    Options = options,
+                },
+                cancellationToken
+            )
+            .ConfigureAwait(false);
+        if (response.StatusCode is >= 200 and < 400)
+        {
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
+            try
+            {
+                var responseData = JsonUtils.Deserialize<DeleteFeatureResponse>(responseBody)!;
+                return new WithRawResponse<DeleteFeatureResponse>()
+                {
+                    Data = responseData,
+                    RawResponse = new RawResponse()
+                    {
+                        StatusCode = response.Raw.StatusCode,
+                        Url = response.Raw.RequestMessage?.RequestUri ?? new Uri("about:blank"),
+                        Headers = ResponseHeaders.FromHttpResponseMessage(response.Raw),
+                    },
+                };
+            }
+            catch (JsonException e)
+            {
+                throw new SchematicApiException(
+                    "Failed to deserialize response",
+                    response.StatusCode,
+                    responseBody,
+                    e
+                );
+            }
+        }
+        {
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
+            try
+            {
+                switch (response.StatusCode)
+                {
+                    case 400:
+                        throw new BadRequestError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 401:
+                        throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 403:
+                        throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 404:
+                        throw new NotFoundError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 500:
+                        throw new InternalServerError(
+                            JsonUtils.Deserialize<ApiError>(responseBody)
+                        );
+                }
+            }
+            catch (JsonException)
+            {
+                // unable to map error response, throwing generic error
+            }
+            throw new SchematicApiException(
+                $"Error with status code {response.StatusCode}",
+                response.StatusCode,
+                responseBody
+            );
+        }
+    }
+
+    private async Task<WithRawResponse<CountFeaturesResponse>> CountFeaturesAsyncCore(
+        CountFeaturesRequest request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 9)
+            .Add("ids", request.Ids)
+            .Add("q", request.Q)
+            .Add("without_company_override_for", request.WithoutCompanyOverrideFor)
+            .Add("plan_version_id", request.PlanVersionId)
+            .Add("without_plan_entitlement_for", request.WithoutPlanEntitlementFor)
+            .Add("feature_type", request.FeatureType)
+            .Add("boolean_require_event", request.BooleanRequireEvent)
+            .Add("limit", request.Limit)
+            .Add("offset", request.Offset)
+            .MergeAdditional(options?.AdditionalQueryParameters)
+            .Build();
+        var _headers = await new SchematicHQ.Client.Core.HeadersBuilder.Builder()
+            .Add(_client.Options.Headers)
+            .Add(_client.Options.AdditionalHeaders)
+            .Add(options?.AdditionalHeaders)
+            .BuildAsync()
+            .ConfigureAwait(false);
+        var response = await _client
+            .SendRequestAsync(
+                new JsonRequest
+                {
+                    Method = HttpMethod.Get,
+                    Path = "features/count",
+                    QueryString = _queryString,
+                    Headers = _headers,
+                    Options = options,
+                },
+                cancellationToken
+            )
+            .ConfigureAwait(false);
+        if (response.StatusCode is >= 200 and < 400)
+        {
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
+            try
+            {
+                var responseData = JsonUtils.Deserialize<CountFeaturesResponse>(responseBody)!;
+                return new WithRawResponse<CountFeaturesResponse>()
+                {
+                    Data = responseData,
+                    RawResponse = new RawResponse()
+                    {
+                        StatusCode = response.Raw.StatusCode,
+                        Url = response.Raw.RequestMessage?.RequestUri ?? new Uri("about:blank"),
+                        Headers = ResponseHeaders.FromHttpResponseMessage(response.Raw),
+                    },
+                };
+            }
+            catch (JsonException e)
+            {
+                throw new SchematicApiException(
+                    "Failed to deserialize response",
+                    response.StatusCode,
+                    responseBody,
+                    e
+                );
+            }
+        }
+        {
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
+            try
+            {
+                switch (response.StatusCode)
+                {
+                    case 400:
+                        throw new BadRequestError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 401:
+                        throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 403:
+                        throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 404:
+                        throw new NotFoundError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 500:
+                        throw new InternalServerError(
+                            JsonUtils.Deserialize<ApiError>(responseBody)
+                        );
+                }
+            }
+            catch (JsonException)
+            {
+                // unable to map error response, throwing generic error
+            }
+            throw new SchematicApiException(
+                $"Error with status code {response.StatusCode}",
+                response.StatusCode,
+                responseBody
+            );
+        }
+    }
+
+    private async Task<WithRawResponse<ListFlagsResponse>> ListFlagsAsyncCore(
+        ListFlagsRequest request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 5)
+            .Add("feature_id", request.FeatureId)
+            .Add("ids", request.Ids)
+            .Add("q", request.Q)
+            .Add("limit", request.Limit)
+            .Add("offset", request.Offset)
+            .MergeAdditional(options?.AdditionalQueryParameters)
+            .Build();
+        var _headers = await new SchematicHQ.Client.Core.HeadersBuilder.Builder()
+            .Add(_client.Options.Headers)
+            .Add(_client.Options.AdditionalHeaders)
+            .Add(options?.AdditionalHeaders)
+            .BuildAsync()
+            .ConfigureAwait(false);
+        var response = await _client
+            .SendRequestAsync(
+                new JsonRequest
+                {
+                    Method = HttpMethod.Get,
+                    Path = "flags",
+                    QueryString = _queryString,
+                    Headers = _headers,
+                    Options = options,
+                },
+                cancellationToken
+            )
+            .ConfigureAwait(false);
+        if (response.StatusCode is >= 200 and < 400)
+        {
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
+            try
+            {
+                var responseData = JsonUtils.Deserialize<ListFlagsResponse>(responseBody)!;
+                return new WithRawResponse<ListFlagsResponse>()
+                {
+                    Data = responseData,
+                    RawResponse = new RawResponse()
+                    {
+                        StatusCode = response.Raw.StatusCode,
+                        Url = response.Raw.RequestMessage?.RequestUri ?? new Uri("about:blank"),
+                        Headers = ResponseHeaders.FromHttpResponseMessage(response.Raw),
+                    },
+                };
+            }
+            catch (JsonException e)
+            {
+                throw new SchematicApiException(
+                    "Failed to deserialize response",
+                    response.StatusCode,
+                    responseBody,
+                    e
+                );
+            }
+        }
+        {
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
+            try
+            {
+                switch (response.StatusCode)
+                {
+                    case 400:
+                        throw new BadRequestError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 401:
+                        throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 403:
+                        throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 404:
+                        throw new NotFoundError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 500:
+                        throw new InternalServerError(
+                            JsonUtils.Deserialize<ApiError>(responseBody)
+                        );
+                }
+            }
+            catch (JsonException)
+            {
+                // unable to map error response, throwing generic error
+            }
+            throw new SchematicApiException(
+                $"Error with status code {response.StatusCode}",
+                response.StatusCode,
+                responseBody
+            );
+        }
+    }
+
+    private async Task<WithRawResponse<CreateFlagResponse>> CreateFlagAsyncCore(
+        CreateFlagRequestBody request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        var _headers = await new SchematicHQ.Client.Core.HeadersBuilder.Builder()
+            .Add(_client.Options.Headers)
+            .Add(_client.Options.AdditionalHeaders)
+            .Add(options?.AdditionalHeaders)
+            .BuildAsync()
+            .ConfigureAwait(false);
+        var response = await _client
+            .SendRequestAsync(
+                new JsonRequest
+                {
+                    Method = HttpMethod.Post,
+                    Path = "flags",
+                    Body = request,
+                    Headers = _headers,
+                    ContentType = "application/json",
+                    Options = options,
+                },
+                cancellationToken
+            )
+            .ConfigureAwait(false);
+        if (response.StatusCode is >= 200 and < 400)
+        {
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
+            try
+            {
+                var responseData = JsonUtils.Deserialize<CreateFlagResponse>(responseBody)!;
+                return new WithRawResponse<CreateFlagResponse>()
+                {
+                    Data = responseData,
+                    RawResponse = new RawResponse()
+                    {
+                        StatusCode = response.Raw.StatusCode,
+                        Url = response.Raw.RequestMessage?.RequestUri ?? new Uri("about:blank"),
+                        Headers = ResponseHeaders.FromHttpResponseMessage(response.Raw),
+                    },
+                };
+            }
+            catch (JsonException e)
+            {
+                throw new SchematicApiException(
+                    "Failed to deserialize response",
+                    response.StatusCode,
+                    responseBody,
+                    e
+                );
+            }
+        }
+        {
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
+            try
+            {
+                switch (response.StatusCode)
+                {
+                    case 400:
+                        throw new BadRequestError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 401:
+                        throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 403:
+                        throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 404:
+                        throw new NotFoundError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 500:
+                        throw new InternalServerError(
+                            JsonUtils.Deserialize<ApiError>(responseBody)
+                        );
+                }
+            }
+            catch (JsonException)
+            {
+                // unable to map error response, throwing generic error
+            }
+            throw new SchematicApiException(
+                $"Error with status code {response.StatusCode}",
+                response.StatusCode,
+                responseBody
+            );
+        }
+    }
+
+    private async Task<WithRawResponse<GetFlagResponse>> GetFlagAsyncCore(
+        string flagId,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        var _headers = await new SchematicHQ.Client.Core.HeadersBuilder.Builder()
+            .Add(_client.Options.Headers)
+            .Add(_client.Options.AdditionalHeaders)
+            .Add(options?.AdditionalHeaders)
+            .BuildAsync()
+            .ConfigureAwait(false);
+        var response = await _client
+            .SendRequestAsync(
+                new JsonRequest
+                {
+                    Method = HttpMethod.Get,
+                    Path = string.Format("flags/{0}", ValueConvert.ToPathParameterString(flagId)),
+                    Headers = _headers,
+                    Options = options,
+                },
+                cancellationToken
+            )
+            .ConfigureAwait(false);
+        if (response.StatusCode is >= 200 and < 400)
+        {
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
+            try
+            {
+                var responseData = JsonUtils.Deserialize<GetFlagResponse>(responseBody)!;
+                return new WithRawResponse<GetFlagResponse>()
+                {
+                    Data = responseData,
+                    RawResponse = new RawResponse()
+                    {
+                        StatusCode = response.Raw.StatusCode,
+                        Url = response.Raw.RequestMessage?.RequestUri ?? new Uri("about:blank"),
+                        Headers = ResponseHeaders.FromHttpResponseMessage(response.Raw),
+                    },
+                };
+            }
+            catch (JsonException e)
+            {
+                throw new SchematicApiException(
+                    "Failed to deserialize response",
+                    response.StatusCode,
+                    responseBody,
+                    e
+                );
+            }
+        }
+        {
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
+            try
+            {
+                switch (response.StatusCode)
+                {
+                    case 401:
+                        throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 403:
+                        throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 404:
+                        throw new NotFoundError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 500:
+                        throw new InternalServerError(
+                            JsonUtils.Deserialize<ApiError>(responseBody)
+                        );
+                }
+            }
+            catch (JsonException)
+            {
+                // unable to map error response, throwing generic error
+            }
+            throw new SchematicApiException(
+                $"Error with status code {response.StatusCode}",
+                response.StatusCode,
+                responseBody
+            );
+        }
+    }
+
+    private async Task<WithRawResponse<UpdateFlagResponse>> UpdateFlagAsyncCore(
+        string flagId,
+        CreateFlagRequestBody request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        var _headers = await new SchematicHQ.Client.Core.HeadersBuilder.Builder()
+            .Add(_client.Options.Headers)
+            .Add(_client.Options.AdditionalHeaders)
+            .Add(options?.AdditionalHeaders)
+            .BuildAsync()
+            .ConfigureAwait(false);
+        var response = await _client
+            .SendRequestAsync(
+                new JsonRequest
+                {
+                    Method = HttpMethod.Put,
+                    Path = string.Format("flags/{0}", ValueConvert.ToPathParameterString(flagId)),
+                    Body = request,
+                    Headers = _headers,
+                    ContentType = "application/json",
+                    Options = options,
+                },
+                cancellationToken
+            )
+            .ConfigureAwait(false);
+        if (response.StatusCode is >= 200 and < 400)
+        {
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
+            try
+            {
+                var responseData = JsonUtils.Deserialize<UpdateFlagResponse>(responseBody)!;
+                return new WithRawResponse<UpdateFlagResponse>()
+                {
+                    Data = responseData,
+                    RawResponse = new RawResponse()
+                    {
+                        StatusCode = response.Raw.StatusCode,
+                        Url = response.Raw.RequestMessage?.RequestUri ?? new Uri("about:blank"),
+                        Headers = ResponseHeaders.FromHttpResponseMessage(response.Raw),
+                    },
+                };
+            }
+            catch (JsonException e)
+            {
+                throw new SchematicApiException(
+                    "Failed to deserialize response",
+                    response.StatusCode,
+                    responseBody,
+                    e
+                );
+            }
+        }
+        {
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
+            try
+            {
+                switch (response.StatusCode)
+                {
+                    case 400:
+                        throw new BadRequestError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 401:
+                        throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 403:
+                        throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 404:
+                        throw new NotFoundError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 500:
+                        throw new InternalServerError(
+                            JsonUtils.Deserialize<ApiError>(responseBody)
+                        );
+                }
+            }
+            catch (JsonException)
+            {
+                // unable to map error response, throwing generic error
+            }
+            throw new SchematicApiException(
+                $"Error with status code {response.StatusCode}",
+                response.StatusCode,
+                responseBody
+            );
+        }
+    }
+
+    private async Task<WithRawResponse<DeleteFlagResponse>> DeleteFlagAsyncCore(
+        string flagId,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        var _headers = await new SchematicHQ.Client.Core.HeadersBuilder.Builder()
+            .Add(_client.Options.Headers)
+            .Add(_client.Options.AdditionalHeaders)
+            .Add(options?.AdditionalHeaders)
+            .BuildAsync()
+            .ConfigureAwait(false);
+        var response = await _client
+            .SendRequestAsync(
+                new JsonRequest
+                {
+                    Method = HttpMethod.Delete,
+                    Path = string.Format("flags/{0}", ValueConvert.ToPathParameterString(flagId)),
+                    Headers = _headers,
+                    Options = options,
+                },
+                cancellationToken
+            )
+            .ConfigureAwait(false);
+        if (response.StatusCode is >= 200 and < 400)
+        {
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
+            try
+            {
+                var responseData = JsonUtils.Deserialize<DeleteFlagResponse>(responseBody)!;
+                return new WithRawResponse<DeleteFlagResponse>()
+                {
+                    Data = responseData,
+                    RawResponse = new RawResponse()
+                    {
+                        StatusCode = response.Raw.StatusCode,
+                        Url = response.Raw.RequestMessage?.RequestUri ?? new Uri("about:blank"),
+                        Headers = ResponseHeaders.FromHttpResponseMessage(response.Raw),
+                    },
+                };
+            }
+            catch (JsonException e)
+            {
+                throw new SchematicApiException(
+                    "Failed to deserialize response",
+                    response.StatusCode,
+                    responseBody,
+                    e
+                );
+            }
+        }
+        {
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
+            try
+            {
+                switch (response.StatusCode)
+                {
+                    case 400:
+                        throw new BadRequestError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 401:
+                        throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 403:
+                        throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 404:
+                        throw new NotFoundError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 500:
+                        throw new InternalServerError(
+                            JsonUtils.Deserialize<ApiError>(responseBody)
+                        );
+                }
+            }
+            catch (JsonException)
+            {
+                // unable to map error response, throwing generic error
+            }
+            throw new SchematicApiException(
+                $"Error with status code {response.StatusCode}",
+                response.StatusCode,
+                responseBody
+            );
+        }
+    }
+
+    private async Task<WithRawResponse<UpdateFlagRulesResponse>> UpdateFlagRulesAsyncCore(
+        string flagId,
+        UpdateFlagRulesRequestBody request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        var _headers = await new SchematicHQ.Client.Core.HeadersBuilder.Builder()
+            .Add(_client.Options.Headers)
+            .Add(_client.Options.AdditionalHeaders)
+            .Add(options?.AdditionalHeaders)
+            .BuildAsync()
+            .ConfigureAwait(false);
+        var response = await _client
+            .SendRequestAsync(
+                new JsonRequest
+                {
+                    Method = HttpMethod.Put,
+                    Path = string.Format(
+                        "flags/{0}/rules",
+                        ValueConvert.ToPathParameterString(flagId)
+                    ),
+                    Body = request,
+                    Headers = _headers,
+                    ContentType = "application/json",
+                    Options = options,
+                },
+                cancellationToken
+            )
+            .ConfigureAwait(false);
+        if (response.StatusCode is >= 200 and < 400)
+        {
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
+            try
+            {
+                var responseData = JsonUtils.Deserialize<UpdateFlagRulesResponse>(responseBody)!;
+                return new WithRawResponse<UpdateFlagRulesResponse>()
+                {
+                    Data = responseData,
+                    RawResponse = new RawResponse()
+                    {
+                        StatusCode = response.Raw.StatusCode,
+                        Url = response.Raw.RequestMessage?.RequestUri ?? new Uri("about:blank"),
+                        Headers = ResponseHeaders.FromHttpResponseMessage(response.Raw),
+                    },
+                };
+            }
+            catch (JsonException e)
+            {
+                throw new SchematicApiException(
+                    "Failed to deserialize response",
+                    response.StatusCode,
+                    responseBody,
+                    e
+                );
+            }
+        }
+        {
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
+            try
+            {
+                switch (response.StatusCode)
+                {
+                    case 400:
+                        throw new BadRequestError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 401:
+                        throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 403:
+                        throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 404:
+                        throw new NotFoundError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 500:
+                        throw new InternalServerError(
+                            JsonUtils.Deserialize<ApiError>(responseBody)
+                        );
+                }
+            }
+            catch (JsonException)
+            {
+                // unable to map error response, throwing generic error
+            }
+            throw new SchematicApiException(
+                $"Error with status code {response.StatusCode}",
+                response.StatusCode,
+                responseBody
+            );
+        }
+    }
+
+    private async Task<WithRawResponse<CheckFlagResponse>> CheckFlagAsyncCore(
+        string key,
+        CheckFlagRequestBody request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        var _headers = await new SchematicHQ.Client.Core.HeadersBuilder.Builder()
+            .Add(_client.Options.Headers)
+            .Add(_client.Options.AdditionalHeaders)
+            .Add(options?.AdditionalHeaders)
+            .BuildAsync()
+            .ConfigureAwait(false);
+        var response = await _client
+            .SendRequestAsync(
+                new JsonRequest
+                {
+                    Method = HttpMethod.Post,
+                    Path = string.Format(
+                        "flags/{0}/check",
+                        ValueConvert.ToPathParameterString(key)
+                    ),
+                    Body = request,
+                    Headers = _headers,
+                    ContentType = "application/json",
+                    Options = options,
+                },
+                cancellationToken
+            )
+            .ConfigureAwait(false);
+        if (response.StatusCode is >= 200 and < 400)
+        {
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
+            try
+            {
+                var responseData = JsonUtils.Deserialize<CheckFlagResponse>(responseBody)!;
+                return new WithRawResponse<CheckFlagResponse>()
+                {
+                    Data = responseData,
+                    RawResponse = new RawResponse()
+                    {
+                        StatusCode = response.Raw.StatusCode,
+                        Url = response.Raw.RequestMessage?.RequestUri ?? new Uri("about:blank"),
+                        Headers = ResponseHeaders.FromHttpResponseMessage(response.Raw),
+                    },
+                };
+            }
+            catch (JsonException e)
+            {
+                throw new SchematicApiException(
+                    "Failed to deserialize response",
+                    response.StatusCode,
+                    responseBody,
+                    e
+                );
+            }
+        }
+        {
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
+            try
+            {
+                switch (response.StatusCode)
+                {
+                    case 400:
+                        throw new BadRequestError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 401:
+                        throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 403:
+                        throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 404:
+                        throw new NotFoundError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 500:
+                        throw new InternalServerError(
+                            JsonUtils.Deserialize<ApiError>(responseBody)
+                        );
+                }
+            }
+            catch (JsonException)
+            {
+                // unable to map error response, throwing generic error
+            }
+            throw new SchematicApiException(
+                $"Error with status code {response.StatusCode}",
+                response.StatusCode,
+                responseBody
+            );
+        }
+    }
+
+    private async Task<WithRawResponse<CheckFlagsResponse>> CheckFlagsAsyncCore(
+        CheckFlagRequestBody request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        var _headers = await new SchematicHQ.Client.Core.HeadersBuilder.Builder()
+            .Add(_client.Options.Headers)
+            .Add(_client.Options.AdditionalHeaders)
+            .Add(options?.AdditionalHeaders)
+            .BuildAsync()
+            .ConfigureAwait(false);
+        var response = await _client
+            .SendRequestAsync(
+                new JsonRequest
+                {
+                    Method = HttpMethod.Post,
+                    Path = "flags/check",
+                    Body = request,
+                    Headers = _headers,
+                    ContentType = "application/json",
+                    Options = options,
+                },
+                cancellationToken
+            )
+            .ConfigureAwait(false);
+        if (response.StatusCode is >= 200 and < 400)
+        {
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
+            try
+            {
+                var responseData = JsonUtils.Deserialize<CheckFlagsResponse>(responseBody)!;
+                return new WithRawResponse<CheckFlagsResponse>()
+                {
+                    Data = responseData,
+                    RawResponse = new RawResponse()
+                    {
+                        StatusCode = response.Raw.StatusCode,
+                        Url = response.Raw.RequestMessage?.RequestUri ?? new Uri("about:blank"),
+                        Headers = ResponseHeaders.FromHttpResponseMessage(response.Raw),
+                    },
+                };
+            }
+            catch (JsonException e)
+            {
+                throw new SchematicApiException(
+                    "Failed to deserialize response",
+                    response.StatusCode,
+                    responseBody,
+                    e
+                );
+            }
+        }
+        {
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
+            try
+            {
+                switch (response.StatusCode)
+                {
+                    case 400:
+                        throw new BadRequestError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 401:
+                        throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 403:
+                        throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 404:
+                        throw new NotFoundError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 500:
+                        throw new InternalServerError(
+                            JsonUtils.Deserialize<ApiError>(responseBody)
+                        );
+                }
+            }
+            catch (JsonException)
+            {
+                // unable to map error response, throwing generic error
+            }
+            throw new SchematicApiException(
+                $"Error with status code {response.StatusCode}",
+                response.StatusCode,
+                responseBody
+            );
+        }
+    }
+
+    private async Task<WithRawResponse<CheckFlagsBulkResponse>> CheckFlagsBulkAsyncCore(
+        CheckFlagsBulkRequestBody request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        var _headers = await new SchematicHQ.Client.Core.HeadersBuilder.Builder()
+            .Add(_client.Options.Headers)
+            .Add(_client.Options.AdditionalHeaders)
+            .Add(options?.AdditionalHeaders)
+            .BuildAsync()
+            .ConfigureAwait(false);
+        var response = await _client
+            .SendRequestAsync(
+                new JsonRequest
+                {
+                    Method = HttpMethod.Post,
+                    Path = "flags/check-bulk",
+                    Body = request,
+                    Headers = _headers,
+                    ContentType = "application/json",
+                    Options = options,
+                },
+                cancellationToken
+            )
+            .ConfigureAwait(false);
+        if (response.StatusCode is >= 200 and < 400)
+        {
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
+            try
+            {
+                var responseData = JsonUtils.Deserialize<CheckFlagsBulkResponse>(responseBody)!;
+                return new WithRawResponse<CheckFlagsBulkResponse>()
+                {
+                    Data = responseData,
+                    RawResponse = new RawResponse()
+                    {
+                        StatusCode = response.Raw.StatusCode,
+                        Url = response.Raw.RequestMessage?.RequestUri ?? new Uri("about:blank"),
+                        Headers = ResponseHeaders.FromHttpResponseMessage(response.Raw),
+                    },
+                };
+            }
+            catch (JsonException e)
+            {
+                throw new SchematicApiException(
+                    "Failed to deserialize response",
+                    response.StatusCode,
+                    responseBody,
+                    e
+                );
+            }
+        }
+        {
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
+            try
+            {
+                switch (response.StatusCode)
+                {
+                    case 400:
+                        throw new BadRequestError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 401:
+                        throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 403:
+                        throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 404:
+                        throw new NotFoundError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 500:
+                        throw new InternalServerError(
+                            JsonUtils.Deserialize<ApiError>(responseBody)
+                        );
+                }
+            }
+            catch (JsonException)
+            {
+                // unable to map error response, throwing generic error
+            }
+            throw new SchematicApiException(
+                $"Error with status code {response.StatusCode}",
+                response.StatusCode,
+                responseBody
+            );
+        }
+    }
+
+    private async Task<WithRawResponse<CountFlagsResponse>> CountFlagsAsyncCore(
+        CountFlagsRequest request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 5)
+            .Add("feature_id", request.FeatureId)
+            .Add("ids", request.Ids)
+            .Add("q", request.Q)
+            .Add("limit", request.Limit)
+            .Add("offset", request.Offset)
+            .MergeAdditional(options?.AdditionalQueryParameters)
+            .Build();
+        var _headers = await new SchematicHQ.Client.Core.HeadersBuilder.Builder()
+            .Add(_client.Options.Headers)
+            .Add(_client.Options.AdditionalHeaders)
+            .Add(options?.AdditionalHeaders)
+            .BuildAsync()
+            .ConfigureAwait(false);
+        var response = await _client
+            .SendRequestAsync(
+                new JsonRequest
+                {
+                    Method = HttpMethod.Get,
+                    Path = "flags/count",
+                    QueryString = _queryString,
+                    Headers = _headers,
+                    Options = options,
+                },
+                cancellationToken
+            )
+            .ConfigureAwait(false);
+        if (response.StatusCode is >= 200 and < 400)
+        {
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
+            try
+            {
+                var responseData = JsonUtils.Deserialize<CountFlagsResponse>(responseBody)!;
+                return new WithRawResponse<CountFlagsResponse>()
+                {
+                    Data = responseData,
+                    RawResponse = new RawResponse()
+                    {
+                        StatusCode = response.Raw.StatusCode,
+                        Url = response.Raw.RequestMessage?.RequestUri ?? new Uri("about:blank"),
+                        Headers = ResponseHeaders.FromHttpResponseMessage(response.Raw),
+                    },
+                };
+            }
+            catch (JsonException e)
+            {
+                throw new SchematicApiException(
+                    "Failed to deserialize response",
+                    response.StatusCode,
+                    responseBody,
+                    e
+                );
+            }
+        }
+        {
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
+            try
+            {
+                switch (response.StatusCode)
+                {
+                    case 400:
+                        throw new BadRequestError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 401:
+                        throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 403:
+                        throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 404:
+                        throw new NotFoundError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 500:
+                        throw new InternalServerError(
+                            JsonUtils.Deserialize<ApiError>(responseBody)
+                        );
+                }
+            }
+            catch (JsonException)
+            {
+                // unable to map error response, throwing generic error
+            }
+            throw new SchematicApiException(
+                $"Error with status code {response.StatusCode}",
+                response.StatusCode,
+                responseBody
+            );
+        }
+    }
+
+    /// <example><code>
+    /// await client.Features.ListFeaturesAsync(
+    ///     new ListFeaturesRequest
+    ///     {
+    ///         Q = "q",
+    ///         WithoutCompanyOverrideFor = "without_company_override_for",
+    ///         PlanVersionId = "plan_version_id",
+    ///         WithoutPlanEntitlementFor = "without_plan_entitlement_for",
+    ///         BooleanRequireEvent = true,
+    ///         Limit = 1000000,
+    ///         Offset = 1000000,
+    ///     }
+    /// );
+    /// </code></example>
+    public WithRawResponseTask<ListFeaturesResponse> ListFeaturesAsync(
+        ListFeaturesRequest request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        return new WithRawResponseTask<ListFeaturesResponse>(
+            ListFeaturesAsyncCore(request, options, cancellationToken)
+        );
     }
 
     /// <example><code>
@@ -135,277 +1514,58 @@ public partial class FeaturesClient
     ///     }
     /// );
     /// </code></example>
-    public async Task<CreateFeatureResponse> CreateFeatureAsync(
+    public WithRawResponseTask<CreateFeatureResponse> CreateFeatureAsync(
         CreateFeatureRequestBody request,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
     {
-        var response = await _client
-            .SendRequestAsync(
-                new JsonRequest
-                {
-                    BaseUrl = _client.Options.BaseUrl,
-                    Method = HttpMethod.Post,
-                    Path = "features",
-                    Body = request,
-                    ContentType = "application/json",
-                    Options = options,
-                },
-                cancellationToken
-            )
-            .ConfigureAwait(false);
-        if (response.StatusCode is >= 200 and < 400)
-        {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
-            try
-            {
-                return JsonUtils.Deserialize<CreateFeatureResponse>(responseBody)!;
-            }
-            catch (JsonException e)
-            {
-                throw new SchematicException("Failed to deserialize response", e);
-            }
-        }
-
-        {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
-            try
-            {
-                switch (response.StatusCode)
-                {
-                    case 400:
-                        throw new BadRequestError(JsonUtils.Deserialize<ApiError>(responseBody));
-                    case 401:
-                        throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
-                    case 403:
-                        throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
-                    case 404:
-                        throw new NotFoundError(JsonUtils.Deserialize<ApiError>(responseBody));
-                    case 500:
-                        throw new InternalServerError(
-                            JsonUtils.Deserialize<ApiError>(responseBody)
-                        );
-                }
-            }
-            catch (JsonException)
-            {
-                // unable to map error response, throwing generic error
-            }
-            throw new SchematicApiException(
-                $"Error with status code {response.StatusCode}",
-                response.StatusCode,
-                responseBody
-            );
-        }
+        return new WithRawResponseTask<CreateFeatureResponse>(
+            CreateFeatureAsyncCore(request, options, cancellationToken)
+        );
     }
 
     /// <example><code>
     /// await client.Features.GetFeatureAsync("feature_id");
     /// </code></example>
-    public async Task<GetFeatureResponse> GetFeatureAsync(
+    public WithRawResponseTask<GetFeatureResponse> GetFeatureAsync(
         string featureId,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
     {
-        var response = await _client
-            .SendRequestAsync(
-                new JsonRequest
-                {
-                    BaseUrl = _client.Options.BaseUrl,
-                    Method = HttpMethod.Get,
-                    Path = string.Format(
-                        "features/{0}",
-                        ValueConvert.ToPathParameterString(featureId)
-                    ),
-                    Options = options,
-                },
-                cancellationToken
-            )
-            .ConfigureAwait(false);
-        if (response.StatusCode is >= 200 and < 400)
-        {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
-            try
-            {
-                return JsonUtils.Deserialize<GetFeatureResponse>(responseBody)!;
-            }
-            catch (JsonException e)
-            {
-                throw new SchematicException("Failed to deserialize response", e);
-            }
-        }
-
-        {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
-            try
-            {
-                switch (response.StatusCode)
-                {
-                    case 401:
-                        throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
-                    case 403:
-                        throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
-                    case 404:
-                        throw new NotFoundError(JsonUtils.Deserialize<ApiError>(responseBody));
-                    case 500:
-                        throw new InternalServerError(
-                            JsonUtils.Deserialize<ApiError>(responseBody)
-                        );
-                }
-            }
-            catch (JsonException)
-            {
-                // unable to map error response, throwing generic error
-            }
-            throw new SchematicApiException(
-                $"Error with status code {response.StatusCode}",
-                response.StatusCode,
-                responseBody
-            );
-        }
+        return new WithRawResponseTask<GetFeatureResponse>(
+            GetFeatureAsyncCore(featureId, options, cancellationToken)
+        );
     }
 
     /// <example><code>
     /// await client.Features.UpdateFeatureAsync("feature_id", new UpdateFeatureRequestBody());
     /// </code></example>
-    public async Task<UpdateFeatureResponse> UpdateFeatureAsync(
+    public WithRawResponseTask<UpdateFeatureResponse> UpdateFeatureAsync(
         string featureId,
         UpdateFeatureRequestBody request,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
     {
-        var response = await _client
-            .SendRequestAsync(
-                new JsonRequest
-                {
-                    BaseUrl = _client.Options.BaseUrl,
-                    Method = HttpMethod.Put,
-                    Path = string.Format(
-                        "features/{0}",
-                        ValueConvert.ToPathParameterString(featureId)
-                    ),
-                    Body = request,
-                    ContentType = "application/json",
-                    Options = options,
-                },
-                cancellationToken
-            )
-            .ConfigureAwait(false);
-        if (response.StatusCode is >= 200 and < 400)
-        {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
-            try
-            {
-                return JsonUtils.Deserialize<UpdateFeatureResponse>(responseBody)!;
-            }
-            catch (JsonException e)
-            {
-                throw new SchematicException("Failed to deserialize response", e);
-            }
-        }
-
-        {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
-            try
-            {
-                switch (response.StatusCode)
-                {
-                    case 400:
-                        throw new BadRequestError(JsonUtils.Deserialize<ApiError>(responseBody));
-                    case 401:
-                        throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
-                    case 403:
-                        throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
-                    case 404:
-                        throw new NotFoundError(JsonUtils.Deserialize<ApiError>(responseBody));
-                    case 500:
-                        throw new InternalServerError(
-                            JsonUtils.Deserialize<ApiError>(responseBody)
-                        );
-                }
-            }
-            catch (JsonException)
-            {
-                // unable to map error response, throwing generic error
-            }
-            throw new SchematicApiException(
-                $"Error with status code {response.StatusCode}",
-                response.StatusCode,
-                responseBody
-            );
-        }
+        return new WithRawResponseTask<UpdateFeatureResponse>(
+            UpdateFeatureAsyncCore(featureId, request, options, cancellationToken)
+        );
     }
 
     /// <example><code>
     /// await client.Features.DeleteFeatureAsync("feature_id");
     /// </code></example>
-    public async Task<DeleteFeatureResponse> DeleteFeatureAsync(
+    public WithRawResponseTask<DeleteFeatureResponse> DeleteFeatureAsync(
         string featureId,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
     {
-        var response = await _client
-            .SendRequestAsync(
-                new JsonRequest
-                {
-                    BaseUrl = _client.Options.BaseUrl,
-                    Method = HttpMethod.Delete,
-                    Path = string.Format(
-                        "features/{0}",
-                        ValueConvert.ToPathParameterString(featureId)
-                    ),
-                    Options = options,
-                },
-                cancellationToken
-            )
-            .ConfigureAwait(false);
-        if (response.StatusCode is >= 200 and < 400)
-        {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
-            try
-            {
-                return JsonUtils.Deserialize<DeleteFeatureResponse>(responseBody)!;
-            }
-            catch (JsonException e)
-            {
-                throw new SchematicException("Failed to deserialize response", e);
-            }
-        }
-
-        {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
-            try
-            {
-                switch (response.StatusCode)
-                {
-                    case 400:
-                        throw new BadRequestError(JsonUtils.Deserialize<ApiError>(responseBody));
-                    case 401:
-                        throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
-                    case 403:
-                        throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
-                    case 404:
-                        throw new NotFoundError(JsonUtils.Deserialize<ApiError>(responseBody));
-                    case 500:
-                        throw new InternalServerError(
-                            JsonUtils.Deserialize<ApiError>(responseBody)
-                        );
-                }
-            }
-            catch (JsonException)
-            {
-                // unable to map error response, throwing generic error
-            }
-            throw new SchematicApiException(
-                $"Error with status code {response.StatusCode}",
-                response.StatusCode,
-                responseBody
-            );
-        }
+        return new WithRawResponseTask<DeleteFeatureResponse>(
+            DeleteFeatureAsyncCore(featureId, options, cancellationToken)
+        );
     }
 
     /// <example><code>
@@ -417,106 +1577,20 @@ public partial class FeaturesClient
     ///         PlanVersionId = "plan_version_id",
     ///         WithoutPlanEntitlementFor = "without_plan_entitlement_for",
     ///         BooleanRequireEvent = true,
-    ///         Limit = 1,
-    ///         Offset = 1,
+    ///         Limit = 1000000,
+    ///         Offset = 1000000,
     ///     }
     /// );
     /// </code></example>
-    public async Task<CountFeaturesResponse> CountFeaturesAsync(
+    public WithRawResponseTask<CountFeaturesResponse> CountFeaturesAsync(
         CountFeaturesRequest request,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
     {
-        var _query = new Dictionary<string, object>();
-        _query["ids"] = request.Ids;
-        _query["feature_type"] = request.FeatureType.Select(_value => _value.Stringify()).ToList();
-        if (request.Q != null)
-        {
-            _query["q"] = request.Q;
-        }
-        if (request.WithoutCompanyOverrideFor != null)
-        {
-            _query["without_company_override_for"] = request.WithoutCompanyOverrideFor;
-        }
-        if (request.PlanVersionId != null)
-        {
-            _query["plan_version_id"] = request.PlanVersionId;
-        }
-        if (request.WithoutPlanEntitlementFor != null)
-        {
-            _query["without_plan_entitlement_for"] = request.WithoutPlanEntitlementFor;
-        }
-        if (request.BooleanRequireEvent != null)
-        {
-            _query["boolean_require_event"] = JsonUtils.Serialize(
-                request.BooleanRequireEvent.Value
-            );
-        }
-        if (request.Limit != null)
-        {
-            _query["limit"] = request.Limit.Value.ToString();
-        }
-        if (request.Offset != null)
-        {
-            _query["offset"] = request.Offset.Value.ToString();
-        }
-        var response = await _client
-            .SendRequestAsync(
-                new JsonRequest
-                {
-                    BaseUrl = _client.Options.BaseUrl,
-                    Method = HttpMethod.Get,
-                    Path = "features/count",
-                    Query = _query,
-                    Options = options,
-                },
-                cancellationToken
-            )
-            .ConfigureAwait(false);
-        if (response.StatusCode is >= 200 and < 400)
-        {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
-            try
-            {
-                return JsonUtils.Deserialize<CountFeaturesResponse>(responseBody)!;
-            }
-            catch (JsonException e)
-            {
-                throw new SchematicException("Failed to deserialize response", e);
-            }
-        }
-
-        {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
-            try
-            {
-                switch (response.StatusCode)
-                {
-                    case 400:
-                        throw new BadRequestError(JsonUtils.Deserialize<ApiError>(responseBody));
-                    case 401:
-                        throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
-                    case 403:
-                        throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
-                    case 404:
-                        throw new NotFoundError(JsonUtils.Deserialize<ApiError>(responseBody));
-                    case 500:
-                        throw new InternalServerError(
-                            JsonUtils.Deserialize<ApiError>(responseBody)
-                        );
-                }
-            }
-            catch (JsonException)
-            {
-                // unable to map error response, throwing generic error
-            }
-            throw new SchematicApiException(
-                $"Error with status code {response.StatusCode}",
-                response.StatusCode,
-                responseBody
-            );
-        }
+        return new WithRawResponseTask<CountFeaturesResponse>(
+            CountFeaturesAsyncCore(request, options, cancellationToken)
+        );
     }
 
     /// <example><code>
@@ -525,91 +1599,20 @@ public partial class FeaturesClient
     ///     {
     ///         FeatureId = "feature_id",
     ///         Q = "q",
-    ///         Limit = 1,
-    ///         Offset = 1,
+    ///         Limit = 1000000,
+    ///         Offset = 1000000,
     ///     }
     /// );
     /// </code></example>
-    public async Task<ListFlagsResponse> ListFlagsAsync(
+    public WithRawResponseTask<ListFlagsResponse> ListFlagsAsync(
         ListFlagsRequest request,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
     {
-        var _query = new Dictionary<string, object>();
-        _query["ids"] = request.Ids;
-        if (request.FeatureId != null)
-        {
-            _query["feature_id"] = request.FeatureId;
-        }
-        if (request.Q != null)
-        {
-            _query["q"] = request.Q;
-        }
-        if (request.Limit != null)
-        {
-            _query["limit"] = request.Limit.Value.ToString();
-        }
-        if (request.Offset != null)
-        {
-            _query["offset"] = request.Offset.Value.ToString();
-        }
-        var response = await _client
-            .SendRequestAsync(
-                new JsonRequest
-                {
-                    BaseUrl = _client.Options.BaseUrl,
-                    Method = HttpMethod.Get,
-                    Path = "flags",
-                    Query = _query,
-                    Options = options,
-                },
-                cancellationToken
-            )
-            .ConfigureAwait(false);
-        if (response.StatusCode is >= 200 and < 400)
-        {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
-            try
-            {
-                return JsonUtils.Deserialize<ListFlagsResponse>(responseBody)!;
-            }
-            catch (JsonException e)
-            {
-                throw new SchematicException("Failed to deserialize response", e);
-            }
-        }
-
-        {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
-            try
-            {
-                switch (response.StatusCode)
-                {
-                    case 400:
-                        throw new BadRequestError(JsonUtils.Deserialize<ApiError>(responseBody));
-                    case 401:
-                        throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
-                    case 403:
-                        throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
-                    case 404:
-                        throw new NotFoundError(JsonUtils.Deserialize<ApiError>(responseBody));
-                    case 500:
-                        throw new InternalServerError(
-                            JsonUtils.Deserialize<ApiError>(responseBody)
-                        );
-                }
-            }
-            catch (JsonException)
-            {
-                // unable to map error response, throwing generic error
-            }
-            throw new SchematicApiException(
-                $"Error with status code {response.StatusCode}",
-                response.StatusCode,
-                responseBody
-            );
-        }
+        return new WithRawResponseTask<ListFlagsResponse>(
+            ListFlagsAsyncCore(request, options, cancellationToken)
+        );
     }
 
     /// <example><code>
@@ -624,133 +1627,29 @@ public partial class FeaturesClient
     ///     }
     /// );
     /// </code></example>
-    public async Task<CreateFlagResponse> CreateFlagAsync(
+    public WithRawResponseTask<CreateFlagResponse> CreateFlagAsync(
         CreateFlagRequestBody request,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
     {
-        var response = await _client
-            .SendRequestAsync(
-                new JsonRequest
-                {
-                    BaseUrl = _client.Options.BaseUrl,
-                    Method = HttpMethod.Post,
-                    Path = "flags",
-                    Body = request,
-                    ContentType = "application/json",
-                    Options = options,
-                },
-                cancellationToken
-            )
-            .ConfigureAwait(false);
-        if (response.StatusCode is >= 200 and < 400)
-        {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
-            try
-            {
-                return JsonUtils.Deserialize<CreateFlagResponse>(responseBody)!;
-            }
-            catch (JsonException e)
-            {
-                throw new SchematicException("Failed to deserialize response", e);
-            }
-        }
-
-        {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
-            try
-            {
-                switch (response.StatusCode)
-                {
-                    case 400:
-                        throw new BadRequestError(JsonUtils.Deserialize<ApiError>(responseBody));
-                    case 401:
-                        throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
-                    case 403:
-                        throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
-                    case 404:
-                        throw new NotFoundError(JsonUtils.Deserialize<ApiError>(responseBody));
-                    case 500:
-                        throw new InternalServerError(
-                            JsonUtils.Deserialize<ApiError>(responseBody)
-                        );
-                }
-            }
-            catch (JsonException)
-            {
-                // unable to map error response, throwing generic error
-            }
-            throw new SchematicApiException(
-                $"Error with status code {response.StatusCode}",
-                response.StatusCode,
-                responseBody
-            );
-        }
+        return new WithRawResponseTask<CreateFlagResponse>(
+            CreateFlagAsyncCore(request, options, cancellationToken)
+        );
     }
 
     /// <example><code>
     /// await client.Features.GetFlagAsync("flag_id");
     /// </code></example>
-    public async Task<GetFlagResponse> GetFlagAsync(
+    public WithRawResponseTask<GetFlagResponse> GetFlagAsync(
         string flagId,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
     {
-        var response = await _client
-            .SendRequestAsync(
-                new JsonRequest
-                {
-                    BaseUrl = _client.Options.BaseUrl,
-                    Method = HttpMethod.Get,
-                    Path = string.Format("flags/{0}", ValueConvert.ToPathParameterString(flagId)),
-                    Options = options,
-                },
-                cancellationToken
-            )
-            .ConfigureAwait(false);
-        if (response.StatusCode is >= 200 and < 400)
-        {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
-            try
-            {
-                return JsonUtils.Deserialize<GetFlagResponse>(responseBody)!;
-            }
-            catch (JsonException e)
-            {
-                throw new SchematicException("Failed to deserialize response", e);
-            }
-        }
-
-        {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
-            try
-            {
-                switch (response.StatusCode)
-                {
-                    case 401:
-                        throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
-                    case 403:
-                        throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
-                    case 404:
-                        throw new NotFoundError(JsonUtils.Deserialize<ApiError>(responseBody));
-                    case 500:
-                        throw new InternalServerError(
-                            JsonUtils.Deserialize<ApiError>(responseBody)
-                        );
-                }
-            }
-            catch (JsonException)
-            {
-                // unable to map error response, throwing generic error
-            }
-            throw new SchematicApiException(
-                $"Error with status code {response.StatusCode}",
-                response.StatusCode,
-                responseBody
-            );
-        }
+        return new WithRawResponseTask<GetFlagResponse>(
+            GetFlagAsyncCore(flagId, options, cancellationToken)
+        );
     }
 
     /// <example><code>
@@ -766,136 +1665,30 @@ public partial class FeaturesClient
     ///     }
     /// );
     /// </code></example>
-    public async Task<UpdateFlagResponse> UpdateFlagAsync(
+    public WithRawResponseTask<UpdateFlagResponse> UpdateFlagAsync(
         string flagId,
         CreateFlagRequestBody request,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
     {
-        var response = await _client
-            .SendRequestAsync(
-                new JsonRequest
-                {
-                    BaseUrl = _client.Options.BaseUrl,
-                    Method = HttpMethod.Put,
-                    Path = string.Format("flags/{0}", ValueConvert.ToPathParameterString(flagId)),
-                    Body = request,
-                    ContentType = "application/json",
-                    Options = options,
-                },
-                cancellationToken
-            )
-            .ConfigureAwait(false);
-        if (response.StatusCode is >= 200 and < 400)
-        {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
-            try
-            {
-                return JsonUtils.Deserialize<UpdateFlagResponse>(responseBody)!;
-            }
-            catch (JsonException e)
-            {
-                throw new SchematicException("Failed to deserialize response", e);
-            }
-        }
-
-        {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
-            try
-            {
-                switch (response.StatusCode)
-                {
-                    case 400:
-                        throw new BadRequestError(JsonUtils.Deserialize<ApiError>(responseBody));
-                    case 401:
-                        throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
-                    case 403:
-                        throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
-                    case 404:
-                        throw new NotFoundError(JsonUtils.Deserialize<ApiError>(responseBody));
-                    case 500:
-                        throw new InternalServerError(
-                            JsonUtils.Deserialize<ApiError>(responseBody)
-                        );
-                }
-            }
-            catch (JsonException)
-            {
-                // unable to map error response, throwing generic error
-            }
-            throw new SchematicApiException(
-                $"Error with status code {response.StatusCode}",
-                response.StatusCode,
-                responseBody
-            );
-        }
+        return new WithRawResponseTask<UpdateFlagResponse>(
+            UpdateFlagAsyncCore(flagId, request, options, cancellationToken)
+        );
     }
 
     /// <example><code>
     /// await client.Features.DeleteFlagAsync("flag_id");
     /// </code></example>
-    public async Task<DeleteFlagResponse> DeleteFlagAsync(
+    public WithRawResponseTask<DeleteFlagResponse> DeleteFlagAsync(
         string flagId,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
     {
-        var response = await _client
-            .SendRequestAsync(
-                new JsonRequest
-                {
-                    BaseUrl = _client.Options.BaseUrl,
-                    Method = HttpMethod.Delete,
-                    Path = string.Format("flags/{0}", ValueConvert.ToPathParameterString(flagId)),
-                    Options = options,
-                },
-                cancellationToken
-            )
-            .ConfigureAwait(false);
-        if (response.StatusCode is >= 200 and < 400)
-        {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
-            try
-            {
-                return JsonUtils.Deserialize<DeleteFlagResponse>(responseBody)!;
-            }
-            catch (JsonException e)
-            {
-                throw new SchematicException("Failed to deserialize response", e);
-            }
-        }
-
-        {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
-            try
-            {
-                switch (response.StatusCode)
-                {
-                    case 400:
-                        throw new BadRequestError(JsonUtils.Deserialize<ApiError>(responseBody));
-                    case 401:
-                        throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
-                    case 403:
-                        throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
-                    case 404:
-                        throw new NotFoundError(JsonUtils.Deserialize<ApiError>(responseBody));
-                    case 500:
-                        throw new InternalServerError(
-                            JsonUtils.Deserialize<ApiError>(responseBody)
-                        );
-                }
-            }
-            catch (JsonException)
-            {
-                // unable to map error response, throwing generic error
-            }
-            throw new SchematicApiException(
-                $"Error with status code {response.StatusCode}",
-                response.StatusCode,
-                responseBody
-            );
-        }
+        return new WithRawResponseTask<DeleteFlagResponse>(
+            DeleteFlagAsyncCore(flagId, options, cancellationToken)
+        );
     }
 
     /// <example><code>
@@ -933,220 +1726,52 @@ public partial class FeaturesClient
     ///                     },
     ///                 },
     ///                 Name = "name",
-    ///                 Priority = 1,
+    ///                 Priority = 1000000,
     ///                 Value = true,
     ///             },
     ///         },
     ///     }
     /// );
     /// </code></example>
-    public async Task<UpdateFlagRulesResponse> UpdateFlagRulesAsync(
+    public WithRawResponseTask<UpdateFlagRulesResponse> UpdateFlagRulesAsync(
         string flagId,
         UpdateFlagRulesRequestBody request,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
     {
-        var response = await _client
-            .SendRequestAsync(
-                new JsonRequest
-                {
-                    BaseUrl = _client.Options.BaseUrl,
-                    Method = HttpMethod.Put,
-                    Path = string.Format(
-                        "flags/{0}/rules",
-                        ValueConvert.ToPathParameterString(flagId)
-                    ),
-                    Body = request,
-                    ContentType = "application/json",
-                    Options = options,
-                },
-                cancellationToken
-            )
-            .ConfigureAwait(false);
-        if (response.StatusCode is >= 200 and < 400)
-        {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
-            try
-            {
-                return JsonUtils.Deserialize<UpdateFlagRulesResponse>(responseBody)!;
-            }
-            catch (JsonException e)
-            {
-                throw new SchematicException("Failed to deserialize response", e);
-            }
-        }
-
-        {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
-            try
-            {
-                switch (response.StatusCode)
-                {
-                    case 400:
-                        throw new BadRequestError(JsonUtils.Deserialize<ApiError>(responseBody));
-                    case 401:
-                        throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
-                    case 403:
-                        throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
-                    case 404:
-                        throw new NotFoundError(JsonUtils.Deserialize<ApiError>(responseBody));
-                    case 500:
-                        throw new InternalServerError(
-                            JsonUtils.Deserialize<ApiError>(responseBody)
-                        );
-                }
-            }
-            catch (JsonException)
-            {
-                // unable to map error response, throwing generic error
-            }
-            throw new SchematicApiException(
-                $"Error with status code {response.StatusCode}",
-                response.StatusCode,
-                responseBody
-            );
-        }
+        return new WithRawResponseTask<UpdateFlagRulesResponse>(
+            UpdateFlagRulesAsyncCore(flagId, request, options, cancellationToken)
+        );
     }
 
     /// <example><code>
     /// await client.Features.CheckFlagAsync("key", new CheckFlagRequestBody());
     /// </code></example>
-    public async Task<CheckFlagResponse> CheckFlagAsync(
+    public WithRawResponseTask<CheckFlagResponse> CheckFlagAsync(
         string key,
         CheckFlagRequestBody request,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
     {
-        var response = await _client
-            .SendRequestAsync(
-                new JsonRequest
-                {
-                    BaseUrl = _client.Options.BaseUrl,
-                    Method = HttpMethod.Post,
-                    Path = string.Format(
-                        "flags/{0}/check",
-                        ValueConvert.ToPathParameterString(key)
-                    ),
-                    Body = request,
-                    ContentType = "application/json",
-                    Options = options,
-                },
-                cancellationToken
-            )
-            .ConfigureAwait(false);
-        if (response.StatusCode is >= 200 and < 400)
-        {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
-            try
-            {
-                return JsonUtils.Deserialize<CheckFlagResponse>(responseBody)!;
-            }
-            catch (JsonException e)
-            {
-                throw new SchematicException("Failed to deserialize response", e);
-            }
-        }
-
-        {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
-            try
-            {
-                switch (response.StatusCode)
-                {
-                    case 400:
-                        throw new BadRequestError(JsonUtils.Deserialize<ApiError>(responseBody));
-                    case 401:
-                        throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
-                    case 403:
-                        throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
-                    case 404:
-                        throw new NotFoundError(JsonUtils.Deserialize<ApiError>(responseBody));
-                    case 500:
-                        throw new InternalServerError(
-                            JsonUtils.Deserialize<ApiError>(responseBody)
-                        );
-                }
-            }
-            catch (JsonException)
-            {
-                // unable to map error response, throwing generic error
-            }
-            throw new SchematicApiException(
-                $"Error with status code {response.StatusCode}",
-                response.StatusCode,
-                responseBody
-            );
-        }
+        return new WithRawResponseTask<CheckFlagResponse>(
+            CheckFlagAsyncCore(key, request, options, cancellationToken)
+        );
     }
 
     /// <example><code>
     /// await client.Features.CheckFlagsAsync(new CheckFlagRequestBody());
     /// </code></example>
-    public async Task<CheckFlagsResponse> CheckFlagsAsync(
+    public WithRawResponseTask<CheckFlagsResponse> CheckFlagsAsync(
         CheckFlagRequestBody request,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
     {
-        var response = await _client
-            .SendRequestAsync(
-                new JsonRequest
-                {
-                    BaseUrl = _client.Options.BaseUrl,
-                    Method = HttpMethod.Post,
-                    Path = "flags/check",
-                    Body = request,
-                    ContentType = "application/json",
-                    Options = options,
-                },
-                cancellationToken
-            )
-            .ConfigureAwait(false);
-        if (response.StatusCode is >= 200 and < 400)
-        {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
-            try
-            {
-                return JsonUtils.Deserialize<CheckFlagsResponse>(responseBody)!;
-            }
-            catch (JsonException e)
-            {
-                throw new SchematicException("Failed to deserialize response", e);
-            }
-        }
-
-        {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
-            try
-            {
-                switch (response.StatusCode)
-                {
-                    case 400:
-                        throw new BadRequestError(JsonUtils.Deserialize<ApiError>(responseBody));
-                    case 401:
-                        throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
-                    case 403:
-                        throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
-                    case 404:
-                        throw new NotFoundError(JsonUtils.Deserialize<ApiError>(responseBody));
-                    case 500:
-                        throw new InternalServerError(
-                            JsonUtils.Deserialize<ApiError>(responseBody)
-                        );
-                }
-            }
-            catch (JsonException)
-            {
-                // unable to map error response, throwing generic error
-            }
-            throw new SchematicApiException(
-                $"Error with status code {response.StatusCode}",
-                response.StatusCode,
-                responseBody
-            );
-        }
+        return new WithRawResponseTask<CheckFlagsResponse>(
+            CheckFlagsAsyncCore(request, options, cancellationToken)
+        );
     }
 
     /// <example><code>
@@ -1157,69 +1782,15 @@ public partial class FeaturesClient
     ///     }
     /// );
     /// </code></example>
-    public async Task<CheckFlagsBulkResponse> CheckFlagsBulkAsync(
+    public WithRawResponseTask<CheckFlagsBulkResponse> CheckFlagsBulkAsync(
         CheckFlagsBulkRequestBody request,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
     {
-        var response = await _client
-            .SendRequestAsync(
-                new JsonRequest
-                {
-                    BaseUrl = _client.Options.BaseUrl,
-                    Method = HttpMethod.Post,
-                    Path = "flags/check-bulk",
-                    Body = request,
-                    ContentType = "application/json",
-                    Options = options,
-                },
-                cancellationToken
-            )
-            .ConfigureAwait(false);
-        if (response.StatusCode is >= 200 and < 400)
-        {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
-            try
-            {
-                return JsonUtils.Deserialize<CheckFlagsBulkResponse>(responseBody)!;
-            }
-            catch (JsonException e)
-            {
-                throw new SchematicException("Failed to deserialize response", e);
-            }
-        }
-
-        {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
-            try
-            {
-                switch (response.StatusCode)
-                {
-                    case 400:
-                        throw new BadRequestError(JsonUtils.Deserialize<ApiError>(responseBody));
-                    case 401:
-                        throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
-                    case 403:
-                        throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
-                    case 404:
-                        throw new NotFoundError(JsonUtils.Deserialize<ApiError>(responseBody));
-                    case 500:
-                        throw new InternalServerError(
-                            JsonUtils.Deserialize<ApiError>(responseBody)
-                        );
-                }
-            }
-            catch (JsonException)
-            {
-                // unable to map error response, throwing generic error
-            }
-            throw new SchematicApiException(
-                $"Error with status code {response.StatusCode}",
-                response.StatusCode,
-                responseBody
-            );
-        }
+        return new WithRawResponseTask<CheckFlagsBulkResponse>(
+            CheckFlagsBulkAsyncCore(request, options, cancellationToken)
+        );
     }
 
     /// <example><code>
@@ -1228,90 +1799,19 @@ public partial class FeaturesClient
     ///     {
     ///         FeatureId = "feature_id",
     ///         Q = "q",
-    ///         Limit = 1,
-    ///         Offset = 1,
+    ///         Limit = 1000000,
+    ///         Offset = 1000000,
     ///     }
     /// );
     /// </code></example>
-    public async Task<CountFlagsResponse> CountFlagsAsync(
+    public WithRawResponseTask<CountFlagsResponse> CountFlagsAsync(
         CountFlagsRequest request,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
     {
-        var _query = new Dictionary<string, object>();
-        _query["ids"] = request.Ids;
-        if (request.FeatureId != null)
-        {
-            _query["feature_id"] = request.FeatureId;
-        }
-        if (request.Q != null)
-        {
-            _query["q"] = request.Q;
-        }
-        if (request.Limit != null)
-        {
-            _query["limit"] = request.Limit.Value.ToString();
-        }
-        if (request.Offset != null)
-        {
-            _query["offset"] = request.Offset.Value.ToString();
-        }
-        var response = await _client
-            .SendRequestAsync(
-                new JsonRequest
-                {
-                    BaseUrl = _client.Options.BaseUrl,
-                    Method = HttpMethod.Get,
-                    Path = "flags/count",
-                    Query = _query,
-                    Options = options,
-                },
-                cancellationToken
-            )
-            .ConfigureAwait(false);
-        if (response.StatusCode is >= 200 and < 400)
-        {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
-            try
-            {
-                return JsonUtils.Deserialize<CountFlagsResponse>(responseBody)!;
-            }
-            catch (JsonException e)
-            {
-                throw new SchematicException("Failed to deserialize response", e);
-            }
-        }
-
-        {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
-            try
-            {
-                switch (response.StatusCode)
-                {
-                    case 400:
-                        throw new BadRequestError(JsonUtils.Deserialize<ApiError>(responseBody));
-                    case 401:
-                        throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
-                    case 403:
-                        throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
-                    case 404:
-                        throw new NotFoundError(JsonUtils.Deserialize<ApiError>(responseBody));
-                    case 500:
-                        throw new InternalServerError(
-                            JsonUtils.Deserialize<ApiError>(responseBody)
-                        );
-                }
-            }
-            catch (JsonException)
-            {
-                // unable to map error response, throwing generic error
-            }
-            throw new SchematicApiException(
-                $"Error with status code {response.StatusCode}",
-                response.StatusCode,
-                responseBody
-            );
-        }
+        return new WithRawResponseTask<CountFlagsResponse>(
+            CountFlagsAsyncCore(request, options, cancellationToken)
+        );
     }
 }

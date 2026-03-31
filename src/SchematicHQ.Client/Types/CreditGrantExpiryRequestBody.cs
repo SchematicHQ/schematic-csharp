@@ -1,5 +1,5 @@
-using System.Text.Json;
-using System.Text.Json.Serialization;
+using global::System.Text.Json;
+using global::System.Text.Json.Serialization;
 using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
@@ -18,7 +18,7 @@ public record CreditGrantExpiryRequestBody : IJsonOnDeserialized
     public BillingCreditExpiryUnit? ExpiryUnit { get; set; }
 
     [JsonPropertyName("expiry_unit_count")]
-    public int? ExpiryUnitCount { get; set; }
+    public long? ExpiryUnitCount { get; set; }
 
     [JsonPropertyName("reset_cadence")]
     public required BillingPlanCreditGrantResetCadence ResetCadence { get; set; }

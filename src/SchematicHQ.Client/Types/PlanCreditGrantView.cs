@@ -1,5 +1,5 @@
-using System.Text.Json;
-using System.Text.Json.Serialization;
+using global::System.Text.Json;
+using global::System.Text.Json.Serialization;
 using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
@@ -12,7 +12,7 @@ public record PlanCreditGrantView : IJsonOnDeserialized
         new Dictionary<string, JsonElement>();
 
     [JsonPropertyName("billing_credit_auto_topup_amount")]
-    public int? BillingCreditAutoTopupAmount { get; set; }
+    public long? BillingCreditAutoTopupAmount { get; set; }
 
     [JsonPropertyName("billing_credit_auto_topup_amount_type")]
     public string? BillingCreditAutoTopupAmountType { get; set; }
@@ -27,10 +27,10 @@ public record PlanCreditGrantView : IJsonOnDeserialized
     public BillingCreditExpiryUnit? BillingCreditAutoTopupExpiryUnit { get; set; }
 
     [JsonPropertyName("billing_credit_auto_topup_expiry_unit_count")]
-    public int? BillingCreditAutoTopupExpiryUnitCount { get; set; }
+    public long? BillingCreditAutoTopupExpiryUnitCount { get; set; }
 
     [JsonPropertyName("billing_credit_auto_topup_threshold_percent")]
-    public int? BillingCreditAutoTopupThresholdPercent { get; set; }
+    public long? BillingCreditAutoTopupThresholdPercent { get; set; }
 
     [JsonPropertyName("created_at")]
     public required DateTime CreatedAt { get; set; }
@@ -39,7 +39,7 @@ public record PlanCreditGrantView : IJsonOnDeserialized
     public BillingCreditView? Credit { get; set; }
 
     [JsonPropertyName("credit_amount")]
-    public required int CreditAmount { get; set; }
+    public required long CreditAmount { get; set; }
 
     /// <summary>
     /// Deprecated field, will be removed in the future. Use Credit.Description instead.
@@ -69,7 +69,7 @@ public record PlanCreditGrantView : IJsonOnDeserialized
     public BillingCreditExpiryUnit? ExpiryUnit { get; set; }
 
     [JsonPropertyName("expiry_unit_count")]
-    public int? ExpiryUnitCount { get; set; }
+    public long? ExpiryUnitCount { get; set; }
 
     [JsonPropertyName("id")]
     public required string Id { get; set; }

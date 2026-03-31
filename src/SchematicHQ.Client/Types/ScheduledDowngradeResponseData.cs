@@ -1,5 +1,5 @@
-using System.Text.Json;
-using System.Text.Json.Serialization;
+using global::System.Text.Json;
+using global::System.Text.Json.Serialization;
 using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
@@ -24,7 +24,7 @@ public record ScheduledDowngradeResponseData : IJsonOnDeserialized
     public required string FromPlanName { get; set; }
 
     [JsonPropertyName("from_subscription_price")]
-    public required int FromSubscriptionPrice { get; set; }
+    public required long FromSubscriptionPrice { get; set; }
 
     [JsonPropertyName("id")]
     public required string Id { get; set; }
@@ -36,7 +36,7 @@ public record ScheduledDowngradeResponseData : IJsonOnDeserialized
     public string? ScheduledInterval { get; set; }
 
     [JsonPropertyName("scheduled_price")]
-    public int? ScheduledPrice { get; set; }
+    public long? ScheduledPrice { get; set; }
 
     [JsonPropertyName("to_plan_id")]
     public required string ToPlanId { get; set; }

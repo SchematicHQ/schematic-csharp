@@ -1,9 +1,12 @@
-using System.Text.Json.Serialization;
+using global::System.Text.Json;
+using global::System.Text.Json.Serialization;
 using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
 
-[JsonConverter(typeof(StringEnumSerializer<RulesengineConditionMetricPeriodMonthReset>))]
+[JsonConverter(
+    typeof(RulesengineConditionMetricPeriodMonthReset.RulesengineConditionMetricPeriodMonthResetSerializer)
+)]
 [Serializable]
 public readonly record struct RulesengineConditionMetricPeriodMonthReset : IStringEnum
 {
@@ -61,6 +64,56 @@ public readonly record struct RulesengineConditionMetricPeriodMonthReset : IStri
 
     public static explicit operator RulesengineConditionMetricPeriodMonthReset(string value) =>
         new(value);
+
+    internal class RulesengineConditionMetricPeriodMonthResetSerializer
+        : JsonConverter<RulesengineConditionMetricPeriodMonthReset>
+    {
+        public override RulesengineConditionMetricPeriodMonthReset Read(
+            ref Utf8JsonReader reader,
+            Type typeToConvert,
+            JsonSerializerOptions options
+        )
+        {
+            var stringValue =
+                reader.GetString()
+                ?? throw new global::System.Exception(
+                    "The JSON value could not be read as a string."
+                );
+            return new RulesengineConditionMetricPeriodMonthReset(stringValue);
+        }
+
+        public override void Write(
+            Utf8JsonWriter writer,
+            RulesengineConditionMetricPeriodMonthReset value,
+            JsonSerializerOptions options
+        )
+        {
+            writer.WriteStringValue(value.Value);
+        }
+
+        public override RulesengineConditionMetricPeriodMonthReset ReadAsPropertyName(
+            ref Utf8JsonReader reader,
+            Type typeToConvert,
+            JsonSerializerOptions options
+        )
+        {
+            var stringValue =
+                reader.GetString()
+                ?? throw new global::System.Exception(
+                    "The JSON property name could not be read as a string."
+                );
+            return new RulesengineConditionMetricPeriodMonthReset(stringValue);
+        }
+
+        public override void WriteAsPropertyName(
+            Utf8JsonWriter writer,
+            RulesengineConditionMetricPeriodMonthReset value,
+            JsonSerializerOptions options
+        )
+        {
+            writer.WritePropertyName(value.Value);
+        }
+    }
 
     /// <summary>
     /// Constant strings for enum values

@@ -1,35 +1,39 @@
-using System.Net.Http;
-using System.Threading;
-using global::System.Threading.Tasks;
 using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
 
-public partial class SchematicApi
+public partial class SchematicApi : ISchematicApi
 {
     private readonly RawClient _client;
 
     public SchematicApi(string? apiKey = null, ClientOptions? clientOptions = null)
     {
-        var defaultHeaders = new Headers(
+        clientOptions ??= new ClientOptions();
+        var platformHeaders = new Headers(
             new Dictionary<string, string>()
             {
-                { "X-Schematic-Api-Key", apiKey },
                 { "X-Fern-Language", "C#" },
                 { "X-Fern-SDK-Name", "SchematicHQ.Client" },
                 { "X-Fern-SDK-Version", Version.Current },
-                { "User-Agent", "SchematicHQ.Client/1.4.1" },
+                { "User-Agent", "SchematicHQ.Client/1.4.2" },
             }
         );
-        clientOptions ??= new ClientOptions();
-        foreach (var header in defaultHeaders)
+        foreach (var header in platformHeaders)
         {
             if (!clientOptions.Headers.ContainsKey(header.Key))
             {
                 clientOptions.Headers[header.Key] = header.Value;
             }
         }
-        _client = new RawClient(clientOptions);
+        var clientOptionsWithAuth = clientOptions.Clone();
+        var authHeaders = new Headers(
+            new Dictionary<string, string>() { { "X-Schematic-Api-Key", apiKey ?? "" } }
+        );
+        foreach (var header in authHeaders)
+        {
+            clientOptionsWithAuth.Headers[header.Key] = header.Value;
+        }
+        _client = new RawClient(clientOptionsWithAuth);
         Accounts = new AccountsClient(_client);
         Billing = new BillingClient(_client);
         Credits = new CreditsClient(_client);
@@ -50,61 +54,67 @@ public partial class SchematicApi
         Webhooks = new WebhooksClient(_client);
     }
 
-    public AccountsClient Accounts { get; }
+    public IAccountsClient Accounts { get; }
 
-    public BillingClient Billing { get; }
+    public IBillingClient Billing { get; }
 
-    public CreditsClient Credits { get; }
+    public ICreditsClient Credits { get; }
 
-    public CheckoutClient Checkout { get; }
+    public ICheckoutClient Checkout { get; }
 
-    public CompaniesClient Companies { get; }
+    public ICompaniesClient Companies { get; }
 
-    public EntitlementsClient Entitlements { get; }
+    public IEntitlementsClient Entitlements { get; }
 
-    public PlansClient Plans { get; }
+    public IPlansClient Plans { get; }
 
-    public ComponentsClient Components { get; }
+    public IComponentsClient Components { get; }
 
-    public DataexportsClient Dataexports { get; }
+    public IDataexportsClient Dataexports { get; }
 
-    public EventsClient Events { get; }
+    public IEventsClient Events { get; }
 
-    public FeaturesClient Features { get; }
+    public IFeaturesClient Features { get; }
 
-    public PlanbundleClient Planbundle { get; }
+    public IPlanbundleClient Planbundle { get; }
 
-    public PlangroupsClient Plangroups { get; }
+    public IPlangroupsClient Plangroups { get; }
 
-    public PlanmigrationsClient Planmigrations { get; }
+    public IPlanmigrationsClient Planmigrations { get; }
 
-    public ComponentspublicClient Componentspublic { get; }
+    public IComponentspublicClient Componentspublic { get; }
 
-    public ScheduledcheckoutClient Scheduledcheckout { get; }
+    public IScheduledcheckoutClient Scheduledcheckout { get; }
 
-    public AccesstokensClient Accesstokens { get; }
+    public IAccesstokensClient Accesstokens { get; }
 
-    public WebhooksClient Webhooks { get; }
+    public IWebhooksClient Webhooks { get; }
 
     /// <example><code>
     /// await client.PutPlanAudiencesPlanAudienceIdAsync("plan_audience_id");
     /// </code></example>
-    public async global::System.Threading.Tasks.Task PutPlanAudiencesPlanAudienceIdAsync(
+    public async Task PutPlanAudiencesPlanAudienceIdAsync(
         string planAudienceId,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
     {
+        var _headers = await new SchematicHQ.Client.Core.HeadersBuilder.Builder()
+            .Add(_client.Options.Headers)
+            .Add(_client.Options.AdditionalHeaders)
+            .Add(options?.AdditionalHeaders)
+            .BuildAsync()
+            .ConfigureAwait(false);
         var response = await _client
             .SendRequestAsync(
                 new JsonRequest
                 {
-                    BaseUrl = _client.Options.BaseUrl,
                     Method = HttpMethod.Put,
                     Path = string.Format(
                         "plan-audiences/{0}",
                         ValueConvert.ToPathParameterString(planAudienceId)
                     ),
+                    Headers = _headers,
                     Options = options,
                 },
                 cancellationToken
@@ -115,7 +125,9 @@ public partial class SchematicApi
             return;
         }
         {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
             throw new SchematicApiException(
                 $"Error with status code {response.StatusCode}",
                 response.StatusCode,
@@ -127,22 +139,28 @@ public partial class SchematicApi
     /// <example><code>
     /// await client.DeletePlanAudiencesPlanAudienceIdAsync("plan_audience_id");
     /// </code></example>
-    public async global::System.Threading.Tasks.Task DeletePlanAudiencesPlanAudienceIdAsync(
+    public async Task DeletePlanAudiencesPlanAudienceIdAsync(
         string planAudienceId,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
     {
+        var _headers = await new SchematicHQ.Client.Core.HeadersBuilder.Builder()
+            .Add(_client.Options.Headers)
+            .Add(_client.Options.AdditionalHeaders)
+            .Add(options?.AdditionalHeaders)
+            .BuildAsync()
+            .ConfigureAwait(false);
         var response = await _client
             .SendRequestAsync(
                 new JsonRequest
                 {
-                    BaseUrl = _client.Options.BaseUrl,
                     Method = HttpMethod.Delete,
                     Path = string.Format(
                         "plan-audiences/{0}",
                         ValueConvert.ToPathParameterString(planAudienceId)
                     ),
+                    Headers = _headers,
                     Options = options,
                 },
                 cancellationToken
@@ -153,7 +171,9 @@ public partial class SchematicApi
             return;
         }
         {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
             throw new SchematicApiException(
                 $"Error with status code {response.StatusCode}",
                 response.StatusCode,

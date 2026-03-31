@@ -1,9 +1,10 @@
-using System.Text.Json.Serialization;
+using global::System.Text.Json;
+using global::System.Text.Json.Serialization;
 using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
 
-[JsonConverter(typeof(StringEnumSerializer<ComponentEntityType>))]
+[JsonConverter(typeof(ComponentEntityType.ComponentEntityTypeSerializer))]
 [Serializable]
 public readonly record struct ComponentEntityType : IStringEnum
 {
@@ -51,6 +52,55 @@ public readonly record struct ComponentEntityType : IStringEnum
     public static explicit operator string(ComponentEntityType value) => value.Value;
 
     public static explicit operator ComponentEntityType(string value) => new(value);
+
+    internal class ComponentEntityTypeSerializer : JsonConverter<ComponentEntityType>
+    {
+        public override ComponentEntityType Read(
+            ref Utf8JsonReader reader,
+            Type typeToConvert,
+            JsonSerializerOptions options
+        )
+        {
+            var stringValue =
+                reader.GetString()
+                ?? throw new global::System.Exception(
+                    "The JSON value could not be read as a string."
+                );
+            return new ComponentEntityType(stringValue);
+        }
+
+        public override void Write(
+            Utf8JsonWriter writer,
+            ComponentEntityType value,
+            JsonSerializerOptions options
+        )
+        {
+            writer.WriteStringValue(value.Value);
+        }
+
+        public override ComponentEntityType ReadAsPropertyName(
+            ref Utf8JsonReader reader,
+            Type typeToConvert,
+            JsonSerializerOptions options
+        )
+        {
+            var stringValue =
+                reader.GetString()
+                ?? throw new global::System.Exception(
+                    "The JSON property name could not be read as a string."
+                );
+            return new ComponentEntityType(stringValue);
+        }
+
+        public override void WriteAsPropertyName(
+            Utf8JsonWriter writer,
+            ComponentEntityType value,
+            JsonSerializerOptions options
+        )
+        {
+            writer.WritePropertyName(value.Value);
+        }
+    }
 
     /// <summary>
     /// Constant strings for enum values

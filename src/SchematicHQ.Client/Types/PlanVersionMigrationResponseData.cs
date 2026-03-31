@@ -1,5 +1,5 @@
-using System.Text.Json;
-using System.Text.Json.Serialization;
+using global::System.Text.Json;
+using global::System.Text.Json.Serialization;
 using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
@@ -15,7 +15,7 @@ public record PlanVersionMigrationResponseData : IJsonOnDeserialized
     public DateTime? CompletedAt { get; set; }
 
     [JsonPropertyName("completed_companies")]
-    public required int CompletedCompanies { get; set; }
+    public required long CompletedCompanies { get; set; }
 
     [JsonPropertyName("created_at")]
     public required DateTime CreatedAt { get; set; }
@@ -24,7 +24,7 @@ public record PlanVersionMigrationResponseData : IJsonOnDeserialized
     public string? Error { get; set; }
 
     [JsonPropertyName("failed_companies")]
-    public required int FailedCompanies { get; set; }
+    public required long FailedCompanies { get; set; }
 
     [JsonPropertyName("id")]
     public required string Id { get; set; }
@@ -39,7 +39,7 @@ public record PlanVersionMigrationResponseData : IJsonOnDeserialized
     public required string PlanVersionIdTo { get; set; }
 
     [JsonPropertyName("skipped_companies")]
-    public required int SkippedCompanies { get; set; }
+    public required long SkippedCompanies { get; set; }
 
     [JsonPropertyName("started_at")]
     public DateTime? StartedAt { get; set; }
@@ -51,7 +51,7 @@ public record PlanVersionMigrationResponseData : IJsonOnDeserialized
     public required PlanVersionMigrationStrategy Strategy { get; set; }
 
     [JsonPropertyName("total_companies")]
-    public required int TotalCompanies { get; set; }
+    public required long TotalCompanies { get; set; }
 
     [JsonPropertyName("updated_at")]
     public required DateTime UpdatedAt { get; set; }

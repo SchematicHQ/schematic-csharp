@@ -1,9 +1,12 @@
-using System.Text.Json.Serialization;
+using global::System.Text.Json;
+using global::System.Text.Json.Serialization;
 using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
 
-[JsonConverter(typeof(StringEnumSerializer<UpdatePlanEntitlementRequestBodyMetricPeriod>))]
+[JsonConverter(
+    typeof(UpdatePlanEntitlementRequestBodyMetricPeriod.UpdatePlanEntitlementRequestBodyMetricPeriodSerializer)
+)]
 [Serializable]
 public readonly record struct UpdatePlanEntitlementRequestBodyMetricPeriod : IStringEnum
 {
@@ -69,6 +72,56 @@ public readonly record struct UpdatePlanEntitlementRequestBodyMetricPeriod : ISt
 
     public static explicit operator UpdatePlanEntitlementRequestBodyMetricPeriod(string value) =>
         new(value);
+
+    internal class UpdatePlanEntitlementRequestBodyMetricPeriodSerializer
+        : JsonConverter<UpdatePlanEntitlementRequestBodyMetricPeriod>
+    {
+        public override UpdatePlanEntitlementRequestBodyMetricPeriod Read(
+            ref Utf8JsonReader reader,
+            Type typeToConvert,
+            JsonSerializerOptions options
+        )
+        {
+            var stringValue =
+                reader.GetString()
+                ?? throw new global::System.Exception(
+                    "The JSON value could not be read as a string."
+                );
+            return new UpdatePlanEntitlementRequestBodyMetricPeriod(stringValue);
+        }
+
+        public override void Write(
+            Utf8JsonWriter writer,
+            UpdatePlanEntitlementRequestBodyMetricPeriod value,
+            JsonSerializerOptions options
+        )
+        {
+            writer.WriteStringValue(value.Value);
+        }
+
+        public override UpdatePlanEntitlementRequestBodyMetricPeriod ReadAsPropertyName(
+            ref Utf8JsonReader reader,
+            Type typeToConvert,
+            JsonSerializerOptions options
+        )
+        {
+            var stringValue =
+                reader.GetString()
+                ?? throw new global::System.Exception(
+                    "The JSON property name could not be read as a string."
+                );
+            return new UpdatePlanEntitlementRequestBodyMetricPeriod(stringValue);
+        }
+
+        public override void WriteAsPropertyName(
+            Utf8JsonWriter writer,
+            UpdatePlanEntitlementRequestBodyMetricPeriod value,
+            JsonSerializerOptions options
+        )
+        {
+            writer.WritePropertyName(value.Value);
+        }
+    }
 
     /// <summary>
     /// Constant strings for enum values

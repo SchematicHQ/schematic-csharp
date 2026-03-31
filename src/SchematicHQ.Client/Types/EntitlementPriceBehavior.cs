@@ -1,9 +1,10 @@
-using System.Text.Json.Serialization;
+using global::System.Text.Json;
+using global::System.Text.Json.Serialization;
 using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
 
-[JsonConverter(typeof(StringEnumSerializer<EntitlementPriceBehavior>))]
+[JsonConverter(typeof(EntitlementPriceBehavior.EntitlementPriceBehaviorSerializer))]
 [Serializable]
 public readonly record struct EntitlementPriceBehavior : IStringEnum
 {
@@ -57,6 +58,55 @@ public readonly record struct EntitlementPriceBehavior : IStringEnum
     public static explicit operator string(EntitlementPriceBehavior value) => value.Value;
 
     public static explicit operator EntitlementPriceBehavior(string value) => new(value);
+
+    internal class EntitlementPriceBehaviorSerializer : JsonConverter<EntitlementPriceBehavior>
+    {
+        public override EntitlementPriceBehavior Read(
+            ref Utf8JsonReader reader,
+            Type typeToConvert,
+            JsonSerializerOptions options
+        )
+        {
+            var stringValue =
+                reader.GetString()
+                ?? throw new global::System.Exception(
+                    "The JSON value could not be read as a string."
+                );
+            return new EntitlementPriceBehavior(stringValue);
+        }
+
+        public override void Write(
+            Utf8JsonWriter writer,
+            EntitlementPriceBehavior value,
+            JsonSerializerOptions options
+        )
+        {
+            writer.WriteStringValue(value.Value);
+        }
+
+        public override EntitlementPriceBehavior ReadAsPropertyName(
+            ref Utf8JsonReader reader,
+            Type typeToConvert,
+            JsonSerializerOptions options
+        )
+        {
+            var stringValue =
+                reader.GetString()
+                ?? throw new global::System.Exception(
+                    "The JSON property name could not be read as a string."
+                );
+            return new EntitlementPriceBehavior(stringValue);
+        }
+
+        public override void WriteAsPropertyName(
+            Utf8JsonWriter writer,
+            EntitlementPriceBehavior value,
+            JsonSerializerOptions options
+        )
+        {
+            writer.WritePropertyName(value.Value);
+        }
+    }
 
     /// <summary>
     /// Constant strings for enum values

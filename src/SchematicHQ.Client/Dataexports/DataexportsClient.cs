@@ -1,44 +1,37 @@
-using System.Net.Http;
-using System.Text.Json;
-using System.Threading;
-using global::System.Threading.Tasks;
+using global::System.Text.Json;
 using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
 
-public partial class DataexportsClient
+public partial class DataexportsClient : IDataexportsClient
 {
-    private RawClient _client;
+    private readonly RawClient _client;
 
     internal DataexportsClient(RawClient client)
     {
         _client = client;
     }
 
-    /// <example><code>
-    /// await client.Dataexports.CreateDataExportAsync(
-    ///     new CreateDataExportRequestBody
-    ///     {
-    ///         ExportType = "company-feature-usage",
-    ///         Metadata = "metadata",
-    ///         OutputFileType = "csv",
-    ///     }
-    /// );
-    /// </code></example>
-    public async Task<CreateDataExportResponse> CreateDataExportAsync(
+    private async Task<WithRawResponse<CreateDataExportResponse>> CreateDataExportAsyncCore(
         CreateDataExportRequestBody request,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
     {
+        var _headers = await new SchematicHQ.Client.Core.HeadersBuilder.Builder()
+            .Add(_client.Options.Headers)
+            .Add(_client.Options.AdditionalHeaders)
+            .Add(options?.AdditionalHeaders)
+            .BuildAsync()
+            .ConfigureAwait(false);
         var response = await _client
             .SendRequestAsync(
                 new JsonRequest
                 {
-                    BaseUrl = _client.Options.BaseUrl,
                     Method = HttpMethod.Post,
                     Path = "data-exports",
                     Body = request,
+                    Headers = _headers,
                     ContentType = "application/json",
                     Options = options,
                 },
@@ -47,19 +40,37 @@ public partial class DataexportsClient
             .ConfigureAwait(false);
         if (response.StatusCode is >= 200 and < 400)
         {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
             try
             {
-                return JsonUtils.Deserialize<CreateDataExportResponse>(responseBody)!;
+                var responseData = JsonUtils.Deserialize<CreateDataExportResponse>(responseBody)!;
+                return new WithRawResponse<CreateDataExportResponse>()
+                {
+                    Data = responseData,
+                    RawResponse = new RawResponse()
+                    {
+                        StatusCode = response.Raw.StatusCode,
+                        Url = response.Raw.RequestMessage?.RequestUri ?? new Uri("about:blank"),
+                        Headers = ResponseHeaders.FromHttpResponseMessage(response.Raw),
+                    },
+                };
             }
             catch (JsonException e)
             {
-                throw new SchematicException("Failed to deserialize response", e);
+                throw new SchematicApiException(
+                    "Failed to deserialize response",
+                    response.StatusCode,
+                    responseBody,
+                    e
+                );
             }
         }
-
         {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
             try
             {
                 switch (response.StatusCode)
@@ -90,32 +101,51 @@ public partial class DataexportsClient
         }
     }
 
-    /// <example><code>
-    /// await client.Dataexports.GetDataExportArtifactAsync("data_export_id");
-    /// </code></example>
-    public async global::System.Threading.Tasks.Task GetDataExportArtifactAsync(
+    private async Task<WithRawResponse<global::System.IO.Stream>> GetDataExportArtifactAsyncCore(
         string dataExportId,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
     {
+        var _headers = await new SchematicHQ.Client.Core.HeadersBuilder.Builder()
+            .Add(_client.Options.Headers)
+            .Add(_client.Options.AdditionalHeaders)
+            .Add(options?.AdditionalHeaders)
+            .BuildAsync()
+            .ConfigureAwait(false);
         var response = await _client
             .SendRequestAsync(
                 new JsonRequest
                 {
-                    BaseUrl = _client.Options.BaseUrl,
                     Method = HttpMethod.Get,
                     Path = string.Format(
                         "data-exports/{0}/artifact",
                         ValueConvert.ToPathParameterString(dataExportId)
                     ),
+                    Headers = _headers,
                     Options = options,
                 },
                 cancellationToken
             )
             .ConfigureAwait(false);
+        if (response.StatusCode is >= 200 and < 400)
         {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            var stream = await response.Raw.Content.ReadAsStreamAsync();
+            return new WithRawResponse<global::System.IO.Stream>()
+            {
+                Data = stream,
+                RawResponse = new RawResponse()
+                {
+                    StatusCode = response.Raw.StatusCode,
+                    Url = response.Raw.RequestMessage?.RequestUri ?? new Uri("about:blank"),
+                    Headers = ResponseHeaders.FromHttpResponseMessage(response.Raw),
+                },
+            };
+        }
+        {
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
             try
             {
                 switch (response.StatusCode)
@@ -142,5 +172,40 @@ public partial class DataexportsClient
                 responseBody
             );
         }
+    }
+
+    /// <example><code>
+    /// await client.Dataexports.CreateDataExportAsync(
+    ///     new CreateDataExportRequestBody
+    ///     {
+    ///         ExportType = "company-feature-usage",
+    ///         Metadata = "metadata",
+    ///         OutputFileType = "csv",
+    ///     }
+    /// );
+    /// </code></example>
+    public WithRawResponseTask<CreateDataExportResponse> CreateDataExportAsync(
+        CreateDataExportRequestBody request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        return new WithRawResponseTask<CreateDataExportResponse>(
+            CreateDataExportAsyncCore(request, options, cancellationToken)
+        );
+    }
+
+    /// <example><code>
+    /// await client.Dataexports.GetDataExportArtifactAsync("data_export_id");
+    /// </code></example>
+    public WithRawResponseTask<global::System.IO.Stream> GetDataExportArtifactAsync(
+        string dataExportId,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        return new WithRawResponseTask<global::System.IO.Stream>(
+            GetDataExportArtifactAsyncCore(dataExportId, options, cancellationToken)
+        );
     }
 }

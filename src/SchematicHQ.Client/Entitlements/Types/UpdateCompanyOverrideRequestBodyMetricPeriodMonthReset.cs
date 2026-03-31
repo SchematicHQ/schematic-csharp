@@ -1,10 +1,11 @@
-using System.Text.Json.Serialization;
+using global::System.Text.Json;
+using global::System.Text.Json.Serialization;
 using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
 
 [JsonConverter(
-    typeof(StringEnumSerializer<UpdateCompanyOverrideRequestBodyMetricPeriodMonthReset>)
+    typeof(UpdateCompanyOverrideRequestBodyMetricPeriodMonthReset.UpdateCompanyOverrideRequestBodyMetricPeriodMonthResetSerializer)
 )]
 [Serializable]
 public readonly record struct UpdateCompanyOverrideRequestBodyMetricPeriodMonthReset : IStringEnum
@@ -63,6 +64,56 @@ public readonly record struct UpdateCompanyOverrideRequestBodyMetricPeriodMonthR
     public static explicit operator UpdateCompanyOverrideRequestBodyMetricPeriodMonthReset(
         string value
     ) => new(value);
+
+    internal class UpdateCompanyOverrideRequestBodyMetricPeriodMonthResetSerializer
+        : JsonConverter<UpdateCompanyOverrideRequestBodyMetricPeriodMonthReset>
+    {
+        public override UpdateCompanyOverrideRequestBodyMetricPeriodMonthReset Read(
+            ref Utf8JsonReader reader,
+            Type typeToConvert,
+            JsonSerializerOptions options
+        )
+        {
+            var stringValue =
+                reader.GetString()
+                ?? throw new global::System.Exception(
+                    "The JSON value could not be read as a string."
+                );
+            return new UpdateCompanyOverrideRequestBodyMetricPeriodMonthReset(stringValue);
+        }
+
+        public override void Write(
+            Utf8JsonWriter writer,
+            UpdateCompanyOverrideRequestBodyMetricPeriodMonthReset value,
+            JsonSerializerOptions options
+        )
+        {
+            writer.WriteStringValue(value.Value);
+        }
+
+        public override UpdateCompanyOverrideRequestBodyMetricPeriodMonthReset ReadAsPropertyName(
+            ref Utf8JsonReader reader,
+            Type typeToConvert,
+            JsonSerializerOptions options
+        )
+        {
+            var stringValue =
+                reader.GetString()
+                ?? throw new global::System.Exception(
+                    "The JSON property name could not be read as a string."
+                );
+            return new UpdateCompanyOverrideRequestBodyMetricPeriodMonthReset(stringValue);
+        }
+
+        public override void WriteAsPropertyName(
+            Utf8JsonWriter writer,
+            UpdateCompanyOverrideRequestBodyMetricPeriodMonthReset value,
+            JsonSerializerOptions options
+        )
+        {
+            writer.WritePropertyName(value.Value);
+        }
+    }
 
     /// <summary>
     /// Constant strings for enum values

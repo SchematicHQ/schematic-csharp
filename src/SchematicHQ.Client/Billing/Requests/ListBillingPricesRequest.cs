@@ -1,4 +1,4 @@
-using System.Text.Json.Serialization;
+using global::System.Text.Json.Serialization;
 using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
@@ -6,6 +6,12 @@ namespace SchematicHQ.Client;
 [Serializable]
 public record ListBillingPricesRequest
 {
+    /// <summary>
+    /// Filter for prices in a specific currency (e.g. usd, eur)
+    /// </summary>
+    [JsonIgnore]
+    public string? Currency { get; set; }
+
     /// <summary>
     /// Filter for prices valid for initial plans (free prices only)
     /// </summary>
@@ -31,7 +37,7 @@ public record ListBillingPricesRequest
     public bool? IsActive { get; set; }
 
     [JsonIgnore]
-    public int? Price { get; set; }
+    public long? Price { get; set; }
 
     [JsonIgnore]
     public string? ProductId { get; set; }
@@ -61,13 +67,13 @@ public record ListBillingPricesRequest
     /// Page limit (default 100)
     /// </summary>
     [JsonIgnore]
-    public int? Limit { get; set; }
+    public long? Limit { get; set; }
 
     /// <summary>
     /// Page offset (default 0)
     /// </summary>
     [JsonIgnore]
-    public int? Offset { get; set; }
+    public long? Offset { get; set; }
 
     /// <inheritdoc />
     public override string ToString()

@@ -1,5 +1,5 @@
-using System.Text.Json;
-using System.Text.Json.Serialization;
+using global::System.Text.Json;
+using global::System.Text.Json.Serialization;
 using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
@@ -33,13 +33,13 @@ public record CheckFlagResponseData : IJsonOnDeserialized
     /// Deprecated: Use Entitlement.Allocation instead.
     /// </summary>
     [JsonPropertyName("feature_allocation")]
-    public int? FeatureAllocation { get; set; }
+    public long? FeatureAllocation { get; set; }
 
     /// <summary>
     /// Deprecated: Use Entitlement.Usage instead.
     /// </summary>
     [JsonPropertyName("feature_usage")]
-    public int? FeatureUsage { get; set; }
+    public long? FeatureUsage { get; set; }
 
     /// <summary>
     /// Deprecated: Use Entitlement.EventName instead.

@@ -1,5 +1,5 @@
-using System.Text.Json;
-using System.Text.Json.Serialization;
+using global::System.Text.Json;
+using global::System.Text.Json.Serialization;
 using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
@@ -15,10 +15,10 @@ public record CreditBundlePurchaseResponseData : IJsonOnDeserialized
     public BillingCreditBundleResponseData? Bundle { get; set; }
 
     [JsonPropertyName("quantity")]
-    public required int Quantity { get; set; }
+    public required long Quantity { get; set; }
 
     [JsonPropertyName("total")]
-    public required int Total { get; set; }
+    public required long Total { get; set; }
 
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();

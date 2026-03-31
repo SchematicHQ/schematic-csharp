@@ -1,5 +1,5 @@
-using System.Text.Json;
-using System.Text.Json.Serialization;
+using global::System.Text.Json;
+using global::System.Text.Json.Serialization;
 using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
@@ -15,7 +15,7 @@ public record BillingCouponResponseData : IJsonOnDeserialized
     public required string AccountId { get; set; }
 
     [JsonPropertyName("amount_off")]
-    public int? AmountOff { get; set; }
+    public long? AmountOff { get; set; }
 
     [JsonPropertyName("currency")]
     public string? Currency { get; set; }
@@ -24,7 +24,7 @@ public record BillingCouponResponseData : IJsonOnDeserialized
     public string? Duration { get; set; }
 
     [JsonPropertyName("duration_in_months")]
-    public int? DurationInMonths { get; set; }
+    public long? DurationInMonths { get; set; }
 
     [JsonPropertyName("environment_id")]
     public required string EnvironmentId { get; set; }
@@ -39,7 +39,7 @@ public record BillingCouponResponseData : IJsonOnDeserialized
     public required bool IsActive { get; set; }
 
     [JsonPropertyName("max_redemptions")]
-    public int? MaxRedemptions { get; set; }
+    public long? MaxRedemptions { get; set; }
 
     [JsonPropertyName("metadata")]
     public Dictionary<string, object?> Metadata { get; set; } = new Dictionary<string, object?>();
@@ -54,7 +54,7 @@ public record BillingCouponResponseData : IJsonOnDeserialized
     public required BillingProviderType ProviderType { get; set; }
 
     [JsonPropertyName("times_redeemed")]
-    public required int TimesRedeemed { get; set; }
+    public required long TimesRedeemed { get; set; }
 
     [JsonPropertyName("valid_from")]
     public DateTime? ValidFrom { get; set; }

@@ -1,5 +1,5 @@
-using System.Text.Json;
-using System.Text.Json.Serialization;
+using global::System.Text.Json;
+using global::System.Text.Json.Serialization;
 using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
@@ -28,9 +28,6 @@ public record ConditionGroupView : IJsonOnDeserialized
 
     [JsonPropertyName("id")]
     public required string Id { get; set; }
-
-    [JsonPropertyName("plan_version_id")]
-    public string? PlanVersionId { get; set; }
 
     [JsonPropertyName("rule_id")]
     public required string RuleId { get; set; }

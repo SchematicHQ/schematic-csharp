@@ -1,5 +1,5 @@
-using System.Text.Json;
-using System.Text.Json.Serialization;
+using global::System.Text.Json;
+using global::System.Text.Json.Serialization;
 using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
@@ -18,7 +18,7 @@ public record WhoAmIResponseData : IJsonOnDeserialized
     public required string AccountName { get; set; }
 
     [JsonPropertyName("actor_type")]
-    public required string ActorType { get; set; }
+    public required ActorType ActorType { get; set; }
 
     [JsonPropertyName("api_key_id")]
     public string? ApiKeyId { get; set; }

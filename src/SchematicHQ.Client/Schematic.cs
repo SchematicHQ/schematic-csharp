@@ -32,11 +32,17 @@ public partial class Schematic
     public CheckoutClient Checkout { get; init; }
     public CompaniesClient Companies { get; init; }
     public ComponentsClient Components { get; init; }
+    public ComponentspublicClient Componentspublic { get; init; }
+    public CreditsClient Credits { get; init; }
+    public DataexportsClient Dataexports { get; init; }
     public EntitlementsClient Entitlements { get; init; }
     public EventsClient Events { get; init; }
     public FeaturesClient Features { get; init; }
+    public PlanbundleClient Planbundle { get; init; }
     public PlangroupsClient Plangroups { get; init; }
+    public PlanmigrationsClient Planmigrations { get; init; }
     public PlansClient Plans { get; init; }
+    public ScheduledcheckoutClient Scheduledcheckout { get; init; }
     public WebhooksClient Webhooks { get; init; }
 
     public Schematic(string apiKey, ClientOptions? options = null)
@@ -93,18 +99,24 @@ public partial class Schematic
 
         var httpClient = _offline ? new HttpClient(new OfflineHttpMessageHandler()) : _options.HttpClient;
         API = new SchematicApi(apiKey, _options.WithHttpClient(httpClient));
-        Accesstokens = API.Accesstokens;
-        Accounts = API.Accounts;
-        Billing = API.Billing;
-        Checkout = API.Checkout;
-        Companies = API.Companies;
-        Components = API.Components;
-        Entitlements = API.Entitlements;
-        Events = API.Events;
-        Features = API.Features;
-        Plangroups = API.Plangroups;
-        Plans = API.Plans;
-        Webhooks = API.Webhooks;
+        Accesstokens = (AccesstokensClient)API.Accesstokens;
+        Accounts = (AccountsClient)API.Accounts;
+        Billing = (BillingClient)API.Billing;
+        Checkout = (CheckoutClient)API.Checkout;
+        Companies = (CompaniesClient)API.Companies;
+        Components = (ComponentsClient)API.Components;
+        Componentspublic = (ComponentspublicClient)API.Componentspublic;
+        Credits = (CreditsClient)API.Credits;
+        Dataexports = (DataexportsClient)API.Dataexports;
+        Entitlements = (EntitlementsClient)API.Entitlements;
+        Events = (EventsClient)API.Events;
+        Features = (FeaturesClient)API.Features;
+        Planbundle = (PlanbundleClient)API.Planbundle;
+        Plangroups = (PlangroupsClient)API.Plangroups;
+        Planmigrations = (PlanmigrationsClient)API.Planmigrations;
+        Plans = (PlansClient)API.Plans;
+        Scheduledcheckout = (ScheduledcheckoutClient)API.Scheduledcheckout;
+        Webhooks = (WebhooksClient)API.Webhooks;
 
         _eventBuffer = _options.EventBuffer ?? new EventBuffer<CreateEventRequestBody>(
             async items =>

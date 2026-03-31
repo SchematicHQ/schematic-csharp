@@ -1,9 +1,10 @@
-using System.Text.Json.Serialization;
+using global::System.Text.Json;
+using global::System.Text.Json.Serialization;
 using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
 
-[JsonConverter(typeof(StringEnumSerializer<PlanControlledByType>))]
+[JsonConverter(typeof(PlanControlledByType.PlanControlledByTypeSerializer))]
 [Serializable]
 public readonly record struct PlanControlledByType : IStringEnum
 {
@@ -51,6 +52,55 @@ public readonly record struct PlanControlledByType : IStringEnum
     public static explicit operator string(PlanControlledByType value) => value.Value;
 
     public static explicit operator PlanControlledByType(string value) => new(value);
+
+    internal class PlanControlledByTypeSerializer : JsonConverter<PlanControlledByType>
+    {
+        public override PlanControlledByType Read(
+            ref Utf8JsonReader reader,
+            Type typeToConvert,
+            JsonSerializerOptions options
+        )
+        {
+            var stringValue =
+                reader.GetString()
+                ?? throw new global::System.Exception(
+                    "The JSON value could not be read as a string."
+                );
+            return new PlanControlledByType(stringValue);
+        }
+
+        public override void Write(
+            Utf8JsonWriter writer,
+            PlanControlledByType value,
+            JsonSerializerOptions options
+        )
+        {
+            writer.WriteStringValue(value.Value);
+        }
+
+        public override PlanControlledByType ReadAsPropertyName(
+            ref Utf8JsonReader reader,
+            Type typeToConvert,
+            JsonSerializerOptions options
+        )
+        {
+            var stringValue =
+                reader.GetString()
+                ?? throw new global::System.Exception(
+                    "The JSON property name could not be read as a string."
+                );
+            return new PlanControlledByType(stringValue);
+        }
+
+        public override void WriteAsPropertyName(
+            Utf8JsonWriter writer,
+            PlanControlledByType value,
+            JsonSerializerOptions options
+        )
+        {
+            writer.WritePropertyName(value.Value);
+        }
+    }
 
     /// <summary>
     /// Constant strings for enum values

@@ -1,5 +1,5 @@
-using System.Text.Json;
-using System.Text.Json.Serialization;
+using global::System.Text.Json;
+using global::System.Text.Json.Serialization;
 using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
@@ -19,6 +19,9 @@ public record ManagePlanRequest : IJsonOnDeserialized
 
     [JsonPropertyName("base_plan_price_id")]
     public string? BasePlanPriceId { get; set; }
+
+    [JsonPropertyName("base_plan_version_id")]
+    public string? BasePlanVersionId { get; set; }
 
     /// <summary>
     /// If false, subscription cancels at period end. Only applies when removing all plans. Defaults to true.

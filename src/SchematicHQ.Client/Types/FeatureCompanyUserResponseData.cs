@@ -1,5 +1,5 @@
-using System.Text.Json;
-using System.Text.Json.Serialization;
+using global::System.Text.Json;
+using global::System.Text.Json.Serialization;
 using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
@@ -21,7 +21,7 @@ public record FeatureCompanyUserResponseData : IJsonOnDeserialized
     /// The maximum amount of usage that is permitted; a null value indicates that unlimited usage is permitted.
     /// </summary>
     [JsonPropertyName("allocation")]
-    public int? Allocation { get; set; }
+    public long? Allocation { get; set; }
 
     /// <summary>
     /// The type of allocation that is being used.
@@ -66,7 +66,7 @@ public record FeatureCompanyUserResponseData : IJsonOnDeserialized
     /// The amount of usage that has been consumed; a null value indicates that usage is not being measured.
     /// </summary>
     [JsonPropertyName("usage")]
-    public int? Usage { get; set; }
+    public long? Usage { get; set; }
 
     [JsonPropertyName("user")]
     public UserResponseData? User { get; set; }

@@ -1,5 +1,5 @@
-using System.Text.Json;
-using System.Text.Json.Serialization;
+using global::System.Text.Json;
+using global::System.Text.Json.Serialization;
 using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
@@ -27,7 +27,7 @@ public record UpdateEntitlementReqCommon : IJsonOnDeserialized
     public string? ValueCreditId { get; set; }
 
     [JsonPropertyName("value_numeric")]
-    public int? ValueNumeric { get; set; }
+    public long? ValueNumeric { get; set; }
 
     [JsonPropertyName("value_trait_id")]
     public string? ValueTraitId { get; set; }

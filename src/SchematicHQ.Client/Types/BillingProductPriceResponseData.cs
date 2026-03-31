@@ -1,5 +1,5 @@
-using System.Text.Json;
-using System.Text.Json.Serialization;
+using global::System.Text.Json;
+using global::System.Text.Json.Serialization;
 using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
@@ -33,10 +33,10 @@ public record BillingProductPriceResponseData : IJsonOnDeserialized
     public string? MeterId { get; set; }
 
     [JsonPropertyName("package_size")]
-    public required int PackageSize { get; set; }
+    public required long PackageSize { get; set; }
 
     [JsonPropertyName("price")]
-    public required int Price { get; set; }
+    public required long Price { get; set; }
 
     [JsonPropertyName("price_decimal")]
     public string? PriceDecimal { get; set; }

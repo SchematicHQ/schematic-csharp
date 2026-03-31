@@ -1,5 +1,5 @@
-using System.Text.Json;
-using System.Text.Json.Serialization;
+using global::System.Text.Json;
+using global::System.Text.Json.Serialization;
 using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
@@ -30,7 +30,7 @@ public record AuditLogListResponseData : IJsonOnDeserialized
     public required string Method { get; set; }
 
     [JsonPropertyName("resource_id")]
-    public int? ResourceId { get; set; }
+    public long? ResourceId { get; set; }
 
     [JsonPropertyName("resource_id_string")]
     public string? ResourceIdString { get; set; }
@@ -42,7 +42,7 @@ public record AuditLogListResponseData : IJsonOnDeserialized
     public string? ResourceType { get; set; }
 
     [JsonPropertyName("resp_code")]
-    public int? RespCode { get; set; }
+    public long? RespCode { get; set; }
 
     [JsonPropertyName("secondary_resource")]
     public string? SecondaryResource { get; set; }

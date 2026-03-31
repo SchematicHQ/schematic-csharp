@@ -1,5 +1,5 @@
-using System.Text.Json;
-using System.Text.Json.Serialization;
+using global::System.Text.Json;
+using global::System.Text.Json.Serialization;
 using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
@@ -88,7 +88,7 @@ public record CompanyDetailResponseData : IJsonOnDeserialized
     public required DateTime UpdatedAt { get; set; }
 
     [JsonPropertyName("user_count")]
-    public required int UserCount { get; set; }
+    public required long UserCount { get; set; }
 
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();

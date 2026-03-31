@@ -1,9 +1,10 @@
-using System.Text.Json.Serialization;
+using global::System.Text.Json;
+using global::System.Text.Json.Serialization;
 using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
 
-[JsonConverter(typeof(StringEnumSerializer<ScheduledCheckoutStatus>))]
+[JsonConverter(typeof(ScheduledCheckoutStatus.ScheduledCheckoutStatusSerializer))]
 [Serializable]
 public readonly record struct ScheduledCheckoutStatus : IStringEnum
 {
@@ -57,6 +58,55 @@ public readonly record struct ScheduledCheckoutStatus : IStringEnum
     public static explicit operator string(ScheduledCheckoutStatus value) => value.Value;
 
     public static explicit operator ScheduledCheckoutStatus(string value) => new(value);
+
+    internal class ScheduledCheckoutStatusSerializer : JsonConverter<ScheduledCheckoutStatus>
+    {
+        public override ScheduledCheckoutStatus Read(
+            ref Utf8JsonReader reader,
+            Type typeToConvert,
+            JsonSerializerOptions options
+        )
+        {
+            var stringValue =
+                reader.GetString()
+                ?? throw new global::System.Exception(
+                    "The JSON value could not be read as a string."
+                );
+            return new ScheduledCheckoutStatus(stringValue);
+        }
+
+        public override void Write(
+            Utf8JsonWriter writer,
+            ScheduledCheckoutStatus value,
+            JsonSerializerOptions options
+        )
+        {
+            writer.WriteStringValue(value.Value);
+        }
+
+        public override ScheduledCheckoutStatus ReadAsPropertyName(
+            ref Utf8JsonReader reader,
+            Type typeToConvert,
+            JsonSerializerOptions options
+        )
+        {
+            var stringValue =
+                reader.GetString()
+                ?? throw new global::System.Exception(
+                    "The JSON property name could not be read as a string."
+                );
+            return new ScheduledCheckoutStatus(stringValue);
+        }
+
+        public override void WriteAsPropertyName(
+            Utf8JsonWriter writer,
+            ScheduledCheckoutStatus value,
+            JsonSerializerOptions options
+        )
+        {
+            writer.WritePropertyName(value.Value);
+        }
+    }
 
     /// <summary>
     /// Constant strings for enum values

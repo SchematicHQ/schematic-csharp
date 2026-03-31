@@ -1,4 +1,4 @@
-using System.Text.Json.Serialization;
+using global::System.Text.Json.Serialization;
 using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
@@ -12,11 +12,14 @@ public record CreateBillingCreditRequestBody
     [JsonPropertyName("currency")]
     public required string Currency { get; set; }
 
+    [JsonPropertyName("currency_prices")]
+    public IEnumerable<CreditCurrencyPriceRequestBody>? CurrencyPrices { get; set; }
+
     [JsonPropertyName("default_expiry_unit")]
     public BillingCreditExpiryUnit? DefaultExpiryUnit { get; set; }
 
     [JsonPropertyName("default_expiry_unit_count")]
-    public int? DefaultExpiryUnitCount { get; set; }
+    public long? DefaultExpiryUnitCount { get; set; }
 
     [JsonPropertyName("default_rollover_policy")]
     public BillingCreditRolloverPolicy? DefaultRolloverPolicy { get; set; }
@@ -31,7 +34,7 @@ public record CreateBillingCreditRequestBody
     public required string Name { get; set; }
 
     [JsonPropertyName("per_unit_price")]
-    public int? PerUnitPrice { get; set; }
+    public long? PerUnitPrice { get; set; }
 
     [JsonPropertyName("per_unit_price_decimal")]
     public string? PerUnitPriceDecimal { get; set; }

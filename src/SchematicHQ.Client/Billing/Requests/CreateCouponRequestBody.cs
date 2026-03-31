@@ -1,4 +1,4 @@
-using System.Text.Json.Serialization;
+using global::System.Text.Json.Serialization;
 using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
@@ -7,7 +7,7 @@ namespace SchematicHQ.Client;
 public record CreateCouponRequestBody
 {
     [JsonPropertyName("amount_off")]
-    public required int AmountOff { get; set; }
+    public required long AmountOff { get; set; }
 
     [JsonPropertyName("currency")]
     public string? Currency { get; set; }
@@ -16,13 +16,13 @@ public record CreateCouponRequestBody
     public required string Duration { get; set; }
 
     [JsonPropertyName("duration_in_months")]
-    public required int DurationInMonths { get; set; }
+    public required long DurationInMonths { get; set; }
 
     [JsonPropertyName("external_id")]
     public required string ExternalId { get; set; }
 
     [JsonPropertyName("max_redemptions")]
-    public required int MaxRedemptions { get; set; }
+    public required long MaxRedemptions { get; set; }
 
     [JsonPropertyName("name")]
     public required string Name { get; set; }
@@ -31,7 +31,7 @@ public record CreateCouponRequestBody
     public required double PercentOff { get; set; }
 
     [JsonPropertyName("times_redeemed")]
-    public required int TimesRedeemed { get; set; }
+    public required long TimesRedeemed { get; set; }
 
     /// <inheritdoc />
     public override string ToString()

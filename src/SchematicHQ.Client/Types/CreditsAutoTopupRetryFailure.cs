@@ -1,5 +1,5 @@
-using System.Text.Json;
-using System.Text.Json.Serialization;
+using global::System.Text.Json;
+using global::System.Text.Json.Serialization;
 using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
@@ -15,7 +15,7 @@ public record CreditsAutoTopupRetryFailure : IJsonOnDeserialized
     public CreditsAutoTopupCompanySummary? Company { get; set; }
 
     [JsonPropertyName("consecutive_failures")]
-    public required int ConsecutiveFailures { get; set; }
+    public required long ConsecutiveFailures { get; set; }
 
     [JsonPropertyName("credit")]
     public CreditsAutoTopupCreditSummary? Credit { get; set; }

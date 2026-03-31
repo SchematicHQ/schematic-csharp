@@ -1,9 +1,10 @@
-using System.Text.Json.Serialization;
+using global::System.Text.Json;
+using global::System.Text.Json.Serialization;
 using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
 
-[JsonConverter(typeof(StringEnumSerializer<BillingCreditBundleStatus>))]
+[JsonConverter(typeof(BillingCreditBundleStatus.BillingCreditBundleStatusSerializer))]
 [Serializable]
 public readonly record struct BillingCreditBundleStatus : IStringEnum
 {
@@ -51,6 +52,55 @@ public readonly record struct BillingCreditBundleStatus : IStringEnum
     public static explicit operator string(BillingCreditBundleStatus value) => value.Value;
 
     public static explicit operator BillingCreditBundleStatus(string value) => new(value);
+
+    internal class BillingCreditBundleStatusSerializer : JsonConverter<BillingCreditBundleStatus>
+    {
+        public override BillingCreditBundleStatus Read(
+            ref Utf8JsonReader reader,
+            Type typeToConvert,
+            JsonSerializerOptions options
+        )
+        {
+            var stringValue =
+                reader.GetString()
+                ?? throw new global::System.Exception(
+                    "The JSON value could not be read as a string."
+                );
+            return new BillingCreditBundleStatus(stringValue);
+        }
+
+        public override void Write(
+            Utf8JsonWriter writer,
+            BillingCreditBundleStatus value,
+            JsonSerializerOptions options
+        )
+        {
+            writer.WriteStringValue(value.Value);
+        }
+
+        public override BillingCreditBundleStatus ReadAsPropertyName(
+            ref Utf8JsonReader reader,
+            Type typeToConvert,
+            JsonSerializerOptions options
+        )
+        {
+            var stringValue =
+                reader.GetString()
+                ?? throw new global::System.Exception(
+                    "The JSON property name could not be read as a string."
+                );
+            return new BillingCreditBundleStatus(stringValue);
+        }
+
+        public override void WriteAsPropertyName(
+            Utf8JsonWriter writer,
+            BillingCreditBundleStatus value,
+            JsonSerializerOptions options
+        )
+        {
+            writer.WritePropertyName(value.Value);
+        }
+    }
 
     /// <summary>
     /// Constant strings for enum values

@@ -1,5 +1,5 @@
-using System.Text.Json;
-using System.Text.Json.Serialization;
+using global::System.Text.Json;
+using global::System.Text.Json.Serialization;
 using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
@@ -45,16 +45,22 @@ public record ListPlansParams : IJsonOnDeserialized
     public IEnumerable<string>? Ids { get; set; }
 
     /// <summary>
+    /// Include billing settings from draft versions for plans which have draft version
+    /// </summary>
+    [JsonPropertyName("include_draft_versions")]
+    public bool? IncludeDraftVersions { get; set; }
+
+    /// <summary>
     /// Page limit (default 100)
     /// </summary>
     [JsonPropertyName("limit")]
-    public int? Limit { get; set; }
+    public long? Limit { get; set; }
 
     /// <summary>
     /// Page offset (default 0)
     /// </summary>
     [JsonPropertyName("offset")]
-    public int? Offset { get; set; }
+    public long? Offset { get; set; }
 
     /// <summary>
     /// Filter by plan type

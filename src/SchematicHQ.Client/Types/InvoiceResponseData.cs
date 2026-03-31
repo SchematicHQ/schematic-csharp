@@ -1,5 +1,5 @@
-using System.Text.Json;
-using System.Text.Json.Serialization;
+using global::System.Text.Json;
+using global::System.Text.Json.Serialization;
 using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
@@ -12,13 +12,13 @@ public record InvoiceResponseData : IJsonOnDeserialized
         new Dictionary<string, JsonElement>();
 
     [JsonPropertyName("amount_due")]
-    public required int AmountDue { get; set; }
+    public required long AmountDue { get; set; }
 
     [JsonPropertyName("amount_paid")]
-    public required int AmountPaid { get; set; }
+    public required long AmountPaid { get; set; }
 
     [JsonPropertyName("amount_remaining")]
-    public required int AmountRemaining { get; set; }
+    public required long AmountRemaining { get; set; }
 
     [JsonPropertyName("collection_method")]
     public required string CollectionMethod { get; set; }
@@ -60,7 +60,7 @@ public record InvoiceResponseData : IJsonOnDeserialized
     public string? SubscriptionExternalId { get; set; }
 
     [JsonPropertyName("subtotal")]
-    public required int Subtotal { get; set; }
+    public required long Subtotal { get; set; }
 
     [JsonPropertyName("updated_at")]
     public required DateTime UpdatedAt { get; set; }

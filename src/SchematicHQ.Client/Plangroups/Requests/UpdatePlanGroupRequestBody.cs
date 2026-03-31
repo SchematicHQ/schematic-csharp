@@ -1,4 +1,4 @@
-using System.Text.Json.Serialization;
+using global::System.Text.Json.Serialization;
 using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
@@ -97,7 +97,7 @@ public record UpdatePlanGroupRequestBody
     public required bool SyncCustomerBillingDetails { get; set; }
 
     [JsonPropertyName("trial_days")]
-    public int? TrialDays { get; set; }
+    public long? TrialDays { get; set; }
 
     [JsonPropertyName("trial_expiry_plan_id")]
     public string? TrialExpiryPlanId { get; set; }

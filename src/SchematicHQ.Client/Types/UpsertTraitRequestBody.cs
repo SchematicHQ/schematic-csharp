@@ -1,5 +1,5 @@
-using System.Text.Json;
-using System.Text.Json.Serialization;
+using global::System.Text.Json;
+using global::System.Text.Json.Serialization;
 using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
@@ -15,7 +15,7 @@ public record UpsertTraitRequestBody : IJsonOnDeserialized
     /// Amount to increment the trait by (positive or negative)
     /// </summary>
     [JsonPropertyName("incr")]
-    public int? Incr { get; set; }
+    public long? Incr { get; set; }
 
     /// <summary>
     /// Key/value pairs to identify a company or user

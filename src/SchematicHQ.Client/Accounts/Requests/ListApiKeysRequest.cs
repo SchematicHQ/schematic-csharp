@@ -1,4 +1,4 @@
-using System.Text.Json.Serialization;
+using global::System.Text.Json.Serialization;
 using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
@@ -16,13 +16,13 @@ public record ListApiKeysRequest
     /// Page limit (default 100)
     /// </summary>
     [JsonIgnore]
-    public int? Limit { get; set; }
+    public long? Limit { get; set; }
 
     /// <summary>
     /// Page offset (default 0)
     /// </summary>
     [JsonIgnore]
-    public int? Offset { get; set; }
+    public long? Offset { get; set; }
 
     /// <inheritdoc />
     public override string ToString()

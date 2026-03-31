@@ -1,5 +1,5 @@
-using System.Text.Json;
-using System.Text.Json.Serialization;
+using global::System.Text.Json;
+using global::System.Text.Json.Serialization;
 using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
@@ -15,7 +15,7 @@ public record CreateEntitlementInBundleRequestBody : IJsonOnDeserialized
     public string? BillingProductId { get; set; }
 
     [JsonPropertyName("billing_threshold")]
-    public int? BillingThreshold { get; set; }
+    public long? BillingThreshold { get; set; }
 
     [JsonPropertyName("credit_consumption_rate")]
     public double? CreditConsumptionRate { get; set; }
@@ -39,7 +39,7 @@ public record CreateEntitlementInBundleRequestBody : IJsonOnDeserialized
     public IEnumerable<CreatePriceTierRequestBody>? MonthlyPriceTiers { get; set; }
 
     [JsonPropertyName("monthly_unit_price")]
-    public int? MonthlyUnitPrice { get; set; }
+    public long? MonthlyUnitPrice { get; set; }
 
     [JsonPropertyName("monthly_unit_price_decimal")]
     public string? MonthlyUnitPriceDecimal { get; set; }
@@ -63,7 +63,7 @@ public record CreateEntitlementInBundleRequestBody : IJsonOnDeserialized
     public IEnumerable<CreatePriceTierRequestBody>? PriceTiers { get; set; }
 
     [JsonPropertyName("soft_limit")]
-    public int? SoftLimit { get; set; }
+    public long? SoftLimit { get; set; }
 
     [JsonPropertyName("tier_mode")]
     public BillingTiersMode? TierMode { get; set; }
@@ -75,7 +75,7 @@ public record CreateEntitlementInBundleRequestBody : IJsonOnDeserialized
     public string? ValueCreditId { get; set; }
 
     [JsonPropertyName("value_numeric")]
-    public int? ValueNumeric { get; set; }
+    public long? ValueNumeric { get; set; }
 
     [JsonPropertyName("value_trait_id")]
     public string? ValueTraitId { get; set; }
@@ -90,7 +90,7 @@ public record CreateEntitlementInBundleRequestBody : IJsonOnDeserialized
     public IEnumerable<CreatePriceTierRequestBody>? YearlyPriceTiers { get; set; }
 
     [JsonPropertyName("yearly_unit_price")]
-    public int? YearlyUnitPrice { get; set; }
+    public long? YearlyUnitPrice { get; set; }
 
     [JsonPropertyName("yearly_unit_price_decimal")]
     public string? YearlyUnitPriceDecimal { get; set; }

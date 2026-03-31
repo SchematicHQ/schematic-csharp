@@ -1,5 +1,5 @@
-using System.Text.Json;
-using System.Text.Json.Serialization;
+using global::System.Text.Json;
+using global::System.Text.Json.Serialization;
 using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
@@ -12,7 +12,7 @@ public record CreditLedgerEnrichedEntryResponseData : IJsonOnDeserialized
         new Dictionary<string, JsonElement>();
 
     [JsonPropertyName("billing_credit_auto_topup_grant_count")]
-    public required int BillingCreditAutoTopupGrantCount { get; set; }
+    public required long BillingCreditAutoTopupGrantCount { get; set; }
 
     [JsonPropertyName("billing_credit_id")]
     public required string BillingCreditId { get; set; }
@@ -27,7 +27,7 @@ public record CreditLedgerEnrichedEntryResponseData : IJsonOnDeserialized
     public BillingCreditLedgerResponseData? Credit { get; set; }
 
     [JsonPropertyName("expired_grant_count")]
-    public required int ExpiredGrantCount { get; set; }
+    public required long ExpiredGrantCount { get; set; }
 
     [JsonPropertyName("feature")]
     public FeatureLedgerResponseData? Feature { get; set; }
@@ -39,25 +39,25 @@ public record CreditLedgerEnrichedEntryResponseData : IJsonOnDeserialized
     public required DateTime FirstTransactionAt { get; set; }
 
     [JsonPropertyName("free_grant_count")]
-    public required int FreeGrantCount { get; set; }
+    public required long FreeGrantCount { get; set; }
 
     [JsonPropertyName("grant_count")]
-    public required int GrantCount { get; set; }
+    public required long GrantCount { get; set; }
 
     [JsonPropertyName("last_transaction_at")]
     public required DateTime LastTransactionAt { get; set; }
 
     [JsonPropertyName("manually_zeroed_count")]
-    public required int ManuallyZeroedCount { get; set; }
+    public required long ManuallyZeroedCount { get; set; }
 
     [JsonPropertyName("net_change")]
     public required double NetChange { get; set; }
 
     [JsonPropertyName("plan_grant_count")]
-    public required int PlanGrantCount { get; set; }
+    public required long PlanGrantCount { get; set; }
 
     [JsonPropertyName("purchased_grant_count")]
-    public required int PurchasedGrantCount { get; set; }
+    public required long PurchasedGrantCount { get; set; }
 
     [JsonPropertyName("time_bucket")]
     public required DateTime TimeBucket { get; set; }
@@ -69,13 +69,13 @@ public record CreditLedgerEnrichedEntryResponseData : IJsonOnDeserialized
     public required double TotalGranted { get; set; }
 
     [JsonPropertyName("transaction_count")]
-    public required int TransactionCount { get; set; }
+    public required long TransactionCount { get; set; }
 
     [JsonPropertyName("usage_count")]
-    public required int UsageCount { get; set; }
+    public required long UsageCount { get; set; }
 
     [JsonPropertyName("zeroed_out_count")]
-    public required int ZeroedOutCount { get; set; }
+    public required long ZeroedOutCount { get; set; }
 
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();

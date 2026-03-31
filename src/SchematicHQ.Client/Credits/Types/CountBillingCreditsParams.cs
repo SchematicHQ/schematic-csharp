@@ -1,5 +1,5 @@
-using System.Text.Json;
-using System.Text.Json.Serialization;
+using global::System.Text.Json;
+using global::System.Text.Json.Serialization;
 using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
@@ -21,7 +21,7 @@ public record CountBillingCreditsParams : IJsonOnDeserialized
     /// Page limit (default 100)
     /// </summary>
     [JsonPropertyName("limit")]
-    public int? Limit { get; set; }
+    public long? Limit { get; set; }
 
     [JsonPropertyName("name")]
     public string? Name { get; set; }
@@ -30,7 +30,7 @@ public record CountBillingCreditsParams : IJsonOnDeserialized
     /// Page offset (default 0)
     /// </summary>
     [JsonPropertyName("offset")]
-    public int? Offset { get; set; }
+    public long? Offset { get; set; }
 
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();

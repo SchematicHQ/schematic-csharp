@@ -1,5 +1,5 @@
-using System.Text.Json;
-using System.Text.Json.Serialization;
+using global::System.Text.Json;
+using global::System.Text.Json.Serialization;
 using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
@@ -57,7 +57,7 @@ public record CreateOrUpdateConditionRequestBody : IJsonOnDeserialized
     /// Value to compare the track event metric against
     /// </summary>
     [JsonPropertyName("metric_value")]
-    public int? MetricValue { get; set; }
+    public long? MetricValue { get; set; }
 
     [JsonPropertyName("operator")]
     public required CreateOrUpdateConditionRequestBodyOperator Operator { get; set; }

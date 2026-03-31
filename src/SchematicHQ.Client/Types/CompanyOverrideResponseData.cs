@@ -1,5 +1,5 @@
-using System.Text.Json;
-using System.Text.Json.Serialization;
+using global::System.Text.Json;
+using global::System.Text.Json.Serialization;
 using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
@@ -61,7 +61,7 @@ public record CompanyOverrideResponseData : IJsonOnDeserialized
     public bool? ValueBool { get; set; }
 
     [JsonPropertyName("value_numeric")]
-    public int? ValueNumeric { get; set; }
+    public long? ValueNumeric { get; set; }
 
     [JsonPropertyName("value_trait")]
     public EntityTraitDefinitionResponseData? ValueTrait { get; set; }

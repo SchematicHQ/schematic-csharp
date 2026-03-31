@@ -1,5 +1,5 @@
-using System.Text.Json;
-using System.Text.Json.Serialization;
+using global::System.Text.Json;
+using global::System.Text.Json.Serialization;
 using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
@@ -36,11 +36,8 @@ public record RuleView : IJsonOnDeserialized
     [JsonPropertyName("name")]
     public required string Name { get; set; }
 
-    [JsonPropertyName("plan_version_id")]
-    public string? PlanVersionId { get; set; }
-
     [JsonPropertyName("priority")]
-    public required int Priority { get; set; }
+    public required long Priority { get; set; }
 
     [JsonPropertyName("rule_type")]
     public required string RuleType { get; set; }
