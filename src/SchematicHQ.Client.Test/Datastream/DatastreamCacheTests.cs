@@ -241,5 +241,221 @@ namespace SchematicHQ.Client.Test.Datastream
         // existing cache entry entirely. There is no field-level merge logic in the
         // current implementation, so there is no distinct behavior to test for Partial
         // messages beyond what the Full message tests already cover.
+
+        [Test]
+        public void CompanyUpdate_RemovedKey_OrphanedLookupEntryIsDeleted()
+        {
+            var original = new RulesengineCompany
+            {
+                AccountId = "acc_123",
+                EnvironmentId = "env_123",
+                Id = "comp_orphan_1",
+                Keys = new Dictionary<string, string>
+                {
+                    { "org_id", "org-100" },
+                    { "email", "old@example.com" }
+                }
+            };
+
+            PopulateTwoLayerCompanyCache(original);
+
+            // Verify both keys resolve
+            Assert.That(_client.GetCompanyFromCache(new Dictionary<string, string> { { "org_id", "org-100" } }), Is.Not.Null);
+            Assert.That(_client.GetCompanyFromCache(new Dictionary<string, string> { { "email", "old@example.com" } }), Is.Not.Null);
+
+            // Update with "email" key removed
+            var updated = new RulesengineCompany
+            {
+                AccountId = "acc_123",
+                EnvironmentId = "env_123",
+                Id = "comp_orphan_1",
+                Keys = new Dictionary<string, string>
+                {
+                    { "org_id", "org-100" }
+                }
+            };
+
+            PopulateTwoLayerCompanyCache(updated);
+
+            // org_id should still resolve
+            var cached = _client.GetCompanyFromCache(new Dictionary<string, string> { { "org_id", "org-100" } });
+            Assert.That(cached, Is.Not.Null);
+            Assert.That(cached!.Id, Is.EqualTo("comp_orphan_1"));
+
+            // email key should no longer resolve
+            var orphaned = _client.GetCompanyFromCache(new Dictionary<string, string> { { "email", "old@example.com" } });
+            Assert.That(orphaned, Is.Null, "Removed company key should not remain in lookup cache");
+        }
+
+        [Test]
+        public void UserUpdate_RemovedKey_OrphanedLookupEntryIsDeleted()
+        {
+            var original = new RulesengineUser
+            {
+                AccountId = "acc_123",
+                EnvironmentId = "env_123",
+                Id = "user_orphan_1",
+                Keys = new Dictionary<string, string>
+                {
+                    { "user_id", "u-100" },
+                    { "email", "old@example.com" }
+                }
+            };
+
+            PopulateTwoLayerUserCache(original);
+
+            // Verify both keys resolve
+            Assert.That(_client.GetUserFromCache(new Dictionary<string, string> { { "user_id", "u-100" } }), Is.Not.Null);
+            Assert.That(_client.GetUserFromCache(new Dictionary<string, string> { { "email", "old@example.com" } }), Is.Not.Null);
+
+            // Update with "email" key removed
+            var updated = new RulesengineUser
+            {
+                AccountId = "acc_123",
+                EnvironmentId = "env_123",
+                Id = "user_orphan_1",
+                Keys = new Dictionary<string, string>
+                {
+                    { "user_id", "u-100" }
+                }
+            };
+
+            PopulateTwoLayerUserCache(updated);
+
+            // user_id should still resolve
+            var cached = _client.GetUserFromCache(new Dictionary<string, string> { { "user_id", "u-100" } });
+            Assert.That(cached, Is.Not.Null);
+            Assert.That(cached!.Id, Is.EqualTo("user_orphan_1"));
+
+            // email key should no longer resolve
+            var orphaned = _client.GetUserFromCache(new Dictionary<string, string> { { "email", "old@example.com" } });
+            Assert.That(orphaned, Is.Null, "Removed user key should not remain in lookup cache");
+        }
+
+        [Test]
+        public void CompanyUpdate_ChangedKeyValue_OldValueIsRemoved()
+        {
+            var original = new RulesengineCompany
+            {
+                AccountId = "acc_123",
+                EnvironmentId = "env_123",
+                Id = "comp_changed_1",
+                Keys = new Dictionary<string, string>
+                {
+                    { "org_id", "org-100" },
+                    { "email", "old@example.com" }
+                }
+            };
+
+            PopulateTwoLayerCompanyCache(original);
+
+            // Update with changed email value
+            var updated = new RulesengineCompany
+            {
+                AccountId = "acc_123",
+                EnvironmentId = "env_123",
+                Id = "comp_changed_1",
+                Keys = new Dictionary<string, string>
+                {
+                    { "org_id", "org-100" },
+                    { "email", "new@example.com" }
+                }
+            };
+
+            PopulateTwoLayerCompanyCache(updated);
+
+            // New email should resolve
+            var cached = _client.GetCompanyFromCache(new Dictionary<string, string> { { "email", "new@example.com" } });
+            Assert.That(cached, Is.Not.Null);
+            Assert.That(cached!.Id, Is.EqualTo("comp_changed_1"));
+
+            // Old email should no longer resolve
+            var stale = _client.GetCompanyFromCache(new Dictionary<string, string> { { "email", "old@example.com" } });
+            Assert.That(stale, Is.Null, "Old key value should not remain in lookup cache after value change");
+        }
+
+        [Test]
+        public void UserUpdate_ChangedKeyValue_OldValueIsRemoved()
+        {
+            var original = new RulesengineUser
+            {
+                AccountId = "acc_123",
+                EnvironmentId = "env_123",
+                Id = "user_changed_1",
+                Keys = new Dictionary<string, string>
+                {
+                    { "user_id", "u-100" },
+                    { "email", "old@example.com" }
+                }
+            };
+
+            PopulateTwoLayerUserCache(original);
+
+            // Update with changed email value
+            var updated = new RulesengineUser
+            {
+                AccountId = "acc_123",
+                EnvironmentId = "env_123",
+                Id = "user_changed_1",
+                Keys = new Dictionary<string, string>
+                {
+                    { "user_id", "u-100" },
+                    { "email", "new@example.com" }
+                }
+            };
+
+            PopulateTwoLayerUserCache(updated);
+
+            // New email should resolve
+            var cached = _client.GetUserFromCache(new Dictionary<string, string> { { "email", "new@example.com" } });
+            Assert.That(cached, Is.Not.Null);
+            Assert.That(cached!.Id, Is.EqualTo("user_changed_1"));
+
+            // Old email should no longer resolve
+            var stale = _client.GetUserFromCache(new Dictionary<string, string> { { "email", "old@example.com" } });
+            Assert.That(stale, Is.Null, "Old key value should not remain in lookup cache after value change");
+        }
+
+        [Test]
+        public void CompanyUpdate_UnchangedKeys_StillResolvable()
+        {
+            var original = new RulesengineCompany
+            {
+                AccountId = "acc_123",
+                EnvironmentId = "env_123",
+                Id = "comp_stable_1",
+                Keys = new Dictionary<string, string>
+                {
+                    { "org_id", "org-100" },
+                    { "slug", "acme" }
+                }
+            };
+
+            PopulateTwoLayerCompanyCache(original);
+
+            // Update with same keys but different non-key data
+            var updated = new RulesengineCompany
+            {
+                AccountId = "acc_456",
+                EnvironmentId = "env_123",
+                Id = "comp_stable_1",
+                Keys = new Dictionary<string, string>
+                {
+                    { "org_id", "org-100" },
+                    { "slug", "acme" }
+                }
+            };
+
+            PopulateTwoLayerCompanyCache(updated);
+
+            // Both keys should still resolve to the updated entity
+            var byOrg = _client.GetCompanyFromCache(new Dictionary<string, string> { { "org_id", "org-100" } });
+            var bySlug = _client.GetCompanyFromCache(new Dictionary<string, string> { { "slug", "acme" } });
+
+            Assert.That(byOrg, Is.Not.Null);
+            Assert.That(bySlug, Is.Not.Null);
+            Assert.That(byOrg!.AccountId, Is.EqualTo("acc_456"), "Should reflect updated entity data");
+            Assert.That(bySlug!.AccountId, Is.EqualTo("acc_456"), "Should reflect updated entity data");
+        }
     }
 }

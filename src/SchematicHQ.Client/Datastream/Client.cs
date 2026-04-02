@@ -1354,8 +1354,24 @@ namespace SchematicHQ.Client.Datastream
 
     private void CacheCompanyForKeys(RulesengineCompany company)
     {
-      // Store the company object at the ID-based key
       var idKey = CompanyIdCacheKey(company.Id);
+
+      // Remove lookup cache entries for keys that no longer exist
+      var existing = _companyCache.Get(idKey);
+      if (existing != null)
+      {
+        foreach (var oldKey in existing.Keys)
+        {
+          if (!company.Keys.ContainsKey(oldKey.Key) ||
+              !string.Equals(company.Keys[oldKey.Key], oldKey.Value, StringComparison.OrdinalIgnoreCase))
+          {
+            var staleResourceKey = ResourceKeyToCacheKey<RulesengineCompany>(CacheKeyPrefixCompany, oldKey.Key, oldKey.Value);
+            _companyLookupCache.Delete(staleResourceKey);
+          }
+        }
+      }
+
+      // Store the company object at the ID-based key
       _companyCache.Set(idKey, company);
 
       // Store the company ID string at each resource key
@@ -1368,8 +1384,24 @@ namespace SchematicHQ.Client.Datastream
 
     private void CacheUserForKeys(RulesengineUser user)
     {
-      // Store the user object at the ID-based key
       var idKey = UserIdCacheKey(user.Id);
+
+      // Remove lookup cache entries for keys that no longer exist
+      var existing = _userCache.Get(idKey);
+      if (existing != null)
+      {
+        foreach (var oldKey in existing.Keys)
+        {
+          if (!user.Keys.ContainsKey(oldKey.Key) ||
+              !string.Equals(user.Keys[oldKey.Key], oldKey.Value, StringComparison.OrdinalIgnoreCase))
+          {
+            var staleResourceKey = ResourceKeyToCacheKey<RulesengineUser>(CacheKeyPrefixUser, oldKey.Key, oldKey.Value);
+            _userLookupCache.Delete(staleResourceKey);
+          }
+        }
+      }
+
+      // Store the user object at the ID-based key
       _userCache.Set(idKey, user);
 
       // Store the user ID string at each resource key
