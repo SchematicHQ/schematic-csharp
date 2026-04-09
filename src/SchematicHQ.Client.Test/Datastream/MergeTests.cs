@@ -222,13 +222,19 @@ namespace SchematicHQ.Client.Test.Datastream
         }
 
         [Test]
-        public void PartialCompany_MissingId()
+        public void PartialCompany_ToleratesMissingId()
         {
+            // Wire shape from the API: data is wrapped under the field name,
+            // no id at the top level. The cache lookup happens at the handler
+            // level using EntityId from the envelope, not from the data payload.
             var existing = BaseCompany();
-            var partial = @"{""traits"":[]}";
+            var partial = @"{""credit_balances"":{""credit-2"":200.0}}";
 
-            var ex = Assert.Throws<ArgumentException>(() => Merge.PartialCompany(existing, partial));
-            Assert.That(ex!.Message, Does.Contain("missing required field: id"));
+            var merged = Merge.PartialCompany(existing, partial);
+
+            Assert.That(merged.CreditBalances["credit-1"], Is.EqualTo(100.0));
+            Assert.That(merged.CreditBalances["credit-2"], Is.EqualTo(200.0));
+            Assert.That(merged.Id, Is.EqualTo("co-1"));
         }
 
         [Test]
@@ -407,13 +413,18 @@ namespace SchematicHQ.Client.Test.Datastream
         }
 
         [Test]
-        public void PartialUser_MissingId()
+        public void PartialUser_ToleratesMissingId()
         {
+            // Wire shape from the API: data is wrapped under the field name,
+            // no id at the top level. The cache lookup happens at the handler
+            // level using EntityId from the envelope, not from the data payload.
             var existing = BaseUser();
             var partial = @"{""keys"":{""email"":""new@example.com""}}";
 
-            var ex = Assert.Throws<ArgumentException>(() => Merge.PartialUser(existing, partial));
-            Assert.That(ex!.Message, Does.Contain("missing required field: id"));
+            var merged = Merge.PartialUser(existing, partial);
+
+            Assert.That(merged.Keys["email"], Is.EqualTo("new@example.com"));
+            Assert.That(merged.Id, Is.EqualTo("user-1"));
         }
 
         [Test]
@@ -486,22 +497,6 @@ namespace SchematicHQ.Client.Test.Datastream
             Assert.That(existing.Keys, Is.EqualTo(new Dictionary<string, string> { ["email"] = "user@example.com" }));
             Assert.That(existing.Traits.Count(), Is.EqualTo(1));
             Assert.That(existing.Rules.First().Id, Is.EqualTo("rule-1"));
-        }
-
-        // --- ExtractIdFromJson tests ---
-
-        [Test]
-        public void ExtractIdFromJson_ValidJson()
-        {
-            var id = Merge.ExtractIdFromJson(@"{""id"":""co-1"",""traits"":[]}");
-            Assert.That(id, Is.EqualTo("co-1"));
-        }
-
-        [Test]
-        public void ExtractIdFromJson_MissingId()
-        {
-            var ex = Assert.Throws<ArgumentException>(() => Merge.ExtractIdFromJson(@"{""traits"":[]}"));
-            Assert.That(ex!.Message, Does.Contain("missing required field: id"));
         }
 
         // --- DeepCopyCompany tests ---

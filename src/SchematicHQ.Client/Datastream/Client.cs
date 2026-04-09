@@ -648,16 +648,12 @@ namespace SchematicHQ.Client.Datastream
 
         if (response.MessageType == MessageType.Partial)
         {
-          string id;
-          try
+          if (string.IsNullOrEmpty(response.EntityId))
           {
-            id = Merge.ExtractIdFromJson(jsonString);
-          }
-          catch (Exception ex)
-          {
-            _logger.Error("Failed to extract company ID from partial message: {0}", ex.Message);
+            _logger.Error("Partial company message missing entity_id");
             return;
           }
+          var id = response.EntityId;
 
           var existingIdKey = CompanyIdCacheKey(id);
           var existing = _companyCache.Get(existingIdKey);
@@ -763,16 +759,12 @@ namespace SchematicHQ.Client.Datastream
 
         if (response.MessageType == MessageType.Partial)
         {
-          string id;
-          try
+          if (string.IsNullOrEmpty(response.EntityId))
           {
-            id = Merge.ExtractIdFromJson(jsonString);
-          }
-          catch (Exception ex)
-          {
-            _logger.Error("Failed to extract user ID from partial message: {0}", ex.Message);
+            _logger.Error("Partial user message missing entity_id");
             return;
           }
+          var id = response.EntityId;
 
           var existingIdKey = UserIdCacheKey(id);
           var existing = _userCache.Get(existingIdKey);
