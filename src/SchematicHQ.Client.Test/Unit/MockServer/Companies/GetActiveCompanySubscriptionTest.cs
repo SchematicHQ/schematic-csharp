@@ -43,7 +43,7 @@ public class GetActiveCompanySubscriptionTest : BaseMockServerTest
                     "customer_external_id": "customer_external_id",
                     "environment_id": "environment_id",
                     "id": "id",
-                    "provider_type": "schematic",
+                    "provider_type": "orb",
                     "subtotal": 1000000,
                     "updated_at": "2024-01-15T09:30:00.000Z"
                   },
@@ -54,7 +54,7 @@ public class GetActiveCompanySubscriptionTest : BaseMockServerTest
                     "external_id": "external_id",
                     "id": "id",
                     "payment_method_type": "payment_method_type",
-                    "provider_type": "schematic",
+                    "provider_type": "orb",
                     "updated_at": "2024-01-15T09:30:00.000Z"
                   },
                   "products": [
@@ -74,7 +74,7 @@ public class GetActiveCompanySubscriptionTest : BaseMockServerTest
                       "price_tier": [
                         {}
                       ],
-                      "provider_type": "schematic",
+                      "provider_type": "orb",
                       "quantity": 1.1,
                       "subscription_id": "subscription_id",
                       "updated_at": "2024-01-15T09:30:00.000Z",

@@ -36,7 +36,7 @@ public class ListBillingPricesTest : BaseMockServerTest
                   "product_external_id": "product_external_id",
                   "product_id": "product_id",
                   "product_name": "product_name",
-                  "provider_type": "schematic",
+                  "provider_type": "orb",
                   "tiers_mode": "graduated",
                   "updated_at": "2024-01-15T09:30:00.000Z",
                   "usage_type": "licensed"
@@ -58,7 +58,7 @@ public class ListBillingPricesTest : BaseMockServerTest
                 "product_ids": [
                   "product_ids"
                 ],
-                "provider_type": "schematic",
+                "provider_type": "orb",
                 "q": "q",
                 "tiers_mode": "graduated",
                 "usage_type": "licensed",
@@ -76,7 +76,7 @@ public class ListBillingPricesTest : BaseMockServerTest
                     .WithParam("interval", "interval")
                     .WithParam("price", "1000000")
                     .WithParam("product_id", "product_id")
-                    .WithParam("provider_type", "schematic")
+                    .WithParam("provider_type", "orb")
                     .WithParam("q", "q")
                     .WithParam("tiers_mode", "graduated")
                     .WithParam("usage_type", "licensed")
@@ -101,7 +101,7 @@ public class ListBillingPricesTest : BaseMockServerTest
                 IsActive = true,
                 Price = 1000000,
                 ProductId = "product_id",
-                ProviderType = BillingProviderType.Schematic,
+                ProviderType = BillingProviderType.Orb,
                 Q = "q",
                 TiersMode = BillingTiersMode.Graduated,
                 UsageType = BillingPriceUsageType.Licensed,

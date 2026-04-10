@@ -2,6 +2,18 @@ namespace SchematicHQ.Client;
 
 public partial interface IAccountsClient
 {
+    WithRawResponseTask<ListAccountMembersResponse> ListAccountMembersAsync(
+        ListAccountMembersRequest request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    );
+
+    WithRawResponseTask<GetAccountMemberResponse> GetAccountMemberAsync(
+        string accountMemberId,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    );
+
     WithRawResponseTask<ListApiKeysResponse> ListApiKeysAsync(
         ListApiKeysRequest request,
         RequestOptions? options = null,

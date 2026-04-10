@@ -29,7 +29,8 @@ public class CheckFlagsTest : BaseMockServerTest
                 "plan": {
                   "id": "id",
                   "name": "name",
-                  "trial_end_date": "2024-01-15T09:30:00.000Z"
+                  "trial_end_date": "2024-01-15T09:30:00.000Z",
+                  "trial_status": "active"
                 }
               },
               "params": {

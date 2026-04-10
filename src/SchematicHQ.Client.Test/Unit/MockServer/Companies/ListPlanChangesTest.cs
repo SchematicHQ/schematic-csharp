@@ -110,8 +110,8 @@ public class ListPlanChangesTest : BaseMockServerTest
                 }
               ],
               "params": {
-                "action": "action",
-                "base_plan_action": "base_plan_action",
+                "action": "checkout",
+                "base_plan_action": "fallback",
                 "company_id": "company_id",
                 "company_ids": [
                   "company_ids"
@@ -130,8 +130,8 @@ public class ListPlanChangesTest : BaseMockServerTest
                 WireMock
                     .RequestBuilders.Request.Create()
                     .WithPath("/plan-changes")
-                    .WithParam("action", "action")
-                    .WithParam("base_plan_action", "base_plan_action")
+                    .WithParam("action", "checkout")
+                    .WithParam("base_plan_action", "fallback")
                     .WithParam("company_id", "company_id")
                     .WithParam("limit", "1000000")
                     .WithParam("offset", "1000000")
@@ -147,8 +147,8 @@ public class ListPlanChangesTest : BaseMockServerTest
         var response = await Client.Companies.ListPlanChangesAsync(
             new ListPlanChangesRequest
             {
-                Action = "action",
-                BasePlanAction = "base_plan_action",
+                Action = PlanChangeAction.Checkout,
+                BasePlanAction = PlanChangeBasePlanAction.Fallback,
                 CompanyId = "company_id",
                 Limit = 1000000,
                 Offset = 1000000,

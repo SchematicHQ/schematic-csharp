@@ -15,10 +15,10 @@ public record ListPlanChangesParams : IJsonOnDeserialized
         new Dictionary<string, JsonElement>();
 
     [JsonPropertyName("action")]
-    public string? Action { get; set; }
+    public PlanChangeAction? Action { get; set; }
 
     [JsonPropertyName("base_plan_action")]
-    public string? BasePlanAction { get; set; }
+    public PlanChangeBasePlanAction? BasePlanAction { get; set; }
 
     [JsonPropertyName("company_id")]
     public string? CompanyId { get; set; }

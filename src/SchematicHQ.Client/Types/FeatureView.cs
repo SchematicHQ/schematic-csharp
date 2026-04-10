@@ -14,6 +14,9 @@ public record FeatureView : IJsonOnDeserialized
     [JsonPropertyName("account_id")]
     public required string AccountId { get; set; }
 
+    [JsonPropertyName("billing_linked_resource")]
+    public BillingLinkedResourceResponseData? BillingLinkedResource { get; set; }
+
     [JsonPropertyName("created_at")]
     public required DateTime CreatedAt { get; set; }
 

@@ -18,6 +18,9 @@ public record UpdatePlanEntitlementRequestBody
     [JsonPropertyName("currency")]
     public string? Currency { get; set; }
 
+    [JsonPropertyName("currency_prices")]
+    public IEnumerable<CurrencyPriceRequestBody>? CurrencyPrices { get; set; }
+
     [JsonPropertyName("metric_period")]
     public UpdatePlanEntitlementRequestBodyMetricPeriod? MetricPeriod { get; set; }
 

@@ -21,6 +21,7 @@ public class CountCompaniesTest : BaseMockServerTest
                 "credit_type_ids": [
                   "credit_type_ids"
                 ],
+                "has_scheduled_downgrade": true,
                 "ids": [
                   "ids"
                 ],
@@ -76,6 +77,7 @@ public class CountCompaniesTest : BaseMockServerTest
         var response = await Client.Companies.CountCompaniesAsync(
             new CountCompaniesRequest
             {
+                HasScheduledDowngrade = true,
                 MonetizedSubscriptions = true,
                 PlanId = "plan_id",
                 PlanVersionId = "plan_version_id",

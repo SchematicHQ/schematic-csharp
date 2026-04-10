@@ -32,7 +32,7 @@ public class UpsertBillingCustomerTest : BaseMockServerTest
                 "external_id": "external_id",
                 "id": "id",
                 "name": "name",
-                "provider_type": "schematic",
+                "provider_type": "orb",
                 "updated_at": "2024-01-15T09:30:00.000Z"
               },
               "params": {

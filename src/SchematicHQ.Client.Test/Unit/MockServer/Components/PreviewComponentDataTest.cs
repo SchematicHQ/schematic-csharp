@@ -23,7 +23,7 @@ public class PreviewComponentDataTest : BaseMockServerTest
                     "compatible_plan_ids": [
                       "compatible_plan_ids"
                     ],
-                    "controlled_by": "schematic",
+                    "controlled_by": "orb",
                     "created_at": "2024-01-15T09:30:00.000Z",
                     "currency_prices": [
                       {
@@ -142,7 +142,7 @@ public class PreviewComponentDataTest : BaseMockServerTest
                         "updated_at": "2024-01-15T09:30:00.000Z"
                       }
                     ],
-                    "icon": "icon",
+                    "icon": "amber",
                     "id": "id",
                     "included_credit_grants": [
                       {
@@ -179,7 +179,7 @@ public class PreviewComponentDataTest : BaseMockServerTest
                         "created_at": "2024-01-15T09:30:00.000Z",
                         "description": "description",
                         "environment_id": "environment_id",
-                        "icon": "icon",
+                        "icon": "amber",
                         "id": "id",
                         "name": "name",
                         "plan_type": "plan",
@@ -198,7 +198,7 @@ public class PreviewComponentDataTest : BaseMockServerTest
                     "compatible_plan_ids": [
                       "compatible_plan_ids"
                     ],
-                    "controlled_by": "schematic",
+                    "controlled_by": "orb",
                     "created_at": "2024-01-15T09:30:00.000Z",
                     "currency_prices": [
                       {
@@ -317,7 +317,7 @@ public class PreviewComponentDataTest : BaseMockServerTest
                         "updated_at": "2024-01-15T09:30:00.000Z"
                       }
                     ],
-                    "icon": "icon",
+                    "icon": "amber",
                     "id": "id",
                     "included_credit_grants": [
                       {
@@ -354,7 +354,7 @@ public class PreviewComponentDataTest : BaseMockServerTest
                         "created_at": "2024-01-15T09:30:00.000Z",
                         "description": "description",
                         "environment_id": "environment_id",
-                        "icon": "icon",
+                        "icon": "amber",
                         "id": "id",
                         "name": "name",
                         "plan_type": "plan",
@@ -450,14 +450,14 @@ public class PreviewComponentDataTest : BaseMockServerTest
                         "price_tier": [
                           {}
                         ],
-                        "provider_type": "schematic",
+                        "provider_type": "orb",
                         "quantity": 1.1,
                         "subscription_id": "subscription_id",
                         "updated_at": "2024-01-15T09:30:00.000Z",
                         "usage_type": "licensed"
                       }
                     ],
-                    "provider_type": "schematic",
+                    "provider_type": "orb",
                     "status": "status",
                     "subscription_external_id": "subscription_external_id",
                     "total_price": 1000000
@@ -500,14 +500,14 @@ public class PreviewComponentDataTest : BaseMockServerTest
                           "price_tier": [
                             {}
                           ],
-                          "provider_type": "schematic",
+                          "provider_type": "orb",
                           "quantity": 1.1,
                           "subscription_id": "subscription_id",
                           "updated_at": "2024-01-15T09:30:00.000Z",
                           "usage_type": "licensed"
                         }
                       ],
-                      "provider_type": "schematic",
+                      "provider_type": "orb",
                       "status": "status",
                       "subscription_external_id": "subscription_external_id",
                       "total_price": 1000000
@@ -521,7 +521,7 @@ public class PreviewComponentDataTest : BaseMockServerTest
                     "external_id": "external_id",
                     "id": "id",
                     "payment_method_type": "payment_method_type",
-                    "provider_type": "schematic",
+                    "provider_type": "orb",
                     "updated_at": "2024-01-15T09:30:00.000Z"
                   },
                   "entitlements": [
@@ -581,7 +581,7 @@ public class PreviewComponentDataTest : BaseMockServerTest
                       "external_id": "external_id",
                       "id": "id",
                       "payment_method_type": "payment_method_type",
-                      "provider_type": "schematic",
+                      "provider_type": "orb",
                       "updated_at": "2024-01-15T09:30:00.000Z"
                     }
                   ],
@@ -701,7 +701,7 @@ public class PreviewComponentDataTest : BaseMockServerTest
                     "created_at": "2024-01-15T09:30:00.000Z",
                     "credit_description": "credit_description",
                     "credit_name": "credit_name",
-                    "grant_reason": "billing_credit_auto_topup",
+                    "grant_reason": "adjustment",
                     "id": "id",
                     "quantity": 1000000,
                     "quantity_remaining": 1.1,
@@ -716,13 +716,18 @@ public class PreviewComponentDataTest : BaseMockServerTest
                     "created_at": "2024-01-15T09:30:00.000Z",
                     "description": "description",
                     "environment_id": "environment_id",
-                    "icon": "icon",
+                    "icon": "amber",
                     "id": "id",
                     "name": "name",
                     "plan_type": "plan",
                     "status": "published",
                     "updated_at": "2024-01-15T09:30:00.000Z",
                     "version": 1000000
+                  },
+                  "billing_linked_resource": {
+                    "billing_provider": "orb",
+                    "external_resource_id": "external_resource_id",
+                    "originator": "orb"
                   },
                   "billing_product": {
                     "account_id": "account_id",
@@ -739,19 +744,19 @@ public class PreviewComponentDataTest : BaseMockServerTest
                         "id": "id",
                         "interval": "day",
                         "price": 1000000,
-                        "provider_type": "schematic",
+                        "provider_type": "orb",
                         "scheme": "per_unit"
                       }
                     ],
                     "product_id": "product_id",
-                    "provider_type": "schematic",
+                    "provider_type": "orb",
                     "quantity": 1.1,
                     "subscription_count": 1000000,
                     "updated_at": "2024-01-15T09:30:00.000Z"
                   },
                   "charge_type": "free",
                   "company_count": 1000000,
-                  "controlled_by": "schematic",
+                  "controlled_by": "orb",
                   "created_at": "2024-01-15T09:30:00.000Z",
                   "currency_prices": [
                     {
@@ -763,7 +768,7 @@ public class PreviewComponentDataTest : BaseMockServerTest
                     "created_at": "2024-01-15T09:30:00.000Z",
                     "description": "description",
                     "environment_id": "environment_id",
-                    "icon": "icon",
+                    "icon": "amber",
                     "id": "id",
                     "name": "name",
                     "plan_type": "plan",
@@ -863,7 +868,7 @@ public class PreviewComponentDataTest : BaseMockServerTest
                       "updated_at": "2024-01-15T09:30:00.000Z"
                     }
                   ],
-                  "icon": "icon",
+                  "icon": "amber",
                   "id": "id",
                   "included_credit_grants": [
                     {
@@ -887,7 +892,7 @@ public class PreviewComponentDataTest : BaseMockServerTest
                     "id": "id",
                     "interval": "day",
                     "price": 1000000,
-                    "provider_type": "schematic",
+                    "provider_type": "orb",
                     "scheme": "per_unit"
                   },
                   "name": "name",
@@ -897,7 +902,7 @@ public class PreviewComponentDataTest : BaseMockServerTest
                     "id": "id",
                     "interval": "day",
                     "price": 1000000,
-                    "provider_type": "schematic",
+                    "provider_type": "orb",
                     "scheme": "per_unit"
                   },
                   "plan_type": "plan",
@@ -908,7 +913,7 @@ public class PreviewComponentDataTest : BaseMockServerTest
                       "created_at": "2024-01-15T09:30:00.000Z",
                       "description": "description",
                       "environment_id": "environment_id",
-                      "icon": "icon",
+                      "icon": "amber",
                       "id": "id",
                       "name": "name",
                       "plan_type": "plan",
@@ -923,7 +928,7 @@ public class PreviewComponentDataTest : BaseMockServerTest
                     "id": "id",
                     "interval": "day",
                     "price": 1000000,
-                    "provider_type": "schematic",
+                    "provider_type": "orb",
                     "scheme": "per_unit"
                   }
                 },
@@ -956,7 +961,7 @@ public class PreviewComponentDataTest : BaseMockServerTest
                     "customer_external_id": "customer_external_id",
                     "environment_id": "environment_id",
                     "id": "id",
-                    "provider_type": "schematic",
+                    "provider_type": "orb",
                     "subtotal": 1000000,
                     "updated_at": "2024-01-15T09:30:00.000Z"
                   }
@@ -966,13 +971,18 @@ public class PreviewComponentDataTest : BaseMockServerTest
                     "created_at": "2024-01-15T09:30:00.000Z",
                     "description": "description",
                     "environment_id": "environment_id",
-                    "icon": "icon",
+                    "icon": "amber",
                     "id": "id",
                     "name": "name",
                     "plan_type": "plan",
                     "status": "published",
                     "updated_at": "2024-01-15T09:30:00.000Z",
                     "version": 1000000
+                  },
+                  "billing_linked_resource": {
+                    "billing_provider": "orb",
+                    "external_resource_id": "external_resource_id",
+                    "originator": "orb"
                   },
                   "billing_product": {
                     "account_id": "account_id",
@@ -989,19 +999,19 @@ public class PreviewComponentDataTest : BaseMockServerTest
                         "id": "id",
                         "interval": "day",
                         "price": 1000000,
-                        "provider_type": "schematic",
+                        "provider_type": "orb",
                         "scheme": "per_unit"
                       }
                     ],
                     "product_id": "product_id",
-                    "provider_type": "schematic",
+                    "provider_type": "orb",
                     "quantity": 1.1,
                     "subscription_count": 1000000,
                     "updated_at": "2024-01-15T09:30:00.000Z"
                   },
                   "charge_type": "free",
                   "company_count": 1000000,
-                  "controlled_by": "schematic",
+                  "controlled_by": "orb",
                   "created_at": "2024-01-15T09:30:00.000Z",
                   "currency_prices": [
                     {
@@ -1013,7 +1023,7 @@ public class PreviewComponentDataTest : BaseMockServerTest
                     "created_at": "2024-01-15T09:30:00.000Z",
                     "description": "description",
                     "environment_id": "environment_id",
-                    "icon": "icon",
+                    "icon": "amber",
                     "id": "id",
                     "name": "name",
                     "plan_type": "plan",
@@ -1113,7 +1123,7 @@ public class PreviewComponentDataTest : BaseMockServerTest
                       "updated_at": "2024-01-15T09:30:00.000Z"
                     }
                   ],
-                  "icon": "icon",
+                  "icon": "amber",
                   "id": "id",
                   "included_credit_grants": [
                     {
@@ -1137,7 +1147,7 @@ public class PreviewComponentDataTest : BaseMockServerTest
                     "id": "id",
                     "interval": "day",
                     "price": 1000000,
-                    "provider_type": "schematic",
+                    "provider_type": "orb",
                     "scheme": "per_unit"
                   },
                   "name": "name",
@@ -1147,7 +1157,7 @@ public class PreviewComponentDataTest : BaseMockServerTest
                     "id": "id",
                     "interval": "day",
                     "price": 1000000,
-                    "provider_type": "schematic",
+                    "provider_type": "orb",
                     "scheme": "per_unit"
                   },
                   "plan_type": "plan",
@@ -1158,7 +1168,7 @@ public class PreviewComponentDataTest : BaseMockServerTest
                       "created_at": "2024-01-15T09:30:00.000Z",
                       "description": "description",
                       "environment_id": "environment_id",
-                      "icon": "icon",
+                      "icon": "amber",
                       "id": "id",
                       "name": "name",
                       "plan_type": "plan",
@@ -1173,7 +1183,7 @@ public class PreviewComponentDataTest : BaseMockServerTest
                     "id": "id",
                     "interval": "day",
                     "price": 1000000,
-                    "provider_type": "schematic",
+                    "provider_type": "orb",
                     "scheme": "per_unit"
                   }
                 },
@@ -1231,7 +1241,7 @@ public class PreviewComponentDataTest : BaseMockServerTest
                     "customer_external_id": "customer_external_id",
                     "environment_id": "environment_id",
                     "id": "id",
-                    "provider_type": "schematic",
+                    "provider_type": "orb",
                     "subtotal": 1000000,
                     "updated_at": "2024-01-15T09:30:00.000Z"
                   },
@@ -1242,7 +1252,7 @@ public class PreviewComponentDataTest : BaseMockServerTest
                     "external_id": "external_id",
                     "id": "id",
                     "payment_method_type": "payment_method_type",
-                    "provider_type": "schematic",
+                    "provider_type": "orb",
                     "updated_at": "2024-01-15T09:30:00.000Z"
                   },
                   "products": [
@@ -1262,7 +1272,7 @@ public class PreviewComponentDataTest : BaseMockServerTest
                       "price_tier": [
                         {}
                       ],
-                      "provider_type": "schematic",
+                      "provider_type": "orb",
                       "quantity": 1.1,
                       "subscription_id": "subscription_id",
                       "updated_at": "2024-01-15T09:30:00.000Z",
@@ -1289,7 +1299,7 @@ public class PreviewComponentDataTest : BaseMockServerTest
                   "external_id": "external_id",
                   "id": "id",
                   "payment_method_external_id": "payment_method_external_id",
-                  "provider_type": "schematic",
+                  "provider_type": "orb",
                   "status": "draft",
                   "subscription_external_id": "subscription_external_id",
                   "subtotal": 1000000,

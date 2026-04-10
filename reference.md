@@ -80,6 +80,93 @@ await client.DeletePlanAudiencesPlanAudienceIdAsync("plan_audience_id");
 </details>
 
 ## accounts
+<details><summary><code>client.Accounts.<a href="/src/SchematicHQ.Client/Accounts/AccountsClient.cs">ListAccountMembersAsync</a>(ListAccountMembersRequest { ... }) -> WithRawResponseTask&lt;ListAccountMembersResponse&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Accounts.ListAccountMembersAsync(
+    new ListAccountMembersRequest
+    {
+        Q = "q",
+        Limit = 1000000,
+        Offset = 1000000,
+    }
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `ListAccountMembersRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Accounts.<a href="/src/SchematicHQ.Client/Accounts/AccountsClient.cs">GetAccountMemberAsync</a>(accountMemberId) -> WithRawResponseTask&lt;GetAccountMemberResponse&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Accounts.GetAccountMemberAsync("account_member_id");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**accountMemberId:** `string` — account_member_id
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.Accounts.<a href="/src/SchematicHQ.Client/Accounts/AccountsClient.cs">ListApiKeysAsync</a>(ListApiKeysRequest { ... }) -> WithRawResponseTask&lt;ListApiKeysResponse&gt;</code></summary>
 <dl>
 <dd>
@@ -918,7 +1005,7 @@ await client.Billing.ListCustomersWithSubscriptionsAsync(
     new ListCustomersWithSubscriptionsRequest
     {
         Name = "name",
-        ProviderType = BillingProviderType.Schematic,
+        ProviderType = BillingProviderType.Orb,
         Q = "q",
         Limit = 1000000,
         Offset = 1000000,
@@ -967,7 +1054,7 @@ await client.Billing.CountCustomersAsync(
     new CountCustomersRequest
     {
         Name = "name",
-        ProviderType = BillingProviderType.Schematic,
+        ProviderType = BillingProviderType.Orb,
         Q = "q",
         Limit = 1000000,
         Offset = 1000000,
@@ -1312,7 +1399,7 @@ await client.Billing.ListBillingPricesAsync(
         IsActive = true,
         Price = 1000000,
         ProductId = "product_id",
-        ProviderType = BillingProviderType.Schematic,
+        ProviderType = BillingProviderType.Orb,
         Q = "q",
         TiersMode = BillingTiersMode.Graduated,
         UsageType = BillingPriceUsageType.Licensed,
@@ -1467,7 +1554,7 @@ await client.Billing.ListBillingProductPricesAsync(
         IsActive = true,
         Price = 1000000,
         ProductId = "product_id",
-        ProviderType = BillingProviderType.Schematic,
+        ProviderType = BillingProviderType.Orb,
         Q = "q",
         TiersMode = BillingTiersMode.Graduated,
         UsageType = BillingPriceUsageType.Licensed,
@@ -1603,7 +1690,7 @@ await client.Billing.ListBillingProductsAsync(
         IsActive = true,
         Name = "name",
         PriceUsageType = BillingPriceUsageType.Licensed,
-        ProviderType = BillingProviderType.Schematic,
+        ProviderType = BillingProviderType.Orb,
         Q = "q",
         WithOneTimeCharges = true,
         WithPricesOnly = true,
@@ -1658,7 +1745,7 @@ await client.Billing.CountBillingProductsAsync(
         IsActive = true,
         Name = "name",
         PriceUsageType = BillingPriceUsageType.Licensed,
-        ProviderType = BillingProviderType.Schematic,
+        ProviderType = BillingProviderType.Orb,
         Q = "q",
         WithOneTimeCharges = true,
         WithPricesOnly = true,
@@ -2384,7 +2471,7 @@ await client.Credits.GrantBillingCreditsToCompanyAsync(
         CompanyId = "company_id",
         CreditId = "credit_id",
         Quantity = 1000000,
-        Reason = BillingCreditGrantReason.BillingCreditAutoTopup,
+        Reason = BillingCreditGrantReason.Adjustment,
     }
 );
 ```
@@ -2796,6 +2883,46 @@ await client.Credits.CreateBillingPlanCreditGrantAsync(
 <dd>
 
 **request:** `CreateBillingPlanCreditGrantRequestBody` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Credits.<a href="/src/SchematicHQ.Client/Credits/CreditsClient.cs">GetSingleBillingPlanCreditGrantAsync</a>(planGrantId) -> WithRawResponseTask&lt;GetSingleBillingPlanCreditGrantResponse&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Credits.GetSingleBillingPlanCreditGrantAsync("plan_grant_id");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**planGrantId:** `string` — plan_grant_id
     
 </dd>
 </dl>
@@ -3447,6 +3574,7 @@ await client.Checkout.UpdateCustomerSubscriptionTrialEndAsync(
 await client.Companies.ListCompaniesAsync(
     new ListCompaniesRequest
     {
+        HasScheduledDowngrade = true,
         MonetizedSubscriptions = true,
         PlanId = "plan_id",
         PlanVersionId = "plan_version_id",
@@ -3637,6 +3765,7 @@ await client.Companies.DeleteCompanyAsync(
 await client.Companies.CountCompaniesAsync(
     new CountCompaniesRequest
     {
+        HasScheduledDowngrade = true,
         MonetizedSubscriptions = true,
         PlanId = "plan_id",
         PlanVersionId = "plan_version_id",
@@ -4441,8 +4570,8 @@ await client.Companies.GetEntityTraitValuesAsync(
 await client.Companies.ListPlanChangesAsync(
     new ListPlanChangesRequest
     {
-        Action = "action",
-        BasePlanAction = "base_plan_action",
+        Action = PlanChangeAction.Checkout,
+        BasePlanAction = PlanChangeBasePlanAction.Fallback,
         CompanyId = "company_id",
         Limit = 1000000,
         Offset = 1000000,
@@ -6083,6 +6212,55 @@ await client.Entitlements.DeletePlanEntitlementAsync("plan_entitlement_id");
 </dl>
 </details>
 
+<details><summary><code>client.Entitlements.<a href="/src/SchematicHQ.Client/Entitlements/EntitlementsClient.cs">UpsertPlanEntitlementForBillingProductAsync</a>(CreateBillingLinkedPlanEntitlementRequestBody { ... }) -> WithRawResponseTask&lt;UpsertPlanEntitlementForBillingProductResponse&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Entitlements.UpsertPlanEntitlementForBillingProductAsync(
+    new CreateBillingLinkedPlanEntitlementRequestBody
+    {
+        BillingProvider = BillingProviderType.Orb,
+        ExternalResourceId = "external_resource_id",
+        FeatureId = "feature_id",
+        PlanId = "plan_id",
+        ValueType = EntitlementValueType.Boolean,
+    }
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `CreateBillingLinkedPlanEntitlementRequestBody` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.Entitlements.<a href="/src/SchematicHQ.Client/Entitlements/EntitlementsClient.cs">CountPlanEntitlementsAsync</a>(CountPlanEntitlementsRequest { ... }) -> WithRawResponseTask&lt;CountPlanEntitlementsResponse&gt;</code></summary>
 <dl>
 <dd>
@@ -6570,6 +6748,151 @@ await client.Plans.UpsertBillingProductPlanAsync(
 </dl>
 </details>
 
+<details><summary><code>client.Plans.<a href="/src/SchematicHQ.Client/Plans/PlansClient.cs">UpsertPlanForBillingProductAsync</a>(CreateBillingLinkedPlanRequestBody { ... }) -> WithRawResponseTask&lt;UpsertPlanForBillingProductResponse&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Plans.UpsertPlanForBillingProductAsync(
+    new CreateBillingLinkedPlanRequestBody
+    {
+        BillingProvider = BillingProviderType.Orb,
+        Description = "description",
+        ExternalResourceId = "external_resource_id",
+        Name = "name",
+        PlanType = PlanType.Plan,
+    }
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `CreateBillingLinkedPlanRequestBody` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Plans.<a href="/src/SchematicHQ.Client/Plans/PlansClient.cs">ListBillingProductMatchCompaniesAsync</a>(ListBillingProductMatchCompaniesRequest { ... }) -> WithRawResponseTask&lt;ListBillingProductMatchCompaniesResponse&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Plans.ListBillingProductMatchCompaniesAsync(
+    new ListBillingProductMatchCompaniesRequest
+    {
+        PlanId = "plan_id",
+        Q = "q",
+        Limit = 1000000,
+        Offset = 1000000,
+    }
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `ListBillingProductMatchCompaniesRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Plans.<a href="/src/SchematicHQ.Client/Plans/PlansClient.cs">CountBillingProductMatchCompaniesAsync</a>(CountBillingProductMatchCompaniesRequest { ... }) -> WithRawResponseTask&lt;CountBillingProductMatchCompaniesResponse&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Plans.CountBillingProductMatchCompaniesAsync(
+    new CountBillingProductMatchCompaniesRequest
+    {
+        PlanId = "plan_id",
+        Q = "q",
+        Limit = 1000000,
+        Offset = 1000000,
+    }
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `CountBillingProductMatchCompaniesRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.Plans.<a href="/src/SchematicHQ.Client/Plans/PlansClient.cs">CountPlansAsync</a>(CountPlansRequest { ... }) -> WithRawResponseTask&lt;CountPlansResponse&gt;</code></summary>
 <dl>
 <dd>
@@ -6668,7 +6991,7 @@ await client.Plans.ListPlanIssuesAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Plans.<a href="/src/SchematicHQ.Client/Plans/PlansClient.cs">DeletePlanVersionAsync</a>(planId) -> WithRawResponseTask&lt;DeletePlanVersionResponse&gt;</code></summary>
+<details><summary><code>client.Plans.<a href="/src/SchematicHQ.Client/Plans/PlansClient.cs">DeletePlanVersionAsync</a>(planId, DeletePlanVersionRequest { ... }) -> WithRawResponseTask&lt;DeletePlanVersionResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -6681,7 +7004,10 @@ await client.Plans.ListPlanIssuesAsync(
 <dd>
 
 ```csharp
-await client.Plans.DeletePlanVersionAsync("plan_id");
+await client.Plans.DeletePlanVersionAsync(
+    "plan_id",
+    new DeletePlanVersionRequest { PromoteArchivedVersion = true }
+);
 ```
 </dd>
 </dl>
@@ -6697,6 +7023,14 @@ await client.Plans.DeletePlanVersionAsync("plan_id");
 <dd>
 
 **planId:** `string` — plan_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `DeletePlanVersionRequest` 
     
 </dd>
 </dl>
@@ -7428,11 +7762,11 @@ await client.Events.GetSegmentIntegrationStatusAsync();
 await client.Features.ListFeaturesAsync(
     new ListFeaturesRequest
     {
+        BooleanRequireEvent = true,
+        PlanVersionId = "plan_version_id",
         Q = "q",
         WithoutCompanyOverrideFor = "without_company_override_for",
-        PlanVersionId = "plan_version_id",
         WithoutPlanEntitlementFor = "without_plan_entitlement_for",
-        BooleanRequireEvent = true,
         Limit = 1000000,
         Offset = 1000000,
     }
@@ -7638,6 +7972,55 @@ await client.Features.DeleteFeatureAsync("feature_id");
 </dl>
 </details>
 
+<details><summary><code>client.Features.<a href="/src/SchematicHQ.Client/Features/FeaturesClient.cs">UpsertFeatureForBillingProductAsync</a>(CreateBillingLinkedFeatureRequestBody { ... }) -> WithRawResponseTask&lt;UpsertFeatureForBillingProductResponse&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Features.UpsertFeatureForBillingProductAsync(
+    new CreateBillingLinkedFeatureRequestBody
+    {
+        BillingProvider = BillingProviderType.Orb,
+        Description = "description",
+        ExternalResourceId = "external_resource_id",
+        FeatureType = FeatureType.Boolean,
+        Name = "name",
+    }
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `CreateBillingLinkedFeatureRequestBody` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.Features.<a href="/src/SchematicHQ.Client/Features/FeaturesClient.cs">CountFeaturesAsync</a>(CountFeaturesRequest { ... }) -> WithRawResponseTask&lt;CountFeaturesResponse&gt;</code></summary>
 <dl>
 <dd>
@@ -7654,11 +8037,11 @@ await client.Features.DeleteFeatureAsync("feature_id");
 await client.Features.CountFeaturesAsync(
     new CountFeaturesRequest
     {
+        BooleanRequireEvent = true,
+        PlanVersionId = "plan_version_id",
         Q = "q",
         WithoutCompanyOverrideFor = "without_company_override_for",
-        PlanVersionId = "plan_version_id",
         WithoutPlanEntitlementFor = "without_plan_entitlement_for",
-        BooleanRequireEvent = true,
         Limit = 1000000,
         Offset = 1000000,
     }

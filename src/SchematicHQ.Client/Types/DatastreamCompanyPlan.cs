@@ -20,6 +20,9 @@ public record DatastreamCompanyPlan : IJsonOnDeserialized
     [JsonPropertyName("trial_end_date")]
     public DateTime? TrialEndDate { get; set; }
 
+    [JsonPropertyName("trial_status")]
+    public TrialStatus? TrialStatus { get; set; }
+
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();
 

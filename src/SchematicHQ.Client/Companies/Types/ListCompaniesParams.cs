@@ -21,6 +21,12 @@ public record ListCompaniesParams : IJsonOnDeserialized
     public IEnumerable<string>? CreditTypeIds { get; set; }
 
     /// <summary>
+    /// Filter companies that have a pending scheduled downgrade
+    /// </summary>
+    [JsonPropertyName("has_scheduled_downgrade")]
+    public bool? HasScheduledDowngrade { get; set; }
+
+    /// <summary>
     /// Filter companies by multiple company IDs (starts with comp_)
     /// </summary>
     [JsonPropertyName("ids")]

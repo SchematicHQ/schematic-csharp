@@ -21,7 +21,7 @@ public record PlanVersionResponseData : IJsonOnDeserialized
     public required string EnvironmentId { get; set; }
 
     [JsonPropertyName("icon")]
-    public required string Icon { get; set; }
+    public required PlanIcon Icon { get; set; }
 
     [JsonPropertyName("id")]
     public required string Id { get; set; }

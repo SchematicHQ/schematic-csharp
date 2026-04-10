@@ -28,6 +28,7 @@ public class UpdateBillingPlanCreditGrantTest : BaseMockServerTest
                 "auto_topup_expiry_type": "duration",
                 "auto_topup_expiry_unit": "billing_periods",
                 "auto_topup_expiry_unit_count": 1000000,
+                "auto_topup_threshold_credits": 1000000,
                 "auto_topup_threshold_percent": 1000000,
                 "created_at": "2024-01-15T09:30:00.000Z",
                 "credit": {
@@ -53,7 +54,7 @@ public class UpdateBillingPlanCreditGrantTest : BaseMockServerTest
                     "id": "id",
                     "interval": "day",
                     "price": 1000000,
-                    "provider_type": "schematic",
+                    "provider_type": "orb",
                     "scheme": "per_unit"
                   },
                   "product": {
@@ -65,7 +66,7 @@ public class UpdateBillingPlanCreditGrantTest : BaseMockServerTest
                     "name": "name",
                     "price": 1.1,
                     "product_id": "product_id",
-                    "provider_type": "schematic",
+                    "provider_type": "orb",
                     "quantity": 1.1,
                     "updated_at": "2024-01-15T09:30:00.000Z"
                   },

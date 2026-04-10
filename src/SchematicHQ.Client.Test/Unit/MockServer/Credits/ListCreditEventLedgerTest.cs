@@ -47,7 +47,7 @@ public class ListCreditEventLedgerTest : BaseMockServerTest
                   "grant_id": "grant_id",
                   "grant_quantity": 1000000,
                   "grant_quantity_remaining": 1.1,
-                  "grant_reason": "billing_credit_auto_topup",
+                  "grant_reason": "adjustment",
                   "grant_valid_from": "2024-01-15T09:30:00.000Z",
                   "plan_id": "plan_id",
                   "quantity_consumed": 1.1,

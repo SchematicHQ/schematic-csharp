@@ -8,6 +8,8 @@ namespace SchematicHQ.Client;
 [Serializable]
 public readonly record struct BillingCreditGrantReason : IStringEnum
 {
+    public static readonly BillingCreditGrantReason Adjustment = new(Values.Adjustment);
+
     public static readonly BillingCreditGrantReason BillingCreditAutoTopup = new(
         Values.BillingCreditAutoTopup
     );
@@ -114,6 +116,8 @@ public readonly record struct BillingCreditGrantReason : IStringEnum
     [Serializable]
     public static class Values
     {
+        public const string Adjustment = "adjustment";
+
         public const string BillingCreditAutoTopup = "billing_credit_auto_topup";
 
         public const string Free = "free";

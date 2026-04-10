@@ -14,6 +14,11 @@ public class GetPlanEntitlementTest : BaseMockServerTest
         const string mockResponse = """
             {
               "data": {
+                "billing_linked_resource": {
+                  "billing_provider": "orb",
+                  "external_resource_id": "external_resource_id",
+                  "originator": "orb"
+                },
                 "billing_threshold": 1000000,
                 "consumption_rate": 1.1,
                 "created_at": "2024-01-15T09:30:00.000Z",
@@ -61,7 +66,7 @@ public class GetPlanEntitlementTest : BaseMockServerTest
                   "product_external_id": "product_external_id",
                   "product_id": "product_id",
                   "product_name": "product_name",
-                  "provider_type": "schematic",
+                  "provider_type": "orb",
                   "tiers_mode": "graduated",
                   "updated_at": "2024-01-15T09:30:00.000Z",
                   "usage_type": "licensed"
@@ -87,7 +92,7 @@ public class GetPlanEntitlementTest : BaseMockServerTest
                   "product_external_id": "product_external_id",
                   "product_id": "product_id",
                   "product_name": "product_name",
-                  "provider_type": "schematic",
+                  "provider_type": "orb",
                   "tiers_mode": "graduated",
                   "updated_at": "2024-01-15T09:30:00.000Z",
                   "usage_type": "licensed"
@@ -97,7 +102,7 @@ public class GetPlanEntitlementTest : BaseMockServerTest
                 "plan": {
                   "created_at": "2024-01-15T09:30:00.000Z",
                   "description": "description",
-                  "icon": "icon",
+                  "icon": "amber",
                   "id": "id",
                   "name": "name",
                   "plan_type": "plan",
@@ -119,7 +124,7 @@ public class GetPlanEntitlementTest : BaseMockServerTest
                   "price": 1.1,
                   "price_decimal": "price_decimal",
                   "product_id": "product_id",
-                  "provider_type": "schematic",
+                  "provider_type": "orb",
                   "quantity": 1.1,
                   "updated_at": "2024-01-15T09:30:00.000Z"
                 },
@@ -147,7 +152,7 @@ public class GetPlanEntitlementTest : BaseMockServerTest
                     "id": "id",
                     "interval": "day",
                     "price": 1000000,
-                    "provider_type": "schematic",
+                    "provider_type": "orb",
                     "scheme": "per_unit"
                   },
                   "product": {
@@ -159,7 +164,7 @@ public class GetPlanEntitlementTest : BaseMockServerTest
                     "name": "name",
                     "price": 1.1,
                     "product_id": "product_id",
-                    "provider_type": "schematic",
+                    "provider_type": "orb",
                     "quantity": 1.1,
                     "updated_at": "2024-01-15T09:30:00.000Z"
                   },

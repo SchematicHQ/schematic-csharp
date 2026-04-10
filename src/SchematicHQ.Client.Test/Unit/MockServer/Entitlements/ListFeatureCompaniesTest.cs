@@ -78,14 +78,14 @@ public class ListFeatureCompaniesTest : BaseMockServerTest
                             "price_tier": [
                               {}
                             ],
-                            "provider_type": "schematic",
+                            "provider_type": "orb",
                             "quantity": 1.1,
                             "subscription_id": "subscription_id",
                             "updated_at": "2024-01-15T09:30:00.000Z",
                             "usage_type": "licensed"
                           }
                         ],
-                        "provider_type": "schematic",
+                        "provider_type": "orb",
                         "status": "status",
                         "subscription_external_id": "subscription_external_id",
                         "total_price": 1000000
@@ -147,7 +147,7 @@ public class ListFeatureCompaniesTest : BaseMockServerTest
                         "external_id": "external_id",
                         "id": "id",
                         "payment_method_type": "payment_method_type",
-                        "provider_type": "schematic",
+                        "provider_type": "orb",
                         "updated_at": "2024-01-15T09:30:00.000Z"
                       }
                     ],
@@ -226,11 +226,11 @@ public class ListFeatureCompaniesTest : BaseMockServerTest
                   },
                   "credit_grant_details": [
                     {
-                      "grant_reason": "billing_credit_auto_topup",
+                      "grant_reason": "adjustment",
                       "quantity": 1.1
                     }
                   ],
-                  "credit_grant_reason": "billing_credit_auto_topup",
+                  "credit_grant_reason": "adjustment",
                   "credit_remaining": 1.1,
                   "credit_type_icon": "credit_type_icon",
                   "credit_used": 1.1,
@@ -351,7 +351,7 @@ public class ListFeatureCompaniesTest : BaseMockServerTest
                     "product_external_id": "product_external_id",
                     "product_id": "product_id",
                     "product_name": "product_name",
-                    "provider_type": "schematic",
+                    "provider_type": "orb",
                     "updated_at": "2024-01-15T09:30:00.000Z",
                     "usage_type": "licensed"
                   },
@@ -361,7 +361,7 @@ public class ListFeatureCompaniesTest : BaseMockServerTest
                   "plan": {
                     "created_at": "2024-01-15T09:30:00.000Z",
                     "description": "description",
-                    "icon": "icon",
+                    "icon": "amber",
                     "id": "id",
                     "name": "name",
                     "plan_type": "plan",
@@ -402,7 +402,7 @@ public class ListFeatureCompaniesTest : BaseMockServerTest
                     "product_external_id": "product_external_id",
                     "product_id": "product_id",
                     "product_name": "product_name",
-                    "provider_type": "schematic",
+                    "provider_type": "orb",
                     "updated_at": "2024-01-15T09:30:00.000Z",
                     "usage_type": "licensed"
                   }

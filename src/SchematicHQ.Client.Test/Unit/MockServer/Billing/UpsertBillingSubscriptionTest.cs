@@ -62,7 +62,7 @@ public class UpsertBillingSubscriptionTest : BaseMockServerTest
                 },
                 "period_end": 1000000,
                 "period_start": 1000000,
-                "provider_type": "schematic",
+                "provider_type": "orb",
                 "status": "status",
                 "subscription_external_id": "subscription_external_id",
                 "total_price": 1000000,

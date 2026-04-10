@@ -16,6 +16,11 @@ public class ListFeaturesTest : BaseMockServerTest
             {
               "data": [
                 {
+                  "billing_linked_resource": {
+                    "billing_provider": "orb",
+                    "external_resource_id": "external_resource_id",
+                    "originator": "orb"
+                  },
                   "created_at": "2024-01-15T09:30:00.000Z",
                   "description": "description",
                   "event_subtype": "event_subtype",
@@ -153,9 +158,9 @@ public class ListFeaturesTest : BaseMockServerTest
                 WireMock
                     .RequestBuilders.Request.Create()
                     .WithPath("/features")
+                    .WithParam("plan_version_id", "plan_version_id")
                     .WithParam("q", "q")
                     .WithParam("without_company_override_for", "without_company_override_for")
-                    .WithParam("plan_version_id", "plan_version_id")
                     .WithParam("without_plan_entitlement_for", "without_plan_entitlement_for")
                     .WithParam("limit", "1000000")
                     .WithParam("offset", "1000000")
@@ -171,11 +176,11 @@ public class ListFeaturesTest : BaseMockServerTest
         var response = await Client.Features.ListFeaturesAsync(
             new ListFeaturesRequest
             {
+                BooleanRequireEvent = true,
+                PlanVersionId = "plan_version_id",
                 Q = "q",
                 WithoutCompanyOverrideFor = "without_company_override_for",
-                PlanVersionId = "plan_version_id",
                 WithoutPlanEntitlementFor = "without_plan_entitlement_for",
-                BooleanRequireEvent = true,
                 Limit = 1000000,
                 Offset = 1000000,
             }

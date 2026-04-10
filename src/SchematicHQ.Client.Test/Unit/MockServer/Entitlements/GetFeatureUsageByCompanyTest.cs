@@ -48,7 +48,7 @@ public class GetFeatureUsageByCompanyTest : BaseMockServerTest
                           "period_end": 1000000,
                           "period_start": 1000000,
                           "products": [],
-                          "provider_type": "schematic",
+                          "provider_type": "orb",
                           "status": "status",
                           "subscription_external_id": "subscription_external_id",
                           "total_price": 1000000
@@ -65,7 +65,7 @@ public class GetFeatureUsageByCompanyTest : BaseMockServerTest
                             "period_end": 1000000,
                             "period_start": 1000000,
                             "products": [],
-                            "provider_type": "schematic",
+                            "provider_type": "orb",
                             "status": "status",
                             "subscription_external_id": "subscription_external_id",
                             "total_price": 1000000
@@ -81,7 +81,7 @@ public class GetFeatureUsageByCompanyTest : BaseMockServerTest
                             "period_end": 1000000,
                             "period_start": 1000000,
                             "products": [],
-                            "provider_type": "schematic",
+                            "provider_type": "orb",
                             "status": "status",
                             "subscription_external_id": "subscription_external_id",
                             "total_price": 1000000
@@ -95,7 +95,7 @@ public class GetFeatureUsageByCompanyTest : BaseMockServerTest
                           "external_id": "external_id",
                           "id": "id",
                           "payment_method_type": "payment_method_type",
-                          "provider_type": "schematic",
+                          "provider_type": "orb",
                           "updated_at": "2024-01-15T09:30:00.000Z"
                         },
                         "entitlements": [
@@ -191,7 +191,7 @@ public class GetFeatureUsageByCompanyTest : BaseMockServerTest
                             "external_id": "external_id",
                             "id": "id",
                             "payment_method_type": "payment_method_type",
-                            "provider_type": "schematic",
+                            "provider_type": "orb",
                             "updated_at": "2024-01-15T09:30:00.000Z"
                           },
                           {
@@ -201,7 +201,7 @@ public class GetFeatureUsageByCompanyTest : BaseMockServerTest
                             "external_id": "external_id",
                             "id": "id",
                             "payment_method_type": "payment_method_type",
-                            "provider_type": "schematic",
+                            "provider_type": "orb",
                             "updated_at": "2024-01-15T09:30:00.000Z"
                           }
                         ],
@@ -333,17 +333,17 @@ public class GetFeatureUsageByCompanyTest : BaseMockServerTest
                       {
                         "credit_type_icon": "credit_type_icon",
                         "expires_at": "2024-01-15T09:30:00.000Z",
-                        "grant_reason": "billing_credit_auto_topup",
+                        "grant_reason": "adjustment",
                         "quantity": 1.1
                       },
                       {
                         "credit_type_icon": "credit_type_icon",
                         "expires_at": "2024-01-15T09:30:00.000Z",
-                        "grant_reason": "billing_credit_auto_topup",
+                        "grant_reason": "adjustment",
                         "quantity": 1.1
                       }
                     ],
-                    "credit_grant_reason": "billing_credit_auto_topup",
+                    "credit_grant_reason": "adjustment",
                     "credit_remaining": 1.1,
                     "credit_total": 1.1,
                     "credit_type_icon": "credit_type_icon",
@@ -361,6 +361,11 @@ public class GetFeatureUsageByCompanyTest : BaseMockServerTest
                     "entitlement_source": "entitlement_source",
                     "entitlement_type": "company_override",
                     "feature": {
+                      "billing_linked_resource": {
+                        "billing_provider": "orb",
+                        "external_resource_id": "external_resource_id",
+                        "originator": "orb"
+                      },
                       "created_at": "2024-01-15T09:30:00.000Z",
                       "description": "description",
                       "event_subtype": "event_subtype",
@@ -543,7 +548,7 @@ public class GetFeatureUsageByCompanyTest : BaseMockServerTest
                       "product_external_id": "product_external_id",
                       "product_id": "product_id",
                       "product_name": "product_name",
-                      "provider_type": "schematic",
+                      "provider_type": "orb",
                       "tiers_mode": "graduated",
                       "updated_at": "2024-01-15T09:30:00.000Z",
                       "usage_type": "licensed"
@@ -555,13 +560,18 @@ public class GetFeatureUsageByCompanyTest : BaseMockServerTest
                       "audience_type": "audience_type",
                       "created_at": "2024-01-15T09:30:00.000Z",
                       "description": "description",
-                      "icon": "icon",
+                      "icon": "amber",
                       "id": "id",
                       "name": "name",
                       "plan_type": "plan",
                       "updated_at": "2024-01-15T09:30:00.000Z"
                     },
                     "plan_entitlement": {
+                      "billing_linked_resource": {
+                        "billing_provider": "orb",
+                        "external_resource_id": "external_resource_id",
+                        "originator": "orb"
+                      },
                       "billing_threshold": 1000000,
                       "consumption_rate": 1.1,
                       "created_at": "2024-01-15T09:30:00.000Z",
@@ -583,7 +593,7 @@ public class GetFeatureUsageByCompanyTest : BaseMockServerTest
                             "product_external_id": "product_external_id",
                             "product_id": "product_id",
                             "product_name": "product_name",
-                            "provider_type": "schematic",
+                            "provider_type": "orb",
                             "updated_at": "2024-01-15T09:30:00.000Z",
                             "usage_type": "licensed"
                           },
@@ -602,7 +612,7 @@ public class GetFeatureUsageByCompanyTest : BaseMockServerTest
                             "product_external_id": "product_external_id",
                             "product_id": "product_id",
                             "product_name": "product_name",
-                            "provider_type": "schematic",
+                            "provider_type": "orb",
                             "updated_at": "2024-01-15T09:30:00.000Z",
                             "usage_type": "licensed"
                           }
@@ -624,7 +634,7 @@ public class GetFeatureUsageByCompanyTest : BaseMockServerTest
                             "product_external_id": "product_external_id",
                             "product_id": "product_id",
                             "product_name": "product_name",
-                            "provider_type": "schematic",
+                            "provider_type": "orb",
                             "updated_at": "2024-01-15T09:30:00.000Z",
                             "usage_type": "licensed"
                           },
@@ -643,7 +653,7 @@ public class GetFeatureUsageByCompanyTest : BaseMockServerTest
                             "product_external_id": "product_external_id",
                             "product_id": "product_id",
                             "product_name": "product_name",
-                            "provider_type": "schematic",
+                            "provider_type": "orb",
                             "updated_at": "2024-01-15T09:30:00.000Z",
                             "usage_type": "licensed"
                           }
@@ -689,7 +699,7 @@ public class GetFeatureUsageByCompanyTest : BaseMockServerTest
                         "product_external_id": "product_external_id",
                         "product_id": "product_id",
                         "product_name": "product_name",
-                        "provider_type": "schematic",
+                        "provider_type": "orb",
                         "tiers_mode": "graduated",
                         "updated_at": "2024-01-15T09:30:00.000Z",
                         "usage_type": "licensed"
@@ -716,7 +726,7 @@ public class GetFeatureUsageByCompanyTest : BaseMockServerTest
                         "product_external_id": "product_external_id",
                         "product_id": "product_id",
                         "product_name": "product_name",
-                        "provider_type": "schematic",
+                        "provider_type": "orb",
                         "tiers_mode": "graduated",
                         "updated_at": "2024-01-15T09:30:00.000Z",
                         "usage_type": "licensed"
@@ -727,7 +737,7 @@ public class GetFeatureUsageByCompanyTest : BaseMockServerTest
                         "audience_type": "audience_type",
                         "created_at": "2024-01-15T09:30:00.000Z",
                         "description": "description",
-                        "icon": "icon",
+                        "icon": "amber",
                         "id": "id",
                         "name": "name",
                         "plan_type": "plan",
@@ -750,7 +760,7 @@ public class GetFeatureUsageByCompanyTest : BaseMockServerTest
                         "price": 1.1,
                         "price_decimal": "price_decimal",
                         "product_id": "product_id",
-                        "provider_type": "schematic",
+                        "provider_type": "orb",
                         "quantity": 1.1,
                         "updated_at": "2024-01-15T09:30:00.000Z"
                       },
@@ -781,7 +791,7 @@ public class GetFeatureUsageByCompanyTest : BaseMockServerTest
                           "id": "id",
                           "interval": "day",
                           "price": 1000000,
-                          "provider_type": "schematic",
+                          "provider_type": "orb",
                           "scheme": "per_unit"
                         },
                         "product": {
@@ -793,7 +803,7 @@ public class GetFeatureUsageByCompanyTest : BaseMockServerTest
                           "name": "name",
                           "price": 1.1,
                           "product_id": "product_id",
-                          "provider_type": "schematic",
+                          "provider_type": "orb",
                           "quantity": 1.1,
                           "updated_at": "2024-01-15T09:30:00.000Z"
                         },
@@ -851,7 +861,7 @@ public class GetFeatureUsageByCompanyTest : BaseMockServerTest
                       "product_external_id": "product_external_id",
                       "product_id": "product_id",
                       "product_name": "product_name",
-                      "provider_type": "schematic",
+                      "provider_type": "orb",
                       "tiers_mode": "graduated",
                       "updated_at": "2024-01-15T09:30:00.000Z",
                       "usage_type": "licensed"
@@ -889,7 +899,7 @@ public class GetFeatureUsageByCompanyTest : BaseMockServerTest
                           "period_end": 1000000,
                           "period_start": 1000000,
                           "products": [],
-                          "provider_type": "schematic",
+                          "provider_type": "orb",
                           "status": "status",
                           "subscription_external_id": "subscription_external_id",
                           "total_price": 1000000
@@ -906,7 +916,7 @@ public class GetFeatureUsageByCompanyTest : BaseMockServerTest
                             "period_end": 1000000,
                             "period_start": 1000000,
                             "products": [],
-                            "provider_type": "schematic",
+                            "provider_type": "orb",
                             "status": "status",
                             "subscription_external_id": "subscription_external_id",
                             "total_price": 1000000
@@ -922,7 +932,7 @@ public class GetFeatureUsageByCompanyTest : BaseMockServerTest
                             "period_end": 1000000,
                             "period_start": 1000000,
                             "products": [],
-                            "provider_type": "schematic",
+                            "provider_type": "orb",
                             "status": "status",
                             "subscription_external_id": "subscription_external_id",
                             "total_price": 1000000
@@ -936,7 +946,7 @@ public class GetFeatureUsageByCompanyTest : BaseMockServerTest
                           "external_id": "external_id",
                           "id": "id",
                           "payment_method_type": "payment_method_type",
-                          "provider_type": "schematic",
+                          "provider_type": "orb",
                           "updated_at": "2024-01-15T09:30:00.000Z"
                         },
                         "entitlements": [
@@ -1032,7 +1042,7 @@ public class GetFeatureUsageByCompanyTest : BaseMockServerTest
                             "external_id": "external_id",
                             "id": "id",
                             "payment_method_type": "payment_method_type",
-                            "provider_type": "schematic",
+                            "provider_type": "orb",
                             "updated_at": "2024-01-15T09:30:00.000Z"
                           },
                           {
@@ -1042,7 +1052,7 @@ public class GetFeatureUsageByCompanyTest : BaseMockServerTest
                             "external_id": "external_id",
                             "id": "id",
                             "payment_method_type": "payment_method_type",
-                            "provider_type": "schematic",
+                            "provider_type": "orb",
                             "updated_at": "2024-01-15T09:30:00.000Z"
                           }
                         ],
@@ -1174,17 +1184,17 @@ public class GetFeatureUsageByCompanyTest : BaseMockServerTest
                       {
                         "credit_type_icon": "credit_type_icon",
                         "expires_at": "2024-01-15T09:30:00.000Z",
-                        "grant_reason": "billing_credit_auto_topup",
+                        "grant_reason": "adjustment",
                         "quantity": 1.1
                       },
                       {
                         "credit_type_icon": "credit_type_icon",
                         "expires_at": "2024-01-15T09:30:00.000Z",
-                        "grant_reason": "billing_credit_auto_topup",
+                        "grant_reason": "adjustment",
                         "quantity": 1.1
                       }
                     ],
-                    "credit_grant_reason": "billing_credit_auto_topup",
+                    "credit_grant_reason": "adjustment",
                     "credit_remaining": 1.1,
                     "credit_total": 1.1,
                     "credit_type_icon": "credit_type_icon",
@@ -1202,6 +1212,11 @@ public class GetFeatureUsageByCompanyTest : BaseMockServerTest
                     "entitlement_source": "entitlement_source",
                     "entitlement_type": "company_override",
                     "feature": {
+                      "billing_linked_resource": {
+                        "billing_provider": "orb",
+                        "external_resource_id": "external_resource_id",
+                        "originator": "orb"
+                      },
                       "created_at": "2024-01-15T09:30:00.000Z",
                       "description": "description",
                       "event_subtype": "event_subtype",
@@ -1384,7 +1399,7 @@ public class GetFeatureUsageByCompanyTest : BaseMockServerTest
                       "product_external_id": "product_external_id",
                       "product_id": "product_id",
                       "product_name": "product_name",
-                      "provider_type": "schematic",
+                      "provider_type": "orb",
                       "tiers_mode": "graduated",
                       "updated_at": "2024-01-15T09:30:00.000Z",
                       "usage_type": "licensed"
@@ -1396,13 +1411,18 @@ public class GetFeatureUsageByCompanyTest : BaseMockServerTest
                       "audience_type": "audience_type",
                       "created_at": "2024-01-15T09:30:00.000Z",
                       "description": "description",
-                      "icon": "icon",
+                      "icon": "amber",
                       "id": "id",
                       "name": "name",
                       "plan_type": "plan",
                       "updated_at": "2024-01-15T09:30:00.000Z"
                     },
                     "plan_entitlement": {
+                      "billing_linked_resource": {
+                        "billing_provider": "orb",
+                        "external_resource_id": "external_resource_id",
+                        "originator": "orb"
+                      },
                       "billing_threshold": 1000000,
                       "consumption_rate": 1.1,
                       "created_at": "2024-01-15T09:30:00.000Z",
@@ -1424,7 +1444,7 @@ public class GetFeatureUsageByCompanyTest : BaseMockServerTest
                             "product_external_id": "product_external_id",
                             "product_id": "product_id",
                             "product_name": "product_name",
-                            "provider_type": "schematic",
+                            "provider_type": "orb",
                             "updated_at": "2024-01-15T09:30:00.000Z",
                             "usage_type": "licensed"
                           },
@@ -1443,7 +1463,7 @@ public class GetFeatureUsageByCompanyTest : BaseMockServerTest
                             "product_external_id": "product_external_id",
                             "product_id": "product_id",
                             "product_name": "product_name",
-                            "provider_type": "schematic",
+                            "provider_type": "orb",
                             "updated_at": "2024-01-15T09:30:00.000Z",
                             "usage_type": "licensed"
                           }
@@ -1465,7 +1485,7 @@ public class GetFeatureUsageByCompanyTest : BaseMockServerTest
                             "product_external_id": "product_external_id",
                             "product_id": "product_id",
                             "product_name": "product_name",
-                            "provider_type": "schematic",
+                            "provider_type": "orb",
                             "updated_at": "2024-01-15T09:30:00.000Z",
                             "usage_type": "licensed"
                           },
@@ -1484,7 +1504,7 @@ public class GetFeatureUsageByCompanyTest : BaseMockServerTest
                             "product_external_id": "product_external_id",
                             "product_id": "product_id",
                             "product_name": "product_name",
-                            "provider_type": "schematic",
+                            "provider_type": "orb",
                             "updated_at": "2024-01-15T09:30:00.000Z",
                             "usage_type": "licensed"
                           }
@@ -1530,7 +1550,7 @@ public class GetFeatureUsageByCompanyTest : BaseMockServerTest
                         "product_external_id": "product_external_id",
                         "product_id": "product_id",
                         "product_name": "product_name",
-                        "provider_type": "schematic",
+                        "provider_type": "orb",
                         "tiers_mode": "graduated",
                         "updated_at": "2024-01-15T09:30:00.000Z",
                         "usage_type": "licensed"
@@ -1557,7 +1577,7 @@ public class GetFeatureUsageByCompanyTest : BaseMockServerTest
                         "product_external_id": "product_external_id",
                         "product_id": "product_id",
                         "product_name": "product_name",
-                        "provider_type": "schematic",
+                        "provider_type": "orb",
                         "tiers_mode": "graduated",
                         "updated_at": "2024-01-15T09:30:00.000Z",
                         "usage_type": "licensed"
@@ -1568,7 +1588,7 @@ public class GetFeatureUsageByCompanyTest : BaseMockServerTest
                         "audience_type": "audience_type",
                         "created_at": "2024-01-15T09:30:00.000Z",
                         "description": "description",
-                        "icon": "icon",
+                        "icon": "amber",
                         "id": "id",
                         "name": "name",
                         "plan_type": "plan",
@@ -1591,7 +1611,7 @@ public class GetFeatureUsageByCompanyTest : BaseMockServerTest
                         "price": 1.1,
                         "price_decimal": "price_decimal",
                         "product_id": "product_id",
-                        "provider_type": "schematic",
+                        "provider_type": "orb",
                         "quantity": 1.1,
                         "updated_at": "2024-01-15T09:30:00.000Z"
                       },
@@ -1622,7 +1642,7 @@ public class GetFeatureUsageByCompanyTest : BaseMockServerTest
                           "id": "id",
                           "interval": "day",
                           "price": 1000000,
-                          "provider_type": "schematic",
+                          "provider_type": "orb",
                           "scheme": "per_unit"
                         },
                         "product": {
@@ -1634,7 +1654,7 @@ public class GetFeatureUsageByCompanyTest : BaseMockServerTest
                           "name": "name",
                           "price": 1.1,
                           "product_id": "product_id",
-                          "provider_type": "schematic",
+                          "provider_type": "orb",
                           "quantity": 1.1,
                           "updated_at": "2024-01-15T09:30:00.000Z"
                         },
@@ -1692,7 +1712,7 @@ public class GetFeatureUsageByCompanyTest : BaseMockServerTest
                       "product_external_id": "product_external_id",
                       "product_id": "product_id",
                       "product_name": "product_name",
-                      "provider_type": "schematic",
+                      "provider_type": "orb",
                       "tiers_mode": "graduated",
                       "updated_at": "2024-01-15T09:30:00.000Z",
                       "usage_type": "licensed"

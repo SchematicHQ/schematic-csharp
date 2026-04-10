@@ -11,6 +11,9 @@ public record FeatureDetailResponseData : IJsonOnDeserialized
     private readonly IDictionary<string, JsonElement> _extensionData =
         new Dictionary<string, JsonElement>();
 
+    [JsonPropertyName("billing_linked_resource")]
+    public BillingLinkedResourceResponseData? BillingLinkedResource { get; set; }
+
     [JsonPropertyName("created_at")]
     public required DateTime CreatedAt { get; set; }
 

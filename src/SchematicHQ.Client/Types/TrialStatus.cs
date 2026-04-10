@@ -4,15 +4,17 @@ using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
 
-[JsonConverter(typeof(PlanControlledByType.PlanControlledByTypeSerializer))]
+[JsonConverter(typeof(TrialStatus.TrialStatusSerializer))]
 [Serializable]
-public readonly record struct PlanControlledByType : IStringEnum
+public readonly record struct TrialStatus : IStringEnum
 {
-    public static readonly PlanControlledByType Schematic = new(Values.Schematic);
+    public static readonly TrialStatus Active = new(Values.Active);
 
-    public static readonly PlanControlledByType Stripe = new(Values.Stripe);
+    public static readonly TrialStatus Converted = new(Values.Converted);
 
-    public PlanControlledByType(string value)
+    public static readonly TrialStatus Expired = new(Values.Expired);
+
+    public TrialStatus(string value)
     {
         Value = value;
     }
@@ -25,9 +27,9 @@ public readonly record struct PlanControlledByType : IStringEnum
     /// <summary>
     /// Create a string enum with the given value.
     /// </summary>
-    public static PlanControlledByType FromCustom(string value)
+    public static TrialStatus FromCustom(string value)
     {
-        return new PlanControlledByType(value);
+        return new TrialStatus(value);
     }
 
     public bool Equals(string? other)
@@ -43,19 +45,19 @@ public readonly record struct PlanControlledByType : IStringEnum
         return Value;
     }
 
-    public static bool operator ==(PlanControlledByType value1, string value2) =>
+    public static bool operator ==(TrialStatus value1, string value2) =>
         value1.Value.Equals(value2);
 
-    public static bool operator !=(PlanControlledByType value1, string value2) =>
+    public static bool operator !=(TrialStatus value1, string value2) =>
         !value1.Value.Equals(value2);
 
-    public static explicit operator string(PlanControlledByType value) => value.Value;
+    public static explicit operator string(TrialStatus value) => value.Value;
 
-    public static explicit operator PlanControlledByType(string value) => new(value);
+    public static explicit operator TrialStatus(string value) => new(value);
 
-    internal class PlanControlledByTypeSerializer : JsonConverter<PlanControlledByType>
+    internal class TrialStatusSerializer : JsonConverter<TrialStatus>
     {
-        public override PlanControlledByType Read(
+        public override TrialStatus Read(
             ref Utf8JsonReader reader,
             Type typeToConvert,
             JsonSerializerOptions options
@@ -66,19 +68,19 @@ public readonly record struct PlanControlledByType : IStringEnum
                 ?? throw new global::System.Exception(
                     "The JSON value could not be read as a string."
                 );
-            return new PlanControlledByType(stringValue);
+            return new TrialStatus(stringValue);
         }
 
         public override void Write(
             Utf8JsonWriter writer,
-            PlanControlledByType value,
+            TrialStatus value,
             JsonSerializerOptions options
         )
         {
             writer.WriteStringValue(value.Value);
         }
 
-        public override PlanControlledByType ReadAsPropertyName(
+        public override TrialStatus ReadAsPropertyName(
             ref Utf8JsonReader reader,
             Type typeToConvert,
             JsonSerializerOptions options
@@ -89,12 +91,12 @@ public readonly record struct PlanControlledByType : IStringEnum
                 ?? throw new global::System.Exception(
                     "The JSON property name could not be read as a string."
                 );
-            return new PlanControlledByType(stringValue);
+            return new TrialStatus(stringValue);
         }
 
         public override void WriteAsPropertyName(
             Utf8JsonWriter writer,
-            PlanControlledByType value,
+            TrialStatus value,
             JsonSerializerOptions options
         )
         {
@@ -108,8 +110,10 @@ public readonly record struct PlanControlledByType : IStringEnum
     [Serializable]
     public static class Values
     {
-        public const string Schematic = "schematic";
+        public const string Active = "active";
 
-        public const string Stripe = "stripe";
+        public const string Converted = "converted";
+
+        public const string Expired = "expired";
     }
 }

@@ -13,6 +13,12 @@ public record ListCompaniesRequest
     public IEnumerable<string> CreditTypeIds { get; set; } = new List<string>();
 
     /// <summary>
+    /// Filter companies that have a pending scheduled downgrade
+    /// </summary>
+    [JsonIgnore]
+    public bool? HasScheduledDowngrade { get; set; }
+
+    /// <summary>
     /// Filter companies by multiple company IDs (starts with comp_)
     /// </summary>
     [JsonIgnore]

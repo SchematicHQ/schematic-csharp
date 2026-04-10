@@ -27,7 +27,7 @@ public class CreatePlanTest : BaseMockServerTest
                   "created_at": "2024-01-15T09:30:00.000Z",
                   "description": "description",
                   "environment_id": "environment_id",
-                  "icon": "icon",
+                  "icon": "amber",
                   "id": "id",
                   "name": "name",
                   "original_plan_id": "original_plan_id",
@@ -35,6 +35,11 @@ public class CreatePlanTest : BaseMockServerTest
                   "status": "published",
                   "updated_at": "2024-01-15T09:30:00.000Z",
                   "version": 1000000
+                },
+                "billing_linked_resource": {
+                  "billing_provider": "orb",
+                  "external_resource_id": "external_resource_id",
+                  "originator": "orb"
                 },
                 "billing_product": {
                   "account_id": "account_id",
@@ -52,19 +57,19 @@ public class CreatePlanTest : BaseMockServerTest
                       "id": "id",
                       "interval": "day",
                       "price": 1000000,
-                      "provider_type": "schematic",
+                      "provider_type": "orb",
                       "scheme": "per_unit"
                     }
                   ],
                   "product_id": "product_id",
-                  "provider_type": "schematic",
+                  "provider_type": "orb",
                   "quantity": 1.1,
                   "subscription_count": 1000000,
                   "updated_at": "2024-01-15T09:30:00.000Z"
                 },
                 "charge_type": "free",
                 "company_count": 1000000,
-                "controlled_by": "schematic",
+                "controlled_by": "orb",
                 "created_at": "2024-01-15T09:30:00.000Z",
                 "currency_prices": [
                   {
@@ -76,7 +81,7 @@ public class CreatePlanTest : BaseMockServerTest
                   "created_at": "2024-01-15T09:30:00.000Z",
                   "description": "description",
                   "environment_id": "environment_id",
-                  "icon": "icon",
+                  "icon": "amber",
                   "id": "id",
                   "name": "name",
                   "original_plan_id": "original_plan_id",
@@ -177,7 +182,7 @@ public class CreatePlanTest : BaseMockServerTest
                     "updated_at": "2024-01-15T09:30:00.000Z"
                   }
                 ],
-                "icon": "icon",
+                "icon": "amber",
                 "id": "id",
                 "included_credit_grants": [
                   {
@@ -202,7 +207,7 @@ public class CreatePlanTest : BaseMockServerTest
                   "interval": "day",
                   "price": 1000000,
                   "price_decimal": "price_decimal",
-                  "provider_type": "schematic",
+                  "provider_type": "orb",
                   "scheme": "per_unit"
                 },
                 "name": "name",
@@ -213,7 +218,7 @@ public class CreatePlanTest : BaseMockServerTest
                   "interval": "day",
                   "price": 1000000,
                   "price_decimal": "price_decimal",
-                  "provider_type": "schematic",
+                  "provider_type": "orb",
                   "scheme": "per_unit"
                 },
                 "plan_type": "plan",
@@ -224,7 +229,7 @@ public class CreatePlanTest : BaseMockServerTest
                     "created_at": "2024-01-15T09:30:00.000Z",
                     "description": "description",
                     "environment_id": "environment_id",
-                    "icon": "icon",
+                    "icon": "amber",
                     "id": "id",
                     "name": "name",
                     "plan_type": "plan",
@@ -240,7 +245,7 @@ public class CreatePlanTest : BaseMockServerTest
                   "interval": "day",
                   "price": 1000000,
                   "price_decimal": "price_decimal",
-                  "provider_type": "schematic",
+                  "provider_type": "orb",
                   "scheme": "per_unit"
                 }
               },

@@ -8,7 +8,7 @@ namespace SchematicHQ.Client;
 [Serializable]
 public readonly record struct RulesEngineSchemaVersion : IStringEnum
 {
-    public static readonly RulesEngineSchemaVersion V5F633Cc3 = new(Values.V5F633Cc3);
+    public static readonly RulesEngineSchemaVersion V313Fa646 = new(Values.V313Fa646);
 
     public static readonly RulesEngineSchemaVersion PlaceholderForFernCompatibility = new(
         Values.PlaceholderForFernCompatibility
@@ -110,7 +110,7 @@ public readonly record struct RulesEngineSchemaVersion : IStringEnum
     [Serializable]
     public static class Values
     {
-        public const string V5F633Cc3 = "v5f633cc3";
+        public const string V313Fa646 = "v313fa646";
 
         public const string PlaceholderForFernCompatibility = "placeholder-for-fern-compatibility";
     }

@@ -18,8 +18,9 @@ public partial class CompaniesClient : ICompaniesClient
         CancellationToken cancellationToken = default
     )
     {
-        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 18)
+        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 19)
             .Add("credit_type_ids", request.CreditTypeIds)
+            .Add("has_scheduled_downgrade", request.HasScheduledDowngrade)
             .Add("ids", request.Ids)
             .Add("monetized_subscriptions", request.MonetizedSubscriptions)
             .Add("plan_id", request.PlanId)
@@ -401,8 +402,9 @@ public partial class CompaniesClient : ICompaniesClient
         CancellationToken cancellationToken = default
     )
     {
-        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 18)
+        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 19)
             .Add("credit_type_ids", request.CreditTypeIds)
+            .Add("has_scheduled_downgrade", request.HasScheduledDowngrade)
             .Add("ids", request.Ids)
             .Add("monetized_subscriptions", request.MonetizedSubscriptions)
             .Add("plan_id", request.PlanId)
@@ -3678,6 +3680,7 @@ public partial class CompaniesClient : ICompaniesClient
     /// await client.Companies.ListCompaniesAsync(
     ///     new ListCompaniesRequest
     ///     {
+    ///         HasScheduledDowngrade = true,
     ///         MonetizedSubscriptions = true,
     ///         PlanId = "plan_id",
     ///         PlanVersionId = "plan_version_id",
@@ -3757,6 +3760,7 @@ public partial class CompaniesClient : ICompaniesClient
     /// await client.Companies.CountCompaniesAsync(
     ///     new CountCompaniesRequest
     ///     {
+    ///         HasScheduledDowngrade = true,
     ///         MonetizedSubscriptions = true,
     ///         PlanId = "plan_id",
     ///         PlanVersionId = "plan_version_id",
@@ -4106,8 +4110,8 @@ public partial class CompaniesClient : ICompaniesClient
     /// await client.Companies.ListPlanChangesAsync(
     ///     new ListPlanChangesRequest
     ///     {
-    ///         Action = "action",
-    ///         BasePlanAction = "base_plan_action",
+    ///         Action = PlanChangeAction.Checkout,
+    ///         BasePlanAction = PlanChangeBasePlanAction.Fallback,
     ///         CompanyId = "company_id",
     ///         Limit = 1000000,
     ///         Offset = 1000000,

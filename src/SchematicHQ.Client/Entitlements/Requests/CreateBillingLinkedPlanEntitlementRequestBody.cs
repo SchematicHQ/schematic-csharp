@@ -1,0 +1,107 @@
+using global::System.Text.Json.Serialization;
+using SchematicHQ.Client.Core;
+
+namespace SchematicHQ.Client;
+
+[Serializable]
+public record CreateBillingLinkedPlanEntitlementRequestBody
+{
+    [JsonPropertyName("billing_product_id")]
+    public string? BillingProductId { get; set; }
+
+    [JsonPropertyName("billing_provider")]
+    public required BillingProviderType BillingProvider { get; set; }
+
+    [JsonPropertyName("billing_threshold")]
+    public long? BillingThreshold { get; set; }
+
+    [JsonPropertyName("credit_consumption_rate")]
+    public double? CreditConsumptionRate { get; set; }
+
+    [JsonPropertyName("currency")]
+    public string? Currency { get; set; }
+
+    [JsonPropertyName("currency_prices")]
+    public IEnumerable<CurrencyPriceRequestBody>? CurrencyPrices { get; set; }
+
+    [JsonPropertyName("external_resource_id")]
+    public required string ExternalResourceId { get; set; }
+
+    [JsonPropertyName("feature_id")]
+    public required string FeatureId { get; set; }
+
+    [JsonPropertyName("metric_period")]
+    public CreateBillingLinkedPlanEntitlementRequestBodyMetricPeriod? MetricPeriod { get; set; }
+
+    [JsonPropertyName("metric_period_month_reset")]
+    public CreateBillingLinkedPlanEntitlementRequestBodyMetricPeriodMonthReset? MetricPeriodMonthReset { get; set; }
+
+    [JsonPropertyName("monthly_metered_price_id")]
+    public string? MonthlyMeteredPriceId { get; set; }
+
+    [JsonPropertyName("monthly_price_tiers")]
+    public IEnumerable<CreatePriceTierRequestBody>? MonthlyPriceTiers { get; set; }
+
+    [JsonPropertyName("monthly_unit_price")]
+    public long? MonthlyUnitPrice { get; set; }
+
+    [JsonPropertyName("monthly_unit_price_decimal")]
+    public string? MonthlyUnitPriceDecimal { get; set; }
+
+    [JsonPropertyName("overage_billing_product_id")]
+    public string? OverageBillingProductId { get; set; }
+
+    [JsonPropertyName("plan_id")]
+    public required string PlanId { get; set; }
+
+    [JsonPropertyName("plan_version_id")]
+    public string? PlanVersionId { get; set; }
+
+    [JsonPropertyName("price_behavior")]
+    public EntitlementPriceBehavior? PriceBehavior { get; set; }
+
+    /// <summary>
+    /// Use MonthlyPriceTiers or YearlyPriceTiers instead
+    /// </summary>
+    [JsonPropertyName("price_tiers")]
+    public IEnumerable<CreatePriceTierRequestBody>? PriceTiers { get; set; }
+
+    [JsonPropertyName("soft_limit")]
+    public long? SoftLimit { get; set; }
+
+    [JsonPropertyName("tier_mode")]
+    public BillingTiersMode? TierMode { get; set; }
+
+    [JsonPropertyName("value_bool")]
+    public bool? ValueBool { get; set; }
+
+    [JsonPropertyName("value_credit_id")]
+    public string? ValueCreditId { get; set; }
+
+    [JsonPropertyName("value_numeric")]
+    public long? ValueNumeric { get; set; }
+
+    [JsonPropertyName("value_trait_id")]
+    public string? ValueTraitId { get; set; }
+
+    [JsonPropertyName("value_type")]
+    public required EntitlementValueType ValueType { get; set; }
+
+    [JsonPropertyName("yearly_metered_price_id")]
+    public string? YearlyMeteredPriceId { get; set; }
+
+    [JsonPropertyName("yearly_price_tiers")]
+    public IEnumerable<CreatePriceTierRequestBody>? YearlyPriceTiers { get; set; }
+
+    [JsonPropertyName("yearly_unit_price")]
+    public long? YearlyUnitPrice { get; set; }
+
+    [JsonPropertyName("yearly_unit_price_decimal")]
+    public string? YearlyUnitPriceDecimal { get; set; }
+
+    /// <inheritdoc />
+    public override string ToString()
+    {
+        return JsonUtils.Serialize(this);
+    }
+}

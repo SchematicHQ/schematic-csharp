@@ -84,14 +84,14 @@ public class CreateCompanyOverrideTest : BaseMockServerTest
                         "price_tier": [
                           {}
                         ],
-                        "provider_type": "schematic",
+                        "provider_type": "orb",
                         "quantity": 1.1,
                         "subscription_id": "subscription_id",
                         "updated_at": "2024-01-15T09:30:00.000Z",
                         "usage_type": "licensed"
                       }
                     ],
-                    "provider_type": "schematic",
+                    "provider_type": "orb",
                     "status": "status",
                     "subscription_external_id": "subscription_external_id",
                     "total_price": 1000000
@@ -134,14 +134,14 @@ public class CreateCompanyOverrideTest : BaseMockServerTest
                           "price_tier": [
                             {}
                           ],
-                          "provider_type": "schematic",
+                          "provider_type": "orb",
                           "quantity": 1.1,
                           "subscription_id": "subscription_id",
                           "updated_at": "2024-01-15T09:30:00.000Z",
                           "usage_type": "licensed"
                         }
                       ],
-                      "provider_type": "schematic",
+                      "provider_type": "orb",
                       "status": "status",
                       "subscription_external_id": "subscription_external_id",
                       "total_price": 1000000
@@ -155,7 +155,7 @@ public class CreateCompanyOverrideTest : BaseMockServerTest
                     "external_id": "external_id",
                     "id": "id",
                     "payment_method_type": "payment_method_type",
-                    "provider_type": "schematic",
+                    "provider_type": "orb",
                     "updated_at": "2024-01-15T09:30:00.000Z"
                   },
                   "entitlements": [
@@ -215,7 +215,7 @@ public class CreateCompanyOverrideTest : BaseMockServerTest
                       "external_id": "external_id",
                       "id": "id",
                       "payment_method_type": "payment_method_type",
-                      "provider_type": "schematic",
+                      "provider_type": "orb",
                       "updated_at": "2024-01-15T09:30:00.000Z"
                     }
                   ],

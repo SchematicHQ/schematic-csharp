@@ -17,7 +17,7 @@ public class GrantBillingCreditsToCompanyTest : BaseMockServerTest
               "company_id": "company_id",
               "credit_id": "credit_id",
               "quantity": 1000000,
-              "reason": "billing_credit_auto_topup"
+              "reason": "adjustment"
             }
             """;
 
@@ -32,7 +32,7 @@ public class GrantBillingCreditsToCompanyTest : BaseMockServerTest
                 "credit_name": "credit_name",
                 "currency": "currency",
                 "expires_at": "2024-01-15T09:30:00.000Z",
-                "grant_reason": "billing_credit_auto_topup",
+                "grant_reason": "adjustment",
                 "id": "id",
                 "plan_id": "plan_id",
                 "plan_name": "plan_name",
@@ -43,7 +43,7 @@ public class GrantBillingCreditsToCompanyTest : BaseMockServerTest
                   "interval": "day",
                   "price": 1000000,
                   "price_decimal": "price_decimal",
-                  "provider_type": "schematic",
+                  "provider_type": "orb",
                   "scheme": "per_unit"
                 },
                 "quantity": 1000000,
@@ -95,7 +95,7 @@ public class GrantBillingCreditsToCompanyTest : BaseMockServerTest
                 CompanyId = "company_id",
                 CreditId = "credit_id",
                 Quantity = 1000000,
-                Reason = BillingCreditGrantReason.BillingCreditAutoTopup,
+                Reason = BillingCreditGrantReason.Adjustment,
             }
         );
         JsonAssert.AreEqual(response, mockResponse);

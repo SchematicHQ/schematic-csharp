@@ -20,6 +20,9 @@ public record UsageBasedEntitlementRequestBody : IJsonOnDeserialized
     [JsonPropertyName("currency")]
     public string? Currency { get; set; }
 
+    [JsonPropertyName("currency_prices")]
+    public IEnumerable<CurrencyPriceRequestBody>? CurrencyPrices { get; set; }
+
     [JsonPropertyName("monthly_metered_price_id")]
     public string? MonthlyMeteredPriceId { get; set; }
 

@@ -29,7 +29,7 @@ public class UpsertBillingMeterTest : BaseMockServerTest
                 "event_payload_key": "event_payload_key",
                 "external_price_id": "external_price_id",
                 "id": "id",
-                "provider_type": "schematic"
+                "provider_type": "orb"
               },
               "params": {
                 "key": "value"
