@@ -18,17 +18,12 @@ namespace SchematicHQ.Client.Datastream
         /// <summary>
         /// Merges a partial JSON update into an existing Company.
         /// Deep-copies the existing company, then applies only the fields
-        /// present in partialJson. The "id" field must be present.
+        /// present in partialJson.
         /// </summary>
         public static RulesengineCompany PartialCompany(RulesengineCompany existing, string partialJson)
         {
             using var doc = JsonDocument.Parse(partialJson);
             var root = doc.RootElement;
-
-            if (!root.TryGetProperty("id", out _))
-            {
-                throw new ArgumentException("partial company message missing required field: id");
-            }
 
             var merged = DeepCopyCompany(existing);
 
@@ -101,17 +96,12 @@ namespace SchematicHQ.Client.Datastream
         /// <summary>
         /// Merges a partial JSON update into an existing User.
         /// Deep-copies the existing user, then applies only the fields
-        /// present in partialJson. The "id" field must be present.
+        /// present in partialJson.
         /// </summary>
         public static RulesengineUser PartialUser(RulesengineUser existing, string partialJson)
         {
             using var doc = JsonDocument.Parse(partialJson);
             var root = doc.RootElement;
-
-            if (!root.TryGetProperty("id", out _))
-            {
-                throw new ArgumentException("partial user message missing required field: id");
-            }
 
             var merged = DeepCopyUser(existing);
 
@@ -147,23 +137,6 @@ namespace SchematicHQ.Client.Datastream
             }
 
             return merged;
-        }
-
-        /// <summary>
-        /// Extracts the "id" field from a raw JSON message.
-        /// </summary>
-        public static string ExtractIdFromJson(string json)
-        {
-            using var doc = JsonDocument.Parse(json);
-            if (doc.RootElement.TryGetProperty("id", out var idProp))
-            {
-                var id = idProp.GetString();
-                if (!string.IsNullOrEmpty(id))
-                {
-                    return id;
-                }
-            }
-            throw new ArgumentException("partial message missing required field: id");
         }
 
         /// <summary>
