@@ -21,7 +21,7 @@ public class GetPublicPlansTest : BaseMockServerTest
                     "compatible_plan_ids": [
                       "compatible_plan_ids"
                     ],
-                    "controlled_by": "schematic",
+                    "controlled_by": "orb",
                     "created_at": "2024-01-15T09:30:00.000Z",
                     "currency_prices": [
                       {
@@ -139,7 +139,7 @@ public class GetPublicPlansTest : BaseMockServerTest
                         "updated_at": "2024-01-15T09:30:00.000Z"
                       }
                     ],
-                    "icon": "icon",
+                    "icon": "amber",
                     "id": "id",
                     "included_credit_grants": [
                       {
@@ -167,7 +167,7 @@ public class GetPublicPlansTest : BaseMockServerTest
                         "created_at": "2024-01-15T09:30:00.000Z",
                         "description": "description",
                         "environment_id": "environment_id",
-                        "icon": "icon",
+                        "icon": "amber",
                         "id": "id",
                         "name": "name",
                         "plan_type": "plan",
@@ -185,7 +185,7 @@ public class GetPublicPlansTest : BaseMockServerTest
                     "compatible_plan_ids": [
                       "compatible_plan_ids"
                     ],
-                    "controlled_by": "schematic",
+                    "controlled_by": "orb",
                     "created_at": "2024-01-15T09:30:00.000Z",
                     "currency_prices": [
                       {
@@ -303,7 +303,7 @@ public class GetPublicPlansTest : BaseMockServerTest
                         "updated_at": "2024-01-15T09:30:00.000Z"
                       }
                     ],
-                    "icon": "icon",
+                    "icon": "amber",
                     "id": "id",
                     "included_credit_grants": [
                       {
@@ -331,7 +331,7 @@ public class GetPublicPlansTest : BaseMockServerTest
                         "created_at": "2024-01-15T09:30:00.000Z",
                         "description": "description",
                         "environment_id": "environment_id",
-                        "icon": "icon",
+                        "icon": "amber",
                         "id": "id",
                         "name": "name",
                         "plan_type": "plan",

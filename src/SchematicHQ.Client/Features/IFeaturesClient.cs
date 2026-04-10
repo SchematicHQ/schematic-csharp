@@ -33,6 +33,12 @@ public partial interface IFeaturesClient
         CancellationToken cancellationToken = default
     );
 
+    WithRawResponseTask<UpsertFeatureForBillingProductResponse> UpsertFeatureForBillingProductAsync(
+        CreateBillingLinkedFeatureRequestBody request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    );
+
     WithRawResponseTask<CountFeaturesResponse> CountFeaturesAsync(
         CountFeaturesRequest request,
         RequestOptions? options = null,

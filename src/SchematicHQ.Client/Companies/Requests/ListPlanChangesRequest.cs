@@ -7,10 +7,10 @@ namespace SchematicHQ.Client;
 public record ListPlanChangesRequest
 {
     [JsonIgnore]
-    public string? Action { get; set; }
+    public PlanChangeAction? Action { get; set; }
 
     [JsonIgnore]
-    public string? BasePlanAction { get; set; }
+    public PlanChangeBasePlanAction? BasePlanAction { get; set; }
 
     [JsonIgnore]
     public string? CompanyId { get; set; }

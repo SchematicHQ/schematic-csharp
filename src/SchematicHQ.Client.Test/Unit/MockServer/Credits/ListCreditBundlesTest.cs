@@ -41,7 +41,7 @@ public class ListCreditBundlesTest : BaseMockServerTest
                     "id": "id",
                     "interval": "day",
                     "price": 1000000,
-                    "provider_type": "schematic",
+                    "provider_type": "orb",
                     "scheme": "per_unit"
                   },
                   "quantity": 1000000,
@@ -53,7 +53,7 @@ public class ListCreditBundlesTest : BaseMockServerTest
                     "id": "id",
                     "interval": "day",
                     "price": 1000000,
-                    "provider_type": "schematic",
+                    "provider_type": "orb",
                     "scheme": "per_unit"
                   },
                   "updated_at": "2024-01-15T09:30:00.000Z"

@@ -31,7 +31,7 @@ public class UpsertBillingProductTest : BaseMockServerTest
                 "price": 1.1,
                 "price_decimal": "price_decimal",
                 "product_id": "product_id",
-                "provider_type": "schematic",
+                "provider_type": "orb",
                 "quantity": 1.1,
                 "updated_at": "2024-01-15T09:30:00.000Z"
               },

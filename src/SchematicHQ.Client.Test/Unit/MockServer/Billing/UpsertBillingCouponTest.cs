@@ -43,7 +43,7 @@ public class UpsertBillingCouponTest : BaseMockServerTest
                 },
                 "name": "name",
                 "percent_off": 1.1,
-                "provider_type": "schematic",
+                "provider_type": "orb",
                 "times_redeemed": 1000000,
                 "valid_from": "2024-01-15T09:30:00.000Z",
                 "valid_until": "2024-01-15T09:30:00.000Z"

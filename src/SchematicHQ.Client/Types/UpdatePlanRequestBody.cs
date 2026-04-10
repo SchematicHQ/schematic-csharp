@@ -15,7 +15,7 @@ public record UpdatePlanRequestBody : IJsonOnDeserialized
     public string? Description { get; set; }
 
     [JsonPropertyName("icon")]
-    public string? Icon { get; set; }
+    public PlanIcon? Icon { get; set; }
 
     [JsonPropertyName("name")]
     public required string Name { get; set; }

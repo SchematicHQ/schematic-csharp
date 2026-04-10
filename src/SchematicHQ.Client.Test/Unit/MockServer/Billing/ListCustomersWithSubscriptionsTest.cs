@@ -22,7 +22,7 @@ public class ListCustomersWithSubscriptionsTest : BaseMockServerTest
                   "external_id": "external_id",
                   "id": "id",
                   "name": "name",
-                  "provider_type": "schematic",
+                  "provider_type": "orb",
                   "subscriptions": [
                     {
                       "currency": "currency",
@@ -42,7 +42,7 @@ public class ListCustomersWithSubscriptionsTest : BaseMockServerTest
                 "limit": 1000000,
                 "name": "name",
                 "offset": 1000000,
-                "provider_type": "schematic",
+                "provider_type": "orb",
                 "q": "q"
               }
             }
@@ -54,7 +54,7 @@ public class ListCustomersWithSubscriptionsTest : BaseMockServerTest
                     .RequestBuilders.Request.Create()
                     .WithPath("/billing/customers")
                     .WithParam("name", "name")
-                    .WithParam("provider_type", "schematic")
+                    .WithParam("provider_type", "orb")
                     .WithParam("q", "q")
                     .WithParam("limit", "1000000")
                     .WithParam("offset", "1000000")
@@ -71,7 +71,7 @@ public class ListCustomersWithSubscriptionsTest : BaseMockServerTest
             new ListCustomersWithSubscriptionsRequest
             {
                 Name = "name",
-                ProviderType = BillingProviderType.Schematic,
+                ProviderType = BillingProviderType.Orb,
                 Q = "q",
                 Limit = 1000000,
                 Offset = 1000000,

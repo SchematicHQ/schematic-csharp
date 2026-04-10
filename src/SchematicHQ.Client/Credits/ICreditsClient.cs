@@ -137,6 +137,12 @@ public partial interface ICreditsClient
         CancellationToken cancellationToken = default
     );
 
+    WithRawResponseTask<GetSingleBillingPlanCreditGrantResponse> GetSingleBillingPlanCreditGrantAsync(
+        string planGrantId,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    );
+
     WithRawResponseTask<UpdateBillingPlanCreditGrantResponse> UpdateBillingPlanCreditGrantAsync(
         string planGrantId,
         UpdateBillingPlanCreditGrantRequestBody request,

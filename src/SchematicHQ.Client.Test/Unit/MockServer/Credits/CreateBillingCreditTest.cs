@@ -46,7 +46,7 @@ public class CreateBillingCreditTest : BaseMockServerTest
                   "interval": "day",
                   "price": 1000000,
                   "price_decimal": "price_decimal",
-                  "provider_type": "schematic",
+                  "provider_type": "orb",
                   "scheme": "per_unit"
                 },
                 "product": {
@@ -59,7 +59,7 @@ public class CreateBillingCreditTest : BaseMockServerTest
                   "price": 1.1,
                   "price_decimal": "price_decimal",
                   "product_id": "product_id",
-                  "provider_type": "schematic",
+                  "provider_type": "orb",
                   "quantity": 1.1,
                   "updated_at": "2024-01-15T09:30:00.000Z"
                 },

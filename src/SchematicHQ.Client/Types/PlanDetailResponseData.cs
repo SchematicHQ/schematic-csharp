@@ -17,6 +17,9 @@ public record PlanDetailResponseData : IJsonOnDeserialized
     [JsonPropertyName("audience_type")]
     public string? AudienceType { get; set; }
 
+    [JsonPropertyName("billing_linked_resource")]
+    public BillingLinkedResourceResponseData? BillingLinkedResource { get; set; }
+
     [JsonPropertyName("billing_product")]
     public BillingProductDetailResponseData? BillingProduct { get; set; }
 
@@ -27,7 +30,7 @@ public record PlanDetailResponseData : IJsonOnDeserialized
     public required long CompanyCount { get; set; }
 
     [JsonPropertyName("controlled_by")]
-    public required PlanControlledByType ControlledBy { get; set; }
+    public required BillingProviderType ControlledBy { get; set; }
 
     [JsonPropertyName("created_at")]
     public required DateTime CreatedAt { get; set; }
@@ -47,7 +50,7 @@ public record PlanDetailResponseData : IJsonOnDeserialized
         new List<FeatureDetailResponseData>();
 
     [JsonPropertyName("icon")]
-    public required string Icon { get; set; }
+    public required PlanIcon Icon { get; set; }
 
     [JsonPropertyName("id")]
     public required string Id { get; set; }

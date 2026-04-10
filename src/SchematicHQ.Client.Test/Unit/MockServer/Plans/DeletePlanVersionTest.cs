@@ -1,4 +1,5 @@
 using NUnit.Framework;
+using SchematicHQ.Client;
 using SchematicHQ.Client.Test.Unit.MockServer;
 using SchematicHQ.Client.Test.Utils;
 
@@ -17,7 +18,7 @@ public class DeletePlanVersionTest : BaseMockServerTest
                 "deleted": true
               },
               "params": {
-                "key": "value"
+                "promote_archived_version": true
               }
             }
             """;
@@ -36,7 +37,10 @@ public class DeletePlanVersionTest : BaseMockServerTest
                     .WithBody(mockResponse)
             );
 
-        var response = await Client.Plans.DeletePlanVersionAsync("plan_id");
+        var response = await Client.Plans.DeletePlanVersionAsync(
+            "plan_id",
+            new DeletePlanVersionRequest { PromoteArchivedVersion = true }
+        );
         JsonAssert.AreEqual(response, mockResponse);
     }
 }

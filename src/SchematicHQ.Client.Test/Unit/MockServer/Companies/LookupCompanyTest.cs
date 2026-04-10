@@ -31,6 +31,7 @@ public class LookupCompanyTest : BaseMockServerTest
                         "billing_credit_auto_topup_expiry_type": "duration",
                         "billing_credit_auto_topup_expiry_unit": "billing_periods",
                         "billing_credit_auto_topup_expiry_unit_count": 1000000,
+                        "billing_credit_auto_topup_threshold_credits": 1000000,
                         "billing_credit_auto_topup_threshold_percent": 1000000,
                         "created_at": "2024-01-15T09:30:00.000Z",
                         "credit": {
@@ -62,7 +63,7 @@ public class LookupCompanyTest : BaseMockServerTest
                             "product_external_id": "product_external_id",
                             "product_id": "product_id",
                             "product_name": "product_name",
-                            "provider_type": "schematic",
+                            "provider_type": "orb",
                             "updated_at": "2024-01-15T09:30:00.000Z",
                             "usage_type": "licensed"
                           },
@@ -77,7 +78,7 @@ public class LookupCompanyTest : BaseMockServerTest
                             "name": "name",
                             "price": 1.1,
                             "product_id": "product_id",
-                            "provider_type": "schematic",
+                            "provider_type": "orb",
                             "quantity": 1.1,
                             "updated_at": "2024-01-15T09:30:00.000Z"
                           },
@@ -115,6 +116,7 @@ public class LookupCompanyTest : BaseMockServerTest
                         "billing_credit_auto_topup_expiry_type": "duration",
                         "billing_credit_auto_topup_expiry_unit": "billing_periods",
                         "billing_credit_auto_topup_expiry_unit_count": 1000000,
+                        "billing_credit_auto_topup_threshold_credits": 1000000,
                         "billing_credit_auto_topup_threshold_percent": 1000000,
                         "created_at": "2024-01-15T09:30:00.000Z",
                         "credit": {
@@ -146,7 +148,7 @@ public class LookupCompanyTest : BaseMockServerTest
                             "product_external_id": "product_external_id",
                             "product_id": "product_id",
                             "product_name": "product_name",
-                            "provider_type": "schematic",
+                            "provider_type": "orb",
                             "updated_at": "2024-01-15T09:30:00.000Z",
                             "usage_type": "licensed"
                           },
@@ -161,7 +163,7 @@ public class LookupCompanyTest : BaseMockServerTest
                             "name": "name",
                             "price": 1.1,
                             "product_id": "product_id",
-                            "provider_type": "schematic",
+                            "provider_type": "orb",
                             "quantity": 1.1,
                             "updated_at": "2024-01-15T09:30:00.000Z"
                           },
@@ -213,6 +215,7 @@ public class LookupCompanyTest : BaseMockServerTest
                         "billing_credit_auto_topup_expiry_type": "duration",
                         "billing_credit_auto_topup_expiry_unit": "billing_periods",
                         "billing_credit_auto_topup_expiry_unit_count": 1000000,
+                        "billing_credit_auto_topup_threshold_credits": 1000000,
                         "billing_credit_auto_topup_threshold_percent": 1000000,
                         "created_at": "2024-01-15T09:30:00.000Z",
                         "credit": {
@@ -244,7 +247,7 @@ public class LookupCompanyTest : BaseMockServerTest
                             "product_external_id": "product_external_id",
                             "product_id": "product_id",
                             "product_name": "product_name",
-                            "provider_type": "schematic",
+                            "provider_type": "orb",
                             "updated_at": "2024-01-15T09:30:00.000Z",
                             "usage_type": "licensed"
                           },
@@ -259,7 +262,7 @@ public class LookupCompanyTest : BaseMockServerTest
                             "name": "name",
                             "price": 1.1,
                             "product_id": "product_id",
-                            "provider_type": "schematic",
+                            "provider_type": "orb",
                             "quantity": 1.1,
                             "updated_at": "2024-01-15T09:30:00.000Z"
                           },
@@ -297,6 +300,7 @@ public class LookupCompanyTest : BaseMockServerTest
                         "billing_credit_auto_topup_expiry_type": "duration",
                         "billing_credit_auto_topup_expiry_unit": "billing_periods",
                         "billing_credit_auto_topup_expiry_unit_count": 1000000,
+                        "billing_credit_auto_topup_threshold_credits": 1000000,
                         "billing_credit_auto_topup_threshold_percent": 1000000,
                         "created_at": "2024-01-15T09:30:00.000Z",
                         "credit": {
@@ -328,7 +332,7 @@ public class LookupCompanyTest : BaseMockServerTest
                             "product_external_id": "product_external_id",
                             "product_id": "product_id",
                             "product_name": "product_name",
-                            "provider_type": "schematic",
+                            "provider_type": "orb",
                             "updated_at": "2024-01-15T09:30:00.000Z",
                             "usage_type": "licensed"
                           },
@@ -343,7 +347,7 @@ public class LookupCompanyTest : BaseMockServerTest
                             "name": "name",
                             "price": 1.1,
                             "product_id": "product_id",
-                            "provider_type": "schematic",
+                            "provider_type": "orb",
                             "quantity": 1.1,
                             "updated_at": "2024-01-15T09:30:00.000Z"
                           },
@@ -444,7 +448,7 @@ public class LookupCompanyTest : BaseMockServerTest
                     "external_id": "external_id",
                     "id": "id",
                     "payment_method_external_id": "payment_method_external_id",
-                    "provider_type": "schematic",
+                    "provider_type": "orb",
                     "status": "draft",
                     "subscription_external_id": "subscription_external_id",
                     "subtotal": 1000000,
@@ -473,7 +477,7 @@ public class LookupCompanyTest : BaseMockServerTest
                     "external_id": "external_id",
                     "id": "id",
                     "payment_method_type": "payment_method_type",
-                    "provider_type": "schematic",
+                    "provider_type": "orb",
                     "updated_at": "2024-01-15T09:30:00.000Z"
                   },
                   "period_end": 1000000,
@@ -509,7 +513,7 @@ public class LookupCompanyTest : BaseMockServerTest
                           "up_to": 1000000
                         }
                       ],
-                      "provider_type": "schematic",
+                      "provider_type": "orb",
                       "quantity": 1.1,
                       "subscription_id": "subscription_id",
                       "subscription_item_external_id": "subscription_item_external_id",
@@ -546,7 +550,7 @@ public class LookupCompanyTest : BaseMockServerTest
                           "up_to": 1000000
                         }
                       ],
-                      "provider_type": "schematic",
+                      "provider_type": "orb",
                       "quantity": 1.1,
                       "subscription_id": "subscription_id",
                       "subscription_item_external_id": "subscription_item_external_id",
@@ -554,7 +558,7 @@ public class LookupCompanyTest : BaseMockServerTest
                       "usage_type": "licensed"
                     }
                   ],
-                  "provider_type": "schematic",
+                  "provider_type": "orb",
                   "status": "status",
                   "subscription_external_id": "subscription_external_id",
                   "total_price": 1000000,
@@ -622,7 +626,7 @@ public class LookupCompanyTest : BaseMockServerTest
                       "external_id": "external_id",
                       "id": "id",
                       "payment_method_external_id": "payment_method_external_id",
-                      "provider_type": "schematic",
+                      "provider_type": "orb",
                       "status": "draft",
                       "subscription_external_id": "subscription_external_id",
                       "subtotal": 1000000,
@@ -651,7 +655,7 @@ public class LookupCompanyTest : BaseMockServerTest
                       "external_id": "external_id",
                       "id": "id",
                       "payment_method_type": "payment_method_type",
-                      "provider_type": "schematic",
+                      "provider_type": "orb",
                       "updated_at": "2024-01-15T09:30:00.000Z"
                     },
                     "period_end": 1000000,
@@ -687,7 +691,7 @@ public class LookupCompanyTest : BaseMockServerTest
                             "up_to": 1000000
                           }
                         ],
-                        "provider_type": "schematic",
+                        "provider_type": "orb",
                         "quantity": 1.1,
                         "subscription_id": "subscription_id",
                         "subscription_item_external_id": "subscription_item_external_id",
@@ -724,7 +728,7 @@ public class LookupCompanyTest : BaseMockServerTest
                             "up_to": 1000000
                           }
                         ],
-                        "provider_type": "schematic",
+                        "provider_type": "orb",
                         "quantity": 1.1,
                         "subscription_id": "subscription_id",
                         "subscription_item_external_id": "subscription_item_external_id",
@@ -732,7 +736,7 @@ public class LookupCompanyTest : BaseMockServerTest
                         "usage_type": "licensed"
                       }
                     ],
-                    "provider_type": "schematic",
+                    "provider_type": "orb",
                     "status": "status",
                     "subscription_external_id": "subscription_external_id",
                     "total_price": 1000000,
@@ -799,7 +803,7 @@ public class LookupCompanyTest : BaseMockServerTest
                       "external_id": "external_id",
                       "id": "id",
                       "payment_method_external_id": "payment_method_external_id",
-                      "provider_type": "schematic",
+                      "provider_type": "orb",
                       "status": "draft",
                       "subscription_external_id": "subscription_external_id",
                       "subtotal": 1000000,
@@ -828,7 +832,7 @@ public class LookupCompanyTest : BaseMockServerTest
                       "external_id": "external_id",
                       "id": "id",
                       "payment_method_type": "payment_method_type",
-                      "provider_type": "schematic",
+                      "provider_type": "orb",
                       "updated_at": "2024-01-15T09:30:00.000Z"
                     },
                     "period_end": 1000000,
@@ -864,7 +868,7 @@ public class LookupCompanyTest : BaseMockServerTest
                             "up_to": 1000000
                           }
                         ],
-                        "provider_type": "schematic",
+                        "provider_type": "orb",
                         "quantity": 1.1,
                         "subscription_id": "subscription_id",
                         "subscription_item_external_id": "subscription_item_external_id",
@@ -901,7 +905,7 @@ public class LookupCompanyTest : BaseMockServerTest
                             "up_to": 1000000
                           }
                         ],
-                        "provider_type": "schematic",
+                        "provider_type": "orb",
                         "quantity": 1.1,
                         "subscription_id": "subscription_id",
                         "subscription_item_external_id": "subscription_item_external_id",
@@ -909,7 +913,7 @@ public class LookupCompanyTest : BaseMockServerTest
                         "usage_type": "licensed"
                       }
                     ],
-                    "provider_type": "schematic",
+                    "provider_type": "orb",
                     "status": "status",
                     "subscription_external_id": "subscription_external_id",
                     "total_price": 1000000,
@@ -935,7 +939,7 @@ public class LookupCompanyTest : BaseMockServerTest
                   "external_id": "external_id",
                   "id": "id",
                   "payment_method_type": "payment_method_type",
-                  "provider_type": "schematic",
+                  "provider_type": "orb",
                   "updated_at": "2024-01-15T09:30:00.000Z"
                 },
                 "entitlements": [
@@ -1103,7 +1107,7 @@ public class LookupCompanyTest : BaseMockServerTest
                     "external_id": "external_id",
                     "id": "id",
                     "payment_method_type": "payment_method_type",
-                    "provider_type": "schematic",
+                    "provider_type": "orb",
                     "updated_at": "2024-01-15T09:30:00.000Z"
                   },
                   {
@@ -1123,7 +1127,7 @@ public class LookupCompanyTest : BaseMockServerTest
                     "external_id": "external_id",
                     "id": "id",
                     "payment_method_type": "payment_method_type",
-                    "provider_type": "schematic",
+                    "provider_type": "orb",
                     "updated_at": "2024-01-15T09:30:00.000Z"
                   }
                 ],
@@ -1142,6 +1146,7 @@ public class LookupCompanyTest : BaseMockServerTest
                       "billing_credit_auto_topup_expiry_type": "duration",
                       "billing_credit_auto_topup_expiry_unit": "billing_periods",
                       "billing_credit_auto_topup_expiry_unit_count": 1000000,
+                      "billing_credit_auto_topup_threshold_credits": 1000000,
                       "billing_credit_auto_topup_threshold_percent": 1000000,
                       "created_at": "2024-01-15T09:30:00.000Z",
                       "credit": {
@@ -1173,7 +1178,7 @@ public class LookupCompanyTest : BaseMockServerTest
                           "product_external_id": "product_external_id",
                           "product_id": "product_id",
                           "product_name": "product_name",
-                          "provider_type": "schematic",
+                          "provider_type": "orb",
                           "updated_at": "2024-01-15T09:30:00.000Z",
                           "usage_type": "licensed"
                         },
@@ -1188,7 +1193,7 @@ public class LookupCompanyTest : BaseMockServerTest
                           "name": "name",
                           "price": 1.1,
                           "product_id": "product_id",
-                          "provider_type": "schematic",
+                          "provider_type": "orb",
                           "quantity": 1.1,
                           "updated_at": "2024-01-15T09:30:00.000Z"
                         },
@@ -1226,6 +1231,7 @@ public class LookupCompanyTest : BaseMockServerTest
                       "billing_credit_auto_topup_expiry_type": "duration",
                       "billing_credit_auto_topup_expiry_unit": "billing_periods",
                       "billing_credit_auto_topup_expiry_unit_count": 1000000,
+                      "billing_credit_auto_topup_threshold_credits": 1000000,
                       "billing_credit_auto_topup_threshold_percent": 1000000,
                       "created_at": "2024-01-15T09:30:00.000Z",
                       "credit": {
@@ -1257,7 +1263,7 @@ public class LookupCompanyTest : BaseMockServerTest
                           "product_external_id": "product_external_id",
                           "product_id": "product_id",
                           "product_name": "product_name",
-                          "provider_type": "schematic",
+                          "provider_type": "orb",
                           "updated_at": "2024-01-15T09:30:00.000Z",
                           "usage_type": "licensed"
                         },
@@ -1272,7 +1278,7 @@ public class LookupCompanyTest : BaseMockServerTest
                           "name": "name",
                           "price": 1.1,
                           "product_id": "product_id",
-                          "provider_type": "schematic",
+                          "provider_type": "orb",
                           "quantity": 1.1,
                           "updated_at": "2024-01-15T09:30:00.000Z"
                         },

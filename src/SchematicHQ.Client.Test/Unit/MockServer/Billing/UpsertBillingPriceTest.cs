@@ -40,7 +40,7 @@ public class UpsertBillingPriceTest : BaseMockServerTest
                 "interval": "day",
                 "price": 1000000,
                 "price_decimal": "price_decimal",
-                "provider_type": "schematic",
+                "provider_type": "orb",
                 "scheme": "per_unit"
               },
               "params": {

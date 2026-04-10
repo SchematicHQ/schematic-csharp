@@ -39,7 +39,7 @@ public class UpsertPaymentMethodTest : BaseMockServerTest
                 "external_id": "external_id",
                 "id": "id",
                 "payment_method_type": "payment_method_type",
-                "provider_type": "schematic",
+                "provider_type": "orb",
                 "updated_at": "2024-01-15T09:30:00.000Z"
               },
               "params": {

@@ -26,7 +26,7 @@ public class CountBillingProductsTest : BaseMockServerTest
                 "name": "name",
                 "offset": 1000000,
                 "price_usage_type": "licensed",
-                "provider_type": "schematic",
+                "provider_type": "orb",
                 "q": "q",
                 "with_one_time_charges": true,
                 "with_prices_only": true,
@@ -43,7 +43,7 @@ public class CountBillingProductsTest : BaseMockServerTest
                     .WithPath("/billing/products/count")
                     .WithParam("name", "name")
                     .WithParam("price_usage_type", "licensed")
-                    .WithParam("provider_type", "schematic")
+                    .WithParam("provider_type", "orb")
                     .WithParam("q", "q")
                     .WithParam("limit", "1000000")
                     .WithParam("offset", "1000000")
@@ -62,7 +62,7 @@ public class CountBillingProductsTest : BaseMockServerTest
                 IsActive = true,
                 Name = "name",
                 PriceUsageType = BillingPriceUsageType.Licensed,
-                ProviderType = BillingProviderType.Schematic,
+                ProviderType = BillingProviderType.Orb,
                 Q = "q",
                 WithOneTimeCharges = true,
                 WithPricesOnly = true,

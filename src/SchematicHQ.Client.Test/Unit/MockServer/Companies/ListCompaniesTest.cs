@@ -76,14 +76,14 @@ public class ListCompaniesTest : BaseMockServerTest
                         "price_tier": [
                           {}
                         ],
-                        "provider_type": "schematic",
+                        "provider_type": "orb",
                         "quantity": 1.1,
                         "subscription_id": "subscription_id",
                         "updated_at": "2024-01-15T09:30:00.000Z",
                         "usage_type": "licensed"
                       }
                     ],
-                    "provider_type": "schematic",
+                    "provider_type": "orb",
                     "status": "status",
                     "subscription_external_id": "subscription_external_id",
                     "total_price": 1000000
@@ -126,14 +126,14 @@ public class ListCompaniesTest : BaseMockServerTest
                           "price_tier": [
                             {}
                           ],
-                          "provider_type": "schematic",
+                          "provider_type": "orb",
                           "quantity": 1.1,
                           "subscription_id": "subscription_id",
                           "updated_at": "2024-01-15T09:30:00.000Z",
                           "usage_type": "licensed"
                         }
                       ],
-                      "provider_type": "schematic",
+                      "provider_type": "orb",
                       "status": "status",
                       "subscription_external_id": "subscription_external_id",
                       "total_price": 1000000
@@ -147,7 +147,7 @@ public class ListCompaniesTest : BaseMockServerTest
                     "external_id": "external_id",
                     "id": "id",
                     "payment_method_type": "payment_method_type",
-                    "provider_type": "schematic",
+                    "provider_type": "orb",
                     "updated_at": "2024-01-15T09:30:00.000Z"
                   },
                   "entitlements": [
@@ -207,7 +207,7 @@ public class ListCompaniesTest : BaseMockServerTest
                       "external_id": "external_id",
                       "id": "id",
                       "payment_method_type": "payment_method_type",
-                      "provider_type": "schematic",
+                      "provider_type": "orb",
                       "updated_at": "2024-01-15T09:30:00.000Z"
                     }
                   ],
@@ -298,6 +298,7 @@ public class ListCompaniesTest : BaseMockServerTest
                 "credit_type_ids": [
                   "credit_type_ids"
                 ],
+                "has_scheduled_downgrade": true,
                 "ids": [
                   "ids"
                 ],
@@ -353,6 +354,7 @@ public class ListCompaniesTest : BaseMockServerTest
         var response = await Client.Companies.ListCompaniesAsync(
             new ListCompaniesRequest
             {
+                HasScheduledDowngrade = true,
                 MonetizedSubscriptions = true,
                 PlanId = "plan_id",
                 PlanVersionId = "plan_version_id",

@@ -112,6 +112,12 @@ public partial interface IEntitlementsClient
         CancellationToken cancellationToken = default
     );
 
+    WithRawResponseTask<UpsertPlanEntitlementForBillingProductResponse> UpsertPlanEntitlementForBillingProductAsync(
+        CreateBillingLinkedPlanEntitlementRequestBody request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    );
+
     WithRawResponseTask<CountPlanEntitlementsResponse> CountPlanEntitlementsAsync(
         CountPlanEntitlementsRequest request,
         RequestOptions? options = null,

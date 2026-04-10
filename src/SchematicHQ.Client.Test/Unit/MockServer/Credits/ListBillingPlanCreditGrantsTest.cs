@@ -22,6 +22,7 @@ public class ListBillingPlanCreditGrantsTest : BaseMockServerTest
                   "auto_topup_expiry_type": "duration",
                   "auto_topup_expiry_unit": "billing_periods",
                   "auto_topup_expiry_unit_count": 1000000,
+                  "auto_topup_threshold_credits": 1000000,
                   "auto_topup_threshold_percent": 1000000,
                   "created_at": "2024-01-15T09:30:00.000Z",
                   "credit": {

@@ -2001,7 +2001,7 @@ public partial class BillingClient : IBillingClient
     ///     new ListCustomersWithSubscriptionsRequest
     ///     {
     ///         Name = "name",
-    ///         ProviderType = BillingProviderType.Schematic,
+    ///         ProviderType = BillingProviderType.Orb,
     ///         Q = "q",
     ///         Limit = 1000000,
     ///         Offset = 1000000,
@@ -2024,7 +2024,7 @@ public partial class BillingClient : IBillingClient
     ///     new CountCustomersRequest
     ///     {
     ///         Name = "name",
-    ///         ProviderType = BillingProviderType.Schematic,
+    ///         ProviderType = BillingProviderType.Orb,
     ///         Q = "q",
     ///         Limit = 1000000,
     ///         Offset = 1000000,
@@ -2187,7 +2187,7 @@ public partial class BillingClient : IBillingClient
     ///         IsActive = true,
     ///         Price = 1000000,
     ///         ProductId = "product_id",
-    ///         ProviderType = BillingProviderType.Schematic,
+    ///         ProviderType = BillingProviderType.Orb,
     ///         Q = "q",
     ///         TiersMode = BillingTiersMode.Graduated,
     ///         UsageType = BillingPriceUsageType.Licensed,
@@ -2264,7 +2264,7 @@ public partial class BillingClient : IBillingClient
     ///         IsActive = true,
     ///         Price = 1000000,
     ///         ProductId = "product_id",
-    ///         ProviderType = BillingProviderType.Schematic,
+    ///         ProviderType = BillingProviderType.Orb,
     ///         Q = "q",
     ///         TiersMode = BillingTiersMode.Graduated,
     ///         UsageType = BillingPriceUsageType.Licensed,
@@ -2322,7 +2322,7 @@ public partial class BillingClient : IBillingClient
     ///         IsActive = true,
     ///         Name = "name",
     ///         PriceUsageType = BillingPriceUsageType.Licensed,
-    ///         ProviderType = BillingProviderType.Schematic,
+    ///         ProviderType = BillingProviderType.Orb,
     ///         Q = "q",
     ///         WithOneTimeCharges = true,
     ///         WithPricesOnly = true,
@@ -2351,7 +2351,7 @@ public partial class BillingClient : IBillingClient
     ///         IsActive = true,
     ///         Name = "name",
     ///         PriceUsageType = BillingPriceUsageType.Licensed,
-    ///         ProviderType = BillingProviderType.Schematic,
+    ///         ProviderType = BillingProviderType.Orb,
     ///         Q = "q",
     ///         WithOneTimeCharges = true,
     ///         WithPricesOnly = true,

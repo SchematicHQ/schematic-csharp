@@ -14,6 +14,11 @@ public class GetFeatureTest : BaseMockServerTest
         const string mockResponse = """
             {
               "data": {
+                "billing_linked_resource": {
+                  "billing_provider": "orb",
+                  "external_resource_id": "external_resource_id",
+                  "originator": "orb"
+                },
                 "created_at": "2024-01-15T09:30:00.000Z",
                 "description": "description",
                 "event_subtype": "event_subtype",

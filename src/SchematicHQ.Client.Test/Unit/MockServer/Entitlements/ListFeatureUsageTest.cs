@@ -44,11 +44,11 @@ public class ListFeatureUsageTest : BaseMockServerTest
                   },
                   "credit_grant_details": [
                     {
-                      "grant_reason": "billing_credit_auto_topup",
+                      "grant_reason": "adjustment",
                       "quantity": 1.1
                     }
                   ],
-                  "credit_grant_reason": "billing_credit_auto_topup",
+                  "credit_grant_reason": "adjustment",
                   "credit_remaining": 1.1,
                   "credit_type_icon": "credit_type_icon",
                   "credit_used": 1.1,
@@ -169,7 +169,7 @@ public class ListFeatureUsageTest : BaseMockServerTest
                     "product_external_id": "product_external_id",
                     "product_id": "product_id",
                     "product_name": "product_name",
-                    "provider_type": "schematic",
+                    "provider_type": "orb",
                     "updated_at": "2024-01-15T09:30:00.000Z",
                     "usage_type": "licensed"
                   },
@@ -179,7 +179,7 @@ public class ListFeatureUsageTest : BaseMockServerTest
                   "plan": {
                     "created_at": "2024-01-15T09:30:00.000Z",
                     "description": "description",
-                    "icon": "icon",
+                    "icon": "amber",
                     "id": "id",
                     "name": "name",
                     "plan_type": "plan",
@@ -220,7 +220,7 @@ public class ListFeatureUsageTest : BaseMockServerTest
                     "product_external_id": "product_external_id",
                     "product_id": "product_id",
                     "product_name": "product_name",
-                    "provider_type": "schematic",
+                    "provider_type": "orb",
                     "updated_at": "2024-01-15T09:30:00.000Z",
                     "usage_type": "licensed"
                   }

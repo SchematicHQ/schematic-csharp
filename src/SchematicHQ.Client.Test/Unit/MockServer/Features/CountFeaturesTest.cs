@@ -40,9 +40,9 @@ public class CountFeaturesTest : BaseMockServerTest
                 WireMock
                     .RequestBuilders.Request.Create()
                     .WithPath("/features/count")
+                    .WithParam("plan_version_id", "plan_version_id")
                     .WithParam("q", "q")
                     .WithParam("without_company_override_for", "without_company_override_for")
-                    .WithParam("plan_version_id", "plan_version_id")
                     .WithParam("without_plan_entitlement_for", "without_plan_entitlement_for")
                     .WithParam("limit", "1000000")
                     .WithParam("offset", "1000000")
@@ -58,11 +58,11 @@ public class CountFeaturesTest : BaseMockServerTest
         var response = await Client.Features.CountFeaturesAsync(
             new CountFeaturesRequest
             {
+                BooleanRequireEvent = true,
+                PlanVersionId = "plan_version_id",
                 Q = "q",
                 WithoutCompanyOverrideFor = "without_company_override_for",
-                PlanVersionId = "plan_version_id",
                 WithoutPlanEntitlementFor = "without_plan_entitlement_for",
-                BooleanRequireEvent = true,
                 Limit = 1000000,
                 Offset = 1000000,
             }

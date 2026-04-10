@@ -27,7 +27,7 @@ public class PublishPlanVersionTest : BaseMockServerTest
                 "created_at": "2024-01-15T09:30:00.000Z",
                 "description": "description",
                 "environment_id": "environment_id",
-                "icon": "icon",
+                "icon": "amber",
                 "id": "id",
                 "name": "name",
                 "original_plan_id": "original_plan_id",

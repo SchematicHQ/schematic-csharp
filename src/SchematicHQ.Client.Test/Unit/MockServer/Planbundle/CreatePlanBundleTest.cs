@@ -29,7 +29,7 @@ public class CreatePlanBundleTest : BaseMockServerTest
                   "account_id": "account_id",
                   "billing_product_id": "billing_product_id",
                   "charge_type": "free",
-                  "controlled_by": "schematic",
+                  "controlled_by": "orb",
                   "environment_id": "environment_id",
                   "is_trialable": true,
                   "monthly_price_id": "monthly_price_id",
@@ -71,7 +71,7 @@ public class CreatePlanBundleTest : BaseMockServerTest
                 "plan": {
                   "created_at": "2024-01-15T09:30:00.000Z",
                   "description": "description",
-                  "icon": "icon",
+                  "icon": "amber",
                   "id": "id",
                   "name": "name",
                   "plan_type": "plan",

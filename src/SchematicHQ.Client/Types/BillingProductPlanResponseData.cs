@@ -21,7 +21,7 @@ public record BillingProductPlanResponseData : IJsonOnDeserialized
     public required ChargeType ChargeType { get; set; }
 
     [JsonPropertyName("controlled_by")]
-    public required PlanControlledByType ControlledBy { get; set; }
+    public required BillingProviderType ControlledBy { get; set; }
 
     [JsonPropertyName("environment_id")]
     public required string EnvironmentId { get; set; }

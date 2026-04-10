@@ -6,8 +6,26 @@ namespace SchematicHQ.Client;
 [Serializable]
 public record CountFeaturesRequest
 {
+    /// <summary>
+    /// Only return boolean features if there is an associated event. Automatically includes boolean in the feature types filter.
+    /// </summary>
+    [JsonIgnore]
+    public bool? BooleanRequireEvent { get; set; }
+
+    /// <summary>
+    /// Filter by one or more feature types (boolean, event, trait)
+    /// </summary>
+    [JsonIgnore]
+    public IEnumerable<FeatureType> FeatureType { get; set; } = new List<FeatureType>();
+
     [JsonIgnore]
     public IEnumerable<string> Ids { get; set; } = new List<string>();
+
+    /// <summary>
+    /// Filter by plan version ID when used with without_plan_entitlement_for; if not provided, the latest published version is used
+    /// </summary>
+    [JsonIgnore]
+    public string? PlanVersionId { get; set; }
 
     /// <summary>
     /// Search by feature name or ID
@@ -22,28 +40,10 @@ public record CountFeaturesRequest
     public string? WithoutCompanyOverrideFor { get; set; }
 
     /// <summary>
-    /// Filter by plan version ID when used with without_plan_entitlement_for; if not provided, the latest published version is used
-    /// </summary>
-    [JsonIgnore]
-    public string? PlanVersionId { get; set; }
-
-    /// <summary>
     /// Filter out features that already have a plan entitlement for the specified plan ID
     /// </summary>
     [JsonIgnore]
     public string? WithoutPlanEntitlementFor { get; set; }
-
-    /// <summary>
-    /// Filter by one or more feature types (boolean, event, trait)
-    /// </summary>
-    [JsonIgnore]
-    public IEnumerable<FeatureType> FeatureType { get; set; } = new List<FeatureType>();
-
-    /// <summary>
-    /// Only return boolean features if there is an associated event. Automatically includes boolean in the feature types filter.
-    /// </summary>
-    [JsonIgnore]
-    public bool? BooleanRequireEvent { get; set; }
 
     /// <summary>
     /// Page limit (default 100)

@@ -48,6 +48,24 @@ public partial interface IPlansClient
         CancellationToken cancellationToken = default
     );
 
+    WithRawResponseTask<UpsertPlanForBillingProductResponse> UpsertPlanForBillingProductAsync(
+        CreateBillingLinkedPlanRequestBody request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    );
+
+    WithRawResponseTask<ListBillingProductMatchCompaniesResponse> ListBillingProductMatchCompaniesAsync(
+        ListBillingProductMatchCompaniesRequest request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    );
+
+    WithRawResponseTask<CountBillingProductMatchCompaniesResponse> CountBillingProductMatchCompaniesAsync(
+        CountBillingProductMatchCompaniesRequest request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    );
+
     WithRawResponseTask<CountPlansResponse> CountPlansAsync(
         CountPlansRequest request,
         RequestOptions? options = null,
@@ -62,6 +80,7 @@ public partial interface IPlansClient
 
     WithRawResponseTask<DeletePlanVersionResponse> DeletePlanVersionAsync(
         string planId,
+        DeletePlanVersionRequest request,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     );

@@ -29,6 +29,9 @@ public record BillingPlanCreditGrantResponseData : IJsonOnDeserialized
     [JsonPropertyName("auto_topup_expiry_unit_count")]
     public long? AutoTopupExpiryUnitCount { get; set; }
 
+    [JsonPropertyName("auto_topup_threshold_credits")]
+    public long? AutoTopupThresholdCredits { get; set; }
+
     [JsonPropertyName("auto_topup_threshold_percent")]
     public long? AutoTopupThresholdPercent { get; set; }
 

@@ -18,6 +18,9 @@ public record CreatePlanEntitlementRequestBody
     [JsonPropertyName("currency")]
     public string? Currency { get; set; }
 
+    [JsonPropertyName("currency_prices")]
+    public IEnumerable<CurrencyPriceRequestBody>? CurrencyPrices { get; set; }
+
     [JsonPropertyName("feature_id")]
     public required string FeatureId { get; set; }
 

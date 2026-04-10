@@ -31,12 +31,12 @@ public class ListBillingProductsTest : BaseMockServerTest
                       "id": "id",
                       "interval": "day",
                       "price": 1000000,
-                      "provider_type": "schematic",
+                      "provider_type": "orb",
                       "scheme": "per_unit"
                     }
                   ],
                   "product_id": "product_id",
-                  "provider_type": "schematic",
+                  "provider_type": "orb",
                   "quantity": 1.1,
                   "subscription_count": 1000000,
                   "updated_at": "2024-01-15T09:30:00.000Z"
@@ -51,7 +51,7 @@ public class ListBillingProductsTest : BaseMockServerTest
                 "name": "name",
                 "offset": 1000000,
                 "price_usage_type": "licensed",
-                "provider_type": "schematic",
+                "provider_type": "orb",
                 "q": "q",
                 "with_one_time_charges": true,
                 "with_prices_only": true,
@@ -68,7 +68,7 @@ public class ListBillingProductsTest : BaseMockServerTest
                     .WithPath("/billing/products")
                     .WithParam("name", "name")
                     .WithParam("price_usage_type", "licensed")
-                    .WithParam("provider_type", "schematic")
+                    .WithParam("provider_type", "orb")
                     .WithParam("q", "q")
                     .WithParam("limit", "1000000")
                     .WithParam("offset", "1000000")
@@ -87,7 +87,7 @@ public class ListBillingProductsTest : BaseMockServerTest
                 IsActive = true,
                 Name = "name",
                 PriceUsageType = BillingPriceUsageType.Licensed,
-                ProviderType = BillingProviderType.Schematic,
+                ProviderType = BillingProviderType.Orb,
                 Q = "q",
                 WithOneTimeCharges = true,
                 WithPricesOnly = true,

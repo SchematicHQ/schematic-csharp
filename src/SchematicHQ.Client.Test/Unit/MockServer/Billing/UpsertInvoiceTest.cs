@@ -40,7 +40,7 @@ public class UpsertInvoiceTest : BaseMockServerTest
                 "external_id": "external_id",
                 "id": "id",
                 "payment_method_external_id": "payment_method_external_id",
-                "provider_type": "schematic",
+                "provider_type": "orb",
                 "status": "draft",
                 "subscription_external_id": "subscription_external_id",
                 "subtotal": 1000000,
