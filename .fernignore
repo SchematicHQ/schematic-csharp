@@ -13,6 +13,7 @@ src/SchematicHQ.Client.Test/TestCache.cs
 src/SchematicHQ.Client.Test/TestClient.cs
 src/SchematicHQ.Client.Test/TestCompaniesClient.cs
 src/SchematicHQ.Client.Test/TestEventBuffer.cs
+src/SchematicHQ.Client.Test/TestEventCaptureClient.cs
 src/SchematicHQ.Client.Test/TestLogger.cs
 src/SchematicHQ.Client.Test/RulesEngine/
 src/SchematicHQ.Client.Test/SchematicHQ.Client.Test.Custom.props
@@ -22,6 +23,7 @@ src/SchematicHQ.Client/Cache/
 src/SchematicHQ.Client/Core/Public/ClientOptionsCustom.cs
 src/SchematicHQ.Client/Datastream
 src/SchematicHQ.Client/EventBuffer.cs
+src/SchematicHQ.Client/EventCaptureClient.cs
 src/SchematicHQ.Client/Logger.cs
 src/SchematicHQ.Client/RulesEngine/
 src/SchematicHQ.Client/Schematic.cs

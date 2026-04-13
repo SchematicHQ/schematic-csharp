@@ -21,6 +21,11 @@ public partial class ClientOptions
     public IEventBuffer<CreateEventRequestBody>? EventBuffer { get; set; }
 
     /// <summary>
+    /// Base URL for the event capture service. Defaults to https://c.schematichq.com
+    /// </summary>
+    public string? EventCaptureBaseUrl { get; set; }
+
+    /// <summary>
     /// Enable replicator mode - uses only cached data from a replicator service
     /// </summary>
     public bool ReplicatorMode { get; set; } = false;
@@ -43,6 +48,7 @@ public static class ClientOptionsExtensions
             DatastreamOptions = options.DatastreamOptions,
             DefaultEventBufferPeriod = options.DefaultEventBufferPeriod,
             EventBuffer = options.EventBuffer,
+            EventCaptureBaseUrl = options.EventCaptureBaseUrl,
             FlagDefaults = options.FlagDefaults,
             Headers = new Headers(new Dictionary<string, HeaderValue>(options.Headers)),
             HttpClient = httpClient,
