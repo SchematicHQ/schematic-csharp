@@ -16,7 +16,7 @@ public interface IEventBuffer<T>
 public class EventBuffer<T> : IEventBuffer<T>
 {
     private const int DefaultMaxSize = 100;
-    private static readonly TimeSpan DefaultFlushPeriod = TimeSpan.FromMilliseconds(3000);
+    private static readonly TimeSpan DefaultFlushPeriod = TimeSpan.FromMilliseconds(5000);
     private const int MaxWaitForBuffer = 3; //seconds to wait for event buffer to flush on Stop
     private const int MaxRetries = 3; // Maximum number of retry attempts
     private const double InitialRetryDelaySeconds = 1.0; // Initial retry delay in seconds

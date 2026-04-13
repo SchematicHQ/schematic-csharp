@@ -118,15 +118,14 @@ public partial class Schematic
         Scheduledcheckout = (ScheduledcheckoutClient)API.Scheduledcheckout;
         Webhooks = (WebhooksClient)API.Webhooks;
 
+        var captureClient = new EventCaptureClient(
+            httpClient,
+            apiKey,
+            _logger,
+            _options.EventCaptureBaseUrl
+        );
         _eventBuffer = _options.EventBuffer ?? new EventBuffer<CreateEventRequestBody>(
-            async items =>
-            {
-                var request = new CreateEventBatchRequestBody
-                {
-                    Events = items
-                };
-                await API.Events.CreateEventBatchAsync(request);
-            },
+            async items => await captureClient.SendBatchAsync(items),
             _logger,
             flushPeriod: _options.DefaultEventBufferPeriod
         );
@@ -493,7 +492,8 @@ public partial class Schematic
             var eventBody = new CreateEventRequestBody
             {
                 EventType = eventType,
-                Body = body
+                Body = body,
+                SentAt = DateTime.UtcNow
             };
 
             _eventBuffer.Push(eventBody);
