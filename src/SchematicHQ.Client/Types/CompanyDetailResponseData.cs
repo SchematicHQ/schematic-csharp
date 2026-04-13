@@ -28,6 +28,10 @@ public record CompanyDetailResponseData : IJsonOnDeserialized
     [JsonPropertyName("created_at")]
     public required DateTime CreatedAt { get; set; }
 
+    [JsonPropertyName("custom_plan_billings")]
+    public IEnumerable<CustomPlanBillingResponseData> CustomPlanBillings { get; set; } =
+        new List<CustomPlanBillingResponseData>();
+
     [JsonPropertyName("default_payment_method")]
     public PaymentMethodResponseData? DefaultPaymentMethod { get; set; }
 

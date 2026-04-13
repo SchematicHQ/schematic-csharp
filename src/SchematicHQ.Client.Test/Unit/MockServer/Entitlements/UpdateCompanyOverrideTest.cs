@@ -146,6 +146,18 @@ public class UpdateCompanyOverrideTest : BaseMockServerTest
                     }
                   ],
                   "created_at": "2024-01-15T09:30:00.000Z",
+                  "custom_plan_billings": [
+                    {
+                      "activation_strategy": "on_payment",
+                      "company_id": "company_id",
+                      "created_at": "2024-01-15T09:30:00.000Z",
+                      "days_until_due": 1000000,
+                      "id": "id",
+                      "plan_id": "plan_id",
+                      "status": "active",
+                      "updated_at": "2024-01-15T09:30:00.000Z"
+                    }
+                  ],
                   "default_payment_method": {
                     "created_at": "2024-01-15T09:30:00.000Z",
                     "customer_external_id": "customer_external_id",

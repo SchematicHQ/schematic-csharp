@@ -88,6 +88,28 @@ public class GetFeatureUsageByCompanyTest : BaseMockServerTest
                           }
                         ],
                         "created_at": "2024-01-15T09:30:00.000Z",
+                        "custom_plan_billings": [
+                          {
+                            "activation_strategy": "on_payment",
+                            "company_id": "company_id",
+                            "created_at": "2024-01-15T09:30:00.000Z",
+                            "days_until_due": 1000000,
+                            "id": "id",
+                            "plan_id": "plan_id",
+                            "status": "active",
+                            "updated_at": "2024-01-15T09:30:00.000Z"
+                          },
+                          {
+                            "activation_strategy": "on_payment",
+                            "company_id": "company_id",
+                            "created_at": "2024-01-15T09:30:00.000Z",
+                            "days_until_due": 1000000,
+                            "id": "id",
+                            "plan_id": "plan_id",
+                            "status": "active",
+                            "updated_at": "2024-01-15T09:30:00.000Z"
+                          }
+                        ],
                         "default_payment_method": {
                           "created_at": "2024-01-15T09:30:00.000Z",
                           "customer_external_id": "customer_external_id",
@@ -558,6 +580,8 @@ public class GetFeatureUsageByCompanyTest : BaseMockServerTest
                     "period": "period",
                     "plan": {
                       "audience_type": "audience_type",
+                      "company_id": "company_id",
+                      "copied_from_plan_id": "copied_from_plan_id",
                       "created_at": "2024-01-15T09:30:00.000Z",
                       "description": "description",
                       "icon": "amber",
@@ -735,6 +759,8 @@ public class GetFeatureUsageByCompanyTest : BaseMockServerTest
                       "metric_period_month_reset": "metric_period_month_reset",
                       "plan": {
                         "audience_type": "audience_type",
+                        "company_id": "company_id",
+                        "copied_from_plan_id": "copied_from_plan_id",
                         "created_at": "2024-01-15T09:30:00.000Z",
                         "description": "description",
                         "icon": "amber",
@@ -939,6 +965,28 @@ public class GetFeatureUsageByCompanyTest : BaseMockServerTest
                           }
                         ],
                         "created_at": "2024-01-15T09:30:00.000Z",
+                        "custom_plan_billings": [
+                          {
+                            "activation_strategy": "on_payment",
+                            "company_id": "company_id",
+                            "created_at": "2024-01-15T09:30:00.000Z",
+                            "days_until_due": 1000000,
+                            "id": "id",
+                            "plan_id": "plan_id",
+                            "status": "active",
+                            "updated_at": "2024-01-15T09:30:00.000Z"
+                          },
+                          {
+                            "activation_strategy": "on_payment",
+                            "company_id": "company_id",
+                            "created_at": "2024-01-15T09:30:00.000Z",
+                            "days_until_due": 1000000,
+                            "id": "id",
+                            "plan_id": "plan_id",
+                            "status": "active",
+                            "updated_at": "2024-01-15T09:30:00.000Z"
+                          }
+                        ],
                         "default_payment_method": {
                           "created_at": "2024-01-15T09:30:00.000Z",
                           "customer_external_id": "customer_external_id",
@@ -1409,6 +1457,8 @@ public class GetFeatureUsageByCompanyTest : BaseMockServerTest
                     "period": "period",
                     "plan": {
                       "audience_type": "audience_type",
+                      "company_id": "company_id",
+                      "copied_from_plan_id": "copied_from_plan_id",
                       "created_at": "2024-01-15T09:30:00.000Z",
                       "description": "description",
                       "icon": "amber",
@@ -1586,6 +1636,8 @@ public class GetFeatureUsageByCompanyTest : BaseMockServerTest
                       "metric_period_month_reset": "metric_period_month_reset",
                       "plan": {
                         "audience_type": "audience_type",
+                        "company_id": "company_id",
+                        "copied_from_plan_id": "copied_from_plan_id",
                         "created_at": "2024-01-15T09:30:00.000Z",
                         "description": "description",
                         "icon": "amber",

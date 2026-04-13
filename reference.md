@@ -6455,6 +6455,53 @@ await client.Plans.UpdateCompanyPlansAsync(
 </dl>
 </details>
 
+<details><summary><code>client.Plans.<a href="/src/SchematicHQ.Client/Plans/PlansClient.cs">CreateCustomPlanAsync</a>(CreateCustomPlanRequestBody { ... }) -> WithRawResponseTask&lt;CreateCustomPlanResponse&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Plans.CreateCustomPlanAsync(
+    new CreateCustomPlanRequestBody
+    {
+        CompanyId = "company_id",
+        Description = "description",
+        Name = "name",
+    }
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `CreateCustomPlanRequestBody` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.Plans.<a href="/src/SchematicHQ.Client/Plans/PlansClient.cs">ListPlansAsync</a>(ListPlansRequest { ... }) -> WithRawResponseTask&lt;ListPlansResponse&gt;</code></summary>
 <dl>
 <dd>
@@ -6479,6 +6526,7 @@ await client.Plans.ListPlansAsync(
         IncludeDraftVersions = true,
         PlanType = PlanType.Plan,
         Q = "q",
+        ScopedToCompanyId = "scoped_to_company_id",
         WithoutEntitlementFor = "without_entitlement_for",
         WithoutPaidProductId = true,
         Limit = 1000000,
@@ -6917,6 +6965,7 @@ await client.Plans.CountPlansAsync(
         IncludeDraftVersions = true,
         PlanType = PlanType.Plan,
         Q = "q",
+        ScopedToCompanyId = "scoped_to_company_id",
         WithoutEntitlementFor = "without_entitlement_for",
         WithoutPaidProductId = true,
         Limit = 1000000,
@@ -7061,6 +7110,10 @@ await client.Plans.PublishPlanVersionAsync(
     {
         ExcludedCompanyIds = new List<string>() { "excluded_company_ids" },
         MigrationStrategy = PlanVersionMigrationStrategy.Immediate,
+        PayInAdvance = new List<UpdatePayInAdvanceRequestBody>()
+        {
+            new UpdatePayInAdvanceRequestBody { PriceId = "price_id", Quantity = 1000000 },
+        },
     }
 );
 ```
@@ -8564,6 +8617,47 @@ await client.Features.CountFlagsAsync(
 <dd>
 
 **request:** `CountFlagsRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## integrationsapi
+<details><summary><code>client.Integrationsapi.<a href="/src/SchematicHQ.Client/Integrationsapi/IntegrationsapiClient.cs">GetIntegrationWebhookUrlAsync</a>(type) -> WithRawResponseTask&lt;GetIntegrationWebhookUrlResponse&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Integrationsapi.GetIntegrationWebhookUrlAsync("type");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**type:** `string` — type
     
 </dd>
 </dl>

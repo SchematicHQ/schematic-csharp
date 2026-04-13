@@ -105,13 +105,102 @@ public partial class PlansClient : IPlansClient
         }
     }
 
+    private async Task<WithRawResponse<CreateCustomPlanResponse>> CreateCustomPlanAsyncCore(
+        CreateCustomPlanRequestBody request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        var _headers = await new SchematicHQ.Client.Core.HeadersBuilder.Builder()
+            .Add(_client.Options.Headers)
+            .Add(_client.Options.AdditionalHeaders)
+            .Add(options?.AdditionalHeaders)
+            .BuildAsync()
+            .ConfigureAwait(false);
+        var response = await _client
+            .SendRequestAsync(
+                new JsonRequest
+                {
+                    Method = HttpMethod.Post,
+                    Path = "custom-plans",
+                    Body = request,
+                    Headers = _headers,
+                    ContentType = "application/json",
+                    Options = options,
+                },
+                cancellationToken
+            )
+            .ConfigureAwait(false);
+        if (response.StatusCode is >= 200 and < 400)
+        {
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
+            try
+            {
+                var responseData = JsonUtils.Deserialize<CreateCustomPlanResponse>(responseBody)!;
+                return new WithRawResponse<CreateCustomPlanResponse>()
+                {
+                    Data = responseData,
+                    RawResponse = new RawResponse()
+                    {
+                        StatusCode = response.Raw.StatusCode,
+                        Url = response.Raw.RequestMessage?.RequestUri ?? new Uri("about:blank"),
+                        Headers = ResponseHeaders.FromHttpResponseMessage(response.Raw),
+                    },
+                };
+            }
+            catch (JsonException e)
+            {
+                throw new SchematicApiException(
+                    "Failed to deserialize response",
+                    response.StatusCode,
+                    responseBody,
+                    e
+                );
+            }
+        }
+        {
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
+            try
+            {
+                switch (response.StatusCode)
+                {
+                    case 400:
+                        throw new BadRequestError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 401:
+                        throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 403:
+                        throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 404:
+                        throw new NotFoundError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 500:
+                        throw new InternalServerError(
+                            JsonUtils.Deserialize<ApiError>(responseBody)
+                        );
+                }
+            }
+            catch (JsonException)
+            {
+                // unable to map error response, throwing generic error
+            }
+            throw new SchematicApiException(
+                $"Error with status code {response.StatusCode}",
+                response.StatusCode,
+                responseBody
+            );
+        }
+    }
+
     private async Task<WithRawResponse<ListPlansResponse>> ListPlansAsyncCore(
         ListPlansRequest request,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
     {
-        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 13)
+        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 14)
             .Add("company_id", request.CompanyId)
             .Add("for_fallback_plan", request.ForFallbackPlan)
             .Add("for_initial_plan", request.ForInitialPlan)
@@ -121,6 +210,7 @@ public partial class PlansClient : IPlansClient
             .Add("include_draft_versions", request.IncludeDraftVersions)
             .Add("plan_type", request.PlanType)
             .Add("q", request.Q)
+            .Add("scoped_to_company_id", request.ScopedToCompanyId)
             .Add("without_entitlement_for", request.WithoutEntitlementFor)
             .Add("without_paid_product_id", request.WithoutPaidProductId)
             .Add("limit", request.Limit)
@@ -960,7 +1050,7 @@ public partial class PlansClient : IPlansClient
         CancellationToken cancellationToken = default
     )
     {
-        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 13)
+        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 14)
             .Add("company_id", request.CompanyId)
             .Add("for_fallback_plan", request.ForFallbackPlan)
             .Add("for_initial_plan", request.ForInitialPlan)
@@ -970,6 +1060,7 @@ public partial class PlansClient : IPlansClient
             .Add("include_draft_versions", request.IncludeDraftVersions)
             .Add("plan_type", request.PlanType)
             .Add("q", request.Q)
+            .Add("scoped_to_company_id", request.ScopedToCompanyId)
             .Add("without_entitlement_for", request.WithoutEntitlementFor)
             .Add("without_paid_product_id", request.WithoutPaidProductId)
             .Add("limit", request.Limit)
@@ -1359,6 +1450,27 @@ public partial class PlansClient : IPlansClient
     }
 
     /// <example><code>
+    /// await client.Plans.CreateCustomPlanAsync(
+    ///     new CreateCustomPlanRequestBody
+    ///     {
+    ///         CompanyId = "company_id",
+    ///         Description = "description",
+    ///         Name = "name",
+    ///     }
+    /// );
+    /// </code></example>
+    public WithRawResponseTask<CreateCustomPlanResponse> CreateCustomPlanAsync(
+        CreateCustomPlanRequestBody request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        return new WithRawResponseTask<CreateCustomPlanResponse>(
+            CreateCustomPlanAsyncCore(request, options, cancellationToken)
+        );
+    }
+
+    /// <example><code>
     /// await client.Plans.ListPlansAsync(
     ///     new ListPlansRequest
     ///     {
@@ -1370,6 +1482,7 @@ public partial class PlansClient : IPlansClient
     ///         IncludeDraftVersions = true,
     ///         PlanType = PlanType.Plan,
     ///         Q = "q",
+    ///         ScopedToCompanyId = "scoped_to_company_id",
     ///         WithoutEntitlementFor = "without_entitlement_for",
     ///         WithoutPaidProductId = true,
     ///         Limit = 1000000,
@@ -1553,6 +1666,7 @@ public partial class PlansClient : IPlansClient
     ///         IncludeDraftVersions = true,
     ///         PlanType = PlanType.Plan,
     ///         Q = "q",
+    ///         ScopedToCompanyId = "scoped_to_company_id",
     ///         WithoutEntitlementFor = "without_entitlement_for",
     ///         WithoutPaidProductId = true,
     ///         Limit = 1000000,
@@ -1612,6 +1726,10 @@ public partial class PlansClient : IPlansClient
     ///     {
     ///         ExcludedCompanyIds = new List&lt;string&gt;() { "excluded_company_ids" },
     ///         MigrationStrategy = PlanVersionMigrationStrategy.Immediate,
+    ///         PayInAdvance = new List&lt;UpdatePayInAdvanceRequestBody&gt;()
+    ///         {
+    ///             new UpdatePayInAdvanceRequestBody { PriceId = "price_id", Quantity = 1000000 },
+    ///         },
     ///     }
     /// );
     /// </code></example>

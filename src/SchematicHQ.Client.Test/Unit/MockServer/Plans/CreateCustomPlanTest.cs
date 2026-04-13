@@ -7,16 +7,16 @@ namespace SchematicHQ.Client.Test.Unit.MockServer.Plans;
 
 [TestFixture]
 [Parallelizable(ParallelScope.Self)]
-public class CreatePlanTest : BaseMockServerTest
+public class CreateCustomPlanTest : BaseMockServerTest
 {
     [NUnit.Framework.Test]
     public async Task MockServerTest()
     {
         const string requestJson = """
             {
+              "company_id": "company_id",
               "description": "description",
-              "name": "name",
-              "plan_type": "plan"
+              "name": "name"
             }
             """;
 
@@ -262,7 +262,7 @@ public class CreatePlanTest : BaseMockServerTest
             .Given(
                 WireMock
                     .RequestBuilders.Request.Create()
-                    .WithPath("/plans")
+                    .WithPath("/custom-plans")
                     .WithHeader("Content-Type", "application/json")
                     .UsingPost()
                     .WithBodyAsJson(requestJson)
@@ -274,12 +274,12 @@ public class CreatePlanTest : BaseMockServerTest
                     .WithBody(mockResponse)
             );
 
-        var response = await Client.Plans.CreatePlanAsync(
-            new CreatePlanRequestBody
+        var response = await Client.Plans.CreateCustomPlanAsync(
+            new CreateCustomPlanRequestBody
             {
+                CompanyId = "company_id",
                 Description = "description",
                 Name = "name",
-                PlanType = PlanType.Plan,
             }
         );
         JsonAssert.AreEqual(response, mockResponse);

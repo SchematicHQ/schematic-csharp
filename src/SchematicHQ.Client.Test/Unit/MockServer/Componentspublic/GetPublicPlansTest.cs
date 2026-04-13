@@ -21,7 +21,7 @@ public class GetPublicPlansTest : BaseMockServerTest
                     "compatible_plan_ids": [
                       "compatible_plan_ids"
                     ],
-                    "controlled_by": "orb",
+                    "controlled_by": "controlled_by",
                     "created_at": "2024-01-15T09:30:00.000Z",
                     "currency_prices": [
                       {
@@ -185,7 +185,7 @@ public class GetPublicPlansTest : BaseMockServerTest
                     "compatible_plan_ids": [
                       "compatible_plan_ids"
                     ],
-                    "controlled_by": "orb",
+                    "controlled_by": "controlled_by",
                     "created_at": "2024-01-15T09:30:00.000Z",
                     "currency_prices": [
                       {
