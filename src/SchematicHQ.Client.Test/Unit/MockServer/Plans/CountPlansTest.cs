@@ -31,6 +31,7 @@ public class CountPlansTest : BaseMockServerTest
                 "offset": 1000000,
                 "plan_type": "plan",
                 "q": "q",
+                "scoped_to_company_id": "scoped_to_company_id",
                 "without_entitlement_for": "without_entitlement_for",
                 "without_paid_product_id": true
               }
@@ -45,6 +46,7 @@ public class CountPlansTest : BaseMockServerTest
                     .WithParam("company_id", "company_id")
                     .WithParam("plan_type", "plan")
                     .WithParam("q", "q")
+                    .WithParam("scoped_to_company_id", "scoped_to_company_id")
                     .WithParam("without_entitlement_for", "without_entitlement_for")
                     .WithParam("limit", "1000000")
                     .WithParam("offset", "1000000")
@@ -68,6 +70,7 @@ public class CountPlansTest : BaseMockServerTest
                 IncludeDraftVersions = true,
                 PlanType = PlanType.Plan,
                 Q = "q",
+                ScopedToCompanyId = "scoped_to_company_id",
                 WithoutEntitlementFor = "without_entitlement_for",
                 WithoutPaidProductId = true,
                 Limit = 1000000,

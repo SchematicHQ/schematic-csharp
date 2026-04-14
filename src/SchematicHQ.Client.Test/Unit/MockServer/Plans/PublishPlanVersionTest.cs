@@ -17,7 +17,13 @@ public class PublishPlanVersionTest : BaseMockServerTest
               "excluded_company_ids": [
                 "excluded_company_ids"
               ],
-              "migration_strategy": "immediate"
+              "migration_strategy": "immediate",
+              "pay_in_advance": [
+                {
+                  "price_id": "price_id",
+                  "quantity": 1000000
+                }
+              ]
             }
             """;
 
@@ -64,6 +70,10 @@ public class PublishPlanVersionTest : BaseMockServerTest
             {
                 ExcludedCompanyIds = new List<string>() { "excluded_company_ids" },
                 MigrationStrategy = PlanVersionMigrationStrategy.Immediate,
+                PayInAdvance = new List<UpdatePayInAdvanceRequestBody>()
+                {
+                    new UpdatePayInAdvanceRequestBody { PriceId = "price_id", Quantity = 1000000 },
+                },
             }
         );
         JsonAssert.AreEqual(response, mockResponse);

@@ -23,7 +23,7 @@ public class PreviewComponentDataTest : BaseMockServerTest
                     "compatible_plan_ids": [
                       "compatible_plan_ids"
                     ],
-                    "controlled_by": "orb",
+                    "controlled_by": "controlled_by",
                     "created_at": "2024-01-15T09:30:00.000Z",
                     "currency_prices": [
                       {
@@ -198,7 +198,7 @@ public class PreviewComponentDataTest : BaseMockServerTest
                     "compatible_plan_ids": [
                       "compatible_plan_ids"
                     ],
-                    "controlled_by": "orb",
+                    "controlled_by": "controlled_by",
                     "created_at": "2024-01-15T09:30:00.000Z",
                     "currency_prices": [
                       {
@@ -514,6 +514,18 @@ public class PreviewComponentDataTest : BaseMockServerTest
                     }
                   ],
                   "created_at": "2024-01-15T09:30:00.000Z",
+                  "custom_plan_billings": [
+                    {
+                      "activation_strategy": "on_payment",
+                      "company_id": "company_id",
+                      "created_at": "2024-01-15T09:30:00.000Z",
+                      "days_until_due": 1000000,
+                      "id": "id",
+                      "plan_id": "plan_id",
+                      "status": "active",
+                      "updated_at": "2024-01-15T09:30:00.000Z"
+                    }
+                  ],
                   "default_payment_method": {
                     "created_at": "2024-01-15T09:30:00.000Z",
                     "customer_external_id": "customer_external_id",
@@ -756,7 +768,10 @@ public class PreviewComponentDataTest : BaseMockServerTest
                   },
                   "charge_type": "free",
                   "company_count": 1000000,
-                  "controlled_by": "orb",
+                  "company_id": "company_id",
+                  "company_name": "company_name",
+                  "controlled_by": "controlled_by",
+                  "copied_from_plan_id": "copied_from_plan_id",
                   "created_at": "2024-01-15T09:30:00.000Z",
                   "currency_prices": [
                     {
@@ -1011,7 +1026,10 @@ public class PreviewComponentDataTest : BaseMockServerTest
                   },
                   "charge_type": "free",
                   "company_count": 1000000,
-                  "controlled_by": "orb",
+                  "company_id": "company_id",
+                  "company_name": "company_name",
+                  "controlled_by": "controlled_by",
+                  "copied_from_plan_id": "copied_from_plan_id",
                   "created_at": "2024-01-15T09:30:00.000Z",
                   "currency_prices": [
                     {

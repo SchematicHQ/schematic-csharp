@@ -52,6 +52,12 @@ public record ListPlansRequest
     public string? Q { get; set; }
 
     /// <summary>
+    /// Filter plans scoped to a specific company (custom plans)
+    /// </summary>
+    [JsonIgnore]
+    public string? ScopedToCompanyId { get; set; }
+
+    /// <summary>
     /// Filter out plans that already have a plan entitlement for the specified feature ID
     /// </summary>
     [JsonIgnore]

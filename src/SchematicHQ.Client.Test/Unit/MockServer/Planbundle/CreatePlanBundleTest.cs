@@ -69,6 +69,8 @@ public class CreatePlanBundleTest : BaseMockServerTest
                   }
                 ],
                 "plan": {
+                  "company_id": "company_id",
+                  "copied_from_plan_id": "copied_from_plan_id",
                   "created_at": "2024-01-15T09:30:00.000Z",
                   "description": "description",
                   "icon": "amber",

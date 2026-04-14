@@ -18,6 +18,9 @@ public record CreateMeterRequestBody
     [JsonPropertyName("external_id")]
     public required string ExternalId { get; set; }
 
+    [JsonPropertyName("provider_type")]
+    public BillingProviderType? ProviderType { get; set; }
+
     /// <inheritdoc />
     public override string ToString()
     {

@@ -15,7 +15,7 @@ public partial class SchematicApi : ISchematicApi
                 { "X-Fern-Language", "C#" },
                 { "X-Fern-SDK-Name", "SchematicHQ.Client" },
                 { "X-Fern-SDK-Version", Version.Current },
-                { "User-Agent", "SchematicHQ.Client/1.4.3" },
+                { "User-Agent", "SchematicHQ.Client/1.4.4" },
             }
         );
         foreach (var header in platformHeaders)
@@ -45,6 +45,7 @@ public partial class SchematicApi : ISchematicApi
         Dataexports = new DataexportsClient(_client);
         Events = new EventsClient(_client);
         Features = new FeaturesClient(_client);
+        Integrationsapi = new IntegrationsapiClient(_client);
         Planbundle = new PlanbundleClient(_client);
         Plangroups = new PlangroupsClient(_client);
         Planmigrations = new PlanmigrationsClient(_client);
@@ -75,6 +76,8 @@ public partial class SchematicApi : ISchematicApi
     public IEventsClient Events { get; }
 
     public IFeaturesClient Features { get; }
+
+    public IIntegrationsapiClient Integrationsapi { get; }
 
     public IPlanbundleClient Planbundle { get; }
 

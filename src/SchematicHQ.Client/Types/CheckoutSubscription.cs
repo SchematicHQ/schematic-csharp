@@ -50,6 +50,9 @@ public record CheckoutSubscription : IJsonOnDeserialized
     [JsonPropertyName("interval")]
     public required string Interval { get; set; }
 
+    [JsonPropertyName("invoice_url")]
+    public string? InvoiceUrl { get; set; }
+
     [JsonPropertyName("metadata")]
     public Dictionary<string, object?>? Metadata { get; set; }
 

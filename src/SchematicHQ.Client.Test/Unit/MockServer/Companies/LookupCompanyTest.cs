@@ -922,6 +922,34 @@ public class LookupCompanyTest : BaseMockServerTest
                   }
                 ],
                 "created_at": "2024-01-15T09:30:00.000Z",
+                "custom_plan_billings": [
+                  {
+                    "activation_strategy": "on_payment",
+                    "company_id": "company_id",
+                    "created_at": "2024-01-15T09:30:00.000Z",
+                    "days_until_due": 1000000,
+                    "id": "id",
+                    "paid_at": "2024-01-15T09:30:00.000Z",
+                    "plan_id": "plan_id",
+                    "published_at": "2024-01-15T09:30:00.000Z",
+                    "status": "active",
+                    "stripe_invoice_url": "stripe_invoice_url",
+                    "updated_at": "2024-01-15T09:30:00.000Z"
+                  },
+                  {
+                    "activation_strategy": "on_payment",
+                    "company_id": "company_id",
+                    "created_at": "2024-01-15T09:30:00.000Z",
+                    "days_until_due": 1000000,
+                    "id": "id",
+                    "paid_at": "2024-01-15T09:30:00.000Z",
+                    "plan_id": "plan_id",
+                    "published_at": "2024-01-15T09:30:00.000Z",
+                    "status": "active",
+                    "stripe_invoice_url": "stripe_invoice_url",
+                    "updated_at": "2024-01-15T09:30:00.000Z"
+                  }
+                ],
                 "default_payment_method": {
                   "account_last4": "account_last4",
                   "account_name": "account_name",

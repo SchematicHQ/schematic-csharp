@@ -50,6 +50,9 @@ public record CreateBillingSubscriptionRequestBody
     public IEnumerable<BillingProductPricing> ProductExternalIds { get; set; } =
         new List<BillingProductPricing>();
 
+    [JsonPropertyName("provider_type")]
+    public BillingProviderType? ProviderType { get; set; }
+
     [JsonPropertyName("status")]
     public string? Status { get; set; }
 

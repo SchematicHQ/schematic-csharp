@@ -11,6 +11,6 @@
       "Moq.Contrib.HttpClient": "1.4.0"
     }
   },
-  "originGitCommit": "55f518dd505d348900809b193345774c37962166",
-  "sdkVersion": "1.4.3"
+  "originGitCommit": "3b0798fafff35a7e1b538c50c4a39870c9b32fdc",
+  "sdkVersion": "1.4.4"
 }

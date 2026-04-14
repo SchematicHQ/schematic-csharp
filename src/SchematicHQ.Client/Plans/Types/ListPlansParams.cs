@@ -72,6 +72,12 @@ public record ListPlansParams : IJsonOnDeserialized
     public string? Q { get; set; }
 
     /// <summary>
+    /// Filter plans scoped to a specific company (custom plans)
+    /// </summary>
+    [JsonPropertyName("scoped_to_company_id")]
+    public string? ScopedToCompanyId { get; set; }
+
+    /// <summary>
     /// Filter out plans that already have a plan entitlement for the specified feature ID
     /// </summary>
     [JsonPropertyName("without_entitlement_for")]

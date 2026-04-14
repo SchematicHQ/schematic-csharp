@@ -5,38 +5,41 @@ using SchematicHQ.Client.Core;
 namespace SchematicHQ.Client;
 
 [Serializable]
-public record PlanResponseData : IJsonOnDeserialized
+public record CustomPlanBillingResponseData : IJsonOnDeserialized
 {
     [JsonExtensionData]
     private readonly IDictionary<string, JsonElement> _extensionData =
         new Dictionary<string, JsonElement>();
 
-    [JsonPropertyName("audience_type")]
-    public string? AudienceType { get; set; }
+    [JsonPropertyName("activation_strategy")]
+    public required CustomPlanActivationStrategy ActivationStrategy { get; set; }
 
     [JsonPropertyName("company_id")]
-    public string? CompanyId { get; set; }
-
-    [JsonPropertyName("copied_from_plan_id")]
-    public string? CopiedFromPlanId { get; set; }
+    public required string CompanyId { get; set; }
 
     [JsonPropertyName("created_at")]
     public required DateTime CreatedAt { get; set; }
 
-    [JsonPropertyName("description")]
-    public required string Description { get; set; }
-
-    [JsonPropertyName("icon")]
-    public required PlanIcon Icon { get; set; }
+    [JsonPropertyName("days_until_due")]
+    public required long DaysUntilDue { get; set; }
 
     [JsonPropertyName("id")]
     public required string Id { get; set; }
 
-    [JsonPropertyName("name")]
-    public required string Name { get; set; }
+    [JsonPropertyName("paid_at")]
+    public DateTime? PaidAt { get; set; }
 
-    [JsonPropertyName("plan_type")]
-    public required PlanType PlanType { get; set; }
+    [JsonPropertyName("plan_id")]
+    public required string PlanId { get; set; }
+
+    [JsonPropertyName("published_at")]
+    public DateTime? PublishedAt { get; set; }
+
+    [JsonPropertyName("status")]
+    public required CustomPlanBillingStatus Status { get; set; }
+
+    [JsonPropertyName("stripe_invoice_url")]
+    public string? StripeInvoiceUrl { get; set; }
 
     [JsonPropertyName("updated_at")]
     public required DateTime UpdatedAt { get; set; }

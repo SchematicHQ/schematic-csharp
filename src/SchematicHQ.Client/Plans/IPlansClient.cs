@@ -9,6 +9,12 @@ public partial interface IPlansClient
         CancellationToken cancellationToken = default
     );
 
+    WithRawResponseTask<CreateCustomPlanResponse> CreateCustomPlanAsync(
+        CreateCustomPlanRequestBody request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    );
+
     WithRawResponseTask<ListPlansResponse> ListPlansAsync(
         ListPlansRequest request,
         RequestOptions? options = null,

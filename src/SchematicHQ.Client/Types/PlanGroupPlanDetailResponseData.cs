@@ -29,11 +29,20 @@ public record PlanGroupPlanDetailResponseData : IJsonOnDeserialized
     [JsonPropertyName("company_count")]
     public required long CompanyCount { get; set; }
 
+    [JsonPropertyName("company_id")]
+    public string? CompanyId { get; set; }
+
+    [JsonPropertyName("company_name")]
+    public string? CompanyName { get; set; }
+
     [JsonPropertyName("compatible_plan_ids")]
     public IEnumerable<string> CompatiblePlanIds { get; set; } = new List<string>();
 
     [JsonPropertyName("controlled_by")]
-    public required BillingProviderType ControlledBy { get; set; }
+    public required string ControlledBy { get; set; }
+
+    [JsonPropertyName("copied_from_plan_id")]
+    public string? CopiedFromPlanId { get; set; }
 
     [JsonPropertyName("created_at")]
     public required DateTime CreatedAt { get; set; }
