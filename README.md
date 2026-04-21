@@ -212,6 +212,43 @@ if (resp.Entitlement != null)
 }
 ```
 
+### Checking multiple flags
+
+The `CheckFlags` method allows you to efficiently check multiple feature flags in a single operation. When you provide specific flag keys, it will only return the flag values for those flags, leveraging intelligent caching to minimize API calls.
+
+```csharp
+Schematic schematic = new Schematic("YOUR_API_KEY");
+
+var company = new Dictionary<string, string> { { "id", "your-company-id" } };
+
+// Check specific flags by providing an array of flag keys
+var results = await schematic.CheckFlags(
+    company: company,
+    keys: new[] { "feature-flag-1", "feature-flag-2", "feature-flag-3" }
+);
+
+foreach (var result in results)
+{
+    Console.WriteLine($"Flag {result.Flag}: {result.Value} ({result.Reason})");
+    if (result.Value)
+    {
+        // This flag is enabled
+    }
+    else
+    {
+        // This flag is disabled
+    }
+}
+
+// Or check all available flags by omitting the keys parameter
+var allResults = await schematic.CheckFlags(company: company);
+
+foreach (var result in allResults)
+{
+    Console.WriteLine($"Flag {result.Flag}: {result.Value}");
+}
+```
+
 ### OpenFeature Integration
 
 The Schematic .NET SDK includes built-in support for [OpenFeature](https://openfeature.dev/), allowing you to use Schematic's feature flags through the OpenFeature standard API.
