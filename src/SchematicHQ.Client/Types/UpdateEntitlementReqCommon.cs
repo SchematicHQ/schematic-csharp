@@ -15,10 +15,10 @@ public record UpdateEntitlementReqCommon : IJsonOnDeserialized
     public double? CreditConsumptionRate { get; set; }
 
     [JsonPropertyName("metric_period")]
-    public UpdateEntitlementReqCommonMetricPeriod? MetricPeriod { get; set; }
+    public MetricPeriod? MetricPeriod { get; set; }
 
     [JsonPropertyName("metric_period_month_reset")]
-    public UpdateEntitlementReqCommonMetricPeriodMonthReset? MetricPeriodMonthReset { get; set; }
+    public MetricPeriodMonthReset? MetricPeriodMonthReset { get; set; }
 
     [JsonPropertyName("value_bool")]
     public bool? ValueBool { get; set; }

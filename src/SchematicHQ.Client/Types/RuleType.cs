@@ -4,29 +4,29 @@ using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
 
-[JsonConverter(typeof(RulesengineRuleRuleType.RulesengineRuleRuleTypeSerializer))]
+[JsonConverter(typeof(RuleType.RuleTypeSerializer))]
 [Serializable]
-public readonly record struct RulesengineRuleRuleType : IStringEnum
+public readonly record struct RuleType : IStringEnum
 {
-    public static readonly RulesengineRuleRuleType Default = new(Values.Default);
+    public static readonly RuleType CompanyOverride = new(Values.CompanyOverride);
 
-    public static readonly RulesengineRuleRuleType GlobalOverride = new(Values.GlobalOverride);
-
-    public static readonly RulesengineRuleRuleType CompanyOverride = new(Values.CompanyOverride);
-
-    public static readonly RulesengineRuleRuleType CompanyOverrideUsageExceeded = new(
+    public static readonly RuleType CompanyOverrideUsageExceeded = new(
         Values.CompanyOverrideUsageExceeded
     );
 
-    public static readonly RulesengineRuleRuleType PlanEntitlement = new(Values.PlanEntitlement);
+    public static readonly RuleType Default = new(Values.Default);
 
-    public static readonly RulesengineRuleRuleType PlanEntitlementUsageExceeded = new(
+    public static readonly RuleType GlobalOverride = new(Values.GlobalOverride);
+
+    public static readonly RuleType PlanEntitlement = new(Values.PlanEntitlement);
+
+    public static readonly RuleType PlanEntitlementUsageExceeded = new(
         Values.PlanEntitlementUsageExceeded
     );
 
-    public static readonly RulesengineRuleRuleType Standard = new(Values.Standard);
+    public static readonly RuleType Standard = new(Values.Standard);
 
-    public RulesengineRuleRuleType(string value)
+    public RuleType(string value)
     {
         Value = value;
     }
@@ -39,9 +39,9 @@ public readonly record struct RulesengineRuleRuleType : IStringEnum
     /// <summary>
     /// Create a string enum with the given value.
     /// </summary>
-    public static RulesengineRuleRuleType FromCustom(string value)
+    public static RuleType FromCustom(string value)
     {
-        return new RulesengineRuleRuleType(value);
+        return new RuleType(value);
     }
 
     public bool Equals(string? other)
@@ -57,19 +57,17 @@ public readonly record struct RulesengineRuleRuleType : IStringEnum
         return Value;
     }
 
-    public static bool operator ==(RulesengineRuleRuleType value1, string value2) =>
-        value1.Value.Equals(value2);
+    public static bool operator ==(RuleType value1, string value2) => value1.Value.Equals(value2);
 
-    public static bool operator !=(RulesengineRuleRuleType value1, string value2) =>
-        !value1.Value.Equals(value2);
+    public static bool operator !=(RuleType value1, string value2) => !value1.Value.Equals(value2);
 
-    public static explicit operator string(RulesengineRuleRuleType value) => value.Value;
+    public static explicit operator string(RuleType value) => value.Value;
 
-    public static explicit operator RulesengineRuleRuleType(string value) => new(value);
+    public static explicit operator RuleType(string value) => new(value);
 
-    internal class RulesengineRuleRuleTypeSerializer : JsonConverter<RulesengineRuleRuleType>
+    internal class RuleTypeSerializer : JsonConverter<RuleType>
     {
-        public override RulesengineRuleRuleType Read(
+        public override RuleType Read(
             ref Utf8JsonReader reader,
             Type typeToConvert,
             JsonSerializerOptions options
@@ -80,19 +78,19 @@ public readonly record struct RulesengineRuleRuleType : IStringEnum
                 ?? throw new global::System.Exception(
                     "The JSON value could not be read as a string."
                 );
-            return new RulesengineRuleRuleType(stringValue);
+            return new RuleType(stringValue);
         }
 
         public override void Write(
             Utf8JsonWriter writer,
-            RulesengineRuleRuleType value,
+            RuleType value,
             JsonSerializerOptions options
         )
         {
             writer.WriteStringValue(value.Value);
         }
 
-        public override RulesengineRuleRuleType ReadAsPropertyName(
+        public override RuleType ReadAsPropertyName(
             ref Utf8JsonReader reader,
             Type typeToConvert,
             JsonSerializerOptions options
@@ -103,12 +101,12 @@ public readonly record struct RulesengineRuleRuleType : IStringEnum
                 ?? throw new global::System.Exception(
                     "The JSON property name could not be read as a string."
                 );
-            return new RulesengineRuleRuleType(stringValue);
+            return new RuleType(stringValue);
         }
 
         public override void WriteAsPropertyName(
             Utf8JsonWriter writer,
-            RulesengineRuleRuleType value,
+            RuleType value,
             JsonSerializerOptions options
         )
         {
@@ -122,13 +120,13 @@ public readonly record struct RulesengineRuleRuleType : IStringEnum
     [Serializable]
     public static class Values
     {
-        public const string Default = "default";
-
-        public const string GlobalOverride = "global_override";
-
         public const string CompanyOverride = "company_override";
 
         public const string CompanyOverrideUsageExceeded = "company_override_usage_exceeded";
+
+        public const string Default = "default";
+
+        public const string GlobalOverride = "global_override";
 
         public const string PlanEntitlement = "plan_entitlement";
 

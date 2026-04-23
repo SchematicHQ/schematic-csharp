@@ -24,10 +24,10 @@ public record UsageBasedEntitlementResponseData : IJsonOnDeserialized
     public BillingPriceView? MeteredPrice { get; set; }
 
     [JsonPropertyName("metric_period")]
-    public string? MetricPeriod { get; set; }
+    public MetricPeriod? MetricPeriod { get; set; }
 
     [JsonPropertyName("metric_period_month_reset")]
-    public string? MetricPeriodMonthReset { get; set; }
+    public MetricPeriodMonthReset? MetricPeriodMonthReset { get; set; }
 
     [JsonPropertyName("monthly_usage_based_price")]
     public BillingPriceView? MonthlyUsageBasedPrice { get; set; }

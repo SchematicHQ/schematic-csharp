@@ -39,10 +39,10 @@ public record CompanyOverrideResponseData : IJsonOnDeserialized
     public required string Id { get; set; }
 
     [JsonPropertyName("metric_period")]
-    public string? MetricPeriod { get; set; }
+    public MetricPeriod? MetricPeriod { get; set; }
 
     [JsonPropertyName("metric_period_month_reset")]
-    public string? MetricPeriodMonthReset { get; set; }
+    public MetricPeriodMonthReset? MetricPeriodMonthReset { get; set; }
 
     [JsonPropertyName("notes")]
     public IEnumerable<CompanyOverrideNoteResponseData> Notes { get; set; } =

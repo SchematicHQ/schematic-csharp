@@ -1,84 +1,4 @@
 # Reference
-<details><summary><code>client.<a href="/src/SchematicHQ.Client/Schematic.cs">PutPlanAudiencesPlanAudienceIdAsync</a>(planAudienceId)</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```csharp
-await client.PutPlanAudiencesPlanAudienceIdAsync("plan_audience_id");
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**planAudienceId:** `string` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.<a href="/src/SchematicHQ.Client/Schematic.cs">DeletePlanAudiencesPlanAudienceIdAsync</a>(planAudienceId)</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```csharp
-await client.DeletePlanAudiencesPlanAudienceIdAsync("plan_audience_id");
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**planAudienceId:** `string` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
 ## accounts
 <details><summary><code>client.Accounts.<a href="/src/SchematicHQ.Client/Accounts/AccountsClient.cs">ListAccountMembersAsync</a>(ListAccountMembersRequest { ... }) -> WithRawResponseTask&lt;ListAccountMembersResponse&gt;</code></summary>
 <dl>
@@ -96,6 +16,7 @@ await client.DeletePlanAudiencesPlanAudienceIdAsync("plan_audience_id");
 await client.Accounts.ListAccountMembersAsync(
     new ListAccountMembersRequest
     {
+        Ids = [new List<string>() { "ids" }],
         Q = "q",
         Limit = 1000000,
         Offset = 1000000,
@@ -587,7 +508,12 @@ await client.Accounts.CountAuditLogsAsync(
 
 ```csharp
 await client.Accounts.ListEnvironmentsAsync(
-    new ListEnvironmentsRequest { Limit = 1000000, Offset = 1000000 }
+    new ListEnvironmentsRequest
+    {
+        Ids = [new List<string>() { "ids" }],
+        Limit = 1000000,
+        Offset = 1000000,
+    }
 );
 ```
 </dd>
@@ -1004,6 +930,7 @@ await client.Billing.UpsertBillingCustomerAsync(
 await client.Billing.ListCustomersWithSubscriptionsAsync(
     new ListCustomersWithSubscriptionsRequest
     {
+        CompanyIds = [new List<string>() { "company_ids" }],
         Name = "name",
         ProviderType = BillingProviderType.Orb,
         Q = "q",
@@ -1053,6 +980,7 @@ await client.Billing.ListCustomersWithSubscriptionsAsync(
 await client.Billing.CountCustomersAsync(
     new CountCustomersRequest
     {
+        CompanyIds = [new List<string>() { "company_ids" }],
         Name = "name",
         ProviderType = BillingProviderType.Orb,
         Q = "q",
@@ -1395,10 +1323,12 @@ await client.Billing.ListBillingPricesAsync(
         Currency = "currency",
         ForInitialPlan = true,
         ForTrialExpiryPlan = true,
+        Ids = [new List<string>() { "ids" }],
         Interval = "interval",
         IsActive = true,
         Price = 1000000,
         ProductId = "product_id",
+        ProductIds = [new List<string>() { "product_ids" }],
         ProviderType = BillingProviderType.Orb,
         Q = "q",
         TiersMode = BillingTiersMode.Graduated,
@@ -1550,10 +1480,12 @@ await client.Billing.ListBillingProductPricesAsync(
         Currency = "currency",
         ForInitialPlan = true,
         ForTrialExpiryPlan = true,
+        Ids = [new List<string>() { "ids" }],
         Interval = "interval",
         IsActive = true,
         Price = 1000000,
         ProductId = "product_id",
+        ProductIds = [new List<string>() { "product_ids" }],
         ProviderType = BillingProviderType.Orb,
         Q = "q",
         TiersMode = BillingTiersMode.Graduated,
@@ -1687,6 +1619,7 @@ await client.Billing.UpsertBillingProductAsync(
 await client.Billing.ListBillingProductsAsync(
     new ListBillingProductsRequest
     {
+        Ids = [new List<string>() { "ids" }],
         IsActive = true,
         Name = "name",
         PriceUsageType = BillingPriceUsageType.Licensed,
@@ -1742,6 +1675,7 @@ await client.Billing.ListBillingProductsAsync(
 await client.Billing.CountBillingProductsAsync(
     new CountBillingProductsRequest
     {
+        Ids = [new List<string>() { "ids" }],
         IsActive = true,
         Name = "name",
         PriceUsageType = BillingPriceUsageType.Licensed,
@@ -1871,6 +1805,7 @@ await client.Billing.UpsertBillingSubscriptionAsync(
 await client.Credits.ListBillingCreditsAsync(
     new ListBillingCreditsRequest
     {
+        Ids = [new List<string>() { "ids" }],
         Name = "name",
         Limit = 1000000,
         Offset = 1000000,
@@ -2096,6 +2031,7 @@ await client.Credits.SoftDeleteBillingCreditAsync("credit_id");
 await client.Credits.ListCreditBundlesAsync(
     new ListCreditBundlesRequest
     {
+        Ids = [new List<string>() { "ids" }],
         CreditId = "credit_id",
         Status = BillingCreditBundleStatus.Active,
         BundleType = "fixed",
@@ -2324,6 +2260,7 @@ await client.Credits.DeleteCreditBundleAsync("bundle_id");
 await client.Credits.CountCreditBundlesAsync(
     new CountCreditBundlesRequest
     {
+        Ids = [new List<string>() { "ids" }],
         CreditId = "credit_id",
         Status = BillingCreditBundleStatus.Active,
         BundleType = "fixed",
@@ -2373,6 +2310,7 @@ await client.Credits.CountCreditBundlesAsync(
 await client.Credits.CountBillingCreditsAsync(
     new CountBillingCreditsRequest
     {
+        Ids = [new List<string>() { "ids" }],
         Name = "name",
         Limit = 1000000,
         Offset = 1000000,
@@ -2615,6 +2553,7 @@ await client.Credits.CountBillingCreditsGrantsAsync(
     new CountBillingCreditsGrantsRequest
     {
         CreditId = "credit_id",
+        Ids = [new List<string>() { "ids" }],
         Limit = 1000000,
         Offset = 1000000,
     }
@@ -2662,6 +2601,7 @@ await client.Credits.ListGrantsForCreditAsync(
     new ListGrantsForCreditRequest
     {
         CreditId = "credit_id",
+        Ids = [new List<string>() { "ids" }],
         Limit = 1000000,
         Offset = 1000000,
     }
@@ -2813,7 +2753,9 @@ await client.Credits.ListBillingPlanCreditGrantsAsync(
     new ListBillingPlanCreditGrantsRequest
     {
         CreditId = "credit_id",
+        Ids = [new List<string>() { "ids" }],
         PlanId = "plan_id",
+        PlanIds = [new List<string>() { "plan_ids" }],
         PlanVersionId = "plan_version_id",
         Limit = 1000000,
         Offset = 1000000,
@@ -3057,7 +2999,9 @@ await client.Credits.CountBillingPlanCreditGrantsAsync(
     new CountBillingPlanCreditGrantsRequest
     {
         CreditId = "credit_id",
+        Ids = [new List<string>() { "ids" }],
         PlanId = "plan_id",
+        PlanIds = [new List<string>() { "plan_ids" }],
         PlanVersionId = "plan_version_id",
         Limit = 1000000,
         Offset = 1000000,
@@ -3574,13 +3518,18 @@ await client.Checkout.UpdateCustomerSubscriptionTrialEndAsync(
 await client.Companies.ListCompaniesAsync(
     new ListCompaniesRequest
     {
+        CreditTypeIds = [new List<string>() { "credit_type_ids" }],
         HasScheduledDowngrade = true,
+        Ids = [new List<string>() { "ids" }],
         MonetizedSubscriptions = true,
         PlanId = "plan_id",
+        PlanIds = [new List<string>() { "plan_ids" }],
         PlanVersionId = "plan_version_id",
         Q = "q",
         SortOrderColumn = "sort_order_column",
         SortOrderDirection = SortDirection.Asc,
+        SubscriptionStatuses = [new List<SubscriptionStatus>() { SubscriptionStatus.Active }],
+        SubscriptionTypes = [new List<SubscriptionType>() { SubscriptionType.Free }],
         WithEntitlementFor = "with_entitlement_for",
         WithoutFeatureOverrideFor = "without_feature_override_for",
         WithoutPlan = true,
@@ -3765,13 +3714,18 @@ await client.Companies.DeleteCompanyAsync(
 await client.Companies.CountCompaniesAsync(
     new CountCompaniesRequest
     {
+        CreditTypeIds = [new List<string>() { "credit_type_ids" }],
         HasScheduledDowngrade = true,
+        Ids = [new List<string>() { "ids" }],
         MonetizedSubscriptions = true,
         PlanId = "plan_id",
+        PlanIds = [new List<string>() { "plan_ids" }],
         PlanVersionId = "plan_version_id",
         Q = "q",
         SortOrderColumn = "sort_order_column",
         SortOrderDirection = SortDirection.Asc,
+        SubscriptionStatuses = [new List<SubscriptionStatus>() { SubscriptionStatus.Active }],
+        SubscriptionTypes = [new List<SubscriptionType>() { SubscriptionType.Free }],
         WithEntitlementFor = "with_entitlement_for",
         WithoutFeatureOverrideFor = "without_feature_override_for",
         WithoutPlan = true,
@@ -4098,6 +4052,7 @@ await client.Companies.GetActiveCompanySubscriptionAsync(
     new GetActiveCompanySubscriptionRequest
     {
         CompanyId = "company_id",
+        CompanyIds = [new List<string>() { "company_ids" }],
         Limit = 1000000,
         Offset = 1000000,
     }
@@ -4191,6 +4146,7 @@ await client.Companies.ListEntityKeyDefinitionsAsync(
     new ListEntityKeyDefinitionsRequest
     {
         EntityType = EntityType.Company,
+        Ids = [new List<string>() { "ids" }],
         Q = "q",
         Limit = 1000000,
         Offset = 1000000,
@@ -4239,6 +4195,7 @@ await client.Companies.CountEntityKeyDefinitionsAsync(
     new CountEntityKeyDefinitionsRequest
     {
         EntityType = EntityType.Company,
+        Ids = [new List<string>() { "ids" }],
         Q = "q",
         Limit = 1000000,
         Offset = 1000000,
@@ -4287,8 +4244,10 @@ await client.Companies.ListEntityTraitDefinitionsAsync(
     new ListEntityTraitDefinitionsRequest
     {
         EntityType = EntityType.Company,
+        Ids = [new List<string>() { "ids" }],
         Q = "q",
         TraitType = TraitType.Boolean,
+        TraitTypes = [new List<TraitType>() { TraitType.Boolean }],
         Limit = 1000000,
         Offset = 1000000,
     }
@@ -4474,8 +4433,10 @@ await client.Companies.CountEntityTraitDefinitionsAsync(
     new CountEntityTraitDefinitionsRequest
     {
         EntityType = EntityType.Company,
+        Ids = [new List<string>() { "ids" }],
         Q = "q",
         TraitType = TraitType.Boolean,
+        TraitTypes = [new List<TraitType>() { TraitType.Boolean }],
         Limit = 1000000,
         Offset = 1000000,
     }
@@ -4573,6 +4534,8 @@ await client.Companies.ListPlanChangesAsync(
         Action = PlanChangeAction.Checkout,
         BasePlanAction = PlanChangeBasePlanAction.Fallback,
         CompanyId = "company_id",
+        CompanyIds = [new List<string>() { "company_ids" }],
+        PlanIds = [new List<string>() { "plan_ids" }],
         Limit = 1000000,
         Offset = 1000000,
     }
@@ -4659,8 +4622,10 @@ await client.Companies.GetPlanChangeAsync("plan_change_id");
 await client.Companies.ListPlanTraitsAsync(
     new ListPlanTraitsRequest
     {
+        Ids = [new List<string>() { "ids" }],
         PlanId = "plan_id",
         TraitId = "trait_id",
+        TraitIds = [new List<string>() { "trait_ids" }],
         Limit = 1000000,
         Offset = 1000000,
     }
@@ -4691,53 +4656,6 @@ await client.Companies.ListPlanTraitsAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Companies.<a href="/src/SchematicHQ.Client/Companies/CompaniesClient.cs">CreatePlanTraitAsync</a>(CreatePlanTraitRequestBody { ... }) -> WithRawResponseTask&lt;CreatePlanTraitResponse&gt;</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```csharp
-await client.Companies.CreatePlanTraitAsync(
-    new CreatePlanTraitRequestBody
-    {
-        PlanId = "plan_id",
-        TraitId = "trait_id",
-        TraitValue = "trait_value",
-    }
-);
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**request:** `CreatePlanTraitRequestBody` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
 <details><summary><code>client.Companies.<a href="/src/SchematicHQ.Client/Companies/CompaniesClient.cs">GetPlanTraitAsync</a>(planTraitId) -> WithRawResponseTask&lt;GetPlanTraitResponse&gt;</code></summary>
 <dl>
 <dd>
@@ -4752,97 +4670,6 @@ await client.Companies.CreatePlanTraitAsync(
 
 ```csharp
 await client.Companies.GetPlanTraitAsync("plan_trait_id");
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**planTraitId:** `string` — plan_trait_id
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Companies.<a href="/src/SchematicHQ.Client/Companies/CompaniesClient.cs">UpdatePlanTraitAsync</a>(planTraitId, UpdatePlanTraitRequestBody { ... }) -> WithRawResponseTask&lt;UpdatePlanTraitResponse&gt;</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```csharp
-await client.Companies.UpdatePlanTraitAsync(
-    "plan_trait_id",
-    new UpdatePlanTraitRequestBody { PlanId = "plan_id", TraitValue = "trait_value" }
-);
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**planTraitId:** `string` — plan_trait_id
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request:** `UpdatePlanTraitRequestBody` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Companies.<a href="/src/SchematicHQ.Client/Companies/CompaniesClient.cs">DeletePlanTraitAsync</a>(planTraitId) -> WithRawResponseTask&lt;DeletePlanTraitResponse&gt;</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```csharp
-await client.Companies.DeletePlanTraitAsync("plan_trait_id");
 ```
 </dd>
 </dl>
@@ -4939,8 +4766,10 @@ await client.Companies.UpdatePlanTraitsBulkAsync(
 await client.Companies.CountPlanTraitsAsync(
     new CountPlanTraitsRequest
     {
+        Ids = [new List<string>() { "ids" }],
         PlanId = "plan_id",
         TraitId = "trait_id",
+        TraitIds = [new List<string>() { "trait_ids" }],
         Limit = 1000000,
         Offset = 1000000,
     }
@@ -5034,6 +4863,7 @@ await client.Companies.ListUsersAsync(
     new ListUsersRequest
     {
         CompanyId = "company_id",
+        Ids = [new List<string>() { "ids" }],
         PlanId = "plan_id",
         Q = "q",
         Limit = 1000000,
@@ -5205,6 +5035,7 @@ await client.Companies.CountUsersAsync(
     new CountUsersRequest
     {
         CompanyId = "company_id",
+        Ids = [new List<string>() { "ids" }],
         PlanId = "plan_id",
         Q = "q",
         Limit = 1000000,
@@ -5381,7 +5212,10 @@ await client.Entitlements.ListCompanyOverridesAsync(
     new ListCompanyOverridesRequest
     {
         CompanyId = "company_id",
+        CompanyIds = [new List<string>() { "company_ids" }],
         FeatureId = "feature_id",
+        FeatureIds = [new List<string>() { "feature_ids" }],
+        Ids = [new List<string>() { "ids" }],
         WithoutExpired = true,
         Q = "q",
         Limit = 1000000,
@@ -5609,7 +5443,10 @@ await client.Entitlements.CountCompanyOverridesAsync(
     new CountCompanyOverridesRequest
     {
         CompanyId = "company_id",
+        CompanyIds = [new List<string>() { "company_ids" }],
         FeatureId = "feature_id",
+        FeatureIds = [new List<string>() { "feature_ids" }],
+        Ids = [new List<string>() { "ids" }],
         WithoutExpired = true,
         Q = "q",
         Limit = 1000000,
@@ -5755,6 +5592,7 @@ await client.Entitlements.ListFeatureUsageAsync(
     new ListFeatureUsageRequest
     {
         CompanyId = "company_id",
+        FeatureIds = [new List<string>() { "feature_ids" }],
         IncludeUsageAggregation = true,
         Q = "q",
         WithoutNegativeEntitlements = true,
@@ -5854,6 +5692,7 @@ await client.Entitlements.CountFeatureUsageAsync(
     new CountFeatureUsageRequest
     {
         CompanyId = "company_id",
+        FeatureIds = [new List<string>() { "feature_ids" }],
         IncludeUsageAggregation = true,
         Q = "q",
         WithoutNegativeEntitlements = true,
@@ -6000,8 +5839,12 @@ await client.Entitlements.ListPlanEntitlementsAsync(
     new ListPlanEntitlementsRequest
     {
         FeatureId = "feature_id",
+        FeatureIds = [new List<string>() { "feature_ids" }],
+        Ids = [new List<string>() { "ids" }],
         PlanId = "plan_id",
+        PlanIds = [new List<string>() { "plan_ids" }],
         PlanVersionId = "plan_version_id",
+        PlanVersionIds = [new List<string>() { "plan_version_ids" }],
         Q = "q",
         WithMeteredProducts = true,
         Limit = 1000000,
@@ -6278,8 +6121,12 @@ await client.Entitlements.CountPlanEntitlementsAsync(
     new CountPlanEntitlementsRequest
     {
         FeatureId = "feature_id",
+        FeatureIds = [new List<string>() { "feature_ids" }],
+        Ids = [new List<string>() { "ids" }],
         PlanId = "plan_id",
+        PlanIds = [new List<string>() { "plan_ids" }],
         PlanVersionId = "plan_version_id",
+        PlanVersionIds = [new List<string>() { "plan_version_ids" }],
         Q = "q",
         WithMeteredProducts = true,
         Limit = 1000000,
@@ -6455,6 +6302,114 @@ await client.Plans.UpdateCompanyPlansAsync(
 </dl>
 </details>
 
+<details><summary><code>client.Plans.<a href="/src/SchematicHQ.Client/Plans/PlansClient.cs">ListCustomPlanBillingsAsync</a>(ListCustomPlanBillingsRequest { ... }) -> WithRawResponseTask&lt;ListCustomPlanBillingsResponse&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Plans.ListCustomPlanBillingsAsync(
+    new ListCustomPlanBillingsRequest
+    {
+        CompanyId = "company_id",
+        PlanId = "plan_id",
+        Status = CustomPlanBillingStatus.Active,
+        Statuses = [new List<CustomPlanBillingStatus>() { CustomPlanBillingStatus.Active }],
+        Limit = 1000000,
+        Offset = 1000000,
+    }
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `ListCustomPlanBillingsRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Plans.<a href="/src/SchematicHQ.Client/Plans/PlansClient.cs">RetryCustomPlanBillingAsync</a>(customPlanBillingId, RetryCustomPlanBillingRequestBody { ... }) -> WithRawResponseTask&lt;RetryCustomPlanBillingResponse&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Plans.RetryCustomPlanBillingAsync(
+    "custom_plan_billing_id",
+    new RetryCustomPlanBillingRequestBody
+    {
+        CustomerEmail = "customer_email",
+        PayInAdvance = new List<UpdatePayInAdvanceRequestBody>()
+        {
+            new UpdatePayInAdvanceRequestBody { PriceId = "price_id", Quantity = 1000000 },
+        },
+    }
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**customPlanBillingId:** `string` — custom_plan_billing_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `RetryCustomPlanBillingRequestBody` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.Plans.<a href="/src/SchematicHQ.Client/Plans/PlansClient.cs">CreateCustomPlanAsync</a>(CreateCustomPlanRequestBody { ... }) -> WithRawResponseTask&lt;CreateCustomPlanResponse&gt;</code></summary>
 <dl>
 <dd>
@@ -6519,10 +6474,12 @@ await client.Plans.ListPlansAsync(
     new ListPlansRequest
     {
         CompanyId = "company_id",
+        ExcludeCompanyScoped = true,
         ForFallbackPlan = true,
         ForInitialPlan = true,
         ForTrialExpiryPlan = true,
         HasProductId = true,
+        Ids = [new List<string>() { "ids" }],
         IncludeDraftVersions = true,
         PlanType = PlanType.Plan,
         Q = "q",
@@ -6958,10 +6915,12 @@ await client.Plans.CountPlansAsync(
     new CountPlansRequest
     {
         CompanyId = "company_id",
+        ExcludeCompanyScoped = true,
         ForFallbackPlan = true,
         ForInitialPlan = true,
         ForTrialExpiryPlan = true,
         HasProductId = true,
+        Ids = [new List<string>() { "ids" }],
         IncludeDraftVersions = true,
         PlanType = PlanType.Plan,
         Q = "q",
@@ -7611,6 +7570,7 @@ await client.Events.GetEventSummariesAsync(
     new GetEventSummariesRequest
     {
         Q = "q",
+        EventSubtypes = [new List<string>() { "event_subtypes" }],
         Limit = 1000000,
         Offset = 1000000,
     }
@@ -7659,6 +7619,7 @@ await client.Events.ListEventsAsync(
     {
         CompanyId = "company_id",
         EventSubtype = "event_subtype",
+        EventTypes = [new List<EventType>() { EventType.FlagCheck }],
         FlagId = "flag_id",
         UserId = "user_id",
         Limit = 1000000,
@@ -7816,6 +7777,8 @@ await client.Features.ListFeaturesAsync(
     new ListFeaturesRequest
     {
         BooleanRequireEvent = true,
+        FeatureType = [new List<FeatureType>() { FeatureType.Boolean }],
+        Ids = [new List<string>() { "ids" }],
         PlanVersionId = "plan_version_id",
         Q = "q",
         WithoutCompanyOverrideFor = "without_company_override_for",
@@ -8091,6 +8054,8 @@ await client.Features.CountFeaturesAsync(
     new CountFeaturesRequest
     {
         BooleanRequireEvent = true,
+        FeatureType = [new List<FeatureType>() { FeatureType.Boolean }],
+        Ids = [new List<string>() { "ids" }],
         PlanVersionId = "plan_version_id",
         Q = "q",
         WithoutCompanyOverrideFor = "without_company_override_for",
@@ -8142,6 +8107,7 @@ await client.Features.ListFlagsAsync(
     new ListFlagsRequest
     {
         FeatureId = "feature_id",
+        Ids = [new List<string>() { "ids" }],
         Q = "q",
         Limit = 1000000,
         Offset = 1000000,
@@ -8389,9 +8355,8 @@ await client.Features.UpdateFlagRulesAsync(
                         {
                             new CreateOrUpdateConditionRequestBody
                             {
-                                ConditionType =
-                                    CreateOrUpdateConditionRequestBodyConditionType.Company,
-                                Operator = CreateOrUpdateConditionRequestBodyOperator.Eq,
+                                ConditionType = ConditionType.BasePlan,
+                                Operator = ComparableOperator.Eq,
                                 ResourceIds = new List<string>() { "resource_ids" },
                             },
                         },
@@ -8401,8 +8366,8 @@ await client.Features.UpdateFlagRulesAsync(
                 {
                     new CreateOrUpdateConditionRequestBody
                     {
-                        ConditionType = CreateOrUpdateConditionRequestBodyConditionType.Company,
-                        Operator = CreateOrUpdateConditionRequestBodyOperator.Eq,
+                        ConditionType = ConditionType.BasePlan,
+                        Operator = ComparableOperator.Eq,
                         ResourceIds = new List<string>() { "resource_ids" },
                     },
                 },
@@ -8597,6 +8562,7 @@ await client.Features.CountFlagsAsync(
     new CountFlagsRequest
     {
         FeatureId = "feature_id",
+        Ids = [new List<string>() { "ids" }],
         Q = "q",
         Limit = 1000000,
         Offset = 1000000,
@@ -9480,6 +9446,7 @@ await client.Accesstokens.IssueTemporaryAccessTokenAsync(
 await client.Webhooks.ListWebhookEventsAsync(
     new ListWebhookEventsRequest
     {
+        Ids = [new List<string>() { "ids" }],
         Q = "q",
         WebhookId = "webhook_id",
         Limit = 1000000,
@@ -9568,6 +9535,7 @@ await client.Webhooks.GetWebhookEventAsync("webhook_event_id");
 await client.Webhooks.CountWebhookEventsAsync(
     new CountWebhookEventsRequest
     {
+        Ids = [new List<string>() { "ids" }],
         Q = "q",
         WebhookId = "webhook_id",
         Limit = 1000000,

@@ -46,10 +46,10 @@ public record PlanEntitlementResponseData : IJsonOnDeserialized
     public BillingPriceView? MeteredYearlyPrice { get; set; }
 
     [JsonPropertyName("metric_period")]
-    public string? MetricPeriod { get; set; }
+    public MetricPeriod? MetricPeriod { get; set; }
 
     [JsonPropertyName("metric_period_month_reset")]
-    public string? MetricPeriodMonthReset { get; set; }
+    public MetricPeriodMonthReset? MetricPeriodMonthReset { get; set; }
 
     [JsonPropertyName("plan")]
     public PlanResponseData? Plan { get; set; }

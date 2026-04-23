@@ -42,8 +42,11 @@ public record FeatureDetailResponseData : IJsonOnDeserialized
     [JsonPropertyName("lifecycle_phase")]
     public FeatureLifecyclePhase? LifecyclePhase { get; set; }
 
-    [JsonPropertyName("maintainer_id")]
-    public string? MaintainerId { get; set; }
+    [JsonPropertyName("maintainer")]
+    public AccountMemberResponseData? Maintainer { get; set; }
+
+    [JsonPropertyName("maintainer_account_member_id")]
+    public string? MaintainerAccountMemberId { get; set; }
 
     [JsonPropertyName("name")]
     public required string Name { get; set; }

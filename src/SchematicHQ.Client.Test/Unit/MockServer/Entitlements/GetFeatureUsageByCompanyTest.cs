@@ -187,8 +187,8 @@ public class GetFeatureUsageByCompanyTest : BaseMockServerTest
                             "created_at": "2024-01-15T09:30:00.000Z",
                             "environment_id": "environment_id",
                             "event_subtype": "event_subtype",
-                            "month_reset": "month_reset",
-                            "period": "period",
+                            "month_reset": "billing_cycle",
+                            "period": "all_time",
                             "value": 1000000
                           },
                           {
@@ -199,8 +199,8 @@ public class GetFeatureUsageByCompanyTest : BaseMockServerTest
                             "created_at": "2024-01-15T09:30:00.000Z",
                             "environment_id": "environment_id",
                             "event_subtype": "event_subtype",
-                            "month_reset": "month_reset",
-                            "period": "period",
+                            "month_reset": "billing_cycle",
+                            "period": "all_time",
                             "value": 1000000
                           }
                         ],
@@ -251,7 +251,7 @@ public class GetFeatureUsageByCompanyTest : BaseMockServerTest
                             "id": "id",
                             "name": "name",
                             "priority": 1000000,
-                            "rule_type": "default",
+                            "rule_type": "company_override",
                             "value": true
                           },
                           {
@@ -262,7 +262,7 @@ public class GetFeatureUsageByCompanyTest : BaseMockServerTest
                             "id": "id",
                             "name": "name",
                             "priority": 1000000,
-                            "rule_type": "default",
+                            "rule_type": "company_override",
                             "value": true
                           }
                         ],
@@ -298,7 +298,7 @@ public class GetFeatureUsageByCompanyTest : BaseMockServerTest
                         "icon": "icon",
                         "id": "id",
                         "lifecycle_phase": "add_on",
-                        "maintainer_id": "maintainer_id",
+                        "maintainer_account_member_id": "maintainer_account_member_id",
                         "name": "name",
                         "plural_name": "plural_name",
                         "singular_name": "singular_name",
@@ -307,8 +307,8 @@ public class GetFeatureUsageByCompanyTest : BaseMockServerTest
                       },
                       "feature_id": "feature_id",
                       "id": "id",
-                      "metric_period": "metric_period",
-                      "metric_period_month_reset": "metric_period_month_reset",
+                      "metric_period": "all_time",
+                      "metric_period_month_reset": "billing_cycle",
                       "notes": [
                         {
                           "created_at": "2024-01-15T09:30:00.000Z",
@@ -419,7 +419,7 @@ public class GetFeatureUsageByCompanyTest : BaseMockServerTest
                           "id": "id",
                           "key": "key",
                           "last_checked_at": "2024-01-15T09:30:00.000Z",
-                          "maintainer_id": "maintainer_id",
+                          "maintainer_account_member_id": "maintainer_account_member_id",
                           "name": "name",
                           "rules": [
                             {
@@ -430,7 +430,7 @@ public class GetFeatureUsageByCompanyTest : BaseMockServerTest
                               "id": "id",
                               "name": "name",
                               "priority": 1000000,
-                              "rule_type": "rule_type",
+                              "rule_type": "company_override",
                               "updated_at": "2024-01-15T09:30:00.000Z",
                               "value": true
                             },
@@ -442,7 +442,7 @@ public class GetFeatureUsageByCompanyTest : BaseMockServerTest
                               "id": "id",
                               "name": "name",
                               "priority": 1000000,
-                              "rule_type": "rule_type",
+                              "rule_type": "company_override",
                               "updated_at": "2024-01-15T09:30:00.000Z",
                               "value": true
                             }
@@ -467,7 +467,7 @@ public class GetFeatureUsageByCompanyTest : BaseMockServerTest
                           "id": "id",
                           "key": "key",
                           "last_checked_at": "2024-01-15T09:30:00.000Z",
-                          "maintainer_id": "maintainer_id",
+                          "maintainer_account_member_id": "maintainer_account_member_id",
                           "name": "name",
                           "rules": [
                             {
@@ -478,7 +478,7 @@ public class GetFeatureUsageByCompanyTest : BaseMockServerTest
                               "id": "id",
                               "name": "name",
                               "priority": 1000000,
-                              "rule_type": "rule_type",
+                              "rule_type": "company_override",
                               "updated_at": "2024-01-15T09:30:00.000Z",
                               "value": true
                             },
@@ -490,7 +490,7 @@ public class GetFeatureUsageByCompanyTest : BaseMockServerTest
                               "id": "id",
                               "name": "name",
                               "priority": 1000000,
-                              "rule_type": "rule_type",
+                              "rule_type": "company_override",
                               "updated_at": "2024-01-15T09:30:00.000Z",
                               "value": true
                             }
@@ -501,7 +501,7 @@ public class GetFeatureUsageByCompanyTest : BaseMockServerTest
                       "icon": "icon",
                       "id": "id",
                       "lifecycle_phase": "add_on",
-                      "maintainer_id": "maintainer_id",
+                      "maintainer_account_member_id": "maintainer_account_member_id",
                       "name": "name",
                       "plans": [
                         {
@@ -537,7 +537,7 @@ public class GetFeatureUsageByCompanyTest : BaseMockServerTest
                     "has_valid_allocation": true,
                     "is_unlimited": true,
                     "metric_reset_at": "2024-01-15T09:30:00.000Z",
-                    "month_reset": "month_reset",
+                    "month_reset": "billing_cycle",
                     "monthly_usage_based_price": {
                       "billing_scheme": "per_unit",
                       "created_at": "2024-01-15T09:30:00.000Z",
@@ -548,6 +548,7 @@ public class GetFeatureUsageByCompanyTest : BaseMockServerTest
                       "meter_event_name": "meter_event_name",
                       "meter_event_payload_key": "meter_event_payload_key",
                       "meter_id": "meter_id",
+                      "nickname": "nickname",
                       "package_size": 1000000,
                       "price": 1000000,
                       "price_decimal": "price_decimal",
@@ -577,7 +578,7 @@ public class GetFeatureUsageByCompanyTest : BaseMockServerTest
                     },
                     "overuse": 1000000,
                     "percent_used": 1.1,
-                    "period": "period",
+                    "period": "all_time",
                     "plan": {
                       "audience_type": "audience_type",
                       "company_id": "company_id",
@@ -692,7 +693,7 @@ public class GetFeatureUsageByCompanyTest : BaseMockServerTest
                         "icon": "icon",
                         "id": "id",
                         "lifecycle_phase": "add_on",
-                        "maintainer_id": "maintainer_id",
+                        "maintainer_account_member_id": "maintainer_account_member_id",
                         "name": "name",
                         "plural_name": "plural_name",
                         "singular_name": "singular_name",
@@ -711,6 +712,7 @@ public class GetFeatureUsageByCompanyTest : BaseMockServerTest
                         "meter_event_name": "meter_event_name",
                         "meter_event_payload_key": "meter_event_payload_key",
                         "meter_id": "meter_id",
+                        "nickname": "nickname",
                         "package_size": 1000000,
                         "price": 1000000,
                         "price_decimal": "price_decimal",
@@ -738,6 +740,7 @@ public class GetFeatureUsageByCompanyTest : BaseMockServerTest
                         "meter_event_name": "meter_event_name",
                         "meter_event_payload_key": "meter_event_payload_key",
                         "meter_id": "meter_id",
+                        "nickname": "nickname",
                         "package_size": 1000000,
                         "price": 1000000,
                         "price_decimal": "price_decimal",
@@ -755,8 +758,8 @@ public class GetFeatureUsageByCompanyTest : BaseMockServerTest
                         "updated_at": "2024-01-15T09:30:00.000Z",
                         "usage_type": "licensed"
                       },
-                      "metric_period": "metric_period",
-                      "metric_period_month_reset": "metric_period_month_reset",
+                      "metric_period": "all_time",
+                      "metric_period_month_reset": "billing_cycle",
                       "plan": {
                         "audience_type": "audience_type",
                         "company_id": "company_id",
@@ -865,6 +868,7 @@ public class GetFeatureUsageByCompanyTest : BaseMockServerTest
                       "meter_event_name": "meter_event_name",
                       "meter_event_payload_key": "meter_event_payload_key",
                       "meter_id": "meter_id",
+                      "nickname": "nickname",
                       "package_size": 1000000,
                       "price": 1000000,
                       "price_decimal": "price_decimal",
@@ -1064,8 +1068,8 @@ public class GetFeatureUsageByCompanyTest : BaseMockServerTest
                             "created_at": "2024-01-15T09:30:00.000Z",
                             "environment_id": "environment_id",
                             "event_subtype": "event_subtype",
-                            "month_reset": "month_reset",
-                            "period": "period",
+                            "month_reset": "billing_cycle",
+                            "period": "all_time",
                             "value": 1000000
                           },
                           {
@@ -1076,8 +1080,8 @@ public class GetFeatureUsageByCompanyTest : BaseMockServerTest
                             "created_at": "2024-01-15T09:30:00.000Z",
                             "environment_id": "environment_id",
                             "event_subtype": "event_subtype",
-                            "month_reset": "month_reset",
-                            "period": "period",
+                            "month_reset": "billing_cycle",
+                            "period": "all_time",
                             "value": 1000000
                           }
                         ],
@@ -1128,7 +1132,7 @@ public class GetFeatureUsageByCompanyTest : BaseMockServerTest
                             "id": "id",
                             "name": "name",
                             "priority": 1000000,
-                            "rule_type": "default",
+                            "rule_type": "company_override",
                             "value": true
                           },
                           {
@@ -1139,7 +1143,7 @@ public class GetFeatureUsageByCompanyTest : BaseMockServerTest
                             "id": "id",
                             "name": "name",
                             "priority": 1000000,
-                            "rule_type": "default",
+                            "rule_type": "company_override",
                             "value": true
                           }
                         ],
@@ -1175,7 +1179,7 @@ public class GetFeatureUsageByCompanyTest : BaseMockServerTest
                         "icon": "icon",
                         "id": "id",
                         "lifecycle_phase": "add_on",
-                        "maintainer_id": "maintainer_id",
+                        "maintainer_account_member_id": "maintainer_account_member_id",
                         "name": "name",
                         "plural_name": "plural_name",
                         "singular_name": "singular_name",
@@ -1184,8 +1188,8 @@ public class GetFeatureUsageByCompanyTest : BaseMockServerTest
                       },
                       "feature_id": "feature_id",
                       "id": "id",
-                      "metric_period": "metric_period",
-                      "metric_period_month_reset": "metric_period_month_reset",
+                      "metric_period": "all_time",
+                      "metric_period_month_reset": "billing_cycle",
                       "notes": [
                         {
                           "created_at": "2024-01-15T09:30:00.000Z",
@@ -1296,7 +1300,7 @@ public class GetFeatureUsageByCompanyTest : BaseMockServerTest
                           "id": "id",
                           "key": "key",
                           "last_checked_at": "2024-01-15T09:30:00.000Z",
-                          "maintainer_id": "maintainer_id",
+                          "maintainer_account_member_id": "maintainer_account_member_id",
                           "name": "name",
                           "rules": [
                             {
@@ -1307,7 +1311,7 @@ public class GetFeatureUsageByCompanyTest : BaseMockServerTest
                               "id": "id",
                               "name": "name",
                               "priority": 1000000,
-                              "rule_type": "rule_type",
+                              "rule_type": "company_override",
                               "updated_at": "2024-01-15T09:30:00.000Z",
                               "value": true
                             },
@@ -1319,7 +1323,7 @@ public class GetFeatureUsageByCompanyTest : BaseMockServerTest
                               "id": "id",
                               "name": "name",
                               "priority": 1000000,
-                              "rule_type": "rule_type",
+                              "rule_type": "company_override",
                               "updated_at": "2024-01-15T09:30:00.000Z",
                               "value": true
                             }
@@ -1344,7 +1348,7 @@ public class GetFeatureUsageByCompanyTest : BaseMockServerTest
                           "id": "id",
                           "key": "key",
                           "last_checked_at": "2024-01-15T09:30:00.000Z",
-                          "maintainer_id": "maintainer_id",
+                          "maintainer_account_member_id": "maintainer_account_member_id",
                           "name": "name",
                           "rules": [
                             {
@@ -1355,7 +1359,7 @@ public class GetFeatureUsageByCompanyTest : BaseMockServerTest
                               "id": "id",
                               "name": "name",
                               "priority": 1000000,
-                              "rule_type": "rule_type",
+                              "rule_type": "company_override",
                               "updated_at": "2024-01-15T09:30:00.000Z",
                               "value": true
                             },
@@ -1367,7 +1371,7 @@ public class GetFeatureUsageByCompanyTest : BaseMockServerTest
                               "id": "id",
                               "name": "name",
                               "priority": 1000000,
-                              "rule_type": "rule_type",
+                              "rule_type": "company_override",
                               "updated_at": "2024-01-15T09:30:00.000Z",
                               "value": true
                             }
@@ -1378,7 +1382,7 @@ public class GetFeatureUsageByCompanyTest : BaseMockServerTest
                       "icon": "icon",
                       "id": "id",
                       "lifecycle_phase": "add_on",
-                      "maintainer_id": "maintainer_id",
+                      "maintainer_account_member_id": "maintainer_account_member_id",
                       "name": "name",
                       "plans": [
                         {
@@ -1414,7 +1418,7 @@ public class GetFeatureUsageByCompanyTest : BaseMockServerTest
                     "has_valid_allocation": true,
                     "is_unlimited": true,
                     "metric_reset_at": "2024-01-15T09:30:00.000Z",
-                    "month_reset": "month_reset",
+                    "month_reset": "billing_cycle",
                     "monthly_usage_based_price": {
                       "billing_scheme": "per_unit",
                       "created_at": "2024-01-15T09:30:00.000Z",
@@ -1425,6 +1429,7 @@ public class GetFeatureUsageByCompanyTest : BaseMockServerTest
                       "meter_event_name": "meter_event_name",
                       "meter_event_payload_key": "meter_event_payload_key",
                       "meter_id": "meter_id",
+                      "nickname": "nickname",
                       "package_size": 1000000,
                       "price": 1000000,
                       "price_decimal": "price_decimal",
@@ -1454,7 +1459,7 @@ public class GetFeatureUsageByCompanyTest : BaseMockServerTest
                     },
                     "overuse": 1000000,
                     "percent_used": 1.1,
-                    "period": "period",
+                    "period": "all_time",
                     "plan": {
                       "audience_type": "audience_type",
                       "company_id": "company_id",
@@ -1569,7 +1574,7 @@ public class GetFeatureUsageByCompanyTest : BaseMockServerTest
                         "icon": "icon",
                         "id": "id",
                         "lifecycle_phase": "add_on",
-                        "maintainer_id": "maintainer_id",
+                        "maintainer_account_member_id": "maintainer_account_member_id",
                         "name": "name",
                         "plural_name": "plural_name",
                         "singular_name": "singular_name",
@@ -1588,6 +1593,7 @@ public class GetFeatureUsageByCompanyTest : BaseMockServerTest
                         "meter_event_name": "meter_event_name",
                         "meter_event_payload_key": "meter_event_payload_key",
                         "meter_id": "meter_id",
+                        "nickname": "nickname",
                         "package_size": 1000000,
                         "price": 1000000,
                         "price_decimal": "price_decimal",
@@ -1615,6 +1621,7 @@ public class GetFeatureUsageByCompanyTest : BaseMockServerTest
                         "meter_event_name": "meter_event_name",
                         "meter_event_payload_key": "meter_event_payload_key",
                         "meter_id": "meter_id",
+                        "nickname": "nickname",
                         "package_size": 1000000,
                         "price": 1000000,
                         "price_decimal": "price_decimal",
@@ -1632,8 +1639,8 @@ public class GetFeatureUsageByCompanyTest : BaseMockServerTest
                         "updated_at": "2024-01-15T09:30:00.000Z",
                         "usage_type": "licensed"
                       },
-                      "metric_period": "metric_period",
-                      "metric_period_month_reset": "metric_period_month_reset",
+                      "metric_period": "all_time",
+                      "metric_period_month_reset": "billing_cycle",
                       "plan": {
                         "audience_type": "audience_type",
                         "company_id": "company_id",
@@ -1742,6 +1749,7 @@ public class GetFeatureUsageByCompanyTest : BaseMockServerTest
                       "meter_event_name": "meter_event_name",
                       "meter_event_payload_key": "meter_event_payload_key",
                       "meter_id": "meter_id",
+                      "nickname": "nickname",
                       "package_size": 1000000,
                       "price": 1000000,
                       "price_decimal": "price_decimal",

@@ -18,7 +18,7 @@ public record RulesengineCondition : IJsonOnDeserialized
     public RulesengineTraitDefinition? ComparisonTraitDefinition { get; set; }
 
     [JsonPropertyName("condition_type")]
-    public required RulesengineConditionConditionType ConditionType { get; set; }
+    public required RulesengineConditionType ConditionType { get; set; }
 
     [JsonPropertyName("consumption_rate")]
     public double? ConsumptionRate { get; set; }
@@ -36,16 +36,16 @@ public record RulesengineCondition : IJsonOnDeserialized
     public required string Id { get; set; }
 
     [JsonPropertyName("metric_period")]
-    public RulesengineConditionMetricPeriod? MetricPeriod { get; set; }
+    public RulesengineMetricPeriod? MetricPeriod { get; set; }
 
     [JsonPropertyName("metric_period_month_reset")]
-    public RulesengineConditionMetricPeriodMonthReset? MetricPeriodMonthReset { get; set; }
+    public RulesengineMetricPeriodMonthReset? MetricPeriodMonthReset { get; set; }
 
     [JsonPropertyName("metric_value")]
     public long? MetricValue { get; set; }
 
     [JsonPropertyName("operator")]
-    public required RulesengineConditionOperator Operator { get; set; }
+    public required ComparableOperator Operator { get; set; }
 
     [JsonPropertyName("resource_ids")]
     public IEnumerable<string> ResourceIds { get; set; } = new List<string>();

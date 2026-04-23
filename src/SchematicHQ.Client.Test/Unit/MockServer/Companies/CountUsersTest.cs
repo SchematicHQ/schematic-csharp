@@ -53,6 +53,7 @@ public class CountUsersTest : BaseMockServerTest
             new CountUsersRequest
             {
                 CompanyId = "company_id",
+                Ids = [new List<string>() { "ids" }],
                 PlanId = "plan_id",
                 Q = "q",
                 Limit = 1000000,

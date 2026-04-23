@@ -36,7 +36,7 @@ public record PlanDetailResponseData : IJsonOnDeserialized
     public string? CompanyName { get; set; }
 
     [JsonPropertyName("controlled_by")]
-    public required string ControlledBy { get; set; }
+    public required BillingProviderType ControlledBy { get; set; }
 
     [JsonPropertyName("copied_from_plan_id")]
     public string? CopiedFromPlanId { get; set; }
@@ -55,8 +55,8 @@ public record PlanDetailResponseData : IJsonOnDeserialized
     public PlanVersionResponseData? DraftVersion { get; set; }
 
     [JsonPropertyName("features")]
-    public IEnumerable<FeatureDetailResponseData> Features { get; set; } =
-        new List<FeatureDetailResponseData>();
+    public IEnumerable<FeatureInPlanResponseData> Features { get; set; } =
+        new List<FeatureInPlanResponseData>();
 
     [JsonPropertyName("icon")]
     public required PlanIcon Icon { get; set; }

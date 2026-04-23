@@ -18,10 +18,10 @@ public record CreateEntitlementReqCommon : IJsonOnDeserialized
     public required string FeatureId { get; set; }
 
     [JsonPropertyName("metric_period")]
-    public CreateEntitlementReqCommonMetricPeriod? MetricPeriod { get; set; }
+    public MetricPeriod? MetricPeriod { get; set; }
 
     [JsonPropertyName("metric_period_month_reset")]
-    public CreateEntitlementReqCommonMetricPeriodMonthReset? MetricPeriodMonthReset { get; set; }
+    public MetricPeriodMonthReset? MetricPeriodMonthReset { get; set; }
 
     [JsonPropertyName("value_bool")]
     public bool? ValueBool { get; set; }

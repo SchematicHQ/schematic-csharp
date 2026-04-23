@@ -56,6 +56,7 @@ public class GetEventSummariesTest : BaseMockServerTest
             new GetEventSummariesRequest
             {
                 Q = "q",
+                EventSubtypes = [new List<string>() { "event_subtypes" }],
                 Limit = 1000000,
                 Offset = 1000000,
             }

@@ -4,19 +4,19 @@ using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
 
-[JsonConverter(typeof(RulesengineConditionMetricPeriod.RulesengineConditionMetricPeriodSerializer))]
+[JsonConverter(typeof(RulesengineMetricPeriod.RulesengineMetricPeriodSerializer))]
 [Serializable]
-public readonly record struct RulesengineConditionMetricPeriod : IStringEnum
+public readonly record struct RulesengineMetricPeriod : IStringEnum
 {
-    public static readonly RulesengineConditionMetricPeriod AllTime = new(Values.AllTime);
+    public static readonly RulesengineMetricPeriod AllTime = new(Values.AllTime);
 
-    public static readonly RulesengineConditionMetricPeriod CurrentDay = new(Values.CurrentDay);
+    public static readonly RulesengineMetricPeriod CurrentDay = new(Values.CurrentDay);
 
-    public static readonly RulesengineConditionMetricPeriod CurrentMonth = new(Values.CurrentMonth);
+    public static readonly RulesengineMetricPeriod CurrentMonth = new(Values.CurrentMonth);
 
-    public static readonly RulesengineConditionMetricPeriod CurrentWeek = new(Values.CurrentWeek);
+    public static readonly RulesengineMetricPeriod CurrentWeek = new(Values.CurrentWeek);
 
-    public RulesengineConditionMetricPeriod(string value)
+    public RulesengineMetricPeriod(string value)
     {
         Value = value;
     }
@@ -29,9 +29,9 @@ public readonly record struct RulesengineConditionMetricPeriod : IStringEnum
     /// <summary>
     /// Create a string enum with the given value.
     /// </summary>
-    public static RulesengineConditionMetricPeriod FromCustom(string value)
+    public static RulesengineMetricPeriod FromCustom(string value)
     {
-        return new RulesengineConditionMetricPeriod(value);
+        return new RulesengineMetricPeriod(value);
     }
 
     public bool Equals(string? other)
@@ -47,20 +47,19 @@ public readonly record struct RulesengineConditionMetricPeriod : IStringEnum
         return Value;
     }
 
-    public static bool operator ==(RulesengineConditionMetricPeriod value1, string value2) =>
+    public static bool operator ==(RulesengineMetricPeriod value1, string value2) =>
         value1.Value.Equals(value2);
 
-    public static bool operator !=(RulesengineConditionMetricPeriod value1, string value2) =>
+    public static bool operator !=(RulesengineMetricPeriod value1, string value2) =>
         !value1.Value.Equals(value2);
 
-    public static explicit operator string(RulesengineConditionMetricPeriod value) => value.Value;
+    public static explicit operator string(RulesengineMetricPeriod value) => value.Value;
 
-    public static explicit operator RulesengineConditionMetricPeriod(string value) => new(value);
+    public static explicit operator RulesengineMetricPeriod(string value) => new(value);
 
-    internal class RulesengineConditionMetricPeriodSerializer
-        : JsonConverter<RulesengineConditionMetricPeriod>
+    internal class RulesengineMetricPeriodSerializer : JsonConverter<RulesengineMetricPeriod>
     {
-        public override RulesengineConditionMetricPeriod Read(
+        public override RulesengineMetricPeriod Read(
             ref Utf8JsonReader reader,
             Type typeToConvert,
             JsonSerializerOptions options
@@ -71,19 +70,19 @@ public readonly record struct RulesengineConditionMetricPeriod : IStringEnum
                 ?? throw new global::System.Exception(
                     "The JSON value could not be read as a string."
                 );
-            return new RulesengineConditionMetricPeriod(stringValue);
+            return new RulesengineMetricPeriod(stringValue);
         }
 
         public override void Write(
             Utf8JsonWriter writer,
-            RulesengineConditionMetricPeriod value,
+            RulesengineMetricPeriod value,
             JsonSerializerOptions options
         )
         {
             writer.WriteStringValue(value.Value);
         }
 
-        public override RulesengineConditionMetricPeriod ReadAsPropertyName(
+        public override RulesengineMetricPeriod ReadAsPropertyName(
             ref Utf8JsonReader reader,
             Type typeToConvert,
             JsonSerializerOptions options
@@ -94,12 +93,12 @@ public readonly record struct RulesengineConditionMetricPeriod : IStringEnum
                 ?? throw new global::System.Exception(
                     "The JSON property name could not be read as a string."
                 );
-            return new RulesengineConditionMetricPeriod(stringValue);
+            return new RulesengineMetricPeriod(stringValue);
         }
 
         public override void WriteAsPropertyName(
             Utf8JsonWriter writer,
-            RulesengineConditionMetricPeriod value,
+            RulesengineMetricPeriod value,
             JsonSerializerOptions options
         )
         {

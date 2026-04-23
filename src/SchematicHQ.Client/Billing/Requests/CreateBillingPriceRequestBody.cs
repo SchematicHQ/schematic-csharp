@@ -24,6 +24,9 @@ public record CreateBillingPriceRequestBody
     [JsonPropertyName("meter_id")]
     public string? MeterId { get; set; }
 
+    [JsonPropertyName("nickname")]
+    public string? Nickname { get; set; }
+
     [JsonPropertyName("package_size")]
     public long? PackageSize { get; set; }
 

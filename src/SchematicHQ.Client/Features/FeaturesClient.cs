@@ -1577,6 +1577,8 @@ public partial class FeaturesClient : IFeaturesClient
     ///     new ListFeaturesRequest
     ///     {
     ///         BooleanRequireEvent = true,
+    ///         FeatureType = [new List&lt;FeatureType&gt;() { FeatureType.Boolean }],
+    ///         Ids = [new List&lt;string&gt;() { "ids" }],
     ///         PlanVersionId = "plan_version_id",
     ///         Q = "q",
     ///         WithoutCompanyOverrideFor = "without_company_override_for",
@@ -1689,6 +1691,8 @@ public partial class FeaturesClient : IFeaturesClient
     ///     new CountFeaturesRequest
     ///     {
     ///         BooleanRequireEvent = true,
+    ///         FeatureType = [new List&lt;FeatureType&gt;() { FeatureType.Boolean }],
+    ///         Ids = [new List&lt;string&gt;() { "ids" }],
     ///         PlanVersionId = "plan_version_id",
     ///         Q = "q",
     ///         WithoutCompanyOverrideFor = "without_company_override_for",
@@ -1714,6 +1718,7 @@ public partial class FeaturesClient : IFeaturesClient
     ///     new ListFlagsRequest
     ///     {
     ///         FeatureId = "feature_id",
+    ///         Ids = [new List&lt;string&gt;() { "ids" }],
     ///         Q = "q",
     ///         Limit = 1000000,
     ///         Offset = 1000000,
@@ -1824,9 +1829,8 @@ public partial class FeaturesClient : IFeaturesClient
     ///                         {
     ///                             new CreateOrUpdateConditionRequestBody
     ///                             {
-    ///                                 ConditionType =
-    ///                                     CreateOrUpdateConditionRequestBodyConditionType.Company,
-    ///                                 Operator = CreateOrUpdateConditionRequestBodyOperator.Eq,
+    ///                                 ConditionType = ConditionType.BasePlan,
+    ///                                 Operator = ComparableOperator.Eq,
     ///                                 ResourceIds = new List&lt;string&gt;() { "resource_ids" },
     ///                             },
     ///                         },
@@ -1836,8 +1840,8 @@ public partial class FeaturesClient : IFeaturesClient
     ///                 {
     ///                     new CreateOrUpdateConditionRequestBody
     ///                     {
-    ///                         ConditionType = CreateOrUpdateConditionRequestBodyConditionType.Company,
-    ///                         Operator = CreateOrUpdateConditionRequestBodyOperator.Eq,
+    ///                         ConditionType = ConditionType.BasePlan,
+    ///                         Operator = ComparableOperator.Eq,
     ///                         ResourceIds = new List&lt;string&gt;() { "resource_ids" },
     ///                     },
     ///                 },
@@ -1914,6 +1918,7 @@ public partial class FeaturesClient : IFeaturesClient
     ///     new CountFlagsRequest
     ///     {
     ///         FeatureId = "feature_id",
+    ///         Ids = [new List&lt;string&gt;() { "ids" }],
     ///         Q = "q",
     ///         Limit = 1000000,
     ///         Offset = 1000000,

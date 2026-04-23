@@ -20,6 +20,9 @@ public record AuditLogListResponseData : IJsonOnDeserialized
     [JsonPropertyName("ended_at")]
     public DateTime? EndedAt { get; set; }
 
+    [JsonPropertyName("environment")]
+    public EnvironmentResponseData? Environment { get; set; }
+
     [JsonPropertyName("environment_id")]
     public string? EnvironmentId { get; set; }
 

@@ -16,6 +16,13 @@ public class GetApiKeyTest : BaseMockServerTest
               "data": {
                 "created_at": "2024-01-15T09:30:00.000Z",
                 "description": "description",
+                "environment": {
+                  "created_at": "2024-01-15T09:30:00.000Z",
+                  "environment_type": "development",
+                  "id": "id",
+                  "name": "name",
+                  "updated_at": "2024-01-15T09:30:00.000Z"
+                },
                 "environment_id": "environment_id",
                 "id": "id",
                 "last_used_at": "2024-01-15T09:30:00.000Z",

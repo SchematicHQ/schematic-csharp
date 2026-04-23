@@ -19,10 +19,10 @@ public record CreateCompanyOverrideRequestBody
     public required string FeatureId { get; set; }
 
     [JsonPropertyName("metric_period")]
-    public CreateCompanyOverrideRequestBodyMetricPeriod? MetricPeriod { get; set; }
+    public MetricPeriod? MetricPeriod { get; set; }
 
     [JsonPropertyName("metric_period_month_reset")]
-    public CreateCompanyOverrideRequestBodyMetricPeriodMonthReset? MetricPeriodMonthReset { get; set; }
+    public MetricPeriodMonthReset? MetricPeriodMonthReset { get; set; }
 
     [JsonPropertyName("note")]
     public string? Note { get; set; }

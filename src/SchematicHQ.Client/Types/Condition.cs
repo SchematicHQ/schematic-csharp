@@ -18,7 +18,7 @@ public record Condition : IJsonOnDeserialized
     public TraitDefinition? ComparisonTraitDefinition { get; set; }
 
     [JsonPropertyName("condition_type")]
-    public required ConditionConditionType ConditionType { get; set; }
+    public required ConditionType ConditionType { get; set; }
 
     [JsonPropertyName("consumption_rate")]
     public double? ConsumptionRate { get; set; }
@@ -36,16 +36,16 @@ public record Condition : IJsonOnDeserialized
     public required string Id { get; set; }
 
     [JsonPropertyName("metric_period")]
-    public ConditionMetricPeriod? MetricPeriod { get; set; }
+    public MetricPeriod? MetricPeriod { get; set; }
 
     [JsonPropertyName("metric_period_month_reset")]
-    public ConditionMetricPeriodMonthReset? MetricPeriodMonthReset { get; set; }
+    public MetricPeriodMonthReset? MetricPeriodMonthReset { get; set; }
 
     [JsonPropertyName("metric_value")]
     public long? MetricValue { get; set; }
 
     [JsonPropertyName("operator")]
-    public required ConditionOperator Operator { get; set; }
+    public required ComparableOperator Operator { get; set; }
 
     [JsonPropertyName("resource_ids")]
     public IEnumerable<string> ResourceIds { get; set; } = new List<string>();

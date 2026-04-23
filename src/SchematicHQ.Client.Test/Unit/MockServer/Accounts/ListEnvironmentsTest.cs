@@ -50,7 +50,12 @@ public class ListEnvironmentsTest : BaseMockServerTest
             );
 
         var response = await Client.Accounts.ListEnvironmentsAsync(
-            new ListEnvironmentsRequest { Limit = 1000000, Offset = 1000000 }
+            new ListEnvironmentsRequest
+            {
+                Ids = [new List<string>() { "ids" }],
+                Limit = 1000000,
+                Offset = 1000000,
+            }
         );
         JsonAssert.AreEqual(response, mockResponse);
     }

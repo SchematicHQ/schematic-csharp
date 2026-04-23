@@ -32,8 +32,8 @@ public record FlagResponseData : IJsonOnDeserialized
     [JsonPropertyName("key")]
     public required string Key { get; set; }
 
-    [JsonPropertyName("maintainer_id")]
-    public string? MaintainerId { get; set; }
+    [JsonPropertyName("maintainer_account_member_id")]
+    public string? MaintainerAccountMemberId { get; set; }
 
     [JsonPropertyName("name")]
     public required string Name { get; set; }

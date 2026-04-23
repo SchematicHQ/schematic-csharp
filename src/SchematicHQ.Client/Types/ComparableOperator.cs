@@ -4,21 +4,27 @@ using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
 
-[JsonConverter(
-    typeof(RulesengineCompanyMetricMonthReset.RulesengineCompanyMetricMonthResetSerializer)
-)]
+[JsonConverter(typeof(ComparableOperator.ComparableOperatorSerializer))]
 [Serializable]
-public readonly record struct RulesengineCompanyMetricMonthReset : IStringEnum
+public readonly record struct ComparableOperator : IStringEnum
 {
-    public static readonly RulesengineCompanyMetricMonthReset FirstOfMonth = new(
-        Values.FirstOfMonth
-    );
+    public static readonly ComparableOperator Eq = new(Values.Eq);
 
-    public static readonly RulesengineCompanyMetricMonthReset BillingCycle = new(
-        Values.BillingCycle
-    );
+    public static readonly ComparableOperator Gt = new(Values.Gt);
 
-    public RulesengineCompanyMetricMonthReset(string value)
+    public static readonly ComparableOperator Gte = new(Values.Gte);
+
+    public static readonly ComparableOperator IsEmpty = new(Values.IsEmpty);
+
+    public static readonly ComparableOperator Lt = new(Values.Lt);
+
+    public static readonly ComparableOperator Lte = new(Values.Lte);
+
+    public static readonly ComparableOperator NotEmpty = new(Values.NotEmpty);
+
+    public static readonly ComparableOperator Ne = new(Values.Ne);
+
+    public ComparableOperator(string value)
     {
         Value = value;
     }
@@ -31,9 +37,9 @@ public readonly record struct RulesengineCompanyMetricMonthReset : IStringEnum
     /// <summary>
     /// Create a string enum with the given value.
     /// </summary>
-    public static RulesengineCompanyMetricMonthReset FromCustom(string value)
+    public static ComparableOperator FromCustom(string value)
     {
-        return new RulesengineCompanyMetricMonthReset(value);
+        return new ComparableOperator(value);
     }
 
     public bool Equals(string? other)
@@ -49,20 +55,19 @@ public readonly record struct RulesengineCompanyMetricMonthReset : IStringEnum
         return Value;
     }
 
-    public static bool operator ==(RulesengineCompanyMetricMonthReset value1, string value2) =>
+    public static bool operator ==(ComparableOperator value1, string value2) =>
         value1.Value.Equals(value2);
 
-    public static bool operator !=(RulesengineCompanyMetricMonthReset value1, string value2) =>
+    public static bool operator !=(ComparableOperator value1, string value2) =>
         !value1.Value.Equals(value2);
 
-    public static explicit operator string(RulesengineCompanyMetricMonthReset value) => value.Value;
+    public static explicit operator string(ComparableOperator value) => value.Value;
 
-    public static explicit operator RulesengineCompanyMetricMonthReset(string value) => new(value);
+    public static explicit operator ComparableOperator(string value) => new(value);
 
-    internal class RulesengineCompanyMetricMonthResetSerializer
-        : JsonConverter<RulesengineCompanyMetricMonthReset>
+    internal class ComparableOperatorSerializer : JsonConverter<ComparableOperator>
     {
-        public override RulesengineCompanyMetricMonthReset Read(
+        public override ComparableOperator Read(
             ref Utf8JsonReader reader,
             Type typeToConvert,
             JsonSerializerOptions options
@@ -73,19 +78,19 @@ public readonly record struct RulesengineCompanyMetricMonthReset : IStringEnum
                 ?? throw new global::System.Exception(
                     "The JSON value could not be read as a string."
                 );
-            return new RulesengineCompanyMetricMonthReset(stringValue);
+            return new ComparableOperator(stringValue);
         }
 
         public override void Write(
             Utf8JsonWriter writer,
-            RulesengineCompanyMetricMonthReset value,
+            ComparableOperator value,
             JsonSerializerOptions options
         )
         {
             writer.WriteStringValue(value.Value);
         }
 
-        public override RulesengineCompanyMetricMonthReset ReadAsPropertyName(
+        public override ComparableOperator ReadAsPropertyName(
             ref Utf8JsonReader reader,
             Type typeToConvert,
             JsonSerializerOptions options
@@ -96,12 +101,12 @@ public readonly record struct RulesengineCompanyMetricMonthReset : IStringEnum
                 ?? throw new global::System.Exception(
                     "The JSON property name could not be read as a string."
                 );
-            return new RulesengineCompanyMetricMonthReset(stringValue);
+            return new ComparableOperator(stringValue);
         }
 
         public override void WriteAsPropertyName(
             Utf8JsonWriter writer,
-            RulesengineCompanyMetricMonthReset value,
+            ComparableOperator value,
             JsonSerializerOptions options
         )
         {
@@ -115,8 +120,20 @@ public readonly record struct RulesengineCompanyMetricMonthReset : IStringEnum
     [Serializable]
     public static class Values
     {
-        public const string FirstOfMonth = "first_of_month";
+        public const string Eq = "eq";
 
-        public const string BillingCycle = "billing_cycle";
+        public const string Gt = "gt";
+
+        public const string Gte = "gte";
+
+        public const string IsEmpty = "is_empty";
+
+        public const string Lt = "lt";
+
+        public const string Lte = "lte";
+
+        public const string NotEmpty = "not_empty";
+
+        public const string Ne = "ne";
     }
 }

@@ -41,9 +41,6 @@ public record FlagView : IJsonOnDeserialized
     [JsonPropertyName("last_checked_at")]
     public DateTime? LastCheckedAt { get; set; }
 
-    [JsonPropertyName("maintainer_id")]
-    public string? MaintainerId { get; set; }
-
     [JsonPropertyName("name")]
     public required string Name { get; set; }
 

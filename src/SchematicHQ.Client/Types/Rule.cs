@@ -36,7 +36,7 @@ public record Rule : IJsonOnDeserialized
     public required long Priority { get; set; }
 
     [JsonPropertyName("rule_type")]
-    public required RuleRuleType RuleType { get; set; }
+    public required RuleType RuleType { get; set; }
 
     [JsonPropertyName("value")]
     public required bool Value { get; set; }

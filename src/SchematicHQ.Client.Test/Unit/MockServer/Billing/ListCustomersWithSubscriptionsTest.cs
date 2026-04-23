@@ -70,6 +70,7 @@ public class ListCustomersWithSubscriptionsTest : BaseMockServerTest
         var response = await Client.Billing.ListCustomersWithSubscriptionsAsync(
             new ListCustomersWithSubscriptionsRequest
             {
+                CompanyIds = [new List<string>() { "company_ids" }],
                 Name = "name",
                 ProviderType = BillingProviderType.Orb,
                 Q = "q",

@@ -91,6 +91,7 @@ public class ListGrantsForCreditTest : BaseMockServerTest
             new ListGrantsForCreditRequest
             {
                 CreditId = "credit_id",
+                Ids = [new List<string>() { "ids" }],
                 Limit = 1000000,
                 Offset = 1000000,
             }

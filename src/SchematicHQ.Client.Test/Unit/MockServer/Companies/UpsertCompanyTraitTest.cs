@@ -257,8 +257,8 @@ public class UpsertCompanyTraitTest : BaseMockServerTest
                     "created_at": "2024-01-15T09:30:00.000Z",
                     "environment_id": "environment_id",
                     "event_subtype": "event_subtype",
-                    "month_reset": "month_reset",
-                    "period": "period",
+                    "month_reset": "billing_cycle",
+                    "period": "all_time",
                     "value": 1000000
                   }
                 ],
@@ -344,7 +344,7 @@ public class UpsertCompanyTraitTest : BaseMockServerTest
                     "id": "id",
                     "name": "name",
                     "priority": 1000000,
-                    "rule_type": "default",
+                    "rule_type": "company_override",
                     "value": true
                   }
                 ],

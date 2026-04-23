@@ -51,13 +51,13 @@ public record FeatureCompanyUserResponseData : IJsonOnDeserialized
     /// If the period is current_month, when the month resets.
     /// </summary>
     [JsonPropertyName("month_reset")]
-    public string? MonthReset { get; set; }
+    public MetricPeriodMonthReset? MonthReset { get; set; }
 
     /// <summary>
     /// The period over which usage is measured.
     /// </summary>
     [JsonPropertyName("period")]
-    public string? Period { get; set; }
+    public MetricPeriod? Period { get; set; }
 
     [JsonPropertyName("plan")]
     public PlanResponseData? Plan { get; set; }

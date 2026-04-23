@@ -72,6 +72,7 @@ public class ListWebhookEventsTest : BaseMockServerTest
         var response = await Client.Webhooks.ListWebhookEventsAsync(
             new ListWebhookEventsRequest
             {
+                Ids = [new List<string>() { "ids" }],
                 Q = "q",
                 WebhookId = "webhook_id",
                 Limit = 1000000,

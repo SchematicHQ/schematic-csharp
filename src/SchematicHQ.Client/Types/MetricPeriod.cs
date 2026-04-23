@@ -4,19 +4,19 @@ using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
 
-[JsonConverter(typeof(FeatureEntitlementMetricPeriod.FeatureEntitlementMetricPeriodSerializer))]
+[JsonConverter(typeof(MetricPeriod.MetricPeriodSerializer))]
 [Serializable]
-public readonly record struct FeatureEntitlementMetricPeriod : IStringEnum
+public readonly record struct MetricPeriod : IStringEnum
 {
-    public static readonly FeatureEntitlementMetricPeriod AllTime = new(Values.AllTime);
+    public static readonly MetricPeriod AllTime = new(Values.AllTime);
 
-    public static readonly FeatureEntitlementMetricPeriod CurrentDay = new(Values.CurrentDay);
+    public static readonly MetricPeriod CurrentDay = new(Values.CurrentDay);
 
-    public static readonly FeatureEntitlementMetricPeriod CurrentMonth = new(Values.CurrentMonth);
+    public static readonly MetricPeriod CurrentMonth = new(Values.CurrentMonth);
 
-    public static readonly FeatureEntitlementMetricPeriod CurrentWeek = new(Values.CurrentWeek);
+    public static readonly MetricPeriod CurrentWeek = new(Values.CurrentWeek);
 
-    public FeatureEntitlementMetricPeriod(string value)
+    public MetricPeriod(string value)
     {
         Value = value;
     }
@@ -29,9 +29,9 @@ public readonly record struct FeatureEntitlementMetricPeriod : IStringEnum
     /// <summary>
     /// Create a string enum with the given value.
     /// </summary>
-    public static FeatureEntitlementMetricPeriod FromCustom(string value)
+    public static MetricPeriod FromCustom(string value)
     {
-        return new FeatureEntitlementMetricPeriod(value);
+        return new MetricPeriod(value);
     }
 
     public bool Equals(string? other)
@@ -47,20 +47,19 @@ public readonly record struct FeatureEntitlementMetricPeriod : IStringEnum
         return Value;
     }
 
-    public static bool operator ==(FeatureEntitlementMetricPeriod value1, string value2) =>
+    public static bool operator ==(MetricPeriod value1, string value2) =>
         value1.Value.Equals(value2);
 
-    public static bool operator !=(FeatureEntitlementMetricPeriod value1, string value2) =>
+    public static bool operator !=(MetricPeriod value1, string value2) =>
         !value1.Value.Equals(value2);
 
-    public static explicit operator string(FeatureEntitlementMetricPeriod value) => value.Value;
+    public static explicit operator string(MetricPeriod value) => value.Value;
 
-    public static explicit operator FeatureEntitlementMetricPeriod(string value) => new(value);
+    public static explicit operator MetricPeriod(string value) => new(value);
 
-    internal class FeatureEntitlementMetricPeriodSerializer
-        : JsonConverter<FeatureEntitlementMetricPeriod>
+    internal class MetricPeriodSerializer : JsonConverter<MetricPeriod>
     {
-        public override FeatureEntitlementMetricPeriod Read(
+        public override MetricPeriod Read(
             ref Utf8JsonReader reader,
             Type typeToConvert,
             JsonSerializerOptions options
@@ -71,19 +70,19 @@ public readonly record struct FeatureEntitlementMetricPeriod : IStringEnum
                 ?? throw new global::System.Exception(
                     "The JSON value could not be read as a string."
                 );
-            return new FeatureEntitlementMetricPeriod(stringValue);
+            return new MetricPeriod(stringValue);
         }
 
         public override void Write(
             Utf8JsonWriter writer,
-            FeatureEntitlementMetricPeriod value,
+            MetricPeriod value,
             JsonSerializerOptions options
         )
         {
             writer.WriteStringValue(value.Value);
         }
 
-        public override FeatureEntitlementMetricPeriod ReadAsPropertyName(
+        public override MetricPeriod ReadAsPropertyName(
             ref Utf8JsonReader reader,
             Type typeToConvert,
             JsonSerializerOptions options
@@ -94,12 +93,12 @@ public readonly record struct FeatureEntitlementMetricPeriod : IStringEnum
                 ?? throw new global::System.Exception(
                     "The JSON property name could not be read as a string."
                 );
-            return new FeatureEntitlementMetricPeriod(stringValue);
+            return new MetricPeriod(stringValue);
         }
 
         public override void WriteAsPropertyName(
             Utf8JsonWriter writer,
-            FeatureEntitlementMetricPeriod value,
+            MetricPeriod value,
             JsonSerializerOptions options
         )
         {

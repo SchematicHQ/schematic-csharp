@@ -59,6 +59,7 @@ public class CountBillingProductsTest : BaseMockServerTest
         var response = await Client.Billing.CountBillingProductsAsync(
             new CountBillingProductsRequest
             {
+                Ids = [new List<string>() { "ids" }],
                 IsActive = true,
                 Name = "name",
                 PriceUsageType = BillingPriceUsageType.Licensed,

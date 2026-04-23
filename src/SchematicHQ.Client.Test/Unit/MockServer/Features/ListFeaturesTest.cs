@@ -47,11 +47,11 @@ public class ListFeaturesTest : BaseMockServerTest
                             {
                               "conditions": [
                                 {
-                                  "condition_type": "condition_type",
+                                  "condition_type": "base_plan",
                                   "created_at": "2024-01-15T09:30:00.000Z",
                                   "environment_id": "environment_id",
                                   "id": "id",
-                                  "operator": "operator",
+                                  "operator": "eq",
                                   "resource_ids": [
                                     "resource_ids"
                                   ],
@@ -75,11 +75,11 @@ public class ListFeaturesTest : BaseMockServerTest
                           ],
                           "conditions": [
                             {
-                              "condition_type": "condition_type",
+                              "condition_type": "base_plan",
                               "created_at": "2024-01-15T09:30:00.000Z",
                               "environment_id": "environment_id",
                               "id": "id",
-                              "operator": "operator",
+                              "operator": "eq",
                               "resource_ids": [
                                 "resource_ids"
                               ],
@@ -99,7 +99,7 @@ public class ListFeaturesTest : BaseMockServerTest
                           "id": "id",
                           "name": "name",
                           "priority": 1000000,
-                          "rule_type": "rule_type",
+                          "rule_type": "company_override",
                           "updated_at": "2024-01-15T09:30:00.000Z",
                           "value": true
                         }
@@ -110,7 +110,17 @@ public class ListFeaturesTest : BaseMockServerTest
                   "icon": "icon",
                   "id": "id",
                   "lifecycle_phase": "add_on",
-                  "maintainer_id": "maintainer_id",
+                  "maintainer": {
+                    "created_at": "2024-01-15T09:30:00.000Z",
+                    "id": "id",
+                    "permissions": {
+                      "key": [
+                        "billing_credits_edit"
+                      ]
+                    },
+                    "updated_at": "2024-01-15T09:30:00.000Z"
+                  },
+                  "maintainer_account_member_id": "maintainer_account_member_id",
                   "name": "name",
                   "plans": [
                     {
@@ -177,6 +187,8 @@ public class ListFeaturesTest : BaseMockServerTest
             new ListFeaturesRequest
             {
                 BooleanRequireEvent = true,
+                FeatureType = [new List<FeatureType>() { FeatureType.Boolean }],
+                Ids = [new List<string>() { "ids" }],
                 PlanVersionId = "plan_version_id",
                 Q = "q",
                 WithoutCompanyOverrideFor = "without_company_override_for",

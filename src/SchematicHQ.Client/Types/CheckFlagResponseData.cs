@@ -51,7 +51,7 @@ public record CheckFlagResponseData : IJsonOnDeserialized
     /// Deprecated: Use Entitlement.MetricPeriod instead.
     /// </summary>
     [JsonPropertyName("feature_usage_period")]
-    public string? FeatureUsagePeriod { get; set; }
+    public MetricPeriod? FeatureUsagePeriod { get; set; }
 
     /// <summary>
     /// Deprecated: Use Entitlement.MetricResetAt instead.
@@ -87,7 +87,7 @@ public record CheckFlagResponseData : IJsonOnDeserialized
     /// If a rule was found, its type
     /// </summary>
     [JsonPropertyName("rule_type")]
-    public string? RuleType { get; set; }
+    public RuleType? RuleType { get; set; }
 
     /// <summary>
     /// If user keys were provided and matched a user, its ID

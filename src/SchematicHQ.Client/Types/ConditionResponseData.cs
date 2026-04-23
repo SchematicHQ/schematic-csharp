@@ -21,7 +21,7 @@ public record ConditionResponseData : IJsonOnDeserialized
     public string? ConditionGroupId { get; set; }
 
     [JsonPropertyName("condition_type")]
-    public required string ConditionType { get; set; }
+    public required ConditionType ConditionType { get; set; }
 
     [JsonPropertyName("consumption_rate")]
     public double? ConsumptionRate { get; set; }
@@ -45,16 +45,16 @@ public record ConditionResponseData : IJsonOnDeserialized
     public required string Id { get; set; }
 
     [JsonPropertyName("metric_period")]
-    public string? MetricPeriod { get; set; }
+    public MetricPeriod? MetricPeriod { get; set; }
 
     [JsonPropertyName("metric_period_month_reset")]
-    public string? MetricPeriodMonthReset { get; set; }
+    public MetricPeriodMonthReset? MetricPeriodMonthReset { get; set; }
 
     [JsonPropertyName("metric_value")]
     public long? MetricValue { get; set; }
 
     [JsonPropertyName("operator")]
-    public required string Operator { get; set; }
+    public required ComparableOperator Operator { get; set; }
 
     [JsonPropertyName("resource_unspecified_ids")]
     public IEnumerable<string> ResourceUnspecifiedIds { get; set; } = new List<string>();

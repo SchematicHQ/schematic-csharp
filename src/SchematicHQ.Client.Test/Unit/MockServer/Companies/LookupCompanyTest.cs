@@ -982,7 +982,7 @@ public class LookupCompanyTest : BaseMockServerTest
                     "feature_key": "feature_key",
                     "metric_period": "all_time",
                     "metric_reset_at": "2024-01-15T09:30:00.000Z",
-                    "month_reset": "first_of_month",
+                    "month_reset": "billing_cycle",
                     "soft_limit": 1000000,
                     "usage": 1000000,
                     "value_type": "boolean"
@@ -998,7 +998,7 @@ public class LookupCompanyTest : BaseMockServerTest
                     "feature_key": "feature_key",
                     "metric_period": "all_time",
                     "metric_reset_at": "2024-01-15T09:30:00.000Z",
-                    "month_reset": "first_of_month",
+                    "month_reset": "billing_cycle",
                     "soft_limit": 1000000,
                     "usage": 1000000,
                     "value_type": "boolean"
@@ -1097,8 +1097,8 @@ public class LookupCompanyTest : BaseMockServerTest
                     "created_at": "2024-01-15T09:30:00.000Z",
                     "environment_id": "environment_id",
                     "event_subtype": "event_subtype",
-                    "month_reset": "month_reset",
-                    "period": "period",
+                    "month_reset": "billing_cycle",
+                    "period": "all_time",
                     "valid_until": "2024-01-15T09:30:00.000Z",
                     "value": 1000000
                   },
@@ -1110,8 +1110,8 @@ public class LookupCompanyTest : BaseMockServerTest
                     "created_at": "2024-01-15T09:30:00.000Z",
                     "environment_id": "environment_id",
                     "event_subtype": "event_subtype",
-                    "month_reset": "month_reset",
-                    "period": "period",
+                    "month_reset": "billing_cycle",
+                    "period": "all_time",
                     "valid_until": "2024-01-15T09:30:00.000Z",
                     "value": 1000000
                   }
@@ -1377,7 +1377,7 @@ public class LookupCompanyTest : BaseMockServerTest
                             "event_subtype": "event_subtype",
                             "id": "id",
                             "metric_period": "all_time",
-                            "metric_period_month_reset": "first_of_month",
+                            "metric_period_month_reset": "billing_cycle",
                             "metric_value": 1000000,
                             "operator": "eq",
                             "resource_ids": [
@@ -1405,7 +1405,7 @@ public class LookupCompanyTest : BaseMockServerTest
                             "event_subtype": "event_subtype",
                             "id": "id",
                             "metric_period": "all_time",
-                            "metric_period_month_reset": "first_of_month",
+                            "metric_period_month_reset": "billing_cycle",
                             "metric_value": 1000000,
                             "operator": "eq",
                             "resource_ids": [
@@ -1437,7 +1437,7 @@ public class LookupCompanyTest : BaseMockServerTest
                             "event_subtype": "event_subtype",
                             "id": "id",
                             "metric_period": "all_time",
-                            "metric_period_month_reset": "first_of_month",
+                            "metric_period_month_reset": "billing_cycle",
                             "metric_value": 1000000,
                             "operator": "eq",
                             "resource_ids": [
@@ -1465,7 +1465,7 @@ public class LookupCompanyTest : BaseMockServerTest
                             "event_subtype": "event_subtype",
                             "id": "id",
                             "metric_period": "all_time",
-                            "metric_period_month_reset": "first_of_month",
+                            "metric_period_month_reset": "billing_cycle",
                             "metric_value": 1000000,
                             "operator": "eq",
                             "resource_ids": [
@@ -1497,7 +1497,7 @@ public class LookupCompanyTest : BaseMockServerTest
                         "event_subtype": "event_subtype",
                         "id": "id",
                         "metric_period": "all_time",
-                        "metric_period_month_reset": "first_of_month",
+                        "metric_period_month_reset": "billing_cycle",
                         "metric_value": 1000000,
                         "operator": "eq",
                         "resource_ids": [
@@ -1525,7 +1525,7 @@ public class LookupCompanyTest : BaseMockServerTest
                         "event_subtype": "event_subtype",
                         "id": "id",
                         "metric_period": "all_time",
-                        "metric_period_month_reset": "first_of_month",
+                        "metric_period_month_reset": "billing_cycle",
                         "metric_value": 1000000,
                         "operator": "eq",
                         "resource_ids": [
@@ -1545,7 +1545,7 @@ public class LookupCompanyTest : BaseMockServerTest
                     "id": "id",
                     "name": "name",
                     "priority": 1000000,
-                    "rule_type": "default",
+                    "rule_type": "company_override",
                     "value": true
                   },
                   {
@@ -1567,7 +1567,7 @@ public class LookupCompanyTest : BaseMockServerTest
                             "event_subtype": "event_subtype",
                             "id": "id",
                             "metric_period": "all_time",
-                            "metric_period_month_reset": "first_of_month",
+                            "metric_period_month_reset": "billing_cycle",
                             "metric_value": 1000000,
                             "operator": "eq",
                             "resource_ids": [
@@ -1595,7 +1595,7 @@ public class LookupCompanyTest : BaseMockServerTest
                             "event_subtype": "event_subtype",
                             "id": "id",
                             "metric_period": "all_time",
-                            "metric_period_month_reset": "first_of_month",
+                            "metric_period_month_reset": "billing_cycle",
                             "metric_value": 1000000,
                             "operator": "eq",
                             "resource_ids": [
@@ -1627,7 +1627,7 @@ public class LookupCompanyTest : BaseMockServerTest
                             "event_subtype": "event_subtype",
                             "id": "id",
                             "metric_period": "all_time",
-                            "metric_period_month_reset": "first_of_month",
+                            "metric_period_month_reset": "billing_cycle",
                             "metric_value": 1000000,
                             "operator": "eq",
                             "resource_ids": [
@@ -1655,7 +1655,7 @@ public class LookupCompanyTest : BaseMockServerTest
                             "event_subtype": "event_subtype",
                             "id": "id",
                             "metric_period": "all_time",
-                            "metric_period_month_reset": "first_of_month",
+                            "metric_period_month_reset": "billing_cycle",
                             "metric_value": 1000000,
                             "operator": "eq",
                             "resource_ids": [
@@ -1687,7 +1687,7 @@ public class LookupCompanyTest : BaseMockServerTest
                         "event_subtype": "event_subtype",
                         "id": "id",
                         "metric_period": "all_time",
-                        "metric_period_month_reset": "first_of_month",
+                        "metric_period_month_reset": "billing_cycle",
                         "metric_value": 1000000,
                         "operator": "eq",
                         "resource_ids": [
@@ -1715,7 +1715,7 @@ public class LookupCompanyTest : BaseMockServerTest
                         "event_subtype": "event_subtype",
                         "id": "id",
                         "metric_period": "all_time",
-                        "metric_period_month_reset": "first_of_month",
+                        "metric_period_month_reset": "billing_cycle",
                         "metric_value": 1000000,
                         "operator": "eq",
                         "resource_ids": [
@@ -1735,7 +1735,7 @@ public class LookupCompanyTest : BaseMockServerTest
                     "id": "id",
                     "name": "name",
                     "priority": 1000000,
-                    "rule_type": "default",
+                    "rule_type": "company_override",
                     "value": true
                   }
                 ],

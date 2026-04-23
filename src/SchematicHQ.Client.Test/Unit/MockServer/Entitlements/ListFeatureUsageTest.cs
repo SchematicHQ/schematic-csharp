@@ -77,11 +77,11 @@ public class ListFeatureUsageTest : BaseMockServerTest
                               {
                                 "conditions": [
                                   {
-                                    "condition_type": "condition_type",
+                                    "condition_type": "base_plan",
                                     "created_at": "2024-01-15T09:30:00.000Z",
                                     "environment_id": "environment_id",
                                     "id": "id",
-                                    "operator": "operator",
+                                    "operator": "eq",
                                     "resource_ids": [
                                       "resource_ids"
                                     ],
@@ -105,11 +105,11 @@ public class ListFeatureUsageTest : BaseMockServerTest
                             ],
                             "conditions": [
                               {
-                                "condition_type": "condition_type",
+                                "condition_type": "base_plan",
                                 "created_at": "2024-01-15T09:30:00.000Z",
                                 "environment_id": "environment_id",
                                 "id": "id",
-                                "operator": "operator",
+                                "operator": "eq",
                                 "resource_ids": [
                                   "resource_ids"
                                 ],
@@ -129,7 +129,7 @@ public class ListFeatureUsageTest : BaseMockServerTest
                             "id": "id",
                             "name": "name",
                             "priority": 1000000,
-                            "rule_type": "rule_type",
+                            "rule_type": "company_override",
                             "updated_at": "2024-01-15T09:30:00.000Z",
                             "value": true
                           }
@@ -151,7 +151,7 @@ public class ListFeatureUsageTest : BaseMockServerTest
                   "has_valid_allocation": true,
                   "is_unlimited": true,
                   "metric_reset_at": "2024-01-15T09:30:00.000Z",
-                  "month_reset": "month_reset",
+                  "month_reset": "billing_cycle",
                   "monthly_usage_based_price": {
                     "billing_scheme": "per_unit",
                     "created_at": "2024-01-15T09:30:00.000Z",
@@ -175,7 +175,7 @@ public class ListFeatureUsageTest : BaseMockServerTest
                   },
                   "overuse": 1000000,
                   "percent_used": 1.1,
-                  "period": "period",
+                  "period": "all_time",
                   "plan": {
                     "created_at": "2024-01-15T09:30:00.000Z",
                     "description": "description",
@@ -265,6 +265,7 @@ public class ListFeatureUsageTest : BaseMockServerTest
             new ListFeatureUsageRequest
             {
                 CompanyId = "company_id",
+                FeatureIds = [new List<string>() { "feature_ids" }],
                 IncludeUsageAggregation = true,
                 Q = "q",
                 WithoutNegativeEntitlements = true,

@@ -33,10 +33,10 @@ public record CompanyEventPeriodMetricsResponseData : IJsonOnDeserialized
     public required string EventSubtype { get; set; }
 
     [JsonPropertyName("month_reset")]
-    public required string MonthReset { get; set; }
+    public required MetricPeriodMonthReset MonthReset { get; set; }
 
     [JsonPropertyName("period")]
-    public required string Period { get; set; }
+    public required MetricPeriod Period { get; set; }
 
     [JsonPropertyName("valid_until")]
     public DateTime? ValidUntil { get; set; }

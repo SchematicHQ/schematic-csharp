@@ -844,6 +844,7 @@ public partial class WebhooksClient : IWebhooksClient
     /// await client.Webhooks.ListWebhookEventsAsync(
     ///     new ListWebhookEventsRequest
     ///     {
+    ///         Ids = [new List&lt;string&gt;() { "ids" }],
     ///         Q = "q",
     ///         WebhookId = "webhook_id",
     ///         Limit = 1000000,
@@ -880,6 +881,7 @@ public partial class WebhooksClient : IWebhooksClient
     /// await client.Webhooks.CountWebhookEventsAsync(
     ///     new CountWebhookEventsRequest
     ///     {
+    ///         Ids = [new List&lt;string&gt;() { "ids" }],
     ///         Q = "q",
     ///         WebhookId = "webhook_id",
     ///         Limit = 1000000,

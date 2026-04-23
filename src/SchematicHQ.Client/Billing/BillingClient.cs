@@ -2000,6 +2000,7 @@ public partial class BillingClient : IBillingClient
     /// await client.Billing.ListCustomersWithSubscriptionsAsync(
     ///     new ListCustomersWithSubscriptionsRequest
     ///     {
+    ///         CompanyIds = [new List&lt;string&gt;() { "company_ids" }],
     ///         Name = "name",
     ///         ProviderType = BillingProviderType.Orb,
     ///         Q = "q",
@@ -2023,6 +2024,7 @@ public partial class BillingClient : IBillingClient
     /// await client.Billing.CountCustomersAsync(
     ///     new CountCustomersRequest
     ///     {
+    ///         CompanyIds = [new List&lt;string&gt;() { "company_ids" }],
     ///         Name = "name",
     ///         ProviderType = BillingProviderType.Orb,
     ///         Q = "q",
@@ -2183,10 +2185,12 @@ public partial class BillingClient : IBillingClient
     ///         Currency = "currency",
     ///         ForInitialPlan = true,
     ///         ForTrialExpiryPlan = true,
+    ///         Ids = [new List&lt;string&gt;() { "ids" }],
     ///         Interval = "interval",
     ///         IsActive = true,
     ///         Price = 1000000,
     ///         ProductId = "product_id",
+    ///         ProductIds = [new List&lt;string&gt;() { "product_ids" }],
     ///         ProviderType = BillingProviderType.Orb,
     ///         Q = "q",
     ///         TiersMode = BillingTiersMode.Graduated,
@@ -2260,10 +2264,12 @@ public partial class BillingClient : IBillingClient
     ///         Currency = "currency",
     ///         ForInitialPlan = true,
     ///         ForTrialExpiryPlan = true,
+    ///         Ids = [new List&lt;string&gt;() { "ids" }],
     ///         Interval = "interval",
     ///         IsActive = true,
     ///         Price = 1000000,
     ///         ProductId = "product_id",
+    ///         ProductIds = [new List&lt;string&gt;() { "product_ids" }],
     ///         ProviderType = BillingProviderType.Orb,
     ///         Q = "q",
     ///         TiersMode = BillingTiersMode.Graduated,
@@ -2319,6 +2325,7 @@ public partial class BillingClient : IBillingClient
     /// await client.Billing.ListBillingProductsAsync(
     ///     new ListBillingProductsRequest
     ///     {
+    ///         Ids = [new List&lt;string&gt;() { "ids" }],
     ///         IsActive = true,
     ///         Name = "name",
     ///         PriceUsageType = BillingPriceUsageType.Licensed,
@@ -2348,6 +2355,7 @@ public partial class BillingClient : IBillingClient
     /// await client.Billing.CountBillingProductsAsync(
     ///     new CountBillingProductsRequest
     ///     {
+    ///         Ids = [new List&lt;string&gt;() { "ids" }],
     ///         IsActive = true,
     ///         Name = "name",
     ///         PriceUsageType = BillingPriceUsageType.Licensed,

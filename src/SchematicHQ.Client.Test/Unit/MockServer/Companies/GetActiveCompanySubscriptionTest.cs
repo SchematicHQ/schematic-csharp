@@ -81,6 +81,7 @@ public class GetActiveCompanySubscriptionTest : BaseMockServerTest
                       "usage_type": "licensed"
                     }
                   ],
+                  "provider_type": "orb",
                   "status": "status",
                   "subscription_external_id": "subscription_external_id",
                   "total_price": 1000000,
@@ -119,6 +120,7 @@ public class GetActiveCompanySubscriptionTest : BaseMockServerTest
             new GetActiveCompanySubscriptionRequest
             {
                 CompanyId = "company_id",
+                CompanyIds = [new List<string>() { "company_ids" }],
                 Limit = 1000000,
                 Offset = 1000000,
             }

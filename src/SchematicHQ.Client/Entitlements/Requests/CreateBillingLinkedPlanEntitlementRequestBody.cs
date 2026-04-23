@@ -31,10 +31,10 @@ public record CreateBillingLinkedPlanEntitlementRequestBody
     public required string FeatureId { get; set; }
 
     [JsonPropertyName("metric_period")]
-    public CreateBillingLinkedPlanEntitlementRequestBodyMetricPeriod? MetricPeriod { get; set; }
+    public MetricPeriod? MetricPeriod { get; set; }
 
     [JsonPropertyName("metric_period_month_reset")]
-    public CreateBillingLinkedPlanEntitlementRequestBodyMetricPeriodMonthReset? MetricPeriodMonthReset { get; set; }
+    public MetricPeriodMonthReset? MetricPeriodMonthReset { get; set; }
 
     [JsonPropertyName("monthly_metered_price_id")]
     public string? MonthlyMeteredPriceId { get; set; }

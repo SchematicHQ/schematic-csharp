@@ -3,34 +3,40 @@ using SchematicHQ.Client;
 using SchematicHQ.Client.Test.Unit.MockServer;
 using SchematicHQ.Client.Test.Utils;
 
-namespace SchematicHQ.Client.Test.Unit.MockServer.Companies;
+namespace SchematicHQ.Client.Test.Unit.MockServer.Plans;
 
 [TestFixture]
 [Parallelizable(ParallelScope.Self)]
-public class CreatePlanTraitTest : BaseMockServerTest
+public class RetryCustomPlanBillingTest : BaseMockServerTest
 {
     [NUnit.Framework.Test]
     public async Task MockServerTest()
     {
         const string requestJson = """
             {
-              "plan_id": "plan_id",
-              "trait_id": "trait_id",
-              "trait_value": "trait_value"
+              "customer_email": "customer_email",
+              "pay_in_advance": [
+                {
+                  "price_id": "price_id",
+                  "quantity": 1000000
+                }
+              ]
             }
             """;
 
         const string mockResponse = """
             {
               "data": {
-                "account_id": "account_id",
+                "activation_strategy": "on_payment",
+                "company_id": "company_id",
                 "created_at": "2024-01-15T09:30:00.000Z",
-                "environment_id": "environment_id",
+                "days_until_due": 1000000,
                 "id": "id",
+                "paid_at": "2024-01-15T09:30:00.000Z",
                 "plan_id": "plan_id",
-                "plan_type": "plan_type",
-                "trait_id": "trait_id",
-                "trait_value": "trait_value",
+                "published_at": "2024-01-15T09:30:00.000Z",
+                "status": "active",
+                "stripe_invoice_url": "stripe_invoice_url",
                 "updated_at": "2024-01-15T09:30:00.000Z"
               },
               "params": {
@@ -43,9 +49,9 @@ public class CreatePlanTraitTest : BaseMockServerTest
             .Given(
                 WireMock
                     .RequestBuilders.Request.Create()
-                    .WithPath("/plan-traits")
+                    .WithPath("/custom-plan-billings/custom_plan_billing_id/retry")
                     .WithHeader("Content-Type", "application/json")
-                    .UsingPost()
+                    .UsingPut()
                     .WithBodyAsJson(requestJson)
             )
             .RespondWith(
@@ -55,12 +61,15 @@ public class CreatePlanTraitTest : BaseMockServerTest
                     .WithBody(mockResponse)
             );
 
-        var response = await Client.Companies.CreatePlanTraitAsync(
-            new CreatePlanTraitRequestBody
+        var response = await Client.Plans.RetryCustomPlanBillingAsync(
+            "custom_plan_billing_id",
+            new RetryCustomPlanBillingRequestBody
             {
-                PlanId = "plan_id",
-                TraitId = "trait_id",
-                TraitValue = "trait_value",
+                CustomerEmail = "customer_email",
+                PayInAdvance = new List<UpdatePayInAdvanceRequestBody>()
+                {
+                    new UpdatePayInAdvanceRequestBody { PriceId = "price_id", Quantity = 1000000 },
+                },
             }
         );
         JsonAssert.AreEqual(response, mockResponse);

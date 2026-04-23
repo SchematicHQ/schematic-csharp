@@ -13,10 +13,10 @@ public record UpdateCompanyOverrideRequestBody
     public DateTime? ExpirationDate { get; set; }
 
     [JsonPropertyName("metric_period")]
-    public UpdateCompanyOverrideRequestBodyMetricPeriod? MetricPeriod { get; set; }
+    public MetricPeriod? MetricPeriod { get; set; }
 
     [JsonPropertyName("metric_period_month_reset")]
-    public UpdateCompanyOverrideRequestBodyMetricPeriodMonthReset? MetricPeriodMonthReset { get; set; }
+    public MetricPeriodMonthReset? MetricPeriodMonthReset { get; set; }
 
     [JsonPropertyName("note")]
     public string? Note { get; set; }

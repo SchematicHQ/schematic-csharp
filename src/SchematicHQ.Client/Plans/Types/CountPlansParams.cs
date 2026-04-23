@@ -18,6 +18,12 @@ public record CountPlansParams : IJsonOnDeserialized
     public string? CompanyId { get; set; }
 
     /// <summary>
+    /// Exclude plans that are scoped to a company (custom plans assigned to a company)
+    /// </summary>
+    [JsonPropertyName("exclude_company_scoped")]
+    public bool? ExcludeCompanyScoped { get; set; }
+
+    /// <summary>
     /// Filter for plans valid as fallback plans (not linked to billing)
     /// </summary>
     [JsonPropertyName("for_fallback_plan")]
