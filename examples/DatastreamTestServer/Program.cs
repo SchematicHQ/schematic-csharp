@@ -8,6 +8,7 @@
  * Environment Variables:
  * - SCHEMATIC_API_KEY: Your Schematic API key (required)
  * - SCHEMATIC_API_URL: Schematic API base URL (default: https://api.schematichq.com)
+ * - SCHEMATIC_EVENT_CAPTURE_URL: Event capture service base URL (default: https://c.schematichq.com)
  * - REPLICATOR_HEALTH_URL: Readiness check URL for replicator service (default: http://localhost:8090/ready)
  * - REDIS_URL: Redis connection string (default: localhost:6380)
  * - REDIS_KEY_PREFIX: Redis key prefix (default: schematic:)
@@ -54,8 +55,10 @@ var app = builder.Build();
 string apiKey = Environment.GetEnvironmentVariable("SCHEMATIC_API_KEY") ?? 
     throw new InvalidOperationException("SCHEMATIC_API_KEY environment variable is not set");
 
-string schematicApiUrl = Environment.GetEnvironmentVariable("SCHEMATIC_API_URL") ?? 
+string schematicApiUrl = Environment.GetEnvironmentVariable("SCHEMATIC_API_URL") ??
     "https://api.schematichq.com"; // Default Schematic API URL
+
+string? eventCaptureUrl = Environment.GetEnvironmentVariable("SCHEMATIC_EVENT_CAPTURE_URL");
 
 string replicatorHealthUrl = Environment.GetEnvironmentVariable("REPLICATOR_HEALTH_URL") ?? 
     "http://localhost:8090/ready"; // Default health check URL
@@ -85,6 +88,7 @@ datastreamOptions.WithRedisCache(redisConfig);
 var options = new ClientOptions
 {
     BaseUrl = schematicApiUrl, // Use configurable API URL
+    EventCaptureBaseUrl = eventCaptureUrl, // Optional override for event capture service
     DatastreamOptions = datastreamOptions
 }
     .WithReplicatorMode(replicatorHealthUrl); // Enable replicator mode with health check
@@ -105,6 +109,7 @@ app.MapGet("/config", () => Results.Ok(new {
     replicatorMode = schematic.IsReplicatorMode(),
     configuration = new {
         schematicApiUrl,
+        eventCaptureUrl,
         replicatorHealthUrl,
         redisUrl,
         redisKeyPrefix,
@@ -126,6 +131,7 @@ app.MapGet("/health", () => Results.Ok(new {
     replicatorMode = schematic.IsReplicatorMode(),
     configuration = new {
         schematicApiUrl,
+        eventCaptureUrl,
         replicatorHealthUrl,
         redisUrl,
         redisKeyPrefix,

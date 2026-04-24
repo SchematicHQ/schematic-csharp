@@ -591,6 +591,23 @@ private void SubmitFlagCheckEvent(
         return _datastreamClient != null;
     }
 
+    public void SetFlagDefault(string flag, bool value)
+    {
+        if (_options.FlagDefaults == null)
+        {
+            _options.FlagDefaults = new Dictionary<string, bool>();
+        }
+        _options.FlagDefaults[flag] = value;
+    }
+
+    public void SetFlagDefaults(Dictionary<string, bool> values)
+    {
+        foreach (var kvp in values)
+        {
+            SetFlagDefault(kvp.Key, kvp.Value);
+        }
+    }
+
     private bool GetFlagDefault(string flagKey)
     {
         return _options.FlagDefaults != null && _options.FlagDefaults.TryGetValue(flagKey, out bool value) ? value : false;

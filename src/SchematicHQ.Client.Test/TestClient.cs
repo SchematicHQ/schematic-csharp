@@ -506,6 +506,49 @@ namespace SchematicHQ.Client.Test
         }
 
         [Test]
+        public async Task SetFlagDefault_UpdatesDefaultUsedByCheckFlag()
+        {
+            SetupSchematicTestClient(
+                isOffline: true,
+                response: CreateCheckFlagResponse(HttpStatusCode.OK, false)
+            );
+
+            var beforeSet = await _schematic.CheckFlag("late_flag");
+            Assert.That(beforeSet, Is.False);
+
+            _schematic.SetFlagDefault("late_flag", true);
+
+            var afterSet = await _schematic.CheckFlag("late_flag");
+            Assert.That(afterSet, Is.True);
+
+            _schematic.SetFlagDefault("late_flag", false);
+            var afterOverride = await _schematic.CheckFlag("late_flag");
+            Assert.That(afterOverride, Is.False);
+        }
+
+        [Test]
+        public async Task SetFlagDefaults_UpdatesMultipleDefaults()
+        {
+            SetupSchematicTestClient(
+                isOffline: true,
+                response: CreateCheckFlagResponse(HttpStatusCode.OK, false),
+                flagDefaults: new Dictionary<string, bool> { { "existing_flag", false } }
+            );
+
+            _schematic.SetFlagDefaults(new Dictionary<string, bool>
+            {
+                { "existing_flag", true },
+                { "new_flag_a", true },
+                { "new_flag_b", false }
+            });
+
+            Assert.That(await _schematic.CheckFlag("existing_flag"), Is.True);
+            Assert.That(await _schematic.CheckFlag("new_flag_a"), Is.True);
+            Assert.That(await _schematic.CheckFlag("new_flag_b"), Is.False);
+            Assert.That(await _schematic.CheckFlag("unset_flag"), Is.False);
+        }
+
+        [Test]
         public async Task Track_IncludesQuantityWhenProvided()
         {
             // Arrange

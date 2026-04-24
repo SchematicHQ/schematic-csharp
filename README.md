@@ -542,6 +542,28 @@ Schematic schematic = new Schematic("", options);
 bool flagValue = await schematic.CheckFlag("some-flag-key"); // Returns true
 ```
 
+You can also set flag defaults dynamically after the client has been constructed using `SetFlagDefault` and `SetFlagDefaults`. This is useful in automated testing contexts, where you may want to specify per-test flag values:
+
+```csharp
+using SchematicHQ.Client;
+using System.Collections.Generic;
+
+var options = new ClientOptions { Offline = true };
+Schematic schematic = new Schematic("", options);
+
+// Set a single flag default
+schematic.SetFlagDefault("some-flag-key", true);
+
+// Or set multiple flag defaults at once
+schematic.SetFlagDefaults(new Dictionary<string, bool>
+{
+    { "some-flag-key", true },
+    { "another-flag-key", false }
+});
+
+bool flagValue = await schematic.CheckFlag("some-flag-key"); // Returns true
+```
+
 ### Event Buffer
 Schematic API uses an Event Buffer to batch *Identify* and *Track* requests and avoid multiple API calls.
 You can set the event buffer flush period in options:
