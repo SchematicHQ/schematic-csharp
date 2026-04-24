@@ -33,7 +33,17 @@ public class ListFlagsTest : BaseMockServerTest
                   "id": "id",
                   "key": "key",
                   "last_checked_at": "2024-01-15T09:30:00.000Z",
-                  "maintainer_id": "maintainer_id",
+                  "maintainer": {
+                    "created_at": "2024-01-15T09:30:00.000Z",
+                    "id": "id",
+                    "permissions": {
+                      "key": [
+                        "billing_credits_edit"
+                      ]
+                    },
+                    "updated_at": "2024-01-15T09:30:00.000Z"
+                  },
+                  "maintainer_account_member_id": "maintainer_account_member_id",
                   "name": "name",
                   "rules": [
                     {
@@ -41,11 +51,11 @@ public class ListFlagsTest : BaseMockServerTest
                         {
                           "conditions": [
                             {
-                              "condition_type": "condition_type",
+                              "condition_type": "base_plan",
                               "created_at": "2024-01-15T09:30:00.000Z",
                               "environment_id": "environment_id",
                               "id": "id",
-                              "operator": "operator",
+                              "operator": "eq",
                               "resource_ids": [
                                 "resource_ids"
                               ],
@@ -69,11 +79,11 @@ public class ListFlagsTest : BaseMockServerTest
                       ],
                       "conditions": [
                         {
-                          "condition_type": "condition_type",
+                          "condition_type": "base_plan",
                           "created_at": "2024-01-15T09:30:00.000Z",
                           "environment_id": "environment_id",
                           "id": "id",
-                          "operator": "operator",
+                          "operator": "eq",
                           "resource_ids": [
                             "resource_ids"
                           ],
@@ -93,7 +103,7 @@ public class ListFlagsTest : BaseMockServerTest
                       "id": "id",
                       "name": "name",
                       "priority": 1000000,
-                      "rule_type": "rule_type",
+                      "rule_type": "company_override",
                       "updated_at": "2024-01-15T09:30:00.000Z",
                       "value": true
                     }
@@ -135,6 +145,7 @@ public class ListFlagsTest : BaseMockServerTest
             new ListFlagsRequest
             {
                 FeatureId = "feature_id",
+                Ids = new List<string>() { "ids" },
                 Q = "q",
                 Limit = 1000000,
                 Offset = 1000000,

@@ -30,7 +30,7 @@ public record RuleResponseData : IJsonOnDeserialized
     public required long Priority { get; set; }
 
     [JsonPropertyName("rule_type")]
-    public required string RuleType { get; set; }
+    public required RuleType RuleType { get; set; }
 
     [JsonPropertyName("updated_at")]
     public required DateTime UpdatedAt { get; set; }

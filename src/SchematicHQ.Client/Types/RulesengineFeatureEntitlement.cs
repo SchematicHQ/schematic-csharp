@@ -63,7 +63,7 @@ public record RulesengineFeatureEntitlement : IJsonOnDeserialized
     /// For event-based feature entitlements, the period over which usage is tracked
     /// </summary>
     [JsonPropertyName("metric_period")]
-    public RulesengineFeatureEntitlementMetricPeriod? MetricPeriod { get; set; }
+    public RulesengineMetricPeriod? MetricPeriod { get; set; }
 
     /// <summary>
     /// For event-based feature entitlements, when the usage period will reset
@@ -75,7 +75,7 @@ public record RulesengineFeatureEntitlement : IJsonOnDeserialized
     /// For event-based feature entitlements that have a monthly period, whether that monthly reset is based on the calendar month or a billing cycle
     /// </summary>
     [JsonPropertyName("month_reset")]
-    public RulesengineFeatureEntitlementMonthReset? MonthReset { get; set; }
+    public RulesengineMetricPeriodMonthReset? MonthReset { get; set; }
 
     /// <summary>
     /// For usage-based pricing, the soft limit for overage charges or the next tier boundary

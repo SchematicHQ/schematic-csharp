@@ -5,20 +5,20 @@ using SchematicHQ.Client.Core;
 namespace SchematicHQ.Client;
 
 [JsonConverter(
-    typeof(CreateEntitlementReqCommonMetricPeriodMonthReset.CreateEntitlementReqCommonMetricPeriodMonthResetSerializer)
+    typeof(RulesengineMetricPeriodMonthReset.RulesengineMetricPeriodMonthResetSerializer)
 )]
 [Serializable]
-public readonly record struct CreateEntitlementReqCommonMetricPeriodMonthReset : IStringEnum
+public readonly record struct RulesengineMetricPeriodMonthReset : IStringEnum
 {
-    public static readonly CreateEntitlementReqCommonMetricPeriodMonthReset FirstOfMonth = new(
-        Values.FirstOfMonth
-    );
-
-    public static readonly CreateEntitlementReqCommonMetricPeriodMonthReset BillingCycle = new(
+    public static readonly RulesengineMetricPeriodMonthReset BillingCycle = new(
         Values.BillingCycle
     );
 
-    public CreateEntitlementReqCommonMetricPeriodMonthReset(string value)
+    public static readonly RulesengineMetricPeriodMonthReset FirstOfMonth = new(
+        Values.FirstOfMonth
+    );
+
+    public RulesengineMetricPeriodMonthReset(string value)
     {
         Value = value;
     }
@@ -31,9 +31,9 @@ public readonly record struct CreateEntitlementReqCommonMetricPeriodMonthReset :
     /// <summary>
     /// Create a string enum with the given value.
     /// </summary>
-    public static CreateEntitlementReqCommonMetricPeriodMonthReset FromCustom(string value)
+    public static RulesengineMetricPeriodMonthReset FromCustom(string value)
     {
-        return new CreateEntitlementReqCommonMetricPeriodMonthReset(value);
+        return new RulesengineMetricPeriodMonthReset(value);
     }
 
     public bool Equals(string? other)
@@ -49,28 +49,20 @@ public readonly record struct CreateEntitlementReqCommonMetricPeriodMonthReset :
         return Value;
     }
 
-    public static bool operator ==(
-        CreateEntitlementReqCommonMetricPeriodMonthReset value1,
-        string value2
-    ) => value1.Value.Equals(value2);
+    public static bool operator ==(RulesengineMetricPeriodMonthReset value1, string value2) =>
+        value1.Value.Equals(value2);
 
-    public static bool operator !=(
-        CreateEntitlementReqCommonMetricPeriodMonthReset value1,
-        string value2
-    ) => !value1.Value.Equals(value2);
+    public static bool operator !=(RulesengineMetricPeriodMonthReset value1, string value2) =>
+        !value1.Value.Equals(value2);
 
-    public static explicit operator string(
-        CreateEntitlementReqCommonMetricPeriodMonthReset value
-    ) => value.Value;
+    public static explicit operator string(RulesengineMetricPeriodMonthReset value) => value.Value;
 
-    public static explicit operator CreateEntitlementReqCommonMetricPeriodMonthReset(
-        string value
-    ) => new(value);
+    public static explicit operator RulesengineMetricPeriodMonthReset(string value) => new(value);
 
-    internal class CreateEntitlementReqCommonMetricPeriodMonthResetSerializer
-        : JsonConverter<CreateEntitlementReqCommonMetricPeriodMonthReset>
+    internal class RulesengineMetricPeriodMonthResetSerializer
+        : JsonConverter<RulesengineMetricPeriodMonthReset>
     {
-        public override CreateEntitlementReqCommonMetricPeriodMonthReset Read(
+        public override RulesengineMetricPeriodMonthReset Read(
             ref Utf8JsonReader reader,
             Type typeToConvert,
             JsonSerializerOptions options
@@ -81,19 +73,19 @@ public readonly record struct CreateEntitlementReqCommonMetricPeriodMonthReset :
                 ?? throw new global::System.Exception(
                     "The JSON value could not be read as a string."
                 );
-            return new CreateEntitlementReqCommonMetricPeriodMonthReset(stringValue);
+            return new RulesengineMetricPeriodMonthReset(stringValue);
         }
 
         public override void Write(
             Utf8JsonWriter writer,
-            CreateEntitlementReqCommonMetricPeriodMonthReset value,
+            RulesengineMetricPeriodMonthReset value,
             JsonSerializerOptions options
         )
         {
             writer.WriteStringValue(value.Value);
         }
 
-        public override CreateEntitlementReqCommonMetricPeriodMonthReset ReadAsPropertyName(
+        public override RulesengineMetricPeriodMonthReset ReadAsPropertyName(
             ref Utf8JsonReader reader,
             Type typeToConvert,
             JsonSerializerOptions options
@@ -104,12 +96,12 @@ public readonly record struct CreateEntitlementReqCommonMetricPeriodMonthReset :
                 ?? throw new global::System.Exception(
                     "The JSON property name could not be read as a string."
                 );
-            return new CreateEntitlementReqCommonMetricPeriodMonthReset(stringValue);
+            return new RulesengineMetricPeriodMonthReset(stringValue);
         }
 
         public override void WriteAsPropertyName(
             Utf8JsonWriter writer,
-            CreateEntitlementReqCommonMetricPeriodMonthReset value,
+            RulesengineMetricPeriodMonthReset value,
             JsonSerializerOptions options
         )
         {
@@ -123,8 +115,8 @@ public readonly record struct CreateEntitlementReqCommonMetricPeriodMonthReset :
     [Serializable]
     public static class Values
     {
-        public const string FirstOfMonth = "first_of_month";
-
         public const string BillingCycle = "billing_cycle";
+
+        public const string FirstOfMonth = "first_of_month";
     }
 }

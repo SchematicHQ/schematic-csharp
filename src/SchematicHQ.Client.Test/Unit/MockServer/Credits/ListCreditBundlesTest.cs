@@ -94,6 +94,7 @@ public class ListCreditBundlesTest : BaseMockServerTest
         var response = await Client.Credits.ListCreditBundlesAsync(
             new ListCreditBundlesRequest
             {
+                Ids = new List<string>() { "ids" },
                 CreditId = "credit_id",
                 Status = BillingCreditBundleStatus.Active,
                 BundleType = "fixed",

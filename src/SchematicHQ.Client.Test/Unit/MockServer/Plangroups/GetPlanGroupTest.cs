@@ -22,7 +22,7 @@ public class GetPlanGroupTest : BaseMockServerTest
                     "compatible_plan_ids": [
                       "compatible_plan_ids"
                     ],
-                    "controlled_by": "controlled_by",
+                    "controlled_by": "orb",
                     "created_at": "2024-01-15T09:30:00.000Z",
                     "currency_prices": [
                       {
@@ -67,11 +67,11 @@ public class GetPlanGroupTest : BaseMockServerTest
                                   {
                                     "conditions": [
                                       {
-                                        "condition_type": "condition_type",
+                                        "condition_type": "base_plan",
                                         "created_at": "2024-01-15T09:30:00.000Z",
                                         "environment_id": "environment_id",
                                         "id": "id",
-                                        "operator": "operator",
+                                        "operator": "eq",
                                         "resource_ids": [
                                           "resource_ids"
                                         ],
@@ -95,11 +95,11 @@ public class GetPlanGroupTest : BaseMockServerTest
                                 ],
                                 "conditions": [
                                   {
-                                    "condition_type": "condition_type",
+                                    "condition_type": "base_plan",
                                     "created_at": "2024-01-15T09:30:00.000Z",
                                     "environment_id": "environment_id",
                                     "id": "id",
-                                    "operator": "operator",
+                                    "operator": "eq",
                                     "resource_ids": [
                                       "resource_ids"
                                     ],
@@ -119,7 +119,7 @@ public class GetPlanGroupTest : BaseMockServerTest
                                 "id": "id",
                                 "name": "name",
                                 "priority": 1000000,
-                                "rule_type": "rule_type",
+                                "rule_type": "company_override",
                                 "updated_at": "2024-01-15T09:30:00.000Z",
                                 "value": true
                               }
@@ -233,7 +233,7 @@ public class GetPlanGroupTest : BaseMockServerTest
                   "compatible_plan_ids": [
                     "compatible_plan_ids"
                   ],
-                  "controlled_by": "controlled_by",
+                  "controlled_by": "orb",
                   "copied_from_plan_id": "copied_from_plan_id",
                   "created_at": "2024-01-15T09:30:00.000Z",
                   "currency_prices": [
@@ -296,11 +296,11 @@ public class GetPlanGroupTest : BaseMockServerTest
                                 {
                                   "conditions": [
                                     {
-                                      "condition_type": "condition_type",
+                                      "condition_type": "base_plan",
                                       "created_at": "2024-01-15T09:30:00.000Z",
                                       "environment_id": "environment_id",
                                       "id": "id",
-                                      "operator": "operator",
+                                      "operator": "eq",
                                       "resource_ids": [
                                         "resource_ids"
                                       ],
@@ -324,11 +324,11 @@ public class GetPlanGroupTest : BaseMockServerTest
                               ],
                               "conditions": [
                                 {
-                                  "condition_type": "condition_type",
+                                  "condition_type": "base_plan",
                                   "created_at": "2024-01-15T09:30:00.000Z",
                                   "environment_id": "environment_id",
                                   "id": "id",
-                                  "operator": "operator",
+                                  "operator": "eq",
                                   "resource_ids": [
                                     "resource_ids"
                                   ],
@@ -348,7 +348,7 @@ public class GetPlanGroupTest : BaseMockServerTest
                               "id": "id",
                               "name": "name",
                               "priority": 1000000,
-                              "rule_type": "rule_type",
+                              "rule_type": "company_override",
                               "updated_at": "2024-01-15T09:30:00.000Z",
                               "value": true
                             }
@@ -483,7 +483,7 @@ public class GetPlanGroupTest : BaseMockServerTest
                   "compatible_plan_ids": [
                     "compatible_plan_ids"
                   ],
-                  "controlled_by": "controlled_by",
+                  "controlled_by": "orb",
                   "copied_from_plan_id": "copied_from_plan_id",
                   "created_at": "2024-01-15T09:30:00.000Z",
                   "currency_prices": [
@@ -546,11 +546,11 @@ public class GetPlanGroupTest : BaseMockServerTest
                                 {
                                   "conditions": [
                                     {
-                                      "condition_type": "condition_type",
+                                      "condition_type": "base_plan",
                                       "created_at": "2024-01-15T09:30:00.000Z",
                                       "environment_id": "environment_id",
                                       "id": "id",
-                                      "operator": "operator",
+                                      "operator": "eq",
                                       "resource_ids": [
                                         "resource_ids"
                                       ],
@@ -574,11 +574,11 @@ public class GetPlanGroupTest : BaseMockServerTest
                               ],
                               "conditions": [
                                 {
-                                  "condition_type": "condition_type",
+                                  "condition_type": "base_plan",
                                   "created_at": "2024-01-15T09:30:00.000Z",
                                   "environment_id": "environment_id",
                                   "id": "id",
-                                  "operator": "operator",
+                                  "operator": "eq",
                                   "resource_ids": [
                                     "resource_ids"
                                   ],
@@ -598,7 +598,7 @@ public class GetPlanGroupTest : BaseMockServerTest
                               "id": "id",
                               "name": "name",
                               "priority": 1000000,
-                              "rule_type": "rule_type",
+                              "rule_type": "company_override",
                               "updated_at": "2024-01-15T09:30:00.000Z",
                               "value": true
                             }
@@ -735,7 +735,7 @@ public class GetPlanGroupTest : BaseMockServerTest
                   "compatible_plan_ids": [
                     "compatible_plan_ids"
                   ],
-                  "controlled_by": "controlled_by",
+                  "controlled_by": "orb",
                   "copied_from_plan_id": "copied_from_plan_id",
                   "created_at": "2024-01-15T09:30:00.000Z",
                   "currency_prices": [
@@ -798,11 +798,11 @@ public class GetPlanGroupTest : BaseMockServerTest
                                 {
                                   "conditions": [
                                     {
-                                      "condition_type": "condition_type",
+                                      "condition_type": "base_plan",
                                       "created_at": "2024-01-15T09:30:00.000Z",
                                       "environment_id": "environment_id",
                                       "id": "id",
-                                      "operator": "operator",
+                                      "operator": "eq",
                                       "resource_ids": [
                                         "resource_ids"
                                       ],
@@ -826,11 +826,11 @@ public class GetPlanGroupTest : BaseMockServerTest
                               ],
                               "conditions": [
                                 {
-                                  "condition_type": "condition_type",
+                                  "condition_type": "base_plan",
                                   "created_at": "2024-01-15T09:30:00.000Z",
                                   "environment_id": "environment_id",
                                   "id": "id",
-                                  "operator": "operator",
+                                  "operator": "eq",
                                   "resource_ids": [
                                     "resource_ids"
                                   ],
@@ -850,7 +850,7 @@ public class GetPlanGroupTest : BaseMockServerTest
                               "id": "id",
                               "name": "name",
                               "priority": 1000000,
-                              "rule_type": "rule_type",
+                              "rule_type": "company_override",
                               "updated_at": "2024-01-15T09:30:00.000Z",
                               "value": true
                             }
@@ -946,6 +946,7 @@ public class GetPlanGroupTest : BaseMockServerTest
                   "meter_event_name": "meter_event_name",
                   "meter_event_payload_key": "meter_event_payload_key",
                   "meter_id": "meter_id",
+                  "nickname": "nickname",
                   "package_size": 1000000,
                   "price": 1000000,
                   "price_decimal": "price_decimal",
@@ -985,7 +986,7 @@ public class GetPlanGroupTest : BaseMockServerTest
                     "compatible_plan_ids": [
                       "compatible_plan_ids"
                     ],
-                    "controlled_by": "controlled_by",
+                    "controlled_by": "orb",
                     "created_at": "2024-01-15T09:30:00.000Z",
                     "currency_prices": [
                       {
@@ -1030,11 +1031,11 @@ public class GetPlanGroupTest : BaseMockServerTest
                                   {
                                     "conditions": [
                                       {
-                                        "condition_type": "condition_type",
+                                        "condition_type": "base_plan",
                                         "created_at": "2024-01-15T09:30:00.000Z",
                                         "environment_id": "environment_id",
                                         "id": "id",
-                                        "operator": "operator",
+                                        "operator": "eq",
                                         "resource_ids": [
                                           "resource_ids"
                                         ],
@@ -1058,11 +1059,11 @@ public class GetPlanGroupTest : BaseMockServerTest
                                 ],
                                 "conditions": [
                                   {
-                                    "condition_type": "condition_type",
+                                    "condition_type": "base_plan",
                                     "created_at": "2024-01-15T09:30:00.000Z",
                                     "environment_id": "environment_id",
                                     "id": "id",
-                                    "operator": "operator",
+                                    "operator": "eq",
                                     "resource_ids": [
                                       "resource_ids"
                                     ],
@@ -1082,7 +1083,7 @@ public class GetPlanGroupTest : BaseMockServerTest
                                 "id": "id",
                                 "name": "name",
                                 "priority": 1000000,
-                                "rule_type": "rule_type",
+                                "rule_type": "company_override",
                                 "updated_at": "2024-01-15T09:30:00.000Z",
                                 "value": true
                               }
@@ -1191,7 +1192,7 @@ public class GetPlanGroupTest : BaseMockServerTest
                   "compatible_plan_ids": [
                     "compatible_plan_ids"
                   ],
-                  "controlled_by": "controlled_by",
+                  "controlled_by": "orb",
                   "copied_from_plan_id": "copied_from_plan_id",
                   "created_at": "2024-01-15T09:30:00.000Z",
                   "currency_prices": [
@@ -1254,11 +1255,11 @@ public class GetPlanGroupTest : BaseMockServerTest
                                 {
                                   "conditions": [
                                     {
-                                      "condition_type": "condition_type",
+                                      "condition_type": "base_plan",
                                       "created_at": "2024-01-15T09:30:00.000Z",
                                       "environment_id": "environment_id",
                                       "id": "id",
-                                      "operator": "operator",
+                                      "operator": "eq",
                                       "resource_ids": [
                                         "resource_ids"
                                       ],
@@ -1282,11 +1283,11 @@ public class GetPlanGroupTest : BaseMockServerTest
                               ],
                               "conditions": [
                                 {
-                                  "condition_type": "condition_type",
+                                  "condition_type": "base_plan",
                                   "created_at": "2024-01-15T09:30:00.000Z",
                                   "environment_id": "environment_id",
                                   "id": "id",
-                                  "operator": "operator",
+                                  "operator": "eq",
                                   "resource_ids": [
                                     "resource_ids"
                                   ],
@@ -1306,7 +1307,7 @@ public class GetPlanGroupTest : BaseMockServerTest
                               "id": "id",
                               "name": "name",
                               "priority": 1000000,
-                              "rule_type": "rule_type",
+                              "rule_type": "company_override",
                               "updated_at": "2024-01-15T09:30:00.000Z",
                               "value": true
                             }
@@ -1402,6 +1403,7 @@ public class GetPlanGroupTest : BaseMockServerTest
                   "meter_event_name": "meter_event_name",
                   "meter_event_payload_key": "meter_event_payload_key",
                   "meter_id": "meter_id",
+                  "nickname": "nickname",
                   "package_size": 1000000,
                   "price": 1000000,
                   "price_decimal": "price_decimal",

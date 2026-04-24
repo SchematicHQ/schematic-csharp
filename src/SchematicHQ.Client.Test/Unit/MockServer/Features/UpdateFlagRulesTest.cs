@@ -20,7 +20,7 @@ public class UpdateFlagRulesTest : BaseMockServerTest
                     {
                       "conditions": [
                         {
-                          "condition_type": "company",
+                          "condition_type": "base_plan",
                           "operator": "eq",
                           "resource_ids": [
                             "resource_ids"
@@ -31,7 +31,7 @@ public class UpdateFlagRulesTest : BaseMockServerTest
                   ],
                   "conditions": [
                     {
-                      "condition_type": "company",
+                      "condition_type": "base_plan",
                       "operator": "eq",
                       "resource_ids": [
                         "resource_ids"
@@ -57,7 +57,7 @@ public class UpdateFlagRulesTest : BaseMockServerTest
                   "flag_type": "boolean",
                   "id": "id",
                   "key": "key",
-                  "maintainer_id": "maintainer_id",
+                  "maintainer_account_member_id": "maintainer_account_member_id",
                   "name": "name",
                   "updated_at": "2024-01-15T09:30:00.000Z"
                 },
@@ -67,11 +67,11 @@ public class UpdateFlagRulesTest : BaseMockServerTest
                       {
                         "conditions": [
                           {
-                            "condition_type": "condition_type",
+                            "condition_type": "base_plan",
                             "created_at": "2024-01-15T09:30:00.000Z",
                             "environment_id": "environment_id",
                             "id": "id",
-                            "operator": "operator",
+                            "operator": "eq",
                             "resource_ids": [
                               "resource_ids"
                             ],
@@ -95,11 +95,11 @@ public class UpdateFlagRulesTest : BaseMockServerTest
                     ],
                     "conditions": [
                       {
-                        "condition_type": "condition_type",
+                        "condition_type": "base_plan",
                         "created_at": "2024-01-15T09:30:00.000Z",
                         "environment_id": "environment_id",
                         "id": "id",
-                        "operator": "operator",
+                        "operator": "eq",
                         "resource_ids": [
                           "resource_ids"
                         ],
@@ -119,7 +119,7 @@ public class UpdateFlagRulesTest : BaseMockServerTest
                     "id": "id",
                     "name": "name",
                     "priority": 1000000,
-                    "rule_type": "rule_type",
+                    "rule_type": "company_override",
                     "updated_at": "2024-01-15T09:30:00.000Z",
                     "value": true
                   }
@@ -163,9 +163,8 @@ public class UpdateFlagRulesTest : BaseMockServerTest
                                 {
                                     new CreateOrUpdateConditionRequestBody
                                     {
-                                        ConditionType =
-                                            CreateOrUpdateConditionRequestBodyConditionType.Company,
-                                        Operator = CreateOrUpdateConditionRequestBodyOperator.Eq,
+                                        ConditionType = ConditionType.BasePlan,
+                                        Operator = ComparableOperator.Eq,
                                         ResourceIds = new List<string>() { "resource_ids" },
                                     },
                                 },
@@ -175,9 +174,8 @@ public class UpdateFlagRulesTest : BaseMockServerTest
                         {
                             new CreateOrUpdateConditionRequestBody
                             {
-                                ConditionType =
-                                    CreateOrUpdateConditionRequestBodyConditionType.Company,
-                                Operator = CreateOrUpdateConditionRequestBodyOperator.Eq,
+                                ConditionType = ConditionType.BasePlan,
+                                Operator = ComparableOperator.Eq,
                                 ResourceIds = new List<string>() { "resource_ids" },
                             },
                         },

@@ -155,26 +155,7 @@ public partial interface ICompaniesClient
         CancellationToken cancellationToken = default
     );
 
-    WithRawResponseTask<CreatePlanTraitResponse> CreatePlanTraitAsync(
-        CreatePlanTraitRequestBody request,
-        RequestOptions? options = null,
-        CancellationToken cancellationToken = default
-    );
-
     WithRawResponseTask<GetPlanTraitResponse> GetPlanTraitAsync(
-        string planTraitId,
-        RequestOptions? options = null,
-        CancellationToken cancellationToken = default
-    );
-
-    WithRawResponseTask<UpdatePlanTraitResponse> UpdatePlanTraitAsync(
-        string planTraitId,
-        UpdatePlanTraitRequestBody request,
-        RequestOptions? options = null,
-        CancellationToken cancellationToken = default
-    );
-
-    WithRawResponseTask<DeletePlanTraitResponse> DeletePlanTraitAsync(
         string planTraitId,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default

@@ -2316,95 +2316,6 @@ public partial class CompaniesClient : ICompaniesClient
         }
     }
 
-    private async Task<WithRawResponse<CreatePlanTraitResponse>> CreatePlanTraitAsyncCore(
-        CreatePlanTraitRequestBody request,
-        RequestOptions? options = null,
-        CancellationToken cancellationToken = default
-    )
-    {
-        var _headers = await new SchematicHQ.Client.Core.HeadersBuilder.Builder()
-            .Add(_client.Options.Headers)
-            .Add(_client.Options.AdditionalHeaders)
-            .Add(options?.AdditionalHeaders)
-            .BuildAsync()
-            .ConfigureAwait(false);
-        var response = await _client
-            .SendRequestAsync(
-                new JsonRequest
-                {
-                    Method = HttpMethod.Post,
-                    Path = "plan-traits",
-                    Body = request,
-                    Headers = _headers,
-                    ContentType = "application/json",
-                    Options = options,
-                },
-                cancellationToken
-            )
-            .ConfigureAwait(false);
-        if (response.StatusCode is >= 200 and < 400)
-        {
-            var responseBody = await response
-                .Raw.Content.ReadAsStringAsync(cancellationToken)
-                .ConfigureAwait(false);
-            try
-            {
-                var responseData = JsonUtils.Deserialize<CreatePlanTraitResponse>(responseBody)!;
-                return new WithRawResponse<CreatePlanTraitResponse>()
-                {
-                    Data = responseData,
-                    RawResponse = new RawResponse()
-                    {
-                        StatusCode = response.Raw.StatusCode,
-                        Url = response.Raw.RequestMessage?.RequestUri ?? new Uri("about:blank"),
-                        Headers = ResponseHeaders.FromHttpResponseMessage(response.Raw),
-                    },
-                };
-            }
-            catch (JsonException e)
-            {
-                throw new SchematicApiException(
-                    "Failed to deserialize response",
-                    response.StatusCode,
-                    responseBody,
-                    e
-                );
-            }
-        }
-        {
-            var responseBody = await response
-                .Raw.Content.ReadAsStringAsync(cancellationToken)
-                .ConfigureAwait(false);
-            try
-            {
-                switch (response.StatusCode)
-                {
-                    case 400:
-                        throw new BadRequestError(JsonUtils.Deserialize<ApiError>(responseBody));
-                    case 401:
-                        throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
-                    case 403:
-                        throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
-                    case 404:
-                        throw new NotFoundError(JsonUtils.Deserialize<ApiError>(responseBody));
-                    case 500:
-                        throw new InternalServerError(
-                            JsonUtils.Deserialize<ApiError>(responseBody)
-                        );
-                }
-            }
-            catch (JsonException)
-            {
-                // unable to map error response, throwing generic error
-            }
-            throw new SchematicApiException(
-                $"Error with status code {response.StatusCode}",
-                response.StatusCode,
-                responseBody
-            );
-        }
-    }
-
     private async Task<WithRawResponse<GetPlanTraitResponse>> GetPlanTraitAsyncCore(
         string planTraitId,
         RequestOptions? options = null,
@@ -2469,189 +2380,6 @@ public partial class CompaniesClient : ICompaniesClient
             {
                 switch (response.StatusCode)
                 {
-                    case 401:
-                        throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
-                    case 403:
-                        throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
-                    case 404:
-                        throw new NotFoundError(JsonUtils.Deserialize<ApiError>(responseBody));
-                    case 500:
-                        throw new InternalServerError(
-                            JsonUtils.Deserialize<ApiError>(responseBody)
-                        );
-                }
-            }
-            catch (JsonException)
-            {
-                // unable to map error response, throwing generic error
-            }
-            throw new SchematicApiException(
-                $"Error with status code {response.StatusCode}",
-                response.StatusCode,
-                responseBody
-            );
-        }
-    }
-
-    private async Task<WithRawResponse<UpdatePlanTraitResponse>> UpdatePlanTraitAsyncCore(
-        string planTraitId,
-        UpdatePlanTraitRequestBody request,
-        RequestOptions? options = null,
-        CancellationToken cancellationToken = default
-    )
-    {
-        var _headers = await new SchematicHQ.Client.Core.HeadersBuilder.Builder()
-            .Add(_client.Options.Headers)
-            .Add(_client.Options.AdditionalHeaders)
-            .Add(options?.AdditionalHeaders)
-            .BuildAsync()
-            .ConfigureAwait(false);
-        var response = await _client
-            .SendRequestAsync(
-                new JsonRequest
-                {
-                    Method = HttpMethod.Put,
-                    Path = string.Format(
-                        "plan-traits/{0}",
-                        ValueConvert.ToPathParameterString(planTraitId)
-                    ),
-                    Body = request,
-                    Headers = _headers,
-                    ContentType = "application/json",
-                    Options = options,
-                },
-                cancellationToken
-            )
-            .ConfigureAwait(false);
-        if (response.StatusCode is >= 200 and < 400)
-        {
-            var responseBody = await response
-                .Raw.Content.ReadAsStringAsync(cancellationToken)
-                .ConfigureAwait(false);
-            try
-            {
-                var responseData = JsonUtils.Deserialize<UpdatePlanTraitResponse>(responseBody)!;
-                return new WithRawResponse<UpdatePlanTraitResponse>()
-                {
-                    Data = responseData,
-                    RawResponse = new RawResponse()
-                    {
-                        StatusCode = response.Raw.StatusCode,
-                        Url = response.Raw.RequestMessage?.RequestUri ?? new Uri("about:blank"),
-                        Headers = ResponseHeaders.FromHttpResponseMessage(response.Raw),
-                    },
-                };
-            }
-            catch (JsonException e)
-            {
-                throw new SchematicApiException(
-                    "Failed to deserialize response",
-                    response.StatusCode,
-                    responseBody,
-                    e
-                );
-            }
-        }
-        {
-            var responseBody = await response
-                .Raw.Content.ReadAsStringAsync(cancellationToken)
-                .ConfigureAwait(false);
-            try
-            {
-                switch (response.StatusCode)
-                {
-                    case 400:
-                        throw new BadRequestError(JsonUtils.Deserialize<ApiError>(responseBody));
-                    case 401:
-                        throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
-                    case 403:
-                        throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
-                    case 404:
-                        throw new NotFoundError(JsonUtils.Deserialize<ApiError>(responseBody));
-                    case 500:
-                        throw new InternalServerError(
-                            JsonUtils.Deserialize<ApiError>(responseBody)
-                        );
-                }
-            }
-            catch (JsonException)
-            {
-                // unable to map error response, throwing generic error
-            }
-            throw new SchematicApiException(
-                $"Error with status code {response.StatusCode}",
-                response.StatusCode,
-                responseBody
-            );
-        }
-    }
-
-    private async Task<WithRawResponse<DeletePlanTraitResponse>> DeletePlanTraitAsyncCore(
-        string planTraitId,
-        RequestOptions? options = null,
-        CancellationToken cancellationToken = default
-    )
-    {
-        var _headers = await new SchematicHQ.Client.Core.HeadersBuilder.Builder()
-            .Add(_client.Options.Headers)
-            .Add(_client.Options.AdditionalHeaders)
-            .Add(options?.AdditionalHeaders)
-            .BuildAsync()
-            .ConfigureAwait(false);
-        var response = await _client
-            .SendRequestAsync(
-                new JsonRequest
-                {
-                    Method = HttpMethod.Delete,
-                    Path = string.Format(
-                        "plan-traits/{0}",
-                        ValueConvert.ToPathParameterString(planTraitId)
-                    ),
-                    Headers = _headers,
-                    Options = options,
-                },
-                cancellationToken
-            )
-            .ConfigureAwait(false);
-        if (response.StatusCode is >= 200 and < 400)
-        {
-            var responseBody = await response
-                .Raw.Content.ReadAsStringAsync(cancellationToken)
-                .ConfigureAwait(false);
-            try
-            {
-                var responseData = JsonUtils.Deserialize<DeletePlanTraitResponse>(responseBody)!;
-                return new WithRawResponse<DeletePlanTraitResponse>()
-                {
-                    Data = responseData,
-                    RawResponse = new RawResponse()
-                    {
-                        StatusCode = response.Raw.StatusCode,
-                        Url = response.Raw.RequestMessage?.RequestUri ?? new Uri("about:blank"),
-                        Headers = ResponseHeaders.FromHttpResponseMessage(response.Raw),
-                    },
-                };
-            }
-            catch (JsonException e)
-            {
-                throw new SchematicApiException(
-                    "Failed to deserialize response",
-                    response.StatusCode,
-                    responseBody,
-                    e
-                );
-            }
-        }
-        {
-            var responseBody = await response
-                .Raw.Content.ReadAsStringAsync(cancellationToken)
-                .ConfigureAwait(false);
-            try
-            {
-                switch (response.StatusCode)
-                {
-                    case 400:
-                        throw new BadRequestError(JsonUtils.Deserialize<ApiError>(responseBody));
                     case 401:
                         throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
                     case 403:
@@ -3680,13 +3408,18 @@ public partial class CompaniesClient : ICompaniesClient
     /// await client.Companies.ListCompaniesAsync(
     ///     new ListCompaniesRequest
     ///     {
+    ///         CreditTypeIds = [new List&lt;string&gt;() { "credit_type_ids" }],
     ///         HasScheduledDowngrade = true,
+    ///         Ids = [new List&lt;string&gt;() { "ids" }],
     ///         MonetizedSubscriptions = true,
     ///         PlanId = "plan_id",
+    ///         PlanIds = [new List&lt;string&gt;() { "plan_ids" }],
     ///         PlanVersionId = "plan_version_id",
     ///         Q = "q",
     ///         SortOrderColumn = "sort_order_column",
     ///         SortOrderDirection = SortDirection.Asc,
+    ///         SubscriptionStatuses = [new List&lt;SubscriptionStatus&gt;() { SubscriptionStatus.Active }],
+    ///         SubscriptionTypes = [new List&lt;SubscriptionType&gt;() { SubscriptionType.Free }],
     ///         WithEntitlementFor = "with_entitlement_for",
     ///         WithoutFeatureOverrideFor = "without_feature_override_for",
     ///         WithoutPlan = true,
@@ -3760,13 +3493,18 @@ public partial class CompaniesClient : ICompaniesClient
     /// await client.Companies.CountCompaniesAsync(
     ///     new CountCompaniesRequest
     ///     {
+    ///         CreditTypeIds = [new List&lt;string&gt;() { "credit_type_ids" }],
     ///         HasScheduledDowngrade = true,
+    ///         Ids = [new List&lt;string&gt;() { "ids" }],
     ///         MonetizedSubscriptions = true,
     ///         PlanId = "plan_id",
+    ///         PlanIds = [new List&lt;string&gt;() { "plan_ids" }],
     ///         PlanVersionId = "plan_version_id",
     ///         Q = "q",
     ///         SortOrderColumn = "sort_order_column",
     ///         SortOrderDirection = SortDirection.Asc,
+    ///         SubscriptionStatuses = [new List&lt;SubscriptionStatus&gt;() { SubscriptionStatus.Active }],
+    ///         SubscriptionTypes = [new List&lt;SubscriptionType&gt;() { SubscriptionType.Free }],
     ///         WithEntitlementFor = "with_entitlement_for",
     ///         WithoutFeatureOverrideFor = "without_feature_override_for",
     ///         WithoutPlan = true,
@@ -3900,6 +3638,7 @@ public partial class CompaniesClient : ICompaniesClient
     ///     new GetActiveCompanySubscriptionRequest
     ///     {
     ///         CompanyId = "company_id",
+    ///         CompanyIds = [new List&lt;string&gt;() { "company_ids" }],
     ///         Limit = 1000000,
     ///         Offset = 1000000,
     ///     }
@@ -3941,6 +3680,7 @@ public partial class CompaniesClient : ICompaniesClient
     ///     new ListEntityKeyDefinitionsRequest
     ///     {
     ///         EntityType = EntityType.Company,
+    ///         Ids = [new List&lt;string&gt;() { "ids" }],
     ///         Q = "q",
     ///         Limit = 1000000,
     ///         Offset = 1000000,
@@ -3963,6 +3703,7 @@ public partial class CompaniesClient : ICompaniesClient
     ///     new CountEntityKeyDefinitionsRequest
     ///     {
     ///         EntityType = EntityType.Company,
+    ///         Ids = [new List&lt;string&gt;() { "ids" }],
     ///         Q = "q",
     ///         Limit = 1000000,
     ///         Offset = 1000000,
@@ -3985,8 +3726,10 @@ public partial class CompaniesClient : ICompaniesClient
     ///     new ListEntityTraitDefinitionsRequest
     ///     {
     ///         EntityType = EntityType.Company,
+    ///         Ids = [new List&lt;string&gt;() { "ids" }],
     ///         Q = "q",
     ///         TraitType = TraitType.Boolean,
+    ///         TraitTypes = [new List&lt;TraitType&gt;() { TraitType.Boolean }],
     ///         Limit = 1000000,
     ///         Offset = 1000000,
     ///     }
@@ -4066,8 +3809,10 @@ public partial class CompaniesClient : ICompaniesClient
     ///     new CountEntityTraitDefinitionsRequest
     ///     {
     ///         EntityType = EntityType.Company,
+    ///         Ids = [new List&lt;string&gt;() { "ids" }],
     ///         Q = "q",
     ///         TraitType = TraitType.Boolean,
+    ///         TraitTypes = [new List&lt;TraitType&gt;() { TraitType.Boolean }],
     ///         Limit = 1000000,
     ///         Offset = 1000000,
     ///     }
@@ -4113,6 +3858,8 @@ public partial class CompaniesClient : ICompaniesClient
     ///         Action = PlanChangeAction.Checkout,
     ///         BasePlanAction = PlanChangeBasePlanAction.Fallback,
     ///         CompanyId = "company_id",
+    ///         CompanyIds = [new List&lt;string&gt;() { "company_ids" }],
+    ///         PlanIds = [new List&lt;string&gt;() { "plan_ids" }],
     ///         Limit = 1000000,
     ///         Offset = 1000000,
     ///     }
@@ -4147,8 +3894,10 @@ public partial class CompaniesClient : ICompaniesClient
     /// await client.Companies.ListPlanTraitsAsync(
     ///     new ListPlanTraitsRequest
     ///     {
+    ///         Ids = [new List&lt;string&gt;() { "ids" }],
     ///         PlanId = "plan_id",
     ///         TraitId = "trait_id",
+    ///         TraitIds = [new List&lt;string&gt;() { "trait_ids" }],
     ///         Limit = 1000000,
     ///         Offset = 1000000,
     ///     }
@@ -4166,27 +3915,6 @@ public partial class CompaniesClient : ICompaniesClient
     }
 
     /// <example><code>
-    /// await client.Companies.CreatePlanTraitAsync(
-    ///     new CreatePlanTraitRequestBody
-    ///     {
-    ///         PlanId = "plan_id",
-    ///         TraitId = "trait_id",
-    ///         TraitValue = "trait_value",
-    ///     }
-    /// );
-    /// </code></example>
-    public WithRawResponseTask<CreatePlanTraitResponse> CreatePlanTraitAsync(
-        CreatePlanTraitRequestBody request,
-        RequestOptions? options = null,
-        CancellationToken cancellationToken = default
-    )
-    {
-        return new WithRawResponseTask<CreatePlanTraitResponse>(
-            CreatePlanTraitAsyncCore(request, options, cancellationToken)
-        );
-    }
-
-    /// <example><code>
     /// await client.Companies.GetPlanTraitAsync("plan_trait_id");
     /// </code></example>
     public WithRawResponseTask<GetPlanTraitResponse> GetPlanTraitAsync(
@@ -4197,38 +3925,6 @@ public partial class CompaniesClient : ICompaniesClient
     {
         return new WithRawResponseTask<GetPlanTraitResponse>(
             GetPlanTraitAsyncCore(planTraitId, options, cancellationToken)
-        );
-    }
-
-    /// <example><code>
-    /// await client.Companies.UpdatePlanTraitAsync(
-    ///     "plan_trait_id",
-    ///     new UpdatePlanTraitRequestBody { PlanId = "plan_id", TraitValue = "trait_value" }
-    /// );
-    /// </code></example>
-    public WithRawResponseTask<UpdatePlanTraitResponse> UpdatePlanTraitAsync(
-        string planTraitId,
-        UpdatePlanTraitRequestBody request,
-        RequestOptions? options = null,
-        CancellationToken cancellationToken = default
-    )
-    {
-        return new WithRawResponseTask<UpdatePlanTraitResponse>(
-            UpdatePlanTraitAsyncCore(planTraitId, request, options, cancellationToken)
-        );
-    }
-
-    /// <example><code>
-    /// await client.Companies.DeletePlanTraitAsync("plan_trait_id");
-    /// </code></example>
-    public WithRawResponseTask<DeletePlanTraitResponse> DeletePlanTraitAsync(
-        string planTraitId,
-        RequestOptions? options = null,
-        CancellationToken cancellationToken = default
-    )
-    {
-        return new WithRawResponseTask<DeletePlanTraitResponse>(
-            DeletePlanTraitAsyncCore(planTraitId, options, cancellationToken)
         );
     }
 
@@ -4264,8 +3960,10 @@ public partial class CompaniesClient : ICompaniesClient
     /// await client.Companies.CountPlanTraitsAsync(
     ///     new CountPlanTraitsRequest
     ///     {
+    ///         Ids = [new List&lt;string&gt;() { "ids" }],
     ///         PlanId = "plan_id",
     ///         TraitId = "trait_id",
+    ///         TraitIds = [new List&lt;string&gt;() { "trait_ids" }],
     ///         Limit = 1000000,
     ///         Offset = 1000000,
     ///     }
@@ -4307,6 +4005,7 @@ public partial class CompaniesClient : ICompaniesClient
     ///     new ListUsersRequest
     ///     {
     ///         CompanyId = "company_id",
+    ///         Ids = [new List&lt;string&gt;() { "ids" }],
     ///         PlanId = "plan_id",
     ///         Q = "q",
     ///         Limit = 1000000,
@@ -4374,6 +4073,7 @@ public partial class CompaniesClient : ICompaniesClient
     ///     new CountUsersRequest
     ///     {
     ///         CompanyId = "company_id",
+    ///         Ids = [new List&lt;string&gt;() { "ids" }],
     ///         PlanId = "plan_id",
     ///         Q = "q",
     ///         Limit = 1000000,

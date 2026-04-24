@@ -211,8 +211,8 @@ public class UpdateCompanyOverrideTest : BaseMockServerTest
                       "created_at": "2024-01-15T09:30:00.000Z",
                       "environment_id": "environment_id",
                       "event_subtype": "event_subtype",
-                      "month_reset": "month_reset",
-                      "period": "period",
+                      "month_reset": "billing_cycle",
+                      "period": "all_time",
                       "value": 1000000
                     }
                   ],
@@ -290,7 +290,7 @@ public class UpdateCompanyOverrideTest : BaseMockServerTest
                       "id": "id",
                       "name": "name",
                       "priority": 1000000,
-                      "rule_type": "default",
+                      "rule_type": "company_override",
                       "value": true
                     }
                   ],
@@ -324,7 +324,7 @@ public class UpdateCompanyOverrideTest : BaseMockServerTest
                   "icon": "icon",
                   "id": "id",
                   "lifecycle_phase": "add_on",
-                  "maintainer_id": "maintainer_id",
+                  "maintainer_account_member_id": "maintainer_account_member_id",
                   "name": "name",
                   "plural_name": "plural_name",
                   "singular_name": "singular_name",
@@ -333,8 +333,8 @@ public class UpdateCompanyOverrideTest : BaseMockServerTest
                 },
                 "feature_id": "feature_id",
                 "id": "id",
-                "metric_period": "metric_period",
-                "metric_period_month_reset": "metric_period_month_reset",
+                "metric_period": "all_time",
+                "metric_period_month_reset": "billing_cycle",
                 "notes": [
                   {
                     "created_at": "2024-01-15T09:30:00.000Z",

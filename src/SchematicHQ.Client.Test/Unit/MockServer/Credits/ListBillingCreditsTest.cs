@@ -89,6 +89,7 @@ public class ListBillingCreditsTest : BaseMockServerTest
         var response = await Client.Credits.ListBillingCreditsAsync(
             new ListBillingCreditsRequest
             {
+                Ids = new List<string>() { "ids" },
                 Name = "name",
                 Limit = 1000000,
                 Offset = 1000000,

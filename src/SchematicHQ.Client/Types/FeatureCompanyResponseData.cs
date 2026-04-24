@@ -108,7 +108,7 @@ public record FeatureCompanyResponseData : IJsonOnDeserialized
     public required EntitlementType EntitlementType { get; set; }
 
     [JsonPropertyName("feature")]
-    public FeatureDetailResponseData? Feature { get; set; }
+    public FeatureInPlanResponseData? Feature { get; set; }
 
     /// <summary>
     /// Whether a valid allocation exists
@@ -132,7 +132,7 @@ public record FeatureCompanyResponseData : IJsonOnDeserialized
     /// If the period is current_month, when the month resets.
     /// </summary>
     [JsonPropertyName("month_reset")]
-    public string? MonthReset { get; set; }
+    public MetricPeriodMonthReset? MonthReset { get; set; }
 
     [JsonPropertyName("monthly_usage_based_price")]
     public BillingPriceView? MonthlyUsageBasedPrice { get; set; }
@@ -153,7 +153,7 @@ public record FeatureCompanyResponseData : IJsonOnDeserialized
     /// The period over which usage is measured.
     /// </summary>
     [JsonPropertyName("period")]
-    public string? Period { get; set; }
+    public MetricPeriod? Period { get; set; }
 
     [JsonPropertyName("plan")]
     public PlanResponseData? Plan { get; set; }

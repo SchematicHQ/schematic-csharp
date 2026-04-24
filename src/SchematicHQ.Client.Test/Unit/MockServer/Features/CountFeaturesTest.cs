@@ -59,6 +59,8 @@ public class CountFeaturesTest : BaseMockServerTest
             new CountFeaturesRequest
             {
                 BooleanRequireEvent = true,
+                FeatureType = new List<FeatureType>() { FeatureType.Boolean },
+                Ids = new List<string>() { "ids" },
                 PlanVersionId = "plan_version_id",
                 Q = "q",
                 WithoutCompanyOverrideFor = "without_company_override_for",

@@ -17,6 +17,9 @@ public record ApiKeyResponseData : IJsonOnDeserialized
     [JsonPropertyName("description")]
     public string? Description { get; set; }
 
+    [JsonPropertyName("environment")]
+    public EnvironmentResponseData? Environment { get; set; }
+
     [JsonPropertyName("environment_id")]
     public string? EnvironmentId { get; set; }
 

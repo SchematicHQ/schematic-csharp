@@ -53,8 +53,10 @@ public class CountPlanTraitsTest : BaseMockServerTest
         var response = await Client.Companies.CountPlanTraitsAsync(
             new CountPlanTraitsRequest
             {
+                Ids = new List<string>() { "ids" },
                 PlanId = "plan_id",
                 TraitId = "trait_id",
+                TraitIds = new List<string>() { "trait_ids" },
                 Limit = 1000000,
                 Offset = 1000000,
             }

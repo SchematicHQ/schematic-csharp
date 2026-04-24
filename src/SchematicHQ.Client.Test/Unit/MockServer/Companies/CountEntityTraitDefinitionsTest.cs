@@ -56,8 +56,10 @@ public class CountEntityTraitDefinitionsTest : BaseMockServerTest
             new CountEntityTraitDefinitionsRequest
             {
                 EntityType = EntityType.Company,
+                Ids = new List<string>() { "ids" },
                 Q = "q",
                 TraitType = TraitType.Boolean,
+                TraitTypes = new List<TraitType>() { TraitType.Boolean },
                 Limit = 1000000,
                 Offset = 1000000,
             }

@@ -61,6 +61,7 @@ public class ListAccountMembersTest : BaseMockServerTest
         var response = await Client.Accounts.ListAccountMembersAsync(
             new ListAccountMembersRequest
             {
+                Ids = new List<string>() { "ids" },
                 Q = "q",
                 Limit = 1000000,
                 Offset = 1000000,

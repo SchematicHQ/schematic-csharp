@@ -3,32 +3,32 @@ using System.Collections.Generic;
 
 namespace SchematicHQ.Client.RulesEngine
 {
-  public static class RulesengineRuleRuleTypeExtensions
+  public static class RulesengineRuleTypeExtensions
   {
-    public static string DisplayName(this RulesengineRuleRuleType ruleType)
+    public static string DisplayName(this RulesengineRuleType ruleType)
     {
       return ruleType.Value.Replace("_", " ");
     }
 
-    public static bool IsEntitlement(this RulesengineRuleRuleType ruleType)
+    public static bool IsEntitlement(this RulesengineRuleType ruleType)
     {
-      return ruleType == RulesengineRuleRuleType.PlanEntitlement.Value ||
-             ruleType == RulesengineRuleRuleType.PlanEntitlementUsageExceeded.Value ||
-             ruleType == RulesengineRuleRuleType.CompanyOverride.Value ||
-             ruleType == RulesengineRuleRuleType.CompanyOverrideUsageExceeded.Value;
+      return ruleType == RulesengineRuleType.PlanEntitlement.Value ||
+             ruleType == RulesengineRuleType.PlanEntitlementUsageExceeded.Value ||
+             ruleType == RulesengineRuleType.CompanyOverride.Value ||
+             ruleType == RulesengineRuleType.CompanyOverrideUsageExceeded.Value;
     }
 
-    public static RulePrioritizationMethod PrioritizationMethod(this RulesengineRuleRuleType ruleType)
+    public static RulePrioritizationMethod PrioritizationMethod(this RulesengineRuleType ruleType)
     {
-      if (ruleType == RulesengineRuleRuleType.Standard.Value)
+      if (ruleType == RulesengineRuleType.Standard.Value)
       {
         return RulePrioritizationMethod.Priority;
       }
 
-      if (ruleType == RulesengineRuleRuleType.CompanyOverride.Value ||
-          ruleType == RulesengineRuleRuleType.PlanEntitlement.Value ||
-          ruleType == RulesengineRuleRuleType.CompanyOverrideUsageExceeded.Value ||
-          ruleType == RulesengineRuleRuleType.PlanEntitlementUsageExceeded.Value)
+      if (ruleType == RulesengineRuleType.CompanyOverride.Value ||
+          ruleType == RulesengineRuleType.PlanEntitlement.Value ||
+          ruleType == RulesengineRuleType.CompanyOverrideUsageExceeded.Value ||
+          ruleType == RulesengineRuleType.PlanEntitlementUsageExceeded.Value)
       {
         return RulePrioritizationMethod.Optimistic;
       }
@@ -36,15 +36,15 @@ namespace SchematicHQ.Client.RulesEngine
       return RulePrioritizationMethod.None;
     }
 
-    public static List<RulesengineRuleRuleType> RuleTypePriority = new List<RulesengineRuleRuleType>
+    public static List<RulesengineRuleType> RuleTypePriority = new List<RulesengineRuleType>
         {
-            RulesengineRuleRuleType.GlobalOverride,
-            RulesengineRuleRuleType.CompanyOverride,
-            RulesengineRuleRuleType.PlanEntitlement,
-            RulesengineRuleRuleType.CompanyOverrideUsageExceeded,
-            RulesengineRuleRuleType.PlanEntitlementUsageExceeded,
-            RulesengineRuleRuleType.Standard,
-            RulesengineRuleRuleType.Default
+            RulesengineRuleType.GlobalOverride,
+            RulesengineRuleType.CompanyOverride,
+            RulesengineRuleType.PlanEntitlement,
+            RulesengineRuleType.CompanyOverrideUsageExceeded,
+            RulesengineRuleType.PlanEntitlementUsageExceeded,
+            RulesengineRuleType.Standard,
+            RulesengineRuleType.Default
         };
   }
 

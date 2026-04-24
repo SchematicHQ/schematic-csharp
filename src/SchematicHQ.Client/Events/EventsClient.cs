@@ -583,6 +583,7 @@ public partial class EventsClient : IEventsClient
     ///     new GetEventSummariesRequest
     ///     {
     ///         Q = "q",
+    ///         EventSubtypes = [new List&lt;string&gt;() { "event_subtypes" }],
     ///         Limit = 1000000,
     ///         Offset = 1000000,
     ///     }
@@ -605,6 +606,7 @@ public partial class EventsClient : IEventsClient
     ///     {
     ///         CompanyId = "company_id",
     ///         EventSubtype = "event_subtype",
+    ///         EventTypes = [new List&lt;EventType&gt;() { EventType.FlagCheck }],
     ///         FlagId = "flag_id",
     ///         UserId = "user_id",
     ///         Limit = 1000000,

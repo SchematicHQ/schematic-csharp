@@ -18,7 +18,7 @@ public record CreateOrUpdateConditionRequestBody : IJsonOnDeserialized
     public string? ComparisonTraitId { get; set; }
 
     [JsonPropertyName("condition_type")]
-    public required CreateOrUpdateConditionRequestBodyConditionType ConditionType { get; set; }
+    public required ConditionType ConditionType { get; set; }
 
     /// <summary>
     /// Cost of credit to use to measure this condition
@@ -45,13 +45,13 @@ public record CreateOrUpdateConditionRequestBody : IJsonOnDeserialized
     /// Period of time over which to measure the track event metric
     /// </summary>
     [JsonPropertyName("metric_period")]
-    public CreateOrUpdateConditionRequestBodyMetricPeriod? MetricPeriod { get; set; }
+    public MetricPeriod? MetricPeriod { get; set; }
 
     /// <summary>
     /// When metric_period=current_month, specify whether the month restarts based on the calendar month or the billing period
     /// </summary>
     [JsonPropertyName("metric_period_month_reset")]
-    public CreateOrUpdateConditionRequestBodyMetricPeriodMonthReset? MetricPeriodMonthReset { get; set; }
+    public MetricPeriodMonthReset? MetricPeriodMonthReset { get; set; }
 
     /// <summary>
     /// Value to compare the track event metric against
@@ -60,7 +60,7 @@ public record CreateOrUpdateConditionRequestBody : IJsonOnDeserialized
     public long? MetricValue { get; set; }
 
     [JsonPropertyName("operator")]
-    public required CreateOrUpdateConditionRequestBodyOperator Operator { get; set; }
+    public required ComparableOperator Operator { get; set; }
 
     /// <summary>
     /// List of resource IDs (companies, users, or plans) targeted by this condition

@@ -51,7 +51,7 @@ namespace SchematicHQ.Client.Test
                     UserId = userId,
                     FlagId = flagId,
                     RuleId = ruleId,
-                    RuleType = ruleType
+                    RuleType = ruleType != null ? RuleType.FromCustom(ruleType) : null
                 }
             };
             var serializedResponse = JsonSerializer.Serialize(response, new JsonSerializerOptions { WriteIndented = true });

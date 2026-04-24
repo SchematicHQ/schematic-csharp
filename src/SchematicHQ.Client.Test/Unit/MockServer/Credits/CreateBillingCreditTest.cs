@@ -44,6 +44,7 @@ public class CreateBillingCreditTest : BaseMockServerTest
                   "external_price_id": "external_price_id",
                   "id": "id",
                   "interval": "day",
+                  "nickname": "nickname",
                   "price": 1000000,
                   "price_decimal": "price_decimal",
                   "provider_type": "orb",

@@ -9,6 +9,6 @@ namespace SchematicHQ.Client.RulesEngine.Utils
         /// Auto-generated hash of all model files.
         /// This value changes whenever any model file is modified.
         /// </summary>
-        public const string Value = "505a2bcd";
+        public const string Value = "db9eae8a";
     }
 }

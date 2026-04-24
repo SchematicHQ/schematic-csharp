@@ -44,9 +44,6 @@ public record FeatureView : IJsonOnDeserialized
     [JsonPropertyName("lifecycle_phase")]
     public FeatureLifecyclePhase? LifecyclePhase { get; set; }
 
-    [JsonPropertyName("maintainer_id")]
-    public string? MaintainerId { get; set; }
-
     [JsonPropertyName("name")]
     public required string Name { get; set; }
 

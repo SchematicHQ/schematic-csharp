@@ -43,6 +43,9 @@ public record CompanySubscriptionResponseData : IJsonOnDeserialized
     public IEnumerable<BillingProductForSubscriptionResponseData> Products { get; set; } =
         new List<BillingProductForSubscriptionResponseData>();
 
+    [JsonPropertyName("provider_type")]
+    public required BillingProviderType ProviderType { get; set; }
+
     [JsonPropertyName("status")]
     public required string Status { get; set; }
 

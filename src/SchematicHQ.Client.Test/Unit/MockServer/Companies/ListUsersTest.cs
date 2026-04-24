@@ -95,6 +95,7 @@ public class ListUsersTest : BaseMockServerTest
             new ListUsersRequest
             {
                 CompanyId = "company_id",
+                Ids = new List<string>() { "ids" },
                 PlanId = "plan_id",
                 Q = "q",
                 Limit = 1000000,

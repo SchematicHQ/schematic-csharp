@@ -38,8 +38,11 @@ public record FlagDetailResponseData : IJsonOnDeserialized
     [JsonPropertyName("last_checked_at")]
     public DateTime? LastCheckedAt { get; set; }
 
-    [JsonPropertyName("maintainer_id")]
-    public string? MaintainerId { get; set; }
+    [JsonPropertyName("maintainer")]
+    public AccountMemberResponseData? Maintainer { get; set; }
+
+    [JsonPropertyName("maintainer_account_member_id")]
+    public string? MaintainerAccountMemberId { get; set; }
 
     [JsonPropertyName("name")]
     public required string Name { get; set; }

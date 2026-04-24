@@ -10,6 +10,8 @@ public readonly record struct CustomPlanBillingStatus : IStringEnum
 {
     public static readonly CustomPlanBillingStatus Active = new(Values.Active);
 
+    public static readonly CustomPlanBillingStatus Expired = new(Values.Expired);
+
     public static readonly CustomPlanBillingStatus Paid = new(Values.Paid);
 
     public static readonly CustomPlanBillingStatus Pending = new(Values.Pending);
@@ -111,6 +113,8 @@ public readonly record struct CustomPlanBillingStatus : IStringEnum
     public static class Values
     {
         public const string Active = "active";
+
+        public const string Expired = "expired";
 
         public const string Paid = "paid";
 

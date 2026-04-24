@@ -45,7 +45,7 @@ namespace SchematicHQ.Client.Test.RulesEngine
         Id = GenerateTestId("rule"),
         AccountId = GenerateTestId("acct"),
         EnvironmentId = GenerateTestId("env"),
-        RuleType = RulesengineRuleRuleType.Standard,
+        RuleType = RulesengineRuleType.Standard,
         Name = $"Test Rule {Random.Next(1000)}",
         Priority = 1,
         Conditions = new List<RulesengineCondition>(),
@@ -67,7 +67,7 @@ namespace SchematicHQ.Client.Test.RulesEngine
       };
     }
 
-    public static RulesengineCondition CreateTestCondition(RulesengineConditionConditionType conditionType)
+    public static RulesengineCondition CreateTestCondition(RulesengineConditionType conditionType)
     {
       var condition = new RulesengineCondition
       {
@@ -76,21 +76,21 @@ namespace SchematicHQ.Client.Test.RulesEngine
         EnvironmentId = GenerateTestId("env"),
         ConditionType = conditionType,
         ResourceIds = new List<string>(),
-        Operator = RulesengineConditionOperator.Eq,
+        Operator = ComparableOperator.Eq,
         TraitValue = ""
       };
 
-      if (conditionType == RulesengineConditionConditionType.Metric)
+      if (conditionType == RulesengineConditionType.Metric)
       {
         condition.EventSubtype = $"test_event_{Random.Next(1000)}";
-        condition.MetricPeriod = RulesengineConditionMetricPeriod.AllTime;
+        condition.MetricPeriod = RulesengineMetricPeriod.AllTime;
         condition.MetricValue = 10;
       }
 
       return condition;
     }
 
-    public static RulesengineCompanyMetric CreateTestMetric(RulesengineCompany company, string eventSubtype, RulesengineConditionMetricPeriod period, int value)
+    public static RulesengineCompanyMetric CreateTestMetric(RulesengineCompany company, string eventSubtype, RulesengineMetricPeriod period, int value)
     {
       return new RulesengineCompanyMetric
       {
@@ -98,8 +98,8 @@ namespace SchematicHQ.Client.Test.RulesEngine
         EnvironmentId = company.EnvironmentId,
         CompanyId = company.Id,
         EventSubtype = eventSubtype,
-        Period = new RulesengineCompanyMetricPeriod(period.Value),
-        MonthReset = RulesengineCompanyMetricMonthReset.FirstOfMonth,
+        Period = new RulesengineMetricPeriod(period.Value),
+        MonthReset = RulesengineMetricPeriodMonthReset.FirstOfMonth,
         Value = value,
         CreatedAt = DateTime.UtcNow,
       };

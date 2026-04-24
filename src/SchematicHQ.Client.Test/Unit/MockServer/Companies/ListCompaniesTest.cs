@@ -205,8 +205,8 @@ public class ListCompaniesTest : BaseMockServerTest
                       "created_at": "2024-01-15T09:30:00.000Z",
                       "environment_id": "environment_id",
                       "event_subtype": "event_subtype",
-                      "month_reset": "month_reset",
-                      "period": "period",
+                      "month_reset": "billing_cycle",
+                      "period": "all_time",
                       "value": 1000000
                     }
                   ],
@@ -284,7 +284,7 @@ public class ListCompaniesTest : BaseMockServerTest
                       "id": "id",
                       "name": "name",
                       "priority": 1000000,
-                      "rule_type": "default",
+                      "rule_type": "company_override",
                       "value": true
                     }
                   ],
@@ -366,13 +366,18 @@ public class ListCompaniesTest : BaseMockServerTest
         var response = await Client.Companies.ListCompaniesAsync(
             new ListCompaniesRequest
             {
+                CreditTypeIds = new List<string>() { "credit_type_ids" },
                 HasScheduledDowngrade = true,
+                Ids = new List<string>() { "ids" },
                 MonetizedSubscriptions = true,
                 PlanId = "plan_id",
+                PlanIds = new List<string>() { "plan_ids" },
                 PlanVersionId = "plan_version_id",
                 Q = "q",
                 SortOrderColumn = "sort_order_column",
                 SortOrderDirection = SortDirection.Asc,
+                SubscriptionStatuses = new List<SubscriptionStatus>() { SubscriptionStatus.Active },
+                SubscriptionTypes = new List<SubscriptionType>() { SubscriptionType.Free },
                 WithEntitlementFor = "with_entitlement_for",
                 WithoutFeatureOverrideFor = "without_feature_override_for",
                 WithoutPlan = true,

@@ -4,37 +4,29 @@ using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
 
-[JsonConverter(
-    typeof(RulesengineCheckFlagResultRuleType.RulesengineCheckFlagResultRuleTypeSerializer)
-)]
+[JsonConverter(typeof(RulesengineRuleType.RulesengineRuleTypeSerializer))]
 [Serializable]
-public readonly record struct RulesengineCheckFlagResultRuleType : IStringEnum
+public readonly record struct RulesengineRuleType : IStringEnum
 {
-    public static readonly RulesengineCheckFlagResultRuleType Default = new(Values.Default);
+    public static readonly RulesengineRuleType CompanyOverride = new(Values.CompanyOverride);
 
-    public static readonly RulesengineCheckFlagResultRuleType GlobalOverride = new(
-        Values.GlobalOverride
-    );
-
-    public static readonly RulesengineCheckFlagResultRuleType CompanyOverride = new(
-        Values.CompanyOverride
-    );
-
-    public static readonly RulesengineCheckFlagResultRuleType CompanyOverrideUsageExceeded = new(
+    public static readonly RulesengineRuleType CompanyOverrideUsageExceeded = new(
         Values.CompanyOverrideUsageExceeded
     );
 
-    public static readonly RulesengineCheckFlagResultRuleType PlanEntitlement = new(
-        Values.PlanEntitlement
-    );
+    public static readonly RulesengineRuleType Default = new(Values.Default);
 
-    public static readonly RulesengineCheckFlagResultRuleType PlanEntitlementUsageExceeded = new(
+    public static readonly RulesengineRuleType GlobalOverride = new(Values.GlobalOverride);
+
+    public static readonly RulesengineRuleType PlanEntitlement = new(Values.PlanEntitlement);
+
+    public static readonly RulesengineRuleType PlanEntitlementUsageExceeded = new(
         Values.PlanEntitlementUsageExceeded
     );
 
-    public static readonly RulesengineCheckFlagResultRuleType Standard = new(Values.Standard);
+    public static readonly RulesengineRuleType Standard = new(Values.Standard);
 
-    public RulesengineCheckFlagResultRuleType(string value)
+    public RulesengineRuleType(string value)
     {
         Value = value;
     }
@@ -47,9 +39,9 @@ public readonly record struct RulesengineCheckFlagResultRuleType : IStringEnum
     /// <summary>
     /// Create a string enum with the given value.
     /// </summary>
-    public static RulesengineCheckFlagResultRuleType FromCustom(string value)
+    public static RulesengineRuleType FromCustom(string value)
     {
-        return new RulesengineCheckFlagResultRuleType(value);
+        return new RulesengineRuleType(value);
     }
 
     public bool Equals(string? other)
@@ -65,20 +57,19 @@ public readonly record struct RulesengineCheckFlagResultRuleType : IStringEnum
         return Value;
     }
 
-    public static bool operator ==(RulesengineCheckFlagResultRuleType value1, string value2) =>
+    public static bool operator ==(RulesengineRuleType value1, string value2) =>
         value1.Value.Equals(value2);
 
-    public static bool operator !=(RulesengineCheckFlagResultRuleType value1, string value2) =>
+    public static bool operator !=(RulesengineRuleType value1, string value2) =>
         !value1.Value.Equals(value2);
 
-    public static explicit operator string(RulesengineCheckFlagResultRuleType value) => value.Value;
+    public static explicit operator string(RulesengineRuleType value) => value.Value;
 
-    public static explicit operator RulesengineCheckFlagResultRuleType(string value) => new(value);
+    public static explicit operator RulesengineRuleType(string value) => new(value);
 
-    internal class RulesengineCheckFlagResultRuleTypeSerializer
-        : JsonConverter<RulesengineCheckFlagResultRuleType>
+    internal class RulesengineRuleTypeSerializer : JsonConverter<RulesengineRuleType>
     {
-        public override RulesengineCheckFlagResultRuleType Read(
+        public override RulesengineRuleType Read(
             ref Utf8JsonReader reader,
             Type typeToConvert,
             JsonSerializerOptions options
@@ -89,19 +80,19 @@ public readonly record struct RulesengineCheckFlagResultRuleType : IStringEnum
                 ?? throw new global::System.Exception(
                     "The JSON value could not be read as a string."
                 );
-            return new RulesengineCheckFlagResultRuleType(stringValue);
+            return new RulesengineRuleType(stringValue);
         }
 
         public override void Write(
             Utf8JsonWriter writer,
-            RulesengineCheckFlagResultRuleType value,
+            RulesengineRuleType value,
             JsonSerializerOptions options
         )
         {
             writer.WriteStringValue(value.Value);
         }
 
-        public override RulesengineCheckFlagResultRuleType ReadAsPropertyName(
+        public override RulesengineRuleType ReadAsPropertyName(
             ref Utf8JsonReader reader,
             Type typeToConvert,
             JsonSerializerOptions options
@@ -112,12 +103,12 @@ public readonly record struct RulesengineCheckFlagResultRuleType : IStringEnum
                 ?? throw new global::System.Exception(
                     "The JSON property name could not be read as a string."
                 );
-            return new RulesengineCheckFlagResultRuleType(stringValue);
+            return new RulesengineRuleType(stringValue);
         }
 
         public override void WriteAsPropertyName(
             Utf8JsonWriter writer,
-            RulesengineCheckFlagResultRuleType value,
+            RulesengineRuleType value,
             JsonSerializerOptions options
         )
         {
@@ -131,13 +122,13 @@ public readonly record struct RulesengineCheckFlagResultRuleType : IStringEnum
     [Serializable]
     public static class Values
     {
-        public const string Default = "default";
-
-        public const string GlobalOverride = "global_override";
-
         public const string CompanyOverride = "company_override";
 
         public const string CompanyOverrideUsageExceeded = "company_override_usage_exceeded";
+
+        public const string Default = "default";
+
+        public const string GlobalOverride = "global_override";
 
         public const string PlanEntitlement = "plan_entitlement";
 

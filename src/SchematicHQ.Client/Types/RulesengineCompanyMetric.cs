@@ -27,10 +27,10 @@ public record RulesengineCompanyMetric : IJsonOnDeserialized
     public required string EventSubtype { get; set; }
 
     [JsonPropertyName("month_reset")]
-    public required RulesengineCompanyMetricMonthReset MonthReset { get; set; }
+    public required RulesengineMetricPeriodMonthReset MonthReset { get; set; }
 
     [JsonPropertyName("period")]
-    public required RulesengineCompanyMetricPeriod Period { get; set; }
+    public required RulesengineMetricPeriod Period { get; set; }
 
     [JsonPropertyName("valid_until")]
     public DateTime? ValidUntil { get; set; }

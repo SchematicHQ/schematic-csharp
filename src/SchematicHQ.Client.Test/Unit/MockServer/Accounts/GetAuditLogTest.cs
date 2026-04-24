@@ -17,6 +17,13 @@ public class GetAuditLogTest : BaseMockServerTest
                 "actor_type": "api_key",
                 "api_key_id": "api_key_id",
                 "ended_at": "2024-01-15T09:30:00.000Z",
+                "environment": {
+                  "created_at": "2024-01-15T09:30:00.000Z",
+                  "environment_type": "development",
+                  "id": "id",
+                  "name": "name",
+                  "updated_at": "2024-01-15T09:30:00.000Z"
+                },
                 "environment_id": "environment_id",
                 "id": "id",
                 "method": "method",

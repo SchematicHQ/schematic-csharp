@@ -4,33 +4,29 @@ using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
 
-[JsonConverter(
-    typeof(RulesengineConditionConditionType.RulesengineConditionConditionTypeSerializer)
-)]
+[JsonConverter(typeof(ConditionType.ConditionTypeSerializer))]
 [Serializable]
-public readonly record struct RulesengineConditionConditionType : IStringEnum
+public readonly record struct ConditionType : IStringEnum
 {
-    public static readonly RulesengineConditionConditionType BasePlan = new(Values.BasePlan);
+    public static readonly ConditionType BasePlan = new(Values.BasePlan);
 
-    public static readonly RulesengineConditionConditionType BillingProduct = new(
-        Values.BillingProduct
-    );
+    public static readonly ConditionType BillingProduct = new(Values.BillingProduct);
 
-    public static readonly RulesengineConditionConditionType Company = new(Values.Company);
+    public static readonly ConditionType Company = new(Values.Company);
 
-    public static readonly RulesengineConditionConditionType Credit = new(Values.Credit);
+    public static readonly ConditionType Credit = new(Values.Credit);
 
-    public static readonly RulesengineConditionConditionType Metric = new(Values.Metric);
+    public static readonly ConditionType Metric = new(Values.Metric);
 
-    public static readonly RulesengineConditionConditionType Plan = new(Values.Plan);
+    public static readonly ConditionType Plan = new(Values.Plan);
 
-    public static readonly RulesengineConditionConditionType PlanVersion = new(Values.PlanVersion);
+    public static readonly ConditionType PlanVersion = new(Values.PlanVersion);
 
-    public static readonly RulesengineConditionConditionType Trait = new(Values.Trait);
+    public static readonly ConditionType Trait = new(Values.Trait);
 
-    public static readonly RulesengineConditionConditionType User = new(Values.User);
+    public static readonly ConditionType User = new(Values.User);
 
-    public RulesengineConditionConditionType(string value)
+    public ConditionType(string value)
     {
         Value = value;
     }
@@ -43,9 +39,9 @@ public readonly record struct RulesengineConditionConditionType : IStringEnum
     /// <summary>
     /// Create a string enum with the given value.
     /// </summary>
-    public static RulesengineConditionConditionType FromCustom(string value)
+    public static ConditionType FromCustom(string value)
     {
-        return new RulesengineConditionConditionType(value);
+        return new ConditionType(value);
     }
 
     public bool Equals(string? other)
@@ -61,20 +57,19 @@ public readonly record struct RulesengineConditionConditionType : IStringEnum
         return Value;
     }
 
-    public static bool operator ==(RulesengineConditionConditionType value1, string value2) =>
+    public static bool operator ==(ConditionType value1, string value2) =>
         value1.Value.Equals(value2);
 
-    public static bool operator !=(RulesengineConditionConditionType value1, string value2) =>
+    public static bool operator !=(ConditionType value1, string value2) =>
         !value1.Value.Equals(value2);
 
-    public static explicit operator string(RulesengineConditionConditionType value) => value.Value;
+    public static explicit operator string(ConditionType value) => value.Value;
 
-    public static explicit operator RulesengineConditionConditionType(string value) => new(value);
+    public static explicit operator ConditionType(string value) => new(value);
 
-    internal class RulesengineConditionConditionTypeSerializer
-        : JsonConverter<RulesengineConditionConditionType>
+    internal class ConditionTypeSerializer : JsonConverter<ConditionType>
     {
-        public override RulesengineConditionConditionType Read(
+        public override ConditionType Read(
             ref Utf8JsonReader reader,
             Type typeToConvert,
             JsonSerializerOptions options
@@ -85,19 +80,19 @@ public readonly record struct RulesengineConditionConditionType : IStringEnum
                 ?? throw new global::System.Exception(
                     "The JSON value could not be read as a string."
                 );
-            return new RulesengineConditionConditionType(stringValue);
+            return new ConditionType(stringValue);
         }
 
         public override void Write(
             Utf8JsonWriter writer,
-            RulesengineConditionConditionType value,
+            ConditionType value,
             JsonSerializerOptions options
         )
         {
             writer.WriteStringValue(value.Value);
         }
 
-        public override RulesengineConditionConditionType ReadAsPropertyName(
+        public override ConditionType ReadAsPropertyName(
             ref Utf8JsonReader reader,
             Type typeToConvert,
             JsonSerializerOptions options
@@ -108,12 +103,12 @@ public readonly record struct RulesengineConditionConditionType : IStringEnum
                 ?? throw new global::System.Exception(
                     "The JSON property name could not be read as a string."
                 );
-            return new RulesengineConditionConditionType(stringValue);
+            return new ConditionType(stringValue);
         }
 
         public override void WriteAsPropertyName(
             Utf8JsonWriter writer,
-            RulesengineConditionConditionType value,
+            ConditionType value,
             JsonSerializerOptions options
         )
         {

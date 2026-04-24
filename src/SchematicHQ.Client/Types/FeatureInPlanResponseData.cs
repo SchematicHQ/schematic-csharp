@@ -1,0 +1,80 @@
+using global::System.Text.Json;
+using global::System.Text.Json.Serialization;
+using SchematicHQ.Client.Core;
+
+namespace SchematicHQ.Client;
+
+[Serializable]
+public record FeatureInPlanResponseData : IJsonOnDeserialized
+{
+    [JsonExtensionData]
+    private readonly IDictionary<string, JsonElement> _extensionData =
+        new Dictionary<string, JsonElement>();
+
+    [JsonPropertyName("billing_linked_resource")]
+    public BillingLinkedResourceResponseData? BillingLinkedResource { get; set; }
+
+    [JsonPropertyName("created_at")]
+    public required DateTime CreatedAt { get; set; }
+
+    [JsonPropertyName("description")]
+    public required string Description { get; set; }
+
+    [JsonPropertyName("event_subtype")]
+    public string? EventSubtype { get; set; }
+
+    [JsonPropertyName("event_summary")]
+    public EventSummaryResponseData? EventSummary { get; set; }
+
+    [JsonPropertyName("feature_type")]
+    public required FeatureType FeatureType { get; set; }
+
+    [JsonPropertyName("flags")]
+    public IEnumerable<FlagInPlanResponseData> Flags { get; set; } =
+        new List<FlagInPlanResponseData>();
+
+    [JsonPropertyName("icon")]
+    public required string Icon { get; set; }
+
+    [JsonPropertyName("id")]
+    public required string Id { get; set; }
+
+    [JsonPropertyName("lifecycle_phase")]
+    public FeatureLifecyclePhase? LifecyclePhase { get; set; }
+
+    [JsonPropertyName("maintainer_account_member_id")]
+    public string? MaintainerAccountMemberId { get; set; }
+
+    [JsonPropertyName("name")]
+    public required string Name { get; set; }
+
+    [JsonPropertyName("plans")]
+    public IEnumerable<PreviewObject> Plans { get; set; } = new List<PreviewObject>();
+
+    [JsonPropertyName("plural_name")]
+    public string? PluralName { get; set; }
+
+    [JsonPropertyName("singular_name")]
+    public string? SingularName { get; set; }
+
+    [JsonPropertyName("trait")]
+    public EntityTraitDefinitionResponseData? Trait { get; set; }
+
+    [JsonPropertyName("trait_id")]
+    public string? TraitId { get; set; }
+
+    [JsonPropertyName("updated_at")]
+    public required DateTime UpdatedAt { get; set; }
+
+    [JsonIgnore]
+    public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();
+
+    void IJsonOnDeserialized.OnDeserialized() =>
+        AdditionalProperties.CopyFromExtensionData(_extensionData);
+
+    /// <inheritdoc />
+    public override string ToString()
+    {
+        return JsonUtils.Serialize(this);
+    }
+}

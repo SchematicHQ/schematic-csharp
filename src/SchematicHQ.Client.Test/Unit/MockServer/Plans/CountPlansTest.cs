@@ -19,6 +19,7 @@ public class CountPlansTest : BaseMockServerTest
               },
               "params": {
                 "company_id": "company_id",
+                "exclude_company_scoped": true,
                 "for_fallback_plan": true,
                 "for_initial_plan": true,
                 "for_trial_expiry_plan": true,
@@ -63,10 +64,12 @@ public class CountPlansTest : BaseMockServerTest
             new CountPlansRequest
             {
                 CompanyId = "company_id",
+                ExcludeCompanyScoped = true,
                 ForFallbackPlan = true,
                 ForInitialPlan = true,
                 ForTrialExpiryPlan = true,
                 HasProductId = true,
+                Ids = new List<string>() { "ids" },
                 IncludeDraftVersions = true,
                 PlanType = PlanType.Plan,
                 Q = "q",

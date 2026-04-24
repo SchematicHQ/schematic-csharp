@@ -62,7 +62,7 @@ public class ListPlansTest : BaseMockServerTest
                   "company_count": 1000000,
                   "company_id": "company_id",
                   "company_name": "company_name",
-                  "controlled_by": "controlled_by",
+                  "controlled_by": "orb",
                   "copied_from_plan_id": "copied_from_plan_id",
                   "created_at": "2024-01-15T09:30:00.000Z",
                   "currency_prices": [
@@ -103,11 +103,11 @@ public class ListPlansTest : BaseMockServerTest
                                 {
                                   "conditions": [
                                     {
-                                      "condition_type": "condition_type",
+                                      "condition_type": "base_plan",
                                       "created_at": "2024-01-15T09:30:00.000Z",
                                       "environment_id": "environment_id",
                                       "id": "id",
-                                      "operator": "operator",
+                                      "operator": "eq",
                                       "resource_ids": [
                                         "resource_ids"
                                       ],
@@ -131,11 +131,11 @@ public class ListPlansTest : BaseMockServerTest
                               ],
                               "conditions": [
                                 {
-                                  "condition_type": "condition_type",
+                                  "condition_type": "base_plan",
                                   "created_at": "2024-01-15T09:30:00.000Z",
                                   "environment_id": "environment_id",
                                   "id": "id",
-                                  "operator": "operator",
+                                  "operator": "eq",
                                   "resource_ids": [
                                     "resource_ids"
                                   ],
@@ -155,7 +155,7 @@ public class ListPlansTest : BaseMockServerTest
                               "id": "id",
                               "name": "name",
                               "priority": 1000000,
-                              "rule_type": "rule_type",
+                              "rule_type": "company_override",
                               "updated_at": "2024-01-15T09:30:00.000Z",
                               "value": true
                             }
@@ -242,6 +242,7 @@ public class ListPlansTest : BaseMockServerTest
               ],
               "params": {
                 "company_id": "company_id",
+                "exclude_company_scoped": true,
                 "for_fallback_plan": true,
                 "for_initial_plan": true,
                 "for_trial_expiry_plan": true,
@@ -286,10 +287,12 @@ public class ListPlansTest : BaseMockServerTest
             new ListPlansRequest
             {
                 CompanyId = "company_id",
+                ExcludeCompanyScoped = true,
                 ForFallbackPlan = true,
                 ForInitialPlan = true,
                 ForTrialExpiryPlan = true,
                 HasProductId = true,
+                Ids = new List<string>() { "ids" },
                 IncludeDraftVersions = true,
                 PlanType = PlanType.Plan,
                 Q = "q",

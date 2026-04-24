@@ -52,8 +52,8 @@ namespace SchematicHQ.Client.RulesEngine
         public static RulesengineCompanyMetric? Find(
             IEnumerable<RulesengineCompanyMetric>? metrics,
             string eventSubtype,
-            RulesengineConditionMetricPeriod? period,
-            RulesengineConditionMetricPeriodMonthReset? monthReset)
+            RulesengineMetricPeriod? period,
+            RulesengineMetricPeriodMonthReset? monthReset)
         {
             if (metrics == null || string.IsNullOrEmpty(eventSubtype) || period == null)
                 return null;

@@ -77,7 +77,7 @@ namespace SchematicHQ.Client.Test.Datastream
                 EnvironmentId = "env-1",
                 Name = id,
                 Priority = 1,
-                RuleType = RulesengineRuleRuleType.Default,
+                RuleType = RulesengineRuleType.Default,
                 Value = true
             };
         }
@@ -160,15 +160,15 @@ namespace SchematicHQ.Client.Test.Datastream
                 new RulesengineCompanyMetric
                 {
                     AccountId = "acc-1", EnvironmentId = "env-1", CompanyId = "co-1",
-                    EventSubtype = "event-a", Period = RulesengineCompanyMetricPeriod.AllTime,
-                    MonthReset = RulesengineCompanyMetricMonthReset.FirstOfMonth,
+                    EventSubtype = "event-a", Period = RulesengineMetricPeriod.AllTime,
+                    MonthReset = RulesengineMetricPeriodMonthReset.FirstOfMonth,
                     Value = 10, CreatedAt = DateTime.UtcNow
                 },
                 new RulesengineCompanyMetric
                 {
                     AccountId = "acc-1", EnvironmentId = "env-1", CompanyId = "co-1",
-                    EventSubtype = "event-b", Period = RulesengineCompanyMetricPeriod.CurrentMonth,
-                    MonthReset = RulesengineCompanyMetricMonthReset.FirstOfMonth,
+                    EventSubtype = "event-b", Period = RulesengineMetricPeriod.CurrentMonth,
+                    MonthReset = RulesengineMetricPeriodMonthReset.FirstOfMonth,
                     Value = 5, CreatedAt = DateTime.UtcNow
                 }
             };
@@ -282,8 +282,8 @@ namespace SchematicHQ.Client.Test.Datastream
                 new RulesengineCompanyMetric
                 {
                     AccountId = "acc-1", EnvironmentId = "env-1", CompanyId = "co-1",
-                    EventSubtype = "event-a", Period = RulesengineCompanyMetricPeriod.AllTime,
-                    MonthReset = RulesengineCompanyMetricMonthReset.FirstOfMonth,
+                    EventSubtype = "event-a", Period = RulesengineMetricPeriod.AllTime,
+                    MonthReset = RulesengineMetricPeriodMonthReset.FirstOfMonth,
                     Value = 10, CreatedAt = DateTime.UtcNow
                 }
             };
@@ -537,8 +537,8 @@ namespace SchematicHQ.Client.Test.Datastream
                     new RulesengineCompanyMetric
                     {
                         AccountId = "acc-1", EnvironmentId = "env-1", CompanyId = "co-1",
-                        EventSubtype = "event-1", Period = RulesengineCompanyMetricPeriod.AllTime,
-                        MonthReset = RulesengineCompanyMetricMonthReset.FirstOfMonth,
+                        EventSubtype = "event-1", Period = RulesengineMetricPeriod.AllTime,
+                        MonthReset = RulesengineMetricPeriodMonthReset.FirstOfMonth,
                         Value = 42, CreatedAt = DateTime.UtcNow, ValidUntil = validUntil
                     }
                 },

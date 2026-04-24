@@ -30,7 +30,7 @@ public record RulesengineCheckFlagResult : IJsonOnDeserialized
     public string? FeatureUsageEvent { get; set; }
 
     [JsonPropertyName("feature_usage_period")]
-    public RulesengineCheckFlagResultFeatureUsagePeriod? FeatureUsagePeriod { get; set; }
+    public RulesengineMetricPeriod? FeatureUsagePeriod { get; set; }
 
     [JsonPropertyName("feature_usage_reset_at")]
     public DateTime? FeatureUsageResetAt { get; set; }
@@ -48,7 +48,7 @@ public record RulesengineCheckFlagResult : IJsonOnDeserialized
     public string? RuleId { get; set; }
 
     [JsonPropertyName("rule_type")]
-    public RulesengineCheckFlagResultRuleType? RuleType { get; set; }
+    public RulesengineRuleType? RuleType { get; set; }
 
     [JsonPropertyName("user_id")]
     public string? UserId { get; set; }

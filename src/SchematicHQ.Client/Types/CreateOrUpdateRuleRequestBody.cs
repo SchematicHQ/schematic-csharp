@@ -29,7 +29,7 @@ public record CreateOrUpdateRuleRequestBody : IJsonOnDeserialized
     public required long Priority { get; set; }
 
     [JsonPropertyName("rule_type")]
-    public CreateOrUpdateRuleRequestBodyRuleType? RuleType { get; set; }
+    public RuleType? RuleType { get; set; }
 
     [JsonPropertyName("value")]
     public required bool Value { get; set; }

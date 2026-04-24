@@ -52,6 +52,7 @@ public class CountCreditBundlesTest : BaseMockServerTest
         var response = await Client.Credits.CountCreditBundlesAsync(
             new CountCreditBundlesRequest
             {
+                Ids = new List<string>() { "ids" },
                 CreditId = "credit_id",
                 Status = BillingCreditBundleStatus.Active,
                 BundleType = "fixed",

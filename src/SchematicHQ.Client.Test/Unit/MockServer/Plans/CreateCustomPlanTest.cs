@@ -71,7 +71,7 @@ public class CreateCustomPlanTest : BaseMockServerTest
                 "company_count": 1000000,
                 "company_id": "company_id",
                 "company_name": "company_name",
-                "controlled_by": "controlled_by",
+                "controlled_by": "orb",
                 "copied_from_plan_id": "copied_from_plan_id",
                 "created_at": "2024-01-15T09:30:00.000Z",
                 "currency_prices": [
@@ -113,11 +113,11 @@ public class CreateCustomPlanTest : BaseMockServerTest
                               {
                                 "conditions": [
                                   {
-                                    "condition_type": "condition_type",
+                                    "condition_type": "base_plan",
                                     "created_at": "2024-01-15T09:30:00.000Z",
                                     "environment_id": "environment_id",
                                     "id": "id",
-                                    "operator": "operator",
+                                    "operator": "eq",
                                     "resource_ids": [
                                       "resource_ids"
                                     ],
@@ -141,11 +141,11 @@ public class CreateCustomPlanTest : BaseMockServerTest
                             ],
                             "conditions": [
                               {
-                                "condition_type": "condition_type",
+                                "condition_type": "base_plan",
                                 "created_at": "2024-01-15T09:30:00.000Z",
                                 "environment_id": "environment_id",
                                 "id": "id",
-                                "operator": "operator",
+                                "operator": "eq",
                                 "resource_ids": [
                                   "resource_ids"
                                 ],
@@ -165,7 +165,7 @@ public class CreateCustomPlanTest : BaseMockServerTest
                             "id": "id",
                             "name": "name",
                             "priority": 1000000,
-                            "rule_type": "rule_type",
+                            "rule_type": "company_override",
                             "updated_at": "2024-01-15T09:30:00.000Z",
                             "value": true
                           }
@@ -208,6 +208,7 @@ public class CreateCustomPlanTest : BaseMockServerTest
                   "external_price_id": "external_price_id",
                   "id": "id",
                   "interval": "day",
+                  "nickname": "nickname",
                   "price": 1000000,
                   "price_decimal": "price_decimal",
                   "provider_type": "orb",
@@ -219,6 +220,7 @@ public class CreateCustomPlanTest : BaseMockServerTest
                   "external_price_id": "external_price_id",
                   "id": "id",
                   "interval": "day",
+                  "nickname": "nickname",
                   "price": 1000000,
                   "price_decimal": "price_decimal",
                   "provider_type": "orb",
@@ -246,6 +248,7 @@ public class CreateCustomPlanTest : BaseMockServerTest
                   "external_price_id": "external_price_id",
                   "id": "id",
                   "interval": "day",
+                  "nickname": "nickname",
                   "price": 1000000,
                   "price_decimal": "price_decimal",
                   "provider_type": "orb",

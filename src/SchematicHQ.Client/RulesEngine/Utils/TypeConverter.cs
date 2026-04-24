@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace SchematicHQ.Client.RulesEngine.Utils
 {
-  
+
   [JsonConverter(typeof(SchematicHQ.Client.Cache.ComparableTypeConverter))]
   public enum ComparableType
   {
@@ -14,52 +14,9 @@ namespace SchematicHQ.Client.RulesEngine.Utils
     Date
   }
 
-  [JsonConverter(typeof(JsonStringEnumConverter))]
-  public enum ComparableOperator
-  {
-    [JsonPropertyName("eq")]
-    Eq,
-
-    [JsonPropertyName("ne")]
-    Ne,
-
-    [JsonPropertyName("lt")]
-    Lt,
-
-    [JsonPropertyName("lte")]
-    Lte,
-
-    [JsonPropertyName("gt")]
-    Gt,
-
-    [JsonPropertyName("gte")]
-    Gte,
-
-    [JsonPropertyName("is_empty")]
-    IsEmpty,
-    [JsonPropertyName("not_empty")]
-    NotEmpty,
-  }
-
   // Extension methods to convert from generated types to utility types
   public static class ComparableTypeExtensions
   {
-    public static ComparableOperator ToComparableOperator(this RulesengineConditionOperator op)
-    {
-      return op.Value switch
-      {
-        "eq" => ComparableOperator.Eq,
-        "ne" => ComparableOperator.Ne,
-        "gt" => ComparableOperator.Gt,
-        "lt" => ComparableOperator.Lt,
-        "gte" => ComparableOperator.Gte,
-        "lte" => ComparableOperator.Lte,
-        "is_empty" => ComparableOperator.IsEmpty,
-        "not_empty" => ComparableOperator.NotEmpty,
-        _ => ComparableOperator.Eq
-      };
-    }
-
     public static ComparableType ToComparableType(this RulesengineTraitDefinitionComparableType comparableType)
     {
       return comparableType.Value switch
@@ -98,23 +55,23 @@ namespace SchematicHQ.Client.RulesEngine.Utils
 
     public static bool CompareString(string a, string b, ComparableOperator op)
     {
-      switch (op)
+      switch (op.Value)
       {
-        case ComparableOperator.Eq:
+        case ComparableOperator.Values.Eq:
           return string.Equals(a, b, StringComparison.OrdinalIgnoreCase);
-        case ComparableOperator.Ne:
+        case ComparableOperator.Values.Ne:
           return !string.Equals(a, b, StringComparison.OrdinalIgnoreCase);
-        case ComparableOperator.Lt:
+        case ComparableOperator.Values.Lt:
           return string.Compare(a, b, StringComparison.OrdinalIgnoreCase) < 0;
-        case ComparableOperator.Lte:
+        case ComparableOperator.Values.Lte:
           return string.Compare(a, b, StringComparison.OrdinalIgnoreCase) <= 0;
-        case ComparableOperator.Gt:
+        case ComparableOperator.Values.Gt:
           return string.Compare(a, b, StringComparison.OrdinalIgnoreCase) > 0;
-        case ComparableOperator.Gte:
+        case ComparableOperator.Values.Gte:
           return string.Compare(a, b, StringComparison.OrdinalIgnoreCase) >= 0;
-        case ComparableOperator.IsEmpty:
+        case ComparableOperator.Values.IsEmpty:
           return string.IsNullOrEmpty(a);
-        case ComparableOperator.NotEmpty:
+        case ComparableOperator.Values.NotEmpty:
           return !string.IsNullOrEmpty(a);
         default:
           return false;
@@ -123,19 +80,19 @@ namespace SchematicHQ.Client.RulesEngine.Utils
 
     public static bool CompareInt64(long a, long b, ComparableOperator op)
     {
-      switch (op)
+      switch (op.Value)
       {
-        case ComparableOperator.Eq:
+        case ComparableOperator.Values.Eq:
           return a == b;
-        case ComparableOperator.Ne:
+        case ComparableOperator.Values.Ne:
           return a != b;
-        case ComparableOperator.Lt:
+        case ComparableOperator.Values.Lt:
           return a < b;
-        case ComparableOperator.Lte:
+        case ComparableOperator.Values.Lte:
           return a <= b;
-        case ComparableOperator.Gt:
+        case ComparableOperator.Values.Gt:
           return a > b;
-        case ComparableOperator.Gte:
+        case ComparableOperator.Values.Gte:
           return a >= b;
         default:
           return false;
@@ -144,19 +101,19 @@ namespace SchematicHQ.Client.RulesEngine.Utils
 
     public static bool CompareFloat(double a, double b, ComparableOperator op)
     {
-      switch (op)
+      switch (op.Value)
       {
-        case ComparableOperator.Eq:
+        case ComparableOperator.Values.Eq:
           return Math.Abs(a - b) < double.Epsilon;
-        case ComparableOperator.Ne:
+        case ComparableOperator.Values.Ne:
           return Math.Abs(a - b) >= double.Epsilon;
-        case ComparableOperator.Lt:
+        case ComparableOperator.Values.Lt:
           return a < b;
-        case ComparableOperator.Lte:
+        case ComparableOperator.Values.Lte:
           return a <= b;
-        case ComparableOperator.Gt:
+        case ComparableOperator.Values.Gt:
           return a > b;
-        case ComparableOperator.Gte:
+        case ComparableOperator.Values.Gte:
           return a >= b;
         default:
           return false;
@@ -165,11 +122,11 @@ namespace SchematicHQ.Client.RulesEngine.Utils
 
     public static bool CompareBool(bool a, bool b, ComparableOperator op)
     {
-      switch (op)
+      switch (op.Value)
       {
-        case ComparableOperator.Eq:
+        case ComparableOperator.Values.Eq:
           return a == b;
-        case ComparableOperator.Ne:
+        case ComparableOperator.Values.Ne:
           return a != b;
         default:
           return false;
@@ -178,19 +135,19 @@ namespace SchematicHQ.Client.RulesEngine.Utils
 
     public static bool CompareDate(DateTime a, DateTime b, ComparableOperator op)
     {
-      switch (op)
+      switch (op.Value)
       {
-        case ComparableOperator.Eq:
+        case ComparableOperator.Values.Eq:
           return a.Date == b.Date;
-        case ComparableOperator.Ne:
+        case ComparableOperator.Values.Ne:
           return a.Date != b.Date;
-        case ComparableOperator.Lt:
+        case ComparableOperator.Values.Lt:
           return a < b;
-        case ComparableOperator.Lte:
+        case ComparableOperator.Values.Lte:
           return a <= b;
-        case ComparableOperator.Gt:
+        case ComparableOperator.Values.Gt:
           return a > b;
-        case ComparableOperator.Gte:
+        case ComparableOperator.Values.Gte:
           return a >= b;
         default:
           return false;

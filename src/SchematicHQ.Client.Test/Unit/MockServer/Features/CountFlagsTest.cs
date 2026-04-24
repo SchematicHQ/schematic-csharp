@@ -51,6 +51,7 @@ public class CountFlagsTest : BaseMockServerTest
             new CountFlagsRequest
             {
                 FeatureId = "feature_id",
+                Ids = new List<string>() { "ids" },
                 Q = "q",
                 Limit = 1000000,
                 Offset = 1000000,

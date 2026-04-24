@@ -15,7 +15,7 @@ namespace SchematicHQ.Client.Test.RulesEngine
             int initialCount = company.Metrics.Count();
 
             // Act
-            var metric = TestHelpers.CreateTestMetric(company, "test-event", RulesengineConditionMetricPeriod.AllTime, 5);
+            var metric = TestHelpers.CreateTestMetric(company, "test-event", RulesengineMetricPeriod.AllTime, 5);
             company.AddMetric(metric);
 
             // Assert
@@ -31,8 +31,8 @@ namespace SchematicHQ.Client.Test.RulesEngine
 
             // Add initial metric
             string eventSubtype = "test-event";
-            var period = RulesengineConditionMetricPeriod.AllTime;
-            RulesengineConditionMetricPeriodMonthReset monthReset = RulesengineConditionMetricPeriodMonthReset.FirstOfMonth;
+            var period = RulesengineMetricPeriod.AllTime;
+            RulesengineMetricPeriodMonthReset monthReset = RulesengineMetricPeriodMonthReset.FirstOfMonth;
 
             var initialMetric = TestHelpers.CreateTestMetric(company, eventSubtype, period, 5);
             company.AddMetric(initialMetric);
@@ -72,7 +72,7 @@ namespace SchematicHQ.Client.Test.RulesEngine
                 {
                     // Create a metric with a unique event subtype to avoid collision
                     string uniqueSubtype = $"test-event-{DateTime.Now.Ticks}-{index}";
-                    var metric = TestHelpers.CreateTestMetric(company, uniqueSubtype, RulesengineConditionMetricPeriod.AllTime, index);
+                    var metric = TestHelpers.CreateTestMetric(company, uniqueSubtype, RulesengineMetricPeriod.AllTime, index);
 
                     // Add the metric
                     company.AddMetric(metric);
@@ -101,8 +101,8 @@ namespace SchematicHQ.Client.Test.RulesEngine
                 CompanyId = "comp",
                 EventSubtype = "test",
                 Value = 0,
-                Period = new RulesengineCompanyMetricPeriod("all_time"),
-                MonthReset = RulesengineCompanyMetricMonthReset.FirstOfMonth,
+                Period = new RulesengineMetricPeriod("all_time"),
+                MonthReset = RulesengineMetricPeriodMonthReset.FirstOfMonth,
                 CreatedAt = DateTime.UtcNow
             };
 
@@ -143,7 +143,7 @@ namespace SchematicHQ.Client.Test.RulesEngine
                 Metrics = null!
             };
 
-            var metric = TestHelpers.CreateTestMetric(company, "foo", RulesengineConditionMetricPeriod.AllTime, 1);
+            var metric = TestHelpers.CreateTestMetric(company, "foo", RulesengineMetricPeriod.AllTime, 1);
 
             // Act & Assert
             Assert.DoesNotThrow(() => company.AddMetric(metric));

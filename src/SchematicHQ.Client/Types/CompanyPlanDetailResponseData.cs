@@ -42,7 +42,7 @@ public record CompanyPlanDetailResponseData : IJsonOnDeserialized
     public IEnumerable<string> CompatiblePlanIds { get; set; } = new List<string>();
 
     [JsonPropertyName("controlled_by")]
-    public required string ControlledBy { get; set; }
+    public required BillingProviderType ControlledBy { get; set; }
 
     [JsonPropertyName("copied_from_plan_id")]
     public string? CopiedFromPlanId { get; set; }
@@ -74,8 +74,8 @@ public record CompanyPlanDetailResponseData : IJsonOnDeserialized
         new List<PlanEntitlementResponseData>();
 
     [JsonPropertyName("features")]
-    public IEnumerable<FeatureDetailResponseData> Features { get; set; } =
-        new List<FeatureDetailResponseData>();
+    public IEnumerable<FeatureInPlanResponseData> Features { get; set; } =
+        new List<FeatureInPlanResponseData>();
 
     [JsonPropertyName("icon")]
     public required PlanIcon Icon { get; set; }

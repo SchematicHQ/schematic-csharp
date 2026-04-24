@@ -22,10 +22,10 @@ public record UpdatePlanEntitlementRequestBody
     public IEnumerable<CurrencyPriceRequestBody>? CurrencyPrices { get; set; }
 
     [JsonPropertyName("metric_period")]
-    public UpdatePlanEntitlementRequestBodyMetricPeriod? MetricPeriod { get; set; }
+    public MetricPeriod? MetricPeriod { get; set; }
 
     [JsonPropertyName("metric_period_month_reset")]
-    public UpdatePlanEntitlementRequestBodyMetricPeriodMonthReset? MetricPeriodMonthReset { get; set; }
+    public MetricPeriodMonthReset? MetricPeriodMonthReset { get; set; }
 
     [JsonPropertyName("monthly_metered_price_id")]
     public string? MonthlyMeteredPriceId { get; set; }

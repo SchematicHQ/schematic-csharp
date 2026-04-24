@@ -83,8 +83,8 @@ public class ListPlanEntitlementsTest : BaseMockServerTest
                     "updated_at": "2024-01-15T09:30:00.000Z",
                     "usage_type": "licensed"
                   },
-                  "metric_period": "metric_period",
-                  "metric_period_month_reset": "metric_period_month_reset",
+                  "metric_period": "all_time",
+                  "metric_period_month_reset": "billing_cycle",
                   "plan": {
                     "created_at": "2024-01-15T09:30:00.000Z",
                     "description": "description",
@@ -194,8 +194,12 @@ public class ListPlanEntitlementsTest : BaseMockServerTest
             new ListPlanEntitlementsRequest
             {
                 FeatureId = "feature_id",
+                FeatureIds = new List<string>() { "feature_ids" },
+                Ids = new List<string>() { "ids" },
                 PlanId = "plan_id",
+                PlanIds = new List<string>() { "plan_ids" },
                 PlanVersionId = "plan_version_id",
+                PlanVersionIds = new List<string>() { "plan_version_ids" },
                 Q = "q",
                 WithMeteredProducts = true,
                 Limit = 1000000,
