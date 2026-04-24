@@ -82,7 +82,7 @@ namespace SchematicHQ.Client.Test.RulesEngine
             Assert.That(flag!.Id, Is.EqualTo("flag_6SB8FaJPR8C"));
             Assert.That(flag.Key, Is.EqualTo("analyze-clicks"));
             Assert.That(flag.Rules.Count(), Is.EqualTo(1));
-            Assert.That(flag.Rules.First().RuleType, Is.EqualTo(RulesengineRuleRuleType.PlanEntitlement));
+            Assert.That(flag.Rules.First().RuleType, Is.EqualTo(RulesengineRuleType.PlanEntitlement));
         }
 
         [Test]
@@ -227,7 +227,7 @@ namespace SchematicHQ.Client.Test.RulesEngine
             var testObj = JsonSerializer.Deserialize<TestRuleTypeObject>(json, _jsonOptions);
 
             // Assert
-            Assert.That(testObj!.RuleType, Is.EqualTo(RulesengineRuleRuleType.PlanEntitlement));
+            Assert.That(testObj!.RuleType, Is.EqualTo(RulesengineRuleType.PlanEntitlement));
         }
 
         [Test]
@@ -240,7 +240,7 @@ namespace SchematicHQ.Client.Test.RulesEngine
             var testObj = JsonSerializer.Deserialize<TestRuleTypeObject>(json, _jsonOptions);
 
             // Assert
-            Assert.That(testObj!.RuleType, Is.EqualTo(RulesengineRuleRuleType.GlobalOverride));
+            Assert.That(testObj!.RuleType, Is.EqualTo(RulesengineRuleType.GlobalOverride));
         }
 
         [Test]
@@ -253,7 +253,7 @@ namespace SchematicHQ.Client.Test.RulesEngine
             var testObj = JsonSerializer.Deserialize<TestRuleTypeObject>(json, _jsonOptions);
 
             // Assert
-            Assert.That(testObj!.RuleType, Is.EqualTo(RulesengineRuleRuleType.CompanyOverride));
+            Assert.That(testObj!.RuleType, Is.EqualTo(RulesengineRuleType.CompanyOverride));
         }
 
         [Test]
@@ -266,7 +266,7 @@ namespace SchematicHQ.Client.Test.RulesEngine
             var testObj = JsonSerializer.Deserialize<TestRuleTypeObject>(json, _jsonOptions);
 
             // Assert
-            Assert.That(testObj!.RuleType, Is.EqualTo(RulesengineRuleRuleType.Standard));
+            Assert.That(testObj!.RuleType, Is.EqualTo(RulesengineRuleType.Standard));
         }
 
         [Test]
@@ -279,7 +279,7 @@ namespace SchematicHQ.Client.Test.RulesEngine
             var testObj = JsonSerializer.Deserialize<TestRuleTypeObject>(json, _jsonOptions);
 
             // Assert
-            Assert.That(testObj!.RuleType, Is.EqualTo(RulesengineRuleRuleType.Default));
+            Assert.That(testObj!.RuleType, Is.EqualTo(RulesengineRuleType.Default));
         }
 
         [Test]
@@ -343,7 +343,7 @@ namespace SchematicHQ.Client.Test.RulesEngine
         private class TestRuleTypeObject
         {
             [JsonPropertyName("rule_type")]
-            public RulesengineRuleRuleType RuleType { get; set; }
+            public RulesengineRuleType RuleType { get; set; }
         }
     }
 }

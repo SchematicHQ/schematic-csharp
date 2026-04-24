@@ -252,7 +252,7 @@ namespace SchematicHQ.Client.Test.Datastream
                             EnvironmentId = "env_123",
                             Id = "rule_123",
                             Name = "Test Rule",
-                            RuleType = RulesengineRuleRuleType.Standard,
+                            RuleType = RulesengineRuleType.Standard,
                             Priority = 1,
                             Conditions = new List<RulesengineCondition>(),
                             Value = true

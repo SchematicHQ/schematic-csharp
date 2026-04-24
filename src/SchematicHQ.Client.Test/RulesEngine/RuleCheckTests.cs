@@ -14,7 +14,7 @@ namespace SchematicHQ.Client.Test.RulesEngine
       var svc = RuleCheckService.NewRuleCheckService();
       var company = TestHelpers.CreateTestCompany();
       var rule = TestHelpers.CreateTestRule();
-      rule.RuleType = RulesengineRuleRuleType.GlobalOverride;
+      rule.RuleType = RulesengineRuleType.GlobalOverride;
 
       // Act
       var result = await svc.Check(new CheckScope
@@ -54,7 +54,7 @@ namespace SchematicHQ.Client.Test.RulesEngine
       var svc = RuleCheckService.NewRuleCheckService();
       var company = TestHelpers.CreateTestCompany();
       var rule = TestHelpers.CreateTestRule();
-      rule.RuleType = RulesengineRuleRuleType.Default;
+      rule.RuleType = RulesengineRuleType.Default;
 
       // Act
       var result = await svc.Check(new CheckScope
@@ -77,7 +77,7 @@ namespace SchematicHQ.Client.Test.RulesEngine
       var rule = TestHelpers.CreateTestRule();
 
       // Create condition targeting the company
-      var condition = TestHelpers.CreateTestCondition(RulesengineConditionConditionType.Company);
+      var condition = TestHelpers.CreateTestCondition(RulesengineConditionType.Company);
       condition.ResourceIds = new List<string> { company.Id };
       rule.Conditions = new List<RulesengineCondition> { condition };
 
@@ -102,10 +102,10 @@ namespace SchematicHQ.Client.Test.RulesEngine
 
       string eventSubtype = "test-event";
       var rule = TestHelpers.CreateTestRule();
-      var condition = TestHelpers.CreateTestCondition(RulesengineConditionConditionType.Metric);
+      var condition = TestHelpers.CreateTestCondition(RulesengineConditionType.Metric);
       condition.EventSubtype = eventSubtype;
       condition.MetricValue = 10;
-      condition.Operator = RulesengineConditionOperator.Lte;
+      condition.Operator = ComparableOperator.Lte;
       rule.Conditions = new List<RulesengineCondition> { condition };
 
       var metric = TestHelpers.CreateTestMetric(company, eventSubtype, condition.MetricPeriod!.Value, 5);
@@ -132,10 +132,10 @@ namespace SchematicHQ.Client.Test.RulesEngine
 
       string eventSubtype = "test-event";
       var rule = TestHelpers.CreateTestRule();
-      var condition = TestHelpers.CreateTestCondition(RulesengineConditionConditionType.Metric);
+      var condition = TestHelpers.CreateTestCondition(RulesengineConditionType.Metric);
       condition.EventSubtype = eventSubtype;
       condition.MetricValue = 5;
-      condition.Operator = RulesengineConditionOperator.Lte;
+      condition.Operator = ComparableOperator.Lte;
       rule.Conditions = new List<RulesengineCondition> { condition };
 
       var metric = TestHelpers.CreateTestMetric(company, eventSubtype, condition.MetricPeriod!.Value, 6); // Value exceeds limit
@@ -163,10 +163,10 @@ namespace SchematicHQ.Client.Test.RulesEngine
       company.Traits = new List<RulesengineTrait> { trait };
 
       var rule = TestHelpers.CreateTestRule();
-      var condition = TestHelpers.CreateTestCondition(RulesengineConditionConditionType.Trait);
+      var condition = TestHelpers.CreateTestCondition(RulesengineConditionType.Trait);
       condition.TraitDefinition = trait.TraitDefinition;
       condition.TraitValue = "test-value";
-      condition.Operator = RulesengineConditionOperator.Eq;
+      condition.Operator = ComparableOperator.Eq;
       rule.Conditions = new List<RulesengineCondition> { condition };
 
       // Act
@@ -189,8 +189,8 @@ namespace SchematicHQ.Client.Test.RulesEngine
       var company = TestHelpers.CreateTestCompany();
 
       var rule = TestHelpers.CreateTestRule();
-      var condition1 = TestHelpers.CreateTestCondition(RulesengineConditionConditionType.Company);
-      var condition2 = TestHelpers.CreateTestCondition(RulesengineConditionConditionType.Company);
+      var condition1 = TestHelpers.CreateTestCondition(RulesengineConditionType.Company);
+      var condition2 = TestHelpers.CreateTestCondition(RulesengineConditionType.Company);
       condition2.ResourceIds = new List<string> { company.Id };
 
       var group = new RulesengineConditionGroup
@@ -219,8 +219,8 @@ namespace SchematicHQ.Client.Test.RulesEngine
       var company = TestHelpers.CreateTestCompany();
 
       var rule = TestHelpers.CreateTestRule();
-      var condition1 = TestHelpers.CreateTestCondition(RulesengineConditionConditionType.Company);
-      var condition2 = TestHelpers.CreateTestCondition(RulesengineConditionConditionType.Company);
+      var condition1 = TestHelpers.CreateTestCondition(RulesengineConditionType.Company);
+      var condition2 = TestHelpers.CreateTestCondition(RulesengineConditionType.Company);
       // No matching condition added to the group
 
       var group = new RulesengineConditionGroup
@@ -252,10 +252,10 @@ namespace SchematicHQ.Client.Test.RulesEngine
       user.Traits = new List<RulesengineTrait> { trait };
 
       var rule = TestHelpers.CreateTestRule();
-      var condition = TestHelpers.CreateTestCondition(RulesengineConditionConditionType.Trait);
+      var condition = TestHelpers.CreateTestCondition(RulesengineConditionType.Trait);
       condition.TraitDefinition = traitDef;
       condition.TraitValue = "user-trait-value";
-      condition.Operator = RulesengineConditionOperator.Eq;
+      condition.Operator = ComparableOperator.Eq;
       rule.Conditions = new List<RulesengineCondition> { condition };
 
       // Act
@@ -282,14 +282,14 @@ namespace SchematicHQ.Client.Test.RulesEngine
       var rule = TestHelpers.CreateTestRule();
 
       // Company condition
-      var condition1 = TestHelpers.CreateTestCondition(RulesengineConditionConditionType.Company);
+      var condition1 = TestHelpers.CreateTestCondition(RulesengineConditionType.Company);
       condition1.ResourceIds = new List<string> { company.Id };
 
       // Trait condition
-      var condition2 = TestHelpers.CreateTestCondition(RulesengineConditionConditionType.Trait);
+      var condition2 = TestHelpers.CreateTestCondition(RulesengineConditionType.Trait);
       condition2.TraitDefinition = trait.TraitDefinition;
       condition2.TraitValue = "test-value";
-      condition2.Operator = RulesengineConditionOperator.Eq;
+      condition2.Operator = ComparableOperator.Eq;
 
       rule.Conditions = new List<RulesengineCondition> { condition1, condition2 };
 
@@ -317,14 +317,14 @@ namespace SchematicHQ.Client.Test.RulesEngine
       var rule = TestHelpers.CreateTestRule();
 
       // Company condition
-      var condition1 = TestHelpers.CreateTestCondition(RulesengineConditionConditionType.Company);
+      var condition1 = TestHelpers.CreateTestCondition(RulesengineConditionType.Company);
       condition1.ResourceIds = new List<string> { company.Id };
 
       // Trait condition that doesn't match
-      var condition2 = TestHelpers.CreateTestCondition(RulesengineConditionConditionType.Trait);
+      var condition2 = TestHelpers.CreateTestCondition(RulesengineConditionType.Trait);
       condition2.TraitDefinition = trait.TraitDefinition;
       condition2.TraitValue = "different-value";
-      condition2.Operator = RulesengineConditionOperator.Eq;
+      condition2.Operator = ComparableOperator.Eq;
 
       rule.Conditions = new List<RulesengineCondition> { condition1, condition2 };
 
@@ -356,7 +356,7 @@ namespace SchematicHQ.Client.Test.RulesEngine
 
       // Create a rule with a credit condition
       var rule = TestHelpers.CreateTestRule();
-            var condition = TestHelpers.CreateTestCondition(RulesengineConditionConditionType.Credit);
+            var condition = TestHelpers.CreateTestCondition(RulesengineConditionType.Credit);
       condition.CreditId = creditId;
       condition.ConsumptionRate = 50.0; // Consumption rate less than the balance
       rule.Conditions = new List<RulesengineCondition> { condition };
@@ -389,7 +389,7 @@ namespace SchematicHQ.Client.Test.RulesEngine
 
       // Create a rule with a credit condition
       var rule = TestHelpers.CreateTestRule();
-            var condition = TestHelpers.CreateTestCondition(RulesengineConditionConditionType.Credit);
+            var condition = TestHelpers.CreateTestCondition(RulesengineConditionType.Credit);
       condition.CreditId = creditId;
       condition.ConsumptionRate = 50.0; // Consumption rate more than the balance
       rule.Conditions = new List<RulesengineCondition> { condition };
@@ -422,7 +422,7 @@ namespace SchematicHQ.Client.Test.RulesEngine
 
       // Create a rule with a credit condition
       var rule = TestHelpers.CreateTestRule();
-            var condition = TestHelpers.CreateTestCondition(RulesengineConditionConditionType.Credit);
+            var condition = TestHelpers.CreateTestCondition(RulesengineConditionType.Credit);
       condition.CreditId = creditId;
       condition.ConsumptionRate = null; // Default consumption rate is 1.0
       rule.Conditions = new List<RulesengineCondition> { condition };
@@ -454,7 +454,7 @@ namespace SchematicHQ.Client.Test.RulesEngine
 
       // Create a rule with a credit condition for a different credit ID
       var rule = TestHelpers.CreateTestRule();
-            var condition = TestHelpers.CreateTestCondition(RulesengineConditionConditionType.Credit);
+            var condition = TestHelpers.CreateTestCondition(RulesengineConditionType.Credit);
       condition.CreditId = "non-existent-credit-id"; // Different from the one in company
       condition.ConsumptionRate = 1.0;
       rule.Conditions = new List<RulesengineCondition> { condition };

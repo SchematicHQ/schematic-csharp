@@ -10,13 +10,13 @@ namespace SchematicHQ.Client.RulesEngine
         public long? FeatureAllocation { get; set; }
         public long? FeatureUsage { get; set; }
         public string? FeatureUsageEvent { get; set; }
-        public RulesengineConditionMetricPeriod? FeatureUsagePeriod { get; set; }
+        public RulesengineMetricPeriod? FeatureUsagePeriod { get; set; }
         public DateTime? FeatureUsageResetAt { get; set; }
         public string? FlagId { get; set; }
         public required string FlagKey { get; set; }
         public required string Reason { get; set; }
         public string? RuleId { get; set; }
-        public RulesengineRuleRuleType? RuleType { get; set; }
+        public RulesengineRuleType? RuleType { get; set; }
         public string? UserId { get; set; }
         public bool Value { get; set; }
 
@@ -45,7 +45,7 @@ namespace SchematicHQ.Client.RulesEngine
             // For a numeric entitlement rule, there will be a metric or trait condition;
             // for a boolean or unlimited entitlement rule, we don't need to set these fields
             var usageCondition = rule.Conditions.FirstOrDefault(c =>
-                c != null && (c.ConditionType == RulesengineConditionConditionType.Metric || c.ConditionType == RulesengineConditionConditionType.Trait));
+                c != null && (c.ConditionType == RulesengineConditionType.Metric || c.ConditionType == RulesengineConditionType.Trait));
 
             if (usageCondition == null)
             {
@@ -56,7 +56,7 @@ namespace SchematicHQ.Client.RulesEngine
             long usage = 0;
             long allocation = 0;
 
-            if (usageCondition.ConditionType == RulesengineConditionConditionType.Metric)
+            if (usageCondition.ConditionType == RulesengineConditionType.Metric)
             {
                 FeatureUsageEvent = usageCondition.EventSubtype;
 
@@ -85,7 +85,7 @@ namespace SchematicHQ.Client.RulesEngine
                 FeatureUsagePeriod = metricPeriod;
                 FeatureUsageResetAt = Metrics.GetNextMetricPeriodStartFromCondition(usageCondition, company);
             }
-            else if (usageCondition.ConditionType == RulesengineConditionConditionType.Trait)
+            else if (usageCondition.ConditionType == RulesengineConditionType.Trait)
             {
                 if (usageCondition.TraitDefinition != null)
                 {
@@ -257,7 +257,7 @@ namespace SchematicHQ.Client.RulesEngine
 
             // Prioritize type groups relative to one another
             var prioritizedGroups = new List<List<RulesengineRule>>();
-            foreach (var ruleType in RulesengineRuleRuleTypeExtensions.RuleTypePriority)
+            foreach (var ruleType in RulesengineRuleTypeExtensions.RuleTypePriority)
             {
                 if (grouped.TryGetValue(ruleType, out var rules2))
                 {
@@ -352,7 +352,7 @@ namespace SchematicHQ.Client.RulesEngine
                 FlagKey = flagKey,
                 Reason = data.Reason,
                 RuleId = data.RuleId,
-                RuleType = data.RuleType,
+                RuleType = data.RuleType?.Value,
                 UserId = data.UserId,
                 Value = data.Value
             };
@@ -377,11 +377,11 @@ namespace SchematicHQ.Client.RulesEngine
                 FeatureId = entitlement.FeatureId,
                 FeatureKey = entitlement.FeatureKey,
                 MetricPeriod = entitlement.MetricPeriod.HasValue
-                    ? new RulesengineFeatureEntitlementMetricPeriod(entitlement.MetricPeriod.Value.Value)
+                    ? new RulesengineMetricPeriod(entitlement.MetricPeriod.Value.Value)
                     : null,
                 MetricResetAt = entitlement.MetricResetAt,
                 MonthReset = entitlement.MonthReset.HasValue
-                    ? new RulesengineFeatureEntitlementMonthReset(entitlement.MonthReset.Value.Value)
+                    ? new RulesengineMetricPeriodMonthReset(entitlement.MonthReset.Value.Value)
                     : null,
                 SoftLimit = entitlement.SoftLimit,
                 Usage = entitlement.Usage,
