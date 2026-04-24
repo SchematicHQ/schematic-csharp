@@ -179,7 +179,7 @@ namespace SchematicHQ.Client.Cache
         }
 
         /// <inheritdoc/>
-        public void DeleteMissing(IEnumerable<string> keys)
+        public void DeleteMissing(IEnumerable<string> keys, string? scanPattern = null)
         {
             if (_maxItems == 0 || _disposed)
                 return;
