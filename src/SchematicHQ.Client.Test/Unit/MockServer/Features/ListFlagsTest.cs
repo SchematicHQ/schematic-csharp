@@ -145,7 +145,7 @@ public class ListFlagsTest : BaseMockServerTest
             new ListFlagsRequest
             {
                 FeatureId = "feature_id",
-                Ids = [new List<string>() { "ids" }],
+                Ids = new List<string>() { "ids" },
                 Q = "q",
                 Limit = 1000000,
                 Offset = 1000000,

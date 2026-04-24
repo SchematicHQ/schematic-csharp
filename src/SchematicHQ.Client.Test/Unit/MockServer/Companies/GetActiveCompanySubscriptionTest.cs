@@ -120,7 +120,7 @@ public class GetActiveCompanySubscriptionTest : BaseMockServerTest
             new GetActiveCompanySubscriptionRequest
             {
                 CompanyId = "company_id",
-                CompanyIds = [new List<string>() { "company_ids" }],
+                CompanyIds = new List<string>() { "company_ids" },
                 Limit = 1000000,
                 Offset = 1000000,
             }

@@ -67,7 +67,7 @@ public class ListCustomPlanBillingsTest : BaseMockServerTest
                 CompanyId = "company_id",
                 PlanId = "plan_id",
                 Status = CustomPlanBillingStatus.Active,
-                Statuses = [new List<CustomPlanBillingStatus>() { CustomPlanBillingStatus.Active }],
+                Statuses = new List<CustomPlanBillingStatus>() { CustomPlanBillingStatus.Active },
                 Limit = 1000000,
                 Offset = 1000000,
             }

@@ -91,7 +91,7 @@ public class ListEventsTest : BaseMockServerTest
             {
                 CompanyId = "company_id",
                 EventSubtype = "event_subtype",
-                EventTypes = [new List<EventType>() { EventType.FlagCheck }],
+                EventTypes = new List<EventType>() { EventType.FlagCheck },
                 FlagId = "flag_id",
                 UserId = "user_id",
                 Limit = 1000000,

@@ -52,7 +52,7 @@ public class CountCustomersTest : BaseMockServerTest
         var response = await Client.Billing.CountCustomersAsync(
             new CountCustomersRequest
             {
-                CompanyIds = [new List<string>() { "company_ids" }],
+                CompanyIds = new List<string>() { "company_ids" },
                 Name = "name",
                 ProviderType = BillingProviderType.Orb,
                 Q = "q",

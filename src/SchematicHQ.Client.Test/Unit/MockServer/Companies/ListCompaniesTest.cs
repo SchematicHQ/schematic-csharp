@@ -366,21 +366,18 @@ public class ListCompaniesTest : BaseMockServerTest
         var response = await Client.Companies.ListCompaniesAsync(
             new ListCompaniesRequest
             {
-                CreditTypeIds = [new List<string>() { "credit_type_ids" }],
+                CreditTypeIds = new List<string>() { "credit_type_ids" },
                 HasScheduledDowngrade = true,
-                Ids = [new List<string>() { "ids" }],
+                Ids = new List<string>() { "ids" },
                 MonetizedSubscriptions = true,
                 PlanId = "plan_id",
-                PlanIds = [new List<string>() { "plan_ids" }],
+                PlanIds = new List<string>() { "plan_ids" },
                 PlanVersionId = "plan_version_id",
                 Q = "q",
                 SortOrderColumn = "sort_order_column",
                 SortOrderDirection = SortDirection.Asc,
-                SubscriptionStatuses =
-                [
-                    new List<SubscriptionStatus>() { SubscriptionStatus.Active },
-                ],
-                SubscriptionTypes = [new List<SubscriptionType>() { SubscriptionType.Free }],
+                SubscriptionStatuses = new List<SubscriptionStatus>() { SubscriptionStatus.Active },
+                SubscriptionTypes = new List<SubscriptionType>() { SubscriptionType.Free },
                 WithEntitlementFor = "with_entitlement_for",
                 WithoutFeatureOverrideFor = "without_feature_override_for",
                 WithoutPlan = true,

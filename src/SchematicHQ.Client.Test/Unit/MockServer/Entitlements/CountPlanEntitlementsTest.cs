@@ -65,12 +65,12 @@ public class CountPlanEntitlementsTest : BaseMockServerTest
             new CountPlanEntitlementsRequest
             {
                 FeatureId = "feature_id",
-                FeatureIds = [new List<string>() { "feature_ids" }],
-                Ids = [new List<string>() { "ids" }],
+                FeatureIds = new List<string>() { "feature_ids" },
+                Ids = new List<string>() { "ids" },
                 PlanId = "plan_id",
-                PlanIds = [new List<string>() { "plan_ids" }],
+                PlanIds = new List<string>() { "plan_ids" },
                 PlanVersionId = "plan_version_id",
-                PlanVersionIds = [new List<string>() { "plan_version_ids" }],
+                PlanVersionIds = new List<string>() { "plan_version_ids" },
                 Q = "q",
                 WithMeteredProducts = true,
                 Limit = 1000000,

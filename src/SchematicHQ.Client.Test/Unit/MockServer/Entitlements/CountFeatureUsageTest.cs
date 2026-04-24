@@ -56,7 +56,7 @@ public class CountFeatureUsageTest : BaseMockServerTest
             new CountFeatureUsageRequest
             {
                 CompanyId = "company_id",
-                FeatureIds = [new List<string>() { "feature_ids" }],
+                FeatureIds = new List<string>() { "feature_ids" },
                 IncludeUsageAggregation = true,
                 Q = "q",
                 WithoutNegativeEntitlements = true,

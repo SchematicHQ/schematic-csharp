@@ -265,7 +265,7 @@ public class ListFeatureUsageTest : BaseMockServerTest
             new ListFeatureUsageRequest
             {
                 CompanyId = "company_id",
-                FeatureIds = [new List<string>() { "feature_ids" }],
+                FeatureIds = new List<string>() { "feature_ids" },
                 IncludeUsageAggregation = true,
                 Q = "q",
                 WithoutNegativeEntitlements = true,

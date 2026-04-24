@@ -51,7 +51,7 @@ public class CountEntityKeyDefinitionsTest : BaseMockServerTest
             new CountEntityKeyDefinitionsRequest
             {
                 EntityType = EntityType.Company,
-                Ids = [new List<string>() { "ids" }],
+                Ids = new List<string>() { "ids" },
                 Q = "q",
                 Limit = 1000000,
                 Offset = 1000000,

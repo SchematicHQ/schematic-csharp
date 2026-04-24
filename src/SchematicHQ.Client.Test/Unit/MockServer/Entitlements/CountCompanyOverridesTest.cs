@@ -60,10 +60,10 @@ public class CountCompanyOverridesTest : BaseMockServerTest
             new CountCompanyOverridesRequest
             {
                 CompanyId = "company_id",
-                CompanyIds = [new List<string>() { "company_ids" }],
+                CompanyIds = new List<string>() { "company_ids" },
                 FeatureId = "feature_id",
-                FeatureIds = [new List<string>() { "feature_ids" }],
-                Ids = [new List<string>() { "ids" }],
+                FeatureIds = new List<string>() { "feature_ids" },
+                Ids = new List<string>() { "ids" },
                 WithoutExpired = true,
                 Q = "q",
                 Limit = 1000000,

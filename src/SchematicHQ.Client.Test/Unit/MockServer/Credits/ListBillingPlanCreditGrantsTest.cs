@@ -100,9 +100,9 @@ public class ListBillingPlanCreditGrantsTest : BaseMockServerTest
             new ListBillingPlanCreditGrantsRequest
             {
                 CreditId = "credit_id",
-                Ids = [new List<string>() { "ids" }],
+                Ids = new List<string>() { "ids" },
                 PlanId = "plan_id",
-                PlanIds = [new List<string>() { "plan_ids" }],
+                PlanIds = new List<string>() { "plan_ids" },
                 PlanVersionId = "plan_version_id",
                 Limit = 1000000,
                 Offset = 1000000,

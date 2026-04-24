@@ -150,8 +150,8 @@ public class ListPlanChangesTest : BaseMockServerTest
                 Action = PlanChangeAction.Checkout,
                 BasePlanAction = PlanChangeBasePlanAction.Fallback,
                 CompanyId = "company_id",
-                CompanyIds = [new List<string>() { "company_ids" }],
-                PlanIds = [new List<string>() { "plan_ids" }],
+                CompanyIds = new List<string>() { "company_ids" },
+                PlanIds = new List<string>() { "plan_ids" },
                 Limit = 1000000,
                 Offset = 1000000,
             }

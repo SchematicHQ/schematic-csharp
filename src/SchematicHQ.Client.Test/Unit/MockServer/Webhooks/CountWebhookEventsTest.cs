@@ -50,7 +50,7 @@ public class CountWebhookEventsTest : BaseMockServerTest
         var response = await Client.Webhooks.CountWebhookEventsAsync(
             new CountWebhookEventsRequest
             {
-                Ids = [new List<string>() { "ids" }],
+                Ids = new List<string>() { "ids" },
                 Q = "q",
                 WebhookId = "webhook_id",
                 Limit = 1000000,

@@ -292,7 +292,7 @@ public class ListPlansTest : BaseMockServerTest
                 ForInitialPlan = true,
                 ForTrialExpiryPlan = true,
                 HasProductId = true,
-                Ids = [new List<string>() { "ids" }],
+                Ids = new List<string>() { "ids" },
                 IncludeDraftVersions = true,
                 PlanType = PlanType.Plan,
                 Q = "q",
