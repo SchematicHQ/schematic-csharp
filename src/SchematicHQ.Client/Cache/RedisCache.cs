@@ -36,16 +36,7 @@ namespace SchematicHQ.Client.Cache
                 _db = _redis.GetDatabase(config.Database);
                 _keyPrefix = config.KeyPrefix ?? DEFAULT_KEY_PREFIX;
                 _ttl = config.CacheTTL ?? DEFAULT_CACHE_TTL;
-                _jsonOptions = new JsonSerializerOptions
-                {
-                    WriteIndented = false,
-                    PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower,
-                    Converters =
-                    {
-                        new ComparableTypeConverter(), // Specific handler for ComparableType empty strings
-                        new ResilientEnumConverter() // Fallback for all other enums
-                    }
-                };
+                _jsonOptions = SchematicCacheSerializerDefaults.Options;
             }
             catch (Exception ex)
             {

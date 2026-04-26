@@ -405,16 +405,16 @@ namespace SchematicHQ.Client.Datastream
       switch (message.EntityType)
       {
         case EntityType.Company:
-          HandleCompanyMessage(message);
+          await HandleCompanyMessage(message);
           break;
         case EntityType.Flags:
-          HandleFlagsMessage(message);
+          await HandleFlagsMessage(message);
           break;
         case EntityType.Flag:
-          HandleFlagMessage(message);
+          await HandleFlagMessage(message);
           break;
         case EntityType.User:
-          HandleUserMessage(message);
+          await HandleUserMessage(message);
           break;
         default:
           _logger.Error("Received unknown entity type: {0}", message.EntityType);
@@ -477,7 +477,7 @@ namespace SchematicHQ.Client.Datastream
       }
     }
 
-    private void HandleFlagMessage(DataStreamResponse response)
+    private async Task HandleFlagMessage(DataStreamResponse response)
     {
       try
       {
@@ -522,7 +522,7 @@ namespace SchematicHQ.Client.Datastream
           if (!string.IsNullOrEmpty(flagKey))
           {
             var deleteCacheKey = FlagCacheKey(flagKey);
-            _flagsCache.Delete(deleteCacheKey);
+            await _flagsCache.Delete(deleteCacheKey);
             _logger.Debug("Deleted single flag from cache: {0}", flagKey);
           }
           else
@@ -549,7 +549,7 @@ namespace SchematicHQ.Client.Datastream
         }
 
         var cacheKey = FlagCacheKey(flag.Key);
-        _flagsCache.Set(cacheKey, flag);
+        await _flagsCache.Set(cacheKey, flag);
         _logger.Debug("Cached single flag: {0}", flag.Key);
 
         // Note: Unlike bulk flags processing, we do NOT call DeleteMissing for single flag updates
@@ -775,7 +775,7 @@ namespace SchematicHQ.Client.Datastream
         }
 
         // Update cache using two-layer approach
-        CacheUserForKeys(user);
+        await CacheUserForKeys(user);
 
         // Notify pending requests
         NotifyPendingRequests(user, user.Keys, CacheKeyPrefixUser, _pendingUserRequests);
