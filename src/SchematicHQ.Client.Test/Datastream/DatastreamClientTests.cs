@@ -113,7 +113,7 @@ namespace SchematicHQ.Client.Test.Datastream
             // Add the flag directly to the cache
             var flagsCacheField = typeof(DatastreamClient).GetField("_flagsCache",
                 System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-            var flagsCache = flagsCacheField!.GetValue(_client);
+            var flagsCache = (ICacheProvider)flagsCacheField!.GetValue(_client)!;
 
             // Create a test flag
             var testFlag = new RulesengineFlag
@@ -132,13 +132,10 @@ namespace SchematicHQ.Client.Test.Datastream
             var flagCacheKey = flagCacheKeyMethod!.Invoke(_client, new object[] { "another-feature" }) as string;
 
             // Set the flag in cache
-            var flagSetMethod = flagsCache!.GetType().GetMethod("Set");
-            flagSetMethod!.Invoke(flagsCache, new object[] { flagCacheKey!, testFlag, Type.Missing });
-
+            await flagsCache.Set(flagCacheKey, testFlag);
+            
             // Verify flag is in cache now
-            var getFlagMethod = typeof(DatastreamClient).GetMethod("GetFlag",
-                System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-            var flag = getFlagMethod!.Invoke(_client, new object[] { "another-feature" }) as RulesengineFlag;
+            var flag = await flagsCache.Get<RulesengineFlag>(flagCacheKey);
             Assert.That(flag, Is.Not.Null, "Flag should be in cache after setup");
 
             // Now call CheckFlag directly on the client

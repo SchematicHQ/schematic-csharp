@@ -104,7 +104,7 @@ namespace SchematicHQ.Client.Datastream
         flagTTL = _cacheTtl;
       }
       
-      _cacheProvider = cacheProvider;
+      _cacheProvider = new DatastreamCacheDecorator(cacheProvider, _cacheTtl);
       _flagsCache = new DatastreamCacheDecorator(cacheProvider, flagTTL);
       
       _webSocket = webSocket ?? new StandardWebSocketClient();
