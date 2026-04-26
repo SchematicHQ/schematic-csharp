@@ -1,21 +1,16 @@
 using System.Collections.Concurrent;
-using System.Threading;
-using System.Threading.Tasks;
 
-#nullable enable
+namespace SchematicHQ.Client.Cache;
 
-namespace SchematicHQ.Client.Cache
-{
     /// <summary>
     /// A thread-safe in-memory cache implementation with LRU eviction policy and background expiration
     /// </summary>
-    /// <typeparam name="T">Type of values stored in the cache</typeparam>
-    public class LocalCache<T> : ICacheProvider<T>, IDisposable
+    public class LocalCache : ICacheProvider, IDisposable
     {
         public const int DEFAULT_CACHE_CAPACITY = 1000;
         public static readonly TimeSpan DEFAULT_CACHE_TTL = TimeSpan.FromMilliseconds(5000); // 5000 milliseconds
         public static readonly TimeSpan UNLIMITED_TTL = TimeSpan.MaxValue;
-        private readonly ConcurrentDictionary<string, CachedItem<T>> _cache;
+        private readonly ConcurrentDictionary<string, CachedItem> _cache;
         private readonly LinkedList<string> _lruList;
         private readonly object _lock = new object();
         private readonly int _maxItems;
@@ -32,7 +27,7 @@ namespace SchematicHQ.Client.Cache
         /// <param name="enableBackgroundCleanup">Whether to enable the background cleanup timer (defaults to true)</param>
         public LocalCache(int maxItems = DEFAULT_CACHE_CAPACITY, TimeSpan? ttl = null, bool enableBackgroundCleanup = true)
         {
-            _cache = new ConcurrentDictionary<string, CachedItem<T>>();
+            _cache = new ConcurrentDictionary<string, CachedItem>();
             _lruList = new LinkedList<string>();
             _maxItems = maxItems;
             _ttl = ttl ?? DEFAULT_CACHE_TTL;
@@ -58,19 +53,19 @@ namespace SchematicHQ.Client.Cache
         }
 
         /// <inheritdoc/>
-        public T? Get(string key)
+        public ValueTask<T?> Get<T>(string key)
         {
             if (_maxItems == 0 || _disposed)
-                return default;
+                return ValueTask.FromResult(default(T));
 
             if (!_cache.TryGetValue(key, out var item))
-                return default;
+                return ValueTask.FromResult(default(T));
 
             if (item.Expiration != DateTime.MaxValue && DateTime.UtcNow > item.Expiration)
             {
                 // This item has expired, remove it
                 Remove(key);
-                return default;
+                return ValueTask.FromResult(default(T));
             }
 
             // Update LRU position - We need to check if the node is still part of the list
@@ -99,14 +94,17 @@ namespace SchematicHQ.Client.Cache
                 }
             }
 
-            return item.Value;
+            if (item.Value is T typedValue)
+                return ValueTask.FromResult<T?>(typedValue);
+
+            return ValueTask.FromResult(default(T));
         }
 
         /// <inheritdoc/>
-        public void Set(string key, T val, TimeSpan? ttlOverride = null)
+        public ValueTask Set<T>(string key, T val, TimeSpan? ttlOverride = null)
         {
             if (_maxItems == 0 || _disposed)
-                return;
+                return ValueTask.CompletedTask;
 
             var ttl = ttlOverride ?? _ttl;
             // Determine expiration time - use MaxValue for unlimited TTL
@@ -119,7 +117,7 @@ namespace SchematicHQ.Client.Cache
                 if (_cache.TryGetValue(key, out var existingItem))
                 {
                     // Update the existing item
-                    existingItem.Value = val;
+                    existingItem.Value = val!;
                     existingItem.Expiration = expiration;
                     
                     try
@@ -158,7 +156,7 @@ namespace SchematicHQ.Client.Cache
 
                     // Add new item to cache and LRU list
                     var node = _lruList.AddFirst(key);
-                    var newItem = new CachedItem<T>(val, expiration, node);
+                    var newItem = new CachedItem(val!, expiration, node);
                     if (!_cache.TryAdd(key, newItem))
                     {
                         // If we couldn't add it, clean up the linked list node
@@ -166,23 +164,25 @@ namespace SchematicHQ.Client.Cache
                     }
                 }
             }
+
+            return ValueTask.CompletedTask;
         }
 
         /// <inheritdoc/>
-        public bool Delete(string key)
+        public ValueTask<bool> Delete(string key)
         {
             if (_maxItems == 0 || _disposed)
-                return false;
+                return ValueTask.FromResult(false);
 
             Remove(key);
-            return true;
+            return ValueTask.FromResult(true);
         }
 
         /// <inheritdoc/>
         public void DeleteMissing(IEnumerable<string> keys, string? scanPattern = null)
         {
             if (_maxItems == 0 || _disposed)
-                return;
+                return ValueTask.CompletedTask;
 
             var keysSet = new HashSet<string>(keys);
             var keysToRemove = new List<string>();
@@ -204,6 +204,8 @@ namespace SchematicHQ.Client.Cache
             {
                 Remove(keyToRemove);
             }
+
+            return ValueTask.CompletedTask;
         }
 
         private void Remove(string key)
@@ -307,13 +309,13 @@ namespace SchematicHQ.Client.Cache
         /// <summary>
         /// Represents a cached item with its value, expiration time, and position in the LRU list
         /// </summary>
-        private class CachedItem<TValue>
+        private class CachedItem
         {
-            public TValue Value { get; set; }
+            public object Value { get; set; }
             public DateTime Expiration { get; set; }
             public LinkedListNode<string> Node { get; set; }
 
-            public CachedItem(TValue value, DateTime expiration, LinkedListNode<string> node)
+            public CachedItem(object value, DateTime expiration, LinkedListNode<string> node)
             {
                 Value = value;
                 Expiration = expiration;
@@ -321,4 +323,4 @@ namespace SchematicHQ.Client.Cache
             }
         }
     }
-}
+

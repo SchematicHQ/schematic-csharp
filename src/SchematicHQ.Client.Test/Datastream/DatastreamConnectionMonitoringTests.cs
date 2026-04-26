@@ -3,6 +3,7 @@ using System.Net.WebSockets;
 using System.Threading;
 using System.Threading.Tasks;
 using NUnit.Framework;
+using SchematicHQ.Client.Cache;
 using SchematicHQ.Client.Datastream;
 using SchematicHQ.Client.Test.Datastream.Mocks;
 
@@ -24,7 +25,7 @@ namespace SchematicHQ.Client.Test.Datastream
         {
             // Arrange
             var options = new DatastreamOptions { CacheTTL = TimeSpan.FromMinutes(1) };
-            var adapter = new DatastreamClientAdapter("wss://test.example.com", _logger, "test-api-key", options);
+            var adapter = new DatastreamClientAdapter("wss://test.example.com", _logger, "test-api-key", new LocalCache(), options);
             
             // Act - start the connection
             adapter.Start();
@@ -57,7 +58,7 @@ namespace SchematicHQ.Client.Test.Datastream
             mockWebSocket.SetState(WebSocketState.Connecting); // Start in connecting state
             
             var options = new DatastreamOptions { CacheTTL = TimeSpan.FromMinutes(1) };
-            var adapter = new DatastreamClientAdapter("wss://test.example.com", _logger, "test-api-key", options);
+            var adapter = new DatastreamClientAdapter("wss://test.example.com", _logger, "test-api-key", new LocalCache(), options);
             
             // Set up a task to change the state after a delay
             _ = Task.Run(async () => {
@@ -83,7 +84,7 @@ namespace SchematicHQ.Client.Test.Datastream
         {
             // Arrange
             var options = new DatastreamOptions { CacheTTL = TimeSpan.FromMinutes(1) };
-            var adapter = new DatastreamClientAdapter("wss://test.example.com", _logger, "test-api-key", options);
+            var adapter = new DatastreamClientAdapter("wss://test.example.com", _logger, "test-api-key", new LocalCache(), options);
             
             // Act - check with a very short timeout
             var isConnected = await adapter.IsConnectedAsync(TimeSpan.FromMilliseconds(10));
@@ -105,7 +106,7 @@ namespace SchematicHQ.Client.Test.Datastream
         {
             // Arrange
             var options = new DatastreamOptions { CacheTTL = TimeSpan.FromMinutes(1) };
-            var adapter = new DatastreamClientAdapter("wss://test.example.com", _logger, "test-api-key", options);
+            var adapter = new DatastreamClientAdapter("wss://test.example.com", _logger, "test-api-key", new LocalCache(), options);
 
             // Get the ConnectionStateTracker via reflection
             var trackerField = typeof(DatastreamClientAdapter).GetField("_connectionTracker",
@@ -138,7 +139,7 @@ namespace SchematicHQ.Client.Test.Datastream
         {
             // Arrange
             var options = new DatastreamOptions { CacheTTL = TimeSpan.FromMinutes(1) };
-            var adapter = new DatastreamClientAdapter("wss://test.example.com", _logger, "test-api-key", options);
+            var adapter = new DatastreamClientAdapter("wss://test.example.com", _logger, "test-api-key", new LocalCache(), options);
 
             // Get the ConnectionStateTracker via reflection
             var trackerField = typeof(DatastreamClientAdapter).GetField("_connectionTracker",

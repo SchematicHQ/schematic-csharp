@@ -18,7 +18,7 @@ public partial class Schematic
     private readonly ClientOptions _options;
     private readonly IEventBuffer<CreateEventRequestBody> _eventBuffer;
     private readonly ISchematicLogger _logger;
-    private readonly List<ICacheProvider<CheckFlagWithEntitlementResponse?>> _flagCheckCacheProviders;
+    private readonly ICacheProvider _cache;
     private readonly bool _offline;
     private readonly DatastreamClientAdapter? _datastreamClient;
     private readonly bool _replicatorMode;
@@ -78,15 +78,11 @@ public partial class Schematic
             }
 
             // Check if explicit Redis cache providers are configured
-            if (_options.CacheProviders.Count > 0)
+            if (_options.CacheProvider is not null)
             {
-                foreach (var provider in _options.CacheProviders)
+                if (_options.CacheProvider is RedisCache)
                 {
-                    if (provider is RedisCache<CheckFlagWithEntitlementResponse?>)
-                    {
-                        hasRedisCache = true;
-                        break;
-                    }
+                    hasRedisCache = true;
                 }
             }
 
@@ -132,23 +128,20 @@ public partial class Schematic
         _eventBuffer.Start();
 
         // Initialize cache providers based on configuration
-        if (_options.CacheProviders.Count > 0)
+        if (_options.CacheProvider is not null)
         {
             // Use explicitly provided cache providers
-            _flagCheckCacheProviders = _options.CacheProviders;
+            _cache = _options.CacheProvider;
         }
         else if (_options.CacheConfiguration != null)
         {
-            // Create cache providers based on configuration
-            _flagCheckCacheProviders = new List<ICacheProvider<CheckFlagWithEntitlementResponse?>>();
-
             switch (_options.CacheConfiguration.ProviderType)
             {
                 case CacheProviderType.Redis:
                     if (_options.CacheConfiguration.RedisConfig == null)
                     {
                         _logger.Warn("Redis configuration not provided, falling back to local cache");
-                        _flagCheckCacheProviders.Add(new LocalCache<CheckFlagWithEntitlementResponse?>());
+                        _cache = new LocalCache();
                     }
                     else
                     {
@@ -158,27 +151,23 @@ public partial class Schematic
                             _options.CacheConfiguration.RedisConfig.CacheTTL = _options.CacheConfiguration.CacheTtl;
                         }
 
-                        RedisCache<CheckFlagWithEntitlementResponse?> redisCache = new RedisCache<CheckFlagWithEntitlementResponse?>(_options.CacheConfiguration.RedisConfig);
-                        _flagCheckCacheProviders.Add(redisCache);
+                        _cache = new RedisCache(_options.CacheConfiguration.RedisConfig);
                     }
                     break;
 
                 case CacheProviderType.Local:
                 default:
-                    _flagCheckCacheProviders.Add(new LocalCache<CheckFlagWithEntitlementResponse?>(
+                    _cache = new LocalCache(
                         _options.CacheConfiguration.LocalCacheCapacity,
                         _options.CacheConfiguration.CacheTtl
-                    ));
+                    );
                     break;
             }
         }
         else
         {
             // Default to local cache
-            _flagCheckCacheProviders = new List<ICacheProvider<CheckFlagWithEntitlementResponse?>>
-            {
-                new LocalCache<CheckFlagWithEntitlementResponse?>()
-            };
+            _cache = new LocalCache();
         }
 
         // Initialize datastream if enabled or in replicator mode (for cache access)
@@ -212,6 +201,7 @@ public partial class Schematic
                 _options.BaseUrl,
                 _logger,
                 apiKey,
+                _cache,
                 datastreamOptions,
                 _replicatorMode,
                 _options.ReplicatorHealthUrl
@@ -368,15 +358,12 @@ public partial class Schematic
             string cacheKey = BuildFlagCacheKey(flagKey, company, user);
 
             // Check cache first
-            foreach (var provider in _flagCheckCacheProviders)
+            var cachedResponse = await _cache.Get<CheckFlagWithEntitlementResponse>(cacheKey);
+            if (cachedResponse != null)
             {
-                var cachedResponse = provider.Get(cacheKey);
-                if (cachedResponse != null)
-                {
-                    // Submit flag check event for cached value
-                    SubmitFlagCheckEventForValue(flagKey, cachedResponse.Value, company, user, "cache");
-                    return cachedResponse;
-                }
+                // Submit flag check event for cached value
+                SubmitFlagCheckEventForValue(flagKey, cachedResponse.Value, company, user, "cache");
+                return cachedResponse;
             }
 
             // Make API request
@@ -396,16 +383,13 @@ public partial class Schematic
             var result = CheckFlagWithEntitlementResponse.FromApiResponse(apiResponse.Data, flagKey);
 
             // Cache the result
-            foreach (var provider in _flagCheckCacheProviders)
+            try
             {
-                try
-                {
-                    provider.Set(cacheKey, result);
-                }
-                catch (Exception cacheEx)
-                {
-                    _logger.Error("Error caching flag result: {0}", cacheEx.Message);
-                }
+                await _cache.Set(cacheKey, result);
+            }
+            catch (Exception cacheEx)
+            {
+                _logger.Error("Error caching flag result: {0}", cacheEx.Message);
             }
 
             return result;
