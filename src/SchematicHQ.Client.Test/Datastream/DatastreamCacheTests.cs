@@ -57,7 +57,7 @@ namespace SchematicHQ.Client.Test.Datastream
             Assert.That(cachedCompany.Id, Is.EqualTo(company.Id), "Cached company should match what we stored");
 
             // Wait for cache to expire
-            Thread.Sleep(200); // Cache TTL is 100ms in Setup
+            await Task.Delay(200); // Cache TTL is 100ms in Setup
 
             var expiredCompany = await _client.GetCompanyFromCache(keys);
             Assert.That(expiredCompany, Is.Null, "Company should not be in cache after TTL expiration");

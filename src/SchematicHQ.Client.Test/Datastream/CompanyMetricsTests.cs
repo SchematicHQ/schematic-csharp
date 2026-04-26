@@ -39,11 +39,9 @@ namespace SchematicHQ.Client.Test.Datastream
             var (client, _, _, _) = DatastreamClientTestFactory.CreateClientWithMocks();
             _client = client;
             // Use reflection to get the private cache fields
-            var cacheField = typeof(DatastreamClient).GetField("_companyCache", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+            var cacheField = typeof(DatastreamClient).GetField("_cacheProvider", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
             _companyCache = (ICacheProvider?)cacheField?.GetValue(_client) ?? throw new Exception("Could not get company cache");
-
-            var lookupCacheField = typeof(DatastreamClient).GetField("_companyLookupCache", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-            _companyLookupCache = (ICacheProvider?)lookupCacheField?.GetValue(_client) ?? throw new Exception("Could not get company lookup cache");
+            _companyLookupCache = (ICacheProvider?)cacheField?.GetValue(_client) ?? throw new Exception("Could not get company lookup cache");
         }
 
         [TearDown]

@@ -1,8 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using Moq;
 using NUnit.Framework;
 using SchematicHQ.Client.Cache;
 using SchematicHQ.Client.Datastream;

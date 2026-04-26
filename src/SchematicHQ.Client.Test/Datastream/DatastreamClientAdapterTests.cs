@@ -208,7 +208,7 @@ namespace SchematicHQ.Client.Test.Datastream
             // Set up a flag in the cache directly
             var flagsCacheField = client!.GetType().GetField("_flagsCache", 
                 System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-            var flagsCache = flagsCacheField!.GetValue(client);
+            var flagsCache = (ICacheProvider)flagsCacheField!.GetValue(client)!;
             
             // Create a test flag
             var flag = new RulesengineFlag
@@ -226,14 +226,9 @@ namespace SchematicHQ.Client.Test.Datastream
             var cacheKey = flagCacheKeyMethod!.Invoke(client, new object[] { "test-flag" }) as string;
             
             // Set the flag in cache
-            var setMethod = flagsCache!.GetType().GetMethod("Set");
-            Assert.That(setMethod, Is.Not.Null, "Cache Set method not found");
-            setMethod!.Invoke(flagsCache, new object[] { cacheKey!, flag, Type.Missing });
-            
+            await flagsCache.Set(cacheKey!, flag);
+            var cachedFlag = await flagsCache.Get<RulesengineFlag>(cacheKey);
             // Verify flag is in cache
-            var flagCheck = client.GetType().GetMethod("GetFlag", 
-                System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-            var cachedFlag = flagCheck!.Invoke(client, new object[] { "test-flag" });
             Assert.That(cachedFlag, Is.Not.Null, "Flag should be in cache for test");
             
             var request = new CheckFlagRequestBody
