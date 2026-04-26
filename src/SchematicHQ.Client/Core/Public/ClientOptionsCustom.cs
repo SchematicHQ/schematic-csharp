@@ -28,7 +28,6 @@ public partial class ClientOptions
     /// </summary>
     public LogLevel LogLevel { get; set; } = LogLevel.Warn;
 
-    public List<ICacheProvider<CheckFlagWithEntitlementResponse?>> CacheProviders { get; set; } = new List<ICacheProvider<CheckFlagWithEntitlementResponse?>>();
     public CacheConfiguration? CacheConfiguration { get; set; }
     public bool Offline { get; set; }
 
@@ -60,7 +59,7 @@ public static class ClientOptionsExtensions
         return new ClientOptions
         {
             BaseUrl = options.BaseUrl,
-            CacheProviders = options.CacheProviders,
+            CacheProvider = options.CacheProvider,
             CacheConfiguration = options.CacheConfiguration,
             DatastreamOptions = options.DatastreamOptions,
             DefaultEventBufferPeriod = options.DefaultEventBufferPeriod,
@@ -124,7 +123,7 @@ public static class ClientOptionsExtensions
     /// <returns>Updated client options</returns>
     public static ClientOptions WithLocalCache(
         this ClientOptions options,
-        int capacity = Cache.LocalCache<CheckFlagWithEntitlementResponse?>.DEFAULT_CACHE_CAPACITY,
+        int capacity = Cache.LocalCache.DEFAULT_CACHE_CAPACITY,
         TimeSpan? ttl = null)
     {
         options.CacheConfiguration = new Cache.CacheConfiguration

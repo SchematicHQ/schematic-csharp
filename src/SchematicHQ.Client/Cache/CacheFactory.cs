@@ -1,7 +1,5 @@
 #nullable enable
 
-using StackExchange.Redis;
-
 namespace SchematicHQ.Client.Cache
 {
     /// <summary>
@@ -16,9 +14,9 @@ namespace SchematicHQ.Client.Cache
         /// <param name="capacity">Maximum number of items in the cache</param>
         /// <param name="ttl">Time-to-live for cached items</param>
         /// <returns>A new local cache instance</returns>
-        public static ICacheProvider<T> CreateLocalCache<T>(int capacity = LocalCache<T>.DEFAULT_CACHE_CAPACITY, TimeSpan? ttl = null)
+        public static ICacheProvider CreateLocalCache(int capacity = LocalCache.DEFAULT_CACHE_CAPACITY, TimeSpan? ttl = null)
         {
-            return new LocalCache<T>(capacity, ttl);
+            return new LocalCache(capacity, ttl);
         }
 
         /// <summary>
@@ -27,9 +25,9 @@ namespace SchematicHQ.Client.Cache
         /// <typeparam name="T">Type of values to cache</typeparam>
         /// <param name="config">Redis configuration</param>
         /// <returns>A new Redis cache instance</returns>
-        public static ICacheProvider<T> CreateRedisCache<T>(Datastream.RedisCacheConfig config)
+        public static ICacheProvider CreateRedisCache(Datastream.RedisCacheConfig config)
         {
-            return new RedisCache<T>(config);
+            return new RedisCache(config);
         }
     }
 }

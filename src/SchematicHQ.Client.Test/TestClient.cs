@@ -105,7 +105,7 @@ namespace SchematicHQ.Client.Test
                 Offline = isOffline,
                 FlagDefaults = flagDefaults ?? new Dictionary<string, bool>(),
                 DefaultEventBufferPeriod = TimeSpan.FromSeconds(_defaultEventBufferPeriod),
-                CacheProviders = new List<ICacheProvider<CheckFlagWithEntitlementResponse?>> { new LocalCache<CheckFlagWithEntitlementResponse?>() }
+                CacheProvider = new LocalCache()
             };
 
             if (!_options.Offline)
@@ -142,12 +142,9 @@ namespace SchematicHQ.Client.Test
 
             // Assert
             Assert.That(result, Is.True);
-            foreach (var cacheProvider in _options.CacheProviders)
-            {
-                var cached = cacheProvider.Get(flagKey);
-                Assert.That(cached, Is.Not.Null);
-                Assert.That(cached!.Value, Is.True);
-            }
+            var cached = await _options.CacheProvider!.Get<CheckFlagWithEntitlementResponse?>(flagKey);
+            Assert.That(cached, Is.Not.Null);
+            Assert.That(cached!.Value, Is.True);
         }
 
         [Test]
@@ -157,10 +154,7 @@ namespace SchematicHQ.Client.Test
             SetupSchematicTestClient(isOffline: false, response: CreateCheckFlagResponse(HttpStatusCode.OK, false));
             string flagKey = "test_flag";
             string cacheKey = "test_flag:c-name=test_company:u-id=unique_id";
-            foreach (var cacheProvider in _options.CacheProviders)
-            {
-                cacheProvider.Set(cacheKey, new CheckFlagWithEntitlementResponse { FlagKey = flagKey, Value = true, Reason = "cache" });
-            }
+            await _options.CacheProvider!.Set(cacheKey, new CheckFlagWithEntitlementResponse { FlagKey = flagKey, Value = true, Reason = "cache" });
 
             // Act
             var result = await _schematic.CheckFlag(
@@ -179,10 +173,7 @@ namespace SchematicHQ.Client.Test
             // Arrange
             SetupSchematicTestClient(isOffline: false, response: CreateCheckFlagResponse(HttpStatusCode.OK, false));
             string flagKey = "test_flag";
-            foreach (var cacheProvider in _options.CacheProviders)
-            {
-                cacheProvider.Set(flagKey, new CheckFlagWithEntitlementResponse { FlagKey = flagKey, Value = true, Reason = "cache" });
-            }
+            await _options.CacheProvider!.Set(flagKey, new CheckFlagWithEntitlementResponse { FlagKey = flagKey, Value = true, Reason = "cache" });
 
             // Act
             var result = await _schematic.CheckFlag(flagKey);
@@ -429,14 +420,11 @@ namespace SchematicHQ.Client.Test
             Assert.That(result1.Value, Is.True);
 
             // Verify cache was populated with full response
-            foreach (var cacheProvider in _options.CacheProviders)
-            {
-                var cached = cacheProvider.Get(flagKey);
-                Assert.That(cached, Is.Not.Null);
-                Assert.That(cached!.Value, Is.True);
-                Assert.That(cached.FlagKey, Is.EqualTo(flagKey));
-                Assert.That(cached.Reason, Is.EqualTo("matched entitlement rule"));
-            }
+            var cached = await _options.CacheProvider!.Get<CheckFlagWithEntitlementResponse?>(flagKey);
+            Assert.That(cached, Is.Not.Null);
+            Assert.That(cached!.Value, Is.True);
+            Assert.That(cached.FlagKey, Is.EqualTo(flagKey));
+            Assert.That(cached.Reason, Is.EqualTo("matched entitlement rule"));
         }
 
         [Test]
@@ -454,7 +442,7 @@ namespace SchematicHQ.Client.Test
                 Offline = false,
                 FlagDefaults = new Dictionary<string, bool>(),
                 DefaultEventBufferPeriod = TimeSpan.FromSeconds(_defaultEventBufferPeriod),
-                CacheProviders = new List<ICacheProvider<CheckFlagWithEntitlementResponse?>> { new LocalCache<CheckFlagWithEntitlementResponse?>(maxItems: 0) }
+                CacheProvider = new LocalCache(maxItems: 0)
             };
             _schematic = new Schematic("dummy_api_key", _options.WithHttpClient(testClient));
 
@@ -504,7 +492,7 @@ namespace SchematicHQ.Client.Test
                 Offline = false,
                 FlagDefaults = new Dictionary<string, bool>(),
                 DefaultEventBufferPeriod = TimeSpan.FromSeconds(_defaultEventBufferPeriod),
-                CacheProviders = new List<ICacheProvider<CheckFlagWithEntitlementResponse?>> { new LocalCache<CheckFlagWithEntitlementResponse?>() }
+                CacheProvider = new LocalCache()
             };
             _schematic = new Schematic("dummy_api_key", _options.WithHttpClient(testClient));
 

@@ -33,7 +33,7 @@ namespace SchematicHQ.Client.Test.Cache
             {
                 try
                 {
-                    var cache = new RedisCache<string>(config);
+                    var cache = new RedisCache(config);
                 }
                 catch (InvalidOperationException ex) when (ex.Message.Contains("Failed to connect to Redis"))
                 {
@@ -67,7 +67,7 @@ namespace SchematicHQ.Client.Test.Cache
             {
                 try
                 {
-                    var cache = new RedisCache<string>(config);
+                    var cache = new RedisCache(config);
                 }
                 catch (InvalidOperationException ex) when (ex.Message.Contains("Failed to connect to Redis"))
                 {
@@ -82,7 +82,7 @@ namespace SchematicHQ.Client.Test.Cache
         public void Constructor_WithRedisCacheConfig_NullConfig_ThrowsArgumentNullException()
         {
             // Act & Assert
-            Assert.Throws<ArgumentNullException>(() => new RedisCache<string>((RedisCacheConfig)null));
+            Assert.Throws<ArgumentNullException>(() => new RedisCache((RedisCacheConfig)null));
         }
 
         [Test]
@@ -101,7 +101,7 @@ namespace SchematicHQ.Client.Test.Cache
             // Act & Assert
             try
             {
-                var cache = new RedisCache<string>(clusterConfig);
+                var cache = new RedisCache(clusterConfig);
                 // If we get here without Redis running, that's fine - the config was accepted
                 Assert.Pass("Cluster configuration was accepted and RedisCache was created");
             }
@@ -127,7 +127,7 @@ namespace SchematicHQ.Client.Test.Cache
             };
 
             // Act & Assert
-            var ex = Assert.Throws<ArgumentException>(() => new RedisCache<string>(config));
+            var ex = Assert.Throws<ArgumentException>(() => new RedisCache(config));
             Assert.That(ex.Message, Contains.Substring("Redis endpoints cannot be null or empty"));
         }
 

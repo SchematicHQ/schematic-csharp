@@ -2,6 +2,7 @@ using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using NUnit.Framework;
+using SchematicHQ.Client.Cache;
 using SchematicHQ.Client.RulesEngine.Utils;
 using SchematicHQ.Client.Datastream;
 using SchematicHQ.Client.Test.Datastream.Mocks;
@@ -42,7 +43,7 @@ namespace SchematicHQ.Client.Test.Datastream
         {
             // Arrange - create an adapter that will use our mock client
             var options = new DatastreamOptions();
-            var adapter = new DatastreamClientAdapter("wss://test.example.com", _mockLogger, "test-api-key", options);
+            var adapter = new DatastreamClientAdapter("wss://test.example.com", _mockLogger, "test-api-key", new LocalCache(), options);
 
             // Get the private _client field from adapter and replace it with our mock client
             var clientField = typeof(DatastreamClientAdapter).GetField("_client",
@@ -68,7 +69,7 @@ namespace SchematicHQ.Client.Test.Datastream
         }
 
         [Test]
-        public void CheckFlag_WhenFlagExists_EvaluatesCorrectly()
+        public async Task CheckFlag_WhenFlagExists_EvaluatesCorrectly()
         {
             // Arrange
             SetupFlagsResponse();
@@ -106,7 +107,7 @@ namespace SchematicHQ.Client.Test.Datastream
             
             // Verify company is in cache
             var companyKeys = new Dictionary<string, string> { { "id", "company-123" } };
-            var company = _client.GetCompanyFromCache(companyKeys);
+            var company = await _client.GetCompanyFromCache(companyKeys);
             Assert.That(company, Is.Not.Null, "Company should be in cache after directly adding it");
 
             // Add the flag directly to the cache
@@ -157,7 +158,7 @@ namespace SchematicHQ.Client.Test.Datastream
 
             // Create an adapter that will use our mock client
             var options = new DatastreamOptions();
-            var adapter = new DatastreamClientAdapter("wss://test.example.com", _mockLogger, "test-api-key", options);
+            var adapter = new DatastreamClientAdapter("wss://test.example.com", _mockLogger, "test-api-key", new LocalCache(), options);
 
             // Get the private _client field from adapter and replace it with our mock client
             var clientField = typeof(DatastreamClientAdapter).GetField("_client",

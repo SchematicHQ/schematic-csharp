@@ -42,7 +42,7 @@ namespace SchematicHQ.Client.Datastream
         /// <summary>
         /// Cache capacity for local cache
         /// </summary>
-        public int LocalCacheCapacity { get; set; } = LocalCache<object>.DEFAULT_CACHE_CAPACITY;
+        public int LocalCacheCapacity { get; set; } = LocalCache.DEFAULT_CACHE_CAPACITY;
     }
 
     /// <summary>
@@ -97,7 +97,7 @@ namespace SchematicHQ.Client.Datastream
         /// <returns>Updated options</returns>
         public static DatastreamOptions WithLocalCache(
             this DatastreamOptions options,
-            int capacity = LocalCache<object>.DEFAULT_CACHE_CAPACITY,
+            int capacity = LocalCache.DEFAULT_CACHE_CAPACITY,
             TimeSpan? ttl = null)
         {
             options.CacheProviderType = DatastreamCacheProviderType.Local;
