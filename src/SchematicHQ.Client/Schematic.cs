@@ -78,12 +78,9 @@ public partial class Schematic
             }
 
             // Check if explicit Redis cache providers are configured
-            if (_options.CacheProvider is not null)
+            if (_options.CacheProvider is RedisCache)
             {
-                if (_options.CacheProvider is RedisCache)
-                {
-                    hasRedisCache = true;
-                }
+                hasRedisCache = true;
             }
 
             if (!hasRedisCache)
