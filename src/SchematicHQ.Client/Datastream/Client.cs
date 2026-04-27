@@ -496,7 +496,7 @@ namespace SchematicHQ.Client.Datastream
           cacheKeys.Add(cacheKey);
         }
 
-        _flagsCache.DeleteMissing(cacheKeys);
+        _flagsCache.DeleteMissing(cacheKeys, $"{CacheKeyPrefix}:{CacheKeyPrefixFlags}:*");
 
         lock (_pendingRequestsLock)
         {

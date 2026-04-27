@@ -34,6 +34,12 @@ namespace SchematicHQ.Client.Cache
         /// Delete all keys not present in the provided enumeration
         /// </summary>
         /// <param name="keys">Keys to keep</param>
-        void DeleteMissing(IEnumerable<string> keys);
+        /// <param name="scanPattern">
+        /// Optional glob (appended to the provider's key prefix) restricting which existing keys
+        /// are considered for deletion. When null, every key under the provider's prefix is scanned,
+        /// which can wipe sibling caches that share the same prefix and Redis DB. Callers should pass
+        /// the narrowest pattern they own (e.g. "schematic:flags:*") to scope the scan.
+        /// </param>
+        void DeleteMissing(IEnumerable<string> keys, string? scanPattern = null);
     }
 }

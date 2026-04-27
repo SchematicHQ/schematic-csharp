@@ -154,16 +154,21 @@ namespace SchematicHQ.Client.Cache
         }
 
         /// <inheritdoc/>
-        public void DeleteMissing(IEnumerable<string> keys)
+        public void DeleteMissing(IEnumerable<string> keys, string? scanPattern = null)
         {
             // Convert keys to Redis keys
             var keysToKeep = new HashSet<RedisKey>(keys.Select(k => GetRedisKey(k)));
 
-            // Use server to scan for all keys with our prefix
+            // Scope the scan as narrowly as the caller allows so that sibling caches sharing
+            // the same keyPrefix + Redis DB aren't wiped.
+            var pattern = scanPattern != null
+                ? $"{_keyPrefix}{scanPattern}"
+                : $"{_keyPrefix}*";
+
+            // Use server to scan for keys matching the pattern
             foreach (var endpoint in _redis.GetEndPoints())
             {
                 var server = _redis.GetServer(endpoint);
-                var pattern = $"{_keyPrefix}*";
 
                 // Get keys to delete
                 var keysToDelete = server.Keys(pattern: pattern)
