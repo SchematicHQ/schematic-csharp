@@ -33,6 +33,12 @@ public partial interface ICreditsClient
         CancellationToken cancellationToken = default
     );
 
+    WithRawResponseTask<ListCompanyCreditBalancesResponse> ListCompanyCreditBalancesAsync(
+        ListCompanyCreditBalancesRequest request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    );
+
     WithRawResponseTask<ListCreditBundlesResponse> ListCreditBundlesAsync(
         ListCreditBundlesRequest request,
         RequestOptions? options = null,

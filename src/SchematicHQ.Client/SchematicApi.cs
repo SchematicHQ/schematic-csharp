@@ -45,6 +45,7 @@ public partial class SchematicApi : ISchematicApi
         Dataexports = new DataexportsClient(_client);
         Events = new EventsClient(_client);
         Features = new FeaturesClient(_client);
+        Insights = new InsightsClient(_client);
         Integrationsapi = new IntegrationsapiClient(_client);
         Planbundle = new PlanbundleClient(_client);
         Plangroups = new PlangroupsClient(_client);
@@ -76,6 +77,8 @@ public partial class SchematicApi : ISchematicApi
     public IEventsClient Events { get; }
 
     public IFeaturesClient Features { get; }
+
+    public IInsightsClient Insights { get; }
 
     public IIntegrationsapiClient Integrationsapi { get; }
 

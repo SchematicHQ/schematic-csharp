@@ -13,6 +13,7 @@ public partial interface ISchematicApi
     public IDataexportsClient Dataexports { get; }
     public IEventsClient Events { get; }
     public IFeaturesClient Features { get; }
+    public IInsightsClient Insights { get; }
     public IIntegrationsapiClient Integrationsapi { get; }
     public IPlanbundleClient Planbundle { get; }
     public IPlangroupsClient Plangroups { get; }

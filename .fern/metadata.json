@@ -1,7 +1,7 @@
 {
   "cliVersion": "4.76.1",
   "generatorName": "fernapi/fern-csharp-sdk",
-  "generatorVersion": "2.61.2",
+  "generatorVersion": "2.62.0",
   "generatorConfig": {
     "namespace": "SchematicHQ.Client",
     "client-class-name": "SchematicApi",
@@ -9,8 +9,9 @@
     "extra-dependencies": {
       "moq": "4.20.70",
       "Moq.Contrib.HttpClient": "1.4.0"
-    }
+    },
+    "generate-mock-server-tests": false
   },
-  "originGitCommit": "bc4c906cc55dca6e6d5e9213c5fb6a756783126b",
+  "originGitCommit": "57973a46a4d4ac7fb0dba2d9296b6f6073efd859",
   "sdkVersion": "1.4.4"
 }
