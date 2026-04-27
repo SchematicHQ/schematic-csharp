@@ -2015,6 +2015,48 @@ await client.Credits.SoftDeleteBillingCreditAsync("credit_id");
 </dl>
 </details>
 
+<details><summary><code>client.Credits.<a href="/src/SchematicHQ.Client/Credits/CreditsClient.cs">ListCompanyCreditBalancesAsync</a>(ListCompanyCreditBalancesRequest { ... }) -> WithRawResponseTask&lt;ListCompanyCreditBalancesResponse&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Credits.ListCompanyCreditBalancesAsync(
+    new ListCompanyCreditBalancesRequest { CompanyId = "company_id" }
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `ListCompanyCreditBalancesRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.Credits.<a href="/src/SchematicHQ.Client/Credits/CreditsClient.cs">ListCreditBundlesAsync</a>(ListCreditBundlesRequest { ... }) -> WithRawResponseTask&lt;ListCreditBundlesResponse&gt;</code></summary>
 <dl>
 <dd>
@@ -8583,6 +8625,255 @@ await client.Features.CountFlagsAsync(
 <dd>
 
 **request:** `CountFlagsRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## insights
+<details><summary><code>client.Insights.<a href="/src/SchematicHQ.Client/Insights/InsightsClient.cs">GetActivityAsync</a>(GetActivityRequest { ... }) -> WithRawResponseTask&lt;GetActivityResponse&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Insights.GetActivityAsync(new GetActivityRequest { Limit = 1000000 });
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `GetActivityRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Insights.<a href="/src/SchematicHQ.Client/Insights/InsightsClient.cs">GetEnvironmentFeatureUsageTimeSeriesAsync</a>(GetEnvironmentFeatureUsageTimeSeriesRequest { ... }) -> WithRawResponseTask&lt;GetEnvironmentFeatureUsageTimeSeriesResponse&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Insights.GetEnvironmentFeatureUsageTimeSeriesAsync(
+    new GetEnvironmentFeatureUsageTimeSeriesRequest
+    {
+        EndTime = new DateTime(2024, 01, 15, 09, 30, 00, 000),
+        FeatureId = "feature_id",
+        Granularity = TimeSeriesGranularity.Daily,
+        StartTime = new DateTime(2024, 01, 15, 09, 30, 00, 000),
+    }
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `GetEnvironmentFeatureUsageTimeSeriesRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Insights.<a href="/src/SchematicHQ.Client/Insights/InsightsClient.cs">GetPlanGrowthAsync</a>(GetPlanGrowthRequest { ... }) -> WithRawResponseTask&lt;GetPlanGrowthResponse&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Insights.GetPlanGrowthAsync(new GetPlanGrowthRequest { Months = 1000000 });
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `GetPlanGrowthRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Insights.<a href="/src/SchematicHQ.Client/Insights/InsightsClient.cs">GetSummaryAsync</a>() -> WithRawResponseTask&lt;GetSummaryResponse&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Insights.GetSummaryAsync();
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Insights.<a href="/src/SchematicHQ.Client/Insights/InsightsClient.cs">GetTopFeaturesByUsageAsync</a>(GetTopFeaturesByUsageRequest { ... }) -> WithRawResponseTask&lt;GetTopFeaturesByUsageResponse&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Insights.GetTopFeaturesByUsageAsync(
+    new GetTopFeaturesByUsageRequest
+    {
+        EndTime = new DateTime(2024, 01, 15, 09, 30, 00, 000),
+        Limit = 1000000,
+        StartTime = new DateTime(2024, 01, 15, 09, 30, 00, 000),
+    }
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `GetTopFeaturesByUsageRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Insights.<a href="/src/SchematicHQ.Client/Insights/InsightsClient.cs">GetEnvironmentTraitUsageTimeSeriesAsync</a>(GetEnvironmentTraitUsageTimeSeriesRequest { ... }) -> WithRawResponseTask&lt;GetEnvironmentTraitUsageTimeSeriesResponse&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Insights.GetEnvironmentTraitUsageTimeSeriesAsync(
+    new GetEnvironmentTraitUsageTimeSeriesRequest
+    {
+        EndTime = new DateTime(2024, 01, 15, 09, 30, 00, 000),
+        FeatureId = "feature_id",
+        Granularity = TimeSeriesGranularity.Daily,
+        StartTime = new DateTime(2024, 01, 15, 09, 30, 00, 000),
+    }
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `GetEnvironmentTraitUsageTimeSeriesRequest` 
     
 </dd>
 </dl>
