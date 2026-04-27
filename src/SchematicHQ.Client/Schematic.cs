@@ -422,6 +422,163 @@ public partial class Schematic
         }
     }
 
+    public async Task<List<CheckFlagResponseData>> CheckFlags(
+        Dictionary<string, string>? company = null,
+        Dictionary<string, string>? user = null,
+        IEnumerable<string>? keys = null)
+    {
+        var keyList = keys?.ToList();
+
+        if (_offline)
+        {
+            _logger.Debug("Offline mode enabled, returning default flag values");
+            if (keyList == null || keyList.Count == 0)
+            {
+                return new List<CheckFlagResponseData>();
+            }
+            return keyList.Select(k => new CheckFlagResponseData
+            {
+                Flag = k,
+                Value = GetFlagDefault(k),
+                Reason = "Offline mode - using default value"
+            }).ToList();
+        }
+
+        try
+        {
+            var requestBody = new CheckFlagRequestBody
+            {
+                Company = company,
+                User = user
+            };
+
+            if (_datastreamClient != null && keyList != null && keyList.Count > 0)
+            {
+                var dsResults = await CheckFlagsViaDatastream(keyList, requestBody);
+                if (dsResults != null)
+                {
+                    return dsResults;
+                }
+            }
+
+            if (keyList == null || keyList.Count == 0)
+            {
+                _logger.Debug("No specific flag keys provided, calling CheckFlags API");
+                var apiResp = await API.Features.CheckFlagsAsync(requestBody);
+                return apiResp.Data.Flags.ToList();
+            }
+
+            var cachedResults = new Dictionary<string, CheckFlagResponseData>();
+            var allCached = true;
+            foreach (var key in keyList)
+            {
+                var cacheKey = BuildFlagCacheKey(key, company, user);
+                CheckFlagWithEntitlementResponse? cached = null;
+                foreach (var provider in _flagCheckCacheProviders)
+                {
+                    cached = provider.Get(cacheKey);
+                    if (cached != null) break;
+                }
+                if (cached != null)
+                {
+                    cachedResults[key] = new CheckFlagResponseData
+                    {
+                        Flag = key,
+                        Value = cached.Value,
+                        Reason = cached.Reason
+                    };
+                }
+                else
+                {
+                    allCached = false;
+                }
+            }
+
+            if (allCached)
+            {
+                _logger.Debug("All {0} flags found in cache", keyList.Count);
+                return keyList.Select(k => cachedResults[k]).ToList();
+            }
+
+            _logger.Debug("Cache miss for some flags, calling API for all {0} keys", keyList.Count);
+            var freshResp = await API.Features.CheckFlagsAsync(requestBody);
+            var apiResults = freshResp.Data.Flags.ToDictionary(f => f.Flag);
+
+            foreach (var kvp in apiResults)
+            {
+                var cacheKey = BuildFlagCacheKey(kvp.Key, company, user);
+                var responseForCache = CheckFlagWithEntitlementResponse.FromApiResponse(kvp.Value, kvp.Key);
+                foreach (var provider in _flagCheckCacheProviders)
+                {
+                    try
+                    {
+                        provider.Set(cacheKey, responseForCache);
+                    }
+                    catch (Exception cacheEx)
+                    {
+                        _logger.Error("Error caching flag result: {0}", cacheEx.Message);
+                    }
+                }
+            }
+
+            return keyList.Select(key =>
+            {
+                if (apiResults.TryGetValue(key, out var f))
+                {
+                    return f;
+                }
+                return new CheckFlagResponseData
+                {
+                    Flag = key,
+                    Value = GetFlagDefault(key),
+                    Reason = "Flag not found - using default value"
+                };
+            }).ToList();
+        }
+        catch (Exception ex)
+        {
+            _logger.Error("Error checking flags: {0}", ex.Message);
+            return (keyList ?? new List<string>()).Select(k => new CheckFlagResponseData
+            {
+                Flag = k,
+                Value = GetFlagDefault(k),
+                Reason = $"Error occurred - using default value: {ex.Message}"
+            }).ToList();
+        }
+    }
+
+    private async Task<List<CheckFlagResponseData>?> CheckFlagsViaDatastream(
+        List<string> keys,
+        CheckFlagRequestBody requestBody)
+    {
+        try
+        {
+            var results = new List<CheckFlagResponseData>();
+            foreach (var key in keys)
+            {
+                var result = await _datastreamClient!.CheckFlag(requestBody, key);
+
+                results.Add(new CheckFlagResponseData
+                {
+                    Flag = key,
+                    Value = result.Value,
+                    Reason = result.Reason,
+                    FlagId = result.FlagId,
+                    RuleId = result.RuleId,
+                    CompanyId = result.CompanyId,
+                    UserId = result.UserId
+                });
+            }
+            _logger.Debug("All {0} flags evaluated via Datastream", keys.Count);
+            return results;
+        }
+        catch (Exception ex)
+        {
+            _logger.Debug("Datastream CheckFlags failed ({0}), falling back to API", ex.Message);
+            return null;
+        }
+    }
+
     // Helper method to build consistent cache keys
     private string BuildFlagCacheKey(string flagKey, Dictionary<string, string>? company, Dictionary<string, string>? user)
     {

@@ -61,6 +61,27 @@ namespace SchematicHQ.Client.Test
             };
         }
 
+        private HttpResponseMessage CreateCheckFlagsResponse(HttpStatusCode code, params (string flag, bool value)[] flags)
+        {
+            var response = new CheckFlagsResponse
+            {
+                Data = new CheckFlagsResponseData
+                {
+                    Flags = flags.Select(f => new CheckFlagResponseData
+                    {
+                        Flag = f.flag,
+                        Value = f.value,
+                        Reason = "api_reason"
+                    }).ToList()
+                }
+            };
+            var serializedResponse = JsonSerializer.Serialize(response, new JsonSerializerOptions { WriteIndented = true });
+            return new HttpResponseMessage(code)
+            {
+                Content = new StringContent(serializedResponse, Encoding.UTF8, "application/json")
+            };
+        }
+
         private HttpResponseMessage CreateEventBatchResponse(HttpStatusCode code)
         {
             var response = new CreateEventBatchResponse{
@@ -546,6 +567,114 @@ namespace SchematicHQ.Client.Test
             Assert.That(await _schematic.CheckFlag("new_flag_a"), Is.True);
             Assert.That(await _schematic.CheckFlag("new_flag_b"), Is.False);
             Assert.That(await _schematic.CheckFlag("unset_flag"), Is.False);
+        }
+
+        [Test]
+        public async Task CheckFlags_OfflineReturnsDefaultsForProvidedKeys()
+        {
+            SetupSchematicTestClient(
+                isOffline: true,
+                response: CreateCheckFlagResponse(HttpStatusCode.OK, false),
+                flagDefaults: new Dictionary<string, bool> { { "flag_a", true }, { "flag_b", false } }
+            );
+
+            var results = await _schematic.CheckFlags(keys: new[] { "flag_a", "flag_b", "flag_c" });
+
+            Assert.That(results.Count, Is.EqualTo(3));
+            Assert.That(results[0].Flag, Is.EqualTo("flag_a"));
+            Assert.That(results[0].Value, Is.True);
+            Assert.That(results[1].Flag, Is.EqualTo("flag_b"));
+            Assert.That(results[1].Value, Is.False);
+            Assert.That(results[2].Flag, Is.EqualTo("flag_c"));
+            Assert.That(results[2].Value, Is.False);
+            Assert.That(results[2].Reason, Does.Contain("Offline"));
+        }
+
+        [Test]
+        public async Task CheckFlags_OfflineWithNoKeysReturnsEmpty()
+        {
+            SetupSchematicTestClient(
+                isOffline: true,
+                response: CreateCheckFlagResponse(HttpStatusCode.OK, false),
+                flagDefaults: new Dictionary<string, bool> { { "flag_a", true } }
+            );
+
+            var results = await _schematic.CheckFlags();
+
+            Assert.That(results, Is.Empty);
+        }
+
+        [Test]
+        public async Task CheckFlags_CallsApiAndReturnsResults()
+        {
+            SetupSchematicTestClient(
+                isOffline: false,
+                response: CreateCheckFlagsResponse(HttpStatusCode.OK,
+                    ("flag_a", true),
+                    ("flag_b", false))
+            );
+
+            var results = await _schematic.CheckFlags(keys: new[] { "flag_a", "flag_b" });
+
+            Assert.That(results.Count, Is.EqualTo(2));
+            Assert.That(results.First(f => f.Flag == "flag_a").Value, Is.True);
+            Assert.That(results.First(f => f.Flag == "flag_b").Value, Is.False);
+        }
+
+        [Test]
+        public async Task CheckFlags_ReturnsDefaultForKeyNotInApiResponse()
+        {
+            SetupSchematicTestClient(
+                isOffline: false,
+                response: CreateCheckFlagsResponse(HttpStatusCode.OK, ("flag_a", true)),
+                flagDefaults: new Dictionary<string, bool> { { "missing_flag", true } }
+            );
+
+            var results = await _schematic.CheckFlags(keys: new[] { "flag_a", "missing_flag" });
+
+            Assert.That(results.Count, Is.EqualTo(2));
+            Assert.That(results[0].Flag, Is.EqualTo("flag_a"));
+            Assert.That(results[0].Value, Is.True);
+            Assert.That(results[1].Flag, Is.EqualTo("missing_flag"));
+            Assert.That(results[1].Value, Is.True);
+            Assert.That(results[1].Reason, Does.Contain("default"));
+        }
+
+        [Test]
+        public async Task CheckFlags_UsesCacheWhenAllKeysCached()
+        {
+            SetupSchematicTestClient(
+                isOffline: false,
+                response: CreateCheckFlagsResponse(HttpStatusCode.OK, ("flag_a", false), ("flag_b", false))
+            );
+
+            foreach (var provider in _options.CacheProviders)
+            {
+                provider.Set("flag_a", new CheckFlagWithEntitlementResponse { FlagKey = "flag_a", Value = true, Reason = "cache" });
+                provider.Set("flag_b", new CheckFlagWithEntitlementResponse { FlagKey = "flag_b", Value = true, Reason = "cache" });
+            }
+
+            var results = await _schematic.CheckFlags(keys: new[] { "flag_a", "flag_b" });
+
+            Assert.That(results.Count, Is.EqualTo(2));
+            Assert.That(results.All(r => r.Value), Is.True);
+            Assert.That(results.All(r => r.Reason == "cache"), Is.True);
+        }
+
+        [Test]
+        public async Task CheckFlags_ReturnsDefaultsOnApiError()
+        {
+            SetupSchematicTestClient(
+                isOffline: false,
+                response: CreateCheckFlagResponse(HttpStatusCode.InternalServerError, false),
+                flagDefaults: new Dictionary<string, bool> { { "flag_a", true } }
+            );
+
+            var results = await _schematic.CheckFlags(keys: new[] { "flag_a", "flag_b" });
+
+            Assert.That(results.Count, Is.EqualTo(2));
+            Assert.That(results.First(r => r.Flag == "flag_a").Value, Is.True);
+            Assert.That(results.First(r => r.Flag == "flag_b").Value, Is.False);
         }
 
         [Test]
