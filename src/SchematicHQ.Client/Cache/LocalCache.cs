@@ -179,7 +179,7 @@ namespace SchematicHQ.Client.Cache;
         }
 
         /// <inheritdoc/>
-        public void DeleteMissing(IEnumerable<string> keys, string? scanPattern = null)
+        public ValueTask DeleteMissing(IEnumerable<string> keys, string? scanPattern = null)
         {
             if (_maxItems == 0 || _disposed)
                 return ValueTask.CompletedTask;
@@ -187,11 +187,17 @@ namespace SchematicHQ.Client.Cache;
             var keysSet = new HashSet<string>(keys);
             var keysToRemove = new List<string>();
 
-            // Collect keys to remove (those not in the provided list)
+            // Collect keys to remove (those not in the provided list, optionally filtered by pattern)
             lock (_lock)
             {
                 foreach (var cacheKey in _cache.Keys)
                 {
+                    // If a scanPattern is provided, only consider keys that match it
+                    if (scanPattern != null && !GlobMatch(cacheKey, scanPattern))
+                    {
+                        continue;
+                    }
+
                     if (!keysSet.Contains(cacheKey))
                     {
                         keysToRemove.Add(cacheKey);
@@ -206,6 +212,48 @@ namespace SchematicHQ.Client.Cache;
             }
 
             return ValueTask.CompletedTask;
+        }
+
+        /// <summary>
+        /// Simple glob pattern matcher supporting '*' (match any sequence) and '?' (match single char).
+        /// This mirrors the Redis SCAN pattern semantics used by RedisCache.
+        /// </summary>
+        private static bool GlobMatch(string input, string pattern)
+        {
+            int i = 0, p = 0;
+            int starI = -1, starP = -1;
+
+            while (i < input.Length)
+            {
+                if (p < pattern.Length && (pattern[p] == '?' || pattern[p] == input[i]))
+                {
+                    i++;
+                    p++;
+                }
+                else if (p < pattern.Length && pattern[p] == '*')
+                {
+                    starI = i;
+                    starP = p;
+                    p++;
+                }
+                else if (starP >= 0)
+                {
+                    p = starP + 1;
+                    starI++;
+                    i = starI;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+
+            while (p < pattern.Length && pattern[p] == '*')
+            {
+                p++;
+            }
+
+            return p == pattern.Length;
         }
 
         private void Remove(string key)

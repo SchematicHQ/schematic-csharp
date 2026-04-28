@@ -454,12 +454,7 @@ public partial class Schematic
             foreach (var key in keyList)
             {
                 var cacheKey = BuildFlagCacheKey(key, company, user);
-                CheckFlagWithEntitlementResponse? cached = null;
-                foreach (var provider in _flagCheckCacheProviders)
-                {
-                    cached = provider.Get(cacheKey);
-                    if (cached != null) break;
-                }
+                var cached = await _cache.Get<CheckFlagWithEntitlementResponse>(cacheKey);
                 if (cached != null)
                 {
                     cachedResults[key] = new CheckFlagResponseData
@@ -489,17 +484,16 @@ public partial class Schematic
             {
                 var cacheKey = BuildFlagCacheKey(kvp.Key, company, user);
                 var responseForCache = CheckFlagWithEntitlementResponse.FromApiResponse(kvp.Value, kvp.Key);
-                foreach (var provider in _flagCheckCacheProviders)
+                
+                try
                 {
-                    try
-                    {
-                        provider.Set(cacheKey, responseForCache);
-                    }
-                    catch (Exception cacheEx)
-                    {
-                        _logger.Error("Error caching flag result: {0}", cacheEx.Message);
-                    }
+                    await _cache.Set(cacheKey, responseForCache);  
                 }
+                catch (Exception cacheEx)
+                {
+                    _logger.Error("Error caching flag result: {0}", cacheEx.Message);
+                }
+               
             }
 
             return keyList.Select(key =>

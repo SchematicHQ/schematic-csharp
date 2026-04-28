@@ -29,8 +29,8 @@ internal class DatastreamCacheDecorator : ICacheProvider
         return _inner.Delete(key);
     }
 
-    public ValueTask DeleteMissing(IEnumerable<string> keys)
+    public ValueTask DeleteMissing(IEnumerable<string> keys, string? scanPattern = null)
     {
-        return _inner.DeleteMissing(keys);
+        return _inner.DeleteMissing(keys, scanPattern);
     }
 }
