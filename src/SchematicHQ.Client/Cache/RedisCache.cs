@@ -29,10 +29,10 @@ namespace SchematicHQ.Client.Cache
             {
                 throw new ArgumentNullException(nameof(config));
             }
-
+            _redis = GetRedis(config);
+            
             try
             {
-                _redis = GetRedis(config);
                 _db = _redis.GetDatabase(config.Database);
                 _keyPrefix = config.KeyPrefix ?? DEFAULT_KEY_PREFIX;
                 _ttl = config.CacheTTL ?? DEFAULT_CACHE_TTL;
