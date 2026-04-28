@@ -636,11 +636,8 @@ namespace SchematicHQ.Client.Test
                 response: CreateCheckFlagsResponse(HttpStatusCode.OK, ("flag_a", false), ("flag_b", false))
             );
 
-            foreach (var provider in _options.CacheProviders)
-            {
-                provider.Set("flag_a", new CheckFlagWithEntitlementResponse { FlagKey = "flag_a", Value = true, Reason = "cache" });
-                provider.Set("flag_b", new CheckFlagWithEntitlementResponse { FlagKey = "flag_b", Value = true, Reason = "cache" });
-            }
+            await _options.CacheProvider.Set("flag_a", new CheckFlagWithEntitlementResponse { FlagKey = "flag_a", Value = true, Reason = "cache" });
+            await _options.CacheProvider.Set("flag_b", new CheckFlagWithEntitlementResponse { FlagKey = "flag_b", Value = true, Reason = "cache" });
 
             var results = await _schematic.CheckFlags(keys: new[] { "flag_a", "flag_b" });
 

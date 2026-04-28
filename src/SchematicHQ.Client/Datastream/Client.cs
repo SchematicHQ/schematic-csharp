@@ -356,7 +356,7 @@ namespace SchematicHQ.Client.Datastream
               try
               {
                 var response = JsonSerializer.Deserialize<DataStreamResponse>(message);
-                HandleMessageResponse(response);
+                await HandleMessageResponse(response);
               }
               catch (Exception ex)
               {
@@ -399,7 +399,7 @@ namespace SchematicHQ.Client.Datastream
       }
     }
 
-    private void HandleMessageResponse(DataStreamResponse? message)
+    private async Task HandleMessageResponse(DataStreamResponse? message)
     {
       if (message == null)
       {

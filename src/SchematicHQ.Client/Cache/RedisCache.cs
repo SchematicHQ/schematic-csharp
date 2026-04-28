@@ -153,7 +153,7 @@ namespace SchematicHQ.Client.Cache
         }
 
         /// <inheritdoc/>
-        public void DeleteMissing(IEnumerable<string> keys, string? scanPattern = null)
+        public async ValueTask DeleteMissing(IEnumerable<string> keys, string? scanPattern = null)
         {
             // Convert keys to Redis keys
             var keysToKeep = new HashSet<RedisKey>(keys.Select(k => GetRedisKey(k)));
