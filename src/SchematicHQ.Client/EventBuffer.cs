@@ -1,4 +1,5 @@
 using System.Threading.Channels;
+using Microsoft.Extensions.Logging;
 
 #nullable enable
 
@@ -27,7 +28,7 @@ public class EventBuffer<T> : IEventBuffer<T> where T : notnull
     private readonly int _maxSize;
     private readonly TimeSpan _flushPeriod;
     private readonly Func<List<T>, Task> _action;
-    private readonly ISchematicLogger _logger;
+    private readonly ILogger _logger;
     private readonly Channel<T> _channel;
     private readonly SemaphoreSlim _semaphore;
     private CancellationTokenSource _cts;
@@ -35,7 +36,7 @@ public class EventBuffer<T> : IEventBuffer<T> where T : notnull
     private Task _periodicFlushTask = Task.CompletedTask;
     private Task _processBufferTask = Task.CompletedTask;
 
-    public EventBuffer(Func<List<T>, Task> action, ISchematicLogger logger, int maxSize = DefaultMaxSize, TimeSpan? flushPeriod = null)
+    public EventBuffer(Func<List<T>, Task> action, ILogger logger, int maxSize = DefaultMaxSize, TimeSpan? flushPeriod = null)
     {
         _maxSize = maxSize;
         _flushPeriod = flushPeriod ?? DefaultFlushPeriod;
@@ -50,7 +51,7 @@ public class EventBuffer<T> : IEventBuffer<T> where T : notnull
         _state = StateStopped;
         _semaphore = new SemaphoreSlim(0);
 
-        _logger.Debug("EventBuffer initialized with maxSize: {0}, flushPeriod: {1}", _maxSize, _flushPeriod);
+        _logger.LogDebug("EventBuffer initialized with maxSize: {MaxSize}, flushPeriod: {FlushPeriod}", _maxSize, _flushPeriod);
 
         AppDomain.CurrentDomain.ProcessExit += async (s, e) => {
             await EmergencyFlush();
@@ -66,7 +67,7 @@ public class EventBuffer<T> : IEventBuffer<T> where T : notnull
     {
         try
         {
-            _logger.Debug("Emergency flush triggered by program termination");
+            _logger.LogDebug("Emergency flush triggered by program termination");
             var items = new List<T>(_channel.Reader.Count);
             while (_channel.Reader.TryRead(out var item))
             {
@@ -75,14 +76,14 @@ public class EventBuffer<T> : IEventBuffer<T> where T : notnull
 
             if (items.Count > 0)
             {
-                _logger.Info("Emergency flushing {0} items", items.Count);
+                _logger.LogInformation("Emergency flushing {ItemCount} items", items.Count);
                 await _action(items);
             }
-            _logger.Info("Emergency flush completed");
+            _logger.LogInformation("Emergency flush completed");
         }
         catch (Exception ex)
         {
-            _logger.Error("Error during emergency flush: {0}", ex.Message);
+            _logger.LogError(ex, "Error during emergency flush");
         }
     }
 
@@ -94,7 +95,7 @@ public class EventBuffer<T> : IEventBuffer<T> where T : notnull
         if (!_channel.Writer.TryWrite(item))
             throw new InvalidOperationException("Failed to write item to buffer channel.");
 
-        _logger.Debug("Item added to buffer. Current size: {0}", _channel.Reader.Count);
+        _logger.LogDebug("Item added to buffer. Current size: {QueueSize}", _queue.Count);
         
         if (_channel.Reader.Count >= _maxSize)
         {
@@ -111,7 +112,7 @@ public class EventBuffer<T> : IEventBuffer<T> where T : notnull
         _periodicFlushTask = Task.Run(() => PeriodicFlushAsync(_cts.Token));
         _processBufferTask = Task.Run(() => ProcessBufferAsync(_cts.Token));
 
-        _logger.Info("EventBuffer started.");
+        _logger.LogInformation("EventBuffer started.");
     }
 
     public async Task Flush()
@@ -143,7 +144,7 @@ public class EventBuffer<T> : IEventBuffer<T> where T : notnull
             }
             catch (OperationCanceledException)
             {
-                _logger.Warn("Process buffer task was canceled.");
+                _logger.LogWarning("Process buffer task was canceled.");
             }
         }
     }
@@ -163,11 +164,11 @@ public class EventBuffer<T> : IEventBuffer<T> where T : notnull
             }
             catch (OperationCanceledException)
             {
-                _logger.Warn("Periodic flush task was canceled.");
+                _logger.LogWarning("Periodic flush task was canceled.");
             }
             catch (Exception ex)
             {
-                _logger.Error("An error occurred during periodic flush: {0}", ex.Message);
+                _logger.LogError(ex, "An error occurred during periodic flush");
             }
         }
     }
@@ -182,7 +183,7 @@ public class EventBuffer<T> : IEventBuffer<T> where T : notnull
 
         if (items.Count > 0)
         {
-            _logger.Info("Flushing buffer with {0} items.", items.Count);
+            _logger.LogInformation("Flushing buffer with {ItemCount} items.", items.Count);
 
             // Initialize retry counter and success flag
             int retryCount = 0;
@@ -197,7 +198,7 @@ public class EventBuffer<T> : IEventBuffer<T> where T : notnull
                     if (retryCount > 0)
                     {
                         // Log retry attempt
-                        _logger.Info("Retrying event batch submission (attempt {0} of {1})", retryCount, MaxRetries);
+                        _logger.LogInformation("Retrying event batch submission (attempt {Attempt} of {MaxRetries})", retryCount, MaxRetries);
                     }
 
                     // Attempt to send events
@@ -217,10 +218,9 @@ public class EventBuffer<T> : IEventBuffer<T> where T : notnull
                         double jitter = Random.Shared.NextDouble() * 0.1 * delay; // 10% jitter
                         TimeSpan waitTime = TimeSpan.FromSeconds(delay + jitter);
 
-                        _logger.Warn(
-                            string.Format("Event batch submission failed: {0}. Retrying in {1:0.##} seconds...",
-                            ex.Message, waitTime.TotalSeconds)
-                        );
+                        _logger.LogWarning(ex,
+                            "Event batch submission failed. Retrying in {WaitSeconds:0.##} seconds...",
+                            waitTime.TotalSeconds);
 
                         // Wait before retry
                         await Task.Delay(waitTime);
@@ -231,11 +231,11 @@ public class EventBuffer<T> : IEventBuffer<T> where T : notnull
             // After all retries, if still not successful, log the error
             if (!success)
             {
-                _logger.Error("Event batch submission failed after {0} retries: {1}", MaxRetries, lastException?.Message ?? "Unknown error");
+                _logger.LogError(lastException, "Event batch submission failed after {MaxRetries} retries", MaxRetries);
             }
             else if (retryCount > 0)
             {
-                _logger.Info("Event batch submission succeeded after {0} retries", retryCount);
+                _logger.LogInformation("Event batch submission succeeded after {RetryCount} retries", retryCount);
             }
         }
     }
@@ -264,11 +264,11 @@ public class EventBuffer<T> : IEventBuffer<T> where T : notnull
 
             _cts.Dispose();
             _semaphore.Dispose();
-            _logger.Info("EventBuffer shut down cleanly.");
+            _logger.LogInformation("EventBuffer shut down cleanly.");
         }
         catch (Exception ex)
         {
-            _logger.Error("Error during shutdown: {0}", ex.Message);
+            _logger.LogError(ex, "Error during shutdown");
             throw;
         }
     }

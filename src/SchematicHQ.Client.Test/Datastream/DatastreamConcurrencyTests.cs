@@ -1,5 +1,7 @@
 using System.Text;
+using Microsoft.Extensions.Logging.Testing;
 using System.Text.Json;
+using Microsoft.Extensions.Logging;
 using NUnit.Framework;
 using SchematicHQ.Client.RulesEngine;
 using SchematicHQ.Client.RulesEngine.Utils;
@@ -12,7 +14,7 @@ namespace SchematicHQ.Client.Test.Datastream
     public class DatastreamConcurrencyTests
     {
         private MockWebSocket _mockWebSocket;
-        private MockSchematicLogger _mockLogger;
+        private FakeLogger _mockLogger;
         private DatastreamClient _client;
 
         [SetUp]
@@ -112,7 +114,7 @@ namespace SchematicHQ.Client.Test.Datastream
             await Task.Delay(100);
 
             // Assert
-            Assert.That(_mockLogger.HasLogEntry(LogLevel.Warn, "Received empty company data"), Is.True);
+            Assert.That(_mockLogger.HasLogEntry(LogLevel.Warning, "Received empty company data"), Is.True);
         }
 
         [Test]

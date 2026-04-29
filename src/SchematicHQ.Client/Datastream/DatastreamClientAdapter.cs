@@ -19,7 +19,7 @@ namespace SchematicHQ.Client.Datastream
   public class DatastreamClientAdapter
   {
     private readonly DatastreamClient _client;
-    private readonly ISchematicLogger _logger;
+    private readonly ILogger _logger;
     private readonly bool _replicatorMode;
     private readonly IReplicatorHealthService? _replicatorHealthService;
 
@@ -29,27 +29,27 @@ namespace SchematicHQ.Client.Datastream
     /// <summary>
     /// Creates a new datastream client adapter
     /// </summary>
-    public DatastreamClientAdapter(string baseUrl, ISchematicLogger logger, string apiKey, DatastreamOptions options, bool replicatorMode = false, string? replicatorHealthUrl = null)
+    public DatastreamClientAdapter(string baseUrl, ILogger logger, string apiKey, DatastreamOptions options, bool replicatorMode = false, string? replicatorHealthUrl = null)
     {
       _logger = logger;
       _replicatorMode = replicatorMode;
-      
+
       // Initialize replicator health service if in replicator mode
       if (_replicatorMode && !string.IsNullOrWhiteSpace(replicatorHealthUrl))
       {
         // Create a simple HTTP client for health checks
         var httpClient = new System.Net.Http.HttpClient();
         _replicatorHealthService = new ReplicatorHealthService(httpClient, replicatorHealthUrl, logger);
-        
+
         // Subscribe to cache version changes for logging and potential cache invalidation
         _replicatorHealthService.CacheVersionChanged += OnCacheVersionChanged;
-        
+
         _replicatorHealthService.Start();
       }
-      
+
       _client = new DatastreamClient(
           baseUrl,
-          _logger,
+          logger,
           apiKey,
           _connectionTracker.UpdateConnectionState, // callback to update connection state
           options.CacheTTL,
@@ -131,13 +131,13 @@ namespace SchematicHQ.Client.Datastream
         }
         else
         {
-          _logger.Debug("Timed out waiting for replicator cache version");
+          _logger.LogDebug("Timed out waiting for replicator cache version");
           return null;
         }
       }
       catch (Exception ex)
       {
-        _logger.Debug("Failed to get replicator cache version: {0}", ex.Message);
+        _logger.LogDebug(ex, "Failed to get replicator cache version");
         return null;
       }
     }
@@ -147,7 +147,7 @@ namespace SchematicHQ.Client.Datastream
     /// </summary>
     private void OnCacheVersionChanged(string? oldVersion, string? newVersion)
     {
-      _logger.Info("Cache version changed from {0} to {1} - new cache keys will use updated version", 
+      _logger.LogInformation("Cache version changed from {OldVersion} to {NewVersion} - new cache keys will use updated version",
           oldVersion ?? "(null)", newVersion ?? "(null)");
       
       // Note: Cache invalidation is automatic because cache keys include the version.
@@ -183,7 +183,7 @@ namespace SchematicHQ.Client.Datastream
         }
         catch (Exception ex)
         {
-          _logger.Error($"Error checking datastream connection: {ex.Message}");
+          _logger.LogError(ex, "Error checking datastream connection");
           return false;
         }
       }
@@ -232,13 +232,13 @@ namespace SchematicHQ.Client.Datastream
           if (allRequiredResourcesInCache)
           {
             // All required resources in cache - evaluate flag
-            _logger.Debug("Replicator mode: All required resources in cache, evaluating flag '{0}'", flagKey);
+            _logger.LogDebug("Replicator mode: All required resources in cache, evaluating flag '{FlagKey}'", flagKey);
             return await _client.CheckFlag(cachedCompany, cachedUser, cachedFlag!);
           }
           else if (!flagInCache)
           {
             // Flag missing from cache - replicator should have populated it, so flag doesn't exist
-            _logger.Debug("Replicator mode: Flag '{0}' missing from cache, replicator is healthy so flag doesn't exist", flagKey);
+            _logger.LogDebug("Replicator mode: Flag '{FlagKey}' missing from cache, replicator is healthy so flag doesn't exist", flagKey);
             return new CheckFlagResult
             {
               Reason = "FlagNotFound",
@@ -250,7 +250,7 @@ namespace SchematicHQ.Client.Datastream
           else
           {
             // Some company/user resources missing - evaluate with available data
-            _logger.Warn("Replicator mode: Some required resources missing from cache for flag '{0}', evaluating with available data", flagKey);
+            _logger.LogWarning("Replicator mode: Some required resources missing from cache for flag '{FlagKey}', evaluating with available data", flagKey);
             return await _client.CheckFlag(cachedCompany, cachedUser, cachedFlag!);
           }
         }
@@ -260,13 +260,13 @@ namespace SchematicHQ.Client.Datastream
           if (allRequiredResourcesInCache)
           {
             // All required resources in cache - evaluate flag even though replicator is unhealthy
-            _logger.Warn("Replicator mode: Replicator unhealthy but all required resources in cache, evaluating flag '{0}'", flagKey);
+            _logger.LogWarning("Replicator mode: Replicator unhealthy but all required resources in cache, evaluating flag '{FlagKey}'", flagKey);
             return await _client.CheckFlag(cachedCompany, cachedUser, cachedFlag!);
           }
           else
           {
             // Not all resources in cache and replicator unhealthy - fallback to API
-            _logger.Warn("Replicator mode: Replicator unhealthy and missing required resources for flag '{0}', falling back to API", flagKey);
+            _logger.LogWarning("Replicator mode: Replicator unhealthy and missing required resources for flag '{FlagKey}', falling back to API", flagKey);
             throw new InvalidOperationException($"Replicator unhealthy and required resources missing for flag '{flagKey}' - API fallback required");
           }
         }
@@ -318,7 +318,7 @@ namespace SchematicHQ.Client.Datastream
         }
         catch (Exception ex)
         {
-          _logger.Error("Error fetching missing resources for flag {0}: {1}", flagKey, ex.Message);
+          _logger.LogError(ex, "Error fetching missing resources for flag {FlagKey}", flagKey);
           return new CheckFlagResult
           {
             Reason = "Error",
@@ -426,57 +426,5 @@ namespace SchematicHQ.Client.Datastream
       }
     }
 
-    // Adapter to convert ISchematicLogger to ILogger for the DatastreamClient
-    private class LoggerAdapter : ILogger<DatastreamClient>
-    {
-      private readonly ISchematicLogger _logger;
-
-      public LoggerAdapter(ConsoleLogger logger)
-      {
-        _logger = logger;
-      }
-
-      public IDisposable BeginScope<TState>(TState state)
-      {
-        return new NoopDisposable();
-      }
-
-      public bool IsEnabled(MsLogLevel logLevel)
-      {
-        return true;
-      }
-
-      public void Log<TState>(MsLogLevel logLevel, EventId eventId, TState state, Exception? exception, Func<TState, Exception?, string> formatter)
-      {
-        var message = formatter(state, exception);
-
-        switch (logLevel)
-        {
-          case MsLogLevel.Critical:
-          case MsLogLevel.Error:
-            _logger.Error(message);
-            break;
-          case MsLogLevel.Warning:
-            _logger.Warn(message);
-            break;
-          case MsLogLevel.Information:
-            _logger.Info(message);
-            break;
-          case MsLogLevel.Debug:
-          case MsLogLevel.Trace:
-            _logger.Debug(message);
-            break;
-          default:
-            _logger.Info(message);
-            break;
-        }
-      }
-
-      // A no-operation disposable class
-      private class NoopDisposable : IDisposable
-      {
-        public void Dispose() { }
-      }
-    }
   }
 }
