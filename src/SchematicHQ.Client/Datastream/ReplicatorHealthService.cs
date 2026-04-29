@@ -2,6 +2,7 @@ using System;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client.Datastream
@@ -50,7 +51,7 @@ namespace SchematicHQ.Client.Datastream
     {
         private readonly HttpClient _httpClient;
         private readonly string _healthUrl;
-        private readonly ISchematicLogger _logger;
+        private readonly ILogger _logger;
         private readonly TimeSpan _checkInterval;
         private readonly CancellationTokenSource _cancellationTokenSource;
         private Task? _healthCheckTask;
@@ -71,7 +72,7 @@ namespace SchematicHQ.Client.Datastream
         public ReplicatorHealthService(
             HttpClient httpClient,
             string healthUrl,
-            ISchematicLogger logger,
+            ILogger logger,
             TimeSpan? checkInterval = null)
         {
             _httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
@@ -107,7 +108,7 @@ namespace SchematicHQ.Client.Datastream
             }
             catch (Exception ex)
             {
-                _logger.Debug("Failed to get cache version immediately: {0}", ex.Message);
+                _logger.LogDebug(ex, "Failed to get cache version immediately");
                 return null;
             }
         }
@@ -121,7 +122,7 @@ namespace SchematicHQ.Client.Datastream
             if (_healthCheckTask != null)
                 return; // Already started
 
-            _logger.Info("Starting replicator health check service for URL: {0}", _healthUrl);
+            _logger.LogInformation("Starting replicator health check service for URL: {HealthUrl}", _healthUrl);
             
             // Perform an immediate health check to get the cache version right away
             _ = Task.Run(async () =>
@@ -129,11 +130,11 @@ namespace SchematicHQ.Client.Datastream
                 try
                 {
                     await PerformHealthCheck();
-                    _logger.Debug("Initial health check completed");
+                    _logger.LogDebug("Initial health check completed");
                 }
                 catch (Exception ex)
                 {
-                    _logger.Debug("Initial health check failed: {0}", ex.Message);
+                    _logger.LogDebug(ex, "Initial health check failed");
                 }
             });
             
@@ -146,7 +147,7 @@ namespace SchematicHQ.Client.Datastream
             if (_disposed || _healthCheckTask == null)
                 return;
 
-            _logger.Info("Stopping replicator health check service");
+            _logger.LogInformation("Stopping replicator health check service");
             _cancellationTokenSource.Cancel();
 
             try
@@ -159,7 +160,7 @@ namespace SchematicHQ.Client.Datastream
             }
             catch (Exception ex)
             {
-                _logger.Error("Error stopping health check service: {0}", ex.Message);
+                _logger.LogError(ex, "Error stopping health check service");
             }
 
             _healthCheckTask = null;
@@ -176,7 +177,7 @@ namespace SchematicHQ.Client.Datastream
                 }
                 catch (Exception ex)
                 {
-                    _logger.Error("Error during health check: {0}", ex.Message);
+                    _logger.LogError(ex, "Error during health check");
                     _isHealthy = false;
                 }
 
@@ -199,14 +200,14 @@ namespace SchematicHQ.Client.Datastream
                 
                 // Read and parse the JSON response first
                 var responseBody = await response.Content.ReadAsStringAsync(_cancellationTokenSource.Token);
-                _logger.Debug("Raw health response: {0}", responseBody);
+                _logger.LogDebug("Raw health response: {ResponseBody}", responseBody);
                 
                 var healthResponse = System.Text.Json.JsonSerializer.Deserialize<HealthResponse>(responseBody, new System.Text.Json.JsonSerializerOptions
                 {
                     PropertyNameCaseInsensitive = true
                 });
 
-                _logger.Debug("Deserialized health response - Ready: {0}, CacheVersion: '{1}'", 
+                _logger.LogDebug("Deserialized health response - Ready: {Ready}, CacheVersion: '{CacheVersion}'",
                     healthResponse?.Ready ?? false, healthResponse?.CacheVersion ?? "NULL");
 
                 bool wasHealthy = _isHealthy;
@@ -219,29 +220,29 @@ namespace SchematicHQ.Client.Datastream
                 _isHealthy = response.IsSuccessStatusCode && healthResponse?.Ready == true;
                 _cacheVersion = healthResponse?.CacheVersion;
                 
-                _logger.Debug("Updated cache version from '{0}' to '{1}'", 
+                _logger.LogDebug("Updated cache version from '{PreviousCacheVersion}' to '{CacheVersion}'",
                     previousCacheVersion ?? "NULL", _cacheVersion ?? "NULL");
 
                 // Log state changes - matching Go client exactly
                 if (_isHealthy && !wasHealthy)
                 {
-                    _logger.Info("External replicator is now ready");
+                    _logger.LogInformation("External replicator is now ready");
                 }
                 else if (!_isHealthy && wasHealthy)
                 {
-                    _logger.Info("External replicator is no longer ready");
+                    _logger.LogInformation("External replicator is no longer ready");
                 }
 
                 // Log readiness status for debugging
                 if (!response.IsSuccessStatusCode)
                 {
-                    _logger.Debug("Replicator readiness check: HTTP {0}, Ready={1}", response.StatusCode, healthResponse?.Ready ?? false);
+                    _logger.LogDebug("Replicator readiness check: HTTP {StatusCode}, Ready={Ready}", response.StatusCode, healthResponse?.Ready ?? false);
                 }
 
                 // Log cache version changes and notify subscribers
                 if (_cacheVersion != previousCacheVersion)
                 {
-                    _logger.Info("Replicator cache version updated: {0} -> {1}", previousCacheVersion ?? "(null)", _cacheVersion ?? "(null)");
+                    _logger.LogInformation("Replicator cache version updated: {PreviousCacheVersion} -> {CacheVersion}", previousCacheVersion ?? "(null)", _cacheVersion ?? "(null)");
                     
                     // Notify subscribers of the cache version change
                     CacheVersionChanged?.Invoke(previousCacheVersion, _cacheVersion);
@@ -259,7 +260,7 @@ namespace SchematicHQ.Client.Datastream
                 
                 if (wasHealthyBefore)
                 {
-                    _logger.Warn("Failed to parse replicator health response: {0}", ex.Message);
+                    _logger.LogWarning(ex, "Failed to parse replicator health response");
                 }
             }
             catch (Exception ex)
@@ -269,7 +270,7 @@ namespace SchematicHQ.Client.Datastream
                 
                 if (wasHealthyBefore)
                 {
-                    _logger.Debug("Replicator health check failed: {0}", ex.Message);
+                    _logger.LogDebug(ex, "Replicator health check failed");
                 }
             }
         }

@@ -2,6 +2,7 @@ using System.Net.Http;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Microsoft.Extensions.Logging;
 using OneOf;
 using SchematicHQ.Client.Core;
 
@@ -46,9 +47,9 @@ internal class EventCaptureClient
     private readonly HttpClient _httpClient;
     private readonly string _apiKey;
     private readonly string _baseUrl;
-    private readonly ISchematicLogger _logger;
+    private readonly ILogger _logger;
 
-    public EventCaptureClient(HttpClient httpClient, string apiKey, ISchematicLogger logger, string? baseUrl = null)
+    public EventCaptureClient(HttpClient httpClient, string apiKey, ILogger logger, string? baseUrl = null)
     {
         _httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
         _apiKey = apiKey ?? throw new ArgumentNullException(nameof(apiKey));
@@ -87,7 +88,7 @@ internal class EventCaptureClient
         var json = JsonSerializer.Serialize(batchPayload, JsonOptions.JsonSerializerOptions);
         var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-        _logger.Debug("Sending {0} events to capture service at {1}", events.Count, endpoint);
+        _logger.LogDebug("Sending {EventCount} events to capture service at {Endpoint}", events.Count, endpoint);
 
         using var response = await _httpClient.PostAsync(endpoint, content);
 

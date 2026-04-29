@@ -1,3 +1,5 @@
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Testing;
 using Moq;
 using NUnit.Framework;
 using System.Net;
@@ -8,6 +10,7 @@ using OneOf;
 using SchematicHQ.Client.Core;
 using SchematicHQ.Client.Cache;
 using SchematicHQ.Client.RulesEngine;
+using SchematicHQ.Client.Test.Datastream.Mocks;
 
 namespace SchematicHQ.Client.Test
 {
@@ -16,7 +19,7 @@ namespace SchematicHQ.Client.Test
     {
         private Schematic _schematic;
         private ClientOptions _options;
-        private Mock<ISchematicLogger> _logger;
+        private FakeLogger _logger;
         private int _defaultEventBufferPeriod = 3; // seconds
 
         private HttpResponseMessage CreateCheckFlagResponse(HttpStatusCode code, bool flagValue)
@@ -101,7 +104,7 @@ namespace SchematicHQ.Client.Test
             HttpClient testClient = new HttpClient(new OfflineHttpMessageHandler());
             _options = new ClientOptions
             {
-                Logger = _logger.Object,
+                LoggerFactory = _logger.ToLoggerFactory(),
                 Offline = isOffline,
                 FlagDefaults = flagDefaults ?? new Dictionary<string, bool>(),
                 DefaultEventBufferPeriod = TimeSpan.FromSeconds(_defaultEventBufferPeriod),
@@ -122,7 +125,7 @@ namespace SchematicHQ.Client.Test
         [SetUp]
         public void Setup()
         {
-            _logger = new Mock<ISchematicLogger>();
+            _logger = new FakeLogger();
         }
 
         [TearDown]
@@ -207,7 +210,7 @@ namespace SchematicHQ.Client.Test
 
             // Assert
             Assert.That(result, Is.True); // default is true for the test flag
-            _logger.Verify(logger => logger.Error("Error checking flag via API: {0}", It.IsAny<string>()), Times.Once);
+            Assert.That(_logger.HasLogEntry(LogLevel.Error, "Error checking flag via API"), Is.True);
         }
 
         [Test]
@@ -450,7 +453,7 @@ namespace SchematicHQ.Client.Test
             var testClient = handler.CreateClient();
             _options = new ClientOptions
             {
-                Logger = _logger.Object,
+                LoggerFactory = _logger.ToLoggerFactory(),
                 Offline = false,
                 FlagDefaults = new Dictionary<string, bool>(),
                 DefaultEventBufferPeriod = TimeSpan.FromSeconds(_defaultEventBufferPeriod),
@@ -486,7 +489,7 @@ namespace SchematicHQ.Client.Test
 
             // Assert
             Assert.That(result, Is.False);
-            _logger.Verify(logger => logger.Error("Error checking flag via API: {0}", It.IsAny<string>()), Times.Once);
+            Assert.That(_logger.HasLogEntry(LogLevel.Error, "Error checking flag via API"), Is.True);
         }
 
         [Test]
@@ -500,7 +503,7 @@ namespace SchematicHQ.Client.Test
             var testClient = handler.CreateClient();
             _options = new ClientOptions
             {
-                Logger = _logger.Object,
+                LoggerFactory = _logger.ToLoggerFactory(),
                 Offline = false,
                 FlagDefaults = new Dictionary<string, bool>(),
                 DefaultEventBufferPeriod = TimeSpan.FromSeconds(_defaultEventBufferPeriod),

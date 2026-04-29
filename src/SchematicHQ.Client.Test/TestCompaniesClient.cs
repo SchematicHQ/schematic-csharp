@@ -1,3 +1,6 @@
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
+using Microsoft.Extensions.Logging.Testing;
 using Moq;
 using NUnit.Framework;
 using System.Net;
@@ -13,7 +16,6 @@ namespace SchematicHQ.Client.Test
     {
         private Schematic _schematic;
         private ClientOptions _options;
-        private Mock<ISchematicLogger> _logger;
 
         private HttpResponseMessage CreateUpsertCompanyResponse(HttpStatusCode code)
         {
@@ -58,10 +60,9 @@ namespace SchematicHQ.Client.Test
 
         private void SetupSchematicTestClient(HttpResponseMessage response)
         {
-            _logger = new Mock<ISchematicLogger>();
             _options = new ClientOptions
             {
-                Logger = _logger.Object
+                LoggerFactory = NullLoggerFactory.Instance
             };
 
             var handler = new Mock<HttpMessageHandler>(MockBehavior.Strict);
