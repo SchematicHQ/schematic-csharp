@@ -29,6 +29,7 @@ public class EventBuffer<T> : IEventBuffer<T> where T : notnull
     private readonly Func<List<T>, Task> _action;
     private readonly ISchematicLogger _logger;
     private readonly Channel<T> _channel;
+    private readonly SemaphoreSlim _semaphore;
     private CancellationTokenSource _cts;
     private int _state;
     private Task _periodicFlushTask = Task.CompletedTask;
@@ -47,6 +48,7 @@ public class EventBuffer<T> : IEventBuffer<T> where T : notnull
         });
         _cts = new CancellationTokenSource();
         _state = StateStopped;
+        _semaphore = new SemaphoreSlim(0);
 
         _logger.Debug("EventBuffer initialized with maxSize: {0}, flushPeriod: {1}", _maxSize, _flushPeriod);
 
@@ -93,6 +95,11 @@ public class EventBuffer<T> : IEventBuffer<T> where T : notnull
             throw new InvalidOperationException("Failed to write item to buffer channel.");
 
         _logger.Debug("Item added to buffer. Current size: {0}", _channel.Reader.Count);
+        
+        if (_channel.Reader.Count >= _maxSize)
+        {
+            _semaphore.Release();
+        }
     }
 
     public void Start()
@@ -130,23 +137,13 @@ public class EventBuffer<T> : IEventBuffer<T> where T : notnull
         {
             try
             {
-                // Wait for at least one item to be available
-                await _channel.Reader.WaitToReadAsync(token);
-
-                // Check if we've accumulated enough items for a batch flush
-                if (_channel.Reader.Count >= _maxSize)
-                {
-                    await FlushBufferAsync();
-                }
+                await _semaphore.WaitAsync(token);
+                
+                await FlushBufferAsync();
             }
             catch (OperationCanceledException)
             {
                 _logger.Warn("Process buffer task was canceled.");
-            }
-            catch (ChannelClosedException)
-            {
-                _logger.Debug("Channel closed, process buffer task exiting.");
-                break;
             }
         }
     }
