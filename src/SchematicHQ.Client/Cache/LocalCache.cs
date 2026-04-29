@@ -53,7 +53,7 @@ namespace SchematicHQ.Client.Cache;
         }
 
         /// <inheritdoc/>
-        public ValueTask<T?> Get<T>(string key)
+        public ValueTask<T?> Get<T>(string key, CancellationToken token = default)
         {
             if (_maxItems == 0 || _disposed)
                 return ValueTask.FromResult(default(T));
@@ -101,7 +101,7 @@ namespace SchematicHQ.Client.Cache;
         }
 
         /// <inheritdoc/>
-        public ValueTask Set<T>(string key, T val, TimeSpan? ttlOverride = null)
+        public ValueTask Set<T>(string key, T val, TimeSpan? ttlOverride = null, CancellationToken token = default)
         {
             if (_maxItems == 0 || _disposed)
                 return ValueTask.CompletedTask;
@@ -169,7 +169,21 @@ namespace SchematicHQ.Client.Cache;
         }
 
         /// <inheritdoc/>
-        public ValueTask<bool> Delete(string key)
+        public async ValueTask<T> GetOrSet<T>(string key, Func<CancellationToken, Task<T>> factory, TimeSpan? ttlOverride = null, CancellationToken token = default)
+        {
+            // Try to get from cache first
+            var existing = await Get<T>(key, token);
+            if (existing is not null)
+                return existing;
+
+            // Cache miss — invoke the factory and store the result
+            var value = await factory(token);
+            await Set(key, value, ttlOverride, token);
+            return value;
+        }
+
+        /// <inheritdoc/>
+        public ValueTask<bool> Delete(string key, CancellationToken token = default)
         {
             if (_maxItems == 0 || _disposed)
                 return ValueTask.FromResult(false);

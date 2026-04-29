@@ -110,7 +110,7 @@ namespace SchematicHQ.Client.Cache
         }
 
         /// <inheritdoc/>
-        public async ValueTask<T?> Get<T>(string key)
+        public async ValueTask<T?> Get<T>(string key, CancellationToken token = default)
         {
             var redisKey = GetRedisKey(key);
             var value = await _db.StringGetAsync(redisKey);
@@ -133,7 +133,7 @@ namespace SchematicHQ.Client.Cache
         }
 
         /// <inheritdoc/>
-        public async ValueTask Set<T>(string key, T val, TimeSpan? ttlOverride = null)
+        public async ValueTask Set<T>(string key, T val, TimeSpan? ttlOverride = null, CancellationToken token = default)
         {
             var redisKey = GetRedisKey(key);
             var ttl = ttlOverride ?? _ttl;
@@ -145,8 +145,22 @@ namespace SchematicHQ.Client.Cache
             await _db.StringSetAsync(redisKey, json, expiry);
         }
 
+        //TODO update this with stampede protection at some point.
+        public async ValueTask<T> GetOrSet<T>(string key, Func<CancellationToken, Task<T>> factory, TimeSpan? ttlOverride = null, CancellationToken token = default)
+        {
+            // Try to get from cache first
+            var existing = await Get<T>(key, token);
+            if (existing is not null)
+                return existing;
+
+            // Cache miss — invoke the factory and store the result
+            var value = await factory(token);
+            await Set(key, value, ttlOverride, token);
+            return value;
+        }
+
         /// <inheritdoc/>
-        public async ValueTask<bool> Delete(string key)
+        public async ValueTask<bool> Delete(string key, CancellationToken token = default)
         {
             var redisKey = GetRedisKey(key);
             return await _db.KeyDeleteAsync(redisKey);
