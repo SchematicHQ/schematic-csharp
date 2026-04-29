@@ -10,5 +10,7 @@ Configure additional MSBuild properties for your project in this file:
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="OpenFeature" Version="2.9.0" />
+    <PackageReference Include="Moq" Version="4.20.72" />
+    <PackageReference Include="Moq.Contrib.HttpClient" Version="1.4.0" />
   </ItemGroup>
 </Project>

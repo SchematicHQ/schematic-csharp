@@ -4,7 +4,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Collections.Concurrent;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using OneOf.Types;
 using SchematicHQ.Client.RulesEngine;
 using SchematicHQ.Client.RulesEngine.Utils;
