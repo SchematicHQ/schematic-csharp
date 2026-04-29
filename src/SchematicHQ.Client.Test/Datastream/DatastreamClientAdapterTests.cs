@@ -1,4 +1,5 @@
 using System;
+using Microsoft.Extensions.Logging.Testing;
 using System.Net.WebSockets;
 using System.Threading;
 using System.Threading.Tasks;
@@ -13,7 +14,7 @@ namespace SchematicHQ.Client.Test.Datastream
     {
         private DatastreamClientAdapter _adapter;
         private MockWebSocket _mockWebSocket;
-        private MockSchematicLogger _mockLogger;
+        private FakeLogger _mockLogger;
         private Action<bool> _connectionCallback;
         
         [SetUp]
@@ -21,7 +22,7 @@ namespace SchematicHQ.Client.Test.Datastream
         {
             // We need to capture the connection callback to trigger connection state changes in tests
             _connectionCallback = null;
-            _mockLogger = new MockSchematicLogger();
+            _mockLogger = new FakeLogger();
             _mockWebSocket = new MockWebSocket();
             _mockWebSocket.SetState(WebSocketState.Open);
             

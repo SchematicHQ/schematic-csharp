@@ -17,7 +17,7 @@ namespace SchematicHQ.Client.Datastream
 {
   public class DatastreamClient : IDisposable
   {
-    private readonly ISchematicLogger _logger;
+    private readonly ILogger _logger;
     private readonly string _apiKey;
     private readonly Uri _baseUrl;
     private readonly TimeSpan _cacheTtl;
@@ -73,7 +73,7 @@ namespace SchematicHQ.Client.Datastream
 
     public DatastreamClient(
         string baseUrl,
-        ISchematicLogger logger,
+        ILogger logger,
         string apiKey,
         Action<bool> connectionStateCallback,
         TimeSpan? cacheTtl = null,
@@ -112,7 +112,7 @@ namespace SchematicHQ.Client.Datastream
       {
         try
         {
-          _logger.Info("Initializing Redis cache for Datastream company, user and flag data");
+          _logger.LogInformation("Initializing Redis cache for Datastream company, user and flag data");
           // We need to use the Cache namespace version, but cast it to the Client namespace interface
           _companyCache = new RedisCache<RulesengineCompany>(options.RedisConfig);
           _userCache = new RedisCache<RulesengineUser>(options.RedisConfig);
@@ -124,7 +124,7 @@ namespace SchematicHQ.Client.Datastream
         }
         catch (Exception ex)
         {
-          _logger.Error("Failed to initialize Redis cache: {0}. Falling back to local cache.", ex.Message);
+          _logger.LogError(ex, "Failed to initialize Redis cache. Falling back to local cache.");
           _companyCache = new LocalCache<RulesengineCompany>(options.LocalCacheCapacity, _cacheTtl);
           _userCache = new LocalCache<RulesengineUser>(options.LocalCacheCapacity, _cacheTtl);
           _companyLookupCache = new LocalCache<string>(options.LocalCacheCapacity, _cacheTtl);
@@ -214,7 +214,7 @@ namespace SchematicHQ.Client.Datastream
           {
 
             await _webSocket.ConnectAsync(_baseUrl, _cancellationTokenSource.Token);
-            _logger.Info("Connected to Schematic WebSocket");
+            _logger.LogInformation("Connected to Schematic WebSocket");
             attempts = 0;
 
             // Signal connection state
@@ -254,7 +254,7 @@ namespace SchematicHQ.Client.Datastream
           catch (Exception connectEx)
           {
             // Handle connection errors specifically
-            _logger.Error("Failed to connect to WebSocket: {0}", connectEx.Message);
+            _logger.LogError(connectEx, "Failed to connect to WebSocket");
             // Don't rethrow - allow the outer exception handler to handle retries
             throw;
           }
@@ -273,7 +273,7 @@ namespace SchematicHQ.Client.Datastream
               }
               catch (Exception ex)
               {
-                _logger.Error("Error closing WebSocket: {0}", ex.Message);
+                _logger.LogError(ex, "Error closing WebSocket");
                 _webSocket.Abort();
               }
             }
@@ -282,14 +282,14 @@ namespace SchematicHQ.Client.Datastream
         catch (WebSocketAuthenticationException authEx)
         {
           _reconnectSemaphore.Release();
-          _logger.Error(authEx.Message);
+          _logger.LogError(authEx, "WebSocket authentication failed (close code {CloseCode})", authEx.CloseCode);
           _connectionStateCallback(false);
           return;
         }
         catch (Exception connectionEx)
         {
           _reconnectSemaphore.Release();
-          _logger.Error("WebSocket connection error: {0}", connectionEx.Message);
+          _logger.LogError(connectionEx, "WebSocket connection error");
           attempts++;
           _connectionStateCallback(false);
 
@@ -301,7 +301,7 @@ namespace SchematicHQ.Client.Datastream
 
           if (attempts >= MaxReconnectAttempts)
           {
-            _logger.Error("Unable to connect to server after {0} attempts", MaxReconnectAttempts);
+            _logger.LogError("Unable to connect to server after {MaxReconnectAttempts} attempts", MaxReconnectAttempts);
             return;
           }
 
@@ -336,7 +336,7 @@ namespace SchematicHQ.Client.Datastream
     {
       var buffer = new byte[4096];
       var receiveBuffer = new List<byte>();
-      _logger.Info("Starting to read messages from WebSocket");
+      _logger.LogInformation("Starting to read messages from WebSocket");
       try
       {
         while (_webSocket.State == WebSocketState.Open && !_cancellationTokenSource.Token.IsCancellationRequested)
@@ -374,7 +374,7 @@ namespace SchematicHQ.Client.Datastream
 
               if (string.IsNullOrEmpty(message))
               {
-                _logger.Debug("Received empty message from WebSocket");
+                _logger.LogDebug("Received empty message from WebSocket");
                 return; // Trigger reconnection
               }
 
@@ -385,13 +385,13 @@ namespace SchematicHQ.Client.Datastream
               }
               catch (Exception ex)
               {
-                _logger.Error("Failed to process WebSocket message: {0}", ex.Message);
+                _logger.LogError(ex, "Failed to process WebSocket message");
               }
             }
           }
           catch (OperationCanceledException)
           {
-            _logger.Info("WebSocket read operation was cancelled");
+            _logger.LogInformation("WebSocket read operation was cancelled");
             return;
           }
           catch (WebSocketAuthenticationException)
@@ -400,7 +400,7 @@ namespace SchematicHQ.Client.Datastream
           }
           catch (Exception ex)
           {
-            _logger.Error("Error reading from WebSocket: {0}", ex.Message);
+            _logger.LogError(ex, "Error reading from WebSocket");
             return; // Exit and trigger reconnection
           }
         }
@@ -411,14 +411,14 @@ namespace SchematicHQ.Client.Datastream
       }
       catch (Exception ex)
       {
-        _logger.Error("Fatal error in ReadMessagesAsync: {0}", ex.Message);
+        _logger.LogError(ex, "Fatal error in ReadMessagesAsync");
       }
       finally
       {
         // Signal that reconnection should happen
         if (!_cancellationTokenSource.IsCancellationRequested)
         {
-          _logger.Info("Signaling for WebSocket reconnection");
+          _logger.LogInformation("Signaling for WebSocket reconnection");
           _readCancellationSource.Cancel();
         }
       }
@@ -452,7 +452,7 @@ namespace SchematicHQ.Client.Datastream
           HandleUserMessage(message);
           break;
         default:
-          _logger.Error("Received unknown entity type: {0}", message.EntityType);
+          _logger.LogError("Received unknown entity type: {EntityType}", message.EntityType);
           break;
       }
     }
@@ -463,7 +463,7 @@ namespace SchematicHQ.Client.Datastream
       {
         if (response.Data == null)
         {
-          _logger.Warn("Received empty flags data");
+          _logger.LogWarning("Received empty flags data");
           return;
         }
 
@@ -480,7 +480,7 @@ namespace SchematicHQ.Client.Datastream
 
         if (flags == null || flags.Count == 0)
         {
-          _logger.Warn("Received empty or null flags list");
+          _logger.LogWarning("Received empty or null flags list");
           return;
         }
 
@@ -488,7 +488,7 @@ namespace SchematicHQ.Client.Datastream
         {
           if (string.IsNullOrEmpty(flag.Key))
           {
-            _logger.Debug("Flag key is null, skipping flag: {0}", flag.Id);
+            _logger.LogDebug("Flag key is null, skipping flag: {FlagId}", flag.Id);
             continue;
           }
           var cacheKey = FlagCacheKey(flag.Key);
@@ -508,7 +508,7 @@ namespace SchematicHQ.Client.Datastream
       }
       catch (Exception ex)
       {
-        _logger.Error("Failed to handle flags message: {0}", ex.Message);
+        _logger.LogError(ex, "Failed to handle flags message");
       }
     }
 
@@ -518,7 +518,7 @@ namespace SchematicHQ.Client.Datastream
       {
         if (response.Data == null)
         {
-          _logger.Warn("Received empty flag data");
+          _logger.LogWarning("Received empty flag data");
           return;
         }
 
@@ -558,11 +558,11 @@ namespace SchematicHQ.Client.Datastream
           {
             var deleteCacheKey = FlagCacheKey(flagKey);
             _flagsCache.Delete(deleteCacheKey);
-            _logger.Debug("Deleted single flag from cache: {0}", flagKey);
+            _logger.LogDebug("Deleted single flag from cache: {FlagKey}", flagKey);
           }
           else
           {
-            _logger.Warn("Could not extract flag key from delete message");
+            _logger.LogWarning("Could not extract flag key from delete message");
           }
 
           return;
@@ -573,25 +573,25 @@ namespace SchematicHQ.Client.Datastream
 
         if (flag == null)
         {
-          _logger.Warn("Received null flag data");
+          _logger.LogWarning("Received null flag data");
           return;
         }
 
         if (string.IsNullOrEmpty(flag.Key))
         {
-          _logger.Debug("Flag key is null, skipping flag: {0}", flag.Id);
+          _logger.LogDebug("Flag key is null, skipping flag: {FlagId}", flag.Id);
           return;
         }
 
         var cacheKey = FlagCacheKey(flag.Key);
         _flagsCache.Set(cacheKey, flag);
-        _logger.Debug("Cached single flag: {0}", flag.Key);
+        _logger.LogDebug("Cached single flag: {FlagKey}", flag.Key);
 
         // Note: Unlike bulk flags processing, we do NOT call DeleteMissing for single flag updates
       }
       catch (Exception ex)
       {
-        _logger.Error("Failed to handle single flag message: {0}", ex.Message);
+        _logger.LogError(ex, "Failed to handle single flag message");
       }
     }
 
@@ -629,7 +629,7 @@ namespace SchematicHQ.Client.Datastream
       {
         if (response.Data == null)
         {
-          _logger.Warn("Received empty company data");
+          _logger.LogWarning("Received empty company data");
           return;
         }
 
@@ -650,7 +650,7 @@ namespace SchematicHQ.Client.Datastream
         {
           if (string.IsNullOrEmpty(response.EntityId))
           {
-            _logger.Error("Partial company message missing entity_id");
+            _logger.LogError("Partial company message missing entity_id");
             return;
           }
           var id = response.EntityId;
@@ -659,7 +659,7 @@ namespace SchematicHQ.Client.Datastream
           var existing = _companyCache.Get(existingIdKey);
           if (existing == null)
           {
-            _logger.Warn("Cache miss for partial company '{0}', skipping", id);
+            _logger.LogWarning("Cache miss for partial company '{CompanyId}', skipping", id);
             return;
           }
 
@@ -669,7 +669,7 @@ namespace SchematicHQ.Client.Datastream
           }
           catch (Exception ex)
           {
-            _logger.Error("Failed to merge partial company: {0}", ex.Message);
+            _logger.LogError(ex, "Failed to merge partial company");
             return;
           }
         }
@@ -680,7 +680,7 @@ namespace SchematicHQ.Client.Datastream
 
         if (company == null)
         {
-          _logger.Warn("Received null company data");
+          _logger.LogWarning("Received null company data");
           return;
         }
 
@@ -692,7 +692,7 @@ namespace SchematicHQ.Client.Datastream
           // Wait for the lock with a reasonable timeout
           if (!await companyLock.WaitAsync(TimeSpan.FromSeconds(5)))
           {
-            _logger.Warn("Timeout waiting for company lock during WebSocket update");
+            _logger.LogWarning("Timeout waiting for company lock during WebSocket update");
             return;
           }
 
@@ -726,12 +726,12 @@ namespace SchematicHQ.Client.Datastream
         }
         catch (Exception lockEx)
         {
-          _logger.Error($"Error during locked company update: {lockEx.Message}");
+          _logger.LogError(lockEx, "Error during locked company update");
         }
       }
       catch (Exception ex)
       {
-        _logger.Error("Failed to handle company message: {0}", ex.Message);
+        _logger.LogError(ex, "Failed to handle company message");
       }
     }
 
@@ -741,7 +741,7 @@ namespace SchematicHQ.Client.Datastream
       {
         if (response.Data == null)
         {
-          _logger.Warn("Received empty user data");
+          _logger.LogWarning("Received empty user data");
           return;
         }
 
@@ -761,7 +761,7 @@ namespace SchematicHQ.Client.Datastream
         {
           if (string.IsNullOrEmpty(response.EntityId))
           {
-            _logger.Error("Partial user message missing entity_id");
+            _logger.LogError("Partial user message missing entity_id");
             return;
           }
           var id = response.EntityId;
@@ -770,7 +770,7 @@ namespace SchematicHQ.Client.Datastream
           var existing = _userCache.Get(existingIdKey);
           if (existing == null)
           {
-            _logger.Warn("Cache miss for partial user '{0}', skipping", id);
+            _logger.LogWarning("Cache miss for partial user '{UserId}', skipping", id);
             return;
           }
 
@@ -780,7 +780,7 @@ namespace SchematicHQ.Client.Datastream
           }
           catch (Exception ex)
           {
-            _logger.Error("Failed to merge partial user: {0}", ex.Message);
+            _logger.LogError(ex, "Failed to merge partial user");
             return;
           }
         }
@@ -791,7 +791,7 @@ namespace SchematicHQ.Client.Datastream
 
         if (user == null)
         {
-          _logger.Warn("Received null user data");
+          _logger.LogWarning("Received null user data");
           return;
         }
 
@@ -804,7 +804,7 @@ namespace SchematicHQ.Client.Datastream
           {
             var resourceKey = ResourceKeyToCacheKey<RulesengineUser>(CacheKeyPrefixUser, key.Key, key.Value);
             _userLookupCache.Delete(resourceKey);
-            _logger.Debug("Deleted user from cache with key: {0}", resourceKey);
+            _logger.LogDebug("Deleted user from cache with key: {ResourceKey}", resourceKey);
           }
           return;
         }
@@ -817,7 +817,7 @@ namespace SchematicHQ.Client.Datastream
       }
       catch (Exception ex)
       {
-        _logger.Error("Failed to handle user message: {0}", ex.Message);
+        _logger.LogError(ex, "Failed to handle user message");
       }
     }
 
@@ -827,7 +827,7 @@ namespace SchematicHQ.Client.Datastream
       {
         if (response.Data == null)
         {
-          _logger.Warn("Received empty error data");
+          _logger.LogWarning("Received empty error data");
           return;
         }
 
@@ -838,7 +838,7 @@ namespace SchematicHQ.Client.Datastream
         {
           if (!string.IsNullOrEmpty(error.Error))
           {
-            _logger.Error("Received error from server: {0}", error.Error);
+            _logger.LogError("Received error from server: {ServerError}", error.Error);
           }
           
           // Check if we have keys and entity type in the error response
@@ -853,7 +853,7 @@ namespace SchematicHQ.Client.Datastream
                 NotifyPendingRequests<RulesengineUser>(null, error.Keys, CacheKeyPrefixUser, _pendingUserRequests);
                 break;
               default:
-                _logger.Warn("Received error for unsupported entity type: {0}", error.EntityType.Value);
+                _logger.LogWarning("Received error for unsupported entity type: {EntityType}", error.EntityType.Value);
                 break;
             }
           }
@@ -861,7 +861,7 @@ namespace SchematicHQ.Client.Datastream
       }
       catch (Exception ex)
       {
-        _logger.Error("Failed to deserialize error message: {0}", ex.Message);
+        _logger.LogError(ex, "Failed to deserialize error message");
       }
     }
 
@@ -874,7 +874,7 @@ namespace SchematicHQ.Client.Datastream
       }
       catch (Exception ex)
       {
-        _logger.Error("Error checking flag {0}: {1}", flag.Key, ex.Message);
+        _logger.LogError(ex, "Error checking flag {FlagKey}", flag.Key);
         return new CheckFlagResult
         {
           Reason = "Error",
@@ -1024,7 +1024,7 @@ namespace SchematicHQ.Client.Datastream
         }
         else if (_webSocket.State != WebSocketState.Open)
         {
-          _logger.Warn("WebSocket is not open, cannot request flags data");
+          _logger.LogWarning("WebSocket is not open, cannot request flags data");
           return;
         }
 
@@ -1120,13 +1120,13 @@ namespace SchematicHQ.Client.Datastream
     {
         if (eventBody == null)
         {
-            _logger.Error("Event body cannot be null");
+            _logger.LogError("Event body cannot be null");
             return false;
         }
 
         if (eventBody.Company == null || eventBody.Company.Count == 0)
         {
-            _logger.Error("No keys provided for company lookup");
+            _logger.LogError("No keys provided for company lookup");
             return false;
         }
 
@@ -1138,7 +1138,7 @@ namespace SchematicHQ.Client.Datastream
             // Wait for the lock with a reasonable timeout to prevent deadlocks
             if (!await companyLock.WaitAsync(TimeSpan.FromSeconds(5)))
             {
-                _logger.Warn("Timeout waiting for company lock during metrics update");
+                _logger.LogWarning("Timeout waiting for company lock during metrics update");
                 return false;
             }
 
@@ -1155,7 +1155,7 @@ namespace SchematicHQ.Client.Datastream
                 var companyCopy = DeepCopyCompany(company);
                 if (companyCopy == null)
                 {
-                    _logger.Error("Failed to create deep copy of company");
+                    _logger.LogError("Failed to create deep copy of company");
                     return false;
                 }
 
@@ -1173,7 +1173,7 @@ namespace SchematicHQ.Client.Datastream
 
                 if (!metricUpdated)
                 {
-                    _logger.Debug($"No matching metric found for event {eventBody.Event}");
+                    _logger.LogDebug("No matching metric found for event {EventName}", eventBody.Event);
                     return false;
                 }
 
@@ -1184,7 +1184,7 @@ namespace SchematicHQ.Client.Datastream
                 }
                 catch (Exception ex)
                 {
-                    _logger.Warn($"Failed to cache company metrics: {ex.Message}");
+                    _logger.LogWarning(ex, "Failed to cache company metrics");
                     return false;
                 }
 
@@ -1198,7 +1198,7 @@ namespace SchematicHQ.Client.Datastream
         }
         catch (Exception ex)
         {
-            _logger.Error($"Error during company metrics update: {ex.Message}");
+            _logger.LogError(ex, "Error during company metrics update");
             return false;
         }
     }
@@ -1217,7 +1217,7 @@ namespace SchematicHQ.Client.Datastream
         }
         catch (Exception ex)
         {
-            _logger.Error($"Error in synchronous company metrics update: {ex.Message}");
+            _logger.LogError(ex, "Error in synchronous company metrics update");
             return false;
         }
     }    /// <summary>
@@ -1307,16 +1307,16 @@ namespace SchematicHQ.Client.Datastream
     private string GetCacheVersion()
     {
       var replicatorVersion = _cacheVersionProvider?.Invoke();
-      _logger.Debug("Cache version provider returned: {0}", replicatorVersion ?? "(null)");
+      _logger.LogDebug("Cache version provider returned: {ReplicatorVersion}", replicatorVersion ?? "(null)");
       
       if (!string.IsNullOrEmpty(replicatorVersion))
       {
-        _logger.Info("Using replicator cache version: {0}", replicatorVersion);
+        _logger.LogInformation("Using replicator cache version: {ReplicatorVersion}", replicatorVersion);
         return replicatorVersion;
       }
       
       var sdkVersion = SchemaVersionGenerator.GetGlobalSchemaVersion();
-      _logger.Info("Using SDK cache version: {0}", sdkVersion);
+      _logger.LogInformation("Using SDK cache version: {SdkVersion}", sdkVersion);
       return sdkVersion;
     }
 
@@ -1467,7 +1467,7 @@ namespace SchematicHQ.Client.Datastream
         
         if (locksToRemove.Count > 0)
         {
-          _logger.Debug($"Cleaned up {locksToRemove.Count} unused company locks");
+          _logger.LogDebug("Cleaned up {LockCount} unused company locks", locksToRemove.Count);
         }
       }
     }
@@ -1495,29 +1495,29 @@ namespace SchematicHQ.Client.Datastream
             // we need to eventually block here, but with a clean timeout
             if (!closeTask.Wait(TimeSpan.FromSeconds(5)))
             {
-              _logger.Warn("WebSocket close handshake timed out");
+              _logger.LogWarning("WebSocket close handshake timed out");
             }
           }
           catch (OperationCanceledException)
           {
-            _logger.Warn("WebSocket close handshake was cancelled");
+            _logger.LogWarning("WebSocket close handshake was cancelled");
           }
           catch (AggregateException ex) when (ex.InnerExceptions.Any(e => e is OperationCanceledException))
           {
-            _logger.Warn("WebSocket close handshake was cancelled");
+            _logger.LogWarning("WebSocket close handshake was cancelled");
           }
 
           // If it didn't close gracefully, abort
           if (_webSocket.State != WebSocketState.Closed)
           {
-            _logger.Warn("WebSocket didn't close gracefully, aborting");
+            _logger.LogWarning("WebSocket didn't close gracefully, aborting");
             _webSocket.Abort();
           }
         }
       }
       catch (Exception ex)
       {
-        _logger.Error("Error closing WebSocket connection: {0}", ex.Message);
+        _logger.LogError(ex, "Error closing WebSocket connection");
 
         // Ensure we abort in case of errors
         try { _webSocket.Abort(); } catch { /* Ignore any errors during abort */ }

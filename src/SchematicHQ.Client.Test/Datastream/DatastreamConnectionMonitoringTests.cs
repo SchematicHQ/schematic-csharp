@@ -1,4 +1,5 @@
 using System;
+using Microsoft.Extensions.Logging.Testing;
 using System.Net.WebSockets;
 using System.Threading;
 using System.Threading.Tasks;
@@ -11,12 +12,12 @@ namespace SchematicHQ.Client.Test.Datastream
     [TestFixture]
     public class DatastreamConnectionMonitoringTests
     {
-        private MockSchematicLogger _logger;
+        private FakeLogger _logger;
         
         [SetUp]
         public void Setup()
         {
-            _logger = new MockSchematicLogger();
+            _logger = new FakeLogger();
         }
         
         [Test]

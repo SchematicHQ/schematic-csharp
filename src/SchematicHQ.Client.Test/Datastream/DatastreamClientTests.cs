@@ -1,6 +1,8 @@
 using System.Text;
+using Microsoft.Extensions.Logging.Testing;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Microsoft.Extensions.Logging;
 using NUnit.Framework;
 using SchematicHQ.Client.RulesEngine.Utils;
 using SchematicHQ.Client.Datastream;
@@ -12,7 +14,7 @@ namespace SchematicHQ.Client.Test.Datastream
     public class DatastreamClientTests
     {
         private MockWebSocket _mockWebSocket;
-        private MockSchematicLogger _mockLogger;
+        private FakeLogger _mockLogger;
         private DatastreamClient _client;
         private JsonSerializerOptions _jsonOptions;
 
@@ -228,7 +230,7 @@ namespace SchematicHQ.Client.Test.Datastream
             _client.Dispose();
 
             // Assert
-            Assert.That(_mockLogger.HasLogEntry(LogLevel.Info, "Connected to Schematic WebSocket"), Is.False);
+            Assert.That(_mockLogger.HasLogEntry(LogLevel.Information, "Connected to Schematic WebSocket"), Is.False);
         }
 
         private void SetupFlagsResponse()

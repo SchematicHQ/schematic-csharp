@@ -1,4 +1,5 @@
-using System.Net.Http;
+
+using Microsoft.Extensions.Logging;
 using SchematicHQ.Client.Core;
 using SchematicHQ.Client.Cache;
 using SchematicHQ.Client.RulesEngine;
@@ -9,8 +10,11 @@ namespace SchematicHQ.Client;
 
 public partial class ClientOptions
 {
+    private static readonly ILoggerFactory DefaultLoggerFactory =
+        Microsoft.Extensions.Logging.LoggerFactory.Create(builder => builder.AddSimpleConsole());
+
     public Dictionary<string, bool> FlagDefaults { get; set; } = new Dictionary<string, bool>();
-    public ISchematicLogger Logger { get; set; } = new ConsoleLogger();
+    public ILoggerFactory LoggerFactory { get; set; } = DefaultLoggerFactory;
     public List<ICacheProvider<CheckFlagWithEntitlementResponse?>> CacheProviders { get; set; } = new List<ICacheProvider<CheckFlagWithEntitlementResponse?>>();
     public CacheConfiguration? CacheConfiguration { get; set; }
     public bool Offline { get; set; }
@@ -52,7 +56,7 @@ public static class ClientOptionsExtensions
             FlagDefaults = options.FlagDefaults,
             Headers = new Headers(new Dictionary<string, HeaderValue>(options.Headers)),
             HttpClient = httpClient,
-            Logger = options.Logger,
+            LoggerFactory = options.LoggerFactory,
             MaxRetries = options.MaxRetries,
             Offline = options.Offline,
             ReplicatorMode = options.ReplicatorMode,
