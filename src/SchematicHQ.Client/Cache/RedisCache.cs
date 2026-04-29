@@ -44,7 +44,7 @@ namespace SchematicHQ.Client.Cache
             }
         }
 
-        public ConnectionMultiplexer GetRedis(RedisCacheConfig config)
+        private ConnectionMultiplexer GetRedis(RedisCacheConfig config)
         {
             if (config.RedisConnection != null)
                 return config.RedisConnection;

@@ -69,14 +69,7 @@ public partial class Schematic
             {
                 hasRedisCache = true;
             }
-
-            // Check if Redis is configured via DatastreamOptions
-            if (_options.DatastreamOptions?.CacheProviderType == DatastreamCacheProviderType.Redis && 
-                _options.DatastreamOptions.RedisConfig != null)
-            {
-                hasRedisCache = true;
-            }
-
+            
             // Check if explicit Redis cache providers are configured
             if (_options.CacheProvider is RedisCache)
             {
@@ -172,26 +165,11 @@ public partial class Schematic
         {
             // Create DatastreamOptions with cache settings from _options.CacheConfiguration
             var datastreamOptions = _options.DatastreamOptions ?? new DatastreamOptions();
-
-            // Apply cache settings from the main configuration if not set in DatastreamOptions
-            if (_options.CacheConfiguration != null && datastreamOptions.RedisConfig == null)
+            
+            if (_options.CacheConfiguration != null)
             {
-                // Set cache provider type based on main configuration
-                datastreamOptions.CacheProviderType = _options.CacheConfiguration.ProviderType == CacheProviderType.Redis
-                    ? DatastreamCacheProviderType.Redis
-                    : DatastreamCacheProviderType.Local;
-
-                // Pass through the Redis settings if using Redis unless explicitly set in DatastreamOptions
-                if (datastreamOptions.CacheProviderType == DatastreamCacheProviderType.Redis)
-                {
-                    datastreamOptions.RedisConfig = _options.CacheConfiguration.RedisConfig;
-                }
-
-                // Apply local cache settings
-                datastreamOptions.LocalCacheCapacity = _options.CacheConfiguration.LocalCacheCapacity;
-
                 // Apply cache TTL if not set in DatastreamOptions
-                datastreamOptions.CacheTTL = datastreamOptions.CacheTTL ?? _options.CacheConfiguration.CacheTtl;
+                datastreamOptions.CacheTTL ??= _options.CacheConfiguration.CacheTtl;
             }
 
             _datastreamClient = new DatastreamClientAdapter(
