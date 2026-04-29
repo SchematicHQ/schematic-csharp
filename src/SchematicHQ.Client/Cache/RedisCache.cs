@@ -182,18 +182,20 @@ namespace SchematicHQ.Client.Cache
             foreach (var endpoint in _redis.GetEndPoints())
             {
                 var server = _redis.GetServer(endpoint);
-
-                var fetchedKeys = await server.CommandGetKeysAsync([pattern]);
+                   
+                var keysToDelete = new List<RedisKey>();
                 
-                var keysToDelete = fetchedKeys
-                    .Where(key => !keysToKeep.Contains(key))
-                    .ToArray();
+                await foreach (var key in server.KeysAsync(pattern: pattern))
+                {                                                                                                                                                                                                                            
+                    if (!keysToKeep.Contains(key))
+                        keysToDelete.Add(key);                                                                                                                                                                                               
+                }  
                 
                 // Delete keys in batches
-                if (keysToDelete.Length > 0)
+                if (keysToDelete.Count > 0)
                 {
                     const int batchSize = 100;
-                    for (int i = 0; i < keysToDelete.Length; i += batchSize)
+                    for (int i = 0; i < keysToDelete.Count; i += batchSize)
                     {
                         var batch = keysToDelete.Skip(i).Take(batchSize).ToArray();
                         await _db.KeyDeleteAsync(batch);
