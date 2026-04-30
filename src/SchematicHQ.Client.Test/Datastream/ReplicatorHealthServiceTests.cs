@@ -49,15 +49,20 @@ namespace SchematicHQ.Client.Test.Datastream
 
             var service = new ReplicatorHealthService(httpClient, "http://test/ready", logger);
 
-            // Act
-            service.Start();
-            
-            // Wait for health check to complete
-            await Task.Delay(100);
+            try
+            {
+                // Act — drive the check synchronously instead of racing Start()'s background
+                // task. GetCacheVersionAsync awaits PerformHealthCheck directly.
+                await service.GetCacheVersionAsync();
 
-            // Assert
-            Assert.That(service.IsHealthy, Is.True);
-            Assert.That(service.CacheVersion, Is.EqualTo("test123"));
+                // Assert
+                Assert.That(service.IsHealthy, Is.True);
+                Assert.That(service.CacheVersion, Is.EqualTo("test123"));
+            }
+            finally
+            {
+                service.Dispose();
+            }
         }
 
         [Test]
@@ -96,15 +101,19 @@ namespace SchematicHQ.Client.Test.Datastream
 
             var service = new ReplicatorHealthService(httpClient, "http://test/ready", logger);
 
-            // Act
-            service.Start();
-            
-            // Wait for health check to complete
-            await Task.Delay(100);
+            try
+            {
+                // Act — drive the check synchronously instead of racing Start()'s background task.
+                await service.GetCacheVersionAsync();
 
-            // Assert
-            Assert.That(service.IsHealthy, Is.False);
-            Assert.That(service.CacheVersion, Is.EqualTo("test123")); // Should still parse cache version
+                // Assert
+                Assert.That(service.IsHealthy, Is.False);
+                Assert.That(service.CacheVersion, Is.EqualTo("test123")); // Should still parse cache version
+            }
+            finally
+            {
+                service.Dispose();
+            }
         }
 
         [Test]
