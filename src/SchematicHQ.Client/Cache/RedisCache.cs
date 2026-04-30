@@ -1,17 +1,13 @@
 using System.Text.Json;
-using System.Text.Json.Serialization;
 using StackExchange.Redis;
 using SchematicHQ.Client.Datastream;
-
-#nullable enable
 
 namespace SchematicHQ.Client.Cache
 {
     /// <summary>
     /// Redis cache provider for SchematicHQ client
     /// </summary>
-    /// <typeparam name="T">Type of values stored in the cache</typeparam>
-    public class RedisCache<T> : ICacheProvider<T>
+    public class RedisCache : ICacheProvider
     {
         public const string DEFAULT_KEY_PREFIX = "schematic:";
         public static readonly TimeSpan DEFAULT_CACHE_TTL = TimeSpan.FromMinutes(5);
@@ -23,24 +19,43 @@ namespace SchematicHQ.Client.Cache
         private readonly TimeSpan _ttl;
         private readonly JsonSerializerOptions _jsonOptions;
 
-    /// <summary>
-    /// Creates a new RedisCache instance using structured configuration (recommended)
-    /// </summary>
-    /// <param name="config">Redis configuration</param>
-    public RedisCache(RedisCacheConfig config)
-    {
-        if (config == null)
+        /// <summary>
+        /// Creates a new RedisCache instance using structured configuration (recommended)
+        /// </summary>
+        /// <param name="config">Redis configuration</param>
+        public RedisCache(RedisCacheConfig config)
         {
-            throw new ArgumentNullException(nameof(config));
+            if (config == null)
+            {
+                throw new ArgumentNullException(nameof(config));
+            }
+           
+            try
+            {
+                _redis = GetRedis(config);
+                _db = _redis.GetDatabase(config.Database);
+                _keyPrefix = config.KeyPrefix ?? DEFAULT_KEY_PREFIX;
+                _ttl = config.CacheTTL ?? DEFAULT_CACHE_TTL;
+                _jsonOptions = SchematicCacheSerializerDefaults.Options;
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException($"Failed to connect to Redis: {ex.Message}", ex);
+            }
         }
 
-        if (config.Endpoints == null || !config.Endpoints.Any())
+        private ConnectionMultiplexer GetRedis(RedisCacheConfig config)
         {
-            throw new ArgumentException("Redis endpoints cannot be null or empty", nameof(config));
-        }
-
-        try
-        {
+            if (config.RedisConnection != null)
+                return config.RedisConnection;
+            
+            // Obsolete configuration below
+#pragma warning disable CS0618 // Type or member is obsolete
+            if (config.Endpoints == null || !config.Endpoints.Any())
+            {
+                throw new ArgumentException("Redis endpoints cannot be null or empty", nameof(config));
+            }
+            
             var options = new ConfigurationOptions
             {
                 AbortOnConnectFail = config.AbortOnConnectFail,
@@ -84,57 +99,25 @@ namespace SchematicHQ.Client.Cache
             {
                 options.Password = config.Password;
             }
+
             if (!string.IsNullOrEmpty(config.Username))
             {
                 options.User = config.Username;
             }
-
-            _redis = ConnectionMultiplexer.Connect(options);
-            _db = _redis.GetDatabase(config.Database);
-            _keyPrefix = config.KeyPrefix ?? DEFAULT_KEY_PREFIX;
-            _ttl = config.CacheTTL ?? DEFAULT_CACHE_TTL;
-            _jsonOptions = new JsonSerializerOptions 
-            { 
-                WriteIndented = false,
-                PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower,
-                Converters = { 
-                    new ComparableTypeConverter(), // Specific handler for ComparableType empty strings
-                    new ResilientEnumConverter()   // Fallback for all other enums
-                }
-            };
-        }
-        catch (Exception ex)
-        {
-            throw new InvalidOperationException($"Failed to connect to Redis: {ex.Message}", ex);
-        }
-    }
-
-
-        /// <inheritdoc/>
-        public T? Get(string key)
-        {
-            var redisKey = GetRedisKey(key);
-            var value = _db.StringGet(redisKey);
-
-            if (value.IsNullOrEmpty)
-            {
-                return default;
-            }
-
-            try
-            {
-                return JsonSerializer.Deserialize<T>(value!, _jsonOptions);
-            }
-            catch (Exception e)
-            {
-                // If we can't deserialize, just remove the value and return null
-                Delete(key);
-                return default;
-            }
+#pragma warning restore CS0618 // Type or member is obsolete
+            
+            return ConnectionMultiplexer.Connect(options);
         }
 
         /// <inheritdoc/>
-        public void Set(string key, T val, TimeSpan? ttlOverride = null)
+        public async ValueTask<T?> Get<T>(string key, CancellationToken token = default) where T: notnull
+        {
+            var (_, value) = await TryGetInternalAsync<T>(key);
+            return value;
+        }
+
+        /// <inheritdoc/>
+        public async ValueTask Set<T>(string key, T val, TimeSpan? ttlOverride = null, CancellationToken token = default) where T: notnull
         {
             var redisKey = GetRedisKey(key);
             var ttl = ttlOverride ?? _ttl;
@@ -143,18 +126,51 @@ namespace SchematicHQ.Client.Cache
             var expiry = ttl == UNLIMITED_TTL ? (TimeSpan?)null : ttl;
 
             var json = JsonSerializer.Serialize(val, _jsonOptions);
-            _db.StringSet(redisKey, json, expiry);
+            await _db.StringSetAsync(redisKey, json, expiry);
         }
-
-        /// <inheritdoc/>
-        public bool Delete(string key)
+        
+        private async Task<(bool Found, T? Value)> TryGetInternalAsync<T>(string key) where T : notnull
         {
             var redisKey = GetRedisKey(key);
-            return _db.KeyDelete(redisKey);
+            var value = await _db.StringGetAsync(redisKey);
+
+            if (value.IsNullOrEmpty)
+                return (false, default);
+
+            try
+            {
+                return (true, JsonSerializer.Deserialize<T>(value!, _jsonOptions));
+            }
+            catch
+            {
+                // Bad payload
+                await Delete(key);
+                return (false, default);
+            }
+        }
+
+        //TODO update this with stampede protection at some point.
+        public async ValueTask<T> GetOrSet<T>(string key, Func<CancellationToken, Task<T>> factory, TimeSpan? ttlOverride = null, CancellationToken token = default) where T: notnull
+        {
+            var (found, existing) = await TryGetInternalAsync<T>(key);
+            if (found)
+                return existing!;
+
+            // Cache miss — invoke the factory and store the result
+            var value = await factory(token);
+            await Set(key, value, ttlOverride, token);
+            return value;
         }
 
         /// <inheritdoc/>
-        public void DeleteMissing(IEnumerable<string> keys, string? scanPattern = null)
+        public async ValueTask<bool> Delete(string key, CancellationToken token = default)
+        {
+            var redisKey = GetRedisKey(key);
+            return await _db.KeyDeleteAsync(redisKey);
+        }
+
+        /// <inheritdoc/>
+        public async ValueTask DeleteMissing(IEnumerable<string> keys, string? scanPattern = null)
         {
             // Convert keys to Redis keys
             var keysToKeep = new HashSet<RedisKey>(keys.Select(k => GetRedisKey(k)));
@@ -169,27 +185,30 @@ namespace SchematicHQ.Client.Cache
             foreach (var endpoint in _redis.GetEndPoints())
             {
                 var server = _redis.GetServer(endpoint);
-
-                // Get keys to delete
-                var keysToDelete = server.Keys(pattern: pattern)
-                    .Where(key => !keysToKeep.Contains(key))
-                    .ToArray();
-
+                   
+                var keysToDelete = new List<RedisKey>();
+                
+                await foreach (var key in server.KeysAsync(pattern: pattern))
+                {                                                                                                                                                                                                                            
+                    if (!keysToKeep.Contains(key))
+                        keysToDelete.Add(key);                                                                                                                                                                                               
+                }  
+                
                 // Delete keys in batches
-                if (keysToDelete.Length > 0)
+                if (keysToDelete.Count > 0)
                 {
                     const int batchSize = 100;
-                    for (int i = 0; i < keysToDelete.Length; i += batchSize)
+                    for (int i = 0; i < keysToDelete.Count; i += batchSize)
                     {
                         var batch = keysToDelete.Skip(i).Take(batchSize).ToArray();
-                        _db.KeyDelete(batch);
+                        await _db.KeyDeleteAsync(batch);
                     }
                 }
             }
         }
 
         private RedisKey GetRedisKey(string key)
-        {     
+        {
             return $"{_keyPrefix}{key}";
         }
     }
