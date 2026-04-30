@@ -1,4 +1,5 @@
 using System.Collections.Concurrent;
+using System.Diagnostics.CodeAnalysis;
 
 namespace SchematicHQ.Client.Cache;
 
@@ -53,55 +54,15 @@ namespace SchematicHQ.Client.Cache;
         }
 
         /// <inheritdoc/>
-        public ValueTask<T?> Get<T>(string key, CancellationToken token = default)
+        public ValueTask<T?> Get<T>(string key, CancellationToken token = default) where T: notnull
         {
-            if (_maxItems == 0 || _disposed)
-                return ValueTask.FromResult(default(T));
-
-            if (!_cache.TryGetValue(key, out var item))
-                return ValueTask.FromResult(default(T));
-
-            if (item.Expiration != DateTime.MaxValue && DateTime.UtcNow > item.Expiration)
-            {
-                // This item has expired, remove it
-                Remove(key);
-                return ValueTask.FromResult(default(T));
-            }
-
-            // Update LRU position - We need to check if the node is still part of the list
-            // because it might have been removed by another thread
-            lock (_lock)
-            {
-                try
-                {
-                    // Check if node is still in the list before removing it
-                    if (item.Node.List != null)
-                    {
-                        _lruList.Remove(item.Node);
-                        _lruList.AddFirst(item.Node);
-                    }
-                    else
-                    {
-                        // Node was already removed, add a new one
-                        item.Node = _lruList.AddFirst(key);
-                    }
-                }
-                catch (InvalidOperationException)
-                {
-                    // If the node was already removed by another thread,
-                    // create a new node for the key
-                    item.Node = _lruList.AddFirst(key);
-                }
-            }
-
-            if (item.Value is T typedValue)
-                return ValueTask.FromResult<T?>(typedValue);
-
-            return ValueTask.FromResult(default(T));
+            return TryGet<T>(key, out var value)
+                ? ValueTask.FromResult<T?>(value)
+                : ValueTask.FromResult(default(T));
         }
 
         /// <inheritdoc/>
-        public ValueTask Set<T>(string key, T val, TimeSpan? ttlOverride = null, CancellationToken token = default)
+        public ValueTask Set<T>(string key, T val, TimeSpan? ttlOverride = null, CancellationToken token = default) where T: notnull
         {
             if (_maxItems == 0 || _disposed)
                 return ValueTask.CompletedTask;
@@ -168,12 +129,56 @@ namespace SchematicHQ.Client.Cache;
             return ValueTask.CompletedTask;
         }
 
-        /// <inheritdoc/>
-        public async ValueTask<T> GetOrSet<T>(string key, Func<CancellationToken, Task<T>> factory, TimeSpan? ttlOverride = null, CancellationToken token = default)
+        private bool TryGet<T>(string key, [NotNullWhen(true)] out T? value) where T : notnull
         {
-            // Try to get from cache first
-            var existing = await Get<T>(key, token);
-            if (existing is not null)
+            value = default;
+
+            if (_maxItems == 0 || _disposed)
+                return false;
+
+            if (!_cache.TryGetValue(key, out var item))
+                return false;
+
+            if (item.Expiration != DateTime.MaxValue && DateTime.UtcNow > item.Expiration)
+            {
+                Remove(key);
+                return false;
+            }
+
+            // Update LRU position - same logic as Get<T>
+            lock (_lock)
+            {
+                try
+                {
+                    if (item.Node.List != null)
+                    {
+                        _lruList.Remove(item.Node);
+                        _lruList.AddFirst(item.Node);
+                    }
+                    else
+                    {
+                        item.Node = _lruList.AddFirst(key);
+                    }
+                }
+                catch (InvalidOperationException)
+                {
+                    item.Node = _lruList.AddFirst(key);
+                }
+            }
+
+            if (item.Value is T typedValue)
+            {
+                value = typedValue;
+                return true;
+            }
+
+            return false; // Type mismatch — treat as a miss
+        }
+
+        /// <inheritdoc/>
+        public async ValueTask<T> GetOrSet<T>(string key, Func<CancellationToken, Task<T>> factory, TimeSpan? ttlOverride = null, CancellationToken token = default) where T: notnull
+        {
+            if (TryGet<T>(key, out var existing))
                 return existing;
 
             // Cache miss — invoke the factory and store the result

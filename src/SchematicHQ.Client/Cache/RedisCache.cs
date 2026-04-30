@@ -29,10 +29,10 @@ namespace SchematicHQ.Client.Cache
             {
                 throw new ArgumentNullException(nameof(config));
             }
-            _redis = GetRedis(config);
-            
+           
             try
             {
+                _redis = GetRedis(config);
                 _db = _redis.GetDatabase(config.Database);
                 _keyPrefix = config.KeyPrefix ?? DEFAULT_KEY_PREFIX;
                 _ttl = config.CacheTTL ?? DEFAULT_CACHE_TTL;
@@ -110,30 +110,14 @@ namespace SchematicHQ.Client.Cache
         }
 
         /// <inheritdoc/>
-        public async ValueTask<T?> Get<T>(string key, CancellationToken token = default)
+        public async ValueTask<T?> Get<T>(string key, CancellationToken token = default) where T: notnull
         {
-            var redisKey = GetRedisKey(key);
-            var value = await _db.StringGetAsync(redisKey);
-
-            if (value.IsNullOrEmpty)
-            {
-                return default;
-            }
-
-            try
-            {
-                return JsonSerializer.Deserialize<T>(value!, _jsonOptions);
-            }
-            catch (Exception e)
-            {
-                // If we can't deserialize, just remove the value and return null
-                await Delete(key);
-                return default;
-            }
+            var (_, value) = await TryGetInternalAsync<T>(key);
+            return value;
         }
 
         /// <inheritdoc/>
-        public async ValueTask Set<T>(string key, T val, TimeSpan? ttlOverride = null, CancellationToken token = default)
+        public async ValueTask Set<T>(string key, T val, TimeSpan? ttlOverride = null, CancellationToken token = default) where T: notnull
         {
             var redisKey = GetRedisKey(key);
             var ttl = ttlOverride ?? _ttl;
@@ -144,14 +128,33 @@ namespace SchematicHQ.Client.Cache
             var json = JsonSerializer.Serialize(val, _jsonOptions);
             await _db.StringSetAsync(redisKey, json, expiry);
         }
+        
+        private async Task<(bool Found, T? Value)> TryGetInternalAsync<T>(string key) where T : notnull
+        {
+            var redisKey = GetRedisKey(key);
+            var value = await _db.StringGetAsync(redisKey);
+
+            if (value.IsNullOrEmpty)
+                return (false, default);
+
+            try
+            {
+                return (true, JsonSerializer.Deserialize<T>(value!, _jsonOptions));
+            }
+            catch
+            {
+                // Bad payload
+                await Delete(key);
+                return (false, default);
+            }
+        }
 
         //TODO update this with stampede protection at some point.
-        public async ValueTask<T> GetOrSet<T>(string key, Func<CancellationToken, Task<T>> factory, TimeSpan? ttlOverride = null, CancellationToken token = default)
+        public async ValueTask<T> GetOrSet<T>(string key, Func<CancellationToken, Task<T>> factory, TimeSpan? ttlOverride = null, CancellationToken token = default) where T: notnull
         {
-            // Try to get from cache first
-            var existing = await Get<T>(key, token);
-            if (existing is not null)
-                return existing;
+            var (found, existing) = await TryGetInternalAsync<T>(key);
+            if (found)
+                return existing!;
 
             // Cache miss — invoke the factory and store the result
             var value = await factory(token);
