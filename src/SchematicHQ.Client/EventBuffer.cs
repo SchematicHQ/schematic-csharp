@@ -247,6 +247,9 @@ public class EventBuffer<T> : IEventBuffer<T> where T : notnull
 
         try
         {
+            await _cts.CancelAsync();                                                                                                                                                                                                  
+            _channel.Writer.TryComplete();      
+            
             try
             {
                 await DrainAsync();
@@ -256,13 +259,11 @@ public class EventBuffer<T> : IEventBuffer<T> where T : notnull
                 _logger.Warn("Error draining buffer on stop: {0}", ex.Message);
             }
 
-            await _cts.CancelAsync();
-            _channel.Writer.TryComplete();
-
             var timeout = TimeSpan.FromSeconds(MaxWaitForBuffer);
             await Task.WhenAny(Task.WhenAll(_periodicFlushTask, _processBufferTask), Task.Delay(timeout));
 
             _cts.Dispose();
+            _semaphore.Dispose();
             _logger.Info("EventBuffer shut down cleanly.");
         }
         catch (Exception ex)
