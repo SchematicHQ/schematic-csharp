@@ -6,6 +6,7 @@ CLAUDE.md
 LICENSE
 README.md
 examples/
+testapp/
 src/SchematicHQ.Client.Test/Cache/
 src/SchematicHQ.Client.Test/Datastream/
 src/SchematicHQ.Client.Test/Integration/
