@@ -177,7 +177,9 @@ namespace SchematicHQ.Client.RulesEngine
                 .ToList();
 
             var ruleChecker = RuleCheckService.NewRuleCheckService();
-            foreach (var group in GroupRulesByPriority(flag.Rules.ToList(), companyRules, userRules))
+            // The wire format may send `"rules": null` for flags with no rules; treat that as empty.
+            var flagRules = flag.Rules?.ToList() ?? new List<RulesengineRule>();
+            foreach (var group in GroupRulesByPriority(flagRules, companyRules, userRules))
             {
                 foreach (var rule in group)
                 {
