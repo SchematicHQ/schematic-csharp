@@ -1143,6 +1143,36 @@ namespace SchematicHQ.Client.Test.Cache
         }
 
         [Test]
+        public async Task GetOrSet_WithValueType_InvokesFactoryOnCacheMissAndCachesResult()
+        {
+            // Arrange
+            using var cache = new LocalCache(
+                maxItems: 100,
+                ttl: TimeSpan.FromMinutes(5));
+
+            int factoryCallCount = 0;
+            Func<CancellationToken, Task<int>> factory = _ =>
+            {
+                Interlocked.Increment(ref factoryCallCount);
+                return Task.FromResult(42);
+            };
+
+            // Act - first call should miss the cache and invoke the factory
+            var first = await cache.GetOrSet("answer", factory);
+
+            // Assert
+            Assert.That(factoryCallCount, Is.EqualTo(1), "Factory should run once on a cache miss");
+            Assert.That(first, Is.EqualTo(42), "First call should return the factory's value");
+
+            // Act - second call should hit the cache; factory must not run again
+            var second = await cache.GetOrSet("answer", factory);
+
+            // Assert
+            Assert.That(factoryCallCount, Is.EqualTo(1), "Factory should not run again on a cache hit");
+            Assert.That(second, Is.EqualTo(42), "Second call should return the cached value");
+        }
+
+        [Test]
         public async Task Delete_RemovesItemPermanently()
         {
             // Arrange

@@ -122,7 +122,7 @@ namespace SchematicHQ.Client.Test.Cache
             };
 
             // Act & Assert
-            var ex = Assert.Throws<ArgumentException>(() => new RedisCache(config));
+            var ex = Assert.Throws<InvalidOperationException>(() => new RedisCache(config));
             Assert.That(ex.Message, Contains.Substring("Redis endpoints cannot be null or empty"));
         }
 
