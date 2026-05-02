@@ -13,7 +13,7 @@ namespace SchematicHQ.Client.Cache
         public static readonly TimeSpan DEFAULT_CACHE_TTL = TimeSpan.FromMinutes(5);
         public static readonly TimeSpan UNLIMITED_TTL = TimeSpan.MaxValue;
 
-        private readonly ConnectionMultiplexer _redis;
+        private readonly IConnectionMultiplexer _redis;
         private readonly IDatabase _db;
         private readonly string _keyPrefix;
         private readonly TimeSpan _ttl;
@@ -44,10 +44,16 @@ namespace SchematicHQ.Client.Cache
             }
         }
 
-        private ConnectionMultiplexer GetRedis(RedisCacheConfig config)
+        private static IConnectionMultiplexer GetRedis(RedisCacheConfig config)
         {
-            if (config.RedisConnection != null)
-                return config.RedisConnection;
+            if (config.ConnectionMultiplexerFactory != null)
+                return config.ConnectionMultiplexerFactory.Invoke();
+            
+            if (config.ConfigurationOptions != null)
+                return ConnectionMultiplexer.Connect(config.ConfigurationOptions);
+            
+            if(config.Configuration != null)
+                return ConnectionMultiplexer.Connect(config.Configuration);
             
             // Obsolete configuration below
 #pragma warning disable CS0618 // Type or member is obsolete
