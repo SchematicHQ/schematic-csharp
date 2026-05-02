@@ -23,100 +23,112 @@ namespace SchematicHQ.Client.Datastream
         /// Database number to use (default: 0)
         /// </summary>
         public int Database { get; set; } = 0;
+        
+        /// <summary>
+        /// The configuration string used to connect to Redis.
+        /// </summary>
+        public string? Configuration { get; set; }
 
         /// <summary>
-        /// The redis connection multiplexer to use for this cache.
+        /// The configuration used to connect to Redis.
+        /// This is prioritized over Configuration.
         /// </summary>
-        public ConnectionMultiplexer? RedisConnection { get; set; }
+        public ConfigurationOptions? ConfigurationOptions { get; set; }
+
+        /// <summary>
+        /// Gets or sets a delegate to create or return the ConnectionMultiplexer instance.
+        /// This is prioritized over Configuration and ConfigurationOptions.
+        /// </summary>
+        public Func<IConnectionMultiplexer>? ConnectionMultiplexerFactory { get; set; }
         
         /// <summary>
         /// The Redis server endpoints (host:port format)
         /// </summary>
-        [Obsolete("Use RedisConnection instead")]
+        [Obsolete("Use Configuration, ConfigurationOptions, or ConnectionMultiplexerFactory Instead")]
         public List<string> Endpoints { get; set; } = new List<string>();
 
         /// <summary>
         /// Redis username for authentication (Redis 6.0+)
         /// </summary>
-        [Obsolete("Use RedisConnection instead")]
+        [Obsolete("Use Configuration, ConfigurationOptions, or ConnectionMultiplexerFactory Instead")]
         public string? Username { get; set; }
 
         /// <summary>
         /// Redis password for authentication
         /// </summary>
-        [Obsolete("Use RedisConnection instead")]
+        [Obsolete("Use Configuration, ConfigurationOptions, or ConnectionMultiplexerFactory Instead")]
         public string? Password { get; set; }
         
         /// <summary>
         /// Use SSL/TLS for connection
         /// </summary>
-        [Obsolete("Use RedisConnection instead")]
+        [Obsolete("Use Configuration, ConfigurationOptions, or ConnectionMultiplexerFactory Instead")]
         public bool Ssl { get; set; } = false;
 
         /// <summary>
         /// SSL host (defaults to endpoint if not specified)
         /// </summary>
-        [Obsolete("Use RedisConnection instead")]
+        [Obsolete("Use Configuration, ConfigurationOptions, or ConnectionMultiplexerFactory Instead")]
         public string? SslHost { get; set; }
 
         /// <summary>
         /// Client name for connection identification
         /// </summary>
-        [Obsolete("Use RedisConnection instead")]
+        [Obsolete("Use Configuration, ConfigurationOptions, or ConnectionMultiplexerFactory Instead")]
         public string? ClientName { get; set; }
 
         /// <summary>
         /// Connection timeout in milliseconds (default: 5000ms)
         /// </summary>
-        [Obsolete("Use RedisConnection instead")]
+        [Obsolete("Use Configuration, ConfigurationOptions, or ConnectionMultiplexerFactory Instead")]
         public int ConnectTimeout { get; set; } = 5000;
 
         /// <summary>
         /// Synchronous operation timeout in milliseconds (default: 5000ms)
         /// </summary>
-        [Obsolete("Use RedisConnection instead")]
+        [Obsolete("Use Configuration, ConfigurationOptions, or ConnectionMultiplexerFactory Instead")]
         public int SyncTimeout { get; set; } = 5000;
 
         /// <summary>
         /// Asynchronous operation timeout in milliseconds (default: 5000ms)
         /// </summary>
-        [Obsolete("Use RedisConnection instead")]
+        [Obsolete("Use Configuration, ConfigurationOptions, or ConnectionMultiplexerFactory Instead")]
         public int AsyncTimeout { get; set; } = 5000;
 
         /// <summary>
         /// Keep-alive interval in seconds (default: 60s)
         /// </summary>
-        [Obsolete("Use RedisConnection instead")]
+        [Obsolete("Use Configuration, ConfigurationOptions, or ConnectionMultiplexerFactory Instead")]
         public int KeepAlive { get; set; } = 60;
 
         /// <summary>
         /// Whether to abort connection on connect failure (default: true)
         /// </summary>
-        [Obsolete("Use RedisConnection instead")]
+        [Obsolete("Use Configuration, ConfigurationOptions, or ConnectionMultiplexerFactory Instead")]
         public bool AbortOnConnectFail { get; set; } = true;
 
         /// <summary>
         /// Connection retry count (default: 3)
         /// </summary>
-        [Obsolete("Use RedisConnection instead")]
+        [Obsolete("Use Configuration, ConfigurationOptions, or ConnectionMultiplexerFactory Instead")]
         public int ConnectRetry { get; set; } = 3;
         
         /// <summary>
         /// Allow admin operations (dangerous commands)
         /// </summary>
-        [Obsolete("Use RedisConnection instead")]
+        [Obsolete("Use Configuration, ConfigurationOptions, or ConnectionMultiplexerFactory Instead")]
         public bool AllowAdmin { get; set; } = false;
 
         /// <summary>
         /// Default database for commands (can be overridden per-operation)
         /// </summary>
-        [Obsolete("Use RedisConnection instead")]
+        [Obsolete("Use Configuration, ConfigurationOptions, or ConnectionMultiplexerFactory Instead")]
         public int? DefaultDatabase { get; set; }
 
         /// <summary>
         /// Service name for Sentinel support
         /// </summary>
-        [Obsolete("Use RedisConnection instead")]
+        [Obsolete("Use Configuration, ConfigurationOptions, or ConnectionMultiplexerFactory Instead")]
         public string? ServiceName { get; set; }
     }
 
