@@ -22,6 +22,12 @@ public record CreateEventRequestBody : IJsonOnDeserialized
     public required EventType EventType { get; set; }
 
     /// <summary>
+    /// Optional client-supplied key. Duplicate events with the same key (scoped to the environment) are dropped for 24h.
+    /// </summary>
+    [JsonPropertyName("idempotency_key")]
+    public string? IdempotencyKey { get; set; }
+
+    /// <summary>
     /// Optionally provide a timestamp at which the event was sent to Schematic
     /// </summary>
     [JsonPropertyName("sent_at")]

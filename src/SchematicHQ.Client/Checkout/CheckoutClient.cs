@@ -656,6 +656,10 @@ public partial class CheckoutClient : ICheckoutClient
     ///         {
     ///             new UpdateAddOnRequestBody { AddOnId = "add_on_id", PriceId = "price_id" },
     ///         },
+    ///         AutoTopupOverrides = new List&lt;UpdateAutoTopupOverrideRequestBody&gt;()
+    ///         {
+    ///             new UpdateAutoTopupOverrideRequestBody { PlanCreditGrantId = "plan_credit_grant_id" },
+    ///         },
     ///         CompanyId = "company_id",
     ///         CreditBundles = new List&lt;UpdateCreditBundleRequestBody&gt;()
     ///         {
@@ -705,6 +709,10 @@ public partial class CheckoutClient : ICheckoutClient
     ///         AddOnIds = new List&lt;UpdateAddOnRequestBody&gt;()
     ///         {
     ///             new UpdateAddOnRequestBody { AddOnId = "add_on_id", PriceId = "price_id" },
+    ///         },
+    ///         AutoTopupOverrides = new List&lt;UpdateAutoTopupOverrideRequestBody&gt;()
+    ///         {
+    ///             new UpdateAutoTopupOverrideRequestBody { PlanCreditGrantId = "plan_credit_grant_id" },
     ///         },
     ///         CompanyId = "company_id",
     ///         CreditBundles = new List&lt;UpdateCreditBundleRequestBody&gt;()

@@ -2014,12 +2014,13 @@ public partial class CreditsClient : ICreditsClient
         CancellationToken cancellationToken = default
     )
     {
-        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 7)
+        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 8)
             .Add("credit_id", request.CreditId)
             .Add("ids", request.Ids)
             .Add("plan_id", request.PlanId)
             .Add("plan_ids", request.PlanIds)
             .Add("plan_version_id", request.PlanVersionId)
+            .Add("plan_version_ids", request.PlanVersionIds)
             .Add("limit", request.Limit)
             .Add("offset", request.Offset)
             .MergeAdditional(options?.AdditionalQueryParameters)
@@ -2498,12 +2499,13 @@ public partial class CreditsClient : ICreditsClient
         CancellationToken cancellationToken = default
     )
     {
-        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 7)
+        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 8)
             .Add("credit_id", request.CreditId)
             .Add("ids", request.Ids)
             .Add("plan_id", request.PlanId)
             .Add("plan_ids", request.PlanIds)
             .Add("plan_version_id", request.PlanVersionId)
+            .Add("plan_version_ids", request.PlanVersionIds)
             .Add("limit", request.Limit)
             .Add("offset", request.Offset)
             .MergeAdditional(options?.AdditionalQueryParameters)
@@ -2802,7 +2804,7 @@ public partial class CreditsClient : ICreditsClient
     /// await client.Credits.ListBillingCreditsAsync(
     ///     new ListBillingCreditsRequest
     ///     {
-    ///         Ids = [new List&lt;string&gt;() { "ids" }],
+    ///         Ids = new List&lt;string&gt;() { "ids" },
     ///         Name = "name",
     ///         Limit = 1000000,
     ///         Offset = 1000000,
@@ -2907,7 +2909,7 @@ public partial class CreditsClient : ICreditsClient
     /// await client.Credits.ListCreditBundlesAsync(
     ///     new ListCreditBundlesRequest
     ///     {
-    ///         Ids = [new List&lt;string&gt;() { "ids" }],
+    ///         Ids = new List&lt;string&gt;() { "ids" },
     ///         CreditId = "credit_id",
     ///         Status = BillingCreditBundleStatus.Active,
     ///         BundleType = "fixed",
@@ -2999,7 +3001,7 @@ public partial class CreditsClient : ICreditsClient
     /// await client.Credits.CountCreditBundlesAsync(
     ///     new CountCreditBundlesRequest
     ///     {
-    ///         Ids = [new List&lt;string&gt;() { "ids" }],
+    ///         Ids = new List&lt;string&gt;() { "ids" },
     ///         CreditId = "credit_id",
     ///         Status = BillingCreditBundleStatus.Active,
     ///         BundleType = "fixed",
@@ -3023,7 +3025,7 @@ public partial class CreditsClient : ICreditsClient
     /// await client.Credits.CountBillingCreditsAsync(
     ///     new CountBillingCreditsRequest
     ///     {
-    ///         Ids = [new List&lt;string&gt;() { "ids" }],
+    ///         Ids = new List&lt;string&gt;() { "ids" },
     ///         Name = "name",
     ///         Limit = 1000000,
     ///         Offset = 1000000,
@@ -3129,7 +3131,7 @@ public partial class CreditsClient : ICreditsClient
     ///     new CountBillingCreditsGrantsRequest
     ///     {
     ///         CreditId = "credit_id",
-    ///         Ids = [new List&lt;string&gt;() { "ids" }],
+    ///         Ids = new List&lt;string&gt;() { "ids" },
     ///         Limit = 1000000,
     ///         Offset = 1000000,
     ///     }
@@ -3151,7 +3153,7 @@ public partial class CreditsClient : ICreditsClient
     ///     new ListGrantsForCreditRequest
     ///     {
     ///         CreditId = "credit_id",
-    ///         Ids = [new List&lt;string&gt;() { "ids" }],
+    ///         Ids = new List&lt;string&gt;() { "ids" },
     ///         Limit = 1000000,
     ///         Offset = 1000000,
     ///     }
@@ -3225,10 +3227,11 @@ public partial class CreditsClient : ICreditsClient
     ///     new ListBillingPlanCreditGrantsRequest
     ///     {
     ///         CreditId = "credit_id",
-    ///         Ids = [new List&lt;string&gt;() { "ids" }],
+    ///         Ids = new List&lt;string&gt;() { "ids" },
     ///         PlanId = "plan_id",
-    ///         PlanIds = [new List&lt;string&gt;() { "plan_ids" }],
+    ///         PlanIds = new List&lt;string&gt;() { "plan_ids" },
     ///         PlanVersionId = "plan_version_id",
+    ///         PlanVersionIds = new List&lt;string&gt;() { "plan_version_ids" },
     ///         Limit = 1000000,
     ///         Offset = 1000000,
     ///     }
@@ -3327,10 +3330,11 @@ public partial class CreditsClient : ICreditsClient
     ///     new CountBillingPlanCreditGrantsRequest
     ///     {
     ///         CreditId = "credit_id",
-    ///         Ids = [new List&lt;string&gt;() { "ids" }],
+    ///         Ids = new List&lt;string&gt;() { "ids" },
     ///         PlanId = "plan_id",
-    ///         PlanIds = [new List&lt;string&gt;() { "plan_ids" }],
+    ///         PlanIds = new List&lt;string&gt;() { "plan_ids" },
     ///         PlanVersionId = "plan_version_id",
+    ///         PlanVersionIds = new List&lt;string&gt;() { "plan_version_ids" },
     ///         Limit = 1000000,
     ///         Offset = 1000000,
     ///     }

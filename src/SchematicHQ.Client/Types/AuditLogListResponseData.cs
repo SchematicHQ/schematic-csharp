@@ -14,6 +14,9 @@ public record AuditLogListResponseData : IJsonOnDeserialized
     [JsonPropertyName("actor_type")]
     public required ActorType ActorType { get; set; }
 
+    [JsonPropertyName("api_key")]
+    public ApiKeyResponseData? ApiKey { get; set; }
+
     [JsonPropertyName("api_key_id")]
     public string? ApiKeyId { get; set; }
 

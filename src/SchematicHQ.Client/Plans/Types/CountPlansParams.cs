@@ -18,6 +18,12 @@ public record CountPlansParams : IJsonOnDeserialized
     public string? CompanyId { get; set; }
 
     /// <summary>
+    /// Only return plans that are scoped to a company (custom plans assigned to a company)
+    /// </summary>
+    [JsonPropertyName("company_scoped_only")]
+    public bool? CompanyScopedOnly { get; set; }
+
+    /// <summary>
     /// Exclude plans that are scoped to a company (custom plans assigned to a company)
     /// </summary>
     [JsonPropertyName("exclude_company_scoped")]

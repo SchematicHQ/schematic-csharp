@@ -15,6 +15,10 @@ public record DuplicatePlanEntitlementsResponseResponseData : IJsonOnDeserialize
     public IEnumerable<PlanEntitlementResponseData> Data { get; set; } =
         new List<PlanEntitlementResponseData>();
 
+    [JsonPropertyName("issues")]
+    public IEnumerable<PlanIssueResponseData> Issues { get; set; } =
+        new List<PlanIssueResponseData>();
+
     [JsonPropertyName("skipped")]
     public IEnumerable<SkippedEntitlementResponseData> Skipped { get; set; } =
         new List<SkippedEntitlementResponseData>();

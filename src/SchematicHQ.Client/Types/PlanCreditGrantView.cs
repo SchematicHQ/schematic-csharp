@@ -29,6 +29,9 @@ public record PlanCreditGrantView : IJsonOnDeserialized
     [JsonPropertyName("billing_credit_auto_topup_expiry_unit_count")]
     public long? BillingCreditAutoTopupExpiryUnitCount { get; set; }
 
+    [JsonPropertyName("billing_credit_auto_topup_self_service")]
+    public required bool BillingCreditAutoTopupSelfService { get; set; }
+
     [JsonPropertyName("billing_credit_auto_topup_threshold_credits")]
     public long? BillingCreditAutoTopupThresholdCredits { get; set; }
 

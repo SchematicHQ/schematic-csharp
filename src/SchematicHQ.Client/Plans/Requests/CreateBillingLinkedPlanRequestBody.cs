@@ -15,6 +15,9 @@ public record CreateBillingLinkedPlanRequestBody
     [JsonPropertyName("external_resource_id")]
     public required string ExternalResourceId { get; set; }
 
+    [JsonPropertyName("external_resource_version")]
+    public string? ExternalResourceVersion { get; set; }
+
     [JsonPropertyName("icon")]
     public PlanIcon? Icon { get; set; }
 

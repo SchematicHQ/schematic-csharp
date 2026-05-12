@@ -26,6 +26,9 @@ public record ApiKeyCreateResponseData : IJsonOnDeserialized
     [JsonPropertyName("id")]
     public required string Id { get; set; }
 
+    [JsonPropertyName("integration")]
+    public ApiKeyIntegrationResponseData? Integration { get; set; }
+
     [JsonPropertyName("last_used_at")]
     public DateTime? LastUsedAt { get; set; }
 

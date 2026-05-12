@@ -18,10 +18,11 @@ public partial class FeaturesClient : IFeaturesClient
         CancellationToken cancellationToken = default
     )
     {
-        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 9)
+        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 10)
             .Add("boolean_require_event", request.BooleanRequireEvent)
             .Add("feature_type", request.FeatureType)
             .Add("ids", request.Ids)
+            .Add("managed_by", request.ManagedBy)
             .Add("plan_version_id", request.PlanVersionId)
             .Add("q", request.Q)
             .Add("without_company_override_for", request.WithoutCompanyOverrideFor)
@@ -571,10 +572,11 @@ public partial class FeaturesClient : IFeaturesClient
         CancellationToken cancellationToken = default
     )
     {
-        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 9)
+        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 10)
             .Add("boolean_require_event", request.BooleanRequireEvent)
             .Add("feature_type", request.FeatureType)
             .Add("ids", request.Ids)
+            .Add("managed_by", request.ManagedBy)
             .Add("plan_version_id", request.PlanVersionId)
             .Add("q", request.Q)
             .Add("without_company_override_for", request.WithoutCompanyOverrideFor)
@@ -1577,8 +1579,9 @@ public partial class FeaturesClient : IFeaturesClient
     ///     new ListFeaturesRequest
     ///     {
     ///         BooleanRequireEvent = true,
-    ///         FeatureType = [new List&lt;FeatureType&gt;() { FeatureType.Boolean }],
-    ///         Ids = [new List&lt;string&gt;() { "ids" }],
+    ///         FeatureType = new List&lt;FeatureType&gt;() { FeatureType.Boolean },
+    ///         Ids = new List&lt;string&gt;() { "ids" },
+    ///         ManagedBy = BillingProviderType.Orb,
     ///         PlanVersionId = "plan_version_id",
     ///         Q = "q",
     ///         WithoutCompanyOverrideFor = "without_company_override_for",
@@ -1691,8 +1694,9 @@ public partial class FeaturesClient : IFeaturesClient
     ///     new CountFeaturesRequest
     ///     {
     ///         BooleanRequireEvent = true,
-    ///         FeatureType = [new List&lt;FeatureType&gt;() { FeatureType.Boolean }],
-    ///         Ids = [new List&lt;string&gt;() { "ids" }],
+    ///         FeatureType = new List&lt;FeatureType&gt;() { FeatureType.Boolean },
+    ///         Ids = new List&lt;string&gt;() { "ids" },
+    ///         ManagedBy = BillingProviderType.Orb,
     ///         PlanVersionId = "plan_version_id",
     ///         Q = "q",
     ///         WithoutCompanyOverrideFor = "without_company_override_for",
@@ -1718,7 +1722,7 @@ public partial class FeaturesClient : IFeaturesClient
     ///     new ListFlagsRequest
     ///     {
     ///         FeatureId = "feature_id",
-    ///         Ids = [new List&lt;string&gt;() { "ids" }],
+    ///         Ids = new List&lt;string&gt;() { "ids" },
     ///         Q = "q",
     ///         Limit = 1000000,
     ///         Offset = 1000000,
@@ -1918,7 +1922,7 @@ public partial class FeaturesClient : IFeaturesClient
     ///     new CountFlagsRequest
     ///     {
     ///         FeatureId = "feature_id",
-    ///         Ids = [new List&lt;string&gt;() { "ids" }],
+    ///         Ids = new List&lt;string&gt;() { "ids" },
     ///         Q = "q",
     ///         Limit = 1000000,
     ///         Offset = 1000000,
