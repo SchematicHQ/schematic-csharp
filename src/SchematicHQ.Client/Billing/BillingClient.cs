@@ -1629,13 +1629,14 @@ public partial class BillingClient : IBillingClient
         CancellationToken cancellationToken = default
     )
     {
-        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 12)
+        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 13)
             .Add("ids", request.Ids)
             .Add("is_active", request.IsActive)
             .Add("name", request.Name)
             .Add("price_usage_type", request.PriceUsageType)
             .Add("provider_type", request.ProviderType)
             .Add("q", request.Q)
+            .Add("recurring_charges_only", request.RecurringChargesOnly)
             .Add("with_one_time_charges", request.WithOneTimeCharges)
             .Add("with_prices_only", request.WithPricesOnly)
             .Add("with_zero_price", request.WithZeroPrice)
@@ -1734,13 +1735,14 @@ public partial class BillingClient : IBillingClient
         CancellationToken cancellationToken = default
     )
     {
-        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 12)
+        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 13)
             .Add("ids", request.Ids)
             .Add("is_active", request.IsActive)
             .Add("name", request.Name)
             .Add("price_usage_type", request.PriceUsageType)
             .Add("provider_type", request.ProviderType)
             .Add("q", request.Q)
+            .Add("recurring_charges_only", request.RecurringChargesOnly)
             .Add("with_one_time_charges", request.WithOneTimeCharges)
             .Add("with_prices_only", request.WithPricesOnly)
             .Add("with_zero_price", request.WithZeroPrice)
@@ -2000,7 +2002,7 @@ public partial class BillingClient : IBillingClient
     /// await client.Billing.ListCustomersWithSubscriptionsAsync(
     ///     new ListCustomersWithSubscriptionsRequest
     ///     {
-    ///         CompanyIds = [new List&lt;string&gt;() { "company_ids" }],
+    ///         CompanyIds = new List&lt;string&gt;() { "company_ids" },
     ///         Name = "name",
     ///         ProviderType = BillingProviderType.Orb,
     ///         Q = "q",
@@ -2024,7 +2026,7 @@ public partial class BillingClient : IBillingClient
     /// await client.Billing.CountCustomersAsync(
     ///     new CountCustomersRequest
     ///     {
-    ///         CompanyIds = [new List&lt;string&gt;() { "company_ids" }],
+    ///         CompanyIds = new List&lt;string&gt;() { "company_ids" },
     ///         Name = "name",
     ///         ProviderType = BillingProviderType.Orb,
     ///         Q = "q",
@@ -2185,12 +2187,12 @@ public partial class BillingClient : IBillingClient
     ///         Currency = "currency",
     ///         ForInitialPlan = true,
     ///         ForTrialExpiryPlan = true,
-    ///         Ids = [new List&lt;string&gt;() { "ids" }],
+    ///         Ids = new List&lt;string&gt;() { "ids" },
     ///         Interval = "interval",
     ///         IsActive = true,
     ///         Price = 1000000,
     ///         ProductId = "product_id",
-    ///         ProductIds = [new List&lt;string&gt;() { "product_ids" }],
+    ///         ProductIds = new List&lt;string&gt;() { "product_ids" },
     ///         ProviderType = BillingProviderType.Orb,
     ///         Q = "q",
     ///         TiersMode = BillingTiersMode.Graduated,
@@ -2264,12 +2266,12 @@ public partial class BillingClient : IBillingClient
     ///         Currency = "currency",
     ///         ForInitialPlan = true,
     ///         ForTrialExpiryPlan = true,
-    ///         Ids = [new List&lt;string&gt;() { "ids" }],
+    ///         Ids = new List&lt;string&gt;() { "ids" },
     ///         Interval = "interval",
     ///         IsActive = true,
     ///         Price = 1000000,
     ///         ProductId = "product_id",
-    ///         ProductIds = [new List&lt;string&gt;() { "product_ids" }],
+    ///         ProductIds = new List&lt;string&gt;() { "product_ids" },
     ///         ProviderType = BillingProviderType.Orb,
     ///         Q = "q",
     ///         TiersMode = BillingTiersMode.Graduated,
@@ -2325,12 +2327,13 @@ public partial class BillingClient : IBillingClient
     /// await client.Billing.ListBillingProductsAsync(
     ///     new ListBillingProductsRequest
     ///     {
-    ///         Ids = [new List&lt;string&gt;() { "ids" }],
+    ///         Ids = new List&lt;string&gt;() { "ids" },
     ///         IsActive = true,
     ///         Name = "name",
     ///         PriceUsageType = BillingPriceUsageType.Licensed,
     ///         ProviderType = BillingProviderType.Orb,
     ///         Q = "q",
+    ///         RecurringChargesOnly = true,
     ///         WithOneTimeCharges = true,
     ///         WithPricesOnly = true,
     ///         WithZeroPrice = true,
@@ -2355,12 +2358,13 @@ public partial class BillingClient : IBillingClient
     /// await client.Billing.CountBillingProductsAsync(
     ///     new CountBillingProductsRequest
     ///     {
-    ///         Ids = [new List&lt;string&gt;() { "ids" }],
+    ///         Ids = new List&lt;string&gt;() { "ids" },
     ///         IsActive = true,
     ///         Name = "name",
     ///         PriceUsageType = BillingPriceUsageType.Licensed,
     ///         ProviderType = BillingProviderType.Orb,
     ///         Q = "q",
+    ///         RecurringChargesOnly = true,
     ///         WithOneTimeCharges = true,
     ///         WithPricesOnly = true,
     ///         WithZeroPrice = true,

@@ -15,6 +15,10 @@ public record ChangeSubscriptionInternalRequestBody : IJsonOnDeserialized
     public IEnumerable<UpdateAddOnRequestBody> AddOnIds { get; set; } =
         new List<UpdateAddOnRequestBody>();
 
+    [JsonPropertyName("auto_topup_overrides")]
+    public IEnumerable<UpdateAutoTopupOverrideRequestBody> AutoTopupOverrides { get; set; } =
+        new List<UpdateAutoTopupOverrideRequestBody>();
+
     [JsonPropertyName("company_id")]
     public required string CompanyId { get; set; }
 

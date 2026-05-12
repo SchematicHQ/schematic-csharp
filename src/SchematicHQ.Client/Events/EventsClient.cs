@@ -202,11 +202,12 @@ public partial class EventsClient : IEventsClient
         CancellationToken cancellationToken = default
     )
     {
-        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 7)
+        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 8)
             .Add("company_id", request.CompanyId)
             .Add("event_subtype", request.EventSubtype)
             .Add("event_types", request.EventTypes)
             .Add("flag_id", request.FlagId)
+            .Add("idempotency_key", request.IdempotencyKey)
             .Add("user_id", request.UserId)
             .Add("limit", request.Limit)
             .Add("offset", request.Offset)
@@ -583,7 +584,7 @@ public partial class EventsClient : IEventsClient
     ///     new GetEventSummariesRequest
     ///     {
     ///         Q = "q",
-    ///         EventSubtypes = [new List&lt;string&gt;() { "event_subtypes" }],
+    ///         EventSubtypes = new List&lt;string&gt;() { "event_subtypes" },
     ///         Limit = 1000000,
     ///         Offset = 1000000,
     ///     }
@@ -606,8 +607,9 @@ public partial class EventsClient : IEventsClient
     ///     {
     ///         CompanyId = "company_id",
     ///         EventSubtype = "event_subtype",
-    ///         EventTypes = [new List&lt;EventType&gt;() { EventType.FlagCheck }],
+    ///         EventTypes = new List&lt;EventType&gt;() { EventType.FlagCheck },
     ///         FlagId = "flag_id",
+    ///         IdempotencyKey = "idempotency_key",
     ///         UserId = "user_id",
     ///         Limit = 1000000,
     ///         Offset = 1000000,

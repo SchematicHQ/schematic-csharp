@@ -30,7 +30,8 @@ public record BillingCreditBundleView : IJsonOnDeserialized
     public required string CreditName { get; set; }
 
     [JsonPropertyName("currency_prices")]
-    public IEnumerable<CreditBundleCurrencyPrice>? CurrencyPrices { get; set; }
+    public IEnumerable<CreditBundleCurrencyPrice> CurrencyPrices { get; set; } =
+        new List<CreditBundleCurrencyPrice>();
 
     [JsonPropertyName("expiry_type")]
     public required BillingCreditExpiryType ExpiryType { get; set; }

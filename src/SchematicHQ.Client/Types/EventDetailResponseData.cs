@@ -14,6 +14,9 @@ public record EventDetailResponseData : IJsonOnDeserialized
     [JsonPropertyName("api_key")]
     public string? ApiKey { get; set; }
 
+    [JsonPropertyName("api_key_view")]
+    public ApiKeyResponseData? ApiKeyView { get; set; }
+
     [JsonPropertyName("body")]
     public Dictionary<string, object?> Body { get; set; } = new Dictionary<string, object?>();
 
@@ -46,6 +49,9 @@ public record EventDetailResponseData : IJsonOnDeserialized
 
     [JsonPropertyName("id")]
     public required string Id { get; set; }
+
+    [JsonPropertyName("idempotency_key")]
+    public string? IdempotencyKey { get; set; }
 
     [JsonPropertyName("loaded_at")]
     public DateTime? LoadedAt { get; set; }

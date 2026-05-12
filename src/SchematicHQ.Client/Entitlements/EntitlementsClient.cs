@@ -2140,10 +2140,10 @@ public partial class EntitlementsClient : IEntitlementsClient
     ///     new ListCompanyOverridesRequest
     ///     {
     ///         CompanyId = "company_id",
-    ///         CompanyIds = [new List&lt;string&gt;() { "company_ids" }],
+    ///         CompanyIds = new List&lt;string&gt;() { "company_ids" },
     ///         FeatureId = "feature_id",
-    ///         FeatureIds = [new List&lt;string&gt;() { "feature_ids" }],
-    ///         Ids = [new List&lt;string&gt;() { "ids" }],
+    ///         FeatureIds = new List&lt;string&gt;() { "feature_ids" },
+    ///         Ids = new List&lt;string&gt;() { "ids" },
     ///         WithoutExpired = true,
     ///         Q = "q",
     ///         Limit = 1000000,
@@ -2234,10 +2234,10 @@ public partial class EntitlementsClient : IEntitlementsClient
     ///     new CountCompanyOverridesRequest
     ///     {
     ///         CompanyId = "company_id",
-    ///         CompanyIds = [new List&lt;string&gt;() { "company_ids" }],
+    ///         CompanyIds = new List&lt;string&gt;() { "company_ids" },
     ///         FeatureId = "feature_id",
-    ///         FeatureIds = [new List&lt;string&gt;() { "feature_ids" }],
-    ///         Ids = [new List&lt;string&gt;() { "ids" }],
+    ///         FeatureIds = new List&lt;string&gt;() { "feature_ids" },
+    ///         Ids = new List&lt;string&gt;() { "ids" },
     ///         WithoutExpired = true,
     ///         Q = "q",
     ///         Limit = 1000000,
@@ -2305,7 +2305,7 @@ public partial class EntitlementsClient : IEntitlementsClient
     ///     new ListFeatureUsageRequest
     ///     {
     ///         CompanyId = "company_id",
-    ///         FeatureIds = [new List&lt;string&gt;() { "feature_ids" }],
+    ///         FeatureIds = new List&lt;string&gt;() { "feature_ids" },
     ///         IncludeUsageAggregation = true,
     ///         Q = "q",
     ///         WithoutNegativeEntitlements = true,
@@ -2353,7 +2353,7 @@ public partial class EntitlementsClient : IEntitlementsClient
     ///     new CountFeatureUsageRequest
     ///     {
     ///         CompanyId = "company_id",
-    ///         FeatureIds = [new List&lt;string&gt;() { "feature_ids" }],
+    ///         FeatureIds = new List&lt;string&gt;() { "feature_ids" },
     ///         IncludeUsageAggregation = true,
     ///         Q = "q",
     ///         WithoutNegativeEntitlements = true,
@@ -2422,12 +2422,12 @@ public partial class EntitlementsClient : IEntitlementsClient
     ///     new ListPlanEntitlementsRequest
     ///     {
     ///         FeatureId = "feature_id",
-    ///         FeatureIds = [new List&lt;string&gt;() { "feature_ids" }],
-    ///         Ids = [new List&lt;string&gt;() { "ids" }],
+    ///         FeatureIds = new List&lt;string&gt;() { "feature_ids" },
+    ///         Ids = new List&lt;string&gt;() { "ids" },
     ///         PlanId = "plan_id",
-    ///         PlanIds = [new List&lt;string&gt;() { "plan_ids" }],
+    ///         PlanIds = new List&lt;string&gt;() { "plan_ids" },
     ///         PlanVersionId = "plan_version_id",
-    ///         PlanVersionIds = [new List&lt;string&gt;() { "plan_version_ids" }],
+    ///         PlanVersionIds = new List&lt;string&gt;() { "plan_version_ids" },
     ///         Q = "q",
     ///         WithMeteredProducts = true,
     ///         Limit = 1000000,
@@ -2541,12 +2541,12 @@ public partial class EntitlementsClient : IEntitlementsClient
     ///     new CountPlanEntitlementsRequest
     ///     {
     ///         FeatureId = "feature_id",
-    ///         FeatureIds = [new List&lt;string&gt;() { "feature_ids" }],
-    ///         Ids = [new List&lt;string&gt;() { "ids" }],
+    ///         FeatureIds = new List&lt;string&gt;() { "feature_ids" },
+    ///         Ids = new List&lt;string&gt;() { "ids" },
     ///         PlanId = "plan_id",
-    ///         PlanIds = [new List&lt;string&gt;() { "plan_ids" }],
+    ///         PlanIds = new List&lt;string&gt;() { "plan_ids" },
     ///         PlanVersionId = "plan_version_id",
-    ///         PlanVersionIds = [new List&lt;string&gt;() { "plan_version_ids" }],
+    ///         PlanVersionIds = new List&lt;string&gt;() { "plan_version_ids" },
     ///         Q = "q",
     ///         WithMeteredProducts = true,
     ///         Limit = 1000000,

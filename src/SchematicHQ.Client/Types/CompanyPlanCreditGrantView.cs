@@ -1,0 +1,136 @@
+using global::System.Text.Json;
+using global::System.Text.Json.Serialization;
+using SchematicHQ.Client.Core;
+
+namespace SchematicHQ.Client;
+
+[Serializable]
+public record CompanyPlanCreditGrantView : IJsonOnDeserialized
+{
+    [JsonExtensionData]
+    private readonly IDictionary<string, JsonElement> _extensionData =
+        new Dictionary<string, JsonElement>();
+
+    [JsonPropertyName("billing_credit_auto_topup_amount")]
+    public long? BillingCreditAutoTopupAmount { get; set; }
+
+    [JsonPropertyName("billing_credit_auto_topup_amount_type")]
+    public string? BillingCreditAutoTopupAmountType { get; set; }
+
+    [JsonPropertyName("billing_credit_auto_topup_enabled")]
+    public required bool BillingCreditAutoTopupEnabled { get; set; }
+
+    [JsonPropertyName("billing_credit_auto_topup_expiry_type")]
+    public BillingCreditExpiryType? BillingCreditAutoTopupExpiryType { get; set; }
+
+    [JsonPropertyName("billing_credit_auto_topup_expiry_unit")]
+    public BillingCreditExpiryUnit? BillingCreditAutoTopupExpiryUnit { get; set; }
+
+    [JsonPropertyName("billing_credit_auto_topup_expiry_unit_count")]
+    public long? BillingCreditAutoTopupExpiryUnitCount { get; set; }
+
+    [JsonPropertyName("billing_credit_auto_topup_self_service")]
+    public required bool BillingCreditAutoTopupSelfService { get; set; }
+
+    [JsonPropertyName("billing_credit_auto_topup_threshold_credits")]
+    public long? BillingCreditAutoTopupThresholdCredits { get; set; }
+
+    [JsonPropertyName("billing_credit_auto_topup_threshold_percent")]
+    public long? BillingCreditAutoTopupThresholdPercent { get; set; }
+
+    [JsonPropertyName("company_auto_topup_amount")]
+    public long? CompanyAutoTopupAmount { get; set; }
+
+    [JsonPropertyName("company_auto_topup_enabled")]
+    public bool? CompanyAutoTopupEnabled { get; set; }
+
+    [JsonPropertyName("company_auto_topup_threshold_credits")]
+    public long? CompanyAutoTopupThresholdCredits { get; set; }
+
+    [JsonPropertyName("created_at")]
+    public required DateTime CreatedAt { get; set; }
+
+    [JsonPropertyName("credit")]
+    public BillingCreditView? Credit { get; set; }
+
+    [JsonPropertyName("credit_amount")]
+    public required long CreditAmount { get; set; }
+
+    /// <summary>
+    /// Deprecated field, will be removed in the future. Use Credit.Description instead.
+    /// </summary>
+    [JsonPropertyName("credit_description")]
+    public required string CreditDescription { get; set; }
+
+    /// <summary>
+    /// Deprecated field, will be removed in the future. Use Credit.Icon instead.
+    /// </summary>
+    [JsonPropertyName("credit_icon")]
+    public string? CreditIcon { get; set; }
+
+    [JsonPropertyName("credit_id")]
+    public required string CreditId { get; set; }
+
+    /// <summary>
+    /// Deprecated field, will be removed in the future. Use Credit.Name instead.
+    /// </summary>
+    [JsonPropertyName("credit_name")]
+    public required string CreditName { get; set; }
+
+    [JsonPropertyName("expiry_type")]
+    public BillingCreditExpiryType? ExpiryType { get; set; }
+
+    [JsonPropertyName("expiry_unit")]
+    public BillingCreditExpiryUnit? ExpiryUnit { get; set; }
+
+    [JsonPropertyName("expiry_unit_count")]
+    public long? ExpiryUnitCount { get; set; }
+
+    [JsonPropertyName("id")]
+    public required string Id { get; set; }
+
+    [JsonPropertyName("plan")]
+    public GenericPreviewObject? Plan { get; set; }
+
+    [JsonPropertyName("plan_id")]
+    public required string PlanId { get; set; }
+
+    [JsonPropertyName("plan_version_id")]
+    public string? PlanVersionId { get; set; }
+
+    /// <summary>
+    /// Deprecated field, will be removed in the future. Use Credit.PluralName instead.
+    /// </summary>
+    [JsonPropertyName("plural_name")]
+    public string? PluralName { get; set; }
+
+    [JsonPropertyName("reset_cadence")]
+    public BillingPlanCreditGrantResetCadence? ResetCadence { get; set; }
+
+    [JsonPropertyName("reset_start")]
+    public BillingPlanCreditGrantResetStart? ResetStart { get; set; }
+
+    [JsonPropertyName("reset_type")]
+    public required BillingPlanCreditGrantResetType ResetType { get; set; }
+
+    /// <summary>
+    /// Deprecated field, will be removed in the future. Use Credit.SingularName instead.
+    /// </summary>
+    [JsonPropertyName("singular_name")]
+    public string? SingularName { get; set; }
+
+    [JsonPropertyName("updated_at")]
+    public required DateTime UpdatedAt { get; set; }
+
+    [JsonIgnore]
+    public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();
+
+    void IJsonOnDeserialized.OnDeserialized() =>
+        AdditionalProperties.CopyFromExtensionData(_extensionData);
+
+    /// <inheritdoc />
+    public override string ToString()
+    {
+        return JsonUtils.Serialize(this);
+    }
+}

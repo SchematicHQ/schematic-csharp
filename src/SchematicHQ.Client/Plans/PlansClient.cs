@@ -398,8 +398,9 @@ public partial class PlansClient : IPlansClient
         CancellationToken cancellationToken = default
     )
     {
-        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 15)
+        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 16)
             .Add("company_id", request.CompanyId)
+            .Add("company_scoped_only", request.CompanyScopedOnly)
             .Add("exclude_company_scoped", request.ExcludeCompanyScoped)
             .Add("for_fallback_plan", request.ForFallbackPlan)
             .Add("for_initial_plan", request.ForInitialPlan)
@@ -1249,8 +1250,9 @@ public partial class PlansClient : IPlansClient
         CancellationToken cancellationToken = default
     )
     {
-        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 15)
+        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 16)
             .Add("company_id", request.CompanyId)
+            .Add("company_scoped_only", request.CompanyScopedOnly)
             .Add("exclude_company_scoped", request.ExcludeCompanyScoped)
             .Add("for_fallback_plan", request.ForFallbackPlan)
             .Add("for_initial_plan", request.ForInitialPlan)
@@ -1656,7 +1658,7 @@ public partial class PlansClient : IPlansClient
     ///         CompanyId = "company_id",
     ///         PlanId = "plan_id",
     ///         Status = CustomPlanBillingStatus.Active,
-    ///         Statuses = [new List&lt;CustomPlanBillingStatus&gt;() { CustomPlanBillingStatus.Active }],
+    ///         Statuses = new List&lt;CustomPlanBillingStatus&gt;() { CustomPlanBillingStatus.Active },
     ///         Limit = 1000000,
     ///         Offset = 1000000,
     ///     }
@@ -1729,12 +1731,13 @@ public partial class PlansClient : IPlansClient
     ///     new ListPlansRequest
     ///     {
     ///         CompanyId = "company_id",
+    ///         CompanyScopedOnly = true,
     ///         ExcludeCompanyScoped = true,
     ///         ForFallbackPlan = true,
     ///         ForInitialPlan = true,
     ///         ForTrialExpiryPlan = true,
     ///         HasProductId = true,
-    ///         Ids = [new List&lt;string&gt;() { "ids" }],
+    ///         Ids = new List&lt;string&gt;() { "ids" },
     ///         IncludeDraftVersions = true,
     ///         PlanType = PlanType.Plan,
     ///         Q = "q",
@@ -1915,12 +1918,13 @@ public partial class PlansClient : IPlansClient
     ///     new CountPlansRequest
     ///     {
     ///         CompanyId = "company_id",
+    ///         CompanyScopedOnly = true,
     ///         ExcludeCompanyScoped = true,
     ///         ForFallbackPlan = true,
     ///         ForInitialPlan = true,
     ///         ForTrialExpiryPlan = true,
     ///         HasProductId = true,
-    ///         Ids = [new List&lt;string&gt;() { "ids" }],
+    ///         Ids = new List&lt;string&gt;() { "ids" },
     ///         IncludeDraftVersions = true,
     ///         PlanType = PlanType.Plan,
     ///         Q = "q",

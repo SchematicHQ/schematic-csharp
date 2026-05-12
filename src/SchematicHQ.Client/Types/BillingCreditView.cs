@@ -23,6 +23,10 @@ public record BillingCreditView : IJsonOnDeserialized
     [JsonPropertyName("created_at")]
     public required DateTime CreatedAt { get; set; }
 
+    [JsonPropertyName("currency_prices")]
+    public IEnumerable<CreditCurrencyPrice> CurrencyPrices { get; set; } =
+        new List<CreditCurrencyPrice>();
+
     [JsonPropertyName("default_expiry_unit")]
     public required BillingCreditExpiryUnit DefaultExpiryUnit { get; set; }
 

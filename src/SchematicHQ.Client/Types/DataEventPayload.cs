@@ -17,6 +17,9 @@ public record DataEventPayload : IJsonOnDeserialized
     [JsonPropertyName("body")]
     public Dictionary<string, object?>? Body { get; set; }
 
+    [JsonPropertyName("idempotency_key")]
+    public string? IdempotencyKey { get; set; }
+
     [JsonPropertyName("sent_at")]
     public DateTime? SentAt { get; set; }
 

@@ -22,6 +22,12 @@ public record CountFeaturesRequest
     public IEnumerable<string> Ids { get; set; } = new List<string>();
 
     /// <summary>
+    /// Filter for features managed by a billing provider, or by Schematic (no billing provider)
+    /// </summary>
+    [JsonIgnore]
+    public BillingProviderType? ManagedBy { get; set; }
+
+    /// <summary>
     /// Filter by plan version ID when used with without_plan_entitlement_for; if not provided, the latest published version is used
     /// </summary>
     [JsonIgnore]

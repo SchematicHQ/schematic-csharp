@@ -19,6 +19,9 @@ public record ListEventsRequest
     public string? FlagId { get; set; }
 
     [JsonIgnore]
+    public string? IdempotencyKey { get; set; }
+
+    [JsonIgnore]
     public string? UserId { get; set; }
 
     /// <summary>

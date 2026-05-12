@@ -48,6 +48,12 @@ public record CountBillingProductsParams : IJsonOnDeserialized
     public string? Q { get; set; }
 
     /// <summary>
+    /// Filter to products that have at least one recurring price
+    /// </summary>
+    [JsonPropertyName("recurring_charges_only")]
+    public bool? RecurringChargesOnly { get; set; }
+
+    /// <summary>
     /// Filter products that are one time charges
     /// </summary>
     [JsonPropertyName("with_one_time_charges")]

@@ -1657,7 +1657,7 @@ public partial class AccountsClient : IAccountsClient
     /// await client.Accounts.ListAccountMembersAsync(
     ///     new ListAccountMembersRequest
     ///     {
-    ///         Ids = [new List&lt;string&gt;() { "ids" }],
+    ///         Ids = new List&lt;string&gt;() { "ids" },
     ///         Q = "q",
     ///         Limit = 1000000,
     ///         Offset = 1000000,
@@ -1858,7 +1858,7 @@ public partial class AccountsClient : IAccountsClient
     /// await client.Accounts.ListEnvironmentsAsync(
     ///     new ListEnvironmentsRequest
     ///     {
-    ///         Ids = [new List&lt;string&gt;() { "ids" }],
+    ///         Ids = new List&lt;string&gt;() { "ids" },
     ///         Limit = 1000000,
     ///         Offset = 1000000,
     ///     }

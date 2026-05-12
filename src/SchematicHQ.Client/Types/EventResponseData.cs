@@ -41,6 +41,9 @@ public record EventResponseData : IJsonOnDeserialized
     [JsonPropertyName("id")]
     public required string Id { get; set; }
 
+    [JsonPropertyName("idempotency_key")]
+    public string? IdempotencyKey { get; set; }
+
     [JsonPropertyName("loaded_at")]
     public DateTime? LoadedAt { get; set; }
 

@@ -21,6 +21,9 @@ public record ListBillingPlanCreditGrantsRequest
     [JsonIgnore]
     public string? PlanVersionId { get; set; }
 
+    [JsonIgnore]
+    public IEnumerable<string> PlanVersionIds { get; set; } = new List<string>();
+
     /// <summary>
     /// Page limit (default 100)
     /// </summary>

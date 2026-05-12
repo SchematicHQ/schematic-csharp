@@ -10,6 +10,12 @@ public record CountPlansRequest
     public string? CompanyId { get; set; }
 
     /// <summary>
+    /// Only return plans that are scoped to a company (custom plans assigned to a company)
+    /// </summary>
+    [JsonIgnore]
+    public bool? CompanyScopedOnly { get; set; }
+
+    /// <summary>
     /// Exclude plans that are scoped to a company (custom plans assigned to a company)
     /// </summary>
     [JsonIgnore]

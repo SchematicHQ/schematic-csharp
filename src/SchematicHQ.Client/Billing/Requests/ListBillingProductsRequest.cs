@@ -28,6 +28,12 @@ public record ListBillingProductsRequest
     public string? Q { get; set; }
 
     /// <summary>
+    /// Filter to products that have at least one recurring price
+    /// </summary>
+    [JsonIgnore]
+    public bool? RecurringChargesOnly { get; set; }
+
+    /// <summary>
     /// Filter products that are one time charges
     /// </summary>
     [JsonIgnore]

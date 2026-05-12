@@ -26,6 +26,9 @@ public record ListEventsParams : IJsonOnDeserialized
     [JsonPropertyName("flag_id")]
     public string? FlagId { get; set; }
 
+    [JsonPropertyName("idempotency_key")]
+    public string? IdempotencyKey { get; set; }
+
     /// <summary>
     /// Page limit (default 100)
     /// </summary>

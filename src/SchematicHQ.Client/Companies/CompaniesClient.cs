@@ -3408,18 +3408,18 @@ public partial class CompaniesClient : ICompaniesClient
     /// await client.Companies.ListCompaniesAsync(
     ///     new ListCompaniesRequest
     ///     {
-    ///         CreditTypeIds = [new List&lt;string&gt;() { "credit_type_ids" }],
+    ///         CreditTypeIds = new List&lt;string&gt;() { "credit_type_ids" },
     ///         HasScheduledDowngrade = true,
-    ///         Ids = [new List&lt;string&gt;() { "ids" }],
+    ///         Ids = new List&lt;string&gt;() { "ids" },
     ///         MonetizedSubscriptions = true,
     ///         PlanId = "plan_id",
-    ///         PlanIds = [new List&lt;string&gt;() { "plan_ids" }],
+    ///         PlanIds = new List&lt;string&gt;() { "plan_ids" },
     ///         PlanVersionId = "plan_version_id",
     ///         Q = "q",
     ///         SortOrderColumn = "sort_order_column",
     ///         SortOrderDirection = SortDirection.Asc,
-    ///         SubscriptionStatuses = [new List&lt;SubscriptionStatus&gt;() { SubscriptionStatus.Active }],
-    ///         SubscriptionTypes = [new List&lt;SubscriptionType&gt;() { SubscriptionType.Free }],
+    ///         SubscriptionStatuses = new List&lt;SubscriptionStatus&gt;() { SubscriptionStatus.Active },
+    ///         SubscriptionTypes = new List&lt;SubscriptionType&gt;() { SubscriptionType.Free },
     ///         WithEntitlementFor = "with_entitlement_for",
     ///         WithoutFeatureOverrideFor = "without_feature_override_for",
     ///         WithoutPlan = true,
@@ -3493,18 +3493,18 @@ public partial class CompaniesClient : ICompaniesClient
     /// await client.Companies.CountCompaniesAsync(
     ///     new CountCompaniesRequest
     ///     {
-    ///         CreditTypeIds = [new List&lt;string&gt;() { "credit_type_ids" }],
+    ///         CreditTypeIds = new List&lt;string&gt;() { "credit_type_ids" },
     ///         HasScheduledDowngrade = true,
-    ///         Ids = [new List&lt;string&gt;() { "ids" }],
+    ///         Ids = new List&lt;string&gt;() { "ids" },
     ///         MonetizedSubscriptions = true,
     ///         PlanId = "plan_id",
-    ///         PlanIds = [new List&lt;string&gt;() { "plan_ids" }],
+    ///         PlanIds = new List&lt;string&gt;() { "plan_ids" },
     ///         PlanVersionId = "plan_version_id",
     ///         Q = "q",
     ///         SortOrderColumn = "sort_order_column",
     ///         SortOrderDirection = SortDirection.Asc,
-    ///         SubscriptionStatuses = [new List&lt;SubscriptionStatus&gt;() { SubscriptionStatus.Active }],
-    ///         SubscriptionTypes = [new List&lt;SubscriptionType&gt;() { SubscriptionType.Free }],
+    ///         SubscriptionStatuses = new List&lt;SubscriptionStatus&gt;() { SubscriptionStatus.Active },
+    ///         SubscriptionTypes = new List&lt;SubscriptionType&gt;() { SubscriptionType.Free },
     ///         WithEntitlementFor = "with_entitlement_for",
     ///         WithoutFeatureOverrideFor = "without_feature_override_for",
     ///         WithoutPlan = true,
@@ -3638,7 +3638,7 @@ public partial class CompaniesClient : ICompaniesClient
     ///     new GetActiveCompanySubscriptionRequest
     ///     {
     ///         CompanyId = "company_id",
-    ///         CompanyIds = [new List&lt;string&gt;() { "company_ids" }],
+    ///         CompanyIds = new List&lt;string&gt;() { "company_ids" },
     ///         Limit = 1000000,
     ///         Offset = 1000000,
     ///     }
@@ -3680,7 +3680,7 @@ public partial class CompaniesClient : ICompaniesClient
     ///     new ListEntityKeyDefinitionsRequest
     ///     {
     ///         EntityType = EntityType.Company,
-    ///         Ids = [new List&lt;string&gt;() { "ids" }],
+    ///         Ids = new List&lt;string&gt;() { "ids" },
     ///         Q = "q",
     ///         Limit = 1000000,
     ///         Offset = 1000000,
@@ -3703,7 +3703,7 @@ public partial class CompaniesClient : ICompaniesClient
     ///     new CountEntityKeyDefinitionsRequest
     ///     {
     ///         EntityType = EntityType.Company,
-    ///         Ids = [new List&lt;string&gt;() { "ids" }],
+    ///         Ids = new List&lt;string&gt;() { "ids" },
     ///         Q = "q",
     ///         Limit = 1000000,
     ///         Offset = 1000000,
@@ -3726,10 +3726,10 @@ public partial class CompaniesClient : ICompaniesClient
     ///     new ListEntityTraitDefinitionsRequest
     ///     {
     ///         EntityType = EntityType.Company,
-    ///         Ids = [new List&lt;string&gt;() { "ids" }],
+    ///         Ids = new List&lt;string&gt;() { "ids" },
     ///         Q = "q",
     ///         TraitType = TraitType.Boolean,
-    ///         TraitTypes = [new List&lt;TraitType&gt;() { TraitType.Boolean }],
+    ///         TraitTypes = new List&lt;TraitType&gt;() { TraitType.Boolean },
     ///         Limit = 1000000,
     ///         Offset = 1000000,
     ///     }
@@ -3809,10 +3809,10 @@ public partial class CompaniesClient : ICompaniesClient
     ///     new CountEntityTraitDefinitionsRequest
     ///     {
     ///         EntityType = EntityType.Company,
-    ///         Ids = [new List&lt;string&gt;() { "ids" }],
+    ///         Ids = new List&lt;string&gt;() { "ids" },
     ///         Q = "q",
     ///         TraitType = TraitType.Boolean,
-    ///         TraitTypes = [new List&lt;TraitType&gt;() { TraitType.Boolean }],
+    ///         TraitTypes = new List&lt;TraitType&gt;() { TraitType.Boolean },
     ///         Limit = 1000000,
     ///         Offset = 1000000,
     ///     }
@@ -3858,8 +3858,8 @@ public partial class CompaniesClient : ICompaniesClient
     ///         Action = PlanChangeAction.Checkout,
     ///         BasePlanAction = PlanChangeBasePlanAction.Fallback,
     ///         CompanyId = "company_id",
-    ///         CompanyIds = [new List&lt;string&gt;() { "company_ids" }],
-    ///         PlanIds = [new List&lt;string&gt;() { "plan_ids" }],
+    ///         CompanyIds = new List&lt;string&gt;() { "company_ids" },
+    ///         PlanIds = new List&lt;string&gt;() { "plan_ids" },
     ///         Limit = 1000000,
     ///         Offset = 1000000,
     ///     }
@@ -3894,10 +3894,10 @@ public partial class CompaniesClient : ICompaniesClient
     /// await client.Companies.ListPlanTraitsAsync(
     ///     new ListPlanTraitsRequest
     ///     {
-    ///         Ids = [new List&lt;string&gt;() { "ids" }],
+    ///         Ids = new List&lt;string&gt;() { "ids" },
     ///         PlanId = "plan_id",
     ///         TraitId = "trait_id",
-    ///         TraitIds = [new List&lt;string&gt;() { "trait_ids" }],
+    ///         TraitIds = new List&lt;string&gt;() { "trait_ids" },
     ///         Limit = 1000000,
     ///         Offset = 1000000,
     ///     }
@@ -3960,10 +3960,10 @@ public partial class CompaniesClient : ICompaniesClient
     /// await client.Companies.CountPlanTraitsAsync(
     ///     new CountPlanTraitsRequest
     ///     {
-    ///         Ids = [new List&lt;string&gt;() { "ids" }],
+    ///         Ids = new List&lt;string&gt;() { "ids" },
     ///         PlanId = "plan_id",
     ///         TraitId = "trait_id",
-    ///         TraitIds = [new List&lt;string&gt;() { "trait_ids" }],
+    ///         TraitIds = new List&lt;string&gt;() { "trait_ids" },
     ///         Limit = 1000000,
     ///         Offset = 1000000,
     ///     }
@@ -4005,7 +4005,7 @@ public partial class CompaniesClient : ICompaniesClient
     ///     new ListUsersRequest
     ///     {
     ///         CompanyId = "company_id",
-    ///         Ids = [new List&lt;string&gt;() { "ids" }],
+    ///         Ids = new List&lt;string&gt;() { "ids" },
     ///         PlanId = "plan_id",
     ///         Q = "q",
     ///         Limit = 1000000,
@@ -4073,7 +4073,7 @@ public partial class CompaniesClient : ICompaniesClient
     ///     new CountUsersRequest
     ///     {
     ///         CompanyId = "company_id",
-    ///         Ids = [new List&lt;string&gt;() { "ids" }],
+    ///         Ids = new List&lt;string&gt;() { "ids" },
     ///         PlanId = "plan_id",
     ///         Q = "q",
     ///         Limit = 1000000,
