@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 using OpenFeature;
 using OpenFeature.Constant;
 using OpenFeature.Error;
@@ -18,6 +19,7 @@ namespace SchematicHQ.Client.OpenFeature
         private static readonly Metadata _metadata = new Metadata("schematic-provider");
         private readonly Schematic _schematic;
         private readonly ClientOptions _options;
+        private readonly ILogger _logger;
 
         /// <summary>
         /// Creates a new instance of the SchematicProvider.
@@ -32,6 +34,7 @@ namespace SchematicHQ.Client.OpenFeature
             }
 
             _options = options ?? new ClientOptions();
+            _logger = _options.LoggerFactory.CreateLogger<SchematicProvider>();
             _schematic = new Schematic(apiKey, _options);
         }
 
@@ -44,6 +47,7 @@ namespace SchematicHQ.Client.OpenFeature
         {
             _schematic = schematic ?? throw new ArgumentNullException(nameof(schematic));
             _options = options ?? new ClientOptions();
+            _logger = _options.LoggerFactory.CreateLogger<SchematicProvider>();
         }
 
         /// <inheritdoc/>
@@ -78,7 +82,7 @@ namespace SchematicHQ.Client.OpenFeature
             }
             catch (Exception ex)
             {
-                _options.Logger?.Error("Error evaluating boolean flag '{0}': {1}", flagKey, ex.Message);
+                _logger.LogError(ex, "Error evaluating boolean flag '{FlagKey}'", flagKey);
                 
                 var errorType = MapExceptionToErrorType(ex);
                 return new ResolutionDetails<bool>(
@@ -159,14 +163,14 @@ namespace SchematicHQ.Client.OpenFeature
         /// <inheritdoc/>
         public override Task InitializeAsync(EvaluationContext? context, CancellationToken cancellationToken = default)
         {
-            _options.Logger?.Info("Schematic provider initialized");
+            _logger.LogInformation("Schematic provider initialized");
             return Task.CompletedTask;
         }
 
         /// <inheritdoc/>
         public override async Task ShutdownAsync(CancellationToken cancellationToken = default)
         {
-            _options.Logger?.Info("Schematic provider shutting down");
+            _logger.LogInformation("Schematic provider shutting down");
             await _schematic.Shutdown().ConfigureAwait(false);
         }
 

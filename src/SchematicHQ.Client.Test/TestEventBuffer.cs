@@ -1,4 +1,5 @@
-using Moq;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 using NUnit.Framework;
 
 namespace SchematicHQ.Client.Tests
@@ -6,14 +7,14 @@ namespace SchematicHQ.Client.Tests
     [TestFixture]
     public class EventBufferTests
     {
-        private Mock<ISchematicLogger> _mockLogger;
+        private ILogger _mockLogger;
         private EventBuffer<int> _buffer;
         private List<int> _processedItems;
 
         [SetUp]
         public void SetUp()
         {
-            _mockLogger = new Mock<ISchematicLogger>();
+            _mockLogger = NullLogger.Instance;
             _processedItems = new List<int>();
             _buffer = new EventBuffer<int>(async items =>
             {
@@ -22,7 +23,7 @@ namespace SchematicHQ.Client.Tests
                     _processedItems.AddRange(items);
                 }
                 await Task.CompletedTask; // Simulate async operation
-            }, _mockLogger.Object);
+            }, _mockLogger);
         }
 
         [TearDown]
@@ -85,7 +86,7 @@ namespace SchematicHQ.Client.Tests
                 _processedItems.AddRange(items);
                 autoResetEvent.Set();
                 await Task.CompletedTask; // Simulate async operation
-            }, _mockLogger.Object, 100, TimeSpan.FromMilliseconds(500));
+            }, _mockLogger, 100, TimeSpan.FromMilliseconds(500));
 
             _buffer.Start();
             _buffer.Push(1);
@@ -121,7 +122,7 @@ namespace SchematicHQ.Client.Tests
                     manualFlushes++;
                 }
                 await Task.CompletedTask;
-            }, _mockLogger.Object, 100, TimeSpan.FromMilliseconds(500));
+            }, _mockLogger, 100, TimeSpan.FromMilliseconds(500));
 
             _buffer.Start();
 
@@ -155,7 +156,7 @@ namespace SchematicHQ.Client.Tests
                         processedItems.AddRange(items);
                     }
                     await Task.CompletedTask;
-                }, _mockLogger.Object);
+                }, _mockLogger);
 
                 buffer.Start();
                 await Task.Delay(10);
@@ -220,7 +221,7 @@ namespace SchematicHQ.Client.Tests
                 }
                 autoResetEvent.Set();
                 await Task.CompletedTask;
-            }, _mockLogger.Object, maxSize, TimeSpan.FromSeconds(60));
+            }, _mockLogger, maxSize, TimeSpan.FromSeconds(60));
 
             _buffer.Start();
 
@@ -253,7 +254,7 @@ namespace SchematicHQ.Client.Tests
                     flushedItems.AddRange(items);
                 }
                 await Task.CompletedTask;
-            }, _mockLogger.Object);
+            }, _mockLogger);
 
             _buffer.Start();
             _buffer.Push(1);
@@ -276,7 +277,7 @@ namespace SchematicHQ.Client.Tests
                 Interlocked.Increment(ref callCount);
                 await Task.CompletedTask;
                 throw new Exception("Persistent failure");
-            }, _mockLogger.Object);
+            }, _mockLogger);
 
             _buffer.Start();
             _buffer.Push(1);
@@ -300,7 +301,7 @@ namespace SchematicHQ.Client.Tests
                     flushedItems.AddRange(items);
                 }
                 await Task.CompletedTask;
-            }, _mockLogger.Object, 100, TimeSpan.FromSeconds(60));
+            }, _mockLogger, 100, TimeSpan.FromSeconds(60));
 
             _buffer.Start();
             _buffer.Push(1);

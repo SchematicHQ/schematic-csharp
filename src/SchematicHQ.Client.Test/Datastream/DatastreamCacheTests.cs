@@ -1,4 +1,5 @@
 using System.Text.Json;
+using Microsoft.Extensions.Logging.Testing;
 using System.Text.Json.Serialization;
 using NUnit.Framework;
 using SchematicHQ.Client.Datastream;
@@ -10,7 +11,7 @@ namespace SchematicHQ.Client.Test.Datastream
     public class DatastreamCacheTests
     {
         private MockWebSocket _mockWebSocket;
-        private MockSchematicLogger _mockLogger;
+        private FakeLogger _mockLogger;
         private DatastreamClient _client;
 
         [SetUp]

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 using SchematicHQ.Client.Datastream;
 using SchematicHQ.Client.Cache;
 using SchematicHQ.Client.Core;
@@ -17,7 +18,7 @@ public partial class Schematic
 {
     private readonly ClientOptions _options;
     private readonly IEventBuffer<CreateEventRequestBody> _eventBuffer;
-    private readonly ISchematicLogger _logger;
+    private readonly ILogger _logger;
     private readonly List<ICacheProvider<CheckFlagWithEntitlementResponse?>> _flagCheckCacheProviders;
     private readonly bool _offline;
     private readonly DatastreamClientAdapter? _datastreamClient;
@@ -50,7 +51,7 @@ public partial class Schematic
         _options = options ?? new ClientOptions();
         _offline = _options.Offline;
         _replicatorMode = _options.ReplicatorMode;
-        _logger = _options.Logger ?? new ConsoleLogger();
+        _logger = _options.LoggerFactory.CreateLogger("SchematicHQ.Client");
 
         // Validate replicator mode configuration
         if (_replicatorMode && string.IsNullOrWhiteSpace(_options.ReplicatorHealthUrl))
@@ -147,7 +148,7 @@ public partial class Schematic
                 case CacheProviderType.Redis:
                     if (_options.CacheConfiguration.RedisConfig == null)
                     {
-                        _logger.Warn("Redis configuration not provided, falling back to local cache");
+                        _logger.LogWarning("Redis configuration not provided, falling back to local cache");
                         _flagCheckCacheProviders.Add(new LocalCache<CheckFlagWithEntitlementResponse?>());
                     }
                     else
@@ -229,7 +230,7 @@ public partial class Schematic
             else
             {
                 _datastreamConnected = false;
-                _logger.Info("Replicator mode enabled - datastream client created for cache access only");
+                _logger.LogInformation("Replicator mode enabled - datastream client created for cache access only");
             }
         }
     }
@@ -255,17 +256,17 @@ public partial class Schematic
                             _datastreamConnected = isConnected;
                             if (isConnected)
                             {
-                                _logger.Info("Datastream connection established");
+                                _logger.LogInformation("Datastream connection established");
                             }
                             else
                             {
-                                _logger.Warn("Datastream connection lost, falling back to API");
+                                _logger.LogWarning("Datastream connection lost, falling back to API");
                             }
                         }
                     }
                     catch (Exception ex)
                     {
-                        _logger.Error($"Error monitoring datastream connection: {ex.Message}");
+                        _logger.LogError(ex, "Error monitoring datastream connection");
                     }
 
                     await Task.Delay(TimeSpan.FromSeconds(5));
@@ -273,7 +274,7 @@ public partial class Schematic
             }
             catch (Exception ex)
             {
-                _logger.Error($"Connection monitoring stopped: {ex.Message}");
+                _logger.LogError(ex, "Connection monitoring stopped");
             }
         });
     }
@@ -345,7 +346,7 @@ public partial class Schematic
             catch (Exception ex)
             {
                 // Fall back to API if datastream fails
-                _logger.Debug("Datastream flag check failed ({0}), falling back to API", ex.Message);
+                _logger.LogDebug(ex, "Datastream flag check failed, falling back to API");
                 return await CheckFlagWithEntitlementApi(flagKey, company, user);
             }
         }
@@ -404,7 +405,7 @@ public partial class Schematic
                 }
                 catch (Exception cacheEx)
                 {
-                    _logger.Error("Error caching flag result: {0}", cacheEx.Message);
+                    _logger.LogError(cacheEx, "Error caching flag result");
                 }
             }
 
@@ -412,7 +413,7 @@ public partial class Schematic
         }
         catch (Exception ex)
         {
-            _logger.Error("Error checking flag via API: {0}", ex.Message);
+            _logger.LogError(ex, "Error checking flag via API");
             return new CheckFlagWithEntitlementResponse
             {
                 FlagKey = flagKey,
@@ -431,7 +432,7 @@ public partial class Schematic
 
         if (_offline)
         {
-            _logger.Debug("Offline mode enabled, returning default flag values");
+            _logger.LogDebug("Offline mode enabled, returning default flag values");
             if (keyList == null || keyList.Count == 0)
             {
                 return new List<CheckFlagResponseData>();
@@ -463,7 +464,7 @@ public partial class Schematic
 
             if (keyList == null || keyList.Count == 0)
             {
-                _logger.Debug("No specific flag keys provided, calling CheckFlags API");
+                _logger.LogDebug("No specific flag keys provided, calling CheckFlags API");
                 var apiResp = await API.Features.CheckFlagsAsync(requestBody);
                 return apiResp.Data.Flags.ToList();
             }
@@ -496,11 +497,11 @@ public partial class Schematic
 
             if (allCached)
             {
-                _logger.Debug("All {0} flags found in cache", keyList.Count);
+                _logger.LogDebug("All {KeyCount} flags found in cache", keyList.Count);
                 return keyList.Select(k => cachedResults[k]).ToList();
             }
 
-            _logger.Debug("Cache miss for some flags, calling API for all {0} keys", keyList.Count);
+            _logger.LogDebug("Cache miss for some flags, calling API for all {KeyCount} keys", keyList.Count);
             var freshResp = await API.Features.CheckFlagsAsync(requestBody);
             var apiResults = freshResp.Data.Flags.ToDictionary(f => f.Flag);
 
@@ -516,7 +517,7 @@ public partial class Schematic
                     }
                     catch (Exception cacheEx)
                     {
-                        _logger.Error("Error caching flag result: {0}", cacheEx.Message);
+                        _logger.LogError(cacheEx, "Error caching flag result");
                     }
                 }
             }
@@ -537,7 +538,7 @@ public partial class Schematic
         }
         catch (Exception ex)
         {
-            _logger.Error("Error checking flags: {0}", ex.Message);
+            _logger.LogError(ex, "Error checking flags");
             return (keyList ?? new List<string>()).Select(k => new CheckFlagResponseData
             {
                 Flag = k,
@@ -569,12 +570,12 @@ public partial class Schematic
                     UserId = result.UserId
                 });
             }
-            _logger.Debug("All {0} flags evaluated via Datastream", keys.Count);
+            _logger.LogDebug("All {KeyCount} flags evaluated via Datastream", keys.Count);
             return results;
         }
         catch (Exception ex)
         {
-            _logger.Debug("Datastream CheckFlags failed ({0}), falling back to API", ex.Message);
+            _logger.LogDebug(ex, "Datastream CheckFlags failed, falling back to API");
             return null;
         }
     }
@@ -629,12 +630,12 @@ public partial class Schematic
                 var success = _datastreamClient.UpdateCompanyMetrics(eventBody);
                 if (!success)
                 {
-                    _logger.Error("Failed to update company metrics: datastream update failed");
+                    _logger.LogError("Failed to update company metrics: datastream update failed");
                 }
             }
             catch (Exception ex)
             {
-                _logger.Error("Failed to update company metrics: {0}", ex.Message);
+                _logger.LogError(ex, "Failed to update company metrics");
             }
         }
     }
@@ -657,7 +658,7 @@ public partial class Schematic
         }
         catch (Exception ex)
         {
-            _logger.Error("Error enqueueing event: {0}", ex.Message);
+            _logger.LogError(ex, "Error enqueueing event");
         }
     }
 
@@ -688,13 +689,13 @@ private void SubmitFlagCheckEvent(
             ReqUser = user
         };
 
-        _logger.Debug("Submitting flag check event: {0}", flagKey);
+        _logger.LogDebug("Submitting flag check event: {FlagKey}", flagKey);
 
         EnqueueEvent(EventType.FlagCheck, eventBody);
     }
     catch (Exception ex)
     {
-        _logger.Error("Error submitting flag check event: {0}", ex.Message);
+        _logger.LogError(ex, "Error submitting flag check event");
     }
 }
 
