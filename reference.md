@@ -5648,6 +5648,7 @@ await client.Entitlements.ListFeatureUsageAsync(
         CompanyId = "company_id",
         FeatureIds = new List<string>() { "feature_ids" },
         IncludeUsageAggregation = true,
+        ManagedBy = BillingProviderType.Orb,
         Q = "q",
         WithoutNegativeEntitlements = true,
         Limit = 1000000,
@@ -5748,6 +5749,7 @@ await client.Entitlements.CountFeatureUsageAsync(
         CompanyId = "company_id",
         FeatureIds = new List<string>() { "feature_ids" },
         IncludeUsageAggregation = true,
+        ManagedBy = BillingProviderType.Orb,
         Q = "q",
         WithoutNegativeEntitlements = true,
         Limit = 1000000,
@@ -7472,6 +7474,160 @@ await client.Components.PreviewComponentDataAsync(
 </dl>
 </details>
 
+## planbundle
+<details><summary><code>client.Planbundle.<a href="/src/SchematicHQ.Client/Planbundle/PlanbundleClient.cs">CreateCustomPlanBundleAsync</a>(CreateCustomPlanBundleRequestBody { ... }) -> WithRawResponseTask&lt;CreateCustomPlanBundleResponse&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Planbundle.CreateCustomPlanBundleAsync(
+    new CreateCustomPlanBundleRequestBody
+    {
+        Entitlements = new List<PlanBundleEntitlementRequestBody>()
+        {
+            new PlanBundleEntitlementRequestBody { Action = PlanBundleAction.Create },
+        },
+    }
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `CreateCustomPlanBundleRequestBody` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Planbundle.<a href="/src/SchematicHQ.Client/Planbundle/PlanbundleClient.cs">CreatePlanBundleAsync</a>(CreatePlanBundleRequestBody { ... }) -> WithRawResponseTask&lt;CreatePlanBundleResponse&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Planbundle.CreatePlanBundleAsync(
+    new CreatePlanBundleRequestBody
+    {
+        Entitlements = new List<PlanBundleEntitlementRequestBody>()
+        {
+            new PlanBundleEntitlementRequestBody { Action = PlanBundleAction.Create },
+        },
+    }
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `CreatePlanBundleRequestBody` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Planbundle.<a href="/src/SchematicHQ.Client/Planbundle/PlanbundleClient.cs">UpdatePlanBundleAsync</a>(planBundleId, UpdatePlanBundleRequestBody { ... }) -> WithRawResponseTask&lt;UpdatePlanBundleResponse&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Planbundle.UpdatePlanBundleAsync(
+    "plan_bundle_id",
+    new UpdatePlanBundleRequestBody
+    {
+        Entitlements = new List<PlanBundleEntitlementRequestBody>()
+        {
+            new PlanBundleEntitlementRequestBody { Action = PlanBundleAction.Create },
+        },
+    }
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**planBundleId:** `string` — plan_bundle_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `UpdatePlanBundleRequestBody` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 ## dataexports
 <details><summary><code>client.Dataexports.<a href="/src/SchematicHQ.Client/Dataexports/DataexportsClient.cs">CreateDataExportAsync</a>(CreateDataExportRequestBody { ... }) -> WithRawResponseTask&lt;CreateDataExportResponse&gt;</code></summary>
 <dl>
@@ -9130,112 +9286,6 @@ await client.Integrationsapi.UninstallIntegrationAsync("integration_id");
 <dd>
 
 **integrationId:** `string` — integration_id
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-## planbundle
-<details><summary><code>client.Planbundle.<a href="/src/SchematicHQ.Client/Planbundle/PlanbundleClient.cs">CreatePlanBundleAsync</a>(CreatePlanBundleRequestBody { ... }) -> WithRawResponseTask&lt;CreatePlanBundleResponse&gt;</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```csharp
-await client.Planbundle.CreatePlanBundleAsync(
-    new CreatePlanBundleRequestBody
-    {
-        Entitlements = new List<PlanBundleEntitlementRequestBody>()
-        {
-            new PlanBundleEntitlementRequestBody { Action = PlanBundleAction.Create },
-        },
-    }
-);
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**request:** `CreatePlanBundleRequestBody` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Planbundle.<a href="/src/SchematicHQ.Client/Planbundle/PlanbundleClient.cs">UpdatePlanBundleAsync</a>(planBundleId, UpdatePlanBundleRequestBody { ... }) -> WithRawResponseTask&lt;UpdatePlanBundleResponse&gt;</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```csharp
-await client.Planbundle.UpdatePlanBundleAsync(
-    "plan_bundle_id",
-    new UpdatePlanBundleRequestBody
-    {
-        Entitlements = new List<PlanBundleEntitlementRequestBody>()
-        {
-            new PlanBundleEntitlementRequestBody { Action = PlanBundleAction.Create },
-        },
-    }
-);
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**planBundleId:** `string` — plan_bundle_id
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request:** `UpdatePlanBundleRequestBody` 
     
 </dd>
 </dl>

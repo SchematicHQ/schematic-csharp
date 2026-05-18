@@ -42,12 +42,12 @@ public partial class SchematicApi : ISchematicApi
         Entitlements = new EntitlementsClient(_client);
         Plans = new PlansClient(_client);
         Components = new ComponentsClient(_client);
+        Planbundle = new PlanbundleClient(_client);
         Dataexports = new DataexportsClient(_client);
         Events = new EventsClient(_client);
         Features = new FeaturesClient(_client);
         Insights = new InsightsClient(_client);
         Integrationsapi = new IntegrationsapiClient(_client);
-        Planbundle = new PlanbundleClient(_client);
         Plangroups = new PlangroupsClient(_client);
         Planmigrations = new PlanmigrationsClient(_client);
         Componentspublic = new ComponentspublicClient(_client);
@@ -72,6 +72,8 @@ public partial class SchematicApi : ISchematicApi
 
     public IComponentsClient Components { get; }
 
+    public IPlanbundleClient Planbundle { get; }
+
     public IDataexportsClient Dataexports { get; }
 
     public IEventsClient Events { get; }
@@ -81,8 +83,6 @@ public partial class SchematicApi : ISchematicApi
     public IInsightsClient Insights { get; }
 
     public IIntegrationsapiClient Integrationsapi { get; }
-
-    public IPlanbundleClient Planbundle { get; }
 
     public IPlangroupsClient Plangroups { get; }
 

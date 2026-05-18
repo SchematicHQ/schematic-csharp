@@ -17,6 +17,9 @@ public record EntitlementCurrencyPricesResponseData : IJsonOnDeserialized
     [JsonPropertyName("monthly_price")]
     public BillingPriceView? MonthlyPrice { get; set; }
 
+    [JsonPropertyName("quarterly_price")]
+    public BillingPriceView? QuarterlyPrice { get; set; }
+
     [JsonPropertyName("yearly_price")]
     public BillingPriceView? YearlyPrice { get; set; }
 

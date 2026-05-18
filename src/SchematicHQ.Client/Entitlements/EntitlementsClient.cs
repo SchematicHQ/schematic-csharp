@@ -792,11 +792,12 @@ public partial class EntitlementsClient : IEntitlementsClient
         CancellationToken cancellationToken = default
     )
     {
-        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 8)
+        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 9)
             .Add("company_id", request.CompanyId)
             .Add("company_keys", request.CompanyKeys)
             .Add("feature_ids", request.FeatureIds)
             .Add("include_usage_aggregation", request.IncludeUsageAggregation)
+            .Add("managed_by", request.ManagedBy)
             .Add("q", request.Q)
             .Add("without_negative_entitlements", request.WithoutNegativeEntitlements)
             .Add("limit", request.Limit)
@@ -989,11 +990,12 @@ public partial class EntitlementsClient : IEntitlementsClient
         CancellationToken cancellationToken = default
     )
     {
-        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 8)
+        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 9)
             .Add("company_id", request.CompanyId)
             .Add("company_keys", request.CompanyKeys)
             .Add("feature_ids", request.FeatureIds)
             .Add("include_usage_aggregation", request.IncludeUsageAggregation)
+            .Add("managed_by", request.ManagedBy)
             .Add("q", request.Q)
             .Add("without_negative_entitlements", request.WithoutNegativeEntitlements)
             .Add("limit", request.Limit)
@@ -2307,6 +2309,7 @@ public partial class EntitlementsClient : IEntitlementsClient
     ///         CompanyId = "company_id",
     ///         FeatureIds = new List&lt;string&gt;() { "feature_ids" },
     ///         IncludeUsageAggregation = true,
+    ///         ManagedBy = BillingProviderType.Orb,
     ///         Q = "q",
     ///         WithoutNegativeEntitlements = true,
     ///         Limit = 1000000,
@@ -2355,6 +2358,7 @@ public partial class EntitlementsClient : IEntitlementsClient
     ///         CompanyId = "company_id",
     ///         FeatureIds = new List&lt;string&gt;() { "feature_ids" },
     ///         IncludeUsageAggregation = true,
+    ///         ManagedBy = BillingProviderType.Orb,
     ///         Q = "q",
     ///         WithoutNegativeEntitlements = true,
     ///         Limit = 1000000,

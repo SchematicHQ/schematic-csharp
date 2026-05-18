@@ -42,6 +42,9 @@ public record PlanEntitlementResponseData : IJsonOnDeserialized
     [JsonPropertyName("metered_monthly_price")]
     public BillingPriceView? MeteredMonthlyPrice { get; set; }
 
+    [JsonPropertyName("metered_quarterly_price")]
+    public BillingPriceView? MeteredQuarterlyPrice { get; set; }
+
     [JsonPropertyName("metered_yearly_price")]
     public BillingPriceView? MeteredYearlyPrice { get; set; }
 

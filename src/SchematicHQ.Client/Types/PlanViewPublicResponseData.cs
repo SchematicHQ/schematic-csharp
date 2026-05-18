@@ -105,6 +105,9 @@ public record PlanViewPublicResponseData : IJsonOnDeserialized
     [JsonPropertyName("plan_type")]
     public required PlanType PlanType { get; set; }
 
+    [JsonPropertyName("quarterly_price")]
+    public BillingPriceResponseData? QuarterlyPrice { get; set; }
+
     [JsonPropertyName("trial_days")]
     public long? TrialDays { get; set; }
 
