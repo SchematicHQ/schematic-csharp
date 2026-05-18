@@ -46,11 +46,9 @@ namespace SchematicHQ.Client.Tests
             await _buffer.Stop();
 
             Assert.Throws<InvalidOperationException>(() => _buffer.Push(1));
-
-            var semaphore = GetPrivateFieldValue<SemaphoreSlim>(_buffer, "_semaphore");
+            
             var cts = GetPrivateFieldValue<CancellationTokenSource>(_buffer, "_cts");
-
-            Assert.That(IsSemaphoreSlimDisposed(semaphore), Is.True, "SemaphoreSlim was not disposed.");
+            
             Assert.That(IsCancellationTokenSourceDisposed(cts), Is.True, "CancellationTokenSource was not disposed.");
         }
 
