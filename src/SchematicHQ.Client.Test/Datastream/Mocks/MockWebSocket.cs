@@ -16,6 +16,8 @@ namespace SchematicHQ.Client.Test.Datastream.Mocks
         public WebSocketCloseStatus? CloseStatus => null;
         public string? CloseStatusDescription => null;
         public IWebSocketOptions Options => _options;
+
+        public string GetRequestHeader(string name) => _options.GetRequestHeader(name);
         
         // Dictionary to store cached company JSON strings by company ID for testing
         public Dictionary<string, string> CachedCompanies { get; } = new();
