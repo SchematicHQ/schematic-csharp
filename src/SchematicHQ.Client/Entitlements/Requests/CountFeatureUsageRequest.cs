@@ -21,6 +21,12 @@ public record CountFeatureUsageRequest
     [JsonIgnore]
     public bool? IncludeUsageAggregation { get; set; }
 
+    /// <summary>
+    /// Filter for features managed by a billing provider, or by Schematic (no billing provider)
+    /// </summary>
+    [JsonIgnore]
+    public BillingProviderType? ManagedBy { get; set; }
+
     [JsonIgnore]
     public string? Q { get; set; }
 

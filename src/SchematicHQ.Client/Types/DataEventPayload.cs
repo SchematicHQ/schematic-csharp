@@ -14,6 +14,9 @@ public record DataEventPayload : IJsonOnDeserialized
     [JsonPropertyName("api_key")]
     public required string ApiKey { get; set; }
 
+    [JsonPropertyName("backfill")]
+    public bool? Backfill { get; set; }
+
     [JsonPropertyName("body")]
     public Dictionary<string, object?>? Body { get; set; }
 
@@ -22,6 +25,9 @@ public record DataEventPayload : IJsonOnDeserialized
 
     [JsonPropertyName("sent_at")]
     public DateTime? SentAt { get; set; }
+
+    [JsonPropertyName("trusted_client_clock")]
+    public bool? TrustedClientClock { get; set; }
 
     [JsonPropertyName("type")]
     public required EventType Type { get; set; }

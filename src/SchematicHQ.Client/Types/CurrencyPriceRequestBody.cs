@@ -23,6 +23,15 @@ public record CurrencyPriceRequestBody : IJsonOnDeserialized
     [JsonPropertyName("monthly_unit_price_decimal")]
     public string? MonthlyUnitPriceDecimal { get; set; }
 
+    [JsonPropertyName("quarterly_price_tiers")]
+    public IEnumerable<CreatePriceTierRequestBody>? QuarterlyPriceTiers { get; set; }
+
+    [JsonPropertyName("quarterly_unit_price")]
+    public long? QuarterlyUnitPrice { get; set; }
+
+    [JsonPropertyName("quarterly_unit_price_decimal")]
+    public string? QuarterlyUnitPriceDecimal { get; set; }
+
     [JsonPropertyName("yearly_price_tiers")]
     public IEnumerable<CreatePriceTierRequestBody>? YearlyPriceTiers { get; set; }
 

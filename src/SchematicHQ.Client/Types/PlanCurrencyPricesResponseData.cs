@@ -20,6 +20,9 @@ public record PlanCurrencyPricesResponseData : IJsonOnDeserialized
     [JsonPropertyName("one_time_price")]
     public BillingPriceResponseData? OneTimePrice { get; set; }
 
+    [JsonPropertyName("quarterly_price")]
+    public BillingPriceResponseData? QuarterlyPrice { get; set; }
+
     [JsonPropertyName("yearly_price")]
     public BillingPriceResponseData? YearlyPrice { get; set; }
 

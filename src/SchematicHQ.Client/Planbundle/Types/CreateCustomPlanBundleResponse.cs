@@ -5,26 +5,20 @@ using SchematicHQ.Client.Core;
 namespace SchematicHQ.Client;
 
 [Serializable]
-public record PlanCurrencyPriceRequestBody : IJsonOnDeserialized
+public record CreateCustomPlanBundleResponse : IJsonOnDeserialized
 {
     [JsonExtensionData]
     private readonly IDictionary<string, JsonElement> _extensionData =
         new Dictionary<string, JsonElement>();
 
-    [JsonPropertyName("currency")]
-    public required string Currency { get; set; }
+    [JsonPropertyName("data")]
+    public required PlanBundleResponseData Data { get; set; }
 
-    [JsonPropertyName("monthly_price")]
-    public long? MonthlyPrice { get; set; }
-
-    [JsonPropertyName("one_time_price")]
-    public long? OneTimePrice { get; set; }
-
-    [JsonPropertyName("quarterly_price")]
-    public long? QuarterlyPrice { get; set; }
-
-    [JsonPropertyName("yearly_price")]
-    public long? YearlyPrice { get; set; }
+    /// <summary>
+    /// Input parameters
+    /// </summary>
+    [JsonPropertyName("params")]
+    public Dictionary<string, object?> Params { get; set; } = new Dictionary<string, object?>();
 
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();

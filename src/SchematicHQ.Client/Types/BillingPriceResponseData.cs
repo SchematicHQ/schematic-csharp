@@ -23,6 +23,9 @@ public record BillingPriceResponseData : IJsonOnDeserialized
     [JsonPropertyName("interval")]
     public required BillingProductPriceInterval Interval { get; set; }
 
+    [JsonPropertyName("interval_count")]
+    public required long IntervalCount { get; set; }
+
     [JsonPropertyName("nickname")]
     public string? Nickname { get; set; }
 

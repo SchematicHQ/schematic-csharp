@@ -10,12 +10,12 @@ public partial interface ISchematicApi
     public IEntitlementsClient Entitlements { get; }
     public IPlansClient Plans { get; }
     public IComponentsClient Components { get; }
+    public IPlanbundleClient Planbundle { get; }
     public IDataexportsClient Dataexports { get; }
     public IEventsClient Events { get; }
     public IFeaturesClient Features { get; }
     public IInsightsClient Insights { get; }
     public IIntegrationsapiClient Integrationsapi { get; }
-    public IPlanbundleClient Planbundle { get; }
     public IPlangroupsClient Plangroups { get; }
     public IPlanmigrationsClient Planmigrations { get; }
     public IComponentspublicClient Componentspublic { get; }
