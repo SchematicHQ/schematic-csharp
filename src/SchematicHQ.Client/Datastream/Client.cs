@@ -67,6 +67,14 @@ namespace SchematicHQ.Client.Datastream
     // Authentication error close code
     private const int AuthErrorCloseCode = 4001;
 
+    // Handshake headers attached to the WebSocket connection so the backend can
+    // distinguish direct-SDK connections from the schematic-datastream-replicator
+    // and correlate either to a specific release. Mode is always "direct" here —
+    // replicator mode in this SDK doesn't open a WebSocket at all.
+    private const string ClientName = "schematic-csharp";
+    private const string DatastreamModeDirect = "direct";
+    private const string UnknownVersion = "unknown";
+
     private static readonly Random _jitterRandom = new Random();
     private static readonly object _randomLock = new object();
 
@@ -207,6 +215,9 @@ namespace SchematicHQ.Client.Datastream
             _readCancellationSource = new CancellationTokenSource();
           }
           _webSocket.Options.SetRequestHeader("X-Schematic-Api-Key", _apiKey);
+          _webSocket.Options.SetRequestHeader("X-Schematic-Datastream-Mode", DatastreamModeDirect);
+          _webSocket.Options.SetRequestHeader("X-Schematic-Client", ClientName);
+          _webSocket.Options.SetRequestHeader("X-Schematic-Client-Version", string.IsNullOrEmpty(SchematicHQ.Client.Version.Current) ? UnknownVersion : SchematicHQ.Client.Version.Current);
           _webSocket.Options.KeepAliveInterval = PingPeriod; // Set keep-alive interval
 
           try

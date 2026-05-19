@@ -164,6 +164,26 @@ namespace SchematicHQ.Client.Test.Datastream
         }
 
         [Test]
+        public void Connect_SetsHandshakeIdentificationHeaders()
+        {
+            var localTestSetup = DatastreamClientTestFactory.CreateClientWithMocks(apiKey: "test_key");
+            var localClient = localTestSetup.Client;
+            var mockWebSocket = localTestSetup.WebSocket;
+
+            localClient.Start();
+            Task.Delay(100).Wait();
+
+            Assert.That(mockWebSocket.GetRequestHeader("X-Schematic-Api-Key"), Is.EqualTo("test_key"));
+            Assert.That(mockWebSocket.GetRequestHeader("X-Schematic-Datastream-Mode"), Is.EqualTo("direct"));
+            Assert.That(mockWebSocket.GetRequestHeader("X-Schematic-Client"), Is.EqualTo("schematic-csharp"));
+            var versionHeader = mockWebSocket.GetRequestHeader("X-Schematic-Client-Version");
+            Assert.That(versionHeader, Is.Not.Empty);
+            Assert.That(versionHeader, Is.Not.EqualTo("unknown"));
+
+            localClient.Dispose();
+        }
+
+        [Test]
         public void DisposingClient_ReportsDisconnected()
         {
             // Create a list to track connection state changes
