@@ -1,21 +1,17 @@
 using System.Collections.Concurrent;
-using System.Threading;
-using System.Threading.Tasks;
+using System.Diagnostics.CodeAnalysis;
 
-#nullable enable
+namespace SchematicHQ.Client.Cache;
 
-namespace SchematicHQ.Client.Cache
-{
     /// <summary>
     /// A thread-safe in-memory cache implementation with LRU eviction policy and background expiration
     /// </summary>
-    /// <typeparam name="T">Type of values stored in the cache</typeparam>
-    public class LocalCache<T> : ICacheProvider<T>, IDisposable
+    public class LocalCache : ICacheProvider, IDisposable
     {
         public const int DEFAULT_CACHE_CAPACITY = 1000;
         public static readonly TimeSpan DEFAULT_CACHE_TTL = TimeSpan.FromMilliseconds(5000); // 5000 milliseconds
         public static readonly TimeSpan UNLIMITED_TTL = TimeSpan.MaxValue;
-        private readonly ConcurrentDictionary<string, CachedItem<T>> _cache;
+        private readonly ConcurrentDictionary<string, CachedItem> _cache;
         private readonly LinkedList<string> _lruList;
         private readonly object _lock = new object();
         private readonly int _maxItems;
@@ -32,7 +28,7 @@ namespace SchematicHQ.Client.Cache
         /// <param name="enableBackgroundCleanup">Whether to enable the background cleanup timer (defaults to true)</param>
         public LocalCache(int maxItems = DEFAULT_CACHE_CAPACITY, TimeSpan? ttl = null, bool enableBackgroundCleanup = true)
         {
-            _cache = new ConcurrentDictionary<string, CachedItem<T>>();
+            _cache = new ConcurrentDictionary<string, CachedItem>();
             _lruList = new LinkedList<string>();
             _maxItems = maxItems;
             _ttl = ttl ?? DEFAULT_CACHE_TTL;
@@ -58,55 +54,18 @@ namespace SchematicHQ.Client.Cache
         }
 
         /// <inheritdoc/>
-        public T? Get(string key)
+        public ValueTask<T?> Get<T>(string key, CancellationToken token = default) where T: notnull
         {
-            if (_maxItems == 0 || _disposed)
-                return default;
-
-            if (!_cache.TryGetValue(key, out var item))
-                return default;
-
-            if (item.Expiration != DateTime.MaxValue && DateTime.UtcNow > item.Expiration)
-            {
-                // This item has expired, remove it
-                Remove(key);
-                return default;
-            }
-
-            // Update LRU position - We need to check if the node is still part of the list
-            // because it might have been removed by another thread
-            lock (_lock)
-            {
-                try
-                {
-                    // Check if node is still in the list before removing it
-                    if (item.Node.List != null)
-                    {
-                        _lruList.Remove(item.Node);
-                        _lruList.AddFirst(item.Node);
-                    }
-                    else
-                    {
-                        // Node was already removed, add a new one
-                        item.Node = _lruList.AddFirst(key);
-                    }
-                }
-                catch (InvalidOperationException)
-                {
-                    // If the node was already removed by another thread,
-                    // create a new node for the key
-                    item.Node = _lruList.AddFirst(key);
-                }
-            }
-
-            return item.Value;
+            return TryGet<T>(key, out var value)
+                ? ValueTask.FromResult<T?>(value)
+                : ValueTask.FromResult(default(T));
         }
 
         /// <inheritdoc/>
-        public void Set(string key, T val, TimeSpan? ttlOverride = null)
+        public ValueTask Set<T>(string key, T val, TimeSpan? ttlOverride = null, CancellationToken token = default) where T: notnull
         {
             if (_maxItems == 0 || _disposed)
-                return;
+                return ValueTask.CompletedTask;
 
             var ttl = ttlOverride ?? _ttl;
             // Determine expiration time - use MaxValue for unlimited TTL
@@ -119,7 +78,7 @@ namespace SchematicHQ.Client.Cache
                 if (_cache.TryGetValue(key, out var existingItem))
                 {
                     // Update the existing item
-                    existingItem.Value = val;
+                    existingItem.Value = val!;
                     existingItem.Expiration = expiration;
                     
                     try
@@ -158,7 +117,7 @@ namespace SchematicHQ.Client.Cache
 
                     // Add new item to cache and LRU list
                     var node = _lruList.AddFirst(key);
-                    var newItem = new CachedItem<T>(val, expiration, node);
+                    var newItem = new CachedItem(val!, expiration, node);
                     if (!_cache.TryAdd(key, newItem))
                     {
                         // If we couldn't add it, clean up the linked list node
@@ -166,32 +125,98 @@ namespace SchematicHQ.Client.Cache
                     }
                 }
             }
+
+            return ValueTask.CompletedTask;
         }
 
-        /// <inheritdoc/>
-        public bool Delete(string key)
+        private bool TryGet<T>(string key, [NotNullWhen(true)] out T? value) where T : notnull
         {
+            value = default;
+
             if (_maxItems == 0 || _disposed)
                 return false;
 
-            Remove(key);
-            return true;
+            if (!_cache.TryGetValue(key, out var item))
+                return false;
+
+            if (item.Expiration != DateTime.MaxValue && DateTime.UtcNow > item.Expiration)
+            {
+                Remove(key);
+                return false;
+            }
+
+            // Update LRU position - same logic as Get<T>
+            lock (_lock)
+            {
+                try
+                {
+                    if (item.Node.List != null)
+                    {
+                        _lruList.Remove(item.Node);
+                        _lruList.AddFirst(item.Node);
+                    }
+                    else
+                    {
+                        item.Node = _lruList.AddFirst(key);
+                    }
+                }
+                catch (InvalidOperationException)
+                {
+                    item.Node = _lruList.AddFirst(key);
+                }
+            }
+
+            if (item.Value is T typedValue)
+            {
+                value = typedValue;
+                return true;
+            }
+
+            return false; // Type mismatch — treat as a miss
         }
 
         /// <inheritdoc/>
-        public void DeleteMissing(IEnumerable<string> keys, string? scanPattern = null)
+        public async ValueTask<T> GetOrSet<T>(string key, Func<CancellationToken, Task<T>> factory, TimeSpan? ttlOverride = null, CancellationToken token = default) where T: notnull
+        {
+            if (TryGet<T>(key, out var existing))
+                return existing;
+
+            // Cache miss — invoke the factory and store the result
+            var value = await factory(token);
+            await Set(key, value, ttlOverride, token);
+            return value;
+        }
+
+        /// <inheritdoc/>
+        public ValueTask<bool> Delete(string key, CancellationToken token = default)
         {
             if (_maxItems == 0 || _disposed)
-                return;
+                return ValueTask.FromResult(false);
+
+            Remove(key);
+            return ValueTask.FromResult(true);
+        }
+
+        /// <inheritdoc/>
+        public ValueTask DeleteMissing(IEnumerable<string> keys, string? scanPattern = null)
+        {
+            if (_maxItems == 0 || _disposed)
+                return ValueTask.CompletedTask;
 
             var keysSet = new HashSet<string>(keys);
             var keysToRemove = new List<string>();
 
-            // Collect keys to remove (those not in the provided list)
+            // Collect keys to remove (those not in the provided list, optionally filtered by pattern)
             lock (_lock)
             {
                 foreach (var cacheKey in _cache.Keys)
                 {
+                    // If a scanPattern is provided, only consider keys that match it
+                    if (scanPattern != null && !GlobMatch(cacheKey, scanPattern))
+                    {
+                        continue;
+                    }
+
                     if (!keysSet.Contains(cacheKey))
                     {
                         keysToRemove.Add(cacheKey);
@@ -204,6 +229,50 @@ namespace SchematicHQ.Client.Cache
             {
                 Remove(keyToRemove);
             }
+
+            return ValueTask.CompletedTask;
+        }
+
+        /// <summary>
+        /// Simple glob pattern matcher supporting '*' (match any sequence) and '?' (match single char).
+        /// This mirrors the Redis SCAN pattern semantics used by RedisCache.
+        /// </summary>
+        private static bool GlobMatch(string input, string pattern)
+        {
+            int i = 0, p = 0;
+            int starI = -1, starP = -1;
+
+            while (i < input.Length)
+            {
+                if (p < pattern.Length && (pattern[p] == '?' || pattern[p] == input[i]))
+                {
+                    i++;
+                    p++;
+                }
+                else if (p < pattern.Length && pattern[p] == '*')
+                {
+                    starI = i;
+                    starP = p;
+                    p++;
+                }
+                else if (starP >= 0)
+                {
+                    p = starP + 1;
+                    starI++;
+                    i = starI;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+
+            while (p < pattern.Length && pattern[p] == '*')
+            {
+                p++;
+            }
+
+            return p == pattern.Length;
         }
 
         private void Remove(string key)
@@ -307,13 +376,13 @@ namespace SchematicHQ.Client.Cache
         /// <summary>
         /// Represents a cached item with its value, expiration time, and position in the LRU list
         /// </summary>
-        private class CachedItem<TValue>
+        private class CachedItem
         {
-            public TValue Value { get; set; }
+            public object Value { get; set; }
             public DateTime Expiration { get; set; }
             public LinkedListNode<string> Node { get; set; }
 
-            public CachedItem(TValue value, DateTime expiration, LinkedListNode<string> node)
+            public CachedItem(object value, DateTime expiration, LinkedListNode<string> node)
             {
                 Value = value;
                 Expiration = expiration;
@@ -321,4 +390,4 @@ namespace SchematicHQ.Client.Cache
             }
         }
     }
-}
+

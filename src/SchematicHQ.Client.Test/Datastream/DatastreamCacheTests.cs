@@ -37,7 +37,7 @@ namespace SchematicHQ.Client.Test.Datastream
         }
 
         [Test]
-        public void ExpiredCache_RequestsResourcesAgain()
+        public async Task ExpiredCache_RequestsResourcesAgain()
         {
             var companyKey = "company-123";
 
@@ -52,19 +52,19 @@ namespace SchematicHQ.Client.Test.Datastream
             PopulateTwoLayerCompanyCache(company);
 
             var keys = new Dictionary<string, string> { { "id", companyKey } };
-            var cachedCompany = _client.GetCompanyFromCache(keys);
+            var cachedCompany = await _client.GetCompanyFromCache(keys);
             Assert.That(cachedCompany, Is.Not.Null, "Company should be in cache after Set");
             Assert.That(cachedCompany.Id, Is.EqualTo(company.Id), "Cached company should match what we stored");
 
             // Wait for cache to expire
-            Thread.Sleep(200); // Cache TTL is 100ms in Setup
+            await Task.Delay(200); // Cache TTL is 100ms in Setup
 
-            var expiredCompany = _client.GetCompanyFromCache(keys);
+            var expiredCompany = await _client.GetCompanyFromCache(keys);
             Assert.That(expiredCompany, Is.Null, "Company should not be in cache after TTL expiration");
         }
 
         [Test]
-        public void TwoStepCompanyLookup_CacheAndRetrieve()
+        public async Task TwoStepCompanyLookup_CacheAndRetrieve()
         {
             var company = new RulesengineCompany
             {
@@ -77,7 +77,7 @@ namespace SchematicHQ.Client.Test.Datastream
             PopulateTwoLayerCompanyCache(company);
 
             var keys = new Dictionary<string, string> { { "org_id", "org-789" } };
-            var cached = _client.GetCompanyFromCache(keys);
+            var cached = await _client.GetCompanyFromCache(keys);
 
             Assert.That(cached, Is.Not.Null, "Company should be retrievable via two-step lookup");
             Assert.That(cached!.Id, Is.EqualTo("comp_456"));
@@ -85,7 +85,7 @@ namespace SchematicHQ.Client.Test.Datastream
         }
 
         [Test]
-        public void TwoStepUserLookup_CacheAndRetrieve()
+        public async Task TwoStepUserLookup_CacheAndRetrieve()
         {
             var user = new RulesengineUser
             {
@@ -98,7 +98,7 @@ namespace SchematicHQ.Client.Test.Datastream
             PopulateTwoLayerUserCache(user);
 
             var keys = new Dictionary<string, string> { { "email", "test@example.com" } };
-            var cached = _client.GetUserFromCache(keys);
+            var cached = await _client.GetUserFromCache(keys);
 
             Assert.That(cached, Is.Not.Null, "User should be retrievable via two-step lookup");
             Assert.That(cached!.Id, Is.EqualTo("user_456"));
@@ -106,7 +106,7 @@ namespace SchematicHQ.Client.Test.Datastream
         }
 
         [Test]
-        public void MultipleResourceKeys_ResolveToSameObject()
+        public async Task MultipleResourceKeys_ResolveToSameObject()
         {
             var company = new RulesengineCompany
             {
@@ -123,9 +123,9 @@ namespace SchematicHQ.Client.Test.Datastream
 
             PopulateTwoLayerCompanyCache(company);
 
-            var byOrg = _client.GetCompanyFromCache(new Dictionary<string, string> { { "org_id", "org-111" } });
-            var bySlug = _client.GetCompanyFromCache(new Dictionary<string, string> { { "slug", "acme-corp" } });
-            var byExternal = _client.GetCompanyFromCache(new Dictionary<string, string> { { "external_id", "ext-222" } });
+            var byOrg = await _client.GetCompanyFromCache(new Dictionary<string, string> { { "org_id", "org-111" } });
+            var bySlug = await _client.GetCompanyFromCache(new Dictionary<string, string> { { "slug", "acme-corp" } });
+            var byExternal = await _client.GetCompanyFromCache(new Dictionary<string, string> { { "external_id", "ext-222" } });
 
             Assert.That(byOrg, Is.Not.Null);
             Assert.That(bySlug, Is.Not.Null);
@@ -156,7 +156,7 @@ namespace SchematicHQ.Client.Test.Datastream
 
             // Verify company is in cache before deletion
             var keys = new Dictionary<string, string> { { "org_id", "org-to-delete" } };
-            var cachedBefore = _client.GetCompanyFromCache(keys);
+            var cachedBefore = await _client.GetCompanyFromCache(keys);
             Assert.That(cachedBefore, Is.Not.Null, "Company should be in cache before delete message");
             Assert.That(cachedBefore!.Id, Is.EqualTo("comp_del_1"));
 
@@ -183,7 +183,7 @@ namespace SchematicHQ.Client.Test.Datastream
             await Task.Delay(200);
 
             // Assert - Company should be removed from cache
-            var cachedAfter = _client.GetCompanyFromCache(keys);
+            var cachedAfter = await _client.GetCompanyFromCache(keys);
             Assert.That(cachedAfter, Is.Null, "Company should be removed from cache after delete message");
         }
 
@@ -203,7 +203,7 @@ namespace SchematicHQ.Client.Test.Datastream
 
             // Verify user is in cache before deletion
             var keys = new Dictionary<string, string> { { "email", "delete-me@example.com" } };
-            var cachedBefore = _client.GetUserFromCache(keys);
+            var cachedBefore = await _client.GetUserFromCache(keys);
             Assert.That(cachedBefore, Is.Not.Null, "User should be in cache before delete message");
             Assert.That(cachedBefore!.Id, Is.EqualTo("user_del_1"));
 
@@ -230,7 +230,7 @@ namespace SchematicHQ.Client.Test.Datastream
             await Task.Delay(200);
 
             // Assert - User should be removed from cache
-            var cachedAfter = _client.GetUserFromCache(keys);
+            var cachedAfter = await _client.GetUserFromCache(keys);
             Assert.That(cachedAfter, Is.Null, "User should be removed from cache after delete message");
         }
 
@@ -243,7 +243,7 @@ namespace SchematicHQ.Client.Test.Datastream
         // messages beyond what the Full message tests already cover.
 
         [Test]
-        public void CompanyUpdate_RemovedKey_OrphanedLookupEntryIsDeleted()
+        public async Task CompanyUpdate_RemovedKey_OrphanedLookupEntryIsDeleted()
         {
             var original = new RulesengineCompany
             {
@@ -260,8 +260,8 @@ namespace SchematicHQ.Client.Test.Datastream
             PopulateTwoLayerCompanyCache(original);
 
             // Verify both keys resolve
-            Assert.That(_client.GetCompanyFromCache(new Dictionary<string, string> { { "org_id", "org-100" } }), Is.Not.Null);
-            Assert.That(_client.GetCompanyFromCache(new Dictionary<string, string> { { "email", "old@example.com" } }), Is.Not.Null);
+            Assert.That(await _client.GetCompanyFromCache(new Dictionary<string, string> { { "org_id", "org-100" } }), Is.Not.Null);
+            Assert.That(await _client.GetCompanyFromCache(new Dictionary<string, string> { { "email", "old@example.com" } }), Is.Not.Null);
 
             // Update with "email" key removed
             var updated = new RulesengineCompany
@@ -278,17 +278,17 @@ namespace SchematicHQ.Client.Test.Datastream
             PopulateTwoLayerCompanyCache(updated);
 
             // org_id should still resolve
-            var cached = _client.GetCompanyFromCache(new Dictionary<string, string> { { "org_id", "org-100" } });
+            var cached = await _client.GetCompanyFromCache(new Dictionary<string, string> { { "org_id", "org-100" } });
             Assert.That(cached, Is.Not.Null);
             Assert.That(cached!.Id, Is.EqualTo("comp_orphan_1"));
 
             // email key should no longer resolve
-            var orphaned = _client.GetCompanyFromCache(new Dictionary<string, string> { { "email", "old@example.com" } });
+            var orphaned = await _client.GetCompanyFromCache(new Dictionary<string, string> { { "email", "old@example.com" } });
             Assert.That(orphaned, Is.Null, "Removed company key should not remain in lookup cache");
         }
 
         [Test]
-        public void UserUpdate_RemovedKey_OrphanedLookupEntryIsDeleted()
+        public async Task UserUpdate_RemovedKey_OrphanedLookupEntryIsDeleted()
         {
             var original = new RulesengineUser
             {
@@ -305,8 +305,8 @@ namespace SchematicHQ.Client.Test.Datastream
             PopulateTwoLayerUserCache(original);
 
             // Verify both keys resolve
-            Assert.That(_client.GetUserFromCache(new Dictionary<string, string> { { "user_id", "u-100" } }), Is.Not.Null);
-            Assert.That(_client.GetUserFromCache(new Dictionary<string, string> { { "email", "old@example.com" } }), Is.Not.Null);
+            Assert.That(await _client.GetUserFromCache(new Dictionary<string, string> { { "user_id", "u-100" } }), Is.Not.Null);
+            Assert.That(await _client.GetUserFromCache(new Dictionary<string, string> { { "email", "old@example.com" } }), Is.Not.Null);
 
             // Update with "email" key removed
             var updated = new RulesengineUser
@@ -323,17 +323,17 @@ namespace SchematicHQ.Client.Test.Datastream
             PopulateTwoLayerUserCache(updated);
 
             // user_id should still resolve
-            var cached = _client.GetUserFromCache(new Dictionary<string, string> { { "user_id", "u-100" } });
+            var cached = await _client.GetUserFromCache(new Dictionary<string, string> { { "user_id", "u-100" } });
             Assert.That(cached, Is.Not.Null);
             Assert.That(cached!.Id, Is.EqualTo("user_orphan_1"));
 
             // email key should no longer resolve
-            var orphaned = _client.GetUserFromCache(new Dictionary<string, string> { { "email", "old@example.com" } });
+            var orphaned = await _client.GetUserFromCache(new Dictionary<string, string> { { "email", "old@example.com" } });
             Assert.That(orphaned, Is.Null, "Removed user key should not remain in lookup cache");
         }
 
         [Test]
-        public void CompanyUpdate_ChangedKeyValue_OldValueIsRemoved()
+        public async Task CompanyUpdate_ChangedKeyValue_OldValueIsRemoved()
         {
             var original = new RulesengineCompany
             {
@@ -365,17 +365,17 @@ namespace SchematicHQ.Client.Test.Datastream
             PopulateTwoLayerCompanyCache(updated);
 
             // New email should resolve
-            var cached = _client.GetCompanyFromCache(new Dictionary<string, string> { { "email", "new@example.com" } });
+            var cached = await _client.GetCompanyFromCache(new Dictionary<string, string> { { "email", "new@example.com" } });
             Assert.That(cached, Is.Not.Null);
             Assert.That(cached!.Id, Is.EqualTo("comp_changed_1"));
 
             // Old email should no longer resolve
-            var stale = _client.GetCompanyFromCache(new Dictionary<string, string> { { "email", "old@example.com" } });
+            var stale = await _client.GetCompanyFromCache(new Dictionary<string, string> { { "email", "old@example.com" } });
             Assert.That(stale, Is.Null, "Old key value should not remain in lookup cache after value change");
         }
 
         [Test]
-        public void UserUpdate_ChangedKeyValue_OldValueIsRemoved()
+        public async Task UserUpdate_ChangedKeyValue_OldValueIsRemoved()
         {
             var original = new RulesengineUser
             {
@@ -407,17 +407,17 @@ namespace SchematicHQ.Client.Test.Datastream
             PopulateTwoLayerUserCache(updated);
 
             // New email should resolve
-            var cached = _client.GetUserFromCache(new Dictionary<string, string> { { "email", "new@example.com" } });
+            var cached = await _client.GetUserFromCache(new Dictionary<string, string> { { "email", "new@example.com" } });
             Assert.That(cached, Is.Not.Null);
             Assert.That(cached!.Id, Is.EqualTo("user_changed_1"));
 
             // Old email should no longer resolve
-            var stale = _client.GetUserFromCache(new Dictionary<string, string> { { "email", "old@example.com" } });
+            var stale = await _client.GetUserFromCache(new Dictionary<string, string> { { "email", "old@example.com" } });
             Assert.That(stale, Is.Null, "Old key value should not remain in lookup cache after value change");
         }
 
         [Test]
-        public void CompanyUpdate_UnchangedKeys_StillResolvable()
+        public async Task CompanyUpdate_UnchangedKeys_StillResolvable()
         {
             var original = new RulesengineCompany
             {
@@ -449,8 +449,8 @@ namespace SchematicHQ.Client.Test.Datastream
             PopulateTwoLayerCompanyCache(updated);
 
             // Both keys should still resolve to the updated entity
-            var byOrg = _client.GetCompanyFromCache(new Dictionary<string, string> { { "org_id", "org-100" } });
-            var bySlug = _client.GetCompanyFromCache(new Dictionary<string, string> { { "slug", "acme" } });
+            var byOrg = await _client.GetCompanyFromCache(new Dictionary<string, string> { { "org_id", "org-100" } });
+            var bySlug = await _client.GetCompanyFromCache(new Dictionary<string, string> { { "slug", "acme" } });
 
             Assert.That(byOrg, Is.Not.Null);
             Assert.That(bySlug, Is.Not.Null);

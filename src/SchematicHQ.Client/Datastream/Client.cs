@@ -27,11 +27,8 @@ namespace SchematicHQ.Client.Datastream
     private CancellationTokenSource _readCancellationSource = new CancellationTokenSource();
 
     // Cache providers
-    private readonly ICacheProvider<RulesengineFlag> _flagsCache;
-    private readonly ICacheProvider<RulesengineCompany> _companyCache;
-    private readonly ICacheProvider<RulesengineUser> _userCache;
-    private readonly ICacheProvider<string> _companyLookupCache;
-    private readonly ICacheProvider<string> _userLookupCache;
+    private readonly ICacheProvider _cacheProvider;
+    private readonly ICacheProvider _flagsCache;
     
     // Cache version provider (optional, for replicator mode)
     private readonly Func<string?>? _cacheVersionProvider;
@@ -83,6 +80,7 @@ namespace SchematicHQ.Client.Datastream
         ISchematicLogger logger,
         string apiKey,
         Action<bool> connectionStateCallback,
+        ICacheProvider cacheProvider,
         TimeSpan? cacheTtl = null,
         IWebSocketClient? webSocket = null,
         DatastreamOptions? options = null,
@@ -112,43 +110,10 @@ namespace SchematicHQ.Client.Datastream
       {
         flagTTL = _cacheTtl;
       }
-
-      // Company and User caches use the configured provider type
-      if (options.CacheProviderType == DatastreamCacheProviderType.Redis &&
-          options.RedisConfig != null)
-      {
-        try
-        {
-          _logger.Info("Initializing Redis cache for Datastream company, user and flag data");
-          // We need to use the Cache namespace version, but cast it to the Client namespace interface
-          _companyCache = new RedisCache<RulesengineCompany>(options.RedisConfig);
-          _userCache = new RedisCache<RulesengineUser>(options.RedisConfig);
-          _companyLookupCache = new RedisCache<string>(options.RedisConfig);
-          _userLookupCache = new RedisCache<string>(options.RedisConfig);
-          var flagConfig = options.RedisConfig;
-          flagConfig.CacheTTL = flagTTL; // Set TTL for flags cache
-          _flagsCache = new RedisCache<RulesengineFlag>(flagConfig);
-        }
-        catch (Exception ex)
-        {
-          _logger.Error("Failed to initialize Redis cache: {0}. Falling back to local cache.", ex.Message);
-          _companyCache = new LocalCache<RulesengineCompany>(options.LocalCacheCapacity, _cacheTtl);
-          _userCache = new LocalCache<RulesengineUser>(options.LocalCacheCapacity, _cacheTtl);
-          _companyLookupCache = new LocalCache<string>(options.LocalCacheCapacity, _cacheTtl);
-          _userLookupCache = new LocalCache<string>(options.LocalCacheCapacity, _cacheTtl);
-          _flagsCache = new LocalCache<RulesengineFlag>(options.LocalCacheCapacity, flagTTL);
-        }
-      }
-      else
-      {
-        // Use local cache (default)
-        _companyCache = new LocalCache<RulesengineCompany>(options.LocalCacheCapacity, _cacheTtl);
-        _userCache = new LocalCache<RulesengineUser>(options.LocalCacheCapacity, _cacheTtl);
-        _companyLookupCache = new LocalCache<string>(options.LocalCacheCapacity, _cacheTtl);
-        _userLookupCache = new LocalCache<string>(options.LocalCacheCapacity, _cacheTtl);
-        _flagsCache = new LocalCache<RulesengineFlag>(options.LocalCacheCapacity, flagTTL);
-      }
-
+      
+      _cacheProvider = new DatastreamCacheDecorator(cacheProvider, _cacheTtl);
+      _flagsCache = new DatastreamCacheDecorator(cacheProvider, flagTTL);
+      
       _webSocket = webSocket ?? new StandardWebSocketClient();
     }
 
@@ -391,7 +356,7 @@ namespace SchematicHQ.Client.Datastream
               try
               {
                 var response = JsonSerializer.Deserialize<DataStreamResponse>(message);
-                HandleMessageResponse(response);
+                await HandleMessageResponse(response);
               }
               catch (Exception ex)
               {
@@ -434,7 +399,7 @@ namespace SchematicHQ.Client.Datastream
       }
     }
 
-    private void HandleMessageResponse(DataStreamResponse? message)
+    private async Task HandleMessageResponse(DataStreamResponse? message)
     {
       if (message == null)
       {
@@ -450,16 +415,16 @@ namespace SchematicHQ.Client.Datastream
       switch (message.EntityType)
       {
         case EntityType.Company:
-          HandleCompanyMessage(message);
+          await HandleCompanyMessage(message);
           break;
         case EntityType.Flags:
-          HandleFlagsMessage(message);
+          await HandleFlagsMessage(message);
           break;
         case EntityType.Flag:
-          HandleFlagMessage(message);
+          await HandleFlagMessage(message);
           break;
         case EntityType.User:
-          HandleUserMessage(message);
+          await HandleUserMessage(message);
           break;
         default:
           _logger.Error("Received unknown entity type: {0}", message.EntityType);
@@ -467,7 +432,7 @@ namespace SchematicHQ.Client.Datastream
       }
     }
 
-    private void HandleFlagsMessage(DataStreamResponse response)
+    private async Task HandleFlagsMessage(DataStreamResponse response)
     {
       try
       {
@@ -502,11 +467,11 @@ namespace SchematicHQ.Client.Datastream
             continue;
           }
           var cacheKey = FlagCacheKey(flag.Key);
-          _flagsCache.Set(cacheKey, flag);
+          await _flagsCache.Set(cacheKey, flag);
           cacheKeys.Add(cacheKey);
         }
 
-        _flagsCache.DeleteMissing(cacheKeys, $"{CacheKeyPrefix}:{CacheKeyPrefixFlags}:*");
+        await _flagsCache.DeleteMissing(cacheKeys, $"{CacheKeyPrefix}:{CacheKeyPrefixFlags}:*");
 
         lock (_pendingRequestsLock)
         {
@@ -522,7 +487,7 @@ namespace SchematicHQ.Client.Datastream
       }
     }
 
-    private void HandleFlagMessage(DataStreamResponse response)
+    private async Task HandleFlagMessage(DataStreamResponse response)
     {
       try
       {
@@ -567,7 +532,7 @@ namespace SchematicHQ.Client.Datastream
           if (!string.IsNullOrEmpty(flagKey))
           {
             var deleteCacheKey = FlagCacheKey(flagKey);
-            _flagsCache.Delete(deleteCacheKey);
+            await _flagsCache.Delete(deleteCacheKey);
             _logger.Debug("Deleted single flag from cache: {0}", flagKey);
           }
           else
@@ -594,7 +559,7 @@ namespace SchematicHQ.Client.Datastream
         }
 
         var cacheKey = FlagCacheKey(flag.Key);
-        _flagsCache.Set(cacheKey, flag);
+        await _flagsCache.Set(cacheKey, flag);
         _logger.Debug("Cached single flag: {0}", flag.Key);
 
         // Note: Unlike bulk flags processing, we do NOT call DeleteMissing for single flag updates
@@ -633,7 +598,7 @@ namespace SchematicHQ.Client.Datastream
       }
     }
     
-    private async void HandleCompanyMessage(DataStreamResponse response)
+    private async Task HandleCompanyMessage(DataStreamResponse response)
     {
       try
       {
@@ -666,7 +631,7 @@ namespace SchematicHQ.Client.Datastream
           var id = response.EntityId;
 
           var existingIdKey = CompanyIdCacheKey(id);
-          var existing = _companyCache.Get(existingIdKey);
+          var existing = await _cacheProvider.Get<RulesengineCompany>(existingIdKey);
           if (existing == null)
           {
             _logger.Warn("Cache miss for partial company '{0}', skipping", id);
@@ -712,18 +677,18 @@ namespace SchematicHQ.Client.Datastream
             {
               // Handle deletion: remove ID key from data cache and resource keys from lookup cache
               var idKey = CompanyIdCacheKey(company.Id);
-              _companyCache.Delete(idKey);
+              await _cacheProvider.Delete(idKey);
               foreach (var key in company.Keys)
               {
                 var resourceKey = ResourceKeyToCacheKey<RulesengineCompany>(CacheKeyPrefixCompany, key.Key, key.Value);
-                _companyLookupCache.Delete(resourceKey);
+                await _cacheProvider.Delete(resourceKey);
               }
 
               return;
             }
 
             // Update cache using two-layer approach (inside the lock to prevent race conditions)
-            CacheCompanyForKeys(company);
+            await CacheCompanyForKeys(company);
 
             // Notify pending requests
             NotifyPendingRequests(company, company.Keys, CacheKeyPrefixCompany, _pendingCompanyRequests);
@@ -745,7 +710,7 @@ namespace SchematicHQ.Client.Datastream
       }
     }
 
-    private void HandleUserMessage(DataStreamResponse response)
+    private async Task HandleUserMessage(DataStreamResponse response)
     {
       try
       {
@@ -777,7 +742,7 @@ namespace SchematicHQ.Client.Datastream
           var id = response.EntityId;
 
           var existingIdKey = UserIdCacheKey(id);
-          var existing = _userCache.Get(existingIdKey);
+          var existing = await _cacheProvider.Get<RulesengineUser>(existingIdKey);
           if (existing == null)
           {
             _logger.Warn("Cache miss for partial user '{0}', skipping", id);
@@ -809,18 +774,18 @@ namespace SchematicHQ.Client.Datastream
         {
           // Handle deletion: remove ID key from data cache and resource keys from lookup cache
           var idKey = UserIdCacheKey(user.Id);
-          _userCache.Delete(idKey);
+          await _cacheProvider.Delete(idKey);
           foreach (var key in user.Keys)
           {
             var resourceKey = ResourceKeyToCacheKey<RulesengineUser>(CacheKeyPrefixUser, key.Key, key.Value);
-            _userLookupCache.Delete(resourceKey);
+            await _cacheProvider.Delete(resourceKey);
             _logger.Debug("Deleted user from cache with key: {0}", resourceKey);
           }
           return;
         }
 
         // Update cache using two-layer approach
-        CacheUserForKeys(user);
+        await CacheUserForKeys(user);
 
         // Notify pending requests
         NotifyPendingRequests(user, user.Keys, CacheKeyPrefixUser, _pendingUserRequests);
@@ -1074,22 +1039,22 @@ namespace SchematicHQ.Client.Datastream
       }
     }
 
-    internal RulesengineFlag? GetFlag(string key)
+    internal async ValueTask<RulesengineFlag?> GetFlag(string key)
     {
-      var flag = _flagsCache.Get(FlagCacheKey(key));
+      var flag = await _flagsCache.Get<RulesengineFlag>(FlagCacheKey(key));
       return flag;
     }
 
-    internal RulesengineCompany? GetCompanyFromCache(Dictionary<string, string> keys)
+    internal async ValueTask<RulesengineCompany?> GetCompanyFromCache(Dictionary<string, string> keys)
     {
       foreach (var key in keys)
       {
         var resourceKey = ResourceKeyToCacheKey<RulesengineCompany>(CacheKeyPrefixCompany, key.Key, key.Value);
-        var companyId = _companyLookupCache.Get(resourceKey);
+        var companyId = await _cacheProvider.Get<string>(resourceKey);
         if (companyId != null)
         {
           var idKey = CompanyIdCacheKey(companyId);
-          var company = _companyCache.Get(idKey);
+          var company = await _cacheProvider.Get<RulesengineCompany>(idKey);
           if (company != null)
           {
             return company;
@@ -1099,16 +1064,16 @@ namespace SchematicHQ.Client.Datastream
       return null;
     }
 
-    internal RulesengineUser? GetUserFromCache(Dictionary<string, string> keys)
+    internal async ValueTask<RulesengineUser?> GetUserFromCache(Dictionary<string, string> keys)
     {
       foreach (var key in keys)
       {
         var resourceKey = ResourceKeyToCacheKey<RulesengineUser>(CacheKeyPrefixUser, key.Key, key.Value);
-        var userId = _userLookupCache.Get(resourceKey);
+        var userId = await _cacheProvider.Get<string>(resourceKey);
         if (userId != null)
         {
           var idKey = UserIdCacheKey(userId);
-          var user = _userCache.Get(idKey);
+          var user = await _cacheProvider.Get<RulesengineUser>(idKey);
           if (user != null)
           {
             return user;
@@ -1155,7 +1120,7 @@ namespace SchematicHQ.Client.Datastream
             try
             {
                 // Get company from cache (inside the lock to ensure consistency)
-                var company = GetCompanyFromCache(eventBody.Company);
+                var company = await GetCompanyFromCache(eventBody.Company);
                 if (company == null)
                 {
                     return false;
@@ -1190,7 +1155,7 @@ namespace SchematicHQ.Client.Datastream
                 // Cache the updated company using two-layer approach (still inside the lock)
                 try
                 {
-                    CacheCompanyForKeys(companyCopy);
+                    await CacheCompanyForKeys(companyCopy);
                 }
                 catch (Exception ex)
                 {
@@ -1354,12 +1319,12 @@ namespace SchematicHQ.Client.Datastream
       return $"{CacheKeyPrefix}:{CacheKeyPrefixUser}:{schemaVersion}:{id}";
     }
 
-    private void CacheCompanyForKeys(RulesengineCompany company)
+    private async Task CacheCompanyForKeys(RulesengineCompany company)
     {
       var idKey = CompanyIdCacheKey(company.Id);
 
       // Remove lookup cache entries for keys that no longer exist
-      var existing = _companyCache.Get(idKey);
+      var existing = await _cacheProvider.Get<RulesengineCompany>(idKey);
       if (existing != null)
       {
         foreach (var oldKey in existing.Keys)
@@ -1368,28 +1333,28 @@ namespace SchematicHQ.Client.Datastream
               !string.Equals(company.Keys[oldKey.Key], oldKey.Value, StringComparison.OrdinalIgnoreCase))
           {
             var staleResourceKey = ResourceKeyToCacheKey<RulesengineCompany>(CacheKeyPrefixCompany, oldKey.Key, oldKey.Value);
-            _companyLookupCache.Delete(staleResourceKey);
+            await _cacheProvider.Delete(staleResourceKey);
           }
         }
       }
 
       // Store the company object at the ID-based key
-      _companyCache.Set(idKey, company);
+      await _cacheProvider.Set(idKey, company);
 
       // Store the company ID string at each resource key
       foreach (var key in company.Keys)
       {
         var resourceKey = ResourceKeyToCacheKey<RulesengineCompany>(CacheKeyPrefixCompany, key.Key, key.Value);
-        _companyLookupCache.Set(resourceKey, company.Id);
+        await _cacheProvider.Set(resourceKey, company.Id);
       }
     }
 
-    private void CacheUserForKeys(RulesengineUser user)
+    private async Task CacheUserForKeys(RulesengineUser user)
     {
       var idKey = UserIdCacheKey(user.Id);
 
       // Remove lookup cache entries for keys that no longer exist
-      var existing = _userCache.Get(idKey);
+      var existing = await _cacheProvider.Get<RulesengineUser>(idKey);
       if (existing != null)
       {
         foreach (var oldKey in existing.Keys)
@@ -1398,19 +1363,19 @@ namespace SchematicHQ.Client.Datastream
               !string.Equals(user.Keys[oldKey.Key], oldKey.Value, StringComparison.OrdinalIgnoreCase))
           {
             var staleResourceKey = ResourceKeyToCacheKey<RulesengineUser>(CacheKeyPrefixUser, oldKey.Key, oldKey.Value);
-            _userLookupCache.Delete(staleResourceKey);
+            await _cacheProvider.Delete(staleResourceKey);
           }
         }
       }
 
       // Store the user object at the ID-based key
-      _userCache.Set(idKey, user);
+      await _cacheProvider.Set(idKey, user);
 
       // Store the user ID string at each resource key
       foreach (var key in user.Keys)
       {
         var resourceKey = ResourceKeyToCacheKey<RulesengineUser>(CacheKeyPrefixUser, key.Key, key.Value);
-        _userLookupCache.Set(resourceKey, user.Id);
+        await _cacheProvider.Set(resourceKey, user.Id);
       }
     }
 
@@ -1540,9 +1505,9 @@ namespace SchematicHQ.Client.Datastream
         _readCancellationSource.Dispose();
 
         // Dispose lookup caches if they implement IDisposable
-        if (_companyLookupCache is IDisposable companyLookupDisposable)
+        if (_cacheProvider is IDisposable companyLookupDisposable)
           companyLookupDisposable.Dispose();
-        if (_userLookupCache is IDisposable userLookupDisposable)
+        if (_flagsCache is IDisposable userLookupDisposable)
           userLookupDisposable.Dispose();
 
         // Clean up company locks

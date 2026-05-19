@@ -3,6 +3,7 @@ using System.Net.WebSockets;
 using System.Threading;
 using System.Threading.Tasks;
 using NUnit.Framework;
+using SchematicHQ.Client.Cache;
 using SchematicHQ.Client.Datastream;
 using SchematicHQ.Client.Test.Datastream.Mocks;
 
@@ -24,17 +25,18 @@ namespace SchematicHQ.Client.Test.Datastream
             _mockLogger = new MockSchematicLogger();
             _mockWebSocket = new MockWebSocket();
             _mockWebSocket.SetState(WebSocketState.Open);
+            var cacheProvider = new LocalCache();
             
             // Create client factory with ability to capture the connection callback
             DatastreamClient CreateClientWithCallback(Action<bool> callback)
             {
                 _connectionCallback = callback;
-                return new DatastreamClient("wss://test.example.com", _mockLogger, "test-api-key", callback, null, _mockWebSocket);
+                return new DatastreamClient("wss://test.example.com", _mockLogger, "test-api-key", callback, cacheProvider, null, _mockWebSocket);
             }
             
             // Use reflection to set private constructor parameters
             var options = new DatastreamOptions { CacheTTL = TimeSpan.FromMinutes(10) };
-            _adapter = new DatastreamClientAdapter("wss://test.example.com", _mockLogger, "test-api-key", options);
+            _adapter = new DatastreamClientAdapter("wss://test.example.com", _mockLogger, "test-api-key", cacheProvider, options);
             
             // Replace the internal client with our mocked version that captures the callback
             var clientField = typeof(DatastreamClientAdapter).GetField("_client", 
@@ -206,7 +208,7 @@ namespace SchematicHQ.Client.Test.Datastream
             // Set up a flag in the cache directly
             var flagsCacheField = client!.GetType().GetField("_flagsCache", 
                 System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-            var flagsCache = flagsCacheField!.GetValue(client);
+            var flagsCache = (ICacheProvider)flagsCacheField!.GetValue(client)!;
             
             // Create a test flag
             var flag = new RulesengineFlag
@@ -224,14 +226,9 @@ namespace SchematicHQ.Client.Test.Datastream
             var cacheKey = flagCacheKeyMethod!.Invoke(client, new object[] { "test-flag" }) as string;
             
             // Set the flag in cache
-            var setMethod = flagsCache!.GetType().GetMethod("Set");
-            Assert.That(setMethod, Is.Not.Null, "Cache Set method not found");
-            setMethod!.Invoke(flagsCache, new object[] { cacheKey!, flag, Type.Missing });
-            
+            await flagsCache.Set(cacheKey!, flag);
+            var cachedFlag = await flagsCache.Get<RulesengineFlag>(cacheKey);
             // Verify flag is in cache
-            var flagCheck = client.GetType().GetMethod("GetFlag", 
-                System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-            var cachedFlag = flagCheck!.Invoke(client, new object[] { "test-flag" });
             Assert.That(cachedFlag, Is.Not.Null, "Flag should be in cache for test");
             
             var request = new CheckFlagRequestBody
