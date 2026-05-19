@@ -18,6 +18,9 @@ public record CreateBillingPriceRequestBody
     [JsonPropertyName("interval")]
     public required string Interval { get; set; }
 
+    [JsonPropertyName("interval_count")]
+    public long? IntervalCount { get; set; }
+
     [JsonPropertyName("is_active")]
     public required bool IsActive { get; set; }
 

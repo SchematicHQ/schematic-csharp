@@ -60,6 +60,18 @@ public record CreatePlanEntitlementRequestBody
     [JsonPropertyName("price_tiers")]
     public IEnumerable<CreatePriceTierRequestBody>? PriceTiers { get; set; }
 
+    [JsonPropertyName("quarterly_metered_price_id")]
+    public string? QuarterlyMeteredPriceId { get; set; }
+
+    [JsonPropertyName("quarterly_price_tiers")]
+    public IEnumerable<CreatePriceTierRequestBody>? QuarterlyPriceTiers { get; set; }
+
+    [JsonPropertyName("quarterly_unit_price")]
+    public long? QuarterlyUnitPrice { get; set; }
+
+    [JsonPropertyName("quarterly_unit_price_decimal")]
+    public string? QuarterlyUnitPriceDecimal { get; set; }
+
     [JsonPropertyName("soft_limit")]
     public long? SoftLimit { get; set; }
 

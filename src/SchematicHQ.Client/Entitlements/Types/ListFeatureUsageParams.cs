@@ -36,6 +36,12 @@ public record ListFeatureUsageParams : IJsonOnDeserialized
     public long? Limit { get; set; }
 
     /// <summary>
+    /// Filter for features managed by a billing provider, or by Schematic (no billing provider)
+    /// </summary>
+    [JsonPropertyName("managed_by")]
+    public BillingProviderType? ManagedBy { get; set; }
+
+    /// <summary>
     /// Page offset (default 0)
     /// </summary>
     [JsonPropertyName("offset")]

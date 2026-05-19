@@ -38,6 +38,12 @@ public record UpsertBillingProductRequestBody : IJsonOnDeserialized
     [JsonPropertyName("one_time_price_id")]
     public string? OneTimePriceId { get; set; }
 
+    [JsonPropertyName("quarterly_price")]
+    public long? QuarterlyPrice { get; set; }
+
+    [JsonPropertyName("quarterly_price_id")]
+    public string? QuarterlyPriceId { get; set; }
+
     [JsonPropertyName("trial_days")]
     public long? TrialDays { get; set; }
 

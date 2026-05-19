@@ -12,6 +12,12 @@ public record CreateEventRequestBody : IJsonOnDeserialized
     private readonly IDictionary<string, JsonElement> _extensionData =
         new Dictionary<string, JsonElement>();
 
+    /// <summary>
+    /// Requires a secret API key, and trusted_client_clock. Import historical data without affecting billing.
+    /// </summary>
+    [JsonPropertyName("backfill")]
+    public bool? Backfill { get; set; }
+
     [JsonPropertyName("body")]
     public OneOf<EventBodyTrack, EventBodyFlagCheck, EventBodyIdentify>? Body { get; set; }
 
@@ -32,6 +38,12 @@ public record CreateEventRequestBody : IJsonOnDeserialized
     /// </summary>
     [JsonPropertyName("sent_at")]
     public DateTime? SentAt { get; set; }
+
+    /// <summary>
+    /// Requires a secret API key and sent_at. Use sent_at as the effective timestamp.
+    /// </summary>
+    [JsonPropertyName("trusted_client_clock")]
+    public bool? TrustedClientClock { get; set; }
 
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();

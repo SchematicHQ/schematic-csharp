@@ -35,6 +35,9 @@ public record UsageBasedEntitlementResponseData : IJsonOnDeserialized
     [JsonPropertyName("price_behavior")]
     public EntitlementPriceBehavior? PriceBehavior { get; set; }
 
+    [JsonPropertyName("quarterly_usage_based_price")]
+    public BillingPriceView? QuarterlyUsageBasedPrice { get; set; }
+
     [JsonPropertyName("value_bool")]
     public bool? ValueBool { get; set; }
 

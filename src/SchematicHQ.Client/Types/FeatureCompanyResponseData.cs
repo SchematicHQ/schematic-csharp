@@ -164,6 +164,9 @@ public record FeatureCompanyResponseData : IJsonOnDeserialized
     [JsonPropertyName("price_behavior")]
     public EntitlementPriceBehavior? PriceBehavior { get; set; }
 
+    [JsonPropertyName("quarterly_usage_based_price")]
+    public BillingPriceView? QuarterlyUsageBasedPrice { get; set; }
+
     /// <summary>
     /// The soft limit for the feature usage. Available only for overage price behavior
     /// </summary>
