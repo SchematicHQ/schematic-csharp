@@ -27,6 +27,10 @@ namespace SchematicHQ.Client.Datastream
 
             var merged = DeepCopyCompany(existing);
 
+            Dictionary<string, double>? partialBalances = null;
+            bool metricsUpdated = false;
+            bool entitlementsInPartial = false;
+
             foreach (var prop in root.EnumerateObject())
             {
                 var raw = prop.Value.GetRawText();
@@ -56,9 +60,11 @@ namespace SchematicHQ.Client.Datastream
                         {
                             merged.CreditBalances[kvp.Key] = kvp.Value;
                         }
+                        partialBalances = cb;
                         break;
                     case "entitlements":
                         merged.Entitlements = JsonSerializer.Deserialize<List<RulesengineFeatureEntitlement>>(raw, JsonOptions)!;
+                        entitlementsInPartial = true;
                         break;
                     case "keys":
                         var keys = JsonSerializer.Deserialize<Dictionary<string, string>>(raw, JsonOptions)!;
@@ -71,6 +77,7 @@ namespace SchematicHQ.Client.Datastream
                     case "metrics":
                         var incoming = JsonSerializer.Deserialize<List<RulesengineCompanyMetric>>(raw, JsonOptions)!;
                         merged.Metrics = UpsertMetrics(merged.Metrics, incoming);
+                        metricsUpdated = true;
                         break;
                     case "plan_ids":
                         merged.PlanIds = JsonSerializer.Deserialize<List<string>>(raw, JsonOptions)!;
@@ -90,7 +97,72 @@ namespace SchematicHQ.Client.Datastream
                 }
             }
 
+            // Partials don't ship a refreshed entitlements list, so when credit_balances
+            // or metrics change we re-derive entitlement.credit_remaining and usage to
+            // match what the server computes for full company messages. Skip the sync
+            // when the partial itself sent entitlements — that list wins.
+            // See sdk-spec.md → Message Types → Partial.
+            if ((partialBalances != null || metricsUpdated) && !entitlementsInPartial && merged.Entitlements != null)
+            {
+                var entitlementsList = merged.Entitlements as IList<RulesengineFeatureEntitlement> ?? merged.Entitlements.ToList();
+                if (entitlementsList.Count > 0)
+                {
+                    merged.Entitlements = SyncEntitlementDerivedFields(
+                        entitlementsList,
+                        partialBalances,
+                        metricsUpdated ? merged.Metrics : null);
+                }
+            }
+
             return merged;
+        }
+
+        /// <summary>
+        /// Re-derives credit_remaining (from credit_balances) and usage (from metrics)
+        /// on each entitlement. credit_used and credit_total are intentionally left alone:
+        /// they aggregate across a grant ledger the SDK can't see, and grant lifecycle
+        /// events trigger a full company message that refreshes them.
+        /// </summary>
+        private static List<RulesengineFeatureEntitlement> SyncEntitlementDerivedFields(
+            IList<RulesengineFeatureEntitlement> entitlements,
+            Dictionary<string, double>? partialBalances,
+            IEnumerable<RulesengineCompanyMetric>? mergedMetrics)
+        {
+            Dictionary<(string, string, string), long>? metricLookup = null;
+            if (mergedMetrics != null)
+            {
+                metricLookup = new Dictionary<(string, string, string), long>();
+                foreach (var m in mergedMetrics)
+                {
+                    metricLookup[(m.EventSubtype, m.Period.Value, m.MonthReset.Value)] = m.Value;
+                }
+            }
+
+            var result = new List<RulesengineFeatureEntitlement>(entitlements.Count);
+            foreach (var ent in entitlements)
+            {
+                var updated = ent;
+
+                if (partialBalances != null
+                    && !string.IsNullOrEmpty(ent.CreditId)
+                    && partialBalances.TryGetValue(ent.CreditId, out var balance))
+                {
+                    updated = updated with { CreditRemaining = balance };
+                }
+
+                if (metricLookup != null && !string.IsNullOrEmpty(ent.EventName))
+                {
+                    var period = ent.MetricPeriod?.Value ?? RulesengineMetricPeriod.Values.AllTime;
+                    var monthReset = ent.MonthReset?.Value ?? RulesengineMetricPeriodMonthReset.Values.FirstOfMonth;
+                    if (metricLookup.TryGetValue((ent.EventName, period, monthReset), out var usage))
+                    {
+                        updated = updated with { Usage = usage };
+                    }
+                }
+
+                result.Add(updated);
+            }
+            return result;
         }
 
         /// <summary>
