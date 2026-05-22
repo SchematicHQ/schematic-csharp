@@ -597,18 +597,21 @@ public partial class Schematic
         return cacheKey;
     }
 
-    public void Identify(Dictionary<string, string> keys, EventBodyIdentifyCompany? company = null, string? name = null, Dictionary<string, object?>? traits = null)
+    public void Identify(Dictionary<string, string> keys, EventBodyIdentifyCompany? company = null, string? name = null, Dictionary<string, object?>? traits = null, IdentifyOptions? options = null)
     {
-        EnqueueEvent(EventType.Identify, new EventBodyIdentify
-        {
-            Company = company,
-            Keys = keys,
-            Name = name,
-            Traits = traits
-        });
+        EnqueueEvent(
+            EventType.Identify,
+            new EventBodyIdentify
+            {
+                Company = company,
+                Keys = keys,
+                Name = name,
+                Traits = traits
+            },
+            idempotencyKey: options?.IdempotencyKey);
     }
 
-    public void Track(string eventName, Dictionary<string, string>? company = null, Dictionary<string, string>? user = null, Dictionary<string, object?>? traits = null, int? quantity = null)
+    public void Track(string eventName, Dictionary<string, string>? company = null, Dictionary<string, string>? user = null, Dictionary<string, object?>? traits = null, int? quantity = null, TrackOptions? options = null)
     {
         var eventBody = new EventBodyTrack
         {
@@ -618,9 +621,15 @@ public partial class Schematic
             User = user,
             Quantity = quantity
         };
-        
-        EnqueueEvent(EventType.Track, eventBody);
-        
+
+        EnqueueEvent(
+            EventType.Track,
+            eventBody,
+            idempotencyKey: options?.IdempotencyKey,
+            sentAt: options?.SentAt,
+            trustedClientClock: options?.TrustedClientClock,
+            backfill: options?.Backfill);
+
         // Update company metrics in datastream if available and connected
         if (company != null && UseDatastream() && _datastreamClient != null && _datastreamConnected)
         {
@@ -639,7 +648,13 @@ public partial class Schematic
         }
     }
 
-    private void EnqueueEvent(EventType eventType, OneOf<EventBodyTrack, EventBodyFlagCheck, EventBodyIdentify> body)
+    private void EnqueueEvent(
+        EventType eventType,
+        OneOf<EventBodyTrack, EventBodyFlagCheck, EventBodyIdentify> body,
+        string? idempotencyKey = null,
+        DateTime? sentAt = null,
+        bool? trustedClientClock = null,
+        bool? backfill = null)
     {
         if (_offline)
             return;
@@ -650,7 +665,10 @@ public partial class Schematic
             {
                 EventType = eventType,
                 Body = body,
-                SentAt = DateTime.UtcNow
+                SentAt = sentAt ?? DateTime.UtcNow,
+                IdempotencyKey = idempotencyKey,
+                TrustedClientClock = trustedClientClock,
+                Backfill = backfill
             };
 
             _eventBuffer.Push(eventBody);
@@ -769,6 +787,52 @@ private void SubmitFlagCheckEvent(
     {
         return _options.FlagDefaults != null && _options.FlagDefaults.TryGetValue(flagKey, out bool value) ? value : false;
     }
+}
+
+/// <summary>
+/// Optional metadata for a track event. Fields map directly to the
+/// corresponding <see cref="CreateEventRequestBody"/> properties; unset
+/// fields are omitted from the wire payload.
+/// </summary>
+public class TrackOptions
+{
+    /// <summary>
+    /// Client-supplied dedupe key. Duplicate events with the same key
+    /// (scoped to the environment) are dropped server-side for 24 hours.
+    /// </summary>
+    public string? IdempotencyKey { get; set; }
+
+    /// <summary>
+    /// Timestamp the event was sent. Required when <see cref="TrustedClientClock"/>
+    /// is true. When set, overrides the SDK's default of UtcNow at enqueue time.
+    /// </summary>
+    public DateTime? SentAt { get; set; }
+
+    /// <summary>
+    /// When true, use <see cref="SentAt"/> as the effective event timestamp
+    /// instead of server receipt time. Requires a secret API key and SentAt.
+    /// </summary>
+    public bool? TrustedClientClock { get; set; }
+
+    /// <summary>
+    /// Import historical data without affecting billing. Requires a secret
+    /// API key and <see cref="TrustedClientClock"/>.
+    /// </summary>
+    public bool? Backfill { get; set; }
+}
+
+/// <summary>
+/// Optional metadata for an identify event. Fields map directly to the
+/// corresponding <see cref="CreateEventRequestBody"/> properties; unset
+/// fields are omitted from the wire payload.
+/// </summary>
+public class IdentifyOptions
+{
+    /// <summary>
+    /// Client-supplied dedupe key. Duplicate events with the same key
+    /// (scoped to the environment) are dropped server-side for 24 hours.
+    /// </summary>
+    public string? IdempotencyKey { get; set; }
 }
 
 public class OfflineHttpMessageHandler : HttpMessageHandler
