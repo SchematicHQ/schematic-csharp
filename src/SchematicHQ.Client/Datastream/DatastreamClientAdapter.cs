@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 using SchematicHQ.Client;
 using SchematicHQ.Client.Core;
 using System.Net.WebSockets;
+// Disambiguate from SchematicHQ.Client.LogLevel — this file's adapter
+// implements Microsoft.Extensions.Logging.ILogger and needs MS's enum.
+using MsLogLevel = Microsoft.Extensions.Logging.LogLevel;
 
 namespace SchematicHQ.Client.Datastream
 {
@@ -438,29 +441,29 @@ namespace SchematicHQ.Client.Datastream
         return new NoopDisposable();
       }
 
-      public bool IsEnabled(LogLevel logLevel)
+      public bool IsEnabled(MsLogLevel logLevel)
       {
         return true;
       }
 
-      public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception? exception, Func<TState, Exception?, string> formatter)
+      public void Log<TState>(MsLogLevel logLevel, EventId eventId, TState state, Exception? exception, Func<TState, Exception?, string> formatter)
       {
         var message = formatter(state, exception);
 
         switch (logLevel)
         {
-          case LogLevel.Critical:
-          case LogLevel.Error:
+          case MsLogLevel.Critical:
+          case MsLogLevel.Error:
             _logger.Error(message);
             break;
-          case LogLevel.Warning:
+          case MsLogLevel.Warning:
             _logger.Warn(message);
             break;
-          case LogLevel.Information:
+          case MsLogLevel.Information:
             _logger.Info(message);
             break;
-          case LogLevel.Debug:
-          case LogLevel.Trace:
+          case MsLogLevel.Debug:
+          case MsLogLevel.Trace:
             _logger.Debug(message);
             break;
           default:

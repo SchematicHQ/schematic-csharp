@@ -50,7 +50,7 @@ public partial class Schematic
         _options = options ?? new ClientOptions();
         _offline = _options.Offline;
         _replicatorMode = _options.ReplicatorMode;
-        _logger = _options.Logger ?? new ConsoleLogger();
+        _logger = _options.Logger ?? new ConsoleLogger(_options.LogLevel);
 
         // Validate replicator mode configuration
         if (_replicatorMode && string.IsNullOrWhiteSpace(_options.ReplicatorHealthUrl))

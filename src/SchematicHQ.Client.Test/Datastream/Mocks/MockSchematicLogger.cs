@@ -1,7 +1,9 @@
 namespace SchematicHQ.Client.Test.Datastream.Mocks
 {
     /// <summary>
-    /// Mock implementation of ISchematicLogger for testing
+    /// Mock implementation of ISchematicLogger for testing.
+    /// Records every call regardless of level (no filtering) so tests can
+    /// assert that a specific message was attempted at a specific severity.
     /// </summary>
     public class MockSchematicLogger : ISchematicLogger
     {
@@ -31,14 +33,6 @@ namespace SchematicHQ.Client.Test.Datastream.Mocks
         {
             return LogEntries.Any(e => e.Level == level && e.Message.Contains(messageContains));
         }
-    }
-
-    public enum LogLevel
-    {
-        Debug,
-        Info,
-        Warn,
-        Error
     }
 
     public class LogEntry

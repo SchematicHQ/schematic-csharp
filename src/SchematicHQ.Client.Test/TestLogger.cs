@@ -14,7 +14,9 @@ namespace SchematicHQ.Client.Tests
             //redirect console output
             _stringWriter = new StringWriter();
             Console.SetOut(_stringWriter);
-            _logger = new ConsoleLogger();
+            // The shared tests below exercise every level, so use Debug here.
+            // Level-filter behavior is covered by the dedicated tests further down.
+            _logger = new ConsoleLogger(LogLevel.Debug);
         }
 
         [TearDown]
@@ -147,6 +149,93 @@ namespace SchematicHQ.Client.Tests
             var output = _stringWriter.ToString().Trim();
             Assert.That(output.Contains("[DEBUG]"), Is.True);
             Assert.That(output.Contains("Debug 123"), Is.True);
+        }
+
+        [Test]
+        public void DefaultConstructor_DefaultsToWarnLevel()
+        {
+            // Per the SDK spec: a ConsoleLogger with no level argument must
+            // suppress Debug and Info but emit Warn and Error.
+            var logger = new ConsoleLogger();
+
+            logger.Debug("debug-msg");
+            logger.Info("info-msg");
+            logger.Warn("warn-msg");
+            logger.Error("error-msg");
+
+            var output = _stringWriter.ToString();
+            Assert.That(output.Contains("debug-msg"), Is.False);
+            Assert.That(output.Contains("info-msg"), Is.False);
+            Assert.That(output.Contains("warn-msg"), Is.True);
+            Assert.That(output.Contains("error-msg"), Is.True);
+        }
+
+        [Test]
+        public void WarnLevel_FiltersDebugAndInfo()
+        {
+            var logger = new ConsoleLogger(LogLevel.Warn);
+
+            logger.Debug("debug-msg");
+            logger.Info("info-msg");
+            logger.Warn("warn-msg");
+            logger.Error("error-msg");
+
+            var output = _stringWriter.ToString();
+            Assert.That(output.Contains("debug-msg"), Is.False);
+            Assert.That(output.Contains("info-msg"), Is.False);
+            Assert.That(output.Contains("warn-msg"), Is.True);
+            Assert.That(output.Contains("error-msg"), Is.True);
+        }
+
+        [Test]
+        public void InfoLevel_FiltersDebugOnly()
+        {
+            var logger = new ConsoleLogger(LogLevel.Info);
+
+            logger.Debug("debug-msg");
+            logger.Info("info-msg");
+            logger.Warn("warn-msg");
+            logger.Error("error-msg");
+
+            var output = _stringWriter.ToString();
+            Assert.That(output.Contains("debug-msg"), Is.False);
+            Assert.That(output.Contains("info-msg"), Is.True);
+            Assert.That(output.Contains("warn-msg"), Is.True);
+            Assert.That(output.Contains("error-msg"), Is.True);
+        }
+
+        [Test]
+        public void ErrorLevel_OnlyEmitsError()
+        {
+            var logger = new ConsoleLogger(LogLevel.Error);
+
+            logger.Debug("debug-msg");
+            logger.Info("info-msg");
+            logger.Warn("warn-msg");
+            logger.Error("error-msg");
+
+            var output = _stringWriter.ToString();
+            Assert.That(output.Contains("debug-msg"), Is.False);
+            Assert.That(output.Contains("info-msg"), Is.False);
+            Assert.That(output.Contains("warn-msg"), Is.False);
+            Assert.That(output.Contains("error-msg"), Is.True);
+        }
+
+        [Test]
+        public void DebugLevel_EmitsAllLevels()
+        {
+            var logger = new ConsoleLogger(LogLevel.Debug);
+
+            logger.Debug("debug-msg");
+            logger.Info("info-msg");
+            logger.Warn("warn-msg");
+            logger.Error("error-msg");
+
+            var output = _stringWriter.ToString();
+            Assert.That(output.Contains("debug-msg"), Is.True);
+            Assert.That(output.Contains("info-msg"), Is.True);
+            Assert.That(output.Contains("warn-msg"), Is.True);
+            Assert.That(output.Contains("error-msg"), Is.True);
         }
     }
 }
