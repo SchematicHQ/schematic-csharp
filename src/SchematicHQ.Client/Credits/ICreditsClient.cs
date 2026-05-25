@@ -119,6 +119,26 @@ public partial interface ICreditsClient
         CancellationToken cancellationToken = default
     );
 
+    WithRawResponseTask<AcquireCreditLeaseResponse> AcquireCreditLeaseAsync(
+        AcquireCreditLeaseRequestBody request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    );
+
+    WithRawResponseTask<ExtendCreditLeaseResponse> ExtendCreditLeaseAsync(
+        string leaseId,
+        ExtendCreditLeaseRequestBody request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    );
+
+    WithRawResponseTask<ReleaseCreditLeaseResponse> ReleaseCreditLeaseAsync(
+        string leaseId,
+        Dictionary<string, object?> request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    );
+
     WithRawResponseTask<GetEnrichedCreditLedgerResponse> GetEnrichedCreditLedgerAsync(
         GetEnrichedCreditLedgerRequest request,
         RequestOptions? options = null,

@@ -4,19 +4,17 @@ using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
 
-[JsonConverter(typeof(ChargeType.ChargeTypeSerializer))]
+[JsonConverter(typeof(BillingStrategy.BillingStrategySerializer))]
 [Serializable]
-public readonly record struct ChargeType : IStringEnum
+public readonly record struct BillingStrategy : IStringEnum
 {
-    public static readonly ChargeType Free = new(Values.Free);
+    public static readonly BillingStrategy SchematicManaged = new(Values.SchematicManaged);
 
-    public static readonly ChargeType None = new(Values.None);
+    public static readonly BillingStrategy ProviderManaged = new(Values.ProviderManaged);
 
-    public static readonly ChargeType OneTime = new(Values.OneTime);
+    public static readonly BillingStrategy NoBilling = new(Values.NoBilling);
 
-    public static readonly ChargeType Recurring = new(Values.Recurring);
-
-    public ChargeType(string value)
+    public BillingStrategy(string value)
     {
         Value = value;
     }
@@ -29,9 +27,9 @@ public readonly record struct ChargeType : IStringEnum
     /// <summary>
     /// Create a string enum with the given value.
     /// </summary>
-    public static ChargeType FromCustom(string value)
+    public static BillingStrategy FromCustom(string value)
     {
-        return new ChargeType(value);
+        return new BillingStrategy(value);
     }
 
     public bool Equals(string? other)
@@ -47,18 +45,19 @@ public readonly record struct ChargeType : IStringEnum
         return Value;
     }
 
-    public static bool operator ==(ChargeType value1, string value2) => value1.Value.Equals(value2);
+    public static bool operator ==(BillingStrategy value1, string value2) =>
+        value1.Value.Equals(value2);
 
-    public static bool operator !=(ChargeType value1, string value2) =>
+    public static bool operator !=(BillingStrategy value1, string value2) =>
         !value1.Value.Equals(value2);
 
-    public static explicit operator string(ChargeType value) => value.Value;
+    public static explicit operator string(BillingStrategy value) => value.Value;
 
-    public static explicit operator ChargeType(string value) => new(value);
+    public static explicit operator BillingStrategy(string value) => new(value);
 
-    internal class ChargeTypeSerializer : JsonConverter<ChargeType>
+    internal class BillingStrategySerializer : JsonConverter<BillingStrategy>
     {
-        public override ChargeType Read(
+        public override BillingStrategy Read(
             ref Utf8JsonReader reader,
             Type typeToConvert,
             JsonSerializerOptions options
@@ -69,19 +68,19 @@ public readonly record struct ChargeType : IStringEnum
                 ?? throw new global::System.Exception(
                     "The JSON value could not be read as a string."
                 );
-            return new ChargeType(stringValue);
+            return new BillingStrategy(stringValue);
         }
 
         public override void Write(
             Utf8JsonWriter writer,
-            ChargeType value,
+            BillingStrategy value,
             JsonSerializerOptions options
         )
         {
             writer.WriteStringValue(value.Value);
         }
 
-        public override ChargeType ReadAsPropertyName(
+        public override BillingStrategy ReadAsPropertyName(
             ref Utf8JsonReader reader,
             Type typeToConvert,
             JsonSerializerOptions options
@@ -92,12 +91,12 @@ public readonly record struct ChargeType : IStringEnum
                 ?? throw new global::System.Exception(
                     "The JSON property name could not be read as a string."
                 );
-            return new ChargeType(stringValue);
+            return new BillingStrategy(stringValue);
         }
 
         public override void WriteAsPropertyName(
             Utf8JsonWriter writer,
-            ChargeType value,
+            BillingStrategy value,
             JsonSerializerOptions options
         )
         {
@@ -111,12 +110,10 @@ public readonly record struct ChargeType : IStringEnum
     [Serializable]
     public static class Values
     {
-        public const string Free = "free";
+        public const string SchematicManaged = "schematic_managed";
 
-        public const string None = "none";
+        public const string ProviderManaged = "provider_managed";
 
-        public const string OneTime = "one_time";
-
-        public const string Recurring = "recurring";
+        public const string NoBilling = "no_billing";
     }
 }

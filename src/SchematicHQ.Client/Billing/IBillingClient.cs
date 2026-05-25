@@ -68,6 +68,12 @@ public partial interface IBillingClient
         CancellationToken cancellationToken = default
     );
 
+    WithRawResponseTask<DeletePaymentMethodByExternalIdResponse> DeletePaymentMethodByExternalIdAsync(
+        string billingId,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    );
+
     WithRawResponseTask<ListBillingPricesResponse> ListBillingPricesAsync(
         ListBillingPricesRequest request,
         RequestOptions? options = null,

@@ -14,6 +14,9 @@ public record UpsertBillingProductRequestBody : IJsonOnDeserialized
     [JsonPropertyName("billing_product_id")]
     public string? BillingProductId { get; set; }
 
+    [JsonPropertyName("billing_strategy")]
+    public BillingStrategy? BillingStrategy { get; set; }
+
     [JsonPropertyName("charge_type")]
     public required ChargeType ChargeType { get; set; }
 

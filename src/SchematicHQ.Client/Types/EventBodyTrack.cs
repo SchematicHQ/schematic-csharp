@@ -24,6 +24,12 @@ public record EventBodyTrack : IJsonOnDeserialized
     public required string Event { get; set; }
 
     /// <summary>
+    /// Credit lease ID this track event is redeeming against
+    /// </summary>
+    [JsonPropertyName("lease_id")]
+    public string? LeaseId { get; set; }
+
+    /// <summary>
     /// Optionally specify the quantity of the event
     /// </summary>
     [JsonPropertyName("quantity")]
