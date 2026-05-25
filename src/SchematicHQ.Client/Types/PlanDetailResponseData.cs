@@ -23,6 +23,9 @@ public record PlanDetailResponseData : IJsonOnDeserialized
     [JsonPropertyName("billing_product")]
     public BillingProductDetailResponseData? BillingProduct { get; set; }
 
+    [JsonPropertyName("billing_strategy")]
+    public required BillingStrategy BillingStrategy { get; set; }
+
     [JsonPropertyName("charge_type")]
     public required ChargeType ChargeType { get; set; }
 
@@ -70,6 +73,9 @@ public record PlanDetailResponseData : IJsonOnDeserialized
     [JsonPropertyName("is_default")]
     public required bool IsDefault { get; set; }
 
+    /// <summary>
+    /// Deprecated: Use BillingStrategy instead
+    /// </summary>
     [JsonPropertyName("is_free")]
     public required bool IsFree { get; set; }
 

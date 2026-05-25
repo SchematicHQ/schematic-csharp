@@ -6,13 +6,9 @@
     "namespace": "SchematicHQ.Client",
     "client-class-name": "SchematicApi",
     "exported-client-class-name": "Schematic",
-    "extra-dependencies": {
-      "moq": "4.20.70",
-      "Moq.Contrib.HttpClient": "1.4.0"
-    },
     "generate-mock-server-tests": false
   },
-  "originGitCommit": "efe71642022d9d3303fd78c648e5b2539192230e",
+  "originGitCommit": "470e0f433ab9bb0e88784674fa2e1efce62ebd9b",
   "originGitCommitIsDirty": false,
   "invokedBy": "ci",
   "requestedVersion": "1.4.6",

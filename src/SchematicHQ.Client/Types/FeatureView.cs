@@ -65,6 +65,9 @@ public record FeatureView : IJsonOnDeserialized
     [JsonPropertyName("updated_at")]
     public required DateTime UpdatedAt { get; set; }
 
+    [JsonPropertyName("usage_limit_trait_id")]
+    public string? UsageLimitTraitId { get; set; }
+
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();
 

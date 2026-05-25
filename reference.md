@@ -1304,6 +1304,46 @@ await client.Billing.UpsertPaymentMethodAsync(
 </dl>
 </details>
 
+<details><summary><code>client.Billing.<a href="/src/SchematicHQ.Client/Billing/BillingClient.cs">DeletePaymentMethodByExternalIdAsync</a>(billingId) -> WithRawResponseTask&lt;DeletePaymentMethodByExternalIdResponse&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Billing.DeletePaymentMethodByExternalIdAsync("billing_id");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**billingId:** `string` — billing_id
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.Billing.<a href="/src/SchematicHQ.Client/Billing/BillingClient.cs">ListBillingPricesAsync</a>(ListBillingPricesRequest { ... }) -> WithRawResponseTask&lt;ListBillingPricesResponse&gt;</code></summary>
 <dl>
 <dd>
@@ -2665,6 +2705,155 @@ await client.Credits.ListGrantsForCreditAsync(
 <dd>
 
 **request:** `ListGrantsForCreditRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Credits.<a href="/src/SchematicHQ.Client/Credits/CreditsClient.cs">AcquireCreditLeaseAsync</a>(AcquireCreditLeaseRequestBody { ... }) -> WithRawResponseTask&lt;AcquireCreditLeaseResponse&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Credits.AcquireCreditLeaseAsync(
+    new AcquireCreditLeaseRequestBody
+    {
+        CompanyId = "company_id",
+        CreditTypeId = "credit_type_id",
+        RequestedAmount = 1.1,
+    }
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `AcquireCreditLeaseRequestBody` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Credits.<a href="/src/SchematicHQ.Client/Credits/CreditsClient.cs">ExtendCreditLeaseAsync</a>(leaseId, ExtendCreditLeaseRequestBody { ... }) -> WithRawResponseTask&lt;ExtendCreditLeaseResponse&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Credits.ExtendCreditLeaseAsync(
+    "lease_id",
+    new ExtendCreditLeaseRequestBody { AdditionalAmount = 1.1 }
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**leaseId:** `string` — lease_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `ExtendCreditLeaseRequestBody` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Credits.<a href="/src/SchematicHQ.Client/Credits/CreditsClient.cs">ReleaseCreditLeaseAsync</a>(leaseId, Dictionary&lt;string, object?&gt; { ... }) -> WithRawResponseTask&lt;ReleaseCreditLeaseResponse&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Credits.ReleaseCreditLeaseAsync(
+    "lease_id",
+    new Dictionary<string, object?>() { { "key", "value" } }
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**leaseId:** `string` — lease_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `Dictionary<string, object?>` 
     
 </dd>
 </dl>
