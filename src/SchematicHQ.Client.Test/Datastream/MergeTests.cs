@@ -653,5 +653,259 @@ namespace SchematicHQ.Client.Test.Datastream
             cpRules[0] = MakeRule("r2");
             Assert.That(orig.Rules.First().Id, Is.EqualTo("r1"));
         }
+
+        // --- Entitlement derived-field sync (sdk-spec.md → Message Types → Partial) ---
+
+        private static RulesengineCompany CompanyWithEntitlements(List<RulesengineFeatureEntitlement> entitlements)
+        {
+            var c = BaseCompany();
+            c.Entitlements = entitlements;
+            return c;
+        }
+
+        private static RulesengineFeatureEntitlement CreditEntitlement(string featureId, string creditId, double? initialRemaining = null)
+        {
+            return new RulesengineFeatureEntitlement
+            {
+                FeatureId = featureId,
+                FeatureKey = featureId,
+                ValueType = RulesengineEntitlementValueType.Numeric,
+                CreditId = creditId,
+                CreditRemaining = initialRemaining,
+                CreditTotal = 500.0,
+                CreditUsed = 100.0,
+            };
+        }
+
+        private static RulesengineFeatureEntitlement EventEntitlement(
+            string featureId,
+            string eventName,
+            RulesengineMetricPeriod? period = null,
+            RulesengineMetricPeriodMonthReset? monthReset = null,
+            long? initialUsage = null)
+        {
+            return new RulesengineFeatureEntitlement
+            {
+                FeatureId = featureId,
+                FeatureKey = featureId,
+                ValueType = RulesengineEntitlementValueType.Numeric,
+                EventName = eventName,
+                MetricPeriod = period,
+                MonthReset = monthReset,
+                Usage = initialUsage,
+            };
+        }
+
+        private static RulesengineCompanyMetric Metric(string eventSubtype, long value, RulesengineMetricPeriod? period = null, RulesengineMetricPeriodMonthReset? monthReset = null)
+        {
+            return new RulesengineCompanyMetric
+            {
+                AccountId = "acc-1",
+                EnvironmentId = "env-1",
+                CompanyId = "co-1",
+                EventSubtype = eventSubtype,
+                Period = period ?? RulesengineMetricPeriod.AllTime,
+                MonthReset = monthReset ?? RulesengineMetricPeriodMonthReset.FirstOfMonth,
+                Value = value,
+                CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, DateTimeKind.Utc),
+            };
+        }
+
+        [Test]
+        public void PartialCompany_SyncsCreditRemainingFromCreditBalances()
+        {
+            var existing = CompanyWithEntitlements(new List<RulesengineFeatureEntitlement>
+            {
+                CreditEntitlement("feat-credit", "credit-1", initialRemaining: 100.0)
+            });
+            // Existing balance for credit-1 = 100.0 (from BaseCompany)
+
+            var partial = @"{""credit_balances"":{""credit-1"":42.0}}";
+
+            var merged = Merge.PartialCompany(existing, partial);
+
+            var ent = merged.Entitlements!.Single();
+            Assert.That(ent.CreditRemaining, Is.EqualTo(42.0));
+            // credit_used / credit_total are not derivable from partials and must stay put
+            Assert.That(ent.CreditTotal, Is.EqualTo(500.0));
+            Assert.That(ent.CreditUsed, Is.EqualTo(100.0));
+        }
+
+        [Test]
+        public void PartialCompany_SyncsCreditRemainingForAllMatchingEntitlements()
+        {
+            // Spec: "A single credit type can fund multiple entitlements; all matching
+            // entitlements must be updated."
+            var existing = CompanyWithEntitlements(new List<RulesengineFeatureEntitlement>
+            {
+                CreditEntitlement("feat-a", "credit-1"),
+                CreditEntitlement("feat-b", "credit-1"),
+                CreditEntitlement("feat-c", "credit-2"),
+            });
+
+            var partial = @"{""credit_balances"":{""credit-1"":99.0}}";
+
+            var merged = Merge.PartialCompany(existing, partial);
+
+            var ents = merged.Entitlements!.ToList();
+            Assert.That(ents[0].CreditRemaining, Is.EqualTo(99.0));
+            Assert.That(ents[1].CreditRemaining, Is.EqualTo(99.0));
+            // credit-2 not in the partial: untouched
+            Assert.That(ents[2].CreditRemaining, Is.Null);
+        }
+
+        [Test]
+        public void PartialCompany_SyncsUsageFromMetrics()
+        {
+            var existing = CompanyWithEntitlements(new List<RulesengineFeatureEntitlement>
+            {
+                EventEntitlement(
+                    "feat-event",
+                    "api_calls",
+                    period: RulesengineMetricPeriod.CurrentMonth,
+                    monthReset: RulesengineMetricPeriodMonthReset.BillingCycle,
+                    initialUsage: 10)
+            });
+
+            // Metric matches on (event_subtype, period, month_reset) triple
+            var partial = @"{""metrics"":[
+                {""account_id"":""acc-1"",""environment_id"":""env-1"",""company_id"":""co-1"",""event_subtype"":""api_calls"",""period"":""current_month"",""month_reset"":""billing_cycle"",""value"":250,""created_at"":""2026-01-01T00:00:00Z""}
+            ]}";
+
+            var merged = Merge.PartialCompany(existing, partial);
+
+            Assert.That(merged.Entitlements!.Single().Usage, Is.EqualTo(250));
+        }
+
+        [Test]
+        public void PartialCompany_UsageSyncDefaultsToAllTimeAndFirstOfMonthWhenEntitlementUnset()
+        {
+            // Spec: "Default metric_period to all_time and month_reset to first_of_month
+            // when the entitlement leaves them unset."
+            var existing = CompanyWithEntitlements(new List<RulesengineFeatureEntitlement>
+            {
+                // No MetricPeriod / MonthReset set
+                EventEntitlement("feat-event", "logins")
+            });
+
+            // Metric uses the defaults — should match
+            var partial = @"{""metrics"":[
+                {""account_id"":""acc-1"",""environment_id"":""env-1"",""company_id"":""co-1"",""event_subtype"":""logins"",""period"":""all_time"",""month_reset"":""first_of_month"",""value"":77,""created_at"":""2026-01-01T00:00:00Z""}
+            ]}";
+
+            var merged = Merge.PartialCompany(existing, partial);
+
+            Assert.That(merged.Entitlements!.Single().Usage, Is.EqualTo(77));
+        }
+
+        [Test]
+        public void PartialCompany_UsageSyncIgnoresMetricsWithMismatchedTriple()
+        {
+            var existing = CompanyWithEntitlements(new List<RulesengineFeatureEntitlement>
+            {
+                EventEntitlement(
+                    "feat-event",
+                    "logins",
+                    period: RulesengineMetricPeriod.CurrentMonth,
+                    monthReset: RulesengineMetricPeriodMonthReset.FirstOfMonth,
+                    initialUsage: 1)
+            });
+
+            // Same event_subtype, but period differs (current_day vs entitlement's current_month)
+            var partial = @"{""metrics"":[
+                {""account_id"":""acc-1"",""environment_id"":""env-1"",""company_id"":""co-1"",""event_subtype"":""logins"",""period"":""current_day"",""month_reset"":""first_of_month"",""value"":555,""created_at"":""2026-01-01T00:00:00Z""}
+            ]}";
+
+            var merged = Merge.PartialCompany(existing, partial);
+
+            // No match → usage stays at the initial value
+            Assert.That(merged.Entitlements!.Single().Usage, Is.EqualTo(1));
+        }
+
+        [Test]
+        public void PartialCompany_SkipsDerivedFieldSyncWhenPartialIncludesEntitlements()
+        {
+            // Spec: "Skip the sync entirely when the partial also includes entitlements
+            // — the server-precomputed list wins."
+            var existing = CompanyWithEntitlements(new List<RulesengineFeatureEntitlement>
+            {
+                CreditEntitlement("feat-credit", "credit-1", initialRemaining: 100.0)
+            });
+
+            var partial = @"{
+                ""credit_balances"": {""credit-1"": 42.0},
+                ""entitlements"": [
+                    {""feature_id"":""feat-credit"",""feature_key"":""feat-credit"",""value_type"":""numeric"",""credit_id"":""credit-1"",""credit_remaining"":7.0}
+                ]
+            }";
+
+            var merged = Merge.PartialCompany(existing, partial);
+
+            // The partial's entitlements list wins; the SDK does not overwrite
+            // credit_remaining (which would be 42.0 from the balance) with the
+            // server-supplied value of 7.0.
+            Assert.That(merged.Entitlements!.Single().CreditRemaining, Is.EqualTo(7.0));
+        }
+
+        [Test]
+        public void PartialCompany_NoSyncWhenPartialDoesNotTouchBalancesOrMetrics()
+        {
+            var existing = CompanyWithEntitlements(new List<RulesengineFeatureEntitlement>
+            {
+                CreditEntitlement("feat-credit", "credit-1", initialRemaining: 12.0)
+            });
+
+            var partial = @"{""keys"":{""slug"":""new-slug""}}";
+
+            var merged = Merge.PartialCompany(existing, partial);
+
+            // Untouched
+            Assert.That(merged.Entitlements!.Single().CreditRemaining, Is.EqualTo(12.0));
+        }
+
+        [Test]
+        public void PartialCompany_DoesNotMutateCachedEntitlementInstances()
+        {
+            var cachedEnt = CreditEntitlement("feat-credit", "credit-1", initialRemaining: 100.0);
+            var existing = CompanyWithEntitlements(new List<RulesengineFeatureEntitlement> { cachedEnt });
+
+            var partial = @"{""credit_balances"":{""credit-1"":42.0}}";
+
+            var merged = Merge.PartialCompany(existing, partial);
+
+            // The cached entitlement instance must not be touched — `record with` returns a
+            // new instance and our sync must use it instead of writing on the original.
+            Assert.That(cachedEnt.CreditRemaining, Is.EqualTo(100.0));
+            Assert.That(merged.Entitlements!.Single().CreditRemaining, Is.EqualTo(42.0));
+            Assert.That(ReferenceEquals(merged.Entitlements!.Single(), cachedEnt), Is.False);
+        }
+
+        [Test]
+        public void PartialCompany_CreditAndUsageSyncTogether()
+        {
+            var existing = CompanyWithEntitlements(new List<RulesengineFeatureEntitlement>
+            {
+                CreditEntitlement("feat-credit", "credit-1", initialRemaining: 100.0),
+                EventEntitlement(
+                    "feat-event",
+                    "api_calls",
+                    period: RulesengineMetricPeriod.AllTime,
+                    monthReset: RulesengineMetricPeriodMonthReset.FirstOfMonth,
+                    initialUsage: 10)
+            });
+
+            var partial = @"{
+                ""credit_balances"": {""credit-1"": 33.0},
+                ""metrics"": [
+                    {""account_id"":""acc-1"",""environment_id"":""env-1"",""company_id"":""co-1"",""event_subtype"":""api_calls"",""period"":""all_time"",""month_reset"":""first_of_month"",""value"":99,""created_at"":""2026-01-01T00:00:00Z""}
+                ]
+            }";
+
+            var merged = Merge.PartialCompany(existing, partial);
+
+            var ents = merged.Entitlements!.ToList();
+            Assert.That(ents[0].CreditRemaining, Is.EqualTo(33.0));
+            Assert.That(ents[1].Usage, Is.EqualTo(99));
+        }
     }
 }

@@ -10,7 +10,11 @@ using SchematicHQ.Client.Core;
 namespace SchematicHQ.Client;
 
 /// <summary>
-/// Represents an event in the format expected by the capture service
+/// Represents an event in the format expected by the capture service.
+/// The optional metadata fields (idempotency_key, sent_at,
+/// trusted_client_clock, backfill) map directly to the equivalent fields
+/// on <see cref="CreateEventRequestBody"/> and are omitted from the wire
+/// payload when null (per <c>JsonIgnoreCondition.WhenWritingNull</c>).
 /// </summary>
 internal class CaptureEventPayload
 {
@@ -23,8 +27,17 @@ internal class CaptureEventPayload
     [JsonPropertyName("type")]
     public required EventType EventType { get; set; }
 
+    [JsonPropertyName("idempotency_key")]
+    public string? IdempotencyKey { get; set; }
+
     [JsonPropertyName("sent_at")]
     public DateTime? SentAt { get; set; }
+
+    [JsonPropertyName("trusted_client_clock")]
+    public bool? TrustedClientClock { get; set; }
+
+    [JsonPropertyName("backfill")]
+    public bool? Backfill { get; set; }
 }
 
 /// <summary>
@@ -75,7 +88,10 @@ internal class EventCaptureClient
                 ApiKey = _apiKey,
                 Body = evt.Body,
                 EventType = evt.EventType,
-                SentAt = evt.SentAt
+                IdempotencyKey = evt.IdempotencyKey,
+                SentAt = evt.SentAt,
+                TrustedClientClock = evt.TrustedClientClock,
+                Backfill = evt.Backfill
             });
         }
 
