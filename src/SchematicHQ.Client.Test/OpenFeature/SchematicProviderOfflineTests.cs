@@ -7,6 +7,7 @@ using OpenFeature.Constant;
 using OpenFeature.Model;
 using SchematicHQ.Client;
 using SchematicHQ.Client.OpenFeature;
+using SchematicHQ.Client.Test.Datastream.Mocks;
 
 namespace SchematicHQ.Client.Test.OpenFeature
 {
@@ -260,6 +261,65 @@ namespace SchematicHQ.Client.Test.OpenFeature
         {
             // Act & Assert
             Assert.Throws<ArgumentNullException>(() => new SchematicProvider((Schematic)null!));
+        }
+
+        [Test]
+        public async Task Initialize_WithCustomLogger_RoutesThroughLogger()
+        {
+            // Arrange
+            var mockLogger = new MockSchematicLogger();
+            var options = new ClientOptions { Offline = true, Logger = mockLogger };
+            var provider = new SchematicProvider("test-key", options);
+
+            // Act
+            await provider.InitializeAsync(EvaluationContext.Empty);
+
+            // Assert
+            Assert.That(mockLogger.HasLogEntry(LogLevel.Info, "initialized"), Is.True);
+        }
+
+        [Test]
+        public async Task Shutdown_WithCustomLogger_RoutesThroughLogger()
+        {
+            // Arrange
+            var mockLogger = new MockSchematicLogger();
+            var options = new ClientOptions { Offline = true, Logger = mockLogger };
+            var provider = new SchematicProvider("test-key", options);
+
+            // Act
+            await provider.ShutdownAsync();
+
+            // Assert
+            Assert.That(mockLogger.HasLogEntry(LogLevel.Info, "shutting down"), Is.True);
+        }
+
+        // Regression guard: when no custom Logger is supplied, ClientOptions.Logger
+        // defaults to null. The provider must fall back to a ConsoleLogger honoring
+        // LogLevel rather than silently dropping logs — previously the provider used
+        // `_options.Logger?.X(...)`, which became a no-op once the default went null.
+        [Test]
+        public async Task Initialize_WithNoCustomLogger_StillLogsViaDefaultConsoleLogger()
+        {
+            // Arrange
+            var originalOut = Console.Out;
+            using var stringWriter = new StringWriter();
+            Console.SetOut(stringWriter);
+            try
+            {
+                // No Logger set; raise LogLevel so the Info init message is emitted.
+                var options = new ClientOptions { Offline = true, LogLevel = LogLevel.Info };
+                var provider = new SchematicProvider("test-key", options);
+
+                // Act
+                await provider.InitializeAsync(EvaluationContext.Empty);
+
+                // Assert
+                Assert.That(stringWriter.ToString(), Does.Contain("Schematic provider initialized"));
+            }
+            finally
+            {
+                Console.SetOut(originalOut);
+            }
         }
     }
 }

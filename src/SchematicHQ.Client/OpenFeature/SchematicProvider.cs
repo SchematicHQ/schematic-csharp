@@ -18,6 +18,7 @@ namespace SchematicHQ.Client.OpenFeature
         private static readonly Metadata _metadata = new Metadata("schematic-provider");
         private readonly Schematic _schematic;
         private readonly ClientOptions _options;
+        private readonly ISchematicLogger _logger;
 
         /// <summary>
         /// Creates a new instance of the SchematicProvider.
@@ -32,6 +33,7 @@ namespace SchematicHQ.Client.OpenFeature
             }
 
             _options = options ?? new ClientOptions();
+            _logger = _options.Logger ?? new ConsoleLogger(_options.LogLevel);
             _schematic = new Schematic(apiKey, _options);
         }
 
@@ -44,6 +46,7 @@ namespace SchematicHQ.Client.OpenFeature
         {
             _schematic = schematic ?? throw new ArgumentNullException(nameof(schematic));
             _options = options ?? new ClientOptions();
+            _logger = _options.Logger ?? new ConsoleLogger(_options.LogLevel);
         }
 
         /// <inheritdoc/>
@@ -78,7 +81,7 @@ namespace SchematicHQ.Client.OpenFeature
             }
             catch (Exception ex)
             {
-                _options.Logger?.Error("Error evaluating boolean flag '{0}': {1}", flagKey, ex.Message);
+                _logger.Error("Error evaluating boolean flag '{0}': {1}", flagKey, ex.Message);
                 
                 var errorType = MapExceptionToErrorType(ex);
                 return new ResolutionDetails<bool>(
@@ -159,14 +162,14 @@ namespace SchematicHQ.Client.OpenFeature
         /// <inheritdoc/>
         public override Task InitializeAsync(EvaluationContext? context, CancellationToken cancellationToken = default)
         {
-            _options.Logger?.Info("Schematic provider initialized");
+            _logger.Info("Schematic provider initialized");
             return Task.CompletedTask;
         }
 
         /// <inheritdoc/>
         public override async Task ShutdownAsync(CancellationToken cancellationToken = default)
         {
-            _options.Logger?.Info("Schematic provider shutting down");
+            _logger.Info("Schematic provider shutting down");
             await _schematic.Shutdown().ConfigureAwait(false);
         }
 
