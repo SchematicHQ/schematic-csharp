@@ -27,6 +27,8 @@ public partial class ClientOptions
     /// is provided.
     /// </summary>
     public LogLevel LogLevel { get; set; } = LogLevel.Warn;
+    
+    public ICacheProvider? CacheProvider { get; set; }
 
     public CacheConfiguration? CacheConfiguration { get; set; }
     public bool Offline { get; set; }
