@@ -8,7 +8,7 @@ namespace SchematicHQ.Client.Cache;
     /// </summary>
     public class LocalCache : ICacheProvider, IDisposable
     {
-        public const int DEFAULT_CACHE_CAPACITY = 1000;
+        public const int DEFAULT_CACHE_CAPACITY = 10000;
         public static readonly TimeSpan DEFAULT_CACHE_TTL = TimeSpan.FromMilliseconds(5000); // 5000 milliseconds
         public static readonly TimeSpan UNLIMITED_TTL = TimeSpan.MaxValue;
         private readonly ConcurrentDictionary<string, CachedItem> _cache;
