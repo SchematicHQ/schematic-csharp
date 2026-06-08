@@ -20,6 +20,8 @@ public readonly record struct BillingCreditGrantReason : IStringEnum
 
     public static readonly BillingCreditGrantReason Purchased = new(Values.Purchased);
 
+    public static readonly BillingCreditGrantReason Rollover = new(Values.Rollover);
+
     public BillingCreditGrantReason(string value)
     {
         Value = value;
@@ -125,5 +127,7 @@ public readonly record struct BillingCreditGrantReason : IStringEnum
         public const string Plan = "plan";
 
         public const string Purchased = "purchased";
+
+        public const string Rollover = "rollover";
     }
 }

@@ -47,6 +47,10 @@ public record ComponentHydrateResponseData : IJsonOnDeserialized
     public IEnumerable<CreditCompanyGrantView> CreditGrants { get; set; } =
         new List<CreditCompanyGrantView>();
 
+    [JsonPropertyName("custom_checkout_fields")]
+    public IEnumerable<CheckoutFieldWithValue> CustomCheckoutFields { get; set; } =
+        new List<CheckoutFieldWithValue>();
+
     [JsonPropertyName("default_plan")]
     public PlanDetailResponseData? DefaultPlan { get; set; }
 

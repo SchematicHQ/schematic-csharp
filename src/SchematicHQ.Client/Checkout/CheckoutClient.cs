@@ -665,6 +665,10 @@ public partial class CheckoutClient : ICheckoutClient
     ///         {
     ///             new UpdateCreditBundleRequestBody { BundleId = "bundle_id", Quantity = 1000000 },
     ///         },
+    ///         CustomFieldValues = new List&lt;CheckoutFieldValue&gt;()
+    ///         {
+    ///             new CheckoutFieldValue { Id = "id", Value = "value" },
+    ///         },
     ///         NewPlanId = "new_plan_id",
     ///         NewPriceId = "new_price_id",
     ///         PayInAdvance = new List&lt;UpdatePayInAdvanceRequestBody&gt;()
@@ -719,6 +723,10 @@ public partial class CheckoutClient : ICheckoutClient
     ///         {
     ///             new UpdateCreditBundleRequestBody { BundleId = "bundle_id", Quantity = 1000000 },
     ///         },
+    ///         CustomFieldValues = new List&lt;CheckoutFieldValue&gt;()
+    ///         {
+    ///             new CheckoutFieldValue { Id = "id", Value = "value" },
+    ///         },
     ///         NewPlanId = "new_plan_id",
     ///         NewPriceId = "new_price_id",
     ///         PayInAdvance = new List&lt;UpdatePayInAdvanceRequestBody&gt;()
@@ -750,6 +758,10 @@ public partial class CheckoutClient : ICheckoutClient
     ///         {
     ///             new UpdateCreditBundleRequestBody { BundleId = "bundle_id", Quantity = 1000000 },
     ///         },
+    ///         CustomFieldValues = new List&lt;CheckoutFieldValue&gt;()
+    ///         {
+    ///             new CheckoutFieldValue { Id = "id", Value = "value" },
+    ///         },
     ///         PayInAdvanceEntitlements = new List&lt;UpdatePayInAdvanceRequestBody&gt;()
     ///         {
     ///             new UpdatePayInAdvanceRequestBody { PriceId = "price_id", Quantity = 1000000 },
@@ -777,6 +789,10 @@ public partial class CheckoutClient : ICheckoutClient
     ///         CreditBundles = new List&lt;UpdateCreditBundleRequestBody&gt;()
     ///         {
     ///             new UpdateCreditBundleRequestBody { BundleId = "bundle_id", Quantity = 1000000 },
+    ///         },
+    ///         CustomFieldValues = new List&lt;CheckoutFieldValue&gt;()
+    ///         {
+    ///             new CheckoutFieldValue { Id = "id", Value = "value" },
     ///         },
     ///         PayInAdvanceEntitlements = new List&lt;UpdatePayInAdvanceRequestBody&gt;()
     ///         {

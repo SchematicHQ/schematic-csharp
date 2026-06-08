@@ -113,6 +113,100 @@ public partial class PlanmigrationsClient : IPlanmigrationsClient
     }
 
     private async Task<
+        WithRawResponse<RetryCompanyMigrationResponse>
+    > RetryCompanyMigrationAsyncCore(
+        string planVersionCompanyMigrationId,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        var _headers = await new SchematicHQ.Client.Core.HeadersBuilder.Builder()
+            .Add(_client.Options.Headers)
+            .Add(_client.Options.AdditionalHeaders)
+            .Add(options?.AdditionalHeaders)
+            .BuildAsync()
+            .ConfigureAwait(false);
+        var response = await _client
+            .SendRequestAsync(
+                new JsonRequest
+                {
+                    Method = HttpMethod.Post,
+                    Path = string.Format(
+                        "plan-version-company-migrations/{0}/retry",
+                        ValueConvert.ToPathParameterString(planVersionCompanyMigrationId)
+                    ),
+                    Headers = _headers,
+                    Options = options,
+                },
+                cancellationToken
+            )
+            .ConfigureAwait(false);
+        if (response.StatusCode is >= 200 and < 400)
+        {
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
+            try
+            {
+                var responseData = JsonUtils.Deserialize<RetryCompanyMigrationResponse>(
+                    responseBody
+                )!;
+                return new WithRawResponse<RetryCompanyMigrationResponse>()
+                {
+                    Data = responseData,
+                    RawResponse = new RawResponse()
+                    {
+                        StatusCode = response.Raw.StatusCode,
+                        Url = response.Raw.RequestMessage?.RequestUri ?? new Uri("about:blank"),
+                        Headers = ResponseHeaders.FromHttpResponseMessage(response.Raw),
+                    },
+                };
+            }
+            catch (JsonException e)
+            {
+                throw new SchematicApiException(
+                    "Failed to deserialize response",
+                    response.StatusCode,
+                    responseBody,
+                    e
+                );
+            }
+        }
+        {
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
+            try
+            {
+                switch (response.StatusCode)
+                {
+                    case 400:
+                        throw new BadRequestError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 401:
+                        throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 403:
+                        throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 404:
+                        throw new NotFoundError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 500:
+                        throw new InternalServerError(
+                            JsonUtils.Deserialize<ApiError>(responseBody)
+                        );
+                }
+            }
+            catch (JsonException)
+            {
+                // unable to map error response, throwing generic error
+            }
+            throw new SchematicApiException(
+                $"Error with status code {response.StatusCode}",
+                response.StatusCode,
+                responseBody
+            );
+        }
+    }
+
+    private async Task<
         WithRawResponse<CountCompanyMigrationsResponse>
     > CountCompanyMigrationsAsyncCore(
         CountCompanyMigrationsRequest request,
@@ -307,6 +401,95 @@ public partial class PlanmigrationsClient : IPlanmigrationsClient
         }
     }
 
+    private async Task<WithRawResponse<CreateMigrationResponse>> CreateMigrationAsyncCore(
+        CreateMigrationInput request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        var _headers = await new SchematicHQ.Client.Core.HeadersBuilder.Builder()
+            .Add(_client.Options.Headers)
+            .Add(_client.Options.AdditionalHeaders)
+            .Add(options?.AdditionalHeaders)
+            .BuildAsync()
+            .ConfigureAwait(false);
+        var response = await _client
+            .SendRequestAsync(
+                new JsonRequest
+                {
+                    Method = HttpMethod.Post,
+                    Path = "plan-version-migrations",
+                    Body = request,
+                    Headers = _headers,
+                    ContentType = "application/json",
+                    Options = options,
+                },
+                cancellationToken
+            )
+            .ConfigureAwait(false);
+        if (response.StatusCode is >= 200 and < 400)
+        {
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
+            try
+            {
+                var responseData = JsonUtils.Deserialize<CreateMigrationResponse>(responseBody)!;
+                return new WithRawResponse<CreateMigrationResponse>()
+                {
+                    Data = responseData,
+                    RawResponse = new RawResponse()
+                    {
+                        StatusCode = response.Raw.StatusCode,
+                        Url = response.Raw.RequestMessage?.RequestUri ?? new Uri("about:blank"),
+                        Headers = ResponseHeaders.FromHttpResponseMessage(response.Raw),
+                    },
+                };
+            }
+            catch (JsonException e)
+            {
+                throw new SchematicApiException(
+                    "Failed to deserialize response",
+                    response.StatusCode,
+                    responseBody,
+                    e
+                );
+            }
+        }
+        {
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
+            try
+            {
+                switch (response.StatusCode)
+                {
+                    case 400:
+                        throw new BadRequestError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 401:
+                        throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 403:
+                        throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 404:
+                        throw new NotFoundError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 500:
+                        throw new InternalServerError(
+                            JsonUtils.Deserialize<ApiError>(responseBody)
+                        );
+                }
+            }
+            catch (JsonException)
+            {
+                // unable to map error response, throwing generic error
+            }
+            throw new SchematicApiException(
+                $"Error with status code {response.StatusCode}",
+                response.StatusCode,
+                responseBody
+            );
+        }
+    }
+
     private async Task<WithRawResponse<GetMigrationResponse>> GetMigrationAsyncCore(
         string planVersionMigrationId,
         RequestOptions? options = null,
@@ -371,6 +554,99 @@ public partial class PlanmigrationsClient : IPlanmigrationsClient
             {
                 switch (response.StatusCode)
                 {
+                    case 401:
+                        throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 403:
+                        throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 404:
+                        throw new NotFoundError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 500:
+                        throw new InternalServerError(
+                            JsonUtils.Deserialize<ApiError>(responseBody)
+                        );
+                }
+            }
+            catch (JsonException)
+            {
+                // unable to map error response, throwing generic error
+            }
+            throw new SchematicApiException(
+                $"Error with status code {response.StatusCode}",
+                response.StatusCode,
+                responseBody
+            );
+        }
+    }
+
+    private async Task<WithRawResponse<RetryMigrationResponse>> RetryMigrationAsyncCore(
+        string planVersionMigrationId,
+        RetryMigrationRequestBody request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        var _headers = await new SchematicHQ.Client.Core.HeadersBuilder.Builder()
+            .Add(_client.Options.Headers)
+            .Add(_client.Options.AdditionalHeaders)
+            .Add(options?.AdditionalHeaders)
+            .BuildAsync()
+            .ConfigureAwait(false);
+        var response = await _client
+            .SendRequestAsync(
+                new JsonRequest
+                {
+                    Method = HttpMethod.Post,
+                    Path = string.Format(
+                        "plan-version-migrations/{0}/retry",
+                        ValueConvert.ToPathParameterString(planVersionMigrationId)
+                    ),
+                    Body = request,
+                    Headers = _headers,
+                    ContentType = "application/json",
+                    Options = options,
+                },
+                cancellationToken
+            )
+            .ConfigureAwait(false);
+        if (response.StatusCode is >= 200 and < 400)
+        {
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
+            try
+            {
+                var responseData = JsonUtils.Deserialize<RetryMigrationResponse>(responseBody)!;
+                return new WithRawResponse<RetryMigrationResponse>()
+                {
+                    Data = responseData,
+                    RawResponse = new RawResponse()
+                    {
+                        StatusCode = response.Raw.StatusCode,
+                        Url = response.Raw.RequestMessage?.RequestUri ?? new Uri("about:blank"),
+                        Headers = ResponseHeaders.FromHttpResponseMessage(response.Raw),
+                    },
+                };
+            }
+            catch (JsonException e)
+            {
+                throw new SchematicApiException(
+                    "Failed to deserialize response",
+                    response.StatusCode,
+                    responseBody,
+                    e
+                );
+            }
+        }
+        {
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
+            try
+            {
+                switch (response.StatusCode)
+                {
+                    case 400:
+                        throw new BadRequestError(JsonUtils.Deserialize<ApiError>(responseBody));
                     case 401:
                         throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
                     case 403:
@@ -514,6 +790,24 @@ public partial class PlanmigrationsClient : IPlanmigrationsClient
     }
 
     /// <example><code>
+    /// await client.Planmigrations.RetryCompanyMigrationAsync("plan_version_company_migration_id");
+    /// </code></example>
+    public WithRawResponseTask<RetryCompanyMigrationResponse> RetryCompanyMigrationAsync(
+        string planVersionCompanyMigrationId,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        return new WithRawResponseTask<RetryCompanyMigrationResponse>(
+            RetryCompanyMigrationAsyncCore(
+                planVersionCompanyMigrationId,
+                options,
+                cancellationToken
+            )
+        );
+    }
+
+    /// <example><code>
     /// await client.Planmigrations.CountCompanyMigrationsAsync(
     ///     new CountCompanyMigrationsRequest
     ///     {
@@ -559,6 +853,31 @@ public partial class PlanmigrationsClient : IPlanmigrationsClient
     }
 
     /// <example><code>
+    /// await client.Planmigrations.CreateMigrationAsync(
+    ///     new CreateMigrationInput
+    ///     {
+    ///         CompanyIds = new List&lt;string&gt;() { "company_ids" },
+    ///         ExcludedCompanyIds = new List&lt;string&gt;() { "excluded_company_ids" },
+    ///         PlanId = "plan_id",
+    ///         PlanVersionIdTo = "plan_version_id_to",
+    ///         PlanVersionIdsFrom = new List&lt;string&gt;() { "plan_version_ids_from" },
+    ///         Strategy = PlanVersionMigrationStrategy.Immediate,
+    ///         TargetPlanType = PlanType.Plan,
+    ///     }
+    /// );
+    /// </code></example>
+    public WithRawResponseTask<CreateMigrationResponse> CreateMigrationAsync(
+        CreateMigrationInput request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        return new WithRawResponseTask<CreateMigrationResponse>(
+            CreateMigrationAsyncCore(request, options, cancellationToken)
+        );
+    }
+
+    /// <example><code>
     /// await client.Planmigrations.GetMigrationAsync("plan_version_migration_id");
     /// </code></example>
     public WithRawResponseTask<GetMigrationResponse> GetMigrationAsync(
@@ -569,6 +888,30 @@ public partial class PlanmigrationsClient : IPlanmigrationsClient
     {
         return new WithRawResponseTask<GetMigrationResponse>(
             GetMigrationAsyncCore(planVersionMigrationId, options, cancellationToken)
+        );
+    }
+
+    /// <example><code>
+    /// await client.Planmigrations.RetryMigrationAsync(
+    ///     "plan_version_migration_id",
+    ///     new RetryMigrationRequestBody
+    ///     {
+    ///         ErrorCodes = new List&lt;MigrationErrorCode&gt;()
+    ///         {
+    ///             MigrationErrorCode.AmbiguousSubscriptionItem,
+    ///         },
+    ///     }
+    /// );
+    /// </code></example>
+    public WithRawResponseTask<RetryMigrationResponse> RetryMigrationAsync(
+        string planVersionMigrationId,
+        RetryMigrationRequestBody request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        return new WithRawResponseTask<RetryMigrationResponse>(
+            RetryMigrationAsyncCore(planVersionMigrationId, request, options, cancellationToken)
         );
     }
 

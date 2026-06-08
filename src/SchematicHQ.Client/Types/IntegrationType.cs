@@ -10,11 +10,15 @@ public readonly record struct IntegrationType : IStringEnum
 {
     public static readonly IntegrationType Clerk = new(Values.Clerk);
 
+    public static readonly IntegrationType Metronome = new(Values.Metronome);
+
     public static readonly IntegrationType Orb = new(Values.Orb);
 
     public static readonly IntegrationType Stripe = new(Values.Stripe);
 
     public static readonly IntegrationType Unknown = new(Values.Unknown);
+
+    public static readonly IntegrationType Workos = new(Values.Workos);
 
     public IntegrationType(string value)
     {
@@ -114,10 +118,14 @@ public readonly record struct IntegrationType : IStringEnum
     {
         public const string Clerk = "clerk";
 
+        public const string Metronome = "metronome";
+
         public const string Orb = "orb";
 
         public const string Stripe = "stripe";
 
         public const string Unknown = "unknown";
+
+        public const string Workos = "workos";
     }
 }

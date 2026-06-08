@@ -49,6 +49,12 @@ public record CountCompaniesRequest
     public string? PlanVersionId { get; set; }
 
     /// <summary>
+    /// Filter companies by one or more plan version IDs (each ID starts with plvr_). Takes precedence over plan_version_id when set.
+    /// </summary>
+    [JsonIgnore]
+    public IEnumerable<string> PlanVersionIds { get; set; } = new List<string>();
+
+    /// <summary>
     /// Search for companies by name, keys or string traits
     /// </summary>
     [JsonIgnore]

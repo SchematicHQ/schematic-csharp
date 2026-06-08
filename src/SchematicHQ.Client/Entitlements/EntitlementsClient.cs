@@ -2309,7 +2309,7 @@ public partial class EntitlementsClient : IEntitlementsClient
     ///         CompanyId = "company_id",
     ///         FeatureIds = new List&lt;string&gt;() { "feature_ids" },
     ///         IncludeUsageAggregation = true,
-    ///         ManagedBy = BillingProviderType.Orb,
+    ///         ManagedBy = BillingProviderType.Metronome,
     ///         Q = "q",
     ///         WithoutNegativeEntitlements = true,
     ///         Limit = 1000000,
@@ -2358,7 +2358,7 @@ public partial class EntitlementsClient : IEntitlementsClient
     ///         CompanyId = "company_id",
     ///         FeatureIds = new List&lt;string&gt;() { "feature_ids" },
     ///         IncludeUsageAggregation = true,
-    ///         ManagedBy = BillingProviderType.Orb,
+    ///         ManagedBy = BillingProviderType.Metronome,
     ///         Q = "q",
     ///         WithoutNegativeEntitlements = true,
     ///         Limit = 1000000,
@@ -2521,7 +2521,7 @@ public partial class EntitlementsClient : IEntitlementsClient
     /// await client.Entitlements.UpsertPlanEntitlementForBillingProductAsync(
     ///     new CreateBillingLinkedPlanEntitlementRequestBody
     ///     {
-    ///         BillingProvider = BillingProviderType.Orb,
+    ///         BillingProvider = BillingProviderType.Metronome,
     ///         ExternalResourceId = "external_resource_id",
     ///         FeatureId = "feature_id",
     ///         PlanId = "plan_id",

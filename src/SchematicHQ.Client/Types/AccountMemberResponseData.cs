@@ -17,11 +17,17 @@ public record AccountMemberResponseData : IJsonOnDeserialized
     [JsonPropertyName("email")]
     public string? Email { get; set; }
 
+    [JsonPropertyName("first_name")]
+    public string? FirstName { get; set; }
+
     [JsonPropertyName("id")]
     public required string Id { get; set; }
 
     [JsonPropertyName("image_url")]
     public string? ImageUrl { get; set; }
+
+    [JsonPropertyName("last_name")]
+    public string? LastName { get; set; }
 
     [JsonPropertyName("name")]
     public string? Name { get; set; }

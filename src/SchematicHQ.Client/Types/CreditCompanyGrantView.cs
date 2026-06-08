@@ -86,8 +86,17 @@ public record CreditCompanyGrantView : IJsonOnDeserialized
     [JsonPropertyName("renewal_period")]
     public BillingPlanCreditGrantResetCadence? RenewalPeriod { get; set; }
 
+    [JsonPropertyName("reserved")]
+    public double? Reserved { get; set; }
+
+    [JsonPropertyName("settled")]
+    public double? Settled { get; set; }
+
     [JsonPropertyName("singular_name")]
     public string? SingularName { get; set; }
+
+    [JsonPropertyName("source_grant_id")]
+    public string? SourceGrantId { get; set; }
 
     [JsonPropertyName("source_label")]
     public required string SourceLabel { get; set; }

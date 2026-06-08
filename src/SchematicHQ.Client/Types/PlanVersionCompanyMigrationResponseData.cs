@@ -26,6 +26,9 @@ public record PlanVersionCompanyMigrationResponseData : IJsonOnDeserialized
     [JsonPropertyName("error")]
     public string? Error { get; set; }
 
+    [JsonPropertyName("error_code")]
+    public MigrationErrorCode? ErrorCode { get; set; }
+
     [JsonPropertyName("id")]
     public required string Id { get; set; }
 

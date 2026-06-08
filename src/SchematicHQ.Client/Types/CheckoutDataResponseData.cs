@@ -29,6 +29,10 @@ public record CheckoutDataResponseData : IJsonOnDeserialized
     [JsonPropertyName("company")]
     public CompanyDetailResponseData? Company { get; set; }
 
+    [JsonPropertyName("custom_checkout_fields")]
+    public IEnumerable<CheckoutFieldWithValue> CustomCheckoutFields { get; set; } =
+        new List<CheckoutFieldWithValue>();
+
     [JsonPropertyName("feature_usage")]
     public FeatureUsageDetailResponseData? FeatureUsage { get; set; }
 

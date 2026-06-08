@@ -47,12 +47,6 @@ public record StripeIntegrationConfig : IJsonOnDeserialized
     [JsonPropertyName("onboard_url")]
     public string? OnboardUrl { get; set; }
 
-    /// <summary>
-    /// Stripe integration config version (1 = legacy API key install, 2 = Connect/App install)
-    /// </summary>
-    [JsonPropertyName("version")]
-    public required int Version { get; set; }
-
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();
 

@@ -20,13 +20,31 @@ public partial interface IIntegrationsapiClient
         CancellationToken cancellationToken = default
     );
 
+    WithRawResponseTask<InstallIntegrationResponse> InstallIntegrationAsync(
+        InstallIntegrationRequestBody request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    );
+
     WithRawResponseTask<StartDataImportResponse> StartDataImportAsync(
         StartDataImportRequestBody request,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     );
 
-    WithRawResponseTask<LoadSampleDataSetV2Response> LoadSampleDataSetV2Async(
+    WithRawResponseTask<LoadSampleDataSetResponse> LoadSampleDataSetAsync(
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    );
+
+    WithRawResponseTask<AssumeStripeInstalledResponse> AssumeStripeInstalledAsync(
+        InstallIntegrationRequestBody request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    );
+
+    WithRawResponseTask<InstallStripeResponse> InstallStripeAsync(
+        InstallIntegrationRequestBody request,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     );

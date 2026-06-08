@@ -23,6 +23,9 @@ public record CustomPlanBillingResponseData : IJsonOnDeserialized
     [JsonPropertyName("days_until_due")]
     public required long DaysUntilDue { get; set; }
 
+    [JsonPropertyName("external_invoice_id")]
+    public string? ExternalInvoiceId { get; set; }
+
     [JsonPropertyName("id")]
     public required string Id { get; set; }
 

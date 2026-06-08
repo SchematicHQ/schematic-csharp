@@ -8,6 +8,8 @@ namespace SchematicHQ.Client;
 [Serializable]
 public readonly record struct BillingProviderType : IStringEnum
 {
+    public static readonly BillingProviderType Metronome = new(Values.Metronome);
+
     public static readonly BillingProviderType Orb = new(Values.Orb);
 
     public static readonly BillingProviderType Schematic = new(Values.Schematic);
@@ -110,6 +112,8 @@ public readonly record struct BillingProviderType : IStringEnum
     [Serializable]
     public static class Values
     {
+        public const string Metronome = "metronome";
+
         public const string Orb = "orb";
 
         public const string Schematic = "schematic";

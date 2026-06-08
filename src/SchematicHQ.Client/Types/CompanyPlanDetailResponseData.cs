@@ -17,6 +17,10 @@ public record CompanyPlanDetailResponseData : IJsonOnDeserialized
     [JsonPropertyName("audience_type")]
     public string? AudienceType { get; set; }
 
+    [JsonPropertyName("available_periods")]
+    public IEnumerable<PlanPriceCadence> AvailablePeriods { get; set; } =
+        new List<PlanPriceCadence>();
+
     [JsonPropertyName("billing_linked_resource")]
     public BillingLinkedResourceResponseData? BillingLinkedResource { get; set; }
 
@@ -73,8 +77,7 @@ public record CompanyPlanDetailResponseData : IJsonOnDeserialized
     public PlanVersionResponseData? DraftVersion { get; set; }
 
     [JsonPropertyName("entitlements")]
-    public IEnumerable<PlanEntitlementResponseData> Entitlements { get; set; } =
-        new List<PlanEntitlementResponseData>();
+    public IEnumerable<PlanEntitlementResponseData>? Entitlements { get; set; }
 
     [JsonPropertyName("features")]
     public IEnumerable<FeatureInPlanResponseData> Features { get; set; } =

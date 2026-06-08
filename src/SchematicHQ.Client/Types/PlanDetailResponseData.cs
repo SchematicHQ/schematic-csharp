@@ -57,6 +57,9 @@ public record PlanDetailResponseData : IJsonOnDeserialized
     [JsonPropertyName("draft_version")]
     public PlanVersionResponseData? DraftVersion { get; set; }
 
+    [JsonPropertyName("entitlements")]
+    public IEnumerable<PlanEntitlementResponseData>? Entitlements { get; set; }
+
     [JsonPropertyName("features")]
     public IEnumerable<FeatureInPlanResponseData> Features { get; set; } =
         new List<FeatureInPlanResponseData>();

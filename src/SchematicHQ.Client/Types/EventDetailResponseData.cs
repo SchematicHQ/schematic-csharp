@@ -53,6 +53,9 @@ public record EventDetailResponseData : IJsonOnDeserialized
     [JsonPropertyName("idempotency_key")]
     public string? IdempotencyKey { get; set; }
 
+    [JsonPropertyName("lease_id")]
+    public string? LeaseId { get; set; }
+
     [JsonPropertyName("loaded_at")]
     public DateTime? LoadedAt { get; set; }
 

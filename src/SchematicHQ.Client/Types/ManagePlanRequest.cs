@@ -39,6 +39,10 @@ public record ManagePlanRequest : IJsonOnDeserialized
     public IEnumerable<UpdateCreditBundleRequestBody> CreditBundles { get; set; } =
         new List<UpdateCreditBundleRequestBody>();
 
+    [JsonPropertyName("custom_field_values")]
+    public IEnumerable<CheckoutFieldValue> CustomFieldValues { get; set; } =
+        new List<CheckoutFieldValue>();
+
     [JsonPropertyName("pay_in_advance_entitlements")]
     public IEnumerable<UpdatePayInAdvanceRequestBody> PayInAdvanceEntitlements { get; set; } =
         new List<UpdatePayInAdvanceRequestBody>();

@@ -17,6 +17,12 @@ public record CompanyCreditBalanceResponseData : IJsonOnDeserialized
     [JsonPropertyName("remaining")]
     public required double Remaining { get; set; }
 
+    [JsonPropertyName("reserved")]
+    public required double Reserved { get; set; }
+
+    [JsonPropertyName("settled")]
+    public required double Settled { get; set; }
+
     [JsonPropertyName("source")]
     public required BillingProviderType Source { get; set; }
 

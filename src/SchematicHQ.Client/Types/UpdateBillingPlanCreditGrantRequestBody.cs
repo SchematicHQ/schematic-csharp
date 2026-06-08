@@ -62,6 +62,12 @@ public record UpdateBillingPlanCreditGrantRequestBody : IJsonOnDeserialized
     [JsonPropertyName("reset_type")]
     public BillingPlanCreditGrantResetType? ResetType { get; set; }
 
+    /// <summary>
+    /// Percentage of unused credits that carry over when this grant resets. Only applies when reset_type is plan_period. Rolled-over credits expire at the next reset and are not rolled again.
+    /// </summary>
+    [JsonPropertyName("rollover_percentage")]
+    public long? RolloverPercentage { get; set; }
+
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();
 

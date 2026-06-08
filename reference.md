@@ -88,6 +88,54 @@ await client.Accounts.GetAccountMemberAsync("account_member_id");
 </dl>
 </details>
 
+<details><summary><code>client.Accounts.<a href="/src/SchematicHQ.Client/Accounts/AccountsClient.cs">CountAccountMembersAsync</a>(CountAccountMembersRequest { ... }) -> WithRawResponseTask&lt;CountAccountMembersResponse&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Accounts.CountAccountMembersAsync(
+    new CountAccountMembersRequest
+    {
+        Ids = new List<string>() { "ids" },
+        Q = "q",
+        Limit = 1000000,
+        Offset = 1000000,
+    }
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `CountAccountMembersRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.Accounts.<a href="/src/SchematicHQ.Client/Accounts/AccountsClient.cs">ListApiKeysAsync</a>(ListApiKeysRequest { ... }) -> WithRawResponseTask&lt;ListApiKeysResponse&gt;</code></summary>
 <dl>
 <dd>
@@ -932,7 +980,7 @@ await client.Billing.ListCustomersWithSubscriptionsAsync(
     {
         CompanyIds = new List<string>() { "company_ids" },
         Name = "name",
-        ProviderType = BillingProviderType.Orb,
+        ProviderType = BillingProviderType.Metronome,
         Q = "q",
         Limit = 1000000,
         Offset = 1000000,
@@ -982,7 +1030,7 @@ await client.Billing.CountCustomersAsync(
     {
         CompanyIds = new List<string>() { "company_ids" },
         Name = "name",
-        ProviderType = BillingProviderType.Orb,
+        ProviderType = BillingProviderType.Metronome,
         Q = "q",
         Limit = 1000000,
         Offset = 1000000,
@@ -1369,7 +1417,7 @@ await client.Billing.ListBillingPricesAsync(
         Price = 1000000,
         ProductId = "product_id",
         ProductIds = new List<string>() { "product_ids" },
-        ProviderType = BillingProviderType.Orb,
+        ProviderType = BillingProviderType.Metronome,
         Q = "q",
         TiersMode = BillingTiersMode.Graduated,
         UsageType = BillingPriceUsageType.Licensed,
@@ -1526,7 +1574,7 @@ await client.Billing.ListBillingProductPricesAsync(
         Price = 1000000,
         ProductId = "product_id",
         ProductIds = new List<string>() { "product_ids" },
-        ProviderType = BillingProviderType.Orb,
+        ProviderType = BillingProviderType.Metronome,
         Q = "q",
         TiersMode = BillingTiersMode.Graduated,
         UsageType = BillingPriceUsageType.Licensed,
@@ -1663,7 +1711,7 @@ await client.Billing.ListBillingProductsAsync(
         IsActive = true,
         Name = "name",
         PriceUsageType = BillingPriceUsageType.Licensed,
-        ProviderType = BillingProviderType.Orb,
+        ProviderType = BillingProviderType.Metronome,
         Q = "q",
         RecurringChargesOnly = true,
         WithOneTimeCharges = true,
@@ -1720,7 +1768,7 @@ await client.Billing.CountBillingProductsAsync(
         IsActive = true,
         Name = "name",
         PriceUsageType = BillingPriceUsageType.Licensed,
-        ProviderType = BillingProviderType.Orb,
+        ProviderType = BillingProviderType.Metronome,
         Q = "q",
         RecurringChargesOnly = true,
         WithOneTimeCharges = true,
@@ -3402,6 +3450,10 @@ await client.Checkout.InternalAsync(
         {
             new UpdateCreditBundleRequestBody { BundleId = "bundle_id", Quantity = 1000000 },
         },
+        CustomFieldValues = new List<CheckoutFieldValue>()
+        {
+            new CheckoutFieldValue { Id = "id", Value = "value" },
+        },
         NewPlanId = "new_plan_id",
         NewPriceId = "new_price_id",
         PayInAdvance = new List<UpdatePayInAdvanceRequestBody>()
@@ -3508,6 +3560,10 @@ await client.Checkout.PreviewCheckoutInternalAsync(
         {
             new UpdateCreditBundleRequestBody { BundleId = "bundle_id", Quantity = 1000000 },
         },
+        CustomFieldValues = new List<CheckoutFieldValue>()
+        {
+            new CheckoutFieldValue { Id = "id", Value = "value" },
+        },
         NewPlanId = "new_plan_id",
         NewPriceId = "new_price_id",
         PayInAdvance = new List<UpdatePayInAdvanceRequestBody>()
@@ -3565,6 +3621,10 @@ await client.Checkout.ManagePlanAsync(
         {
             new UpdateCreditBundleRequestBody { BundleId = "bundle_id", Quantity = 1000000 },
         },
+        CustomFieldValues = new List<CheckoutFieldValue>()
+        {
+            new CheckoutFieldValue { Id = "id", Value = "value" },
+        },
         PayInAdvanceEntitlements = new List<UpdatePayInAdvanceRequestBody>()
         {
             new UpdatePayInAdvanceRequestBody { PriceId = "price_id", Quantity = 1000000 },
@@ -3618,6 +3678,10 @@ await client.Checkout.PreviewManagePlanAsync(
         CreditBundles = new List<UpdateCreditBundleRequestBody>()
         {
             new UpdateCreditBundleRequestBody { BundleId = "bundle_id", Quantity = 1000000 },
+        },
+        CustomFieldValues = new List<CheckoutFieldValue>()
+        {
+            new CheckoutFieldValue { Id = "id", Value = "value" },
         },
         PayInAdvanceEntitlements = new List<UpdatePayInAdvanceRequestBody>()
         {
@@ -3768,6 +3832,7 @@ await client.Companies.ListCompaniesAsync(
         PlanId = "plan_id",
         PlanIds = new List<string>() { "plan_ids" },
         PlanVersionId = "plan_version_id",
+        PlanVersionIds = new List<string>() { "plan_version_ids" },
         Q = "q",
         SortOrderColumn = "sort_order_column",
         SortOrderDirection = SortDirection.Asc,
@@ -3964,6 +4029,7 @@ await client.Companies.CountCompaniesAsync(
         PlanId = "plan_id",
         PlanIds = new List<string>() { "plan_ids" },
         PlanVersionId = "plan_version_id",
+        PlanVersionIds = new List<string>() { "plan_version_ids" },
         Q = "q",
         SortOrderColumn = "sort_order_column",
         SortOrderDirection = SortDirection.Asc,
@@ -5837,7 +5903,7 @@ await client.Entitlements.ListFeatureUsageAsync(
         CompanyId = "company_id",
         FeatureIds = new List<string>() { "feature_ids" },
         IncludeUsageAggregation = true,
-        ManagedBy = BillingProviderType.Orb,
+        ManagedBy = BillingProviderType.Metronome,
         Q = "q",
         WithoutNegativeEntitlements = true,
         Limit = 1000000,
@@ -5938,7 +6004,7 @@ await client.Entitlements.CountFeatureUsageAsync(
         CompanyId = "company_id",
         FeatureIds = new List<string>() { "feature_ids" },
         IncludeUsageAggregation = true,
-        ManagedBy = BillingProviderType.Orb,
+        ManagedBy = BillingProviderType.Metronome,
         Q = "q",
         WithoutNegativeEntitlements = true,
         Limit = 1000000,
@@ -6316,7 +6382,7 @@ await client.Entitlements.DeletePlanEntitlementAsync("plan_entitlement_id");
 await client.Entitlements.UpsertPlanEntitlementForBillingProductAsync(
     new CreateBillingLinkedPlanEntitlementRequestBody
     {
-        BillingProvider = BillingProviderType.Orb,
+        BillingProvider = BillingProviderType.Metronome,
         ExternalResourceId = "external_resource_id",
         FeatureId = "feature_id",
         PlanId = "plan_id",
@@ -6597,6 +6663,57 @@ await client.Plans.ListCustomPlanBillingsAsync(
 </dl>
 </details>
 
+<details><summary><code>client.Plans.<a href="/src/SchematicHQ.Client/Plans/PlansClient.cs">MarkCustomPlanBillingPaidAsync</a>(customPlanBillingId, Dictionary&lt;string, object?&gt; { ... }) -> WithRawResponseTask&lt;MarkCustomPlanBillingPaidResponse&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Plans.MarkCustomPlanBillingPaidAsync(
+    "custom_plan_billing_id",
+    new Dictionary<string, object?>() { { "key", "value" } }
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**customPlanBillingId:** `string` — custom_plan_billing_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `Dictionary<string, object?>` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.Plans.<a href="/src/SchematicHQ.Client/Plans/PlansClient.cs">RetryCustomPlanBillingAsync</a>(customPlanBillingId, RetryCustomPlanBillingRequestBody { ... }) -> WithRawResponseTask&lt;RetryCustomPlanBillingResponse&gt;</code></summary>
 <dl>
 <dd>
@@ -6730,6 +6847,7 @@ await client.Plans.ListPlansAsync(
         PlanType = PlanType.Plan,
         Q = "q",
         ScopedToCompanyId = "scoped_to_company_id",
+        WithEntitlements = true,
         WithoutEntitlementFor = "without_entitlement_for",
         WithoutPaidProductId = true,
         Limit = 1000000,
@@ -7015,7 +7133,7 @@ await client.Plans.UpsertBillingProductPlanAsync(
 await client.Plans.UpsertPlanForBillingProductAsync(
     new CreateBillingLinkedPlanRequestBody
     {
-        BillingProvider = BillingProviderType.Orb,
+        BillingProvider = BillingProviderType.Metronome,
         Description = "description",
         ExternalResourceId = "external_resource_id",
         Name = "name",
@@ -7172,6 +7290,7 @@ await client.Plans.CountPlansAsync(
         PlanType = PlanType.Plan,
         Q = "q",
         ScopedToCompanyId = "scoped_to_company_id",
+        WithEntitlements = true,
         WithoutEntitlementFor = "without_entitlement_for",
         WithoutPaidProductId = true,
         Limit = 1000000,
@@ -8181,7 +8300,7 @@ await client.Features.ListFeaturesAsync(
         BooleanRequireEvent = true,
         FeatureType = new List<FeatureType>() { FeatureType.Boolean },
         Ids = new List<string>() { "ids" },
-        ManagedBy = BillingProviderType.Orb,
+        ManagedBy = BillingProviderType.Metronome,
         PlanVersionId = "plan_version_id",
         Q = "q",
         WithoutCompanyOverrideFor = "without_company_override_for",
@@ -8407,7 +8526,7 @@ await client.Features.DeleteFeatureAsync("feature_id");
 await client.Features.UpsertFeatureForBillingProductAsync(
     new CreateBillingLinkedFeatureRequestBody
     {
-        BillingProvider = BillingProviderType.Orb,
+        BillingProvider = BillingProviderType.Metronome,
         Description = "description",
         ExternalResourceId = "external_resource_id",
         FeatureType = FeatureType.Boolean,
@@ -8459,7 +8578,7 @@ await client.Features.CountFeaturesAsync(
         BooleanRequireEvent = true,
         FeatureType = new List<FeatureType>() { FeatureType.Boolean },
         Ids = new List<string>() { "ids" },
-        ManagedBy = BillingProviderType.Orb,
+        ManagedBy = BillingProviderType.Metronome,
         PlanVersionId = "plan_version_id",
         Q = "q",
         WithoutCompanyOverrideFor = "without_company_override_for",
@@ -9379,6 +9498,48 @@ await client.Integrationsapi.GetIntegrationWebhookUrlAsync("type");
 </dl>
 </details>
 
+<details><summary><code>client.Integrationsapi.<a href="/src/SchematicHQ.Client/Integrationsapi/IntegrationsapiClient.cs">InstallIntegrationAsync</a>(InstallIntegrationRequestBody { ... }) -> WithRawResponseTask&lt;InstallIntegrationResponse&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Integrationsapi.InstallIntegrationAsync(
+    new InstallIntegrationRequestBody { Type = IntegrationType.Clerk }
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `InstallIntegrationRequestBody` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.Integrationsapi.<a href="/src/SchematicHQ.Client/Integrationsapi/IntegrationsapiClient.cs">StartDataImportAsync</a>(StartDataImportRequestBody { ... }) -> WithRawResponseTask&lt;StartDataImportResponse&gt;</code></summary>
 <dl>
 <dd>
@@ -9421,7 +9582,7 @@ await client.Integrationsapi.StartDataImportAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Integrationsapi.<a href="/src/SchematicHQ.Client/Integrationsapi/IntegrationsapiClient.cs">LoadSampleDataSetV2Async</a>() -> WithRawResponseTask&lt;LoadSampleDataSetV2Response&gt;</code></summary>
+<details><summary><code>client.Integrationsapi.<a href="/src/SchematicHQ.Client/Integrationsapi/IntegrationsapiClient.cs">LoadSampleDataSetAsync</a>() -> WithRawResponseTask&lt;LoadSampleDataSetResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -9434,8 +9595,92 @@ await client.Integrationsapi.StartDataImportAsync(
 <dd>
 
 ```csharp
-await client.Integrationsapi.LoadSampleDataSetV2Async();
+await client.Integrationsapi.LoadSampleDataSetAsync();
 ```
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Integrationsapi.<a href="/src/SchematicHQ.Client/Integrationsapi/IntegrationsapiClient.cs">AssumeStripeInstalledAsync</a>(InstallIntegrationRequestBody { ... }) -> WithRawResponseTask&lt;AssumeStripeInstalledResponse&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Integrationsapi.AssumeStripeInstalledAsync(
+    new InstallIntegrationRequestBody { Type = IntegrationType.Clerk }
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `InstallIntegrationRequestBody` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Integrationsapi.<a href="/src/SchematicHQ.Client/Integrationsapi/IntegrationsapiClient.cs">InstallStripeAsync</a>(InstallIntegrationRequestBody { ... }) -> WithRawResponseTask&lt;InstallStripeResponse&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Integrationsapi.InstallStripeAsync(
+    new InstallIntegrationRequestBody { Type = IntegrationType.Clerk }
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `InstallIntegrationRequestBody` 
+    
 </dd>
 </dl>
 </dd>
@@ -9728,6 +9973,46 @@ await client.Planmigrations.ListCompanyMigrationsAsync(
 </dl>
 </details>
 
+<details><summary><code>client.Planmigrations.<a href="/src/SchematicHQ.Client/Planmigrations/PlanmigrationsClient.cs">RetryCompanyMigrationAsync</a>(planVersionCompanyMigrationId) -> WithRawResponseTask&lt;RetryCompanyMigrationResponse&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Planmigrations.RetryCompanyMigrationAsync("plan_version_company_migration_id");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**planVersionCompanyMigrationId:** `string` — plan_version_company_migration_id
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.Planmigrations.<a href="/src/SchematicHQ.Client/Planmigrations/PlanmigrationsClient.cs">CountCompanyMigrationsAsync</a>(CountCompanyMigrationsRequest { ... }) -> WithRawResponseTask&lt;CountCompanyMigrationsResponse&gt;</code></summary>
 <dl>
 <dd>
@@ -9825,6 +10110,57 @@ await client.Planmigrations.ListMigrationsAsync(
 </dl>
 </details>
 
+<details><summary><code>client.Planmigrations.<a href="/src/SchematicHQ.Client/Planmigrations/PlanmigrationsClient.cs">CreateMigrationAsync</a>(CreateMigrationInput { ... }) -> WithRawResponseTask&lt;CreateMigrationResponse&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Planmigrations.CreateMigrationAsync(
+    new CreateMigrationInput
+    {
+        CompanyIds = new List<string>() { "company_ids" },
+        ExcludedCompanyIds = new List<string>() { "excluded_company_ids" },
+        PlanId = "plan_id",
+        PlanVersionIdTo = "plan_version_id_to",
+        PlanVersionIdsFrom = new List<string>() { "plan_version_ids_from" },
+        Strategy = PlanVersionMigrationStrategy.Immediate,
+        TargetPlanType = PlanType.Plan,
+    }
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `CreateMigrationInput` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.Planmigrations.<a href="/src/SchematicHQ.Client/Planmigrations/PlanmigrationsClient.cs">GetMigrationAsync</a>(planVersionMigrationId) -> WithRawResponseTask&lt;GetMigrationResponse&gt;</code></summary>
 <dl>
 <dd>
@@ -9854,6 +10190,63 @@ await client.Planmigrations.GetMigrationAsync("plan_version_migration_id");
 <dd>
 
 **planVersionMigrationId:** `string` — plan_version_migration_id
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Planmigrations.<a href="/src/SchematicHQ.Client/Planmigrations/PlanmigrationsClient.cs">RetryMigrationAsync</a>(planVersionMigrationId, RetryMigrationRequestBody { ... }) -> WithRawResponseTask&lt;RetryMigrationResponse&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Planmigrations.RetryMigrationAsync(
+    "plan_version_migration_id",
+    new RetryMigrationRequestBody
+    {
+        ErrorCodes = new List<MigrationErrorCode>()
+        {
+            MigrationErrorCode.AmbiguousSubscriptionItem,
+        },
+    }
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**planVersionMigrationId:** `string` — plan_version_migration_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `RetryMigrationRequestBody` 
     
 </dd>
 </dl>

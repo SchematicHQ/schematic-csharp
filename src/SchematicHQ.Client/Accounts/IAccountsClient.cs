@@ -14,6 +14,12 @@ public partial interface IAccountsClient
         CancellationToken cancellationToken = default
     );
 
+    WithRawResponseTask<CountAccountMembersResponse> CountAccountMembersAsync(
+        CountAccountMembersRequest request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    );
+
     WithRawResponseTask<ListApiKeysResponse> ListApiKeysAsync(
         ListApiKeysRequest request,
         RequestOptions? options = null,
