@@ -38,6 +38,9 @@ public record PlanVersionMigrationResponseData : IJsonOnDeserialized
     [JsonPropertyName("plan_version_id_to")]
     public required string PlanVersionIdTo { get; set; }
 
+    [JsonPropertyName("plan_version_ids_from")]
+    public IEnumerable<string> PlanVersionIdsFrom { get; set; } = new List<string>();
+
     [JsonPropertyName("skipped_companies")]
     public required long SkippedCompanies { get; set; }
 

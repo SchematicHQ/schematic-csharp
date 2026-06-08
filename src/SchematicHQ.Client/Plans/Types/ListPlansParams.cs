@@ -90,6 +90,12 @@ public record ListPlansParams : IJsonOnDeserialized
     public string? ScopedToCompanyId { get; set; }
 
     /// <summary>
+    /// Include each plan's entitlements in the response
+    /// </summary>
+    [JsonPropertyName("with_entitlements")]
+    public bool? WithEntitlements { get; set; }
+
+    /// <summary>
     /// Filter out plans that already have a plan entitlement for the specified feature ID
     /// </summary>
     [JsonPropertyName("without_entitlement_for")]

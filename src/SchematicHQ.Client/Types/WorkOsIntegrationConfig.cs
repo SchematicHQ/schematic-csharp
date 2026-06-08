@@ -5,20 +5,23 @@ using SchematicHQ.Client.Core;
 namespace SchematicHQ.Client;
 
 [Serializable]
-public record LoadSampleDataSetV2Response : IJsonOnDeserialized
+public record WorkOsIntegrationConfig : IJsonOnDeserialized
 {
     [JsonExtensionData]
     private readonly IDictionary<string, JsonElement> _extensionData =
         new Dictionary<string, JsonElement>();
 
-    [JsonPropertyName("data")]
-    public required IntegrationsDataSetResponseData Data { get; set; }
+    /// <summary>
+    /// Whether Schematic has received the first webhook event from WorkOS after install
+    /// </summary>
+    [JsonPropertyName("first_events_received")]
+    public bool? FirstEventsReceived { get; set; }
 
     /// <summary>
-    /// Input parameters
+    /// URL configured on the WorkOS webhook endpoint that delivers events to Schematic
     /// </summary>
-    [JsonPropertyName("params")]
-    public Dictionary<string, object?> Params { get; set; } = new Dictionary<string, object?>();
+    [JsonPropertyName("webhook_url")]
+    public string? WebhookUrl { get; set; }
 
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();

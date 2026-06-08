@@ -38,6 +38,12 @@ public record UsageBasedEntitlementResponseData : IJsonOnDeserialized
     [JsonPropertyName("quarterly_usage_based_price")]
     public BillingPriceView? QuarterlyUsageBasedPrice { get; set; }
 
+    /// <summary>
+    /// The committed unit quantity for this entitlement. For custom plans this is the quantity the company is contractually committed to; for standard plans it is the quantity pre-filled when subscribing. Only applies to pay-in-advance entitlements. Note: this is not yet enforced/auto-provisioned as a true default — it is currently stored for downstream billing use.
+    /// </summary>
+    [JsonPropertyName("usage_quantity")]
+    public long? UsageQuantity { get; set; }
+
     [JsonPropertyName("value_bool")]
     public bool? ValueBool { get; set; }
 

@@ -29,6 +29,10 @@ public record ChangeSubscriptionInternalRequestBody : IJsonOnDeserialized
     public IEnumerable<UpdateCreditBundleRequestBody> CreditBundles { get; set; } =
         new List<UpdateCreditBundleRequestBody>();
 
+    [JsonPropertyName("custom_field_values")]
+    public IEnumerable<CheckoutFieldValue> CustomFieldValues { get; set; } =
+        new List<CheckoutFieldValue>();
+
     [JsonPropertyName("new_plan_id")]
     public required string NewPlanId { get; set; }
 

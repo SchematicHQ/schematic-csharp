@@ -290,6 +290,95 @@ public partial class IntegrationsapiClient : IIntegrationsapiClient
         }
     }
 
+    private async Task<WithRawResponse<InstallIntegrationResponse>> InstallIntegrationAsyncCore(
+        InstallIntegrationRequestBody request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        var _headers = await new SchematicHQ.Client.Core.HeadersBuilder.Builder()
+            .Add(_client.Options.Headers)
+            .Add(_client.Options.AdditionalHeaders)
+            .Add(options?.AdditionalHeaders)
+            .BuildAsync()
+            .ConfigureAwait(false);
+        var response = await _client
+            .SendRequestAsync(
+                new JsonRequest
+                {
+                    Method = HttpMethod.Post,
+                    Path = "integrations/install",
+                    Body = request,
+                    Headers = _headers,
+                    ContentType = "application/json",
+                    Options = options,
+                },
+                cancellationToken
+            )
+            .ConfigureAwait(false);
+        if (response.StatusCode is >= 200 and < 400)
+        {
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
+            try
+            {
+                var responseData = JsonUtils.Deserialize<InstallIntegrationResponse>(responseBody)!;
+                return new WithRawResponse<InstallIntegrationResponse>()
+                {
+                    Data = responseData,
+                    RawResponse = new RawResponse()
+                    {
+                        StatusCode = response.Raw.StatusCode,
+                        Url = response.Raw.RequestMessage?.RequestUri ?? new Uri("about:blank"),
+                        Headers = ResponseHeaders.FromHttpResponseMessage(response.Raw),
+                    },
+                };
+            }
+            catch (JsonException e)
+            {
+                throw new SchematicApiException(
+                    "Failed to deserialize response",
+                    response.StatusCode,
+                    responseBody,
+                    e
+                );
+            }
+        }
+        {
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
+            try
+            {
+                switch (response.StatusCode)
+                {
+                    case 400:
+                        throw new BadRequestError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 401:
+                        throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 403:
+                        throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 404:
+                        throw new NotFoundError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 500:
+                        throw new InternalServerError(
+                            JsonUtils.Deserialize<ApiError>(responseBody)
+                        );
+                }
+            }
+            catch (JsonException)
+            {
+                // unable to map error response, throwing generic error
+            }
+            throw new SchematicApiException(
+                $"Error with status code {response.StatusCode}",
+                response.StatusCode,
+                responseBody
+            );
+        }
+    }
+
     private async Task<WithRawResponse<StartDataImportResponse>> StartDataImportAsyncCore(
         StartDataImportRequestBody request,
         RequestOptions? options = null,
@@ -379,7 +468,7 @@ public partial class IntegrationsapiClient : IIntegrationsapiClient
         }
     }
 
-    private async Task<WithRawResponse<LoadSampleDataSetV2Response>> LoadSampleDataSetV2AsyncCore(
+    private async Task<WithRawResponse<LoadSampleDataSetResponse>> LoadSampleDataSetAsyncCore(
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
@@ -409,10 +498,8 @@ public partial class IntegrationsapiClient : IIntegrationsapiClient
                 .ConfigureAwait(false);
             try
             {
-                var responseData = JsonUtils.Deserialize<LoadSampleDataSetV2Response>(
-                    responseBody
-                )!;
-                return new WithRawResponse<LoadSampleDataSetV2Response>()
+                var responseData = JsonUtils.Deserialize<LoadSampleDataSetResponse>(responseBody)!;
+                return new WithRawResponse<LoadSampleDataSetResponse>()
                 {
                     Data = responseData,
                     RawResponse = new RawResponse()
@@ -441,6 +528,188 @@ public partial class IntegrationsapiClient : IIntegrationsapiClient
             {
                 switch (response.StatusCode)
                 {
+                    case 401:
+                        throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 403:
+                        throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 404:
+                        throw new NotFoundError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 500:
+                        throw new InternalServerError(
+                            JsonUtils.Deserialize<ApiError>(responseBody)
+                        );
+                }
+            }
+            catch (JsonException)
+            {
+                // unable to map error response, throwing generic error
+            }
+            throw new SchematicApiException(
+                $"Error with status code {response.StatusCode}",
+                response.StatusCode,
+                responseBody
+            );
+        }
+    }
+
+    private async Task<
+        WithRawResponse<AssumeStripeInstalledResponse>
+    > AssumeStripeInstalledAsyncCore(
+        InstallIntegrationRequestBody request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        var _headers = await new SchematicHQ.Client.Core.HeadersBuilder.Builder()
+            .Add(_client.Options.Headers)
+            .Add(_client.Options.AdditionalHeaders)
+            .Add(options?.AdditionalHeaders)
+            .BuildAsync()
+            .ConfigureAwait(false);
+        var response = await _client
+            .SendRequestAsync(
+                new JsonRequest
+                {
+                    Method = HttpMethod.Post,
+                    Path = "integrations/stripe/v2/assume-installed",
+                    Body = request,
+                    Headers = _headers,
+                    ContentType = "application/json",
+                    Options = options,
+                },
+                cancellationToken
+            )
+            .ConfigureAwait(false);
+        if (response.StatusCode is >= 200 and < 400)
+        {
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
+            try
+            {
+                var responseData = JsonUtils.Deserialize<AssumeStripeInstalledResponse>(
+                    responseBody
+                )!;
+                return new WithRawResponse<AssumeStripeInstalledResponse>()
+                {
+                    Data = responseData,
+                    RawResponse = new RawResponse()
+                    {
+                        StatusCode = response.Raw.StatusCode,
+                        Url = response.Raw.RequestMessage?.RequestUri ?? new Uri("about:blank"),
+                        Headers = ResponseHeaders.FromHttpResponseMessage(response.Raw),
+                    },
+                };
+            }
+            catch (JsonException e)
+            {
+                throw new SchematicApiException(
+                    "Failed to deserialize response",
+                    response.StatusCode,
+                    responseBody,
+                    e
+                );
+            }
+        }
+        {
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
+            try
+            {
+                switch (response.StatusCode)
+                {
+                    case 400:
+                        throw new BadRequestError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 401:
+                        throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 403:
+                        throw new ForbiddenError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 404:
+                        throw new NotFoundError(JsonUtils.Deserialize<ApiError>(responseBody));
+                    case 500:
+                        throw new InternalServerError(
+                            JsonUtils.Deserialize<ApiError>(responseBody)
+                        );
+                }
+            }
+            catch (JsonException)
+            {
+                // unable to map error response, throwing generic error
+            }
+            throw new SchematicApiException(
+                $"Error with status code {response.StatusCode}",
+                response.StatusCode,
+                responseBody
+            );
+        }
+    }
+
+    private async Task<WithRawResponse<InstallStripeResponse>> InstallStripeAsyncCore(
+        InstallIntegrationRequestBody request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        var _headers = await new SchematicHQ.Client.Core.HeadersBuilder.Builder()
+            .Add(_client.Options.Headers)
+            .Add(_client.Options.AdditionalHeaders)
+            .Add(options?.AdditionalHeaders)
+            .BuildAsync()
+            .ConfigureAwait(false);
+        var response = await _client
+            .SendRequestAsync(
+                new JsonRequest
+                {
+                    Method = HttpMethod.Post,
+                    Path = "integrations/stripe/v2/install",
+                    Body = request,
+                    Headers = _headers,
+                    ContentType = "application/json",
+                    Options = options,
+                },
+                cancellationToken
+            )
+            .ConfigureAwait(false);
+        if (response.StatusCode is >= 200 and < 400)
+        {
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
+            try
+            {
+                var responseData = JsonUtils.Deserialize<InstallStripeResponse>(responseBody)!;
+                return new WithRawResponse<InstallStripeResponse>()
+                {
+                    Data = responseData,
+                    RawResponse = new RawResponse()
+                    {
+                        StatusCode = response.Raw.StatusCode,
+                        Url = response.Raw.RequestMessage?.RequestUri ?? new Uri("about:blank"),
+                        Headers = ResponseHeaders.FromHttpResponseMessage(response.Raw),
+                    },
+                };
+            }
+            catch (JsonException e)
+            {
+                throw new SchematicApiException(
+                    "Failed to deserialize response",
+                    response.StatusCode,
+                    responseBody,
+                    e
+                );
+            }
+        }
+        {
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
+            try
+            {
+                switch (response.StatusCode)
+                {
+                    case 400:
+                        throw new BadRequestError(JsonUtils.Deserialize<ApiError>(responseBody));
                     case 401:
                         throw new UnauthorizedError(JsonUtils.Deserialize<ApiError>(responseBody));
                     case 403:
@@ -611,6 +880,22 @@ public partial class IntegrationsapiClient : IIntegrationsapiClient
     }
 
     /// <example><code>
+    /// await client.Integrationsapi.InstallIntegrationAsync(
+    ///     new InstallIntegrationRequestBody { Type = IntegrationType.Clerk }
+    /// );
+    /// </code></example>
+    public WithRawResponseTask<InstallIntegrationResponse> InstallIntegrationAsync(
+        InstallIntegrationRequestBody request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        return new WithRawResponseTask<InstallIntegrationResponse>(
+            InstallIntegrationAsyncCore(request, options, cancellationToken)
+        );
+    }
+
+    /// <example><code>
     /// await client.Integrationsapi.StartDataImportAsync(
     ///     new StartDataImportRequestBody { IntegrationId = "integration_id" }
     /// );
@@ -627,15 +912,47 @@ public partial class IntegrationsapiClient : IIntegrationsapiClient
     }
 
     /// <example><code>
-    /// await client.Integrationsapi.LoadSampleDataSetV2Async();
+    /// await client.Integrationsapi.LoadSampleDataSetAsync();
     /// </code></example>
-    public WithRawResponseTask<LoadSampleDataSetV2Response> LoadSampleDataSetV2Async(
+    public WithRawResponseTask<LoadSampleDataSetResponse> LoadSampleDataSetAsync(
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
     {
-        return new WithRawResponseTask<LoadSampleDataSetV2Response>(
-            LoadSampleDataSetV2AsyncCore(options, cancellationToken)
+        return new WithRawResponseTask<LoadSampleDataSetResponse>(
+            LoadSampleDataSetAsyncCore(options, cancellationToken)
+        );
+    }
+
+    /// <example><code>
+    /// await client.Integrationsapi.AssumeStripeInstalledAsync(
+    ///     new InstallIntegrationRequestBody { Type = IntegrationType.Clerk }
+    /// );
+    /// </code></example>
+    public WithRawResponseTask<AssumeStripeInstalledResponse> AssumeStripeInstalledAsync(
+        InstallIntegrationRequestBody request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        return new WithRawResponseTask<AssumeStripeInstalledResponse>(
+            AssumeStripeInstalledAsyncCore(request, options, cancellationToken)
+        );
+    }
+
+    /// <example><code>
+    /// await client.Integrationsapi.InstallStripeAsync(
+    ///     new InstallIntegrationRequestBody { Type = IntegrationType.Clerk }
+    /// );
+    /// </code></example>
+    public WithRawResponseTask<InstallStripeResponse> InstallStripeAsync(
+        InstallIntegrationRequestBody request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        return new WithRawResponseTask<InstallStripeResponse>(
+            InstallStripeAsyncCore(request, options, cancellationToken)
         );
     }
 

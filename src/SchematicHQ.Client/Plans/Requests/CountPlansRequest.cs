@@ -70,6 +70,12 @@ public record CountPlansRequest
     public string? ScopedToCompanyId { get; set; }
 
     /// <summary>
+    /// Include each plan's entitlements in the response
+    /// </summary>
+    [JsonIgnore]
+    public bool? WithEntitlements { get; set; }
+
+    /// <summary>
     /// Filter out plans that already have a plan entitlement for the specified feature ID
     /// </summary>
     [JsonIgnore]

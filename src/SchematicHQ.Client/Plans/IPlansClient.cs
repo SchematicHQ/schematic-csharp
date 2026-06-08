@@ -15,6 +15,13 @@ public partial interface IPlansClient
         CancellationToken cancellationToken = default
     );
 
+    WithRawResponseTask<MarkCustomPlanBillingPaidResponse> MarkCustomPlanBillingPaidAsync(
+        string customPlanBillingId,
+        Dictionary<string, object?> request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    );
+
     WithRawResponseTask<RetryCustomPlanBillingResponse> RetryCustomPlanBillingAsync(
         string customPlanBillingId,
         RetryCustomPlanBillingRequestBody request,

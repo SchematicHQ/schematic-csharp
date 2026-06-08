@@ -21,6 +21,10 @@ public record PlanGroupDetailResponseData : IJsonOnDeserialized
     [JsonPropertyName("component_settings")]
     public required ComponentSettingsResponseData ComponentSettings { get; set; }
 
+    [JsonPropertyName("custom_checkout_fields")]
+    public IEnumerable<CheckoutFieldResponseData> CustomCheckoutFields { get; set; } =
+        new List<CheckoutFieldResponseData>();
+
     [JsonPropertyName("custom_plan_config")]
     public CustomPlanViewConfigResponseData? CustomPlanConfig { get; set; }
 

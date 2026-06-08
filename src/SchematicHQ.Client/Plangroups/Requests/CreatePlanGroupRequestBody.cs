@@ -24,6 +24,9 @@ public record CreatePlanGroupRequestBody
     [JsonPropertyName("checkout_collect_phone")]
     public required bool CheckoutCollectPhone { get; set; }
 
+    [JsonPropertyName("custom_checkout_fields")]
+    public IEnumerable<CheckoutFieldInput>? CustomCheckoutFields { get; set; }
+
     [JsonPropertyName("custom_plan_config")]
     public CustomPlanConfig? CustomPlanConfig { get; set; }
 

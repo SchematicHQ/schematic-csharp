@@ -104,6 +104,12 @@ public record BillingPlanCreditGrantResponseData : IJsonOnDeserialized
     [JsonPropertyName("reset_type")]
     public BillingPlanCreditGrantResetType? ResetType { get; set; }
 
+    /// <summary>
+    /// Percentage of unused credits that carry over when this grant resets. Only meaningful when reset_type is plan_period.
+    /// </summary>
+    [JsonPropertyName("rollover_percentage")]
+    public required long RolloverPercentage { get; set; }
+
     [JsonPropertyName("updated_at")]
     public required DateTime UpdatedAt { get; set; }
 

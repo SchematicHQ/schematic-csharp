@@ -1581,7 +1581,7 @@ public partial class FeaturesClient : IFeaturesClient
     ///         BooleanRequireEvent = true,
     ///         FeatureType = new List&lt;FeatureType&gt;() { FeatureType.Boolean },
     ///         Ids = new List&lt;string&gt;() { "ids" },
-    ///         ManagedBy = BillingProviderType.Orb,
+    ///         ManagedBy = BillingProviderType.Metronome,
     ///         PlanVersionId = "plan_version_id",
     ///         Q = "q",
     ///         WithoutCompanyOverrideFor = "without_company_override_for",
@@ -1670,7 +1670,7 @@ public partial class FeaturesClient : IFeaturesClient
     /// await client.Features.UpsertFeatureForBillingProductAsync(
     ///     new CreateBillingLinkedFeatureRequestBody
     ///     {
-    ///         BillingProvider = BillingProviderType.Orb,
+    ///         BillingProvider = BillingProviderType.Metronome,
     ///         Description = "description",
     ///         ExternalResourceId = "external_resource_id",
     ///         FeatureType = FeatureType.Boolean,
@@ -1696,7 +1696,7 @@ public partial class FeaturesClient : IFeaturesClient
     ///         BooleanRequireEvent = true,
     ///         FeatureType = new List&lt;FeatureType&gt;() { FeatureType.Boolean },
     ///         Ids = new List&lt;string&gt;() { "ids" },
-    ///         ManagedBy = BillingProviderType.Orb,
+    ///         ManagedBy = BillingProviderType.Metronome,
     ///         PlanVersionId = "plan_version_id",
     ///         Q = "q",
     ///         WithoutCompanyOverrideFor = "without_company_override_for",

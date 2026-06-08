@@ -28,6 +28,15 @@ public record IntegrationConfig
     }
 
     /// <summary>
+    /// Create an instance of IntegrationConfig with <see cref="IntegrationConfig.Metronome"/>.
+    /// </summary>
+    public IntegrationConfig(IntegrationConfig.Metronome value)
+    {
+        Type = "metronome";
+        Value = value.Value;
+    }
+
+    /// <summary>
     /// Create an instance of IntegrationConfig with <see cref="IntegrationConfig.Orb"/>.
     /// </summary>
     public IntegrationConfig(IntegrationConfig.Orb value)
@@ -42,6 +51,15 @@ public record IntegrationConfig
     public IntegrationConfig(IntegrationConfig.Stripe value)
     {
         Type = "stripe";
+        Value = value.Value;
+    }
+
+    /// <summary>
+    /// Create an instance of IntegrationConfig with <see cref="IntegrationConfig.Workos"/>.
+    /// </summary>
+    public IntegrationConfig(IntegrationConfig.Workos value)
+    {
+        Type = "workos";
         Value = value.Value;
     }
 
@@ -62,6 +80,11 @@ public record IntegrationConfig
     public bool IsClerk => Type == "clerk";
 
     /// <summary>
+    /// Returns true if <see cref="Type"/> is "metronome"
+    /// </summary>
+    public bool IsMetronome => Type == "metronome";
+
+    /// <summary>
     /// Returns true if <see cref="Type"/> is "orb"
     /// </summary>
     public bool IsOrb => Type == "orb";
@@ -72,6 +95,11 @@ public record IntegrationConfig
     public bool IsStripe => Type == "stripe";
 
     /// <summary>
+    /// Returns true if <see cref="Type"/> is "workos"
+    /// </summary>
+    public bool IsWorkos => Type == "workos";
+
+    /// <summary>
     /// Returns the value as a <see cref="SchematicHQ.Client.ClerkIntegrationConfig"/> if <see cref="Type"/> is 'clerk', otherwise throws an exception.
     /// </summary>
     /// <exception cref="Exception">Thrown when <see cref="Type"/> is not 'clerk'.</exception>
@@ -79,6 +107,15 @@ public record IntegrationConfig
         IsClerk
             ? (SchematicHQ.Client.ClerkIntegrationConfig)Value!
             : throw new global::System.Exception("IntegrationConfig.Type is not 'clerk'");
+
+    /// <summary>
+    /// Returns the value as a <see cref="SchematicHQ.Client.MetronomeIntegrationConfig"/> if <see cref="Type"/> is 'metronome', otherwise throws an exception.
+    /// </summary>
+    /// <exception cref="Exception">Thrown when <see cref="Type"/> is not 'metronome'.</exception>
+    public SchematicHQ.Client.MetronomeIntegrationConfig AsMetronome() =>
+        IsMetronome
+            ? (SchematicHQ.Client.MetronomeIntegrationConfig)Value!
+            : throw new global::System.Exception("IntegrationConfig.Type is not 'metronome'");
 
     /// <summary>
     /// Returns the value as a <see cref="SchematicHQ.Client.OrbIntegrationConfig"/> if <see cref="Type"/> is 'orb', otherwise throws an exception.
@@ -98,26 +135,41 @@ public record IntegrationConfig
             ? (SchematicHQ.Client.StripeIntegrationConfig)Value!
             : throw new global::System.Exception("IntegrationConfig.Type is not 'stripe'");
 
+    /// <summary>
+    /// Returns the value as a <see cref="SchematicHQ.Client.WorkOsIntegrationConfig"/> if <see cref="Type"/> is 'workos', otherwise throws an exception.
+    /// </summary>
+    /// <exception cref="Exception">Thrown when <see cref="Type"/> is not 'workos'.</exception>
+    public SchematicHQ.Client.WorkOsIntegrationConfig AsWorkos() =>
+        IsWorkos
+            ? (SchematicHQ.Client.WorkOsIntegrationConfig)Value!
+            : throw new global::System.Exception("IntegrationConfig.Type is not 'workos'");
+
     public T Match<T>(
         Func<SchematicHQ.Client.ClerkIntegrationConfig, T> onClerk,
+        Func<SchematicHQ.Client.MetronomeIntegrationConfig, T> onMetronome,
         Func<SchematicHQ.Client.OrbIntegrationConfig, T> onOrb,
         Func<SchematicHQ.Client.StripeIntegrationConfig, T> onStripe,
+        Func<SchematicHQ.Client.WorkOsIntegrationConfig, T> onWorkos,
         Func<string, object?, T> onUnknown_
     )
     {
         return Type switch
         {
             "clerk" => onClerk(AsClerk()),
+            "metronome" => onMetronome(AsMetronome()),
             "orb" => onOrb(AsOrb()),
             "stripe" => onStripe(AsStripe()),
+            "workos" => onWorkos(AsWorkos()),
             _ => onUnknown_(Type, Value),
         };
     }
 
     public void Visit(
         Action<SchematicHQ.Client.ClerkIntegrationConfig> onClerk,
+        Action<SchematicHQ.Client.MetronomeIntegrationConfig> onMetronome,
         Action<SchematicHQ.Client.OrbIntegrationConfig> onOrb,
         Action<SchematicHQ.Client.StripeIntegrationConfig> onStripe,
+        Action<SchematicHQ.Client.WorkOsIntegrationConfig> onWorkos,
         Action<string, object?> onUnknown_
     )
     {
@@ -126,11 +178,17 @@ public record IntegrationConfig
             case "clerk":
                 onClerk(AsClerk());
                 break;
+            case "metronome":
+                onMetronome(AsMetronome());
+                break;
             case "orb":
                 onOrb(AsOrb());
                 break;
             case "stripe":
                 onStripe(AsStripe());
+                break;
+            case "workos":
+                onWorkos(AsWorkos());
                 break;
             default:
                 onUnknown_(Type, Value);
@@ -146,6 +204,20 @@ public record IntegrationConfig
         if (Type == "clerk")
         {
             value = (SchematicHQ.Client.ClerkIntegrationConfig)Value!;
+            return true;
+        }
+        value = null;
+        return false;
+    }
+
+    /// <summary>
+    /// Attempts to cast the value to a <see cref="SchematicHQ.Client.MetronomeIntegrationConfig"/> and returns true if successful.
+    /// </summary>
+    public bool TryAsMetronome(out SchematicHQ.Client.MetronomeIntegrationConfig? value)
+    {
+        if (Type == "metronome")
+        {
+            value = (SchematicHQ.Client.MetronomeIntegrationConfig)Value!;
             return true;
         }
         value = null;
@@ -180,13 +252,32 @@ public record IntegrationConfig
         return false;
     }
 
+    /// <summary>
+    /// Attempts to cast the value to a <see cref="SchematicHQ.Client.WorkOsIntegrationConfig"/> and returns true if successful.
+    /// </summary>
+    public bool TryAsWorkos(out SchematicHQ.Client.WorkOsIntegrationConfig? value)
+    {
+        if (Type == "workos")
+        {
+            value = (SchematicHQ.Client.WorkOsIntegrationConfig)Value!;
+            return true;
+        }
+        value = null;
+        return false;
+    }
+
     public override string ToString() => JsonUtils.Serialize(this);
 
     public static implicit operator IntegrationConfig(IntegrationConfig.Clerk value) => new(value);
 
+    public static implicit operator IntegrationConfig(IntegrationConfig.Metronome value) =>
+        new(value);
+
     public static implicit operator IntegrationConfig(IntegrationConfig.Orb value) => new(value);
 
     public static implicit operator IntegrationConfig(IntegrationConfig.Stripe value) => new(value);
+
+    public static implicit operator IntegrationConfig(IntegrationConfig.Workos value) => new(value);
 
     [Serializable]
     internal sealed class JsonConverter : JsonConverter<IntegrationConfig>
@@ -236,6 +327,13 @@ public record IntegrationConfig
                         ?? throw new JsonException(
                             "Failed to deserialize SchematicHQ.Client.ClerkIntegrationConfig"
                         ),
+                "metronome" =>
+                    jsonWithoutDiscriminator.Deserialize<SchematicHQ.Client.MetronomeIntegrationConfig?>(
+                        options
+                    )
+                        ?? throw new JsonException(
+                            "Failed to deserialize SchematicHQ.Client.MetronomeIntegrationConfig"
+                        ),
                 "orb" =>
                     jsonWithoutDiscriminator.Deserialize<SchematicHQ.Client.OrbIntegrationConfig?>(
                         options
@@ -249,6 +347,13 @@ public record IntegrationConfig
                     )
                         ?? throw new JsonException(
                             "Failed to deserialize SchematicHQ.Client.StripeIntegrationConfig"
+                        ),
+                "workos" =>
+                    jsonWithoutDiscriminator.Deserialize<SchematicHQ.Client.WorkOsIntegrationConfig?>(
+                        options
+                    )
+                        ?? throw new JsonException(
+                            "Failed to deserialize SchematicHQ.Client.WorkOsIntegrationConfig"
                         ),
                 _ => json.Deserialize<object?>(options),
             };
@@ -265,8 +370,10 @@ public record IntegrationConfig
                 value.Type switch
                 {
                     "clerk" => JsonSerializer.SerializeToNode(value.Value, options),
+                    "metronome" => JsonSerializer.SerializeToNode(value.Value, options),
                     "orb" => JsonSerializer.SerializeToNode(value.Value, options),
                     "stripe" => JsonSerializer.SerializeToNode(value.Value, options),
+                    "workos" => JsonSerializer.SerializeToNode(value.Value, options),
                     _ => JsonSerializer.SerializeToNode(value.Value, options),
                 } ?? new JsonObject();
             json["type"] = value.Type;
@@ -316,6 +423,26 @@ public record IntegrationConfig
     }
 
     /// <summary>
+    /// Discriminated union type for metronome
+    /// </summary>
+    [Serializable]
+    public struct Metronome
+    {
+        public Metronome(SchematicHQ.Client.MetronomeIntegrationConfig value)
+        {
+            Value = value;
+        }
+
+        internal SchematicHQ.Client.MetronomeIntegrationConfig Value { get; set; }
+
+        public override string ToString() => Value.ToString() ?? "null";
+
+        public static implicit operator IntegrationConfig.Metronome(
+            SchematicHQ.Client.MetronomeIntegrationConfig value
+        ) => new(value);
+    }
+
+    /// <summary>
     /// Discriminated union type for orb
     /// </summary>
     [Serializable]
@@ -352,6 +479,26 @@ public record IntegrationConfig
 
         public static implicit operator IntegrationConfig.Stripe(
             SchematicHQ.Client.StripeIntegrationConfig value
+        ) => new(value);
+    }
+
+    /// <summary>
+    /// Discriminated union type for workos
+    /// </summary>
+    [Serializable]
+    public struct Workos
+    {
+        public Workos(SchematicHQ.Client.WorkOsIntegrationConfig value)
+        {
+            Value = value;
+        }
+
+        internal SchematicHQ.Client.WorkOsIntegrationConfig Value { get; set; }
+
+        public override string ToString() => Value.ToString() ?? "null";
+
+        public static implicit operator IntegrationConfig.Workos(
+            SchematicHQ.Client.WorkOsIntegrationConfig value
         ) => new(value);
     }
 }

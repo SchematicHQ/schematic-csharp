@@ -18,7 +18,7 @@ public partial class CompaniesClient : ICompaniesClient
         CancellationToken cancellationToken = default
     )
     {
-        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 19)
+        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 20)
             .Add("credit_type_ids", request.CreditTypeIds)
             .Add("has_scheduled_downgrade", request.HasScheduledDowngrade)
             .Add("ids", request.Ids)
@@ -26,6 +26,7 @@ public partial class CompaniesClient : ICompaniesClient
             .Add("plan_id", request.PlanId)
             .Add("plan_ids", request.PlanIds)
             .Add("plan_version_id", request.PlanVersionId)
+            .Add("plan_version_ids", request.PlanVersionIds)
             .Add("q", request.Q)
             .Add("sort_order_column", request.SortOrderColumn)
             .Add("sort_order_direction", request.SortOrderDirection)
@@ -402,7 +403,7 @@ public partial class CompaniesClient : ICompaniesClient
         CancellationToken cancellationToken = default
     )
     {
-        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 19)
+        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 20)
             .Add("credit_type_ids", request.CreditTypeIds)
             .Add("has_scheduled_downgrade", request.HasScheduledDowngrade)
             .Add("ids", request.Ids)
@@ -410,6 +411,7 @@ public partial class CompaniesClient : ICompaniesClient
             .Add("plan_id", request.PlanId)
             .Add("plan_ids", request.PlanIds)
             .Add("plan_version_id", request.PlanVersionId)
+            .Add("plan_version_ids", request.PlanVersionIds)
             .Add("q", request.Q)
             .Add("sort_order_column", request.SortOrderColumn)
             .Add("sort_order_direction", request.SortOrderDirection)
@@ -3415,6 +3417,7 @@ public partial class CompaniesClient : ICompaniesClient
     ///         PlanId = "plan_id",
     ///         PlanIds = new List&lt;string&gt;() { "plan_ids" },
     ///         PlanVersionId = "plan_version_id",
+    ///         PlanVersionIds = new List&lt;string&gt;() { "plan_version_ids" },
     ///         Q = "q",
     ///         SortOrderColumn = "sort_order_column",
     ///         SortOrderDirection = SortDirection.Asc,
@@ -3500,6 +3503,7 @@ public partial class CompaniesClient : ICompaniesClient
     ///         PlanId = "plan_id",
     ///         PlanIds = new List&lt;string&gt;() { "plan_ids" },
     ///         PlanVersionId = "plan_version_id",
+    ///         PlanVersionIds = new List&lt;string&gt;() { "plan_version_ids" },
     ///         Q = "q",
     ///         SortOrderColumn = "sort_order_column",
     ///         SortOrderDirection = SortDirection.Asc,

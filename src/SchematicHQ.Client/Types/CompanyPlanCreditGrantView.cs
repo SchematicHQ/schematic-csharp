@@ -113,6 +113,9 @@ public record CompanyPlanCreditGrantView : IJsonOnDeserialized
     [JsonPropertyName("reset_type")]
     public required BillingPlanCreditGrantResetType ResetType { get; set; }
 
+    [JsonPropertyName("rollover_percentage")]
+    public required long RolloverPercentage { get; set; }
+
     /// <summary>
     /// Deprecated field, will be removed in the future. Use Credit.SingularName instead.
     /// </summary>
