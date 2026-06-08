@@ -1,5 +1,6 @@
 using System.Net.WebSockets;
 using System.Reflection;
+using SchematicHQ.Client.Cache;
 using SchematicHQ.Client.Datastream;
 
 namespace SchematicHQ.Client.Test.Datastream.Mocks
@@ -15,9 +16,10 @@ namespace SchematicHQ.Client.Test.Datastream.Mocks
             var logger = new MockSchematicLogger();
             var mockWebSocket = new MockWebSocket();
             mockWebSocket.SetState(WebSocketState.Open);
+            var cacheProvider = new LocalCache();
             
             var monitorCallback = connectionCallback ?? (isConnected => {});
-            var client = new DatastreamClient("wss://test.example.com", logger, apiKey, monitorCallback, cacheTtl, mockWebSocket);
+            var client = new DatastreamClient("wss://test.example.com", logger, apiKey, monitorCallback, cacheProvider, cacheTtl, mockWebSocket);
             
             return (client, mockWebSocket, logger, monitorCallback);
         }
