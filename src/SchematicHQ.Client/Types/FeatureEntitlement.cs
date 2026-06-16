@@ -24,10 +24,22 @@ public record FeatureEntitlement : IJsonOnDeserialized
     public string? CreditId { get; set; }
 
     /// <summary>
-    /// If the company has a credit-based entitlement for this feature, the remaining credit amount
+    /// If the company has a credit-based entitlement for this feature, the credit available to fund new consumption or a new lease hold — open lease holds are excluded. Clients that hold a lease should gate on this plus their own unspent hold; clients with no lease awareness should use credit_settled instead
     /// </summary>
     [JsonPropertyName("credit_remaining")]
     public double? CreditRemaining { get; set; }
+
+    /// <summary>
+    /// If the company has a credit-based entitlement for this feature, the unspent amount held by an open credit lease. Returns to credit_remaining when the lease is released
+    /// </summary>
+    [JsonPropertyName("credit_reserved")]
+    public double? CreditReserved { get; set; }
+
+    /// <summary>
+    /// If the company has a credit-based entitlement for this feature, the balance net of actual consumption, unaffected by open lease holds (credit_remaining plus credit_reserved). The number to display to end users
+    /// </summary>
+    [JsonPropertyName("credit_settled")]
+    public double? CreditSettled { get; set; }
 
     /// <summary>
     /// If the company has a credit-based entitlement for this feature, the total credit amount

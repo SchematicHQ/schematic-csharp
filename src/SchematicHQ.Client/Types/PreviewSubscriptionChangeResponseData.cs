@@ -26,6 +26,15 @@ public record PreviewSubscriptionChangeResponseData : IJsonOnDeserialized
     [JsonPropertyName("new_charges")]
     public required long NewCharges { get; set; }
 
+    [JsonPropertyName("opt_in_required")]
+    public required bool OptInRequired { get; set; }
+
+    [JsonPropertyName("opt_in_text")]
+    public string? OptInText { get; set; }
+
+    [JsonPropertyName("opt_in_title")]
+    public string? OptInTitle { get; set; }
+
     [JsonPropertyName("payment_method_required")]
     public required bool PaymentMethodRequired { get; set; }
 

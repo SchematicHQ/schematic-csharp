@@ -20,6 +20,15 @@ public record CheckoutSettingsResponseData : IJsonOnDeserialized
     [JsonPropertyName("collect_phone")]
     public required bool CollectPhone { get; set; }
 
+    [JsonPropertyName("opt_in_enabled")]
+    public required bool OptInEnabled { get; set; }
+
+    [JsonPropertyName("opt_in_text")]
+    public string? OptInText { get; set; }
+
+    [JsonPropertyName("opt_in_title")]
+    public string? OptInTitle { get; set; }
+
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();
 

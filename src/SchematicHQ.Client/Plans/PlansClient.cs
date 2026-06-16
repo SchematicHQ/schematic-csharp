@@ -1800,14 +1800,7 @@ public partial class PlansClient : IPlansClient
     /// <example><code>
     /// await client.Plans.RetryCustomPlanBillingAsync(
     ///     "custom_plan_billing_id",
-    ///     new RetryCustomPlanBillingRequestBody
-    ///     {
-    ///         CustomerEmail = "customer_email",
-    ///         PayInAdvance = new List&lt;UpdatePayInAdvanceRequestBody&gt;()
-    ///         {
-    ///             new UpdatePayInAdvanceRequestBody { PriceId = "price_id", Quantity = 1000000 },
-    ///         },
-    ///     }
+    ///     new RetryCustomPlanBillingRequestBody { CustomerEmail = "customer_email" }
     /// );
     /// </code></example>
     public WithRawResponseTask<RetryCustomPlanBillingResponse> RetryCustomPlanBillingAsync(
@@ -2112,10 +2105,6 @@ public partial class PlansClient : IPlansClient
     ///     {
     ///         ExcludedCompanyIds = new List&lt;string&gt;() { "excluded_company_ids" },
     ///         MigrationStrategy = PlanVersionMigrationStrategy.Immediate,
-    ///         PayInAdvance = new List&lt;UpdatePayInAdvanceRequestBody&gt;()
-    ///         {
-    ///             new UpdatePayInAdvanceRequestBody { PriceId = "price_id", Quantity = 1000000 },
-    ///         },
     ///     }
     /// );
     /// </code></example>

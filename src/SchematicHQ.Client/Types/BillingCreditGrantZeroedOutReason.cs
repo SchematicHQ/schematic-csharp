@@ -20,6 +20,8 @@ public readonly record struct BillingCreditGrantZeroedOutReason : IStringEnum
         Values.PlanPeriodReset
     );
 
+    public static readonly BillingCreditGrantZeroedOutReason Reconciled = new(Values.Reconciled);
+
     public BillingCreditGrantZeroedOutReason(string value)
     {
         Value = value;
@@ -124,5 +126,7 @@ public readonly record struct BillingCreditGrantZeroedOutReason : IStringEnum
         public const string PlanChange = "plan_change";
 
         public const string PlanPeriodReset = "plan_period_reset";
+
+        public const string Reconciled = "reconciled";
     }
 }

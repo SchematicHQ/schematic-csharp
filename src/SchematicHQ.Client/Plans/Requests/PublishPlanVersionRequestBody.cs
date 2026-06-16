@@ -21,10 +21,6 @@ public record PublishPlanVersionRequestBody
     [JsonPropertyName("migration_strategy")]
     public required PlanVersionMigrationStrategy MigrationStrategy { get; set; }
 
-    [JsonPropertyName("pay_in_advance")]
-    public IEnumerable<UpdatePayInAdvanceRequestBody> PayInAdvance { get; set; } =
-        new List<UpdatePayInAdvanceRequestBody>();
-
     /// <inheritdoc />
     public override string ToString()
     {

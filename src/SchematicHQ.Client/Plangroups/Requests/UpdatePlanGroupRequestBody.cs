@@ -45,6 +45,15 @@ public record UpdatePlanGroupRequestBody
     [JsonPropertyName("initial_plan_price_id")]
     public string? InitialPlanPriceId { get; set; }
 
+    [JsonPropertyName("opt_in_enabled")]
+    public required bool OptInEnabled { get; set; }
+
+    [JsonPropertyName("opt_in_text")]
+    public string? OptInText { get; set; }
+
+    [JsonPropertyName("opt_in_title")]
+    public string? OptInTitle { get; set; }
+
     [JsonPropertyName("ordered_add_ons")]
     public IEnumerable<OrderedPlansInGroup> OrderedAddOns { get; set; } =
         new List<OrderedPlansInGroup>();

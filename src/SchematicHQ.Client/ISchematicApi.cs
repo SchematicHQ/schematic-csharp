@@ -22,4 +22,8 @@ public partial interface ISchematicApi
     public IScheduledcheckoutClient Scheduledcheckout { get; }
     public IAccesstokensClient Accesstokens { get; }
     public IWebhooksClient Webhooks { get; }
+    Task GetCreditLedgerAsync(
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    );
 }

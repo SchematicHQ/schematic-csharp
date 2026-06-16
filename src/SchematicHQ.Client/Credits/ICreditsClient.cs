@@ -139,18 +139,6 @@ public partial interface ICreditsClient
         CancellationToken cancellationToken = default
     );
 
-    WithRawResponseTask<GetEnrichedCreditLedgerResponse> GetEnrichedCreditLedgerAsync(
-        GetEnrichedCreditLedgerRequest request,
-        RequestOptions? options = null,
-        CancellationToken cancellationToken = default
-    );
-
-    WithRawResponseTask<CountCreditLedgerResponse> CountCreditLedgerAsync(
-        CountCreditLedgerRequest request,
-        RequestOptions? options = null,
-        CancellationToken cancellationToken = default
-    );
-
     WithRawResponseTask<ListBillingPlanCreditGrantsResponse> ListBillingPlanCreditGrantsAsync(
         ListBillingPlanCreditGrantsRequest request,
         RequestOptions? options = null,

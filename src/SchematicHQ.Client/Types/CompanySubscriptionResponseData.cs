@@ -33,6 +33,9 @@ public record CompanySubscriptionResponseData : IJsonOnDeserialized
     [JsonPropertyName("interval")]
     public required string Interval { get; set; }
 
+    [JsonPropertyName("is_initial")]
+    public required bool IsInitial { get; set; }
+
     [JsonPropertyName("latest_invoice")]
     public InvoiceResponseData? LatestInvoice { get; set; }
 

@@ -1,4 +1,29 @@
 # Reference
+<details><summary><code>client.<a href="/src/SchematicHQ.Client/Schematic.cs">GetCreditLedgerAsync</a>()</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.GetCreditLedgerAsync();
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 ## accounts
 <details><summary><code>client.Accounts.<a href="/src/SchematicHQ.Client/Accounts/AccountsClient.cs">ListAccountMembersAsync</a>(ListAccountMembersRequest { ... }) -> WithRawResponseTask&lt;ListAccountMembersResponse&gt;</code></summary>
 <dl>
@@ -2902,110 +2927,6 @@ await client.Credits.ReleaseCreditLeaseAsync(
 <dd>
 
 **request:** `Dictionary<string, object?>` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Credits.<a href="/src/SchematicHQ.Client/Credits/CreditsClient.cs">GetEnrichedCreditLedgerAsync</a>(GetEnrichedCreditLedgerRequest { ... }) -> WithRawResponseTask&lt;GetEnrichedCreditLedgerResponse&gt;</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```csharp
-await client.Credits.GetEnrichedCreditLedgerAsync(
-    new GetEnrichedCreditLedgerRequest
-    {
-        CompanyId = "company_id",
-        BillingCreditId = "billing_credit_id",
-        FeatureId = "feature_id",
-        Period = CreditLedgerPeriod.Daily,
-        StartTime = "start_time",
-        EndTime = "end_time",
-        Limit = 1000000,
-        Offset = 1000000,
-    }
-);
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**request:** `GetEnrichedCreditLedgerRequest` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Credits.<a href="/src/SchematicHQ.Client/Credits/CreditsClient.cs">CountCreditLedgerAsync</a>(CountCreditLedgerRequest { ... }) -> WithRawResponseTask&lt;CountCreditLedgerResponse&gt;</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```csharp
-await client.Credits.CountCreditLedgerAsync(
-    new CountCreditLedgerRequest
-    {
-        CompanyId = "company_id",
-        BillingCreditId = "billing_credit_id",
-        FeatureId = "feature_id",
-        Period = CreditLedgerPeriod.Daily,
-        StartTime = "start_time",
-        EndTime = "end_time",
-        Limit = 1000000,
-        Offset = 1000000,
-    }
-);
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**request:** `CountCreditLedgerRequest` 
     
 </dd>
 </dl>
@@ -6729,14 +6650,7 @@ await client.Plans.MarkCustomPlanBillingPaidAsync(
 ```csharp
 await client.Plans.RetryCustomPlanBillingAsync(
     "custom_plan_billing_id",
-    new RetryCustomPlanBillingRequestBody
-    {
-        CustomerEmail = "customer_email",
-        PayInAdvance = new List<UpdatePayInAdvanceRequestBody>()
-        {
-            new UpdatePayInAdvanceRequestBody { PriceId = "price_id", Quantity = 1000000 },
-        },
-    }
+    new RetryCustomPlanBillingRequestBody { CustomerEmail = "customer_email" }
 );
 ```
 </dd>
@@ -7435,10 +7349,6 @@ await client.Plans.PublishPlanVersionAsync(
     {
         ExcludedCompanyIds = new List<string>() { "excluded_company_ids" },
         MigrationStrategy = PlanVersionMigrationStrategy.Immediate,
-        PayInAdvance = new List<UpdatePayInAdvanceRequestBody>()
-        {
-            new UpdatePayInAdvanceRequestBody { PriceId = "price_id", Quantity = 1000000 },
-        },
     }
 );
 ```
@@ -9793,6 +9703,7 @@ await client.Plangroups.CreatePlanGroupAsync(
         CheckoutCollectEmail = true,
         CheckoutCollectPhone = true,
         EnableTaxCollection = true,
+        OptInEnabled = true,
         OrderedAddOns = new List<OrderedPlansInGroup>()
         {
             new OrderedPlansInGroup { PlanId = "plan_id" },
@@ -9865,6 +9776,7 @@ await client.Plangroups.UpdatePlanGroupAsync(
         CheckoutCollectEmail = true,
         CheckoutCollectPhone = true,
         EnableTaxCollection = true,
+        OptInEnabled = true,
         OrderedAddOns = new List<OrderedPlansInGroup>()
         {
             new OrderedPlansInGroup { PlanId = "plan_id" },
