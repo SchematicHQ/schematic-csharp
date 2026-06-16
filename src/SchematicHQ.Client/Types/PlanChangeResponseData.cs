@@ -59,6 +59,12 @@ public record PlanChangeResponseData : IJsonOnDeserialized
     [JsonPropertyName("id")]
     public required string Id { get; set; }
 
+    /// <summary>
+    /// True when this change moved the company to a different version of the same plan (e.g. a plan version migration) rather than to a different plan.
+    /// </summary>
+    [JsonPropertyName("is_version_upgrade")]
+    public required bool IsVersionUpgrade { get; set; }
+
     [JsonPropertyName("previous_base_plan")]
     public PlanSnapshotView? PreviousBasePlan { get; set; }
 

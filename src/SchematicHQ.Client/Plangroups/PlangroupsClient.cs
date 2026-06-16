@@ -307,6 +307,7 @@ public partial class PlangroupsClient : IPlangroupsClient
     ///         CheckoutCollectEmail = true,
     ///         CheckoutCollectPhone = true,
     ///         EnableTaxCollection = true,
+    ///         OptInEnabled = true,
     ///         OrderedAddOns = new List&lt;OrderedPlansInGroup&gt;()
     ///         {
     ///             new OrderedPlansInGroup { PlanId = "plan_id" },
@@ -353,6 +354,7 @@ public partial class PlangroupsClient : IPlangroupsClient
     ///         CheckoutCollectEmail = true,
     ///         CheckoutCollectPhone = true,
     ///         EnableTaxCollection = true,
+    ///         OptInEnabled = true,
     ///         OrderedAddOns = new List&lt;OrderedPlansInGroup&gt;()
     ///         {
     ///             new OrderedPlansInGroup { PlanId = "plan_id" },

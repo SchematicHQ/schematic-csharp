@@ -39,6 +39,9 @@ public record ChangeSubscriptionInternalRequestBody : IJsonOnDeserialized
     [JsonPropertyName("new_price_id")]
     public required string NewPriceId { get; set; }
 
+    [JsonPropertyName("opt_in_accepted")]
+    public bool? OptInAccepted { get; set; }
+
     [JsonPropertyName("pay_in_advance")]
     public IEnumerable<UpdatePayInAdvanceRequestBody> PayInAdvance { get; set; } =
         new List<UpdatePayInAdvanceRequestBody>();
