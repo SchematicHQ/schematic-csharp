@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Testing;
 using NUnit.Framework;
 using OpenFeature;
 using OpenFeature.Constant;
@@ -267,30 +269,30 @@ namespace SchematicHQ.Client.Test.OpenFeature
         public async Task Initialize_WithCustomLogger_RoutesThroughLogger()
         {
             // Arrange
-            var mockLogger = new MockSchematicLogger();
-            var options = new ClientOptions { Offline = true, Logger = mockLogger };
+            var mockLogger = new FakeLogger();
+            var options = new ClientOptions { Offline = true, LoggerFactory = mockLogger.ToLoggerFactory() };
             var provider = new SchematicProvider("test-key", options);
 
             // Act
             await provider.InitializeAsync(EvaluationContext.Empty);
 
             // Assert
-            Assert.That(mockLogger.HasLogEntry(LogLevel.Info, "initialized"), Is.True);
+            Assert.That(mockLogger.HasLogEntry(LogLevel.Information, "initialized"), Is.True);
         }
 
         [Test]
         public async Task Shutdown_WithCustomLogger_RoutesThroughLogger()
         {
             // Arrange
-            var mockLogger = new MockSchematicLogger();
-            var options = new ClientOptions { Offline = true, Logger = mockLogger };
+            var mockLogger = new FakeLogger();
+            var options = new ClientOptions { Offline = true, LoggerFactory = mockLogger.ToLoggerFactory() };
             var provider = new SchematicProvider("test-key", options);
 
             // Act
             await provider.ShutdownAsync();
 
             // Assert
-            Assert.That(mockLogger.HasLogEntry(LogLevel.Info, "shutting down"), Is.True);
+            Assert.That(mockLogger.HasLogEntry(LogLevel.Information, "shutting down"), Is.True);
         }
 
         // Regression guard: when no custom Logger is supplied, ClientOptions.Logger

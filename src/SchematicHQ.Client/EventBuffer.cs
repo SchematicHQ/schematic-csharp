@@ -95,7 +95,7 @@ public class EventBuffer<T> : IEventBuffer<T> where T : notnull
         if (!_channel.Writer.TryWrite(item))
             throw new InvalidOperationException("Failed to write item to buffer channel.");
 
-        _logger.LogDebug("Item added to buffer. Current size: {QueueSize}", _queue.Count);
+        _logger.LogDebug("Item added to buffer. Current size: {QueueSize}", _channel.Reader.Count);
         
         if (_channel.Reader.Count >= _maxSize)
         {
@@ -121,7 +121,7 @@ public class EventBuffer<T> : IEventBuffer<T> where T : notnull
             throw new InvalidOperationException("Buffer is not running.");
 
         await DrainAsync();
-        _logger.Info("Buffer flushed manually.");
+        _logger.LogInformation("Buffer flushed manually.");
     }
 
     private async Task DrainAsync()
@@ -256,7 +256,7 @@ public class EventBuffer<T> : IEventBuffer<T> where T : notnull
             }
             catch (Exception ex)
             {
-                _logger.Warn("Error draining buffer on stop: {0}", ex.Message);
+                _logger.LogWarning("Error draining buffer on stop: {Message}", ex.Message);
             }
 
             var timeout = TimeSpan.FromSeconds(MaxWaitForBuffer);

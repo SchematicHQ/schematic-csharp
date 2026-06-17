@@ -82,7 +82,7 @@ namespace SchematicHQ.Client.OpenFeature
             }
             catch (Exception ex)
             {
-                _logger.Error("Error evaluating boolean flag '{0}': {1}", flagKey, ex.Message);
+                _logger.LogError("Error evaluating boolean flag '{FlagKey}': {Message}", flagKey, ex.Message);
                 
                 var errorType = MapExceptionToErrorType(ex);
                 return new ResolutionDetails<bool>(

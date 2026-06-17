@@ -11,7 +11,7 @@ namespace SchematicHQ.Client;
 public partial class ClientOptions
 {
     private static readonly ILoggerFactory DefaultLoggerFactory =
-        Microsoft.Extensions.Logging.LoggerFactory.Create(builder => builder.AddSimpleConsole());
+        Microsoft.Extensions.Logging.LoggerFactory.Create(builder => builder.AddSimpleConsole().SetMinimumLevel(LogLevel.Warning));
 
     public Dictionary<string, bool> FlagDefaults { get; set; } = new Dictionary<string, bool>();
     public ILoggerFactory LoggerFactory { get; set; } = DefaultLoggerFactory;
