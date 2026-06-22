@@ -1,5 +1,5 @@
 # Reference
-<details><summary><code>client.<a href="/src/SchematicHQ.Client/Schematic.cs">GetCreditLedgerAsync</a>()</code></summary>
+<details><summary><code>client.<a href="/src/SchematicHQ.Client/Schematic.cs">GetCreditLedgerAsync</a>() -> WithRawResponseTask</code></summary>
 <dl>
 <dd>
 
@@ -1439,6 +1439,7 @@ await client.Billing.ListBillingPricesAsync(
         Ids = new List<string>() { "ids" },
         Interval = "interval",
         IsActive = true,
+        PlanVersionId = "plan_version_id",
         Price = 1000000,
         ProductId = "product_id",
         ProductIds = new List<string>() { "product_ids" },
@@ -1596,6 +1597,7 @@ await client.Billing.ListBillingProductPricesAsync(
         Ids = new List<string>() { "ids" },
         Interval = "interval",
         IsActive = true,
+        PlanVersionId = "plan_version_id",
         Price = 1000000,
         ProductId = "product_id",
         ProductIds = new List<string>() { "product_ids" },
@@ -10829,6 +10831,57 @@ await client.Webhooks.DeleteWebhookAsync("webhook_id");
 <dd>
 
 **webhookId:** `string` — webhook_id
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Webhooks.<a href="/src/SchematicHQ.Client/Webhooks/WebhooksClient.cs">SendTestWebhookActionAsync</a>(webhookId, TestWebhookRequestBody { ... }) -> WithRawResponseTask&lt;SendTestWebhookActionResponse&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Webhooks.SendTestWebhookActionAsync(
+    "webhook_id",
+    new TestWebhookRequestBody { RequestType = WebhookRequestType.SubscriptionTrialEnded }
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**webhookId:** `string` — webhook_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `TestWebhookRequestBody` 
     
 </dd>
 </dl>

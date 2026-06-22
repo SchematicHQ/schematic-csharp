@@ -18,6 +18,12 @@ public record FeatureEntitlement : IJsonOnDeserialized
     public long? Allocation { get; set; }
 
     /// <summary>
+    /// If the company has a credit-based entitlement for this feature, the credit cost per unit of usage
+    /// </summary>
+    [JsonPropertyName("consumption_rate")]
+    public double? ConsumptionRate { get; set; }
+
+    /// <summary>
     /// If the company has a credit-based entitlement for this feature, the ID of the credit
     /// </summary>
     [JsonPropertyName("credit_id")]
@@ -58,6 +64,12 @@ public record FeatureEntitlement : IJsonOnDeserialized
     /// </summary>
     [JsonPropertyName("event_name")]
     public string? EventName { get; set; }
+
+    /// <summary>
+    /// For event-based or credit-metered feature entitlements, the event subtype whose usage is tracked
+    /// </summary>
+    [JsonPropertyName("event_subtype")]
+    public string? EventSubtype { get; set; }
 
     /// <summary>
     /// The ID of the feature
