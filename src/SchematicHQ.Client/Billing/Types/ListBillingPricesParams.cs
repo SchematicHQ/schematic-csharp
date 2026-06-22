@@ -56,6 +56,12 @@ public record ListBillingPricesParams : IJsonOnDeserialized
     [JsonPropertyName("offset")]
     public long? Offset { get; set; }
 
+    /// <summary>
+    /// Filter for prices belonging to a specific plan version (e.g. the latest published version)
+    /// </summary>
+    [JsonPropertyName("plan_version_id")]
+    public string? PlanVersionId { get; set; }
+
     [JsonPropertyName("price")]
     public long? Price { get; set; }
 

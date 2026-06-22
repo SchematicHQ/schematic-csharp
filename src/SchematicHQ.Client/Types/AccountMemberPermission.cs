@@ -8,10 +8,6 @@ namespace SchematicHQ.Client;
 [Serializable]
 public readonly record struct AccountMemberPermission : IStringEnum
 {
-    public static readonly AccountMemberPermission BillingCreditsEdit = new(
-        Values.BillingCreditsEdit
-    );
-
     public static readonly AccountMemberPermission CompaniesEdit = new(Values.CompaniesEdit);
 
     public static readonly AccountMemberPermission CompanyUsersEdit = new(Values.CompanyUsersEdit);
@@ -140,8 +136,6 @@ public readonly record struct AccountMemberPermission : IStringEnum
     [Serializable]
     public static class Values
     {
-        public const string BillingCreditsEdit = "billing_credits_edit";
-
         public const string CompaniesEdit = "companies_edit";
 
         public const string CompanyUsersEdit = "company_users_edit";

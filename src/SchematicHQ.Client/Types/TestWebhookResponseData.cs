@@ -5,24 +5,17 @@ using SchematicHQ.Client.Core;
 namespace SchematicHQ.Client;
 
 [Serializable]
-public record CheckFlagsResponseData : IJsonOnDeserialized
+public record TestWebhookResponseData : IJsonOnDeserialized
 {
     [JsonExtensionData]
     private readonly IDictionary<string, JsonElement> _extensionData =
         new Dictionary<string, JsonElement>();
 
-    /// <summary>
-    /// Lease-aware credit balances keyed by credit ID, covering every credit type the company holds a balance in
-    /// </summary>
-    [JsonPropertyName("credit_balances")]
-    public Dictionary<string, CompanyCreditBalance>? CreditBalances { get; set; }
+    [JsonPropertyName("response_code")]
+    public required long ResponseCode { get; set; }
 
-    [JsonPropertyName("flags")]
-    public IEnumerable<CheckFlagResponseData> Flags { get; set; } =
-        new List<CheckFlagResponseData>();
-
-    [JsonPropertyName("plan")]
-    public DatastreamCompanyPlan? Plan { get; set; }
+    [JsonPropertyName("success")]
+    public required bool Success { get; set; }
 
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();

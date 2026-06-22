@@ -36,6 +36,12 @@ public record ListBillingPricesRequest
     [JsonIgnore]
     public bool? IsActive { get; set; }
 
+    /// <summary>
+    /// Filter for prices belonging to a specific plan version (e.g. the latest published version)
+    /// </summary>
+    [JsonIgnore]
+    public string? PlanVersionId { get; set; }
+
     [JsonIgnore]
     public long? Price { get; set; }
 

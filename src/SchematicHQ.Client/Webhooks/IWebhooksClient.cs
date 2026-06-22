@@ -51,6 +51,13 @@ public partial interface IWebhooksClient
         CancellationToken cancellationToken = default
     );
 
+    WithRawResponseTask<SendTestWebhookActionResponse> SendTestWebhookActionAsync(
+        string webhookId,
+        TestWebhookRequestBody request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    );
+
     WithRawResponseTask<CountWebhooksResponse> CountWebhooksAsync(
         CountWebhooksRequest request,
         RequestOptions? options = null,

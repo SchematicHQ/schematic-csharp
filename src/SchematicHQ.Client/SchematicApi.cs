@@ -15,7 +15,7 @@ public partial class SchematicApi : ISchematicApi
                 { "X-Fern-Language", "C#" },
                 { "X-Fern-SDK-Name", "SchematicHQ.Client" },
                 { "X-Fern-SDK-Version", Version.Current },
-                { "User-Agent", "SchematicHQ.Client/1.4.8" },
+                { "User-Agent", "SchematicHQ.Client/1.4.9" },
             }
         );
         foreach (var header in platformHeaders)
@@ -96,10 +96,7 @@ public partial class SchematicApi : ISchematicApi
 
     public IWebhooksClient Webhooks { get; }
 
-    /// <example><code>
-    /// await client.GetCreditLedgerAsync();
-    /// </code></example>
-    public async Task GetCreditLedgerAsync(
+    private async Task<RawResponse> GetCreditLedgerAsyncCore(
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
@@ -124,7 +121,12 @@ public partial class SchematicApi : ISchematicApi
             .ConfigureAwait(false);
         if (response.StatusCode is >= 200 and < 400)
         {
-            return;
+            return new SchematicHQ.Client.RawResponse()
+            {
+                StatusCode = response.Raw.StatusCode,
+                Url = response.Raw.RequestMessage?.RequestUri ?? new Uri("about:blank"),
+                Headers = ResponseHeaders.FromHttpResponseMessage(response.Raw),
+            };
         }
         {
             var responseBody = await response
@@ -133,8 +135,25 @@ public partial class SchematicApi : ISchematicApi
             throw new SchematicApiException(
                 $"Error with status code {response.StatusCode}",
                 response.StatusCode,
-                responseBody
+                responseBody,
+                rawResponse: new SchematicHQ.Client.RawResponse()
+                {
+                    StatusCode = response.Raw.StatusCode,
+                    Url = response.Raw.RequestMessage?.RequestUri ?? new Uri("about:blank"),
+                    Headers = ResponseHeaders.FromHttpResponseMessage(response.Raw),
+                }
             );
         }
+    }
+
+    /// <example><code>
+    /// await client.GetCreditLedgerAsync();
+    /// </code></example>
+    public WithRawResponseTask GetCreditLedgerAsync(
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        return new WithRawResponseTask(GetCreditLedgerAsyncCore(options, cancellationToken));
     }
 }

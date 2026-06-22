@@ -5,24 +5,29 @@ using SchematicHQ.Client.Core;
 namespace SchematicHQ.Client;
 
 [Serializable]
-public record CheckFlagsResponseData : IJsonOnDeserialized
+public record CompanyCreditBalance : IJsonOnDeserialized
 {
     [JsonExtensionData]
     private readonly IDictionary<string, JsonElement> _extensionData =
         new Dictionary<string, JsonElement>();
 
     /// <summary>
-    /// Lease-aware credit balances keyed by credit ID, covering every credit type the company holds a balance in
+    /// Remaining credit, excluding any open lease hold (the value SDKs gate on)
     /// </summary>
-    [JsonPropertyName("credit_balances")]
-    public Dictionary<string, CompanyCreditBalance>? CreditBalances { get; set; }
+    [JsonPropertyName("remaining")]
+    public required double Remaining { get; set; }
 
-    [JsonPropertyName("flags")]
-    public IEnumerable<CheckFlagResponseData> Flags { get; set; } =
-        new List<CheckFlagResponseData>();
+    /// <summary>
+    /// Amount held by the company's open credit lease, 0 when none is open
+    /// </summary>
+    [JsonPropertyName("reserved")]
+    public required double Reserved { get; set; }
 
-    [JsonPropertyName("plan")]
-    public DatastreamCompanyPlan? Plan { get; set; }
+    /// <summary>
+    /// Spendable balance including the open lease hold (remaining + reserved)
+    /// </summary>
+    [JsonPropertyName("settled")]
+    public required double Settled { get; set; }
 
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();
