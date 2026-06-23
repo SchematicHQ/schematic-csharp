@@ -309,7 +309,7 @@ namespace SchematicHQ.Client.Test.OpenFeature
             try
             {
                 // No Logger set; raise LogLevel so the Info init message is emitted.
-                var options = new ClientOptions { Offline = true, LogLevel = LogLevel.Info };
+                var options = new ClientOptions { Offline = true, LogLevel = LogLevel.Information };
                 var provider = new SchematicProvider("test-key", options);
 
                 // Act

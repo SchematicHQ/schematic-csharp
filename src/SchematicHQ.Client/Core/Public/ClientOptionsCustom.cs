@@ -10,11 +10,25 @@ namespace SchematicHQ.Client;
 
 public partial class ClientOptions
 {
-    private static readonly ILoggerFactory DefaultLoggerFactory =
-        Microsoft.Extensions.Logging.LoggerFactory.Create(builder => builder.AddSimpleConsole().SetMinimumLevel(LogLevel.Warning));
+    private ILoggerFactory? _loggerFactory;
+    private ILoggerFactory CreateDefaultLogger() => Microsoft.Extensions.Logging.LoggerFactory.Create(builder => builder.AddSimpleConsole().SetMinimumLevel(LogLevel));
 
     public Dictionary<string, bool> FlagDefaults { get; set; } = new Dictionary<string, bool>();
-    public ILoggerFactory LoggerFactory { get; set; } = DefaultLoggerFactory;
+
+    
+    /// <summary>
+    /// Override the logger factory for the client. Defaults to a simple console logger.
+    /// </summary>
+    public ILoggerFactory LoggerFactory
+    {
+        get => _loggerFactory ??= CreateDefaultLogger();
+        set => _loggerFactory = value;
+    }
+
+    /// <summary>
+    /// Sets the log level for the client. Defaults to LogLevel.Warning. No-op if a custom <see cref="LoggerFactory"/> is provided.
+    /// </summary>
+    public LogLevel LogLevel { get; set; } = LogLevel.Warning;
     public List<ICacheProvider<CheckFlagWithEntitlementResponse?>> CacheProviders { get; set; } = new List<ICacheProvider<CheckFlagWithEntitlementResponse?>>();
     public CacheConfiguration? CacheConfiguration { get; set; }
     public bool Offline { get; set; }
@@ -57,6 +71,7 @@ public static class ClientOptionsExtensions
             Headers = new Headers(new Dictionary<string, HeaderValue>(options.Headers)),
             HttpClient = httpClient,
             LoggerFactory = options.LoggerFactory,
+            LogLevel = options.LogLevel,
             MaxRetries = options.MaxRetries,
             Offline = options.Offline,
             ReplicatorMode = options.ReplicatorMode,
