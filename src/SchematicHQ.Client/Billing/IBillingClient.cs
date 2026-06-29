@@ -14,6 +14,18 @@ public partial interface IBillingClient
         CancellationToken cancellationToken = default
     );
 
+    WithRawResponseTask<DeleteBillingCouponResponse> DeleteBillingCouponAsync(
+        string billingId,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    );
+
+    WithRawResponseTask<DeleteBillingCustomerResponse> DeleteBillingCustomerAsync(
+        string billingId,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    );
+
     WithRawResponseTask<UpsertBillingCustomerResponse> UpsertBillingCustomerAsync(
         CreateBillingCustomerRequestBody request,
         RequestOptions? options = null,
@@ -40,6 +52,12 @@ public partial interface IBillingClient
 
     WithRawResponseTask<UpsertInvoiceResponse> UpsertInvoiceAsync(
         CreateInvoiceRequestBody request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    );
+
+    WithRawResponseTask<DeleteBillingInvoiceResponse> DeleteBillingInvoiceAsync(
+        string billingId,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     );

@@ -72,7 +72,7 @@ public record CreditCompanyGrantView : IJsonOnDeserialized
     public BillingProductPriceResponseData? Price { get; set; }
 
     [JsonPropertyName("quantity")]
-    public required long Quantity { get; set; }
+    public required double Quantity { get; set; }
 
     [JsonPropertyName("quantity_remaining")]
     public required double QuantityRemaining { get; set; }

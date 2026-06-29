@@ -5,17 +5,20 @@ using SchematicHQ.Client.Core;
 namespace SchematicHQ.Client;
 
 [Serializable]
-public record CountResponse : IJsonOnDeserialized
+public record DeleteBillingInvoiceResponse : IJsonOnDeserialized
 {
     [JsonExtensionData]
     private readonly IDictionary<string, JsonElement> _extensionData =
         new Dictionary<string, JsonElement>();
 
+    [JsonPropertyName("data")]
+    public required DeleteResponse Data { get; set; }
+
     /// <summary>
-    /// The number of resources
+    /// Input parameters
     /// </summary>
-    [JsonPropertyName("count")]
-    public long? Count { get; set; }
+    [JsonPropertyName("params")]
+    public Dictionary<string, object?> Params { get; set; } = new Dictionary<string, object?>();
 
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();

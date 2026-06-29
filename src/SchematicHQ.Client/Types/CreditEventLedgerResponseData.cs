@@ -72,7 +72,7 @@ public record CreditEventLedgerResponseData : IJsonOnDeserialized
     public string? GrantId { get; set; }
 
     [JsonPropertyName("grant_quantity")]
-    public long? GrantQuantity { get; set; }
+    public double? GrantQuantity { get; set; }
 
     [JsonPropertyName("grant_quantity_remaining")]
     public double? GrantQuantityRemaining { get; set; }
