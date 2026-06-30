@@ -939,6 +939,86 @@ await client.Billing.UpsertBillingCouponAsync(
 </dl>
 </details>
 
+<details><summary><code>client.Billing.<a href="/src/SchematicHQ.Client/Billing/BillingClient.cs">DeleteBillingCouponAsync</a>(billingId) -> WithRawResponseTask&lt;DeleteBillingCouponResponse&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Billing.DeleteBillingCouponAsync("billing_id");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**billingId:** `string` — billing_id
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Billing.<a href="/src/SchematicHQ.Client/Billing/BillingClient.cs">DeleteBillingCustomerAsync</a>(billingId) -> WithRawResponseTask&lt;DeleteBillingCustomerResponse&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Billing.DeleteBillingCustomerAsync("billing_id");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**billingId:** `string` — billing_id
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.Billing.<a href="/src/SchematicHQ.Client/Billing/BillingClient.cs">UpsertBillingCustomerAsync</a>(CreateBillingCustomerRequestBody { ... }) -> WithRawResponseTask&lt;UpsertBillingCustomerResponse&gt;</code></summary>
 <dl>
 <dd>
@@ -1176,6 +1256,46 @@ await client.Billing.UpsertInvoiceAsync(
 <dd>
 
 **request:** `CreateInvoiceRequestBody` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Billing.<a href="/src/SchematicHQ.Client/Billing/BillingClient.cs">DeleteBillingInvoiceAsync</a>(billingId) -> WithRawResponseTask&lt;DeleteBillingInvoiceResponse&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Billing.DeleteBillingInvoiceAsync("billing_id");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**billingId:** `string` — billing_id
     
 </dd>
 </dl>
