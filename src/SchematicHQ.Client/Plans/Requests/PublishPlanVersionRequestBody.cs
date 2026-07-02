@@ -9,6 +9,9 @@ public record PublishPlanVersionRequestBody
     [JsonPropertyName("activation_strategy")]
     public CustomPlanActivationStrategy? ActivationStrategy { get; set; }
 
+    [JsonPropertyName("coupon_external_id")]
+    public string? CouponExternalId { get; set; }
+
     [JsonPropertyName("customer_email")]
     public string? CustomerEmail { get; set; }
 

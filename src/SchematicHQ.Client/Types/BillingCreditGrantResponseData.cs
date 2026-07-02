@@ -51,7 +51,7 @@ public record BillingCreditGrantResponseData : IJsonOnDeserialized
     public BillingPriceResponseData? Price { get; set; }
 
     [JsonPropertyName("quantity")]
-    public required long Quantity { get; set; }
+    public required double Quantity { get; set; }
 
     [JsonPropertyName("quantity_remaining")]
     public required double QuantityRemaining { get; set; }

@@ -33,7 +33,7 @@ public record EventBodyTrack : IJsonOnDeserialized
     /// Optionally specify the quantity of the event
     /// </summary>
     [JsonPropertyName("quantity")]
-    public int? Quantity { get; set; }
+    public long? Quantity { get; set; }
 
     /// <summary>
     /// A map of trait names to trait values
