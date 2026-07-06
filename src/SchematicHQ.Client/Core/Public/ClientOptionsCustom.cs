@@ -1,4 +1,5 @@
-using System.Net.Http;
+
+using Microsoft.Extensions.Logging;
 using SchematicHQ.Client.Core;
 using SchematicHQ.Client.Cache;
 using SchematicHQ.Client.RulesEngine;
@@ -9,25 +10,25 @@ namespace SchematicHQ.Client;
 
 public partial class ClientOptions
 {
+    private ILoggerFactory? _loggerFactory;
+    private ILoggerFactory CreateDefaultLogger() => Microsoft.Extensions.Logging.LoggerFactory.Create(builder => builder.AddSimpleConsole().SetMinimumLevel(LogLevel));
+
     public Dictionary<string, bool> FlagDefaults { get; set; } = new Dictionary<string, bool>();
 
+    
     /// <summary>
-    /// Custom logger implementation. When null (the default), the SDK uses
-    /// a <see cref="ConsoleLogger"/> configured with <see cref="LogLevel"/>.
-    /// When a custom logger is provided, the SDK does not override or wrap
-    /// its level — the provided logger's own configuration is the source of
-    /// truth and <see cref="LogLevel"/> is ignored.
+    /// Override the logger factory for the client. Defaults to a simple console logger.
     /// </summary>
-    public ISchematicLogger? Logger { get; set; }
+    public ILoggerFactory LoggerFactory
+    {
+        get => _loggerFactory ??= CreateDefaultLogger();
+        set => _loggerFactory = value;
+    }
 
     /// <summary>
-    /// Level for the default <see cref="ConsoleLogger"/>. Defaults to
-    /// <see cref="LogLevel.Warn"/>; raise to <see cref="LogLevel.Debug"/>
-    /// for verbose diagnostics. Ignored when a custom <see cref="Logger"/>
-    /// is provided.
+    /// Sets the log level for the client. Defaults to LogLevel.Warning. No-op if a custom <see cref="LoggerFactory"/> is provided.
     /// </summary>
-    public LogLevel LogLevel { get; set; } = LogLevel.Warn;
-
+    public LogLevel LogLevel { get; set; } = LogLevel.Warning;
     public List<ICacheProvider<CheckFlagWithEntitlementResponse?>> CacheProviders { get; set; } = new List<ICacheProvider<CheckFlagWithEntitlementResponse?>>();
     public CacheConfiguration? CacheConfiguration { get; set; }
     public bool Offline { get; set; }
@@ -69,7 +70,7 @@ public static class ClientOptionsExtensions
             FlagDefaults = options.FlagDefaults,
             Headers = new Headers(new Dictionary<string, HeaderValue>(options.Headers)),
             HttpClient = httpClient,
-            Logger = options.Logger,
+            LoggerFactory = options.LoggerFactory,
             LogLevel = options.LogLevel,
             MaxRetries = options.MaxRetries,
             Offline = options.Offline,

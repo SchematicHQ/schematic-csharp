@@ -1,5 +1,7 @@
 using System.Net;
 using System.Text.Json;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 using Moq;
 using Moq.Protected;
 using NUnit.Framework;
@@ -10,14 +12,14 @@ namespace SchematicHQ.Client.Tests
     [TestFixture]
     public class EventCaptureClientTests
     {
-        private Mock<ISchematicLogger> _mockLogger;
+        private ILogger _mockLogger;
         private Mock<HttpMessageHandler> _mockHandler;
         private HttpClient _httpClient;
 
         [SetUp]
         public void SetUp()
         {
-            _mockLogger = new Mock<ISchematicLogger>();
+            _mockLogger = NullLogger.Instance;
             _mockHandler = new Mock<HttpMessageHandler>();
             _httpClient = new HttpClient(_mockHandler.Object);
         }
@@ -42,7 +44,7 @@ namespace SchematicHQ.Client.Tests
                 .Callback<HttpRequestMessage, CancellationToken>((req, _) => capturedRequest = req)
                 .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.OK));
 
-            var client = new EventCaptureClient(_httpClient, "test_api_key", _mockLogger.Object);
+            var client = new EventCaptureClient(_httpClient, "test_api_key", _mockLogger);
             var events = new List<CreateEventRequestBody>
             {
                 new CreateEventRequestBody
@@ -73,7 +75,7 @@ namespace SchematicHQ.Client.Tests
                 .Callback<HttpRequestMessage, CancellationToken>((req, _) => capturedRequest = req)
                 .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.OK));
 
-            var client = new EventCaptureClient(_httpClient, "test_api_key", _mockLogger.Object, "https://custom.capture.com");
+            var client = new EventCaptureClient(_httpClient, "test_api_key", _mockLogger, "https://custom.capture.com");
             var events = new List<CreateEventRequestBody>
             {
                 new CreateEventRequestBody
@@ -105,7 +107,7 @@ namespace SchematicHQ.Client.Tests
                 })
                 .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.OK));
 
-            var client = new EventCaptureClient(_httpClient, "test_api_key_123", _mockLogger.Object);
+            var client = new EventCaptureClient(_httpClient, "test_api_key_123", _mockLogger);
             var events = new List<CreateEventRequestBody>
             {
                 new CreateEventRequestBody
@@ -144,7 +146,7 @@ namespace SchematicHQ.Client.Tests
                 })
                 .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.OK));
 
-            var client = new EventCaptureClient(_httpClient, "test_key", _mockLogger.Object);
+            var client = new EventCaptureClient(_httpClient, "test_key", _mockLogger);
             var events = new List<CreateEventRequestBody>
             {
                 new CreateEventRequestBody
@@ -192,7 +194,7 @@ namespace SchematicHQ.Client.Tests
                     ItExpr.IsAny<CancellationToken>())
                 .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.OK));
 
-            var client = new EventCaptureClient(_httpClient, "test_key", _mockLogger.Object);
+            var client = new EventCaptureClient(_httpClient, "test_key", _mockLogger);
             await client.SendBatchAsync(new List<CreateEventRequestBody>());
 
             _mockHandler
@@ -218,7 +220,7 @@ namespace SchematicHQ.Client.Tests
                     Content = new StringContent("Internal Server Error")
                 });
 
-            var client = new EventCaptureClient(_httpClient, "test_key", _mockLogger.Object);
+            var client = new EventCaptureClient(_httpClient, "test_key", _mockLogger);
             var events = new List<CreateEventRequestBody>
             {
                 new CreateEventRequestBody
@@ -249,7 +251,7 @@ namespace SchematicHQ.Client.Tests
                 })
                 .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.OK));
 
-            var client = new EventCaptureClient(_httpClient, "test_key", _mockLogger.Object);
+            var client = new EventCaptureClient(_httpClient, "test_key", _mockLogger);
             var events = new List<CreateEventRequestBody>
             {
                 new CreateEventRequestBody

@@ -1,4 +1,5 @@
 using NUnit.Framework;
+using Microsoft.Extensions.Logging.Testing;
 using Moq;
 using Moq.Protected;
 using System;
@@ -20,7 +21,7 @@ namespace SchematicHQ.Client.Test.Datastream
             // Arrange
             var mockHttpMessageHandler = new Mock<HttpMessageHandler>();
             var httpClient = new HttpClient(mockHttpMessageHandler.Object);
-            var logger = new MockSchematicLogger();
+            var logger = new FakeLogger();
             
             var healthResponse = """
                 {
@@ -71,7 +72,7 @@ namespace SchematicHQ.Client.Test.Datastream
             // Arrange
             var mockHttpMessageHandler = new Mock<HttpMessageHandler>();
             var httpClient = new HttpClient(mockHttpMessageHandler.Object);
-            var logger = new MockSchematicLogger();
+            var logger = new FakeLogger();
             
             var healthResponse = """
                 {
@@ -122,7 +123,7 @@ namespace SchematicHQ.Client.Test.Datastream
             // Arrange
             var mockHttpMessageHandler = new Mock<HttpMessageHandler>();
             var httpClient = new HttpClient(mockHttpMessageHandler.Object);
-            var logger = new MockSchematicLogger();
+            var logger = new FakeLogger();
             
             var eventCallCount = 0;
             string? firstEventOldVersion = null;
@@ -234,7 +235,7 @@ namespace SchematicHQ.Client.Test.Datastream
         {
             // Arrange
             var httpClient = new HttpClient();
-            var logger = new MockSchematicLogger();
+            var logger = new FakeLogger();
             var service = new ReplicatorHealthService(httpClient, "http://test/ready", logger);
 
             // Act & Assert - should not throw
