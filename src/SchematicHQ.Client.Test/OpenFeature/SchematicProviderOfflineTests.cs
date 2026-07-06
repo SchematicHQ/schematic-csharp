@@ -315,6 +315,10 @@ namespace SchematicHQ.Client.Test.OpenFeature
                 // Act
                 await provider.InitializeAsync(EvaluationContext.Empty);
 
+                // The default SimpleConsole logger writes on a background thread; dispose
+                // the factory to synchronously drain the queue before asserting.
+                options.LoggerFactory.Dispose();
+
                 // Assert
                 Assert.That(stringWriter.ToString(), Does.Contain("Schematic provider initialized"));
             }
