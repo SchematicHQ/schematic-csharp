@@ -372,7 +372,7 @@ public partial class Schematic
             }
             catch (Exception cacheEx)
             {
-                _logger.Error("Error caching flag result: {0}", cacheEx.Message);
+                _logger.LogError("Error caching flag result: {0}", cacheEx.Message);
             }
 
             return result;
@@ -475,7 +475,7 @@ public partial class Schematic
                 {
                     try
                     {
-                    await _cache.Set(cacheKey, responseForCache);  
+                        await _cache.Set(cacheKey, responseForCache);  
                     }
                     catch (Exception cacheEx)
                     {
@@ -484,7 +484,7 @@ public partial class Schematic
                 }
                 catch (Exception cacheEx)
                 {
-                    _logger.Error("Error caching flag result: {0}", cacheEx.Message);
+                    _logger.LogError("Error caching flag result: {0}", cacheEx.Message);
                 }
                
             }

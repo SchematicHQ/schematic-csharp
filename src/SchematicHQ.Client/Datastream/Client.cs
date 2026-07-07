@@ -533,7 +533,7 @@ namespace SchematicHQ.Client.Datastream
           {
             var deleteCacheKey = FlagCacheKey(flagKey);
             await _flagsCache.Delete(deleteCacheKey);
-            _logger.Debug("Deleted single flag from cache: {0}", flagKey);
+            _logger.LogDebug("Deleted single flag from cache: {0}", flagKey);
           }
           else
           {
@@ -560,7 +560,7 @@ namespace SchematicHQ.Client.Datastream
 
         var cacheKey = FlagCacheKey(flag.Key);
         await _flagsCache.Set(cacheKey, flag);
-        _logger.Debug("Cached single flag: {0}", flag.Key);
+        _logger.LogDebug("Cached single flag: {0}", flag.Key);
 
         // Note: Unlike bulk flags processing, we do NOT call DeleteMissing for single flag updates
       }
@@ -779,7 +779,7 @@ namespace SchematicHQ.Client.Datastream
           {
             var resourceKey = ResourceKeyToCacheKey<RulesengineUser>(CacheKeyPrefixUser, key.Key, key.Value);
             await _cacheProvider.Delete(resourceKey);
-            _logger.Debug("Deleted user from cache with key: {0}", resourceKey);
+            _logger.LogDebug("Deleted user from cache with key: {0}", resourceKey);
           }
           return;
         }

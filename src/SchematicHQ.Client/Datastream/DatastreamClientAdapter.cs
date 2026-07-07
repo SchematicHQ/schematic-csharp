@@ -30,7 +30,7 @@ namespace SchematicHQ.Client.Datastream
     /// <summary>
     /// Creates a new datastream client adapter
     /// </summary>
-    public DatastreamClientAdapter(string baseUrl, ISchematicLogger logger, string apiKey, ICacheProvider provider, DatastreamOptions options, bool replicatorMode = false, string? replicatorHealthUrl = null)
+    public DatastreamClientAdapter(string baseUrl, ILogger logger, string apiKey, ICacheProvider provider, DatastreamOptions options, bool replicatorMode = false, string? replicatorHealthUrl = null)
     {
       _logger = logger;
       _replicatorMode = replicatorMode;
