@@ -1,7 +1,3 @@
-using SchematicHQ.Client.RulesEngine;
-
-#nullable enable
-
 namespace SchematicHQ.Client.Cache
 {
     /// <summary>
@@ -43,6 +39,6 @@ namespace SchematicHQ.Client.Cache
         /// <summary>
         /// Cache capacity for local cache
         /// </summary>
-        public int LocalCacheCapacity { get; set; } = LocalCache<CheckFlagWithEntitlementResponse?>.DEFAULT_CACHE_CAPACITY;
+        public int LocalCacheCapacity { get; set; } = LocalCache.DEFAULT_CACHE_CAPACITY;
     }
 }

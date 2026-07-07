@@ -10,6 +10,7 @@ using System.Net.WebSockets;
 // Disambiguate from SchematicHQ.Client.LogLevel — this file's adapter
 // implements Microsoft.Extensions.Logging.ILogger and needs MS's enum.
 using MsLogLevel = Microsoft.Extensions.Logging.LogLevel;
+using SchematicHQ.Client.Cache;
 
 namespace SchematicHQ.Client.Datastream
 {
@@ -29,7 +30,7 @@ namespace SchematicHQ.Client.Datastream
     /// <summary>
     /// Creates a new datastream client adapter
     /// </summary>
-    public DatastreamClientAdapter(string baseUrl, ILogger logger, string apiKey, DatastreamOptions options, bool replicatorMode = false, string? replicatorHealthUrl = null)
+    public DatastreamClientAdapter(string baseUrl, ILogger logger, string apiKey, ICacheProvider provider, DatastreamOptions options, bool replicatorMode = false, string? replicatorHealthUrl = null)
     {
       _logger = logger;
       _replicatorMode = replicatorMode;
@@ -52,6 +53,7 @@ namespace SchematicHQ.Client.Datastream
           logger,
           apiKey,
           _connectionTracker.UpdateConnectionState, // callback to update connection state
+          provider,
           options.CacheTTL,
           null, // default websocket client
           options,
@@ -203,17 +205,17 @@ namespace SchematicHQ.Client.Datastream
       var needsUser = request.User != null && request.User.Count > 0;
 
       // Always try to get cached resources first
-      var cachedFlag = _client.GetFlag(flagKey);
+      var cachedFlag = await _client.GetFlag(flagKey);
       RulesengineCompany? cachedCompany = null;
       RulesengineUser? cachedUser = null;
 
       if (needsCompany && request.Company != null)
       {
-        cachedCompany = _client.GetCompanyFromCache(request.Company);
+        cachedCompany = await _client.GetCompanyFromCache(request.Company);
       }
       if (needsUser && request.User != null)
       {
-        cachedUser = _client.GetUserFromCache(request.User);
+        cachedUser = await _client.GetUserFromCache(request.User);
       }
 
       // Check if all required resources are available in cache
