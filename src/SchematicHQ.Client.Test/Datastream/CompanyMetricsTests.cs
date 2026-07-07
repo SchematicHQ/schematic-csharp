@@ -29,8 +29,8 @@ namespace SchematicHQ.Client.Test.Datastream
 
         // Client and dependencies
     private DatastreamClient _client;
-    private ICacheProvider<RulesengineCompany> _companyCache;
-    private ICacheProvider<string> _companyLookupCache;
+    private ICacheProvider _companyCache;
+    private ICacheProvider _companyLookupCache;
 
         [SetUp]
         public void Setup()
@@ -39,11 +39,9 @@ namespace SchematicHQ.Client.Test.Datastream
             var (client, _, _, _) = DatastreamClientTestFactory.CreateClientWithMocks();
             _client = client;
             // Use reflection to get the private cache fields
-            var cacheField = typeof(DatastreamClient).GetField("_companyCache", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-            _companyCache = (ICacheProvider<RulesengineCompany>?)cacheField?.GetValue(_client) ?? throw new Exception("Could not get company cache");
-
-            var lookupCacheField = typeof(DatastreamClient).GetField("_companyLookupCache", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-            _companyLookupCache = (ICacheProvider<string>?)lookupCacheField?.GetValue(_client) ?? throw new Exception("Could not get company lookup cache");
+            var cacheField = typeof(DatastreamClient).GetField("_cacheProvider", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+            _companyCache = (ICacheProvider?)cacheField?.GetValue(_client) ?? throw new Exception("Could not get company cache");
+            _companyLookupCache = (ICacheProvider?)cacheField?.GetValue(_client) ?? throw new Exception("Could not get company lookup cache");
         }
 
         [TearDown]
@@ -80,7 +78,7 @@ namespace SchematicHQ.Client.Test.Datastream
         /// <summary>
         /// Helper method to set up a company in cache using both layers
         /// </summary>
-        private void SetupCompanyInCache(string companyJson)
+        private async Task SetupCompanyInCache(string companyJson)
         {
             var company = JsonSerializer.Deserialize<RulesengineCompany>(companyJson, new JsonSerializerOptions
             {
@@ -91,7 +89,7 @@ namespace SchematicHQ.Client.Test.Datastream
 
             // Layer 1: Store company object at ID key
             var idKey = CompanyIdCacheKey(company.Id);
-            _companyCache.Set(idKey, company);
+            await _companyCache.Set(idKey, company);
 
             // Layer 2: Store company ID at each resource key
             if (company.Keys != null)
@@ -99,7 +97,7 @@ namespace SchematicHQ.Client.Test.Datastream
                 foreach (var key in company.Keys)
                 {
                     var resourceKey = ResourceKeyToCacheKey(key.Key, key.Value);
-                    _companyLookupCache.Set(resourceKey, company.Id);
+                    await _companyLookupCache.Set(resourceKey, company.Id);
                 }
             }
         }
@@ -107,18 +105,18 @@ namespace SchematicHQ.Client.Test.Datastream
         /// <summary>
         /// Helper method to get a company from cache using two-step lookup
         /// </summary>
-        private RulesengineCompany? GetCompanyFromCache(Dictionary<string, string> keys)
+        private async Task<RulesengineCompany?> GetCompanyFromCache(Dictionary<string, string> keys)
         {
             if (keys.Count == 0) return null;
 
             foreach (var key in keys)
             {
                 var resourceKey = ResourceKeyToCacheKey(key.Key, key.Value);
-                var companyId = _companyLookupCache.Get(resourceKey);
+                var companyId = await _companyLookupCache.Get<string>(resourceKey);
                 if (companyId != null)
                 {
                     var idKey = CompanyIdCacheKey(companyId);
-                    var company = _companyCache.Get(idKey);
+                    var company = await _companyCache.Get<RulesengineCompany>(idKey);
                     if (company != null) return company;
                 }
             }
@@ -128,10 +126,10 @@ namespace SchematicHQ.Client.Test.Datastream
     /// <summary>
     /// Helper method to update company metrics using the Datastream client
     /// </summary>
-    private bool UpdateCompanyMetrics(Dictionary<string, string> companyKeys, string metricName, string period, int quantity = 1)
+    private async Task<bool> UpdateCompanyMetrics(Dictionary<string, string> companyKeys, string metricName, string period, int quantity = 1)
     {
       // Get the company from cache
-      var company = GetCompanyFromCache(companyKeys);
+      var company = await GetCompanyFromCache(companyKeys);
       if (company == null || company.Metrics == null) return false;
 
       // Find metrics matching the event name (metric name)
@@ -146,18 +144,18 @@ namespace SchematicHQ.Client.Test.Datastream
 
       // Save the updated company back to cache using two-layer approach
       var idKey = CompanyIdCacheKey(company.Id);
-      _companyCache.Set(idKey, company);
+      await _companyCache.Set(idKey, company);
       foreach (var key in companyKeys)
       {
         var resourceKey = ResourceKeyToCacheKey(key.Key, key.Value);
-        _companyLookupCache.Set(resourceKey, company.Id);
+        await _companyLookupCache.Set(resourceKey, company.Id);
       }
 
       return true;
     }
 
     [Test]
-    public void UpdateCompanyMetrics_WithNoMatchingMetric_ReturnsFalse()
+    public async Task UpdateCompanyMetrics_WithNoMatchingMetric_ReturnsFalse()
     {
         // Arrange
         var companyJson = @"{
@@ -192,17 +190,17 @@ namespace SchematicHQ.Client.Test.Datastream
                 ]
             }";
 
-            SetupCompanyInCache(companyJson);
+            await SetupCompanyInCache(companyJson);
 
             // Act
-            var result = UpdateCompanyMetrics(SingleCompanyKey, "metric2", "all_time");
+            var result = await UpdateCompanyMetrics(SingleCompanyKey, "metric2", "all_time");
 
             // Assert
             Assert.That(result, Is.False, "Should return false when no matching metric is found");
         }
 
         [Test]
-        public void UpdateCompanyMetrics_WithMatchingMetric_UpdatesValueWithDefaultQuantity()
+        public async Task UpdateCompanyMetrics_WithMatchingMetric_UpdatesValueWithDefaultQuantity()
         {
             // Arrange
             var companyJson = @"{
@@ -237,14 +235,14 @@ namespace SchematicHQ.Client.Test.Datastream
                 ]
             }";
 
-            SetupCompanyInCache(companyJson);
+            await SetupCompanyInCache(companyJson);
 
             // Act
-            var result = UpdateCompanyMetrics(SingleCompanyKey, "metric1", "all_time");
+            var result = await UpdateCompanyMetrics(SingleCompanyKey, "metric1", "all_time");
 
             // Assert
             Assert.That(result, Is.True, "Should return true when metric is updated");
-            var company = GetCompanyFromCache(SingleCompanyKey);
+            var company = await GetCompanyFromCache(SingleCompanyKey);
             Assert.That(company, Is.Not.Null);
 
             var metric = company?.Metrics?.FirstOrDefault(m => m.EventSubtype == "metric1" && m.Period.Value == "all_time");
@@ -253,7 +251,7 @@ namespace SchematicHQ.Client.Test.Datastream
         }
 
         [Test]
-        public void UpdateCompanyMetrics_WithSpecificQuantity_UpdatesMetricValue()
+        public async Task UpdateCompanyMetrics_WithSpecificQuantity_UpdatesMetricValue()
         {
             // Arrange
             var companyJson = @"{
@@ -288,14 +286,14 @@ namespace SchematicHQ.Client.Test.Datastream
                 ]
             }";
 
-            SetupCompanyInCache(companyJson);
+            await SetupCompanyInCache(companyJson);
 
             // Act
-            var result = UpdateCompanyMetrics(SingleCompanyKey, "metric1", "all_time", 5);
+            var result = await UpdateCompanyMetrics(SingleCompanyKey, "metric1", "all_time", 5);
 
             // Assert
             Assert.That(result, Is.True, "Should return true when metric is updated");
-            var company = GetCompanyFromCache(SingleCompanyKey);
+            var company = await GetCompanyFromCache(SingleCompanyKey);
             Assert.That(company, Is.Not.Null);
 
             var metric = company?.Metrics?.FirstOrDefault(m => m.EventSubtype == "metric1" && m.Period.Value == "all_time");
@@ -304,7 +302,7 @@ namespace SchematicHQ.Client.Test.Datastream
         }
 
         [Test]
-        public void UpdateCompanyMetrics_WithMultipleKeys_UpdatesAllCacheEntries()
+        public async Task UpdateCompanyMetrics_WithMultipleKeys_UpdatesAllCacheEntries()
         {
             // Arrange
             var companyJson = @"{
@@ -340,16 +338,16 @@ namespace SchematicHQ.Client.Test.Datastream
                 ]
             }";
 
-            SetupCompanyInCache(companyJson);
+            await SetupCompanyInCache(companyJson);
 
             // Act
-            var result = UpdateCompanyMetrics(MultipleCompanyKeys, "metric1", "all_time", 5);
+            var result = await UpdateCompanyMetrics(MultipleCompanyKeys, "metric1", "all_time", 5);
 
             // Assert
             Assert.That(result, Is.True, "Should return true when metrics are updated");
 
             // Check company retrieved by primary key
-            var companyByPrimary = GetCompanyFromCache(new Dictionary<string, string> { ["company_id"] = "12345" });
+            var companyByPrimary = await GetCompanyFromCache(new Dictionary<string, string> { ["company_id"] = "12345" });
             Assert.That(companyByPrimary, Is.Not.Null);
 
             var metricByPrimary = companyByPrimary?.Metrics?.FirstOrDefault(m => m.EventSubtype == "metric1" && m.Period.Value == "all_time");
@@ -357,7 +355,7 @@ namespace SchematicHQ.Client.Test.Datastream
             Assert.That(metricByPrimary?.Value, Is.EqualTo(105));
 
             // Check company retrieved by secondary key
-            var companyBySecondary = GetCompanyFromCache(new Dictionary<string, string> { ["secondary_id"] = "secondary123" });
+            var companyBySecondary = await GetCompanyFromCache(new Dictionary<string, string> { ["secondary_id"] = "secondary123" });
             Assert.That(companyBySecondary, Is.Not.Null);
 
             var metricBySecondary = companyBySecondary?.Metrics?.FirstOrDefault(m => m.EventSubtype == "metric1");
@@ -366,7 +364,7 @@ namespace SchematicHQ.Client.Test.Datastream
         }
 
         [Test]
-        public void UpdateCompanyMetrics_WithMultipleMetrics_UpdatesAllMatchingMetrics()
+        public async Task UpdateCompanyMetrics_WithMultipleMetrics_UpdatesAllMatchingMetrics()
         {
             // Arrange
             var companyJson = @"{
@@ -421,14 +419,14 @@ namespace SchematicHQ.Client.Test.Datastream
                 ]
             }";
 
-            SetupCompanyInCache(companyJson);
+            await SetupCompanyInCache(companyJson);
 
             // Act
-            var result = UpdateCompanyMetrics(SingleCompanyKey, "metric1", "current_month", 10);
+            var result = await UpdateCompanyMetrics(SingleCompanyKey, "metric1", "current_month", 10);
 
             // Assert
             Assert.That(result, Is.True, "Should return true when metric is updated");
-            var company = GetCompanyFromCache(SingleCompanyKey);
+            var company = await GetCompanyFromCache(SingleCompanyKey);
             Assert.That(company, Is.Not.Null);
 
             // All metric1 metrics should be updated regardless of period
