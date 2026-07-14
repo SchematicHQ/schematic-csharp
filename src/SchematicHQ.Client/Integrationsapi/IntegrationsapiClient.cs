@@ -18,6 +18,9 @@ public partial class IntegrationsapiClient : IIntegrationsapiClient
         CancellationToken cancellationToken = default
     )
     {
+        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 0)
+            .MergeAdditional(options?.AdditionalQueryParameters)
+            .Build();
         var _headers = await new SchematicHQ.Client.Core.HeadersBuilder.Builder()
             .Add(_client.Options.Headers)
             .Add(_client.Options.AdditionalHeaders)
@@ -33,6 +36,7 @@ public partial class IntegrationsapiClient : IIntegrationsapiClient
                         "integration/start/{0}",
                         ValueConvert.ToPathParameterString(integrationId)
                     ),
+                    QueryString = _queryString,
                     Headers = _headers,
                     Options = options,
                 },
@@ -316,6 +320,9 @@ public partial class IntegrationsapiClient : IIntegrationsapiClient
         CancellationToken cancellationToken = default
     )
     {
+        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 0)
+            .MergeAdditional(options?.AdditionalQueryParameters)
+            .Build();
         var _headers = await new SchematicHQ.Client.Core.HeadersBuilder.Builder()
             .Add(_client.Options.Headers)
             .Add(_client.Options.AdditionalHeaders)
@@ -331,6 +338,7 @@ public partial class IntegrationsapiClient : IIntegrationsapiClient
                         "integrations/{0}/webhook-url",
                         ValueConvert.ToPathParameterString(type)
                     ),
+                    QueryString = _queryString,
                     Headers = _headers,
                     Options = options,
                 },
@@ -456,6 +464,9 @@ public partial class IntegrationsapiClient : IIntegrationsapiClient
         CancellationToken cancellationToken = default
     )
     {
+        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 0)
+            .MergeAdditional(options?.AdditionalQueryParameters)
+            .Build();
         var _headers = await new SchematicHQ.Client.Core.HeadersBuilder.Builder()
             .Add(_client.Options.Headers)
             .Add(_client.Options.AdditionalHeaders)
@@ -469,6 +480,7 @@ public partial class IntegrationsapiClient : IIntegrationsapiClient
                     Method = HttpMethod.Post,
                     Path = "integrations/install",
                     Body = request,
+                    QueryString = _queryString,
                     Headers = _headers,
                     ContentType = "application/json",
                     Options = options,
@@ -605,6 +617,9 @@ public partial class IntegrationsapiClient : IIntegrationsapiClient
         CancellationToken cancellationToken = default
     )
     {
+        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 0)
+            .MergeAdditional(options?.AdditionalQueryParameters)
+            .Build();
         var _headers = await new SchematicHQ.Client.Core.HeadersBuilder.Builder()
             .Add(_client.Options.Headers)
             .Add(_client.Options.AdditionalHeaders)
@@ -618,6 +633,7 @@ public partial class IntegrationsapiClient : IIntegrationsapiClient
                     Method = HttpMethod.Post,
                     Path = "integrations/start-data-import",
                     Body = request,
+                    QueryString = _queryString,
                     Headers = _headers,
                     ContentType = "application/json",
                     Options = options,
@@ -753,6 +769,9 @@ public partial class IntegrationsapiClient : IIntegrationsapiClient
         CancellationToken cancellationToken = default
     )
     {
+        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 0)
+            .MergeAdditional(options?.AdditionalQueryParameters)
+            .Build();
         var _headers = await new SchematicHQ.Client.Core.HeadersBuilder.Builder()
             .Add(_client.Options.Headers)
             .Add(_client.Options.AdditionalHeaders)
@@ -765,6 +784,7 @@ public partial class IntegrationsapiClient : IIntegrationsapiClient
                 {
                     Method = HttpMethod.Get,
                     Path = "integrations/stripe/dataset-sample-v2",
+                    QueryString = _queryString,
                     Headers = _headers,
                     Options = options,
                 },
@@ -890,6 +910,9 @@ public partial class IntegrationsapiClient : IIntegrationsapiClient
         CancellationToken cancellationToken = default
     )
     {
+        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 0)
+            .MergeAdditional(options?.AdditionalQueryParameters)
+            .Build();
         var _headers = await new SchematicHQ.Client.Core.HeadersBuilder.Builder()
             .Add(_client.Options.Headers)
             .Add(_client.Options.AdditionalHeaders)
@@ -903,6 +926,7 @@ public partial class IntegrationsapiClient : IIntegrationsapiClient
                     Method = HttpMethod.Post,
                     Path = "integrations/stripe/v2/assume-installed",
                     Body = request,
+                    QueryString = _queryString,
                     Headers = _headers,
                     ContentType = "application/json",
                     Options = options,
@@ -1041,6 +1065,9 @@ public partial class IntegrationsapiClient : IIntegrationsapiClient
         CancellationToken cancellationToken = default
     )
     {
+        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 0)
+            .MergeAdditional(options?.AdditionalQueryParameters)
+            .Build();
         var _headers = await new SchematicHQ.Client.Core.HeadersBuilder.Builder()
             .Add(_client.Options.Headers)
             .Add(_client.Options.AdditionalHeaders)
@@ -1054,6 +1081,7 @@ public partial class IntegrationsapiClient : IIntegrationsapiClient
                     Method = HttpMethod.Post,
                     Path = "integrations/stripe/v2/install",
                     Body = request,
+                    QueryString = _queryString,
                     Headers = _headers,
                     ContentType = "application/json",
                     Options = options,
@@ -1190,6 +1218,9 @@ public partial class IntegrationsapiClient : IIntegrationsapiClient
         CancellationToken cancellationToken = default
     )
     {
+        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 0)
+            .MergeAdditional(options?.AdditionalQueryParameters)
+            .Build();
         var _headers = await new SchematicHQ.Client.Core.HeadersBuilder.Builder()
             .Add(_client.Options.Headers)
             .Add(_client.Options.AdditionalHeaders)
@@ -1205,6 +1236,7 @@ public partial class IntegrationsapiClient : IIntegrationsapiClient
                         "integrations/uninstall/{0}",
                         ValueConvert.ToPathParameterString(integrationId)
                     ),
+                    QueryString = _queryString,
                     Headers = _headers,
                     Options = options,
                 },

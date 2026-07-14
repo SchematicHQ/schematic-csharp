@@ -180,6 +180,9 @@ public partial class PlanmigrationsClient : IPlanmigrationsClient
         CancellationToken cancellationToken = default
     )
     {
+        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 0)
+            .MergeAdditional(options?.AdditionalQueryParameters)
+            .Build();
         var _headers = await new SchematicHQ.Client.Core.HeadersBuilder.Builder()
             .Add(_client.Options.Headers)
             .Add(_client.Options.AdditionalHeaders)
@@ -195,6 +198,7 @@ public partial class PlanmigrationsClient : IPlanmigrationsClient
                         "plan-version-company-migrations/{0}/retry",
                         ValueConvert.ToPathParameterString(planVersionCompanyMigrationId)
                     ),
+                    QueryString = _queryString,
                     Headers = _headers,
                     Options = options,
                 },
@@ -647,6 +651,9 @@ public partial class PlanmigrationsClient : IPlanmigrationsClient
         CancellationToken cancellationToken = default
     )
     {
+        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 0)
+            .MergeAdditional(options?.AdditionalQueryParameters)
+            .Build();
         var _headers = await new SchematicHQ.Client.Core.HeadersBuilder.Builder()
             .Add(_client.Options.Headers)
             .Add(_client.Options.AdditionalHeaders)
@@ -660,6 +667,7 @@ public partial class PlanmigrationsClient : IPlanmigrationsClient
                     Method = HttpMethod.Post,
                     Path = "plan-version-migrations",
                     Body = request,
+                    QueryString = _queryString,
                     Headers = _headers,
                     ContentType = "application/json",
                     Options = options,
@@ -796,6 +804,9 @@ public partial class PlanmigrationsClient : IPlanmigrationsClient
         CancellationToken cancellationToken = default
     )
     {
+        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 0)
+            .MergeAdditional(options?.AdditionalQueryParameters)
+            .Build();
         var _headers = await new SchematicHQ.Client.Core.HeadersBuilder.Builder()
             .Add(_client.Options.Headers)
             .Add(_client.Options.AdditionalHeaders)
@@ -811,6 +822,7 @@ public partial class PlanmigrationsClient : IPlanmigrationsClient
                         "plan-version-migrations/{0}",
                         ValueConvert.ToPathParameterString(planVersionMigrationId)
                     ),
+                    QueryString = _queryString,
                     Headers = _headers,
                     Options = options,
                 },
@@ -935,6 +947,9 @@ public partial class PlanmigrationsClient : IPlanmigrationsClient
         CancellationToken cancellationToken = default
     )
     {
+        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 0)
+            .MergeAdditional(options?.AdditionalQueryParameters)
+            .Build();
         var _headers = await new SchematicHQ.Client.Core.HeadersBuilder.Builder()
             .Add(_client.Options.Headers)
             .Add(_client.Options.AdditionalHeaders)
@@ -951,6 +966,7 @@ public partial class PlanmigrationsClient : IPlanmigrationsClient
                         ValueConvert.ToPathParameterString(planVersionMigrationId)
                     ),
                     Body = request,
+                    QueryString = _queryString,
                     Headers = _headers,
                     ContentType = "application/json",
                     Options = options,

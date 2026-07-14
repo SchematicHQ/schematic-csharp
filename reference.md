@@ -4257,6 +4257,90 @@ await client.Companies.LookupCompanyAsync(
 </dl>
 </details>
 
+<details><summary><code>client.Companies.<a href="/src/SchematicHQ.Client/Companies/CompaniesClient.cs">GetCompanyBillingEntityAsync</a>(GetCompanyBillingEntityRequest { ... }) -> WithRawResponseTask&lt;GetCompanyBillingEntityResponse&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Companies.GetCompanyBillingEntityAsync(
+    new GetCompanyBillingEntityRequest { CompanyId = "company_id" }
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `GetCompanyBillingEntityRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Companies.<a href="/src/SchematicHQ.Client/Companies/CompaniesClient.cs">GetBillingEntityChildSubscriptionsAsync</a>(GetBillingEntityChildSubscriptionsRequest { ... }) -> WithRawResponseTask&lt;GetBillingEntityChildSubscriptionsResponse&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Companies.GetBillingEntityChildSubscriptionsAsync(
+    new GetBillingEntityChildSubscriptionsRequest { CompanyId = "company_id" }
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `GetBillingEntityChildSubscriptionsRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.Companies.<a href="/src/SchematicHQ.Client/Companies/CompaniesClient.cs">ListCompanyMembershipsAsync</a>(ListCompanyMembershipsRequest { ... }) -> WithRawResponseTask&lt;ListCompanyMembershipsResponse&gt;</code></summary>
 <dl>
 <dd>

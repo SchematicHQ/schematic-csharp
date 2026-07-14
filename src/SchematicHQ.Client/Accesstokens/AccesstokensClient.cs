@@ -20,6 +20,9 @@ public partial class AccesstokensClient : IAccesstokensClient
         CancellationToken cancellationToken = default
     )
     {
+        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 0)
+            .MergeAdditional(options?.AdditionalQueryParameters)
+            .Build();
         var _headers = await new SchematicHQ.Client.Core.HeadersBuilder.Builder()
             .Add(_client.Options.Headers)
             .Add(_client.Options.AdditionalHeaders)
@@ -33,6 +36,7 @@ public partial class AccesstokensClient : IAccesstokensClient
                     Method = HttpMethod.Post,
                     Path = "temporary-access-tokens",
                     Body = request,
+                    QueryString = _queryString,
                     Headers = _headers,
                     ContentType = "application/json",
                     Options = options,

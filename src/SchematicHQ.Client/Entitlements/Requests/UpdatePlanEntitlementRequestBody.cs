@@ -90,6 +90,9 @@ public record UpdatePlanEntitlementRequestBody
     [JsonPropertyName("value_type")]
     public required EntitlementValueType ValueType { get; set; }
 
+    [JsonPropertyName("warning_tiers")]
+    public IEnumerable<WarningTierRequestBody>? WarningTiers { get; set; }
+
     [JsonPropertyName("yearly_metered_price_id")]
     public string? YearlyMeteredPriceId { get; set; }
 

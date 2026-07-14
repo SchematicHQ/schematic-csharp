@@ -102,6 +102,10 @@ public record PlanEntitlementResponseData : IJsonOnDeserialized
     [JsonPropertyName("value_type")]
     public required EntitlementValueType ValueType { get; set; }
 
+    [JsonPropertyName("warning_tiers")]
+    public IEnumerable<WarningTierResponseData> WarningTiers { get; set; } =
+        new List<WarningTierResponseData>();
+
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();
 

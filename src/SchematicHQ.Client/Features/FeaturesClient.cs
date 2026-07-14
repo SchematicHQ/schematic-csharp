@@ -179,6 +179,9 @@ public partial class FeaturesClient : IFeaturesClient
         CancellationToken cancellationToken = default
     )
     {
+        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 0)
+            .MergeAdditional(options?.AdditionalQueryParameters)
+            .Build();
         var _headers = await new SchematicHQ.Client.Core.HeadersBuilder.Builder()
             .Add(_client.Options.Headers)
             .Add(_client.Options.AdditionalHeaders)
@@ -192,6 +195,7 @@ public partial class FeaturesClient : IFeaturesClient
                     Method = HttpMethod.Post,
                     Path = "features",
                     Body = request,
+                    QueryString = _queryString,
                     Headers = _headers,
                     ContentType = "application/json",
                     Options = options,
@@ -328,6 +332,9 @@ public partial class FeaturesClient : IFeaturesClient
         CancellationToken cancellationToken = default
     )
     {
+        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 0)
+            .MergeAdditional(options?.AdditionalQueryParameters)
+            .Build();
         var _headers = await new SchematicHQ.Client.Core.HeadersBuilder.Builder()
             .Add(_client.Options.Headers)
             .Add(_client.Options.AdditionalHeaders)
@@ -343,6 +350,7 @@ public partial class FeaturesClient : IFeaturesClient
                         "features/{0}",
                         ValueConvert.ToPathParameterString(featureId)
                     ),
+                    QueryString = _queryString,
                     Headers = _headers,
                     Options = options,
                 },
@@ -467,6 +475,9 @@ public partial class FeaturesClient : IFeaturesClient
         CancellationToken cancellationToken = default
     )
     {
+        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 0)
+            .MergeAdditional(options?.AdditionalQueryParameters)
+            .Build();
         var _headers = await new SchematicHQ.Client.Core.HeadersBuilder.Builder()
             .Add(_client.Options.Headers)
             .Add(_client.Options.AdditionalHeaders)
@@ -483,6 +494,7 @@ public partial class FeaturesClient : IFeaturesClient
                         ValueConvert.ToPathParameterString(featureId)
                     ),
                     Body = request,
+                    QueryString = _queryString,
                     Headers = _headers,
                     ContentType = "application/json",
                     Options = options,
@@ -619,6 +631,9 @@ public partial class FeaturesClient : IFeaturesClient
         CancellationToken cancellationToken = default
     )
     {
+        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 0)
+            .MergeAdditional(options?.AdditionalQueryParameters)
+            .Build();
         var _headers = await new SchematicHQ.Client.Core.HeadersBuilder.Builder()
             .Add(_client.Options.Headers)
             .Add(_client.Options.AdditionalHeaders)
@@ -634,6 +649,7 @@ public partial class FeaturesClient : IFeaturesClient
                         "features/{0}",
                         ValueConvert.ToPathParameterString(featureId)
                     ),
+                    QueryString = _queryString,
                     Headers = _headers,
                     Options = options,
                 },
@@ -771,6 +787,9 @@ public partial class FeaturesClient : IFeaturesClient
         CancellationToken cancellationToken = default
     )
     {
+        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 0)
+            .MergeAdditional(options?.AdditionalQueryParameters)
+            .Build();
         var _headers = await new SchematicHQ.Client.Core.HeadersBuilder.Builder()
             .Add(_client.Options.Headers)
             .Add(_client.Options.AdditionalHeaders)
@@ -784,6 +803,7 @@ public partial class FeaturesClient : IFeaturesClient
                     Method = HttpMethod.Post,
                     Path = "features/billing-linked",
                     Body = request,
+                    QueryString = _queryString,
                     Headers = _headers,
                     ContentType = "application/json",
                     Options = options,
@@ -1239,6 +1259,9 @@ public partial class FeaturesClient : IFeaturesClient
         CancellationToken cancellationToken = default
     )
     {
+        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 0)
+            .MergeAdditional(options?.AdditionalQueryParameters)
+            .Build();
         var _headers = await new SchematicHQ.Client.Core.HeadersBuilder.Builder()
             .Add(_client.Options.Headers)
             .Add(_client.Options.AdditionalHeaders)
@@ -1252,6 +1275,7 @@ public partial class FeaturesClient : IFeaturesClient
                     Method = HttpMethod.Post,
                     Path = "flags",
                     Body = request,
+                    QueryString = _queryString,
                     Headers = _headers,
                     ContentType = "application/json",
                     Options = options,
@@ -1388,6 +1412,9 @@ public partial class FeaturesClient : IFeaturesClient
         CancellationToken cancellationToken = default
     )
     {
+        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 0)
+            .MergeAdditional(options?.AdditionalQueryParameters)
+            .Build();
         var _headers = await new SchematicHQ.Client.Core.HeadersBuilder.Builder()
             .Add(_client.Options.Headers)
             .Add(_client.Options.AdditionalHeaders)
@@ -1400,6 +1427,7 @@ public partial class FeaturesClient : IFeaturesClient
                 {
                     Method = HttpMethod.Get,
                     Path = string.Format("flags/{0}", ValueConvert.ToPathParameterString(flagId)),
+                    QueryString = _queryString,
                     Headers = _headers,
                     Options = options,
                 },
@@ -1524,6 +1552,9 @@ public partial class FeaturesClient : IFeaturesClient
         CancellationToken cancellationToken = default
     )
     {
+        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 0)
+            .MergeAdditional(options?.AdditionalQueryParameters)
+            .Build();
         var _headers = await new SchematicHQ.Client.Core.HeadersBuilder.Builder()
             .Add(_client.Options.Headers)
             .Add(_client.Options.AdditionalHeaders)
@@ -1537,6 +1568,7 @@ public partial class FeaturesClient : IFeaturesClient
                     Method = HttpMethod.Put,
                     Path = string.Format("flags/{0}", ValueConvert.ToPathParameterString(flagId)),
                     Body = request,
+                    QueryString = _queryString,
                     Headers = _headers,
                     ContentType = "application/json",
                     Options = options,
@@ -1673,6 +1705,9 @@ public partial class FeaturesClient : IFeaturesClient
         CancellationToken cancellationToken = default
     )
     {
+        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 0)
+            .MergeAdditional(options?.AdditionalQueryParameters)
+            .Build();
         var _headers = await new SchematicHQ.Client.Core.HeadersBuilder.Builder()
             .Add(_client.Options.Headers)
             .Add(_client.Options.AdditionalHeaders)
@@ -1685,6 +1720,7 @@ public partial class FeaturesClient : IFeaturesClient
                 {
                     Method = HttpMethod.Delete,
                     Path = string.Format("flags/{0}", ValueConvert.ToPathParameterString(flagId)),
+                    QueryString = _queryString,
                     Headers = _headers,
                     Options = options,
                 },
@@ -1821,6 +1857,9 @@ public partial class FeaturesClient : IFeaturesClient
         CancellationToken cancellationToken = default
     )
     {
+        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 0)
+            .MergeAdditional(options?.AdditionalQueryParameters)
+            .Build();
         var _headers = await new SchematicHQ.Client.Core.HeadersBuilder.Builder()
             .Add(_client.Options.Headers)
             .Add(_client.Options.AdditionalHeaders)
@@ -1837,6 +1876,7 @@ public partial class FeaturesClient : IFeaturesClient
                         ValueConvert.ToPathParameterString(flagId)
                     ),
                     Body = request,
+                    QueryString = _queryString,
                     Headers = _headers,
                     ContentType = "application/json",
                     Options = options,
@@ -1974,6 +2014,9 @@ public partial class FeaturesClient : IFeaturesClient
         CancellationToken cancellationToken = default
     )
     {
+        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 0)
+            .MergeAdditional(options?.AdditionalQueryParameters)
+            .Build();
         var _headers = await new SchematicHQ.Client.Core.HeadersBuilder.Builder()
             .Add(_client.Options.Headers)
             .Add(_client.Options.AdditionalHeaders)
@@ -1990,6 +2033,7 @@ public partial class FeaturesClient : IFeaturesClient
                         ValueConvert.ToPathParameterString(key)
                     ),
                     Body = request,
+                    QueryString = _queryString,
                     Headers = _headers,
                     ContentType = "application/json",
                     Options = options,
@@ -2126,6 +2170,9 @@ public partial class FeaturesClient : IFeaturesClient
         CancellationToken cancellationToken = default
     )
     {
+        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 0)
+            .MergeAdditional(options?.AdditionalQueryParameters)
+            .Build();
         var _headers = await new SchematicHQ.Client.Core.HeadersBuilder.Builder()
             .Add(_client.Options.Headers)
             .Add(_client.Options.AdditionalHeaders)
@@ -2139,6 +2186,7 @@ public partial class FeaturesClient : IFeaturesClient
                     Method = HttpMethod.Post,
                     Path = "flags/check",
                     Body = request,
+                    QueryString = _queryString,
                     Headers = _headers,
                     ContentType = "application/json",
                     Options = options,
@@ -2275,6 +2323,9 @@ public partial class FeaturesClient : IFeaturesClient
         CancellationToken cancellationToken = default
     )
     {
+        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 0)
+            .MergeAdditional(options?.AdditionalQueryParameters)
+            .Build();
         var _headers = await new SchematicHQ.Client.Core.HeadersBuilder.Builder()
             .Add(_client.Options.Headers)
             .Add(_client.Options.AdditionalHeaders)
@@ -2288,6 +2339,7 @@ public partial class FeaturesClient : IFeaturesClient
                     Method = HttpMethod.Post,
                     Path = "flags/check-bulk",
                     Body = request,
+                    QueryString = _queryString,
                     Headers = _headers,
                     ContentType = "application/json",
                     Options = options,

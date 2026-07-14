@@ -35,6 +35,9 @@ public record PlanDetailResponseData : IJsonOnDeserialized
     [JsonPropertyName("company_id")]
     public string? CompanyId { get; set; }
 
+    [JsonPropertyName("company_logo_url")]
+    public string? CompanyLogoUrl { get; set; }
+
     [JsonPropertyName("company_name")]
     public string? CompanyName { get; set; }
 
@@ -46,6 +49,10 @@ public record PlanDetailResponseData : IJsonOnDeserialized
 
     [JsonPropertyName("created_at")]
     public required DateTime CreatedAt { get; set; }
+
+    [JsonPropertyName("credits")]
+    public IEnumerable<BillingCreditResponseData> Credits { get; set; } =
+        new List<BillingCreditResponseData>();
 
     [JsonPropertyName("currency_prices")]
     public IEnumerable<PlanCurrencyPricesResponseData> CurrencyPrices { get; set; } =

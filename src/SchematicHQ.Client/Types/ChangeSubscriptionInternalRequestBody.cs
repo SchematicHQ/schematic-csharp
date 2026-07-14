@@ -19,6 +19,9 @@ public record ChangeSubscriptionInternalRequestBody : IJsonOnDeserialized
     public IEnumerable<UpdateAutoTopupOverrideRequestBody> AutoTopupOverrides { get; set; } =
         new List<UpdateAutoTopupOverrideRequestBody>();
 
+    [JsonPropertyName("billing_entity_id")]
+    public string? BillingEntityId { get; set; }
+
     [JsonPropertyName("company_id")]
     public required string CompanyId { get; set; }
 

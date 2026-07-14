@@ -19,7 +19,12 @@ public record CreateEventRequestBody : IJsonOnDeserialized
     public bool? Backfill { get; set; }
 
     [JsonPropertyName("body")]
-    public OneOf<EventBodyTrack, EventBodyFlagCheck, EventBodyIdentify>? Body { get; set; }
+    public OneOf<
+        EventBodyTrack,
+        EventBodyFlagCheck,
+        EventBodyIdentify,
+        EventBodyInference
+    >? Body { get; set; }
 
     /// <summary>
     /// Either 'identify' or 'track'

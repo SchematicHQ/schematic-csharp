@@ -17,6 +17,9 @@ public record CompanyPlanCreditGrantView : IJsonOnDeserialized
     [JsonPropertyName("billing_credit_auto_topup_amount_type")]
     public string? BillingCreditAutoTopupAmountType { get; set; }
 
+    [JsonPropertyName("billing_credit_auto_topup_availability")]
+    public BillingCreditAutoTopupAvailability? BillingCreditAutoTopupAvailability { get; set; }
+
     [JsonPropertyName("billing_credit_auto_topup_enabled")]
     public required bool BillingCreditAutoTopupEnabled { get; set; }
 
@@ -37,6 +40,9 @@ public record CompanyPlanCreditGrantView : IJsonOnDeserialized
 
     [JsonPropertyName("billing_credit_auto_topup_threshold_percent")]
     public long? BillingCreditAutoTopupThresholdPercent { get; set; }
+
+    [JsonPropertyName("billing_credit_can_buy_bundles")]
+    public required bool BillingCreditCanBuyBundles { get; set; }
 
     [JsonPropertyName("company_auto_topup_amount")]
     public long? CompanyAutoTopupAmount { get; set; }

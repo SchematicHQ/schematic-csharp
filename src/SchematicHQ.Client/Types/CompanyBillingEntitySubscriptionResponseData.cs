@@ -1,0 +1,81 @@
+using global::System.Text.Json;
+using global::System.Text.Json.Serialization;
+using SchematicHQ.Client.Core;
+
+namespace SchematicHQ.Client;
+
+[Serializable]
+public record CompanyBillingEntitySubscriptionResponseData : IJsonOnDeserialized
+{
+    [JsonExtensionData]
+    private readonly IDictionary<string, JsonElement> _extensionData =
+        new Dictionary<string, JsonElement>();
+
+    [JsonPropertyName("cancel_at")]
+    public DateTime? CancelAt { get; set; }
+
+    [JsonPropertyName("cancel_at_period_end")]
+    public required bool CancelAtPeriodEnd { get; set; }
+
+    [JsonPropertyName("company")]
+    public CompanyResponseData? Company { get; set; }
+
+    [JsonPropertyName("currency")]
+    public required string Currency { get; set; }
+
+    [JsonPropertyName("customer_external_id")]
+    public required string CustomerExternalId { get; set; }
+
+    [JsonPropertyName("discounts")]
+    public IEnumerable<BillingSubscriptionDiscountView> Discounts { get; set; } =
+        new List<BillingSubscriptionDiscountView>();
+
+    [JsonPropertyName("expired_at")]
+    public DateTime? ExpiredAt { get; set; }
+
+    [JsonPropertyName("interval")]
+    public required string Interval { get; set; }
+
+    [JsonPropertyName("is_initial")]
+    public required bool IsInitial { get; set; }
+
+    [JsonPropertyName("latest_invoice")]
+    public InvoiceResponseData? LatestInvoice { get; set; }
+
+    [JsonPropertyName("payment_method")]
+    public PaymentMethodResponseData? PaymentMethod { get; set; }
+
+    [JsonPropertyName("plan_name")]
+    public required string PlanName { get; set; }
+
+    [JsonPropertyName("products")]
+    public IEnumerable<BillingProductForSubscriptionResponseData> Products { get; set; } =
+        new List<BillingProductForSubscriptionResponseData>();
+
+    [JsonPropertyName("provider_type")]
+    public required BillingProviderType ProviderType { get; set; }
+
+    [JsonPropertyName("status")]
+    public required string Status { get; set; }
+
+    [JsonPropertyName("subscription_external_id")]
+    public required string SubscriptionExternalId { get; set; }
+
+    [JsonPropertyName("total_price")]
+    public required long TotalPrice { get; set; }
+
+    [JsonPropertyName("trial_end")]
+    public DateTime? TrialEnd { get; set; }
+
+    [JsonIgnore]
+    public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();
+
+    void IJsonOnDeserialized.OnDeserialized() =>
+        AdditionalProperties.CopyFromExtensionData(_extensionData);
+
+    /// <inheritdoc />
+    public override string ToString()
+    {
+        return JsonUtils.Serialize(this);
+    }
+}

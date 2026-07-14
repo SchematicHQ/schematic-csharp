@@ -17,6 +17,12 @@ public record BillingPlanCreditGrantResponseData : IJsonOnDeserialized
     [JsonPropertyName("auto_topup_amount_type")]
     public string? AutoTopupAmountType { get; set; }
 
+    [JsonPropertyName("auto_topup_availability")]
+    public required BillingCreditAutoTopupAvailability AutoTopupAvailability { get; set; }
+
+    /// <summary>
+    /// Derived from auto_topup_availability; use that instead.
+    /// </summary>
     [JsonPropertyName("auto_topup_enabled")]
     public required bool AutoTopupEnabled { get; set; }
 
@@ -29,6 +35,9 @@ public record BillingPlanCreditGrantResponseData : IJsonOnDeserialized
     [JsonPropertyName("auto_topup_expiry_unit_count")]
     public long? AutoTopupExpiryUnitCount { get; set; }
 
+    /// <summary>
+    /// Derived from auto_topup_availability; use that instead.
+    /// </summary>
     [JsonPropertyName("auto_topup_self_service")]
     public required bool AutoTopupSelfService { get; set; }
 
@@ -37,6 +46,12 @@ public record BillingPlanCreditGrantResponseData : IJsonOnDeserialized
 
     [JsonPropertyName("auto_topup_threshold_percent")]
     public long? AutoTopupThresholdPercent { get; set; }
+
+    /// <summary>
+    /// Whether buyers can purchase one-time credit bundles on this grant, independent of auto top-up availability.
+    /// </summary>
+    [JsonPropertyName("can_buy_bundles")]
+    public required bool CanBuyBundles { get; set; }
 
     [JsonPropertyName("created_at")]
     public required DateTime CreatedAt { get; set; }
