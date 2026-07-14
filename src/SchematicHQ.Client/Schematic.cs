@@ -618,7 +618,7 @@ public partial class Schematic
 
     private void EnqueueEvent(
         EventType eventType,
-        OneOf<EventBodyTrack, EventBodyFlagCheck, EventBodyIdentify> body,
+        OneOf<EventBodyTrack, EventBodyFlagCheck, EventBodyIdentify, EventBodyInference> body,
         string? idempotencyKey = null,
         DateTime? sentAt = null,
         bool? trustedClientClock = null,

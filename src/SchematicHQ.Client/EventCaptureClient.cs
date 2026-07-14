@@ -23,7 +23,7 @@ internal class CaptureEventPayload
     public required string ApiKey { get; set; }
 
     [JsonPropertyName("body")]
-    public OneOf<EventBodyTrack, EventBodyFlagCheck, EventBodyIdentify>? Body { get; set; }
+    public OneOf<EventBodyTrack, EventBodyFlagCheck, EventBodyIdentify, EventBodyInference>? Body { get; set; }
 
     [JsonPropertyName("type")]
     public required EventType EventType { get; set; }
