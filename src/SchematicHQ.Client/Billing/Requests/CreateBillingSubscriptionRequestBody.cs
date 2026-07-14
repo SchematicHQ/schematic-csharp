@@ -15,6 +15,9 @@ public record CreateBillingSubscriptionRequestBody
     [JsonPropertyName("cancel_at_period_end")]
     public required bool CancelAtPeriodEnd { get; set; }
 
+    [JsonPropertyName("company_id")]
+    public string? CompanyId { get; set; }
+
     [JsonPropertyName("currency")]
     public required string Currency { get; set; }
 

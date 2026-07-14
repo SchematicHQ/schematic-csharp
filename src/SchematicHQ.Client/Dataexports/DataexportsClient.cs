@@ -18,6 +18,9 @@ public partial class DataexportsClient : IDataexportsClient
         CancellationToken cancellationToken = default
     )
     {
+        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 0)
+            .MergeAdditional(options?.AdditionalQueryParameters)
+            .Build();
         var _headers = await new SchematicHQ.Client.Core.HeadersBuilder.Builder()
             .Add(_client.Options.Headers)
             .Add(_client.Options.AdditionalHeaders)
@@ -31,6 +34,7 @@ public partial class DataexportsClient : IDataexportsClient
                     Method = HttpMethod.Post,
                     Path = "data-exports",
                     Body = request,
+                    QueryString = _queryString,
                     Headers = _headers,
                     ContentType = "application/json",
                     Options = options,
@@ -167,6 +171,9 @@ public partial class DataexportsClient : IDataexportsClient
         CancellationToken cancellationToken = default
     )
     {
+        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 0)
+            .MergeAdditional(options?.AdditionalQueryParameters)
+            .Build();
         var _headers = await new SchematicHQ.Client.Core.HeadersBuilder.Builder()
             .Add(_client.Options.Headers)
             .Add(_client.Options.AdditionalHeaders)
@@ -182,6 +189,7 @@ public partial class DataexportsClient : IDataexportsClient
                         "data-exports/{0}/artifact",
                         ValueConvert.ToPathParameterString(dataExportId)
                     ),
+                    QueryString = _queryString,
                     Headers = _headers,
                     Options = options,
                 },

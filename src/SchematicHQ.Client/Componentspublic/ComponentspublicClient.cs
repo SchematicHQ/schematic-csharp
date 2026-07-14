@@ -17,6 +17,9 @@ public partial class ComponentspublicClient : IComponentspublicClient
         CancellationToken cancellationToken = default
     )
     {
+        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 0)
+            .MergeAdditional(options?.AdditionalQueryParameters)
+            .Build();
         var _headers = await new SchematicHQ.Client.Core.HeadersBuilder.Builder()
             .Add(_client.Options.Headers)
             .Add(_client.Options.AdditionalHeaders)
@@ -29,6 +32,7 @@ public partial class ComponentspublicClient : IComponentspublicClient
                 {
                     Method = HttpMethod.Get,
                     Path = "public/plans",
+                    QueryString = _queryString,
                     Headers = _headers,
                     Options = options,
                 },

@@ -4,19 +4,21 @@ using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
 
-[JsonConverter(typeof(EventType.EventTypeSerializer))]
+[JsonConverter(
+    typeof(BillingCreditAutoTopupAvailability.BillingCreditAutoTopupAvailabilitySerializer)
+)]
 [Serializable]
-public readonly record struct EventType : IStringEnum
+public readonly record struct BillingCreditAutoTopupAvailability : IStringEnum
 {
-    public static readonly EventType FlagCheck = new(Values.FlagCheck);
+    public static readonly BillingCreditAutoTopupAvailability Off = new(Values.Off);
 
-    public static readonly EventType Identify = new(Values.Identify);
+    public static readonly BillingCreditAutoTopupAvailability Automatic = new(Values.Automatic);
 
-    public static readonly EventType Inference = new(Values.Inference);
+    public static readonly BillingCreditAutoTopupAvailability UserControlled = new(
+        Values.UserControlled
+    );
 
-    public static readonly EventType Track = new(Values.Track);
-
-    public EventType(string value)
+    public BillingCreditAutoTopupAvailability(string value)
     {
         Value = value;
     }
@@ -29,9 +31,9 @@ public readonly record struct EventType : IStringEnum
     /// <summary>
     /// Create a string enum with the given value.
     /// </summary>
-    public static EventType FromCustom(string value)
+    public static BillingCreditAutoTopupAvailability FromCustom(string value)
     {
-        return new EventType(value);
+        return new BillingCreditAutoTopupAvailability(value);
     }
 
     public bool Equals(string? other)
@@ -47,17 +49,20 @@ public readonly record struct EventType : IStringEnum
         return Value;
     }
 
-    public static bool operator ==(EventType value1, string value2) => value1.Value.Equals(value2);
+    public static bool operator ==(BillingCreditAutoTopupAvailability value1, string value2) =>
+        value1.Value.Equals(value2);
 
-    public static bool operator !=(EventType value1, string value2) => !value1.Value.Equals(value2);
+    public static bool operator !=(BillingCreditAutoTopupAvailability value1, string value2) =>
+        !value1.Value.Equals(value2);
 
-    public static explicit operator string(EventType value) => value.Value;
+    public static explicit operator string(BillingCreditAutoTopupAvailability value) => value.Value;
 
-    public static explicit operator EventType(string value) => new(value);
+    public static explicit operator BillingCreditAutoTopupAvailability(string value) => new(value);
 
-    internal class EventTypeSerializer : JsonConverter<EventType>
+    internal class BillingCreditAutoTopupAvailabilitySerializer
+        : JsonConverter<BillingCreditAutoTopupAvailability>
     {
-        public override EventType Read(
+        public override BillingCreditAutoTopupAvailability Read(
             ref Utf8JsonReader reader,
             Type typeToConvert,
             JsonSerializerOptions options
@@ -68,19 +73,19 @@ public readonly record struct EventType : IStringEnum
                 ?? throw new global::System.Exception(
                     "The JSON value could not be read as a string."
                 );
-            return new EventType(stringValue);
+            return new BillingCreditAutoTopupAvailability(stringValue);
         }
 
         public override void Write(
             Utf8JsonWriter writer,
-            EventType value,
+            BillingCreditAutoTopupAvailability value,
             JsonSerializerOptions options
         )
         {
             writer.WriteStringValue(value.Value);
         }
 
-        public override EventType ReadAsPropertyName(
+        public override BillingCreditAutoTopupAvailability ReadAsPropertyName(
             ref Utf8JsonReader reader,
             Type typeToConvert,
             JsonSerializerOptions options
@@ -91,12 +96,12 @@ public readonly record struct EventType : IStringEnum
                 ?? throw new global::System.Exception(
                     "The JSON property name could not be read as a string."
                 );
-            return new EventType(stringValue);
+            return new BillingCreditAutoTopupAvailability(stringValue);
         }
 
         public override void WriteAsPropertyName(
             Utf8JsonWriter writer,
-            EventType value,
+            BillingCreditAutoTopupAvailability value,
             JsonSerializerOptions options
         )
         {
@@ -110,12 +115,10 @@ public readonly record struct EventType : IStringEnum
     [Serializable]
     public static class Values
     {
-        public const string FlagCheck = "flag_check";
+        public const string Off = "off";
 
-        public const string Identify = "identify";
+        public const string Automatic = "automatic";
 
-        public const string Inference = "inference";
-
-        public const string Track = "track";
+        public const string UserControlled = "user_controlled";
     }
 }

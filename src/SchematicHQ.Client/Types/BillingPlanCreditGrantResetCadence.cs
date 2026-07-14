@@ -12,7 +12,13 @@ public readonly record struct BillingPlanCreditGrantResetCadence : IStringEnum
 {
     public static readonly BillingPlanCreditGrantResetCadence Daily = new(Values.Daily);
 
+    public static readonly BillingPlanCreditGrantResetCadence Every6Months = new(
+        Values.Every6Months
+    );
+
     public static readonly BillingPlanCreditGrantResetCadence Monthly = new(Values.Monthly);
+
+    public static readonly BillingPlanCreditGrantResetCadence Quarterly = new(Values.Quarterly);
 
     public static readonly BillingPlanCreditGrantResetCadence Weekly = new(Values.Weekly);
 
@@ -117,7 +123,11 @@ public readonly record struct BillingPlanCreditGrantResetCadence : IStringEnum
     {
         public const string Daily = "daily";
 
+        public const string Every6Months = "every_6_months";
+
         public const string Monthly = "monthly";
+
+        public const string Quarterly = "quarterly";
 
         public const string Weekly = "weekly";
 

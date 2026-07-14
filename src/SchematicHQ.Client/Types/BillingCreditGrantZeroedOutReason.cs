@@ -10,7 +10,15 @@ namespace SchematicHQ.Client;
 [Serializable]
 public readonly record struct BillingCreditGrantZeroedOutReason : IStringEnum
 {
+    public static readonly BillingCreditGrantZeroedOutReason CustomerArchived = new(
+        Values.CustomerArchived
+    );
+
     public static readonly BillingCreditGrantZeroedOutReason Expired = new(Values.Expired);
+
+    public static readonly BillingCreditGrantZeroedOutReason IntegrationUninstalled = new(
+        Values.IntegrationUninstalled
+    );
 
     public static readonly BillingCreditGrantZeroedOutReason Manual = new(Values.Manual);
 
@@ -119,7 +127,11 @@ public readonly record struct BillingCreditGrantZeroedOutReason : IStringEnum
     [Serializable]
     public static class Values
     {
+        public const string CustomerArchived = "customer_archived";
+
         public const string Expired = "expired";
+
+        public const string IntegrationUninstalled = "integration_uninstalled";
 
         public const string Manual = "manual";
 

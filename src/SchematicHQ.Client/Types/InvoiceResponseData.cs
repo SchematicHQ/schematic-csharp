@@ -38,6 +38,9 @@ public record InvoiceResponseData : IJsonOnDeserialized
     [JsonPropertyName("due_date")]
     public DateTime? DueDate { get; set; }
 
+    [JsonPropertyName("ending_balance")]
+    public required long EndingBalance { get; set; }
+
     [JsonPropertyName("environment_id")]
     public required string EnvironmentId { get; set; }
 
@@ -52,6 +55,9 @@ public record InvoiceResponseData : IJsonOnDeserialized
 
     [JsonPropertyName("provider_type")]
     public required BillingProviderType ProviderType { get; set; }
+
+    [JsonPropertyName("starting_balance")]
+    public required long StartingBalance { get; set; }
 
     [JsonPropertyName("status")]
     public InvoiceStatus? Status { get; set; }

@@ -179,6 +179,9 @@ public partial class ScheduledcheckoutClient : IScheduledcheckoutClient
         CancellationToken cancellationToken = default
     )
     {
+        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 0)
+            .MergeAdditional(options?.AdditionalQueryParameters)
+            .Build();
         var _headers = await new SchematicHQ.Client.Core.HeadersBuilder.Builder()
             .Add(_client.Options.Headers)
             .Add(_client.Options.AdditionalHeaders)
@@ -192,6 +195,7 @@ public partial class ScheduledcheckoutClient : IScheduledcheckoutClient
                     Method = HttpMethod.Post,
                     Path = "scheduled-checkout",
                     Body = request,
+                    QueryString = _queryString,
                     Headers = _headers,
                     ContentType = "application/json",
                     Options = options,
@@ -330,6 +334,9 @@ public partial class ScheduledcheckoutClient : IScheduledcheckoutClient
         CancellationToken cancellationToken = default
     )
     {
+        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 0)
+            .MergeAdditional(options?.AdditionalQueryParameters)
+            .Build();
         var _headers = await new SchematicHQ.Client.Core.HeadersBuilder.Builder()
             .Add(_client.Options.Headers)
             .Add(_client.Options.AdditionalHeaders)
@@ -345,6 +352,7 @@ public partial class ScheduledcheckoutClient : IScheduledcheckoutClient
                         "scheduled-checkout/{0}",
                         ValueConvert.ToPathParameterString(scheduledCheckoutId)
                     ),
+                    QueryString = _queryString,
                     Headers = _headers,
                     Options = options,
                 },
@@ -473,6 +481,9 @@ public partial class ScheduledcheckoutClient : IScheduledcheckoutClient
         CancellationToken cancellationToken = default
     )
     {
+        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 0)
+            .MergeAdditional(options?.AdditionalQueryParameters)
+            .Build();
         var _headers = await new SchematicHQ.Client.Core.HeadersBuilder.Builder()
             .Add(_client.Options.Headers)
             .Add(_client.Options.AdditionalHeaders)
@@ -489,6 +500,7 @@ public partial class ScheduledcheckoutClient : IScheduledcheckoutClient
                         ValueConvert.ToPathParameterString(scheduledCheckoutId)
                     ),
                     Body = request,
+                    QueryString = _queryString,
                     Headers = _headers,
                     ContentType = "application/json",
                     Options = options,

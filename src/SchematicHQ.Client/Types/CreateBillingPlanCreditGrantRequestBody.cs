@@ -20,6 +20,9 @@ public record CreateBillingPlanCreditGrantRequestBody : IJsonOnDeserialized
     [JsonPropertyName("auto_topup_amount_type")]
     public string? AutoTopupAmountType { get; set; }
 
+    [JsonPropertyName("auto_topup_availability")]
+    public BillingCreditAutoTopupAvailability? AutoTopupAvailability { get; set; }
+
     [JsonPropertyName("auto_topup_enabled")]
     public bool? AutoTopupEnabled { get; set; }
 
@@ -40,6 +43,9 @@ public record CreateBillingPlanCreditGrantRequestBody : IJsonOnDeserialized
 
     [JsonPropertyName("auto_topup_threshold_percent")]
     public long? AutoTopupThresholdPercent { get; set; }
+
+    [JsonPropertyName("can_buy_bundles")]
+    public bool? CanBuyBundles { get; set; }
 
     [JsonPropertyName("credit_amount")]
     public required long CreditAmount { get; set; }

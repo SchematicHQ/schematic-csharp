@@ -182,6 +182,9 @@ public partial class EntitlementsClient : IEntitlementsClient
         CancellationToken cancellationToken = default
     )
     {
+        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 0)
+            .MergeAdditional(options?.AdditionalQueryParameters)
+            .Build();
         var _headers = await new SchematicHQ.Client.Core.HeadersBuilder.Builder()
             .Add(_client.Options.Headers)
             .Add(_client.Options.AdditionalHeaders)
@@ -195,6 +198,7 @@ public partial class EntitlementsClient : IEntitlementsClient
                     Method = HttpMethod.Post,
                     Path = "company-overrides",
                     Body = request,
+                    QueryString = _queryString,
                     Headers = _headers,
                     ContentType = "application/json",
                     Options = options,
@@ -333,6 +337,9 @@ public partial class EntitlementsClient : IEntitlementsClient
         CancellationToken cancellationToken = default
     )
     {
+        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 0)
+            .MergeAdditional(options?.AdditionalQueryParameters)
+            .Build();
         var _headers = await new SchematicHQ.Client.Core.HeadersBuilder.Builder()
             .Add(_client.Options.Headers)
             .Add(_client.Options.AdditionalHeaders)
@@ -348,6 +355,7 @@ public partial class EntitlementsClient : IEntitlementsClient
                         "company-overrides/{0}",
                         ValueConvert.ToPathParameterString(companyOverrideId)
                     ),
+                    QueryString = _queryString,
                     Headers = _headers,
                     Options = options,
                 },
@@ -474,6 +482,9 @@ public partial class EntitlementsClient : IEntitlementsClient
         CancellationToken cancellationToken = default
     )
     {
+        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 0)
+            .MergeAdditional(options?.AdditionalQueryParameters)
+            .Build();
         var _headers = await new SchematicHQ.Client.Core.HeadersBuilder.Builder()
             .Add(_client.Options.Headers)
             .Add(_client.Options.AdditionalHeaders)
@@ -490,6 +501,7 @@ public partial class EntitlementsClient : IEntitlementsClient
                         ValueConvert.ToPathParameterString(companyOverrideId)
                     ),
                     Body = request,
+                    QueryString = _queryString,
                     Headers = _headers,
                     ContentType = "application/json",
                     Options = options,
@@ -630,6 +642,9 @@ public partial class EntitlementsClient : IEntitlementsClient
         CancellationToken cancellationToken = default
     )
     {
+        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 0)
+            .MergeAdditional(options?.AdditionalQueryParameters)
+            .Build();
         var _headers = await new SchematicHQ.Client.Core.HeadersBuilder.Builder()
             .Add(_client.Options.Headers)
             .Add(_client.Options.AdditionalHeaders)
@@ -645,6 +660,7 @@ public partial class EntitlementsClient : IEntitlementsClient
                         "company-overrides/{0}",
                         ValueConvert.ToPathParameterString(companyOverrideId)
                     ),
+                    QueryString = _queryString,
                     Headers = _headers,
                     Options = options,
                 },
@@ -2206,6 +2222,9 @@ public partial class EntitlementsClient : IEntitlementsClient
         CancellationToken cancellationToken = default
     )
     {
+        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 0)
+            .MergeAdditional(options?.AdditionalQueryParameters)
+            .Build();
         var _headers = await new SchematicHQ.Client.Core.HeadersBuilder.Builder()
             .Add(_client.Options.Headers)
             .Add(_client.Options.AdditionalHeaders)
@@ -2219,6 +2238,7 @@ public partial class EntitlementsClient : IEntitlementsClient
                     Method = HttpMethod.Post,
                     Path = "plan-entitlements",
                     Body = request,
+                    QueryString = _queryString,
                     Headers = _headers,
                     ContentType = "application/json",
                     Options = options,
@@ -2357,6 +2377,9 @@ public partial class EntitlementsClient : IEntitlementsClient
         CancellationToken cancellationToken = default
     )
     {
+        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 0)
+            .MergeAdditional(options?.AdditionalQueryParameters)
+            .Build();
         var _headers = await new SchematicHQ.Client.Core.HeadersBuilder.Builder()
             .Add(_client.Options.Headers)
             .Add(_client.Options.AdditionalHeaders)
@@ -2372,6 +2395,7 @@ public partial class EntitlementsClient : IEntitlementsClient
                         "plan-entitlements/{0}",
                         ValueConvert.ToPathParameterString(planEntitlementId)
                     ),
+                    QueryString = _queryString,
                     Headers = _headers,
                     Options = options,
                 },
@@ -2498,6 +2522,9 @@ public partial class EntitlementsClient : IEntitlementsClient
         CancellationToken cancellationToken = default
     )
     {
+        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 0)
+            .MergeAdditional(options?.AdditionalQueryParameters)
+            .Build();
         var _headers = await new SchematicHQ.Client.Core.HeadersBuilder.Builder()
             .Add(_client.Options.Headers)
             .Add(_client.Options.AdditionalHeaders)
@@ -2514,6 +2541,7 @@ public partial class EntitlementsClient : IEntitlementsClient
                         ValueConvert.ToPathParameterString(planEntitlementId)
                     ),
                     Body = request,
+                    QueryString = _queryString,
                     Headers = _headers,
                     ContentType = "application/json",
                     Options = options,
@@ -2654,6 +2682,9 @@ public partial class EntitlementsClient : IEntitlementsClient
         CancellationToken cancellationToken = default
     )
     {
+        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 0)
+            .MergeAdditional(options?.AdditionalQueryParameters)
+            .Build();
         var _headers = await new SchematicHQ.Client.Core.HeadersBuilder.Builder()
             .Add(_client.Options.Headers)
             .Add(_client.Options.AdditionalHeaders)
@@ -2669,6 +2700,7 @@ public partial class EntitlementsClient : IEntitlementsClient
                         "plan-entitlements/{0}",
                         ValueConvert.ToPathParameterString(planEntitlementId)
                     ),
+                    QueryString = _queryString,
                     Headers = _headers,
                     Options = options,
                 },
@@ -2808,6 +2840,9 @@ public partial class EntitlementsClient : IEntitlementsClient
         CancellationToken cancellationToken = default
     )
     {
+        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 0)
+            .MergeAdditional(options?.AdditionalQueryParameters)
+            .Build();
         var _headers = await new SchematicHQ.Client.Core.HeadersBuilder.Builder()
             .Add(_client.Options.Headers)
             .Add(_client.Options.AdditionalHeaders)
@@ -2821,6 +2856,7 @@ public partial class EntitlementsClient : IEntitlementsClient
                     Method = HttpMethod.Post,
                     Path = "plan-entitlements/billing-linked",
                     Body = request,
+                    QueryString = _queryString,
                     Headers = _headers,
                     ContentType = "application/json",
                     Options = options,
@@ -3128,6 +3164,9 @@ public partial class EntitlementsClient : IEntitlementsClient
         CancellationToken cancellationToken = default
     )
     {
+        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 0)
+            .MergeAdditional(options?.AdditionalQueryParameters)
+            .Build();
         var _headers = await new SchematicHQ.Client.Core.HeadersBuilder.Builder()
             .Add(_client.Options.Headers)
             .Add(_client.Options.AdditionalHeaders)
@@ -3141,6 +3180,7 @@ public partial class EntitlementsClient : IEntitlementsClient
                     Method = HttpMethod.Post,
                     Path = "plan-entitlements/duplicate",
                     Body = request,
+                    QueryString = _queryString,
                     Headers = _headers,
                     ContentType = "application/json",
                     Options = options,

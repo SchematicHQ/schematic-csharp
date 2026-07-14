@@ -26,6 +26,9 @@ public record IntegrationsListResponseData : IJsonOnDeserialized
     [JsonPropertyName("is_connect_install")]
     public required bool IsConnectInstall { get; set; }
 
+    [JsonPropertyName("last_webhook_received_at")]
+    public DateTime? LastWebhookReceivedAt { get; set; }
+
     [JsonPropertyName("state")]
     public required IntegrationState State { get; set; }
 

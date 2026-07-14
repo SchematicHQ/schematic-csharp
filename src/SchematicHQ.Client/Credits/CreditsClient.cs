@@ -173,6 +173,9 @@ public partial class CreditsClient : ICreditsClient
         CancellationToken cancellationToken = default
     )
     {
+        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 0)
+            .MergeAdditional(options?.AdditionalQueryParameters)
+            .Build();
         var _headers = await new SchematicHQ.Client.Core.HeadersBuilder.Builder()
             .Add(_client.Options.Headers)
             .Add(_client.Options.AdditionalHeaders)
@@ -186,6 +189,7 @@ public partial class CreditsClient : ICreditsClient
                     Method = HttpMethod.Post,
                     Path = "billing/credits",
                     Body = request,
+                    QueryString = _queryString,
                     Headers = _headers,
                     ContentType = "application/json",
                     Options = options,
@@ -326,6 +330,9 @@ public partial class CreditsClient : ICreditsClient
         CancellationToken cancellationToken = default
     )
     {
+        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 0)
+            .MergeAdditional(options?.AdditionalQueryParameters)
+            .Build();
         var _headers = await new SchematicHQ.Client.Core.HeadersBuilder.Builder()
             .Add(_client.Options.Headers)
             .Add(_client.Options.AdditionalHeaders)
@@ -341,6 +348,7 @@ public partial class CreditsClient : ICreditsClient
                         "billing/credits/{0}",
                         ValueConvert.ToPathParameterString(creditId)
                     ),
+                    QueryString = _queryString,
                     Headers = _headers,
                     Options = options,
                 },
@@ -467,6 +475,9 @@ public partial class CreditsClient : ICreditsClient
         CancellationToken cancellationToken = default
     )
     {
+        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 0)
+            .MergeAdditional(options?.AdditionalQueryParameters)
+            .Build();
         var _headers = await new SchematicHQ.Client.Core.HeadersBuilder.Builder()
             .Add(_client.Options.Headers)
             .Add(_client.Options.AdditionalHeaders)
@@ -483,6 +494,7 @@ public partial class CreditsClient : ICreditsClient
                         ValueConvert.ToPathParameterString(creditId)
                     ),
                     Body = request,
+                    QueryString = _queryString,
                     Headers = _headers,
                     ContentType = "application/json",
                     Options = options,
@@ -623,6 +635,9 @@ public partial class CreditsClient : ICreditsClient
         CancellationToken cancellationToken = default
     )
     {
+        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 0)
+            .MergeAdditional(options?.AdditionalQueryParameters)
+            .Build();
         var _headers = await new SchematicHQ.Client.Core.HeadersBuilder.Builder()
             .Add(_client.Options.Headers)
             .Add(_client.Options.AdditionalHeaders)
@@ -638,6 +653,7 @@ public partial class CreditsClient : ICreditsClient
                         "billing/credits/{0}",
                         ValueConvert.ToPathParameterString(creditId)
                     ),
+                    QueryString = _queryString,
                     Headers = _headers,
                     Options = options,
                 },
@@ -1088,6 +1104,9 @@ public partial class CreditsClient : ICreditsClient
         CancellationToken cancellationToken = default
     )
     {
+        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 0)
+            .MergeAdditional(options?.AdditionalQueryParameters)
+            .Build();
         var _headers = await new SchematicHQ.Client.Core.HeadersBuilder.Builder()
             .Add(_client.Options.Headers)
             .Add(_client.Options.AdditionalHeaders)
@@ -1101,6 +1120,7 @@ public partial class CreditsClient : ICreditsClient
                     Method = HttpMethod.Post,
                     Path = "billing/credits/bundles",
                     Body = request,
+                    QueryString = _queryString,
                     Headers = _headers,
                     ContentType = "application/json",
                     Options = options,
@@ -1237,6 +1257,9 @@ public partial class CreditsClient : ICreditsClient
         CancellationToken cancellationToken = default
     )
     {
+        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 0)
+            .MergeAdditional(options?.AdditionalQueryParameters)
+            .Build();
         var _headers = await new SchematicHQ.Client.Core.HeadersBuilder.Builder()
             .Add(_client.Options.Headers)
             .Add(_client.Options.AdditionalHeaders)
@@ -1252,6 +1275,7 @@ public partial class CreditsClient : ICreditsClient
                         "billing/credits/bundles/{0}",
                         ValueConvert.ToPathParameterString(bundleId)
                     ),
+                    QueryString = _queryString,
                     Headers = _headers,
                     Options = options,
                 },
@@ -1378,6 +1402,9 @@ public partial class CreditsClient : ICreditsClient
         CancellationToken cancellationToken = default
     )
     {
+        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 0)
+            .MergeAdditional(options?.AdditionalQueryParameters)
+            .Build();
         var _headers = await new SchematicHQ.Client.Core.HeadersBuilder.Builder()
             .Add(_client.Options.Headers)
             .Add(_client.Options.AdditionalHeaders)
@@ -1394,6 +1421,7 @@ public partial class CreditsClient : ICreditsClient
                         ValueConvert.ToPathParameterString(bundleId)
                     ),
                     Body = request,
+                    QueryString = _queryString,
                     Headers = _headers,
                     ContentType = "application/json",
                     Options = options,
@@ -1532,6 +1560,9 @@ public partial class CreditsClient : ICreditsClient
         CancellationToken cancellationToken = default
     )
     {
+        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 0)
+            .MergeAdditional(options?.AdditionalQueryParameters)
+            .Build();
         var _headers = await new SchematicHQ.Client.Core.HeadersBuilder.Builder()
             .Add(_client.Options.Headers)
             .Add(_client.Options.AdditionalHeaders)
@@ -1547,6 +1578,7 @@ public partial class CreditsClient : ICreditsClient
                         "billing/credits/bundles/{0}",
                         ValueConvert.ToPathParameterString(bundleId)
                     ),
+                    QueryString = _queryString,
                     Headers = _headers,
                     Options = options,
                 },
@@ -1997,6 +2029,9 @@ public partial class CreditsClient : ICreditsClient
         CancellationToken cancellationToken = default
     )
     {
+        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 0)
+            .MergeAdditional(options?.AdditionalQueryParameters)
+            .Build();
         var _headers = await new SchematicHQ.Client.Core.HeadersBuilder.Builder()
             .Add(_client.Options.Headers)
             .Add(_client.Options.AdditionalHeaders)
@@ -2013,6 +2048,7 @@ public partial class CreditsClient : ICreditsClient
                         ValueConvert.ToPathParameterString(grantId)
                     ),
                     Body = request,
+                    QueryString = _queryString,
                     Headers = _headers,
                     ContentType = "application/json",
                     Options = options,
@@ -2151,6 +2187,9 @@ public partial class CreditsClient : ICreditsClient
         CancellationToken cancellationToken = default
     )
     {
+        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 0)
+            .MergeAdditional(options?.AdditionalQueryParameters)
+            .Build();
         var _headers = await new SchematicHQ.Client.Core.HeadersBuilder.Builder()
             .Add(_client.Options.Headers)
             .Add(_client.Options.AdditionalHeaders)
@@ -2164,6 +2203,7 @@ public partial class CreditsClient : ICreditsClient
                     Method = HttpMethod.Post,
                     Path = "billing/credits/grants/company",
                     Body = request,
+                    QueryString = _queryString,
                     Headers = _headers,
                     ContentType = "application/json",
                     Options = options,
@@ -2930,6 +2970,9 @@ public partial class CreditsClient : ICreditsClient
         CancellationToken cancellationToken = default
     )
     {
+        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 0)
+            .MergeAdditional(options?.AdditionalQueryParameters)
+            .Build();
         var _headers = await new SchematicHQ.Client.Core.HeadersBuilder.Builder()
             .Add(_client.Options.Headers)
             .Add(_client.Options.AdditionalHeaders)
@@ -2943,6 +2986,7 @@ public partial class CreditsClient : ICreditsClient
                     Method = HttpMethod.Post,
                     Path = "billing/credits/lease",
                     Body = request,
+                    QueryString = _queryString,
                     Headers = _headers,
                     ContentType = "application/json",
                     Options = options,
@@ -3080,6 +3124,9 @@ public partial class CreditsClient : ICreditsClient
         CancellationToken cancellationToken = default
     )
     {
+        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 0)
+            .MergeAdditional(options?.AdditionalQueryParameters)
+            .Build();
         var _headers = await new SchematicHQ.Client.Core.HeadersBuilder.Builder()
             .Add(_client.Options.Headers)
             .Add(_client.Options.AdditionalHeaders)
@@ -3096,6 +3143,7 @@ public partial class CreditsClient : ICreditsClient
                         ValueConvert.ToPathParameterString(leaseId)
                     ),
                     Body = request,
+                    QueryString = _queryString,
                     Headers = _headers,
                     ContentType = "application/json",
                     Options = options,
@@ -3233,6 +3281,9 @@ public partial class CreditsClient : ICreditsClient
         CancellationToken cancellationToken = default
     )
     {
+        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 0)
+            .MergeAdditional(options?.AdditionalQueryParameters)
+            .Build();
         var _headers = await new SchematicHQ.Client.Core.HeadersBuilder.Builder()
             .Add(_client.Options.Headers)
             .Add(_client.Options.AdditionalHeaders)
@@ -3249,6 +3300,7 @@ public partial class CreditsClient : ICreditsClient
                         ValueConvert.ToPathParameterString(leaseId)
                     ),
                     Body = request,
+                    QueryString = _queryString,
                     Headers = _headers,
                     ContentType = "application/json",
                     Options = options,
@@ -3550,6 +3602,9 @@ public partial class CreditsClient : ICreditsClient
         CancellationToken cancellationToken = default
     )
     {
+        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 0)
+            .MergeAdditional(options?.AdditionalQueryParameters)
+            .Build();
         var _headers = await new SchematicHQ.Client.Core.HeadersBuilder.Builder()
             .Add(_client.Options.Headers)
             .Add(_client.Options.AdditionalHeaders)
@@ -3563,6 +3618,7 @@ public partial class CreditsClient : ICreditsClient
                     Method = HttpMethod.Post,
                     Path = "billing/credits/plan-grants",
                     Body = request,
+                    QueryString = _queryString,
                     Headers = _headers,
                     ContentType = "application/json",
                     Options = options,
@@ -3703,6 +3759,9 @@ public partial class CreditsClient : ICreditsClient
         CancellationToken cancellationToken = default
     )
     {
+        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 0)
+            .MergeAdditional(options?.AdditionalQueryParameters)
+            .Build();
         var _headers = await new SchematicHQ.Client.Core.HeadersBuilder.Builder()
             .Add(_client.Options.Headers)
             .Add(_client.Options.AdditionalHeaders)
@@ -3718,6 +3777,7 @@ public partial class CreditsClient : ICreditsClient
                         "billing/credits/plan-grants/{0}",
                         ValueConvert.ToPathParameterString(planGrantId)
                     ),
+                    QueryString = _queryString,
                     Headers = _headers,
                     Options = options,
                 },
@@ -3846,6 +3906,9 @@ public partial class CreditsClient : ICreditsClient
         CancellationToken cancellationToken = default
     )
     {
+        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 0)
+            .MergeAdditional(options?.AdditionalQueryParameters)
+            .Build();
         var _headers = await new SchematicHQ.Client.Core.HeadersBuilder.Builder()
             .Add(_client.Options.Headers)
             .Add(_client.Options.AdditionalHeaders)
@@ -3862,6 +3925,7 @@ public partial class CreditsClient : ICreditsClient
                         ValueConvert.ToPathParameterString(planGrantId)
                     ),
                     Body = request,
+                    QueryString = _queryString,
                     Headers = _headers,
                     ContentType = "application/json",
                     Options = options,

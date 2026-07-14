@@ -58,6 +58,18 @@ public partial interface ICompaniesClient
         CancellationToken cancellationToken = default
     );
 
+    WithRawResponseTask<GetCompanyBillingEntityResponse> GetCompanyBillingEntityAsync(
+        GetCompanyBillingEntityRequest request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    );
+
+    WithRawResponseTask<GetBillingEntityChildSubscriptionsResponse> GetBillingEntityChildSubscriptionsAsync(
+        GetBillingEntityChildSubscriptionsRequest request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    );
+
     WithRawResponseTask<ListCompanyMembershipsResponse> ListCompanyMembershipsAsync(
         ListCompanyMembershipsRequest request,
         RequestOptions? options = null,

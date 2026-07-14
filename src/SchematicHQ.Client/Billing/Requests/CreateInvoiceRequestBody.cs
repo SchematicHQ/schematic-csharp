@@ -27,11 +27,17 @@ public record CreateInvoiceRequestBody
     [JsonPropertyName("due_date")]
     public DateTime? DueDate { get; set; }
 
+    [JsonPropertyName("ending_balance")]
+    public long? EndingBalance { get; set; }
+
     [JsonPropertyName("external_id")]
     public string? ExternalId { get; set; }
 
     [JsonPropertyName("payment_method_external_id")]
     public string? PaymentMethodExternalId { get; set; }
+
+    [JsonPropertyName("starting_balance")]
+    public long? StartingBalance { get; set; }
 
     [JsonPropertyName("status")]
     public InvoiceStatus? Status { get; set; }

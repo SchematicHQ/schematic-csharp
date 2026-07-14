@@ -19,9 +19,6 @@ public record CreatePlanBundleRequestBody
     [JsonPropertyName("plan")]
     public CreatePlanRequestBody? Plan { get; set; }
 
-    [JsonPropertyName("traits")]
-    public IEnumerable<UpdatePlanTraitTraitRequestBody>? Traits { get; set; }
-
     /// <inheritdoc />
     public override string ToString()
     {

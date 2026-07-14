@@ -18,6 +18,9 @@ public partial class EventsClient : IEventsClient
         CancellationToken cancellationToken = default
     )
     {
+        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 0)
+            .MergeAdditional(options?.AdditionalQueryParameters)
+            .Build();
         var _headers = await new SchematicHQ.Client.Core.HeadersBuilder.Builder()
             .Add(_client.Options.Headers)
             .Add(_client.Options.AdditionalHeaders)
@@ -31,6 +34,7 @@ public partial class EventsClient : IEventsClient
                     Method = HttpMethod.Post,
                     Path = "event-batch",
                     Body = request,
+                    QueryString = _queryString,
                     Headers = _headers,
                     ContentType = "application/json",
                     Options = options,
@@ -481,6 +485,9 @@ public partial class EventsClient : IEventsClient
         CancellationToken cancellationToken = default
     )
     {
+        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 0)
+            .MergeAdditional(options?.AdditionalQueryParameters)
+            .Build();
         var _headers = await new SchematicHQ.Client.Core.HeadersBuilder.Builder()
             .Add(_client.Options.Headers)
             .Add(_client.Options.AdditionalHeaders)
@@ -494,6 +501,7 @@ public partial class EventsClient : IEventsClient
                     Method = HttpMethod.Post,
                     Path = "events",
                     Body = request,
+                    QueryString = _queryString,
                     Headers = _headers,
                     ContentType = "application/json",
                     Options = options,
@@ -630,6 +638,9 @@ public partial class EventsClient : IEventsClient
         CancellationToken cancellationToken = default
     )
     {
+        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 0)
+            .MergeAdditional(options?.AdditionalQueryParameters)
+            .Build();
         var _headers = await new SchematicHQ.Client.Core.HeadersBuilder.Builder()
             .Add(_client.Options.Headers)
             .Add(_client.Options.AdditionalHeaders)
@@ -642,6 +653,7 @@ public partial class EventsClient : IEventsClient
                 {
                     Method = HttpMethod.Get,
                     Path = string.Format("events/{0}", ValueConvert.ToPathParameterString(eventId)),
+                    QueryString = _queryString,
                     Headers = _headers,
                     Options = options,
                 },
@@ -766,6 +778,9 @@ public partial class EventsClient : IEventsClient
         CancellationToken cancellationToken = default
     )
     {
+        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 0)
+            .MergeAdditional(options?.AdditionalQueryParameters)
+            .Build();
         var _headers = await new SchematicHQ.Client.Core.HeadersBuilder.Builder()
             .Add(_client.Options.Headers)
             .Add(_client.Options.AdditionalHeaders)
@@ -778,6 +793,7 @@ public partial class EventsClient : IEventsClient
                 {
                     Method = HttpMethod.Get,
                     Path = "segment-integration",
+                    QueryString = _queryString,
                     Headers = _headers,
                     Options = options,
                 },

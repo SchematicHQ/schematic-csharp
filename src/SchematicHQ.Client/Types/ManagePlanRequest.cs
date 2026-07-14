@@ -24,6 +24,12 @@ public record ManagePlanRequest : IJsonOnDeserialized
     public string? BasePlanVersionId { get; set; }
 
     /// <summary>
+    /// The company that pays for this subscription. Must already have a Stripe customer. Only honored when starting a new subscription.
+    /// </summary>
+    [JsonPropertyName("billing_entity_id")]
+    public string? BillingEntityId { get; set; }
+
+    /// <summary>
     /// If false, subscription cancels at period end. Only applies when removing all plans. Defaults to true.
     /// </summary>
     [JsonPropertyName("cancel_immediately")]

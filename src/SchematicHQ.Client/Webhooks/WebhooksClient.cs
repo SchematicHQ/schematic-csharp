@@ -174,6 +174,9 @@ public partial class WebhooksClient : IWebhooksClient
         CancellationToken cancellationToken = default
     )
     {
+        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 0)
+            .MergeAdditional(options?.AdditionalQueryParameters)
+            .Build();
         var _headers = await new SchematicHQ.Client.Core.HeadersBuilder.Builder()
             .Add(_client.Options.Headers)
             .Add(_client.Options.AdditionalHeaders)
@@ -189,6 +192,7 @@ public partial class WebhooksClient : IWebhooksClient
                         "webhook-events/{0}",
                         ValueConvert.ToPathParameterString(webhookEventId)
                     ),
+                    QueryString = _queryString,
                     Headers = _headers,
                     Options = options,
                 },
@@ -622,6 +626,9 @@ public partial class WebhooksClient : IWebhooksClient
         CancellationToken cancellationToken = default
     )
     {
+        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 0)
+            .MergeAdditional(options?.AdditionalQueryParameters)
+            .Build();
         var _headers = await new SchematicHQ.Client.Core.HeadersBuilder.Builder()
             .Add(_client.Options.Headers)
             .Add(_client.Options.AdditionalHeaders)
@@ -635,6 +642,7 @@ public partial class WebhooksClient : IWebhooksClient
                     Method = HttpMethod.Post,
                     Path = "webhooks",
                     Body = request,
+                    QueryString = _queryString,
                     Headers = _headers,
                     ContentType = "application/json",
                     Options = options,
@@ -771,6 +779,9 @@ public partial class WebhooksClient : IWebhooksClient
         CancellationToken cancellationToken = default
     )
     {
+        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 0)
+            .MergeAdditional(options?.AdditionalQueryParameters)
+            .Build();
         var _headers = await new SchematicHQ.Client.Core.HeadersBuilder.Builder()
             .Add(_client.Options.Headers)
             .Add(_client.Options.AdditionalHeaders)
@@ -786,6 +797,7 @@ public partial class WebhooksClient : IWebhooksClient
                         "webhooks/{0}",
                         ValueConvert.ToPathParameterString(webhookId)
                     ),
+                    QueryString = _queryString,
                     Headers = _headers,
                     Options = options,
                 },
@@ -910,6 +922,9 @@ public partial class WebhooksClient : IWebhooksClient
         CancellationToken cancellationToken = default
     )
     {
+        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 0)
+            .MergeAdditional(options?.AdditionalQueryParameters)
+            .Build();
         var _headers = await new SchematicHQ.Client.Core.HeadersBuilder.Builder()
             .Add(_client.Options.Headers)
             .Add(_client.Options.AdditionalHeaders)
@@ -926,6 +941,7 @@ public partial class WebhooksClient : IWebhooksClient
                         ValueConvert.ToPathParameterString(webhookId)
                     ),
                     Body = request,
+                    QueryString = _queryString,
                     Headers = _headers,
                     ContentType = "application/json",
                     Options = options,
@@ -1062,6 +1078,9 @@ public partial class WebhooksClient : IWebhooksClient
         CancellationToken cancellationToken = default
     )
     {
+        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 0)
+            .MergeAdditional(options?.AdditionalQueryParameters)
+            .Build();
         var _headers = await new SchematicHQ.Client.Core.HeadersBuilder.Builder()
             .Add(_client.Options.Headers)
             .Add(_client.Options.AdditionalHeaders)
@@ -1077,6 +1096,7 @@ public partial class WebhooksClient : IWebhooksClient
                         "webhooks/{0}",
                         ValueConvert.ToPathParameterString(webhookId)
                     ),
+                    QueryString = _queryString,
                     Headers = _headers,
                     Options = options,
                 },
@@ -1215,6 +1235,9 @@ public partial class WebhooksClient : IWebhooksClient
         CancellationToken cancellationToken = default
     )
     {
+        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 0)
+            .MergeAdditional(options?.AdditionalQueryParameters)
+            .Build();
         var _headers = await new SchematicHQ.Client.Core.HeadersBuilder.Builder()
             .Add(_client.Options.Headers)
             .Add(_client.Options.AdditionalHeaders)
@@ -1231,6 +1254,7 @@ public partial class WebhooksClient : IWebhooksClient
                         ValueConvert.ToPathParameterString(webhookId)
                     ),
                     Body = request,
+                    QueryString = _queryString,
                     Headers = _headers,
                     ContentType = "application/json",
                     Options = options,

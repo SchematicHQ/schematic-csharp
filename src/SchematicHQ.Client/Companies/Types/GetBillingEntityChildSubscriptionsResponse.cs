@@ -5,17 +5,21 @@ using SchematicHQ.Client.Core;
 namespace SchematicHQ.Client;
 
 [Serializable]
-public record MetronomeIntegrationConfig : IJsonOnDeserialized
+public record GetBillingEntityChildSubscriptionsResponse : IJsonOnDeserialized
 {
     [JsonExtensionData]
     private readonly IDictionary<string, JsonElement> _extensionData =
         new Dictionary<string, JsonElement>();
 
+    [JsonPropertyName("data")]
+    public IEnumerable<CompanyBillingEntitySubscriptionResponseData> Data { get; set; } =
+        new List<CompanyBillingEntitySubscriptionResponseData>();
+
     /// <summary>
-    /// Schematic company key used to store the Metronome customer's ingest alias; when unset, imported customers carry only metronome_customer_id
+    /// Input parameters
     /// </summary>
-    [JsonPropertyName("external_customer_id_key")]
-    public string? ExternalCustomerIdKey { get; set; }
+    [JsonPropertyName("params")]
+    public required GetBillingEntityChildSubscriptionsParams Params { get; set; }
 
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();

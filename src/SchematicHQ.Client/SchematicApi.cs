@@ -15,7 +15,7 @@ public partial class SchematicApi : ISchematicApi
                 { "X-Fern-Language", "C#" },
                 { "X-Fern-SDK-Name", "SchematicHQ.Client" },
                 { "X-Fern-SDK-Version", Version.Current },
-                { "User-Agent", "SchematicHQ.Client/1.4.10" },
+                { "User-Agent", "SchematicHQ.Client/1.5.1" },
             }
         );
         foreach (var header in platformHeaders)
@@ -101,6 +101,9 @@ public partial class SchematicApi : ISchematicApi
         CancellationToken cancellationToken = default
     )
     {
+        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 0)
+            .MergeAdditional(options?.AdditionalQueryParameters)
+            .Build();
         var _headers = await new SchematicHQ.Client.Core.HeadersBuilder.Builder()
             .Add(_client.Options.Headers)
             .Add(_client.Options.AdditionalHeaders)
@@ -113,6 +116,7 @@ public partial class SchematicApi : ISchematicApi
                 {
                     Method = HttpMethod.Get,
                     Path = "billing/credits/ledger",
+                    QueryString = _queryString,
                     Headers = _headers,
                     Options = options,
                 },

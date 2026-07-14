@@ -14,6 +14,8 @@ public readonly record struct AccountMemberPermission : IStringEnum
 
     public static readonly AccountMemberPermission ComponentsEdit = new(Values.ComponentsEdit);
 
+    public static readonly AccountMemberPermission CustomPlansEdit = new(Values.CustomPlansEdit);
+
     public static readonly AccountMemberPermission DataExportsEdit = new(Values.DataExportsEdit);
 
     public static readonly AccountMemberPermission FeaturesEdit = new(Values.FeaturesEdit);
@@ -141,6 +143,8 @@ public readonly record struct AccountMemberPermission : IStringEnum
         public const string CompanyUsersEdit = "company_users_edit";
 
         public const string ComponentsEdit = "components_edit";
+
+        public const string CustomPlansEdit = "custom_plans_edit";
 
         public const string DataExportsEdit = "data_exports_edit";
 

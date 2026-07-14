@@ -23,9 +23,6 @@ public record PlanBundleResponseData : IJsonOnDeserialized
     [JsonPropertyName("plan")]
     public PlanResponseData? Plan { get; set; }
 
-    [JsonPropertyName("traits")]
-    public IEnumerable<PlanTraitResponseData>? Traits { get; set; }
-
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();
 
