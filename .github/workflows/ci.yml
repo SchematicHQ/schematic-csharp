@@ -8,6 +8,11 @@ concurrency:
 
 env:
   DOTNET_NOLOGO: true
+  # Authenticates `gh release download` in scripts/download-wasm.sh; the rules engine
+  # WASM lives in the private SchematicHQ/schematic-api repo, so the default
+  # GITHUB_TOKEN (scoped to this repo) cannot read it. Requires a GH_TOKEN repo
+  # secret with read access to schematic-api releases.
+  GH_TOKEN: ${{ secrets.GH_TOKEN }}
 
 jobs:
   ci:
@@ -21,6 +26,9 @@ jobs:
         uses: actions/setup-dotnet@v5
         with:
           dotnet-version: 10.x
+
+      - name: Download WASM binary
+        run: ./scripts/download-wasm.sh
 
       - name: Install tools
         run: dotnet tool restore

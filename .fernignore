@@ -2,6 +2,10 @@
 .claude/
 .github/CODEOWNERS
 .github/workflows/claude-code.yml
+.github/workflows/ci.yml
+.gitignore
+WASM_VERSION
+scripts/download-wasm.sh
 CLAUDE.md
 LICENSE
 README.md

@@ -482,3 +482,7 @@ $RECYCLE.BIN/
 
 # Vim temporary swap files
 *.swp
+
+# Rules engine WASM binary (downloaded at build time from schematic-api GitHub Releases)
+src/SchematicHQ.Client/RulesEngine/Wasm/rulesengine.wasm
+src/SchematicHQ.Client/RulesEngine/Wasm/.wasm_version
