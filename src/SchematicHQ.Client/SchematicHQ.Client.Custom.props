@@ -12,6 +12,19 @@ Configure additional MSBuild properties for your project in this file:
 
     <PackageReference Include="OpenFeature" Version="2.9.0" />
     <PackageReference Include="StackExchange.Redis" Version="2.8.41" />
+    <!-- WASM runtime hosting the shared Rust rules engine (rulesengine.wasm). -->
+    <PackageReference Include="Wasmtime" Version="44.0.0" />
+  </ItemGroup>
+
+  <!--
+    The rules engine WASM binary is downloaded at build time (see scripts/download-wasm.sh)
+    and is NOT tracked in git. It is embedded into the assembly so the SDK ships as a single
+    DLL and loads it via Assembly.GetManifestResourceStream("rulesengine.wasm").
+  -->
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)RulesEngine/Wasm/rulesengine.wasm">
+      <LogicalName>rulesengine.wasm</LogicalName>
+    </EmbeddedResource>
   </ItemGroup>
 
     <ItemGroup Condition=" '$(TargetFramework)' == 'net8.0' ">
@@ -33,5 +46,14 @@ Configure additional MSBuild properties for your project in this file:
     <ItemGroup>
       <Compile Include="$(GeneratedModelHashFile)" />
     </ItemGroup>
+  </Target>
+
+  <!--
+    Fetch the rules engine WASM binary before the embedded resource is gathered.
+    Idempotent: the script skips the download when the local .wasm_version marker
+    matches WASM_VERSION. Runs on local builds; CI also invokes the script explicitly.
+  -->
+  <Target Name="DownloadWasm" BeforeTargets="PrepareForBuild;CoreCompile">
+    <Exec Command="bash $(MSBuildThisFileDirectory)../../scripts/download-wasm.sh" />
   </Target>
 </Project>

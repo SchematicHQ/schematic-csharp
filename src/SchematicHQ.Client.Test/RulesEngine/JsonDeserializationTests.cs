@@ -21,7 +21,6 @@ namespace SchematicHQ.Client.Test.RulesEngine
                 WriteIndented = false,
                 PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower,
                 Converters = {
-                    new ComparableTypeConverter(),
                     new ResilientEnumConverter(),
                     new JsonStringEnumConverter(JsonNamingPolicy.SnakeCaseLower, true)
                 }
@@ -328,12 +327,6 @@ namespace SchematicHQ.Client.Test.RulesEngine
         }
 
         // Test helper classes
-        private class TestComparableTypeObject
-        {
-            [JsonPropertyName("comparable_type")]
-            public ComparableType ComparableType { get; set; }
-        }
-
         private class TestTraitDefinitionComparableTypeObject
         {
             [JsonPropertyName("comparable_type")]
