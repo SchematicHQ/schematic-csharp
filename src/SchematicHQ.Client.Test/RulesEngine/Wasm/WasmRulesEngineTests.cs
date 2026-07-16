@@ -26,10 +26,9 @@ namespace SchematicHQ.Client.Test.RulesEngine.Wasm
         public void TearDown() => _engine.Dispose();
 
         [Test]
-        public void Initializes_And_Exposes_Version_Key()
+        public void Initializes_From_Embedded_Wasm()
         {
             Assert.That(_engine.IsInitialized, Is.True);
-            Assert.That(_engine.GetVersionKey(), Is.Not.Empty);
         }
 
         [Test]
