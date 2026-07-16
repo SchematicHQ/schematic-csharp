@@ -31,7 +31,6 @@ namespace SchematicHQ.Client.RulesEngine
         private readonly object _lock = new();
 
         private volatile bool _initialized;
-        private string? _versionKey;
 
         // Wasmtime objects — kept alive for the lifetime of the engine.
         private Engine? _engine;
@@ -48,7 +47,6 @@ namespace SchematicHQ.Client.RulesEngine
         private Action<long>? _setTime; // setCurrentTimeMillis(nowMillis) — optional
         private Func<int>? _getResultJson; // getResultJson() -> ptr
         private Func<int>? _getResultJsonLength; // getResultJsonLength() -> len
-        private Func<int>? _getVersionKey; // get_version_key_wasm() -> ptr (C string)
 
         public WasmRulesEngine(ILogger logger)
         {
@@ -123,19 +121,14 @@ namespace SchematicHQ.Client.RulesEngine
                         "WASM module does not export 'getResultJsonLength'"
                     );
 
-                // Optional exports — resolved defensively so older wasm builds still load.
+                // Optional export — resolved defensively so older wasm builds still load.
                 // Without setCurrentTimeMillis the clockless wasmtime host cannot compute
                 // metric-period reset timestamps (SCHY-471); with it, feature_usage_reset_at
                 // is populated.
                 _setTime = _instance.GetAction<long>("setCurrentTimeMillis");
-                _getVersionKey = _instance.GetFunction<int>("get_version_key_wasm");
 
                 _initialized = true;
-
-                // Cache the version key immediately — the pointer is only stable before
-                // any other WASM call mutates linear memory.
-                _versionKey = ReadVersionKeyFromWasm();
-                _logger.LogDebug("WASM rules engine initialized (version: {Version})", _versionKey);
+                _logger.LogDebug("WASM rules engine initialized");
             }
         }
 
@@ -198,12 +191,6 @@ namespace SchematicHQ.Client.RulesEngine
                 Value = r.Value,
             };
 
-        /// <summary>
-        /// Version key from the WASM engine, used for cache-key generation so caches
-        /// invalidate when the engine changes. Computed once during initialization.
-        /// </summary>
-        public string GetVersionKey() => _versionKey ?? "1";
-
         public void Dispose()
         {
             _store?.Dispose();
@@ -252,25 +239,6 @@ namespace SchematicHQ.Client.RulesEngine
                     // Frees the input buffer only.
                     _dealloc!(ptr, length);
                 }
-            }
-        }
-
-        private string ReadVersionKeyFromWasm()
-        {
-            if (_getVersionKey == null)
-            {
-                return "1";
-            }
-
-            try
-            {
-                var ptr = _getVersionKey();
-                return _memory!.ReadNullTerminatedString(ptr);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogWarning(ex, "Failed to read WASM version key");
-                return "1";
             }
         }
 

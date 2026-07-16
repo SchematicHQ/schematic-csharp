@@ -34,19 +34,6 @@ Configure additional MSBuild properties for your project in this file:
     <ItemGroup Condition=" '$(TargetFramework)' == 'net9.0' ">
         <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="9.0.15" />
     </ItemGroup>
-    
-    
-  <PropertyGroup>
-    <!-- Ensure the GeneratedModelHash.cs file is included in compilation -->
-    <GeneratedModelHashFile>$(MSBuildThisFileDirectory)RulesEngine/Utils/GeneratedModelHash.cs</GeneratedModelHashFile>
-  </PropertyGroup>
-
-  <Target Name="GenerateModelHash" BeforeTargets="CoreCompile">
-    <Exec Command="bash $(MSBuildThisFileDirectory)/generate-schema-hash.sh $(MSBuildThisFileDirectory)Types $(GeneratedModelHashFile)" />
-    <ItemGroup>
-      <Compile Include="$(GeneratedModelHashFile)" />
-    </ItemGroup>
-  </Target>
 
   <!--
     Fetch the rules engine WASM binary before the embedded resource is gathered.
