@@ -486,3 +486,6 @@ $RECYCLE.BIN/
 # Rules engine WASM binary (downloaded at build time from schematic-api GitHub Releases)
 src/SchematicHQ.Client/RulesEngine/Wasm/rulesengine.wasm
 src/SchematicHQ.Client/RulesEngine/Wasm/.wasm_version
+
+# Local NuGet feed produced by scripts/e2e-pack.sh for the packaged-artifact E2E variant
+artifacts/

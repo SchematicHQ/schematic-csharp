@@ -1,0 +1,38 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <!--
+    Packaged-artifact E2E variant of the SDK test app.
+
+    Unlike ../testapp (which uses a <ProjectReference> to the local source), this
+    project consumes SchematicHQ.Client as a *NuGet package* restored from a local
+    feed (see nuget.config + scripts/e2e-pack.sh). That exercises the full
+    dev -> pack -> restore -> run chain, so the shared E2E suite can catch failures a
+    source build hides:
+      - the embedded rulesengine.wasm being stripped/omitted at pack time, and
+      - the transitive Wasmtime native library (libwasmtime) failing to resolve for
+        the consumer's runtime identifier (RID).
+
+    The application logic is identical to ../testapp: Program.cs is linked, not
+    duplicated, so both variants stay in lockstep.
+  -->
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>SchematicHQ.Testapp</RootNamespace>
+    <AssemblyName>Testapp</AssemblyName>
+    <!-- Deterministic version stamped by scripts/e2e-pack.sh; overridable via the
+         SchematicPackageVersion MSBuild property or env var. -->
+    <SchematicPackageVersion Condition="'$(SchematicPackageVersion)' == ''">0.0.0-e2e</SchematicPackageVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Share the exact app logic with the project-reference test app. -->
+    <Compile Include="../testapp/Program.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="SchematicHQ.Client" Version="$(SchematicPackageVersion)" />
+  </ItemGroup>
+
+</Project>
