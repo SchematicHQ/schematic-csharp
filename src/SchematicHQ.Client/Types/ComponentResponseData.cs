@@ -14,6 +14,9 @@ public record ComponentResponseData : IJsonOnDeserialized
     [JsonPropertyName("ast")]
     public Dictionary<string, double>? Ast { get; set; }
 
+    [JsonPropertyName("catalog_id")]
+    public string? CatalogId { get; set; }
+
     [JsonPropertyName("created_at")]
     public required DateTime CreatedAt { get; set; }
 

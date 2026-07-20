@@ -9,6 +9,9 @@ public record CreateCustomPlanBundleRequestBody
     [JsonPropertyName("billing_product")]
     public UpsertBillingProductRequestBody? BillingProduct { get; set; }
 
+    [JsonPropertyName("credit_grants")]
+    public IEnumerable<PlanBundleCreditGrantRequestBody>? CreditGrants { get; set; }
+
     [JsonPropertyName("entitlements")]
     public IEnumerable<PlanBundleEntitlementRequestBody> Entitlements { get; set; } =
         new List<PlanBundleEntitlementRequestBody>();

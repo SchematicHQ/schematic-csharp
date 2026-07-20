@@ -7,13 +7,13 @@ namespace SchematicHQ.Client;
 public record CreateDataExportRequestBody
 {
     [JsonPropertyName("export_type")]
-    public string ExportType { get; set; } = "company-feature-usage";
+    public required DataExportType ExportType { get; set; }
 
     [JsonPropertyName("metadata")]
-    public required string Metadata { get; set; }
+    public DataExportMetadata? Metadata { get; set; }
 
     [JsonPropertyName("output_file_type")]
-    public string OutputFileType { get; set; } = "csv";
+    public required DataExportOutputFileType OutputFileType { get; set; }
 
     /// <inheritdoc />
     public override string ToString()

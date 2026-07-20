@@ -14,6 +14,10 @@ public record PreviewSubscriptionFinanceResponseData : IJsonOnDeserialized
     [JsonPropertyName("amount_off")]
     public required long AmountOff { get; set; }
 
+    [JsonPropertyName("discounts")]
+    public IEnumerable<PreviewSubscriptionDiscountResponseData> Discounts { get; set; } =
+        new List<PreviewSubscriptionDiscountResponseData>();
+
     [JsonPropertyName("due_now")]
     public required long DueNow { get; set; }
 
@@ -22,6 +26,9 @@ public record PreviewSubscriptionFinanceResponseData : IJsonOnDeserialized
 
     [JsonPropertyName("percent_off")]
     public required double PercentOff { get; set; }
+
+    [JsonPropertyName("period_end")]
+    public required DateTime PeriodEnd { get; set; }
 
     [JsonPropertyName("period_start")]
     public required DateTime PeriodStart { get; set; }

@@ -15,7 +15,7 @@ public partial class SchematicApi : ISchematicApi
                 { "X-Fern-Language", "C#" },
                 { "X-Fern-SDK-Name", "SchematicHQ.Client" },
                 { "X-Fern-SDK-Version", Version.Current },
-                { "User-Agent", "SchematicHQ.Client/1.5.1" },
+                { "User-Agent", "SchematicHQ.Client/1.5.2" },
             }
         );
         foreach (var header in platformHeaders)
@@ -37,6 +37,7 @@ public partial class SchematicApi : ISchematicApi
         Accounts = new AccountsClient(_client);
         Billing = new BillingClient(_client);
         Credits = new CreditsClient(_client);
+        Catalogs = new CatalogsClient(_client);
         Checkout = new CheckoutClient(_client);
         Companies = new CompaniesClient(_client);
         Entitlements = new EntitlementsClient(_client);
@@ -61,6 +62,8 @@ public partial class SchematicApi : ISchematicApi
     public IBillingClient Billing { get; }
 
     public ICreditsClient Credits { get; }
+
+    public ICatalogsClient Catalogs { get; }
 
     public ICheckoutClient Checkout { get; }
 

@@ -1,0 +1,58 @@
+using global::System.Text.Json;
+using global::System.Text.Json.Serialization;
+using SchematicHQ.Client.Core;
+
+namespace SchematicHQ.Client;
+
+[Serializable]
+public record PreviewSubscriptionDiscountResponseData : IJsonOnDeserialized
+{
+    [JsonExtensionData]
+    private readonly IDictionary<string, JsonElement> _extensionData =
+        new Dictionary<string, JsonElement>();
+
+    [JsonPropertyName("amount_off")]
+    public long? AmountOff { get; set; }
+
+    [JsonPropertyName("coupon_name")]
+    public required string CouponName { get; set; }
+
+    [JsonPropertyName("currency")]
+    public string? Currency { get; set; }
+
+    [JsonPropertyName("customer_facing_code")]
+    public string? CustomerFacingCode { get; set; }
+
+    [JsonPropertyName("duration")]
+    public required string Duration { get; set; }
+
+    [JsonPropertyName("duration_in_months")]
+    public long? DurationInMonths { get; set; }
+
+    [JsonPropertyName("ended_at")]
+    public DateTime? EndedAt { get; set; }
+
+    [JsonPropertyName("is_active")]
+    public required bool IsActive { get; set; }
+
+    [JsonPropertyName("percent_off")]
+    public double? PercentOff { get; set; }
+
+    [JsonPropertyName("promo_code_external_id")]
+    public string? PromoCodeExternalId { get; set; }
+
+    [JsonPropertyName("started_at")]
+    public required DateTime StartedAt { get; set; }
+
+    [JsonIgnore]
+    public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();
+
+    void IJsonOnDeserialized.OnDeserialized() =>
+        AdditionalProperties.CopyFromExtensionData(_extensionData);
+
+    /// <inheritdoc />
+    public override string ToString()
+    {
+        return JsonUtils.Serialize(this);
+    }
+}
