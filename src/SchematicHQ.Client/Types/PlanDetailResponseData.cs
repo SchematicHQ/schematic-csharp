@@ -26,6 +26,9 @@ public record PlanDetailResponseData : IJsonOnDeserialized
     [JsonPropertyName("billing_strategy")]
     public required BillingStrategy BillingStrategy { get; set; }
 
+    [JsonPropertyName("catalogs")]
+    public IEnumerable<PlanCatalogMembershipResponseData>? Catalogs { get; set; }
+
     [JsonPropertyName("charge_type")]
     public required ChargeType ChargeType { get; set; }
 

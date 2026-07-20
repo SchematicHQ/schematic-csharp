@@ -1,0 +1,49 @@
+using global::System.Text.Json;
+using global::System.Text.Json.Serialization;
+using SchematicHQ.Client.Core;
+
+namespace SchematicHQ.Client;
+
+/// <summary>
+/// Input parameters
+/// </summary>
+[Serializable]
+public record ListCatalogsParams : IJsonOnDeserialized
+{
+    [JsonExtensionData]
+    private readonly IDictionary<string, JsonElement> _extensionData =
+        new Dictionary<string, JsonElement>();
+
+    [JsonPropertyName("is_default")]
+    public bool? IsDefault { get; set; }
+
+    /// <summary>
+    /// Page limit (default 100)
+    /// </summary>
+    [JsonPropertyName("limit")]
+    public long? Limit { get; set; }
+
+    /// <summary>
+    /// Page offset (default 0)
+    /// </summary>
+    [JsonPropertyName("offset")]
+    public long? Offset { get; set; }
+
+    /// <summary>
+    /// Search by catalog name
+    /// </summary>
+    [JsonPropertyName("q")]
+    public string? Q { get; set; }
+
+    [JsonIgnore]
+    public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();
+
+    void IJsonOnDeserialized.OnDeserialized() =>
+        AdditionalProperties.CopyFromExtensionData(_extensionData);
+
+    /// <inheritdoc />
+    public override string ToString()
+    {
+        return JsonUtils.Serialize(this);
+    }
+}

@@ -5,6 +5,7 @@ public partial interface ISchematicApi
     public IAccountsClient Accounts { get; }
     public IBillingClient Billing { get; }
     public ICreditsClient Credits { get; }
+    public ICatalogsClient Catalogs { get; }
     public ICheckoutClient Checkout { get; }
     public ICompaniesClient Companies { get; }
     public IEntitlementsClient Entitlements { get; }

@@ -119,6 +119,12 @@ public record FeatureEntitlement : IJsonOnDeserialized
     [JsonPropertyName("value_type")]
     public required EntitlementValueType ValueType { get; set; }
 
+    /// <summary>
+    /// Customer-defined usage warning thresholds configured on this entitlement
+    /// </summary>
+    [JsonPropertyName("warning_tiers")]
+    public IEnumerable<WarningTier>? WarningTiers { get; set; }
+
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();
 

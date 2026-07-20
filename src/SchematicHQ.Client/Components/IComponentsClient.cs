@@ -33,6 +33,13 @@ public partial interface IComponentsClient
         CancellationToken cancellationToken = default
     );
 
+    WithRawResponseTask<BindCatalogResponse> BindCatalogAsync(
+        string componentId,
+        BindCatalogRequestBody request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    );
+
     WithRawResponseTask<CountComponentsResponse> CountComponentsAsync(
         CountComponentsRequest request,
         RequestOptions? options = null,

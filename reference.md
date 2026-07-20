@@ -3463,6 +3463,628 @@ await client.Credits.CountCreditEventLedgerAsync(
 </dl>
 </details>
 
+## catalogs
+<details><summary><code>client.Catalogs.<a href="/src/SchematicHQ.Client/Catalogs/CatalogsClient.cs">ListCatalogsAsync</a>(ListCatalogsRequest { ... }) -> WithRawResponseTask&lt;ListCatalogsResponse&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Catalogs.ListCatalogsAsync(
+    new ListCatalogsRequest
+    {
+        IsDefault = true,
+        Q = "q",
+        Limit = 1000000,
+        Offset = 1000000,
+    }
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `ListCatalogsRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Catalogs.<a href="/src/SchematicHQ.Client/Catalogs/CatalogsClient.cs">CreateCatalogAsync</a>(CreateCatalogRequestBody { ... }) -> WithRawResponseTask&lt;CreateCatalogResponse&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Catalogs.CreateCatalogAsync(
+    new CreateCatalogRequestBody { IsDefault = true, Name = "name" }
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `CreateCatalogRequestBody` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Catalogs.<a href="/src/SchematicHQ.Client/Catalogs/CatalogsClient.cs">GetCatalogAsync</a>(catalogId) -> WithRawResponseTask&lt;GetCatalogResponse&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Catalogs.GetCatalogAsync("catalog_id");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**catalogId:** `string` — catalog_id
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Catalogs.<a href="/src/SchematicHQ.Client/Catalogs/CatalogsClient.cs">UpdateCatalogAsync</a>(catalogId, UpdateCatalogRequestBody { ... }) -> WithRawResponseTask&lt;UpdateCatalogResponse&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Catalogs.UpdateCatalogAsync("catalog_id", new UpdateCatalogRequestBody());
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**catalogId:** `string` — catalog_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `UpdateCatalogRequestBody` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Catalogs.<a href="/src/SchematicHQ.Client/Catalogs/CatalogsClient.cs">DeleteCatalogAsync</a>(catalogId) -> WithRawResponseTask&lt;DeleteCatalogResponse&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Catalogs.DeleteCatalogAsync("catalog_id");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**catalogId:** `string` — catalog_id
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Catalogs.<a href="/src/SchematicHQ.Client/Catalogs/CatalogsClient.cs">GetConfigurationAsync</a>(catalogId) -> WithRawResponseTask&lt;GetConfigurationResponse&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Catalogs.GetConfigurationAsync("catalog_id");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**catalogId:** `string` — catalog_id
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Catalogs.<a href="/src/SchematicHQ.Client/Catalogs/CatalogsClient.cs">UpdateConfigurationAsync</a>(catalogId, UpdateCatalogConfigurationRequestBody { ... }) -> WithRawResponseTask&lt;UpdateConfigurationResponse&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Catalogs.UpdateConfigurationAsync(
+    "catalog_id",
+    new UpdateCatalogConfigurationRequestBody()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**catalogId:** `string` — catalog_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `UpdateCatalogConfigurationRequestBody` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Catalogs.<a href="/src/SchematicHQ.Client/Catalogs/CatalogsClient.cs">GetCreditBundlesInCatalogAsync</a>(catalogId) -> WithRawResponseTask&lt;GetCreditBundlesInCatalogResponse&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Catalogs.GetCreditBundlesInCatalogAsync("catalog_id");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**catalogId:** `string` — catalog_id
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Catalogs.<a href="/src/SchematicHQ.Client/Catalogs/CatalogsClient.cs">AddCreditBundleAsync</a>(catalogId, creditBundleId) -> WithRawResponseTask</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Catalogs.AddCreditBundleAsync("catalog_id", "credit_bundle_id");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**catalogId:** `string` — catalog_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**creditBundleId:** `string` — credit_bundle_id
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Catalogs.<a href="/src/SchematicHQ.Client/Catalogs/CatalogsClient.cs">RemoveCreditBundleAsync</a>(catalogId, creditBundleId) -> WithRawResponseTask</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Catalogs.RemoveCreditBundleAsync("catalog_id", "credit_bundle_id");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**catalogId:** `string` — catalog_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**creditBundleId:** `string` — credit_bundle_id
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Catalogs.<a href="/src/SchematicHQ.Client/Catalogs/CatalogsClient.cs">GetDerivedFeaturesAsync</a>(catalogId) -> WithRawResponseTask&lt;GetDerivedFeaturesResponse&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Catalogs.GetDerivedFeaturesAsync("catalog_id");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**catalogId:** `string` — catalog_id
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Catalogs.<a href="/src/SchematicHQ.Client/Catalogs/CatalogsClient.cs">GetPlansInCatalogAsync</a>(catalogId) -> WithRawResponseTask&lt;GetPlansInCatalogResponse&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Catalogs.GetPlansInCatalogAsync("catalog_id");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**catalogId:** `string` — catalog_id
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Catalogs.<a href="/src/SchematicHQ.Client/Catalogs/CatalogsClient.cs">AddPlanAsync</a>(catalogId, planId) -> WithRawResponseTask</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Catalogs.AddPlanAsync("catalog_id", "plan_id");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**catalogId:** `string` — catalog_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**planId:** `string` — plan_id
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Catalogs.<a href="/src/SchematicHQ.Client/Catalogs/CatalogsClient.cs">RemovePlanAsync</a>(catalogId, planId) -> WithRawResponseTask</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Catalogs.RemovePlanAsync("catalog_id", "plan_id");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**catalogId:** `string` — catalog_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**planId:** `string` — plan_id
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 ## checkout
 <details><summary><code>client.Checkout.<a href="/src/SchematicHQ.Client/Checkout/CheckoutClient.cs">InternalAsync</a>(ChangeSubscriptionInternalRequestBody { ... }) -> WithRawResponseTask&lt;CheckoutInternalResponse&gt;</code></summary>
 <dl>
@@ -7809,6 +8431,54 @@ await client.Components.DeleteComponentAsync("component_id");
 </dl>
 </details>
 
+<details><summary><code>client.Components.<a href="/src/SchematicHQ.Client/Components/ComponentsClient.cs">BindCatalogAsync</a>(componentId, BindCatalogRequestBody { ... }) -> WithRawResponseTask&lt;BindCatalogResponse&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Components.BindCatalogAsync("component_id", new BindCatalogRequestBody());
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**componentId:** `string` — component_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `BindCatalogRequestBody` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.Components.<a href="/src/SchematicHQ.Client/Components/ComponentsClient.cs">CountComponentsAsync</a>(CountComponentsRequest { ... }) -> WithRawResponseTask&lt;CountComponentsResponse&gt;</code></summary>
 <dl>
 <dd>
@@ -8053,6 +8723,54 @@ await client.Planbundle.UpdatePlanBundleAsync(
 </details>
 
 ## dataexports
+<details><summary><code>client.Dataexports.<a href="/src/SchematicHQ.Client/Dataexports/DataexportsClient.cs">ListDataExportsAsync</a>(ListDataExportsRequest { ... }) -> WithRawResponseTask&lt;ListDataExportsResponse&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Dataexports.ListDataExportsAsync(
+    new ListDataExportsRequest
+    {
+        ExportType = DataExportType.AuditLog,
+        Status = DataExportStatus.Failure,
+        Limit = 1000000,
+        Offset = 1000000,
+    }
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `ListDataExportsRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.Dataexports.<a href="/src/SchematicHQ.Client/Dataexports/DataexportsClient.cs">CreateDataExportAsync</a>(CreateDataExportRequestBody { ... }) -> WithRawResponseTask&lt;CreateDataExportResponse&gt;</code></summary>
 <dl>
 <dd>
@@ -8069,9 +8787,8 @@ await client.Planbundle.UpdatePlanBundleAsync(
 await client.Dataexports.CreateDataExportAsync(
     new CreateDataExportRequestBody
     {
-        ExportType = "company-feature-usage",
-        Metadata = "metadata",
-        OutputFileType = "csv",
+        ExportType = DataExportType.AuditLog,
+        OutputFileType = DataExportOutputFileType.Csv,
     }
 );
 ```
@@ -8089,6 +8806,46 @@ await client.Dataexports.CreateDataExportAsync(
 <dd>
 
 **request:** `CreateDataExportRequestBody` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Dataexports.<a href="/src/SchematicHQ.Client/Dataexports/DataexportsClient.cs">GetDataExportAsync</a>(dataExportId) -> WithRawResponseTask&lt;GetDataExportResponse&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Dataexports.GetDataExportAsync("data_export_id");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**dataExportId:** `string` — data_export_id
     
 </dd>
 </dl>
