@@ -20,6 +20,19 @@ public partial interface ICheckoutClient
         CancellationToken cancellationToken = default
     );
 
+    WithRawResponseTask<GetCompanyBillingDetailsResponse> GetCompanyBillingDetailsAsync(
+        string companyId,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    );
+
+    WithRawResponseTask<UpdateCompanyBillingDetailsResponse> UpdateCompanyBillingDetailsAsync(
+        string companyId,
+        UpdateCompanyBillingDetailsRequestBody request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    );
+
     WithRawResponseTask<ManagePlanResponse> ManagePlanAsync(
         ManagePlanRequest request,
         RequestOptions? options = null,

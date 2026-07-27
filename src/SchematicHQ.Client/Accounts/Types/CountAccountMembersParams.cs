@@ -35,6 +35,12 @@ public record CountAccountMembersParams : IJsonOnDeserialized
     [JsonPropertyName("q")]
     public string? Q { get; set; }
 
+    /// <summary>
+    /// Filter by member role
+    /// </summary>
+    [JsonPropertyName("role")]
+    public AccountMemberRole? Role { get; set; }
+
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();
 

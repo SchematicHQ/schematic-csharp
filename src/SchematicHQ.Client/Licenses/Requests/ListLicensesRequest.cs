@@ -4,22 +4,16 @@ using SchematicHQ.Client.Core;
 namespace SchematicHQ.Client;
 
 [Serializable]
-public record CountAccountMembersRequest
+public record ListLicensesRequest
 {
+    [JsonIgnore]
+    public IEnumerable<string> FeatureIds { get; set; } = new List<string>();
+
     [JsonIgnore]
     public IEnumerable<string> Ids { get; set; } = new List<string>();
 
-    /// <summary>
-    /// Search filter
-    /// </summary>
     [JsonIgnore]
-    public string? Q { get; set; }
-
-    /// <summary>
-    /// Filter by member role
-    /// </summary>
-    [JsonIgnore]
-    public AccountMemberRole? Role { get; set; }
+    public string? Name { get; set; }
 
     /// <summary>
     /// Page limit (default 100)

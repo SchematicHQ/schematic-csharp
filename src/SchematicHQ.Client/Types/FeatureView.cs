@@ -17,6 +17,9 @@ public record FeatureView : IJsonOnDeserialized
     [JsonPropertyName("billing_linked_resource")]
     public BillingLinkedResourceResponseData? BillingLinkedResource { get; set; }
 
+    [JsonPropertyName("billing_product")]
+    public BillingProductResponseData? BillingProduct { get; set; }
+
     [JsonPropertyName("created_at")]
     public required DateTime CreatedAt { get; set; }
 
@@ -40,6 +43,9 @@ public record FeatureView : IJsonOnDeserialized
 
     [JsonPropertyName("id")]
     public required string Id { get; set; }
+
+    [JsonPropertyName("license_id")]
+    public string? LicenseId { get; set; }
 
     [JsonPropertyName("lifecycle_phase")]
     public FeatureLifecyclePhase? LifecyclePhase { get; set; }

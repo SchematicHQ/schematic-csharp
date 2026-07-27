@@ -44,6 +44,10 @@ public readonly record struct WebhookRequestType : IStringEnum
 
     public static readonly WebhookRequestType CreditLimitWarning = new(Values.CreditLimitWarning);
 
+    public static readonly WebhookRequestType CreditPurchaseSuccess = new(
+        Values.CreditPurchaseSuccess
+    );
+
     public static readonly WebhookRequestType EntitlementLimitReached = new(
         Values.EntitlementLimitReached
     );
@@ -119,6 +123,8 @@ public readonly record struct WebhookRequestType : IStringEnum
     public static readonly WebhookRequestType AutoTopupRetryExceeded = new(
         Values.AutoTopupRetryExceeded
     );
+
+    public static readonly WebhookRequestType AutoTopupSuccess = new(Values.AutoTopupSuccess);
 
     public WebhookRequestType(string value)
     {
@@ -240,6 +246,8 @@ public readonly record struct WebhookRequestType : IStringEnum
 
         public const string CreditLimitWarning = "credit.limit.warning";
 
+        public const string CreditPurchaseSuccess = "credit.purchase.success";
+
         public const string EntitlementLimitReached = "entitlement.limit.reached";
 
         public const string EntitlementLimitWarning = "entitlement.limit.warning";
@@ -293,5 +301,7 @@ public readonly record struct WebhookRequestType : IStringEnum
         public const string AutoTopupHardFailure = "auto.topup.hard.failure";
 
         public const string AutoTopupRetryExceeded = "auto.topup.retry.exceeded";
+
+        public const string AutoTopupSuccess = "auto.topup.success";
     }
 }

@@ -43,6 +43,7 @@ await client.Accounts.ListAccountMembersAsync(
     {
         Ids = new List<string>() { "ids" },
         Q = "q",
+        Role = AccountMemberRole.Admin,
         Limit = 1000000,
         Offset = 1000000,
     }
@@ -131,6 +132,7 @@ await client.Accounts.CountAccountMembersAsync(
     {
         Ids = new List<string>() { "ids" },
         Q = "q",
+        Role = AccountMemberRole.Admin,
         Limit = 1000000,
         Offset = 1000000,
     }
@@ -4253,6 +4255,103 @@ await client.Checkout.PreviewCheckoutInternalAsync(
 <dd>
 
 **request:** `ChangeSubscriptionInternalRequestBody` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Checkout.<a href="/src/SchematicHQ.Client/Checkout/CheckoutClient.cs">GetCompanyBillingDetailsAsync</a>(companyId) -> WithRawResponseTask&lt;GetCompanyBillingDetailsResponse&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Checkout.GetCompanyBillingDetailsAsync("company_id");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**companyId:** `string` — company_id
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Checkout.<a href="/src/SchematicHQ.Client/Checkout/CheckoutClient.cs">UpdateCompanyBillingDetailsAsync</a>(companyId, UpdateCompanyBillingDetailsRequestBody { ... }) -> WithRawResponseTask&lt;UpdateCompanyBillingDetailsResponse&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Checkout.UpdateCompanyBillingDetailsAsync(
+    "company_id",
+    new UpdateCompanyBillingDetailsRequestBody
+    {
+        Values = new List<CheckoutFieldValue>()
+        {
+            new CheckoutFieldValue { Id = "id", Value = "value" },
+        },
+    }
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**companyId:** `string` — company_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `UpdateCompanyBillingDetailsRequestBody` 
     
 </dd>
 </dl>
@@ -10604,6 +10703,145 @@ await client.Integrationsapi.UninstallIntegrationAsync("integration_id");
 </dl>
 </details>
 
+## licenses
+<details><summary><code>client.Licenses.<a href="/src/SchematicHQ.Client/Licenses/LicensesClient.cs">ListLicensesAsync</a>(ListLicensesRequest { ... }) -> WithRawResponseTask&lt;ListLicensesResponse&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Licenses.ListLicensesAsync(
+    new ListLicensesRequest
+    {
+        FeatureIds = new List<string>() { "feature_ids" },
+        Ids = new List<string>() { "ids" },
+        Name = "name",
+        Limit = 1000000,
+        Offset = 1000000,
+    }
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `ListLicensesRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Licenses.<a href="/src/SchematicHQ.Client/Licenses/LicensesClient.cs">GetSingleLicenseAsync</a>(licenseId) -> WithRawResponseTask&lt;GetSingleLicenseResponse&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Licenses.GetSingleLicenseAsync("license_id");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**licenseId:** `string` — license_id
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Licenses.<a href="/src/SchematicHQ.Client/Licenses/LicensesClient.cs">CountLicensesAsync</a>(CountLicensesRequest { ... }) -> WithRawResponseTask&lt;CountLicensesResponse&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Licenses.CountLicensesAsync(
+    new CountLicensesRequest
+    {
+        FeatureIds = new List<string>() { "feature_ids" },
+        Ids = new List<string>() { "ids" },
+        Name = "name",
+        Limit = 1000000,
+        Offset = 1000000,
+    }
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `CountLicensesRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 ## plangroups
 <details><summary><code>client.Plangroups.<a href="/src/SchematicHQ.Client/Plangroups/PlangroupsClient.cs">GetPlanGroupAsync</a>(GetPlanGroupRequest { ... }) -> WithRawResponseTask&lt;GetPlanGroupResponse&gt;</code></summary>
 <dl>
@@ -11170,6 +11408,54 @@ await client.Planmigrations.CountMigrationsAsync(
 <dd>
 
 **request:** `CountMigrationsRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Planmigrations.<a href="/src/SchematicHQ.Client/Planmigrations/PlanmigrationsClient.cs">PreviewMigrationAsync</a>(PreviewMigrationRequestBody { ... }) -> WithRawResponseTask&lt;PreviewMigrationResponse&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Planmigrations.PreviewMigrationAsync(
+    new PreviewMigrationRequestBody
+    {
+        CompanyIds = new List<string>() { "company_ids" },
+        PlanId = "plan_id",
+        PlanVersionIdTo = "plan_version_id_to",
+        TargetPlanType = PlanType.Plan,
+    }
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `PreviewMigrationRequestBody` 
     
 </dd>
 </dl>

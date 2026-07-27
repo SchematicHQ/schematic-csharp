@@ -50,4 +50,10 @@ public partial interface IPlanmigrationsClient
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     );
+
+    WithRawResponseTask<PreviewMigrationResponse> PreviewMigrationAsync(
+        PreviewMigrationRequestBody request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    );
 }
