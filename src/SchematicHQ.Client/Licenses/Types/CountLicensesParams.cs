@@ -8,11 +8,14 @@ namespace SchematicHQ.Client;
 /// Input parameters
 /// </summary>
 [Serializable]
-public record ListAccountMembersParams : IJsonOnDeserialized
+public record CountLicensesParams : IJsonOnDeserialized
 {
     [JsonExtensionData]
     private readonly IDictionary<string, JsonElement> _extensionData =
         new Dictionary<string, JsonElement>();
+
+    [JsonPropertyName("feature_ids")]
+    public IEnumerable<string>? FeatureIds { get; set; }
 
     [JsonPropertyName("ids")]
     public IEnumerable<string>? Ids { get; set; }
@@ -23,23 +26,14 @@ public record ListAccountMembersParams : IJsonOnDeserialized
     [JsonPropertyName("limit")]
     public long? Limit { get; set; }
 
+    [JsonPropertyName("name")]
+    public string? Name { get; set; }
+
     /// <summary>
     /// Page offset (default 0)
     /// </summary>
     [JsonPropertyName("offset")]
     public long? Offset { get; set; }
-
-    /// <summary>
-    /// Search filter
-    /// </summary>
-    [JsonPropertyName("q")]
-    public string? Q { get; set; }
-
-    /// <summary>
-    /// Filter by member role
-    /// </summary>
-    [JsonPropertyName("role")]
-    public AccountMemberRole? Role { get; set; }
 
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();

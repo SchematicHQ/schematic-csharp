@@ -18,9 +18,10 @@ public partial class AccountsClient : IAccountsClient
         CancellationToken cancellationToken = default
     )
     {
-        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 4)
+        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 5)
             .Add("ids", request.Ids)
             .Add("q", request.Q)
+            .Add("role", request.Role)
             .Add("limit", request.Limit)
             .Add("offset", request.Offset)
             .MergeAdditional(options?.AdditionalQueryParameters)
@@ -315,9 +316,10 @@ public partial class AccountsClient : IAccountsClient
         CancellationToken cancellationToken = default
     )
     {
-        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 4)
+        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 5)
             .Add("ids", request.Ids)
             .Add("q", request.Q)
+            .Add("role", request.Role)
             .Add("limit", request.Limit)
             .Add("offset", request.Offset)
             .MergeAdditional(options?.AdditionalQueryParameters)
@@ -2894,6 +2896,7 @@ public partial class AccountsClient : IAccountsClient
     ///     {
     ///         Ids = new List&lt;string&gt;() { "ids" },
     ///         Q = "q",
+    ///         Role = AccountMemberRole.Admin,
     ///         Limit = 1000000,
     ///         Offset = 1000000,
     ///     }
@@ -2930,6 +2933,7 @@ public partial class AccountsClient : IAccountsClient
     ///     {
     ///         Ids = new List&lt;string&gt;() { "ids" },
     ///         Q = "q",
+    ///         Role = AccountMemberRole.Admin,
     ///         Limit = 1000000,
     ///         Offset = 1000000,
     ///     }

@@ -20,6 +20,10 @@ public readonly record struct BillingCreditGrantZeroedOutReason : IStringEnum
         Values.IntegrationUninstalled
     );
 
+    public static readonly BillingCreditGrantZeroedOutReason LicenseRetired = new(
+        Values.LicenseRetired
+    );
+
     public static readonly BillingCreditGrantZeroedOutReason Manual = new(Values.Manual);
 
     public static readonly BillingCreditGrantZeroedOutReason PlanChange = new(Values.PlanChange);
@@ -132,6 +136,8 @@ public readonly record struct BillingCreditGrantZeroedOutReason : IStringEnum
         public const string Expired = "expired";
 
         public const string IntegrationUninstalled = "integration_uninstalled";
+
+        public const string LicenseRetired = "license_retired";
 
         public const string Manual = "manual";
 

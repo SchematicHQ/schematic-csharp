@@ -12,6 +12,8 @@ public readonly record struct FeatureType : IStringEnum
 
     public static readonly FeatureType Event = new(Values.Event);
 
+    public static readonly FeatureType License = new(Values.License);
+
     public static readonly FeatureType Trait = new(Values.Trait);
 
     public FeatureType(string value)
@@ -113,6 +115,8 @@ public readonly record struct FeatureType : IStringEnum
         public const string Boolean = "boolean";
 
         public const string Event = "event";
+
+        public const string License = "license";
 
         public const string Trait = "trait";
     }

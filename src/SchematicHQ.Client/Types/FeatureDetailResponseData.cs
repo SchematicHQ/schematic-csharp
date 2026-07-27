@@ -14,6 +14,12 @@ public record FeatureDetailResponseData : IJsonOnDeserialized
     [JsonPropertyName("billing_linked_resource")]
     public BillingLinkedResourceResponseData? BillingLinkedResource { get; set; }
 
+    /// <summary>
+    /// The billing provider product that sells this feature in the current environment. Set for license features once they have been priced in a plan; a feature priced in several environments has a different product in each.
+    /// </summary>
+    [JsonPropertyName("billing_product")]
+    public BillingProductResponseData? BillingProduct { get; set; }
+
     [JsonPropertyName("created_at")]
     public required DateTime CreatedAt { get; set; }
 
@@ -38,6 +44,12 @@ public record FeatureDetailResponseData : IJsonOnDeserialized
 
     [JsonPropertyName("id")]
     public required string Id { get; set; }
+
+    /// <summary>
+    /// The license sold through this feature. Set only on features of type license, and created automatically with them.
+    /// </summary>
+    [JsonPropertyName("license_id")]
+    public string? LicenseId { get; set; }
 
     [JsonPropertyName("lifecycle_phase")]
     public FeatureLifecyclePhase? LifecyclePhase { get; set; }
@@ -68,6 +80,12 @@ public record FeatureDetailResponseData : IJsonOnDeserialized
 
     [JsonPropertyName("updated_at")]
     public required DateTime UpdatedAt { get; set; }
+
+    /// <summary>
+    /// Set when the feature carries a pay-in-advance quantity. Provisioned lazily for other feature types, and at creation for license features.
+    /// </summary>
+    [JsonPropertyName("usage_limit_trait_id")]
+    public string? UsageLimitTraitId { get; set; }
 
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();

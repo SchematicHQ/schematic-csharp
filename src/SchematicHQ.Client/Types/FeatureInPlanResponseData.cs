@@ -39,6 +39,12 @@ public record FeatureInPlanResponseData : IJsonOnDeserialized
     [JsonPropertyName("id")]
     public required string Id { get; set; }
 
+    /// <summary>
+    /// The license sold through this feature. Set only on features of type license, and created automatically with them.
+    /// </summary>
+    [JsonPropertyName("license_id")]
+    public string? LicenseId { get; set; }
+
     [JsonPropertyName("lifecycle_phase")]
     public FeatureLifecyclePhase? LifecyclePhase { get; set; }
 
@@ -65,6 +71,12 @@ public record FeatureInPlanResponseData : IJsonOnDeserialized
 
     [JsonPropertyName("updated_at")]
     public required DateTime UpdatedAt { get; set; }
+
+    /// <summary>
+    /// Set when the feature carries a pay-in-advance quantity. Provisioned lazily for other feature types, and at creation for license features.
+    /// </summary>
+    [JsonPropertyName("usage_limit_trait_id")]
+    public string? UsageLimitTraitId { get; set; }
 
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();

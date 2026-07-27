@@ -16,6 +16,12 @@ public record ListAccountMembersRequest
     public string? Q { get; set; }
 
     /// <summary>
+    /// Filter by member role
+    /// </summary>
+    [JsonIgnore]
+    public AccountMemberRole? Role { get; set; }
+
+    /// <summary>
     /// Page limit (default 100)
     /// </summary>
     [JsonIgnore]

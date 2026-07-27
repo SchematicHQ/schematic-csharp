@@ -17,6 +17,7 @@ public partial interface ISchematicApi
     public IFeaturesClient Features { get; }
     public IInsightsClient Insights { get; }
     public IIntegrationsapiClient Integrationsapi { get; }
+    public ILicensesClient Licenses { get; }
     public IPlangroupsClient Plangroups { get; }
     public IPlanmigrationsClient Planmigrations { get; }
     public IComponentspublicClient Componentspublic { get; }
