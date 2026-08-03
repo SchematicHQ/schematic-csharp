@@ -5,17 +5,26 @@ using SchematicHQ.Client.Core;
 namespace SchematicHQ.Client;
 
 [Serializable]
-public record CatalogConfigOrderedEntitlementResponseData : IJsonOnDeserialized
+public record UserDailyUsagePointResponseData : IJsonOnDeserialized
 {
     [JsonExtensionData]
     private readonly IDictionary<string, JsonElement> _extensionData =
         new Dictionary<string, JsonElement>();
 
-    [JsonPropertyName("feature_id")]
-    public required string FeatureId { get; set; }
+    /// <summary>
+    /// The UTC day
+    /// </summary>
+    [JsonPropertyName("date")]
+    public required DateTime Date { get; set; }
 
-    [JsonPropertyName("visible")]
-    public required bool Visible { get; set; }
+    [JsonPropertyName("feature")]
+    public FeatureResponseData? Feature { get; set; }
+
+    /// <summary>
+    /// The user's usage of the feature on the day
+    /// </summary>
+    [JsonPropertyName("value")]
+    public required long Value { get; set; }
 
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();

@@ -95,6 +95,12 @@ public record BillingPlanCreditGrantResponseData : IJsonOnDeserialized
     [JsonPropertyName("id")]
     public required string Id { get; set; }
 
+    /// <summary>
+    /// The license whose quantity scales this grant. Set only when scaling is per_license.
+    /// </summary>
+    [JsonPropertyName("license_id")]
+    public string? LicenseId { get; set; }
+
     [JsonPropertyName("plan")]
     public PreviewObjectResponseData? Plan { get; set; }
 
@@ -124,6 +130,12 @@ public record BillingPlanCreditGrantResponseData : IJsonOnDeserialized
     /// </summary>
     [JsonPropertyName("rollover_percentage")]
     public required long RolloverPercentage { get; set; }
+
+    /// <summary>
+    /// Whether the grant is a fixed amount per company, or issued once per license the company holds.
+    /// </summary>
+    [JsonPropertyName("scaling")]
+    public required PlanCreditGrantScaling Scaling { get; set; }
 
     [JsonPropertyName("updated_at")]
     public required DateTime UpdatedAt { get; set; }

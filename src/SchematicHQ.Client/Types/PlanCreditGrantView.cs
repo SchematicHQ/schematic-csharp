@@ -86,6 +86,9 @@ public record PlanCreditGrantView : IJsonOnDeserialized
     [JsonPropertyName("id")]
     public required string Id { get; set; }
 
+    [JsonPropertyName("license_id")]
+    public string? LicenseId { get; set; }
+
     [JsonPropertyName("plan")]
     public GenericPreviewObject? Plan { get; set; }
 
@@ -112,6 +115,9 @@ public record PlanCreditGrantView : IJsonOnDeserialized
 
     [JsonPropertyName("rollover_percentage")]
     public required long RolloverPercentage { get; set; }
+
+    [JsonPropertyName("scaling")]
+    public required PlanCreditGrantScaling Scaling { get; set; }
 
     /// <summary>
     /// Deprecated field, will be removed in the future. Use Credit.SingularName instead.

@@ -20,6 +20,9 @@ public record ComponentCheckoutSettings : IJsonOnDeserialized
     [JsonPropertyName("collect_phone")]
     public required bool CollectPhone { get; set; }
 
+    [JsonPropertyName("proration_behavior")]
+    public required ProrationBehavior ProrationBehavior { get; set; }
+
     [JsonPropertyName("tax_collection_enabled")]
     public required bool TaxCollectionEnabled { get; set; }
 

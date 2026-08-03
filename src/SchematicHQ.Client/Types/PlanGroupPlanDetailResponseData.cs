@@ -100,10 +100,10 @@ public record PlanGroupPlanDetailResponseData : IJsonOnDeserialized
     public required bool IsDefault { get; set; }
 
     /// <summary>
-    /// Deprecated: Use BillingStrategy instead
+    /// Deprecated: reports the plan's charge type, not its price. Read the plan's prices to tell whether it costs anything, or billing_strategy to tell how it is billed.
     /// </summary>
     [JsonPropertyName("is_free")]
-    public required bool IsFree { get; set; }
+    public bool? IsFree { get; set; }
 
     [JsonPropertyName("is_trialable")]
     public required bool IsTrialable { get; set; }

@@ -31,6 +31,12 @@ public record ListBillingPricesRequest
     public string? Interval { get; set; }
 
     /// <summary>
+    /// Filter for prices billed every N intervals; combine with interval (e.g. interval=month, interval_count=3 for quarterly)
+    /// </summary>
+    [JsonIgnore]
+    public long? IntervalCount { get; set; }
+
+    /// <summary>
     /// Filter for active prices on active products (defaults to true if not specified)
     /// </summary>
     [JsonIgnore]

@@ -5,17 +5,26 @@ using SchematicHQ.Client.Core;
 namespace SchematicHQ.Client;
 
 [Serializable]
-public record CatalogConfigOrderedEntitlementResponseData : IJsonOnDeserialized
+public record CompanyTaxIdView : IJsonOnDeserialized
 {
     [JsonExtensionData]
     private readonly IDictionary<string, JsonElement> _extensionData =
         new Dictionary<string, JsonElement>();
 
-    [JsonPropertyName("feature_id")]
-    public required string FeatureId { get; set; }
+    [JsonPropertyName("country")]
+    public required string Country { get; set; }
 
-    [JsonPropertyName("visible")]
-    public required bool Visible { get; set; }
+    [JsonPropertyName("id")]
+    public required string Id { get; set; }
+
+    [JsonPropertyName("type")]
+    public required string Type { get; set; }
+
+    [JsonPropertyName("value")]
+    public required string Value { get; set; }
+
+    [JsonPropertyName("verification_status")]
+    public string? VerificationStatus { get; set; }
 
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();

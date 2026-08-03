@@ -135,4 +135,16 @@ public partial interface IEntitlementsClient
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     );
+
+    WithRawResponseTask<GetUserUsageByCompanyResponse> GetUserUsageByCompanyAsync(
+        GetUserUsageByCompanyRequest request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    );
+
+    WithRawResponseTask<GetUserUsageDetailResponse> GetUserUsageDetailAsync(
+        GetUserUsageDetailRequest request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    );
 }

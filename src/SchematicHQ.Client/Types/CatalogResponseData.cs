@@ -32,9 +32,6 @@ public record CatalogResponseData : IJsonOnDeserialized
     [JsonPropertyName("description")]
     public string? Description { get; set; }
 
-    [JsonPropertyName("environment_id")]
-    public required string EnvironmentId { get; set; }
-
     [JsonPropertyName("id")]
     public required string Id { get; set; }
 
