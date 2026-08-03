@@ -15,6 +15,9 @@ public record UpdateCompanyBillingDetailsRequestBody
     [JsonPropertyName("phone")]
     public string? Phone { get; set; }
 
+    [JsonPropertyName("tax_id")]
+    public TaxIdInput? TaxId { get; set; }
+
     [JsonPropertyName("values")]
     public IEnumerable<CheckoutFieldValue> Values { get; set; } = new List<CheckoutFieldValue>();
 

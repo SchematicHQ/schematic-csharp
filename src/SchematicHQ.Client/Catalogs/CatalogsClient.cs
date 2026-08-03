@@ -2047,9 +2047,7 @@ public partial class CatalogsClient : ICatalogsClient
     }
 
     /// <example><code>
-    /// await client.Catalogs.CreateCatalogAsync(
-    ///     new CreateCatalogRequestBody { IsDefault = true, Name = "name" }
-    /// );
+    /// await client.Catalogs.CreateCatalogAsync(new CreateCatalogRequestBody { Name = "name" });
     /// </code></example>
     public WithRawResponseTask<CreateCatalogResponse> CreateCatalogAsync(
         CreateCatalogRequestBody request,

@@ -59,6 +59,12 @@ public record UpdateBillingPlanCreditGrantRequestBody : IJsonOnDeserialized
     [JsonPropertyName("expiry_unit_count")]
     public long? ExpiryUnitCount { get; set; }
 
+    /// <summary>
+    /// The license whose quantity scales this grant. Cannot be changed after creation.
+    /// </summary>
+    [JsonPropertyName("license_id")]
+    public string? LicenseId { get; set; }
+
     [JsonPropertyName("reset_cadence")]
     public required BillingPlanCreditGrantResetCadence ResetCadence { get; set; }
 
@@ -73,6 +79,12 @@ public record UpdateBillingPlanCreditGrantRequestBody : IJsonOnDeserialized
     /// </summary>
     [JsonPropertyName("rollover_percentage")]
     public long? RolloverPercentage { get; set; }
+
+    /// <summary>
+    /// Whether the grant is a fixed amount per company, or issued once per license the company holds. Cannot be changed after creation.
+    /// </summary>
+    [JsonPropertyName("scaling")]
+    public PlanCreditGrantScaling? Scaling { get; set; }
 
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();

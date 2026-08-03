@@ -12,6 +12,9 @@ public record UpdateApiKeyRequestBody
     [JsonPropertyName("name")]
     public string? Name { get; set; }
 
+    [JsonPropertyName("rate_limit_percent")]
+    public long? RateLimitPercent { get; set; }
+
     /// <inheritdoc />
     public override string ToString()
     {

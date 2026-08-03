@@ -35,6 +35,9 @@ public record ApiKeyResponseData : IJsonOnDeserialized
     [JsonPropertyName("name")]
     public required string Name { get; set; }
 
+    [JsonPropertyName("rate_limit_percent")]
+    public long? RateLimitPercent { get; set; }
+
     [JsonPropertyName("readonly")]
     public required bool Readonly { get; set; }
 

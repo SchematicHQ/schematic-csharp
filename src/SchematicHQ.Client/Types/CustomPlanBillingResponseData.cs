@@ -38,6 +38,9 @@ public record CustomPlanBillingResponseData : IJsonOnDeserialized
     [JsonPropertyName("published_at")]
     public DateTime? PublishedAt { get; set; }
 
+    [JsonPropertyName("send_invoice")]
+    public required bool SendInvoice { get; set; }
+
     [JsonPropertyName("status")]
     public required CustomPlanBillingStatus Status { get; set; }
 

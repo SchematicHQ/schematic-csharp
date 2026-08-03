@@ -2357,12 +2357,13 @@ public partial class BillingClient : IBillingClient
         CancellationToken cancellationToken = default
     )
     {
-        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 17)
+        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 18)
             .Add("currency", request.Currency)
             .Add("for_initial_plan", request.ForInitialPlan)
             .Add("for_trial_expiry_plan", request.ForTrialExpiryPlan)
             .Add("ids", request.Ids)
             .Add("interval", request.Interval)
+            .Add("interval_count", request.IntervalCount)
             .Add("is_active", request.IsActive)
             .Add("plan_version_id", request.PlanVersionId)
             .Add("price", request.Price)
@@ -2836,12 +2837,13 @@ public partial class BillingClient : IBillingClient
         CancellationToken cancellationToken = default
     )
     {
-        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 17)
+        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 18)
             .Add("currency", request.Currency)
             .Add("for_initial_plan", request.ForInitialPlan)
             .Add("for_trial_expiry_plan", request.ForTrialExpiryPlan)
             .Add("ids", request.Ids)
             .Add("interval", request.Interval)
+            .Add("interval_count", request.IntervalCount)
             .Add("is_active", request.IsActive)
             .Add("plan_version_id", request.PlanVersionId)
             .Add("price", request.Price)
@@ -4115,6 +4117,7 @@ public partial class BillingClient : IBillingClient
     ///         ForTrialExpiryPlan = true,
     ///         Ids = new List&lt;string&gt;() { "ids" },
     ///         Interval = "interval",
+    ///         IntervalCount = 1000000,
     ///         IsActive = true,
     ///         PlanVersionId = "plan_version_id",
     ///         Price = 1000000,
@@ -4195,6 +4198,7 @@ public partial class BillingClient : IBillingClient
     ///         ForTrialExpiryPlan = true,
     ///         Ids = new List&lt;string&gt;() { "ids" },
     ///         Interval = "interval",
+    ///         IntervalCount = 1000000,
     ///         IsActive = true,
     ///         PlanVersionId = "plan_version_id",
     ///         Price = 1000000,

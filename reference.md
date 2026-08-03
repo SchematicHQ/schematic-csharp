@@ -1560,6 +1560,7 @@ await client.Billing.ListBillingPricesAsync(
         ForTrialExpiryPlan = true,
         Ids = new List<string>() { "ids" },
         Interval = "interval",
+        IntervalCount = 1000000,
         IsActive = true,
         PlanVersionId = "plan_version_id",
         Price = 1000000,
@@ -1718,6 +1719,7 @@ await client.Billing.ListBillingProductPricesAsync(
         ForTrialExpiryPlan = true,
         Ids = new List<string>() { "ids" },
         Interval = "interval",
+        IntervalCount = 1000000,
         IsActive = true,
         PlanVersionId = "plan_version_id",
         Price = 1000000,
@@ -3527,9 +3529,7 @@ await client.Catalogs.ListCatalogsAsync(
 <dd>
 
 ```csharp
-await client.Catalogs.CreateCatalogAsync(
-    new CreateCatalogRequestBody { IsDefault = true, Name = "name" }
-);
+await client.Catalogs.CreateCatalogAsync(new CreateCatalogRequestBody { Name = "name" });
 ```
 </dd>
 </dl>
@@ -7398,6 +7398,102 @@ await client.Entitlements.GetFeatureUsageByCompanyAsync(
 <dd>
 
 **request:** `GetFeatureUsageByCompanyRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Entitlements.<a href="/src/SchematicHQ.Client/Entitlements/EntitlementsClient.cs">GetUserUsageByCompanyAsync</a>(GetUserUsageByCompanyRequest { ... }) -> WithRawResponseTask&lt;GetUserUsageByCompanyResponse&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Entitlements.GetUserUsageByCompanyAsync(
+    new GetUserUsageByCompanyRequest
+    {
+        CompanyId = "company_id",
+        EndTime = new DateTime(2024, 01, 15, 09, 30, 00, 000),
+        FeatureId = "feature_id",
+        StartTime = new DateTime(2024, 01, 15, 09, 30, 00, 000),
+    }
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `GetUserUsageByCompanyRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Entitlements.<a href="/src/SchematicHQ.Client/Entitlements/EntitlementsClient.cs">GetUserUsageDetailAsync</a>(GetUserUsageDetailRequest { ... }) -> WithRawResponseTask&lt;GetUserUsageDetailResponse&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Entitlements.GetUserUsageDetailAsync(
+    new GetUserUsageDetailRequest
+    {
+        CompanyId = "company_id",
+        EndTime = new DateTime(2024, 01, 15, 09, 30, 00, 000),
+        StartTime = new DateTime(2024, 01, 15, 09, 30, 00, 000),
+        UserId = "user_id",
+    }
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `GetUserUsageDetailRequest` 
     
 </dd>
 </dl>

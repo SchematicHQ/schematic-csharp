@@ -11,8 +11,8 @@ public record CatalogConfigOrderedEntitlement : IJsonOnDeserialized
     private readonly IDictionary<string, JsonElement> _extensionData =
         new Dictionary<string, JsonElement>();
 
-    [JsonPropertyName("plan_entitlement_id")]
-    public required string PlanEntitlementId { get; set; }
+    [JsonPropertyName("feature_id")]
+    public required string FeatureId { get; set; }
 
     [JsonPropertyName("visible")]
     public bool? Visible { get; set; }

@@ -9,9 +9,6 @@ public record CreateCatalogRequestBody
     [JsonPropertyName("description")]
     public string? Description { get; set; }
 
-    [JsonPropertyName("is_default")]
-    public required bool IsDefault { get; set; }
-
     [JsonPropertyName("name")]
     public required string Name { get; set; }
 

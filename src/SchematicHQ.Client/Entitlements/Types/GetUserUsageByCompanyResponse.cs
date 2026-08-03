@@ -5,17 +5,20 @@ using SchematicHQ.Client.Core;
 namespace SchematicHQ.Client;
 
 [Serializable]
-public record CatalogConfigOrderedEntitlementResponseData : IJsonOnDeserialized
+public record GetUserUsageByCompanyResponse : IJsonOnDeserialized
 {
     [JsonExtensionData]
     private readonly IDictionary<string, JsonElement> _extensionData =
         new Dictionary<string, JsonElement>();
 
-    [JsonPropertyName("feature_id")]
-    public required string FeatureId { get; set; }
+    [JsonPropertyName("data")]
+    public required UserUsageByCompanyResponseData Data { get; set; }
 
-    [JsonPropertyName("visible")]
-    public required bool Visible { get; set; }
+    /// <summary>
+    /// Input parameters
+    /// </summary>
+    [JsonPropertyName("params")]
+    public required GetUserUsageByCompanyParams Params { get; set; }
 
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();

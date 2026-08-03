@@ -27,6 +27,9 @@ public record CompanyBillingDetailsView : IJsonOnDeserialized
     [JsonPropertyName("phone")]
     public string? Phone { get; set; }
 
+    [JsonPropertyName("tax_ids")]
+    public IEnumerable<CompanyTaxIdView> TaxIds { get; set; } = new List<CompanyTaxIdView>();
+
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();
 
