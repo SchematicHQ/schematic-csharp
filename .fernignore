@@ -2,6 +2,10 @@
 .claude/
 .github/CODEOWNERS
 .github/workflows/claude-code.yml
+.github/workflows/ci.yml
+.gitignore
+WASM_VERSION
+scripts/download-wasm.sh
 CLAUDE.md
 LICENSE
 README.md
@@ -31,7 +35,6 @@ src/SchematicHQ.Client/Schematic.cs
 src/SchematicHQ.Client/SchematicHQ.Client.Custom.props
 src/SchematicHQ.Client/Webhooks/WebhookUtils/
 src/SchematicHQ.Client/OpenFeature/
-src/SchematicHQ.Client/generate-schema-hash.sh
 .fern/replay.lock
 .fern/replay.yml
 .gitattributes

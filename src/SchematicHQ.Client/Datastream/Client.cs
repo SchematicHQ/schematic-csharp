@@ -22,6 +22,11 @@ namespace SchematicHQ.Client.Datastream
     private readonly TimeSpan _cacheTtl;
     private readonly Action<bool> _connectionStateCallback;
     private IWebSocketClient _webSocket;
+
+    // Local flag evaluator (shared Rust rules engine, hosted via WASM). Null when
+    // initialization failed, in which case flag checks fall back to the flag default.
+    private readonly WasmRulesEngine? _rulesEngine;
+
     private readonly CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
     private readonly SemaphoreSlim _reconnectSemaphore = new SemaphoreSlim(1, 1);
     private CancellationTokenSource _readCancellationSource = new CancellationTokenSource();
@@ -63,6 +68,11 @@ namespace SchematicHQ.Client.Datastream
 
     // Authentication error close code
     private const int AuthErrorCloseCode = 4001;
+
+    // Reasons returned when the WASM rules engine cannot evaluate a flag; the flag's
+    // default value is returned in both cases (matching schematic-java's semantics).
+    private const string ReasonRulesEngineUnavailable = "RULES_ENGINE_UNAVAILABLE";
+    private const string ReasonRulesEngineError = "RULES_ENGINE_ERROR";
 
     // Handshake headers attached to the WebSocket connection so the backend can
     // distinguish direct-SDK connections from the schematic-datastream-replicator
@@ -115,6 +125,20 @@ namespace SchematicHQ.Client.Datastream
       _flagsCache = new DatastreamCacheDecorator(cacheProvider, flagTTL);
       
       _webSocket = webSocket ?? new StandardWebSocketClient();
+
+      // Initialize the WASM rules engine. On failure, degrade gracefully: flag
+      // checks return the flag's default value rather than throwing.
+      try
+      {
+        var rulesEngine = new WasmRulesEngine(_logger);
+        rulesEngine.Initialize();
+        _rulesEngine = rulesEngine;
+      }
+      catch (Exception ex)
+      {
+        _logger.LogError(ex, "Failed to initialize WASM rules engine; flag checks will return default values");
+        _rulesEngine = null;
+      }
     }
 
     public void Start()
@@ -840,23 +864,40 @@ namespace SchematicHQ.Client.Datastream
       }
     }
 
-    internal async Task<CheckFlagResult> CheckFlag(RulesengineCompany? company, RulesengineUser? user, RulesengineFlag flag, CancellationToken cancellationToken = default)
+    internal Task<CheckFlagResult> CheckFlag(RulesengineCompany? company, RulesengineUser? user, RulesengineFlag flag, CancellationToken cancellationToken = default)
     {
+      if (_rulesEngine == null || !_rulesEngine.IsInitialized)
+      {
+        _logger.LogWarning("WASM rules engine unavailable; returning default value for flag {FlagKey}", flag.Key);
+        return Task.FromResult(new CheckFlagResult
+        {
+          Reason = ReasonRulesEngineUnavailable,
+          FlagKey = flag.Key,
+          FlagId = flag.Id,
+          Value = flag.DefaultValue,
+          CompanyId = company?.Id,
+          UserId = user?.Id,
+        });
+      }
+
       try
       {
-        var result = await FlagCheckService.CheckFlag(company, user, flag);
-        return result;
+        var result = _rulesEngine.CheckFlag(company, user, flag);
+        return Task.FromResult(result);
       }
       catch (Exception ex)
       {
         _logger.LogError(ex, "Error checking flag {FlagKey}", flag.Key);
-        return new CheckFlagResult
+        return Task.FromResult(new CheckFlagResult
         {
-          Reason = "Error",
+          Reason = ReasonRulesEngineError,
           FlagKey = flag.Key,
+          FlagId = flag.Id,
           Error = ex,
-          Value = false,
-        };
+          Value = flag.DefaultValue,
+          CompanyId = company?.Id,
+          UserId = user?.Id,
+        });
       }
     }
 
@@ -1516,6 +1557,9 @@ namespace SchematicHQ.Client.Datastream
           lockEntry.Value.Dispose();
         }
         _companyUpdateLocks.Clear();
+
+        // Release the WASM rules engine's native Wasmtime resources.
+        _rulesEngine?.Dispose();
       }
     }
   }
