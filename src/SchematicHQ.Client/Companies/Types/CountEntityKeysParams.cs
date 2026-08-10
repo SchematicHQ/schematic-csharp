@@ -4,21 +4,33 @@ using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
 
+/// <summary>
+/// Input parameters
+/// </summary>
 [Serializable]
-public record TestWebhookResponseData : IJsonOnDeserialized
+public record CountEntityKeysParams : IJsonOnDeserialized
 {
     [JsonExtensionData]
     private readonly IDictionary<string, JsonElement> _extensionData =
         new Dictionary<string, JsonElement>();
 
-    [JsonPropertyName("failure_reason")]
-    public string? FailureReason { get; set; }
+    [JsonPropertyName("definition_id")]
+    public string? DefinitionId { get; set; }
 
-    [JsonPropertyName("response_code")]
-    public required long ResponseCode { get; set; }
+    [JsonPropertyName("entity_type")]
+    public EntityType? EntityType { get; set; }
 
-    [JsonPropertyName("success")]
-    public required bool Success { get; set; }
+    /// <summary>
+    /// Page limit (default 100)
+    /// </summary>
+    [JsonPropertyName("limit")]
+    public long? Limit { get; set; }
+
+    /// <summary>
+    /// Page offset (default 0)
+    /// </summary>
+    [JsonPropertyName("offset")]
+    public long? Offset { get; set; }
 
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();

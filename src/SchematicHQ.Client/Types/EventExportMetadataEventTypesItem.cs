@@ -4,17 +4,21 @@ using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
 
-[JsonConverter(typeof(DataExportType.DataExportTypeSerializer))]
+[JsonConverter(
+    typeof(EventExportMetadataEventTypesItem.EventExportMetadataEventTypesItemSerializer)
+)]
 [Serializable]
-public readonly record struct DataExportType : IStringEnum
+public readonly record struct EventExportMetadataEventTypesItem : IStringEnum
 {
-    public static readonly DataExportType AuditLog = new(Values.AuditLog);
+    public static readonly EventExportMetadataEventTypesItem FlagCheck = new(Values.FlagCheck);
 
-    public static readonly DataExportType CompanyFeatureUsage = new(Values.CompanyFeatureUsage);
+    public static readonly EventExportMetadataEventTypesItem Identify = new(Values.Identify);
 
-    public static readonly DataExportType Event = new(Values.Event);
+    public static readonly EventExportMetadataEventTypesItem Inference = new(Values.Inference);
 
-    public DataExportType(string value)
+    public static readonly EventExportMetadataEventTypesItem Track = new(Values.Track);
+
+    public EventExportMetadataEventTypesItem(string value)
     {
         Value = value;
     }
@@ -27,9 +31,9 @@ public readonly record struct DataExportType : IStringEnum
     /// <summary>
     /// Create a string enum with the given value.
     /// </summary>
-    public static DataExportType FromCustom(string value)
+    public static EventExportMetadataEventTypesItem FromCustom(string value)
     {
-        return new DataExportType(value);
+        return new EventExportMetadataEventTypesItem(value);
     }
 
     public bool Equals(string? other)
@@ -45,19 +49,20 @@ public readonly record struct DataExportType : IStringEnum
         return Value;
     }
 
-    public static bool operator ==(DataExportType value1, string value2) =>
+    public static bool operator ==(EventExportMetadataEventTypesItem value1, string value2) =>
         value1.Value.Equals(value2);
 
-    public static bool operator !=(DataExportType value1, string value2) =>
+    public static bool operator !=(EventExportMetadataEventTypesItem value1, string value2) =>
         !value1.Value.Equals(value2);
 
-    public static explicit operator string(DataExportType value) => value.Value;
+    public static explicit operator string(EventExportMetadataEventTypesItem value) => value.Value;
 
-    public static explicit operator DataExportType(string value) => new(value);
+    public static explicit operator EventExportMetadataEventTypesItem(string value) => new(value);
 
-    internal class DataExportTypeSerializer : JsonConverter<DataExportType>
+    internal class EventExportMetadataEventTypesItemSerializer
+        : JsonConverter<EventExportMetadataEventTypesItem>
     {
-        public override DataExportType Read(
+        public override EventExportMetadataEventTypesItem Read(
             ref Utf8JsonReader reader,
             Type typeToConvert,
             JsonSerializerOptions options
@@ -68,19 +73,19 @@ public readonly record struct DataExportType : IStringEnum
                 ?? throw new global::System.Exception(
                     "The JSON value could not be read as a string."
                 );
-            return new DataExportType(stringValue);
+            return new EventExportMetadataEventTypesItem(stringValue);
         }
 
         public override void Write(
             Utf8JsonWriter writer,
-            DataExportType value,
+            EventExportMetadataEventTypesItem value,
             JsonSerializerOptions options
         )
         {
             writer.WriteStringValue(value.Value);
         }
 
-        public override DataExportType ReadAsPropertyName(
+        public override EventExportMetadataEventTypesItem ReadAsPropertyName(
             ref Utf8JsonReader reader,
             Type typeToConvert,
             JsonSerializerOptions options
@@ -91,12 +96,12 @@ public readonly record struct DataExportType : IStringEnum
                 ?? throw new global::System.Exception(
                     "The JSON property name could not be read as a string."
                 );
-            return new DataExportType(stringValue);
+            return new EventExportMetadataEventTypesItem(stringValue);
         }
 
         public override void WriteAsPropertyName(
             Utf8JsonWriter writer,
-            DataExportType value,
+            EventExportMetadataEventTypesItem value,
             JsonSerializerOptions options
         )
         {
@@ -110,10 +115,12 @@ public readonly record struct DataExportType : IStringEnum
     [Serializable]
     public static class Values
     {
-        public const string AuditLog = "audit-log";
+        public const string FlagCheck = "flag_check";
 
-        public const string CompanyFeatureUsage = "company-feature-usage";
+        public const string Identify = "identify";
 
-        public const string Event = "event";
+        public const string Inference = "inference";
+
+        public const string Track = "track";
     }
 }

@@ -37,6 +37,15 @@ public record DataExportMetadata
     }
 
     /// <summary>
+    /// Create an instance of DataExportMetadata with <see cref="DataExportMetadata.Event"/>.
+    /// </summary>
+    public DataExportMetadata(DataExportMetadata.Event value)
+    {
+        ExportType = "event";
+        Value = value.Value;
+    }
+
+    /// <summary>
     /// Discriminant value
     /// </summary>
     [JsonPropertyName("export_type")]
@@ -56,6 +65,11 @@ public record DataExportMetadata
     /// Returns true if <see cref="ExportType"/> is "company-feature-usage"
     /// </summary>
     public bool IsCompanyFeatureUsage => ExportType == "company-feature-usage";
+
+    /// <summary>
+    /// Returns true if <see cref="ExportType"/> is "event"
+    /// </summary>
+    public bool IsEvent => ExportType == "event";
 
     /// <summary>
     /// Returns the value as a <see cref="SchematicHQ.Client.AuditLogExportMetadata"/> if <see cref="ExportType"/> is 'audit-log', otherwise throws an exception.
@@ -79,9 +93,19 @@ public record DataExportMetadata
                 "DataExportMetadata.ExportType is not 'company-feature-usage'"
             );
 
+    /// <summary>
+    /// Returns the value as a <see cref="SchematicHQ.Client.EventExportMetadata"/> if <see cref="ExportType"/> is 'event', otherwise throws an exception.
+    /// </summary>
+    /// <exception cref="Exception">Thrown when <see cref="ExportType"/> is not 'event'.</exception>
+    public SchematicHQ.Client.EventExportMetadata AsEvent() =>
+        IsEvent
+            ? (SchematicHQ.Client.EventExportMetadata)Value!
+            : throw new global::System.Exception("DataExportMetadata.ExportType is not 'event'");
+
     public T Match<T>(
         Func<SchematicHQ.Client.AuditLogExportMetadata, T> onAuditLog,
         Func<SchematicHQ.Client.CompanyFeatureUsageExportMetadata, T> onCompanyFeatureUsage,
+        Func<SchematicHQ.Client.EventExportMetadata, T> onEvent,
         Func<string, object?, T> onUnknown_
     )
     {
@@ -89,6 +113,7 @@ public record DataExportMetadata
         {
             "audit-log" => onAuditLog(AsAuditLog()),
             "company-feature-usage" => onCompanyFeatureUsage(AsCompanyFeatureUsage()),
+            "event" => onEvent(AsEvent()),
             _ => onUnknown_(ExportType, Value),
         };
     }
@@ -96,6 +121,7 @@ public record DataExportMetadata
     public void Visit(
         Action<SchematicHQ.Client.AuditLogExportMetadata> onAuditLog,
         Action<SchematicHQ.Client.CompanyFeatureUsageExportMetadata> onCompanyFeatureUsage,
+        Action<SchematicHQ.Client.EventExportMetadata> onEvent,
         Action<string, object?> onUnknown_
     )
     {
@@ -106,6 +132,9 @@ public record DataExportMetadata
                 break;
             case "company-feature-usage":
                 onCompanyFeatureUsage(AsCompanyFeatureUsage());
+                break;
+            case "event":
+                onEvent(AsEvent());
                 break;
             default:
                 onUnknown_(ExportType, Value);
@@ -143,6 +172,20 @@ public record DataExportMetadata
         return false;
     }
 
+    /// <summary>
+    /// Attempts to cast the value to a <see cref="SchematicHQ.Client.EventExportMetadata"/> and returns true if successful.
+    /// </summary>
+    public bool TryAsEvent(out SchematicHQ.Client.EventExportMetadata? value)
+    {
+        if (ExportType == "event")
+        {
+            value = (SchematicHQ.Client.EventExportMetadata)Value!;
+            return true;
+        }
+        value = null;
+        return false;
+    }
+
     public override string ToString() => JsonUtils.Serialize(this);
 
     public static implicit operator DataExportMetadata(DataExportMetadata.AuditLog value) =>
@@ -151,6 +194,9 @@ public record DataExportMetadata
     public static implicit operator DataExportMetadata(
         DataExportMetadata.CompanyFeatureUsage value
     ) => new(value);
+
+    public static implicit operator DataExportMetadata(DataExportMetadata.Event value) =>
+        new(value);
 
     [Serializable]
     internal sealed class JsonConverter : JsonConverter<DataExportMetadata>
@@ -207,6 +253,13 @@ public record DataExportMetadata
                         ?? throw new JsonException(
                             "Failed to deserialize SchematicHQ.Client.CompanyFeatureUsageExportMetadata"
                         ),
+                "event" =>
+                    jsonWithoutDiscriminator.Deserialize<SchematicHQ.Client.EventExportMetadata?>(
+                        options
+                    )
+                        ?? throw new JsonException(
+                            "Failed to deserialize SchematicHQ.Client.EventExportMetadata"
+                        ),
                 _ => json.Deserialize<object?>(options),
             };
             return new DataExportMetadata(discriminator, value);
@@ -223,6 +276,7 @@ public record DataExportMetadata
                 {
                     "audit-log" => JsonSerializer.SerializeToNode(value.Value, options),
                     "company-feature-usage" => JsonSerializer.SerializeToNode(value.Value, options),
+                    "event" => JsonSerializer.SerializeToNode(value.Value, options),
                     _ => JsonSerializer.SerializeToNode(value.Value, options),
                 } ?? new JsonObject();
             json["export_type"] = value.ExportType;
@@ -288,6 +342,26 @@ public record DataExportMetadata
 
         public static implicit operator DataExportMetadata.CompanyFeatureUsage(
             SchematicHQ.Client.CompanyFeatureUsageExportMetadata value
+        ) => new(value);
+    }
+
+    /// <summary>
+    /// Discriminated union type for event
+    /// </summary>
+    [Serializable]
+    public struct Event
+    {
+        public Event(SchematicHQ.Client.EventExportMetadata value)
+        {
+            Value = value;
+        }
+
+        internal SchematicHQ.Client.EventExportMetadata Value { get; set; }
+
+        public override string ToString() => Value.ToString() ?? "null";
+
+        public static implicit operator DataExportMetadata.Event(
+            SchematicHQ.Client.EventExportMetadata value
         ) => new(value);
     }
 }

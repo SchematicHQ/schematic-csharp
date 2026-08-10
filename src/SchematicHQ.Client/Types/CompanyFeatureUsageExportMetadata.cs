@@ -24,10 +24,10 @@ public record CompanyFeatureUsageExportMetadata : IJsonOnDeserialized
     public IEnumerable<string>? CreditTypeIds { get; set; }
 
     /// <summary>
-    /// Schematic feature IDs (starting with 'feat_') to include as usage columns; at least one is required
+    /// Schematic feature IDs (starting with 'feat_') to include as usage columns; empty means no usage columns
     /// </summary>
     [JsonPropertyName("feature_ids")]
-    public IEnumerable<string> FeatureIds { get; set; } = new List<string>();
+    public IEnumerable<string>? FeatureIds { get; set; }
 
     /// <summary>
     /// Restrict the export to companies that do (or do not) have a scheduled downgrade
@@ -72,6 +72,18 @@ public record CompanyFeatureUsageExportMetadata : IJsonOnDeserialized
     public string? Q { get; set; }
 
     /// <summary>
+    /// Column to sort the exported rows by (e.g. name, created_at, plan); defaults to name
+    /// </summary>
+    [JsonPropertyName("sort_order_column")]
+    public string? SortOrderColumn { get; set; }
+
+    /// <summary>
+    /// Direction to sort the exported rows by; defaults to asc
+    /// </summary>
+    [JsonPropertyName("sort_order_direction")]
+    public CompanyFeatureUsageExportMetadataSortOrderDirection? SortOrderDirection { get; set; }
+
+    /// <summary>
     /// Restrict the export to companies whose subscription has one of these statuses
     /// </summary>
     [JsonPropertyName("subscription_statuses")]
@@ -82,6 +94,12 @@ public record CompanyFeatureUsageExportMetadata : IJsonOnDeserialized
     /// </summary>
     [JsonPropertyName("subscription_types")]
     public IEnumerable<string>? SubscriptionTypes { get; set; }
+
+    /// <summary>
+    /// Company columns to include, mirroring the companies list; omit to include the plan column only
+    /// </summary>
+    [JsonPropertyName("visible_columns")]
+    public IEnumerable<CompanyFeatureUsageExportMetadataVisibleColumnsItem>? VisibleColumns { get; set; }
 
     /// <summary>
     /// Restrict the export to companies that have an entitlement for this feature ID

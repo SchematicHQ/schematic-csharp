@@ -106,8 +106,20 @@ public partial interface ICompaniesClient
         CancellationToken cancellationToken = default
     );
 
+    WithRawResponseTask<DeleteEntityKeyDefinitionResponse> DeleteEntityKeyDefinitionAsync(
+        string entityKeyDefinitionId,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    );
+
     WithRawResponseTask<CountEntityKeyDefinitionsResponse> CountEntityKeyDefinitionsAsync(
         CountEntityKeyDefinitionsRequest request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    );
+
+    WithRawResponseTask<CountEntityKeysResponse> CountEntityKeysAsync(
+        CountEntityKeysRequest request,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     );
