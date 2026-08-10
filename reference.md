@@ -5335,6 +5335,46 @@ await client.Companies.ListEntityKeyDefinitionsAsync(
 </dl>
 </details>
 
+<details><summary><code>client.Companies.<a href="/src/SchematicHQ.Client/Companies/CompaniesClient.cs">DeleteEntityKeyDefinitionAsync</a>(entityKeyDefinitionId) -> WithRawResponseTask&lt;DeleteEntityKeyDefinitionResponse&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Companies.DeleteEntityKeyDefinitionAsync("entity_key_definition_id");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**entityKeyDefinitionId:** `string` — entity_key_definition_id
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.Companies.<a href="/src/SchematicHQ.Client/Companies/CompaniesClient.cs">CountEntityKeyDefinitionsAsync</a>(CountEntityKeyDefinitionsRequest { ... }) -> WithRawResponseTask&lt;CountEntityKeyDefinitionsResponse&gt;</code></summary>
 <dl>
 <dd>
@@ -5373,6 +5413,54 @@ await client.Companies.CountEntityKeyDefinitionsAsync(
 <dd>
 
 **request:** `CountEntityKeyDefinitionsRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Companies.<a href="/src/SchematicHQ.Client/Companies/CompaniesClient.cs">CountEntityKeysAsync</a>(CountEntityKeysRequest { ... }) -> WithRawResponseTask&lt;CountEntityKeysResponse&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Companies.CountEntityKeysAsync(
+    new CountEntityKeysRequest
+    {
+        DefinitionId = "definition_id",
+        EntityType = EntityType.Company,
+        Limit = 1000000,
+        Offset = 1000000,
+    }
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `CountEntityKeysRequest` 
     
 </dd>
 </dl>

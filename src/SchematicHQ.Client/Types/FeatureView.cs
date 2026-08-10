@@ -18,7 +18,7 @@ public record FeatureView : IJsonOnDeserialized
     public BillingLinkedResourceResponseData? BillingLinkedResource { get; set; }
 
     [JsonPropertyName("billing_product")]
-    public BillingProductResponseData? BillingProduct { get; set; }
+    public BillingProductRecordResponseData? BillingProduct { get; set; }
 
     [JsonPropertyName("created_at")]
     public required DateTime CreatedAt { get; set; }

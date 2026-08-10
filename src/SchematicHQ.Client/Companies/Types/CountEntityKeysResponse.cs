@@ -5,20 +5,20 @@ using SchematicHQ.Client.Core;
 namespace SchematicHQ.Client;
 
 [Serializable]
-public record TestWebhookResponseData : IJsonOnDeserialized
+public record CountEntityKeysResponse : IJsonOnDeserialized
 {
     [JsonExtensionData]
     private readonly IDictionary<string, JsonElement> _extensionData =
         new Dictionary<string, JsonElement>();
 
-    [JsonPropertyName("failure_reason")]
-    public string? FailureReason { get; set; }
+    [JsonPropertyName("data")]
+    public required CountResponse Data { get; set; }
 
-    [JsonPropertyName("response_code")]
-    public required long ResponseCode { get; set; }
-
-    [JsonPropertyName("success")]
-    public required bool Success { get; set; }
+    /// <summary>
+    /// Input parameters
+    /// </summary>
+    [JsonPropertyName("params")]
+    public required CountEntityKeysParams Params { get; set; }
 
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();

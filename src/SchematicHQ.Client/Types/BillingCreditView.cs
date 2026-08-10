@@ -67,7 +67,7 @@ public record BillingCreditView : IJsonOnDeserialized
     public string? PricePerUnitDecimal { get; set; }
 
     [JsonPropertyName("product")]
-    public BillingProductResponseData? Product { get; set; }
+    public BillingProductRecordResponseData? Product { get; set; }
 
     [JsonPropertyName("singular_name")]
     public string? SingularName { get; set; }
