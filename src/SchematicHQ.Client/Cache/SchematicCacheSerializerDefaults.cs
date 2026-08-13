@@ -10,8 +10,7 @@ public static class SchematicCacheSerializerDefaults
         PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower,
         Converters =
         {
-            new ComparableTypeConverter(), // Specific handler for ComparableType empty strings
-            new ResilientEnumConverter() // Fallback for all other enums
+            new ResilientEnumConverter() // Fallback for all enums
         }
     };
 }
