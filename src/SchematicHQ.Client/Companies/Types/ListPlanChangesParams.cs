@@ -38,9 +38,6 @@ public record ListPlanChangesParams : IJsonOnDeserialized
     [JsonPropertyName("offset")]
     public long? Offset { get; set; }
 
-    [JsonPropertyName("plan_ids")]
-    public IEnumerable<string>? PlanIds { get; set; }
-
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();
 

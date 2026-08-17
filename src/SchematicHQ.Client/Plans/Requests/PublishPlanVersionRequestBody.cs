@@ -33,6 +33,9 @@ public record PublishPlanVersionRequestBody
     [JsonPropertyName("phone")]
     public string? Phone { get; set; }
 
+    [JsonPropertyName("proration_behavior")]
+    public MigrationProrationBehavior? ProrationBehavior { get; set; }
+
     /// <summary>
     /// Whether Stripe emails the invoice when it is finalized. Defaults to true.
     /// </summary>

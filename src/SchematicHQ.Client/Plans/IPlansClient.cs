@@ -3,7 +3,7 @@ namespace SchematicHQ.Client;
 public partial interface IPlansClient
 {
     WithRawResponseTask<UpdateCompanyPlansResponse> UpdateCompanyPlansAsync(
-        string companyPlanId,
+        string companyId,
         UpdateCompanyPlansRequestBody request,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
@@ -105,14 +105,14 @@ public partial interface IPlansClient
     );
 
     WithRawResponseTask<DeletePlanVersionResponse> DeletePlanVersionAsync(
-        string planId,
+        string planVersionId,
         DeletePlanVersionRequest request,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     );
 
     WithRawResponseTask<PublishPlanVersionResponse> PublishPlanVersionAsync(
-        string planId,
+        string planVersionId,
         PublishPlanVersionRequestBody request,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default

@@ -30,6 +30,9 @@ public record WhoAmIResponseData : IJsonOnDeserialized
     public IEnumerable<EnvironmentResponseData> Environments { get; set; } =
         new List<EnvironmentResponseData>();
 
+    [JsonPropertyName("onboarding_complete")]
+    public required bool OnboardingComplete { get; set; }
+
     [JsonPropertyName("stripe_user_id")]
     public string? StripeUserId { get; set; }
 

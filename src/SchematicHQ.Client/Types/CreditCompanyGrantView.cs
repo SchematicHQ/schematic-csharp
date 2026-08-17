@@ -20,6 +20,9 @@ public record CreditCompanyGrantView : IJsonOnDeserialized
     [JsonPropertyName("company_id")]
     public required string CompanyId { get; set; }
 
+    [JsonPropertyName("company_license_id")]
+    public string? CompanyLicenseId { get; set; }
+
     [JsonPropertyName("company_name")]
     public required string CompanyName { get; set; }
 
@@ -58,6 +61,9 @@ public record CreditCompanyGrantView : IJsonOnDeserialized
 
     [JsonPropertyName("id")]
     public required string Id { get; set; }
+
+    [JsonPropertyName("license_name")]
+    public string? LicenseName { get; set; }
 
     [JsonPropertyName("plan_id")]
     public string? PlanId { get; set; }

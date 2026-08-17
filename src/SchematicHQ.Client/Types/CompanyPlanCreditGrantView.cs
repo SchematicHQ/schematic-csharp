@@ -53,6 +53,9 @@ public record CompanyPlanCreditGrantView : IJsonOnDeserialized
     [JsonPropertyName("company_auto_topup_threshold_credits")]
     public long? CompanyAutoTopupThresholdCredits { get; set; }
 
+    [JsonPropertyName("company_credit_amount")]
+    public required long CompanyCreditAmount { get; set; }
+
     [JsonPropertyName("created_at")]
     public required DateTime CreatedAt { get; set; }
 

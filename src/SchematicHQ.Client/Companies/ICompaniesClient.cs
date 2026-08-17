@@ -149,6 +149,18 @@ public partial interface ICompaniesClient
         CancellationToken cancellationToken = default
     );
 
+    WithRawResponseTask<DeleteEntityTraitDefinitionResponse> DeleteEntityTraitDefinitionAsync(
+        string entityTraitDefinitionId,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    );
+
+    WithRawResponseTask<GetEntityTraitDefinitionUsageResponse> GetEntityTraitDefinitionUsageAsync(
+        string entityTraitDefinitionId,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    );
+
     WithRawResponseTask<CountEntityTraitDefinitionsResponse> CountEntityTraitDefinitionsAsync(
         CountEntityTraitDefinitionsRequest request,
         RequestOptions? options = null,
@@ -157,6 +169,12 @@ public partial interface ICompaniesClient
 
     WithRawResponseTask<GetEntityTraitValuesResponse> GetEntityTraitValuesAsync(
         GetEntityTraitValuesRequest request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    );
+
+    WithRawResponseTask<CountEntityTraitsResponse> CountEntityTraitsAsync(
+        CountEntityTraitsRequest request,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     );

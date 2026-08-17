@@ -323,7 +323,7 @@ public partial class PlanbundleClient : IPlanbundleClient
     }
 
     private async Task<WithRawResponse<UpdatePlanBundleResponse>> UpdatePlanBundleAsyncCore(
-        string planBundleId,
+        string planId,
         UpdatePlanBundleRequestBody request,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
@@ -345,7 +345,7 @@ public partial class PlanbundleClient : IPlanbundleClient
                     Method = HttpMethod.Put,
                     Path = string.Format(
                         "plan-bundles/{0}",
-                        ValueConvert.ToPathParameterString(planBundleId)
+                        ValueConvert.ToPathParameterString(planId)
                     ),
                     Body = request,
                     QueryString = _queryString,
@@ -525,7 +525,7 @@ public partial class PlanbundleClient : IPlanbundleClient
 
     /// <example><code>
     /// await client.Planbundle.UpdatePlanBundleAsync(
-    ///     "plan_bundle_id",
+    ///     "plan_id",
     ///     new UpdatePlanBundleRequestBody
     ///     {
     ///         Entitlements = new List&lt;PlanBundleEntitlementRequestBody&gt;()
@@ -536,14 +536,14 @@ public partial class PlanbundleClient : IPlanbundleClient
     /// );
     /// </code></example>
     public WithRawResponseTask<UpdatePlanBundleResponse> UpdatePlanBundleAsync(
-        string planBundleId,
+        string planId,
         UpdatePlanBundleRequestBody request,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
     {
         return new WithRawResponseTask<UpdatePlanBundleResponse>(
-            UpdatePlanBundleAsyncCore(planBundleId, request, options, cancellationToken)
+            UpdatePlanBundleAsyncCore(planId, request, options, cancellationToken)
         );
     }
 }

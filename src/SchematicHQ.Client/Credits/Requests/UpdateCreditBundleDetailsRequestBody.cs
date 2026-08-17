@@ -9,6 +9,12 @@ public record UpdateCreditBundleDetailsRequestBody
     [JsonPropertyName("bundle_name")]
     public required string BundleName { get; set; }
 
+    /// <summary>
+    /// Plans whose companies may purchase this bundle. Omitted leaves compatibility unchanged; empty resets the bundle to purchasable on every plan.
+    /// </summary>
+    [JsonPropertyName("compatible_plan_ids")]
+    public IEnumerable<string>? CompatiblePlanIds { get; set; }
+
     [JsonPropertyName("currency_prices")]
     public IEnumerable<CreditBundleCurrencyPriceRequestBody>? CurrencyPrices { get; set; }
 

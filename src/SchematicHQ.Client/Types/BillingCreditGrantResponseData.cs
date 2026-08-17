@@ -14,6 +14,12 @@ public record BillingCreditGrantResponseData : IJsonOnDeserialized
     [JsonPropertyName("company_id")]
     public required string CompanyId { get; set; }
 
+    /// <summary>
+    /// The license instance this grant was issued for. Set only when a per-license plan grant issued it; null on a plan's own grant.
+    /// </summary>
+    [JsonPropertyName("company_license_id")]
+    public string? CompanyLicenseId { get; set; }
+
     [JsonPropertyName("company_name")]
     public required string CompanyName { get; set; }
 
@@ -40,6 +46,12 @@ public record BillingCreditGrantResponseData : IJsonOnDeserialized
 
     [JsonPropertyName("id")]
     public required string Id { get; set; }
+
+    /// <summary>
+    /// Name of the license this grant was issued for, when it came from a per-license plan grant.
+    /// </summary>
+    [JsonPropertyName("license_name")]
+    public string? LicenseName { get; set; }
 
     [JsonPropertyName("plan_id")]
     public string? PlanId { get; set; }

@@ -11,6 +11,9 @@ public record CheckoutSettingsResponseData : IJsonOnDeserialized
     private readonly IDictionary<string, JsonElement> _extensionData =
         new Dictionary<string, JsonElement>();
 
+    [JsonPropertyName("bundle_purchase_behavior")]
+    public required CheckoutBundlePurchaseBehavior BundlePurchaseBehavior { get; set; }
+
     [JsonPropertyName("collect_address")]
     public required bool CollectAddress { get; set; }
 
@@ -19,6 +22,9 @@ public record CheckoutSettingsResponseData : IJsonOnDeserialized
 
     [JsonPropertyName("collect_phone")]
     public required bool CollectPhone { get; set; }
+
+    [JsonPropertyName("collect_tax_id")]
+    public required bool CollectTaxId { get; set; }
 
     [JsonPropertyName("opt_in_enabled")]
     public required bool OptInEnabled { get; set; }

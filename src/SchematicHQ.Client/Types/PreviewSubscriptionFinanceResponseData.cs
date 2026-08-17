@@ -14,6 +14,9 @@ public record PreviewSubscriptionFinanceResponseData : IJsonOnDeserialized
     [JsonPropertyName("amount_off")]
     public required long AmountOff { get; set; }
 
+    [JsonPropertyName("discount_amount")]
+    public required long DiscountAmount { get; set; }
+
     [JsonPropertyName("discounts")]
     public IEnumerable<PreviewSubscriptionDiscountResponseData> Discounts { get; set; } =
         new List<PreviewSubscriptionDiscountResponseData>();

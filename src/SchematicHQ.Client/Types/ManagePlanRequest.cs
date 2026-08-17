@@ -11,6 +11,12 @@ public record ManagePlanRequest : IJsonOnDeserialized
     private readonly IDictionary<string, JsonElement> _extensionData =
         new Dictionary<string, JsonElement>();
 
+    /// <summary>
+    /// If true, the company gets the plan only once the first invoice is paid. Only applies to an invoiced subscription. Defaults to false.
+    /// </summary>
+    [JsonPropertyName("activate_on_payment")]
+    public bool? ActivateOnPayment { get; set; }
+
     [JsonPropertyName("add_on_selections")]
     public IEnumerable<PlanSelection> AddOnSelections { get; set; } = new List<PlanSelection>();
 
@@ -24,6 +30,18 @@ public record ManagePlanRequest : IJsonOnDeserialized
     public string? BasePlanVersionId { get; set; }
 
     /// <summary>
+    /// The date the subscription's billing period renews on. Only honored when starting a new subscription; changing the anchor on an existing subscription is not supported.
+    /// </summary>
+    [JsonPropertyName("billing_cycle_anchor")]
+    public DateTime? BillingCycleAnchor { get; set; }
+
+    /// <summary>
+    /// Address the invoice is sent to. Required when collection_method is send_invoice.
+    /// </summary>
+    [JsonPropertyName("billing_email")]
+    public string? BillingEmail { get; set; }
+
+    /// <summary>
     /// The company that pays for this subscription. Must already have a Stripe customer. Only honored when starting a new subscription.
     /// </summary>
     [JsonPropertyName("billing_entity_id")]
@@ -34,6 +52,12 @@ public record ManagePlanRequest : IJsonOnDeserialized
     /// </summary>
     [JsonPropertyName("cancel_immediately")]
     public bool? CancelImmediately { get; set; }
+
+    /// <summary>
+    /// How the subscription is paid: charged to a payment method on file, or invoiced with payment terms. Invoicing is only available when starting a new subscription. Defaults to charge_automatically.
+    /// </summary>
+    [JsonPropertyName("collection_method")]
+    public BillingCollectionMethod? CollectionMethod { get; set; }
 
     [JsonPropertyName("company_id")]
     public required string CompanyId { get; set; }
@@ -48,6 +72,12 @@ public record ManagePlanRequest : IJsonOnDeserialized
     [JsonPropertyName("custom_field_values")]
     public IEnumerable<CheckoutFieldValue> CustomFieldValues { get; set; } =
         new List<CheckoutFieldValue>();
+
+    /// <summary>
+    /// Payment terms in days for an invoiced subscription. Defaults to 30.
+    /// </summary>
+    [JsonPropertyName("days_until_due")]
+    public long? DaysUntilDue { get; set; }
 
     [JsonPropertyName("pay_in_advance_entitlements")]
     public IEnumerable<UpdatePayInAdvanceRequestBody> PayInAdvanceEntitlements { get; set; } =
@@ -64,6 +94,18 @@ public record ManagePlanRequest : IJsonOnDeserialized
     /// </summary>
     [JsonPropertyName("prorate")]
     public bool? Prorate { get; set; }
+
+    /// <summary>
+    /// When true, the partial period between the subscription starting and its renewal date is billed pro rata straight away. When false that period is free and no invoice is raised until the renewal date. Only applies alongside billing_cycle_anchor. Defaults to true.
+    /// </summary>
+    [JsonPropertyName("prorate_first_period")]
+    public bool? ProrateFirstPeriod { get; set; }
+
+    /// <summary>
+    /// Whether Stripe emails the invoice when it is finalized. Only applies to an invoiced subscription. Defaults to true.
+    /// </summary>
+    [JsonPropertyName("send_invoice")]
+    public bool? SendInvoice { get; set; }
 
     [JsonPropertyName("trial_end")]
     public DateTime? TrialEnd { get; set; }

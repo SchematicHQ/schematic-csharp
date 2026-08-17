@@ -45,6 +45,12 @@ public record UpsertCompanyRequestBody : IJsonOnDeserialized
     public bool? PreventKeyRemap { get; set; }
 
     /// <summary>
+    /// Names of keys to remove from the company. Removing a key the company does not have does nothing, and a company must keep at least one key.
+    /// </summary>
+    [JsonPropertyName("remove_keys")]
+    public IEnumerable<string>? RemoveKeys { get; set; }
+
+    /// <summary>
     /// A map of trait names to trait values
     /// </summary>
     [JsonPropertyName("traits")]

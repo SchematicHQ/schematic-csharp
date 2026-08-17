@@ -15,7 +15,7 @@ public partial interface IPlanbundleClient
     );
 
     WithRawResponseTask<UpdatePlanBundleResponse> UpdatePlanBundleAsync(
-        string planBundleId,
+        string planId,
         UpdatePlanBundleRequestBody request,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default

@@ -12,6 +12,12 @@ public record CreateCreditBundleRequestBody
     [JsonPropertyName("bundle_type")]
     public string? BundleType { get; set; }
 
+    /// <summary>
+    /// Plans whose companies may purchase this bundle. Omitted or empty means the bundle is purchasable on every plan.
+    /// </summary>
+    [JsonPropertyName("compatible_plan_ids")]
+    public IEnumerable<string>? CompatiblePlanIds { get; set; }
+
     [JsonPropertyName("credit_id")]
     public required string CreditId { get; set; }
 

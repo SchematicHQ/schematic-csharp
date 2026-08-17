@@ -481,9 +481,11 @@ public partial class PlangroupsClient : IPlangroupsClient
     ///     new CreatePlanGroupRequestBody
     ///     {
     ///         AddOnIds = new List&lt;string&gt;() { "add_on_ids" },
+    ///         CheckoutBundlePurchaseBehavior = CheckoutBundlePurchaseBehavior.Individual,
     ///         CheckoutCollectAddress = true,
     ///         CheckoutCollectEmail = true,
     ///         CheckoutCollectPhone = true,
+    ///         CheckoutCollectTaxId = true,
     ///         EnableTaxCollection = true,
     ///         OptInEnabled = true,
     ///         OrderedAddOns = new List&lt;OrderedPlansInGroup&gt;()
@@ -528,9 +530,11 @@ public partial class PlangroupsClient : IPlangroupsClient
     ///     new UpdatePlanGroupRequestBody
     ///     {
     ///         AddOnIds = new List&lt;string&gt;() { "add_on_ids" },
+    ///         CheckoutBundlePurchaseBehavior = CheckoutBundlePurchaseBehavior.Individual,
     ///         CheckoutCollectAddress = true,
     ///         CheckoutCollectEmail = true,
     ///         CheckoutCollectPhone = true,
+    ///         CheckoutCollectTaxId = true,
     ///         EnableTaxCollection = true,
     ///         OptInEnabled = true,
     ///         OrderedAddOns = new List&lt;OrderedPlansInGroup&gt;()

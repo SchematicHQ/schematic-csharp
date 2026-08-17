@@ -17,6 +17,12 @@ public record BillingCreditBundleResponseData : IJsonOnDeserialized
     [JsonPropertyName("bundle_type")]
     public string BundleType { get; set; } = "fixed";
 
+    /// <summary>
+    /// Plans whose companies may purchase this bundle. Empty means the bundle is purchasable on every plan.
+    /// </summary>
+    [JsonPropertyName("compatible_plan_ids")]
+    public IEnumerable<string> CompatiblePlanIds { get; set; } = new List<string>();
+
     [JsonPropertyName("created_at")]
     public required DateTime CreatedAt { get; set; }
 

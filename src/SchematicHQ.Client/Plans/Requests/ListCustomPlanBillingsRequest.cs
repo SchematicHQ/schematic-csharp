@@ -19,6 +19,12 @@ public record ListCustomPlanBillingsRequest
     public string? PlanId { get; set; }
 
     /// <summary>
+    /// Filter by the flow that created the billing record. Defaults to custom_plan.
+    /// </summary>
+    [JsonIgnore]
+    public PlanBillingSource? PlanBillingSource { get; set; }
+
+    /// <summary>
     /// Filter by billing status
     /// </summary>
     [JsonIgnore]

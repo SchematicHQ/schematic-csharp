@@ -54,6 +54,12 @@ public record UpsertUserRequestBody : IJsonOnDeserialized
     public string? Name { get; set; }
 
     /// <summary>
+    /// Names of keys to remove from the user. Removing a key the user does not have does nothing, and a user must keep at least one key.
+    /// </summary>
+    [JsonPropertyName("remove_keys")]
+    public IEnumerable<string>? RemoveKeys { get; set; }
+
+    /// <summary>
     /// A map of trait names to trait values
     /// </summary>
     [JsonPropertyName("traits")]

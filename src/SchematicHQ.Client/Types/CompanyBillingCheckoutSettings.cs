@@ -20,6 +20,9 @@ public record CompanyBillingCheckoutSettings : IJsonOnDeserialized
     [JsonPropertyName("collect_phone")]
     public required bool CollectPhone { get; set; }
 
+    [JsonPropertyName("collect_tax_id")]
+    public required bool CollectTaxId { get; set; }
+
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();
 
