@@ -7,13 +7,16 @@ namespace SchematicHQ.Client;
 public record PreviewMigrationRequestBody
 {
     [JsonPropertyName("company_ids")]
-    public IEnumerable<string> CompanyIds { get; set; } = new List<string>();
+    public IEnumerable<string>? CompanyIds { get; set; }
 
     [JsonPropertyName("plan_id")]
     public required string PlanId { get; set; }
 
     [JsonPropertyName("plan_version_id_to")]
     public required string PlanVersionIdTo { get; set; }
+
+    [JsonPropertyName("plan_version_ids_from")]
+    public IEnumerable<string>? PlanVersionIdsFrom { get; set; }
 
     [JsonPropertyName("target_plan_type")]
     public required PlanType TargetPlanType { get; set; }

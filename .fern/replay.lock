@@ -54,25 +54,11 @@ generations:
     cli_version: unknown
     generator_versions:
       fernapi/fern-csharp-sdk: 2.71.1
-current_generation: 615833c95a4508542bd9a955bddefac123c83f6c
-patches:
-  - id: patch-0816e16a
-    content_hash: sha256:17a9a52d7557e941a9879ef072a5b51bb135098a4021df914f5c6a344964a947
-    original_commit: 0816e16ac6deea213675e5288d1b96ade208183b
-    original_message: "chore: update rules engine WASM to v0.4.0 (#158)"
-    original_author: Schematic Bot <bot@schematichq.com>
-    base_generation: 615833c95a4508542bd9a955bddefac123c83f6c
-    files:
-      - WASM_VERSION
-    patch_content: |
-      diff --git a/WASM_VERSION b/WASM_VERSION
-      new file mode 100644
-      index 0000000..1d0ba9e
-      --- /dev/null
-      +++ b/WASM_VERSION
-      @@ -0,0 +1 @@
-      +0.4.0
-    theirs_snapshot:
-      WASM_VERSION: |
-        0.4.0
-    user_owned: true
+  - commit_sha: 1fd784e8c9068b883c35bc0578204e46b168d549
+    tree_hash: a0fd03d69bac49de0b6a7762ad859caebed9ce65
+    timestamp: 2026-08-17T10:10:29.667Z
+    cli_version: unknown
+    generator_versions:
+      fernapi/fern-csharp-sdk: 2.71.1
+current_generation: 1fd784e8c9068b883c35bc0578204e46b168d549
+patches: []

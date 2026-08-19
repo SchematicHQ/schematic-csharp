@@ -41,6 +41,9 @@ public record PlanVersionMigrationResponseData : IJsonOnDeserialized
     [JsonPropertyName("plan_version_ids_from")]
     public IEnumerable<string> PlanVersionIdsFrom { get; set; } = new List<string>();
 
+    [JsonPropertyName("proration_behavior")]
+    public MigrationProrationBehavior? ProrationBehavior { get; set; }
+
     [JsonPropertyName("skipped_companies")]
     public required long SkippedCompanies { get; set; }
 

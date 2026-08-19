@@ -15,6 +15,9 @@ public record CreatePlanGroupRequestBody
     [JsonPropertyName("add_on_ids")]
     public IEnumerable<string> AddOnIds { get; set; } = new List<string>();
 
+    [JsonPropertyName("checkout_bundle_purchase_behavior")]
+    public required CheckoutBundlePurchaseBehavior CheckoutBundlePurchaseBehavior { get; set; }
+
     [JsonPropertyName("checkout_collect_address")]
     public required bool CheckoutCollectAddress { get; set; }
 
@@ -23,6 +26,9 @@ public record CreatePlanGroupRequestBody
 
     [JsonPropertyName("checkout_collect_phone")]
     public required bool CheckoutCollectPhone { get; set; }
+
+    [JsonPropertyName("checkout_collect_tax_id")]
+    public required bool CheckoutCollectTaxId { get; set; }
 
     [JsonPropertyName("custom_checkout_fields")]
     public IEnumerable<CheckoutFieldInput>? CustomCheckoutFields { get; set; }

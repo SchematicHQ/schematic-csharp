@@ -33,6 +33,12 @@ public record ListCustomPlanBillingsParams : IJsonOnDeserialized
     public long? Offset { get; set; }
 
     /// <summary>
+    /// Filter by the flow that created the billing record. Defaults to custom_plan.
+    /// </summary>
+    [JsonPropertyName("plan_billing_source")]
+    public PlanBillingSource? PlanBillingSource { get; set; }
+
+    /// <summary>
     /// Filter by plan ID
     /// </summary>
     [JsonPropertyName("plan_id")]

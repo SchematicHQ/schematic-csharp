@@ -790,6 +790,71 @@ await client.Accounts.DeleteEnvironmentAsync("environment_id");
 </dl>
 </details>
 
+<details><summary><code>client.Accounts.<a href="/src/SchematicHQ.Client/Accounts/AccountsClient.cs">GetOnboardingStateAsync</a>() -> WithRawResponseTask&lt;GetOnboardingStateResponse&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Accounts.GetOnboardingStateAsync();
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Accounts.<a href="/src/SchematicHQ.Client/Accounts/AccountsClient.cs">UpdateOnboardingStateAsync</a>(UpdateOnboardingStateRequestBody { ... }) -> WithRawResponseTask&lt;UpdateOnboardingStateResponse&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Accounts.UpdateOnboardingStateAsync(new UpdateOnboardingStateRequestBody());
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `UpdateOnboardingStateRequestBody` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.Accounts.<a href="/src/SchematicHQ.Client/Accounts/AccountsClient.cs">QuickstartAsync</a>() -> WithRawResponseTask&lt;QuickstartResponse&gt;</code></summary>
 <dl>
 <dd>
@@ -5661,6 +5726,86 @@ await client.Companies.UpdateEntityTraitDefinitionAsync(
 </dl>
 </details>
 
+<details><summary><code>client.Companies.<a href="/src/SchematicHQ.Client/Companies/CompaniesClient.cs">DeleteEntityTraitDefinitionAsync</a>(entityTraitDefinitionId) -> WithRawResponseTask&lt;DeleteEntityTraitDefinitionResponse&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Companies.DeleteEntityTraitDefinitionAsync("entity_trait_definition_id");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**entityTraitDefinitionId:** `string` — entity_trait_definition_id
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Companies.<a href="/src/SchematicHQ.Client/Companies/CompaniesClient.cs">GetEntityTraitDefinitionUsageAsync</a>(entityTraitDefinitionId) -> WithRawResponseTask&lt;GetEntityTraitDefinitionUsageResponse&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Companies.GetEntityTraitDefinitionUsageAsync("entity_trait_definition_id");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**entityTraitDefinitionId:** `string` — entity_trait_definition_id
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.Companies.<a href="/src/SchematicHQ.Client/Companies/CompaniesClient.cs">CountEntityTraitDefinitionsAsync</a>(CountEntityTraitDefinitionsRequest { ... }) -> WithRawResponseTask&lt;CountEntityTraitDefinitionsResponse&gt;</code></summary>
 <dl>
 <dd>
@@ -5760,6 +5905,54 @@ await client.Companies.GetEntityTraitValuesAsync(
 </dl>
 </details>
 
+<details><summary><code>client.Companies.<a href="/src/SchematicHQ.Client/Companies/CompaniesClient.cs">CountEntityTraitsAsync</a>(CountEntityTraitsRequest { ... }) -> WithRawResponseTask&lt;CountEntityTraitsResponse&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Companies.CountEntityTraitsAsync(
+    new CountEntityTraitsRequest
+    {
+        DefinitionId = "definition_id",
+        EntityType = EntityType.Company,
+        Limit = 1000000,
+        Offset = 1000000,
+    }
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `CountEntityTraitsRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.Companies.<a href="/src/SchematicHQ.Client/Companies/CompaniesClient.cs">ListPlanChangesAsync</a>(ListPlanChangesRequest { ... }) -> WithRawResponseTask&lt;ListPlanChangesResponse&gt;</code></summary>
 <dl>
 <dd>
@@ -5780,7 +5973,6 @@ await client.Companies.ListPlanChangesAsync(
         BasePlanAction = PlanChangeBasePlanAction.Fallback,
         CompanyId = "company_id",
         CompanyIds = new List<string>() { "company_ids" },
-        PlanIds = new List<string>() { "plan_ids" },
         Limit = 1000000,
         Offset = 1000000,
     }
@@ -7594,7 +7786,7 @@ await client.Entitlements.GetUserUsageDetailAsync(
 </details>
 
 ## plans
-<details><summary><code>client.Plans.<a href="/src/SchematicHQ.Client/Plans/PlansClient.cs">UpdateCompanyPlansAsync</a>(companyPlanId, UpdateCompanyPlansRequestBody { ... }) -> WithRawResponseTask&lt;UpdateCompanyPlansResponse&gt;</code></summary>
+<details><summary><code>client.Plans.<a href="/src/SchematicHQ.Client/Plans/PlansClient.cs">UpdateCompanyPlansAsync</a>(companyId, UpdateCompanyPlansRequestBody { ... }) -> WithRawResponseTask&lt;UpdateCompanyPlansResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -7608,7 +7800,7 @@ await client.Entitlements.GetUserUsageDetailAsync(
 
 ```csharp
 await client.Plans.UpdateCompanyPlansAsync(
-    "company_plan_id",
+    "company_id",
     new UpdateCompanyPlansRequestBody { AddOnIds = new List<string>() { "add_on_ids" } }
 );
 ```
@@ -7625,7 +7817,7 @@ await client.Plans.UpdateCompanyPlansAsync(
 <dl>
 <dd>
 
-**companyPlanId:** `string` — company_plan_id
+**companyId:** `string` — company_id
     
 </dd>
 </dl>
@@ -7663,6 +7855,7 @@ await client.Plans.ListCustomPlanBillingsAsync(
     {
         CompanyId = "company_id",
         PlanId = "plan_id",
+        PlanBillingSource = PlanBillingSource.CustomPlan,
         Status = CustomPlanBillingStatus.Active,
         Statuses = new List<CustomPlanBillingStatus>() { CustomPlanBillingStatus.Active },
         Limit = 1000000,
@@ -8390,7 +8583,7 @@ await client.Plans.ListPlanIssuesAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Plans.<a href="/src/SchematicHQ.Client/Plans/PlansClient.cs">DeletePlanVersionAsync</a>(planId, DeletePlanVersionRequest { ... }) -> WithRawResponseTask&lt;DeletePlanVersionResponse&gt;</code></summary>
+<details><summary><code>client.Plans.<a href="/src/SchematicHQ.Client/Plans/PlansClient.cs">DeletePlanVersionAsync</a>(planVersionId, DeletePlanVersionRequest { ... }) -> WithRawResponseTask&lt;DeletePlanVersionResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -8404,7 +8597,7 @@ await client.Plans.ListPlanIssuesAsync(
 
 ```csharp
 await client.Plans.DeletePlanVersionAsync(
-    "plan_id",
+    "plan_version_id",
     new DeletePlanVersionRequest { PromoteArchivedVersion = true }
 );
 ```
@@ -8421,7 +8614,7 @@ await client.Plans.DeletePlanVersionAsync(
 <dl>
 <dd>
 
-**planId:** `string` — plan_id
+**planVersionId:** `string` — plan_version_id
     
 </dd>
 </dl>
@@ -8441,7 +8634,7 @@ await client.Plans.DeletePlanVersionAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Plans.<a href="/src/SchematicHQ.Client/Plans/PlansClient.cs">PublishPlanVersionAsync</a>(planId, PublishPlanVersionRequestBody { ... }) -> WithRawResponseTask&lt;PublishPlanVersionResponse&gt;</code></summary>
+<details><summary><code>client.Plans.<a href="/src/SchematicHQ.Client/Plans/PlansClient.cs">PublishPlanVersionAsync</a>(planVersionId, PublishPlanVersionRequestBody { ... }) -> WithRawResponseTask&lt;PublishPlanVersionResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -8455,7 +8648,7 @@ await client.Plans.DeletePlanVersionAsync(
 
 ```csharp
 await client.Plans.PublishPlanVersionAsync(
-    "plan_id",
+    "plan_version_id",
     new PublishPlanVersionRequestBody
     {
         ExcludedCompanyIds = new List<string>() { "excluded_company_ids" },
@@ -8476,7 +8669,7 @@ await client.Plans.PublishPlanVersionAsync(
 <dl>
 <dd>
 
-**planId:** `string` — plan_id
+**planVersionId:** `string` — plan_version_id
     
 </dd>
 </dl>
@@ -8948,7 +9141,7 @@ await client.Planbundle.CreatePlanBundleAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Planbundle.<a href="/src/SchematicHQ.Client/Planbundle/PlanbundleClient.cs">UpdatePlanBundleAsync</a>(planBundleId, UpdatePlanBundleRequestBody { ... }) -> WithRawResponseTask&lt;UpdatePlanBundleResponse&gt;</code></summary>
+<details><summary><code>client.Planbundle.<a href="/src/SchematicHQ.Client/Planbundle/PlanbundleClient.cs">UpdatePlanBundleAsync</a>(planId, UpdatePlanBundleRequestBody { ... }) -> WithRawResponseTask&lt;UpdatePlanBundleResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -8962,7 +9155,7 @@ await client.Planbundle.CreatePlanBundleAsync(
 
 ```csharp
 await client.Planbundle.UpdatePlanBundleAsync(
-    "plan_bundle_id",
+    "plan_id",
     new UpdatePlanBundleRequestBody
     {
         Entitlements = new List<PlanBundleEntitlementRequestBody>()
@@ -8985,7 +9178,7 @@ await client.Planbundle.UpdatePlanBundleAsync(
 <dl>
 <dd>
 
-**planBundleId:** `string` — plan_bundle_id
+**planId:** `string` — plan_id
     
 </dd>
 </dl>
@@ -11084,9 +11277,11 @@ await client.Plangroups.CreatePlanGroupAsync(
     new CreatePlanGroupRequestBody
     {
         AddOnIds = new List<string>() { "add_on_ids" },
+        CheckoutBundlePurchaseBehavior = CheckoutBundlePurchaseBehavior.Individual,
         CheckoutCollectAddress = true,
         CheckoutCollectEmail = true,
         CheckoutCollectPhone = true,
+        CheckoutCollectTaxId = true,
         EnableTaxCollection = true,
         OptInEnabled = true,
         OrderedAddOns = new List<OrderedPlansInGroup>()
@@ -11157,9 +11352,11 @@ await client.Plangroups.UpdatePlanGroupAsync(
     new UpdatePlanGroupRequestBody
     {
         AddOnIds = new List<string>() { "add_on_ids" },
+        CheckoutBundlePurchaseBehavior = CheckoutBundlePurchaseBehavior.Individual,
         CheckoutCollectAddress = true,
         CheckoutCollectEmail = true,
         CheckoutCollectPhone = true,
+        CheckoutCollectTaxId = true,
         EnableTaxCollection = true,
         OptInEnabled = true,
         OrderedAddOns = new List<OrderedPlansInGroup>()
@@ -11423,11 +11620,8 @@ await client.Planmigrations.ListMigrationsAsync(
 await client.Planmigrations.CreateMigrationAsync(
     new CreateMigrationInput
     {
-        CompanyIds = new List<string>() { "company_ids" },
-        ExcludedCompanyIds = new List<string>() { "excluded_company_ids" },
         PlanId = "plan_id",
         PlanVersionIdTo = "plan_version_id_to",
-        PlanVersionIdsFrom = new List<string>() { "plan_version_ids_from" },
         Strategy = PlanVersionMigrationStrategy.Immediate,
         TargetPlanType = PlanType.Plan,
     }
@@ -11619,7 +11813,6 @@ await client.Planmigrations.CountMigrationsAsync(
 await client.Planmigrations.PreviewMigrationAsync(
     new PreviewMigrationRequestBody
     {
-        CompanyIds = new List<string>() { "company_ids" },
         PlanId = "plan_id",
         PlanVersionIdTo = "plan_version_id_to",
         TargetPlanType = PlanType.Plan,

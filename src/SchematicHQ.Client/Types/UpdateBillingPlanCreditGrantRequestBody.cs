@@ -47,6 +47,12 @@ public record UpdateBillingPlanCreditGrantRequestBody : IJsonOnDeserialized
     [JsonPropertyName("can_buy_bundles")]
     public bool? CanBuyBundles { get; set; }
 
+    /// <summary>
+    /// Credits granted once per company on top of the per-license amount. Only valid when the grant scales per license.
+    /// </summary>
+    [JsonPropertyName("company_credit_amount")]
+    public long? CompanyCreditAmount { get; set; }
+
     [JsonPropertyName("credit_amount")]
     public long? CreditAmount { get; set; }
 
@@ -60,7 +66,7 @@ public record UpdateBillingPlanCreditGrantRequestBody : IJsonOnDeserialized
     public long? ExpiryUnitCount { get; set; }
 
     /// <summary>
-    /// The license whose quantity scales this grant. Cannot be changed after creation.
+    /// The license whose quantity scales this grant. Cleared when the grant moves off per-license scaling.
     /// </summary>
     [JsonPropertyName("license_id")]
     public string? LicenseId { get; set; }
@@ -81,7 +87,7 @@ public record UpdateBillingPlanCreditGrantRequestBody : IJsonOnDeserialized
     public long? RolloverPercentage { get; set; }
 
     /// <summary>
-    /// Whether the grant is a fixed amount per company, or issued once per license the company holds. Cannot be changed after creation.
+    /// Whether the grant is a fixed amount per company, or issued once per license the company holds. Changing this re-issues the credits companies already hold for this grant.
     /// </summary>
     [JsonPropertyName("scaling")]
     public PlanCreditGrantScaling? Scaling { get; set; }

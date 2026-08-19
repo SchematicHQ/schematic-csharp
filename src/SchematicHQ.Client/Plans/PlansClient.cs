@@ -13,7 +13,7 @@ public partial class PlansClient : IPlansClient
     }
 
     private async Task<WithRawResponse<UpdateCompanyPlansResponse>> UpdateCompanyPlansAsyncCore(
-        string companyPlanId,
+        string companyId,
         UpdateCompanyPlansRequestBody request,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
@@ -35,7 +35,7 @@ public partial class PlansClient : IPlansClient
                     Method = HttpMethod.Put,
                     Path = string.Format(
                         "company-plans/{0}",
-                        ValueConvert.ToPathParameterString(companyPlanId)
+                        ValueConvert.ToPathParameterString(companyId)
                     ),
                     Body = request,
                     QueryString = _queryString,
@@ -177,9 +177,10 @@ public partial class PlansClient : IPlansClient
         CancellationToken cancellationToken = default
     )
     {
-        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 6)
+        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 7)
             .Add("company_id", request.CompanyId)
             .Add("plan_id", request.PlanId)
+            .Add("plan_billing_source", request.PlanBillingSource)
             .Add("status", request.Status)
             .Add("statuses", request.Statuses)
             .Add("limit", request.Limit)
@@ -2530,7 +2531,7 @@ public partial class PlansClient : IPlansClient
     }
 
     private async Task<WithRawResponse<DeletePlanVersionResponse>> DeletePlanVersionAsyncCore(
-        string planId,
+        string planVersionId,
         DeletePlanVersionRequest request,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
@@ -2553,7 +2554,7 @@ public partial class PlansClient : IPlansClient
                     Method = HttpMethod.Delete,
                     Path = string.Format(
                         "plans/version/{0}",
-                        ValueConvert.ToPathParameterString(planId)
+                        ValueConvert.ToPathParameterString(planVersionId)
                     ),
                     QueryString = _queryString,
                     Headers = _headers,
@@ -2686,7 +2687,7 @@ public partial class PlansClient : IPlansClient
     }
 
     private async Task<WithRawResponse<PublishPlanVersionResponse>> PublishPlanVersionAsyncCore(
-        string planId,
+        string planVersionId,
         PublishPlanVersionRequestBody request,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
@@ -2708,7 +2709,7 @@ public partial class PlansClient : IPlansClient
                     Method = HttpMethod.Put,
                     Path = string.Format(
                         "plans/version/{0}/publish",
-                        ValueConvert.ToPathParameterString(planId)
+                        ValueConvert.ToPathParameterString(planVersionId)
                     ),
                     Body = request,
                     QueryString = _queryString,
@@ -2844,19 +2845,19 @@ public partial class PlansClient : IPlansClient
 
     /// <example><code>
     /// await client.Plans.UpdateCompanyPlansAsync(
-    ///     "company_plan_id",
+    ///     "company_id",
     ///     new UpdateCompanyPlansRequestBody { AddOnIds = new List&lt;string&gt;() { "add_on_ids" } }
     /// );
     /// </code></example>
     public WithRawResponseTask<UpdateCompanyPlansResponse> UpdateCompanyPlansAsync(
-        string companyPlanId,
+        string companyId,
         UpdateCompanyPlansRequestBody request,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
     {
         return new WithRawResponseTask<UpdateCompanyPlansResponse>(
-            UpdateCompanyPlansAsyncCore(companyPlanId, request, options, cancellationToken)
+            UpdateCompanyPlansAsyncCore(companyId, request, options, cancellationToken)
         );
     }
 
@@ -2866,6 +2867,7 @@ public partial class PlansClient : IPlansClient
     ///     {
     ///         CompanyId = "company_id",
     ///         PlanId = "plan_id",
+    ///         PlanBillingSource = PlanBillingSource.CustomPlan,
     ///         Status = CustomPlanBillingStatus.Active,
     ///         Statuses = new List&lt;CustomPlanBillingStatus&gt;() { CustomPlanBillingStatus.Active },
     ///         Limit = 1000000,
@@ -3192,25 +3194,25 @@ public partial class PlansClient : IPlansClient
 
     /// <example><code>
     /// await client.Plans.DeletePlanVersionAsync(
-    ///     "plan_id",
+    ///     "plan_version_id",
     ///     new DeletePlanVersionRequest { PromoteArchivedVersion = true }
     /// );
     /// </code></example>
     public WithRawResponseTask<DeletePlanVersionResponse> DeletePlanVersionAsync(
-        string planId,
+        string planVersionId,
         DeletePlanVersionRequest request,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
     {
         return new WithRawResponseTask<DeletePlanVersionResponse>(
-            DeletePlanVersionAsyncCore(planId, request, options, cancellationToken)
+            DeletePlanVersionAsyncCore(planVersionId, request, options, cancellationToken)
         );
     }
 
     /// <example><code>
     /// await client.Plans.PublishPlanVersionAsync(
-    ///     "plan_id",
+    ///     "plan_version_id",
     ///     new PublishPlanVersionRequestBody
     ///     {
     ///         ExcludedCompanyIds = new List&lt;string&gt;() { "excluded_company_ids" },
@@ -3219,14 +3221,14 @@ public partial class PlansClient : IPlansClient
     /// );
     /// </code></example>
     public WithRawResponseTask<PublishPlanVersionResponse> PublishPlanVersionAsync(
-        string planId,
+        string planVersionId,
         PublishPlanVersionRequestBody request,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
     {
         return new WithRawResponseTask<PublishPlanVersionResponse>(
-            PublishPlanVersionAsyncCore(planId, request, options, cancellationToken)
+            PublishPlanVersionAsyncCore(planVersionId, request, options, cancellationToken)
         );
     }
 }

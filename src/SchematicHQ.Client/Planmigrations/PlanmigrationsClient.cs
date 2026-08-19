@@ -1495,11 +1495,8 @@ public partial class PlanmigrationsClient : IPlanmigrationsClient
     /// await client.Planmigrations.CreateMigrationAsync(
     ///     new CreateMigrationInput
     ///     {
-    ///         CompanyIds = new List&lt;string&gt;() { "company_ids" },
-    ///         ExcludedCompanyIds = new List&lt;string&gt;() { "excluded_company_ids" },
     ///         PlanId = "plan_id",
     ///         PlanVersionIdTo = "plan_version_id_to",
-    ///         PlanVersionIdsFrom = new List&lt;string&gt;() { "plan_version_ids_from" },
     ///         Strategy = PlanVersionMigrationStrategy.Immediate,
     ///         TargetPlanType = PlanType.Plan,
     ///     }
@@ -1580,7 +1577,6 @@ public partial class PlanmigrationsClient : IPlanmigrationsClient
     /// await client.Planmigrations.PreviewMigrationAsync(
     ///     new PreviewMigrationRequestBody
     ///     {
-    ///         CompanyIds = new List&lt;string&gt;() { "company_ids" },
     ///         PlanId = "plan_id",
     ///         PlanVersionIdTo = "plan_version_id_to",
     ///         TargetPlanType = PlanType.Plan,

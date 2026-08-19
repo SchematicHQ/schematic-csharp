@@ -18,9 +18,6 @@ public record ListPlanChangesRequest
     [JsonIgnore]
     public IEnumerable<string> CompanyIds { get; set; } = new List<string>();
 
-    [JsonIgnore]
-    public IEnumerable<string> PlanIds { get; set; } = new List<string>();
-
     /// <summary>
     /// Page limit (default 100)
     /// </summary>

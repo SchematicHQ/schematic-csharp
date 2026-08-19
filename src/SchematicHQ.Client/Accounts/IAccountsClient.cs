@@ -106,6 +106,17 @@ public partial interface IAccountsClient
         CancellationToken cancellationToken = default
     );
 
+    WithRawResponseTask<GetOnboardingStateResponse> GetOnboardingStateAsync(
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    );
+
+    WithRawResponseTask<UpdateOnboardingStateResponse> UpdateOnboardingStateAsync(
+        UpdateOnboardingStateRequestBody request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    );
+
     WithRawResponseTask<QuickstartResponse> QuickstartAsync(
         RequestOptions? options = null,
         CancellationToken cancellationToken = default

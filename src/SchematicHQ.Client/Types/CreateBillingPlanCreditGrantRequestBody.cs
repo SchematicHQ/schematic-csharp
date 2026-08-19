@@ -47,6 +47,12 @@ public record CreateBillingPlanCreditGrantRequestBody : IJsonOnDeserialized
     [JsonPropertyName("can_buy_bundles")]
     public bool? CanBuyBundles { get; set; }
 
+    /// <summary>
+    /// Credits granted once per company on top of the per-license amount. Only valid when scaling is per_license. Defaults to 0.
+    /// </summary>
+    [JsonPropertyName("company_credit_amount")]
+    public long? CompanyCreditAmount { get; set; }
+
     [JsonPropertyName("credit_amount")]
     public required long CreditAmount { get; set; }
 

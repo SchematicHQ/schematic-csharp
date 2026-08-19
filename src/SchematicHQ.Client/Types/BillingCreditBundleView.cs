@@ -14,6 +14,9 @@ public record BillingCreditBundleView : IJsonOnDeserialized
     [JsonPropertyName("bundle_type")]
     public string BundleType { get; set; } = "fixed";
 
+    [JsonPropertyName("compatible_plan_ids")]
+    public IEnumerable<string> CompatiblePlanIds { get; set; } = new List<string>();
+
     [JsonPropertyName("created_at")]
     public required DateTime CreatedAt { get; set; }
 

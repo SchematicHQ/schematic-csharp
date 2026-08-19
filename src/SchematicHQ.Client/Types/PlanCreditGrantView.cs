@@ -44,6 +44,9 @@ public record PlanCreditGrantView : IJsonOnDeserialized
     [JsonPropertyName("billing_credit_can_buy_bundles")]
     public required bool BillingCreditCanBuyBundles { get; set; }
 
+    [JsonPropertyName("company_credit_amount")]
+    public required long CompanyCreditAmount { get; set; }
+
     [JsonPropertyName("created_at")]
     public required DateTime CreatedAt { get; set; }
 

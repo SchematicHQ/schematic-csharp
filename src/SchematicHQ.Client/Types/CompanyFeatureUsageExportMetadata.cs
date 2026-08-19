@@ -24,6 +24,18 @@ public record CompanyFeatureUsageExportMetadata : IJsonOnDeserialized
     public IEnumerable<string>? CreditTypeIds { get; set; }
 
     /// <summary>
+    /// Company key definition IDs to include as columns, one column per definition, mirroring the companies list
+    /// </summary>
+    [JsonPropertyName("entity_key_definition_ids")]
+    public IEnumerable<string>? EntityKeyDefinitionIds { get; set; }
+
+    /// <summary>
+    /// Company trait definition IDs to include as columns, one column per definition, mirroring the companies list
+    /// </summary>
+    [JsonPropertyName("entity_trait_definition_ids")]
+    public IEnumerable<string>? EntityTraitDefinitionIds { get; set; }
+
+    /// <summary>
     /// Schematic feature IDs (starting with 'feat_') to include as usage columns; empty means no usage columns
     /// </summary>
     [JsonPropertyName("feature_ids")]

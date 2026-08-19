@@ -15,6 +15,9 @@ public record PlanVersionMigrationPreviewResponseData : IJsonOnDeserialized
     public IEnumerable<PlanVersionMigrationPreviewCompanyResponseData> Companies { get; set; } =
         new List<PlanVersionMigrationPreviewCompanyResponseData>();
 
+    [JsonPropertyName("has_billing_changes")]
+    public required bool HasBillingChanges { get; set; }
+
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();
 

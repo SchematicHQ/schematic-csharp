@@ -14,6 +14,12 @@ public record CustomPlanBillingResponseData : IJsonOnDeserialized
     [JsonPropertyName("activation_strategy")]
     public required CustomPlanActivationStrategy ActivationStrategy { get; set; }
 
+    /// <summary>
+    /// The billing period renewal date pinned when the subscription started, when one was set. When no invoice exists yet, the first invoice is raised on this date.
+    /// </summary>
+    [JsonPropertyName("billing_cycle_anchor")]
+    public DateTime? BillingCycleAnchor { get; set; }
+
     [JsonPropertyName("company_id")]
     public required string CompanyId { get; set; }
 
@@ -31,6 +37,12 @@ public record CustomPlanBillingResponseData : IJsonOnDeserialized
 
     [JsonPropertyName("paid_at")]
     public DateTime? PaidAt { get; set; }
+
+    /// <summary>
+    /// The flow that created this billing record: a custom plan, or a standard plan assigned by invoice through Manage Plan.
+    /// </summary>
+    [JsonPropertyName("plan_billing_source")]
+    public required PlanBillingSource PlanBillingSource { get; set; }
 
     [JsonPropertyName("plan_id")]
     public required string PlanId { get; set; }
