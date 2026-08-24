@@ -1,3 +1,5 @@
+using System.Linq;
+using System.Reflection;
 using NUnit.Framework;
 using SchematicHQ.Client;
 using SchematicHQ.Client.RulesEngine.Utils;
@@ -13,6 +15,8 @@ namespace SchematicHQ.Client.Test.RulesEngine
     [TestFixture]
     public class SchemaVersionGeneratorTests
     {
+        private const string FernPlaceholderValue = "placeholder-for-fern-compatibility";
+
         [Test]
         public void Resolves_Current_Fern_Schema_Version_Not_Fallback()
         {
@@ -22,9 +26,30 @@ namespace SchematicHQ.Client.Test.RulesEngine
             // Not the "unexpected enum shape" fallback...
             Assert.That(version, Is.Not.EqualTo("1"));
             // ...and not the Fern placeholder member.
-            Assert.That(version, Is.Not.EqualTo("placeholder-for-fern-compatibility"));
-            // It must be one of the real (non-placeholder) values on the generated enum.
-            Assert.That(version, Is.EqualTo(RulesEngineSchemaVersion.V5B3E7220.Value));
+            Assert.That(version, Is.Not.EqualTo(FernPlaceholderValue));
+            // It must be the one real (non-placeholder) value on the generated enum. Resolved
+            // from the nested Values constants rather than a direct symbol reference, because
+            // codegen encodes the schema hash into the member name (e.g. V5B3E7220), which
+            // changes on every schema bump.
+            Assert.That(version, Is.EqualTo(SingleRealGeneratedValue()));
+        }
+
+        private static string SingleRealGeneratedValue()
+        {
+            var values = typeof(RulesEngineSchemaVersion.Values)
+                .GetFields(BindingFlags.Public | BindingFlags.Static)
+                .Where(f => f.IsLiteral && f.FieldType == typeof(string))
+                .Select(f => (string)f.GetRawConstantValue()!)
+                .Where(v => !string.IsNullOrEmpty(v) && v != FernPlaceholderValue)
+                .Distinct()
+                .ToList();
+
+            Assert.That(
+                values,
+                Has.Count.EqualTo(1),
+                "Expected exactly one real value on the generated RulesEngineSchemaVersion enum."
+            );
+            return values[0];
         }
     }
 }
