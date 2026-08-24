@@ -16,7 +16,7 @@ public record UpdatePlanGroupRequestBody
     public IEnumerable<string> AddOnIds { get; set; } = new List<string>();
 
     [JsonPropertyName("checkout_bundle_purchase_behavior")]
-    public required CheckoutBundlePurchaseBehavior CheckoutBundlePurchaseBehavior { get; set; }
+    public CheckoutBundlePurchaseBehavior? CheckoutBundlePurchaseBehavior { get; set; }
 
     [JsonPropertyName("checkout_collect_address")]
     public required bool CheckoutCollectAddress { get; set; }

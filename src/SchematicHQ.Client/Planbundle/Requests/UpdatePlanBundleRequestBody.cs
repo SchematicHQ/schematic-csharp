@@ -17,7 +17,7 @@ public record UpdatePlanBundleRequestBody
         new List<PlanBundleEntitlementRequestBody>();
 
     [JsonPropertyName("plan")]
-    public UpdatePlanRequestBody? Plan { get; set; }
+    public required UpdatePlanRequestBody Plan { get; set; }
 
     [JsonPropertyName("plan_version_id")]
     public string? PlanVersionId { get; set; }

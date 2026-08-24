@@ -4662,6 +4662,7 @@ await client.Companies.ListCompaniesAsync(
         PlanIds = new List<string>() { "plan_ids" },
         PlanVersionId = "plan_version_id",
         PlanVersionIds = new List<string>() { "plan_version_ids" },
+        PlanVersionUnpublished = true,
         Q = "q",
         SortOrderColumn = "sort_order_column",
         SortOrderDirection = SortDirection.Asc,
@@ -4859,6 +4860,7 @@ await client.Companies.CountCompaniesAsync(
         PlanIds = new List<string>() { "plan_ids" },
         PlanVersionId = "plan_version_id",
         PlanVersionIds = new List<string>() { "plan_version_ids" },
+        PlanVersionUnpublished = true,
         Q = "q",
         SortOrderColumn = "sort_order_column",
         SortOrderDirection = SortDirection.Asc,
@@ -7064,6 +7066,57 @@ await client.Entitlements.ListFeatureUsageAsync(
 </dl>
 </details>
 
+<details><summary><code>client.Entitlements.<a href="/src/SchematicHQ.Client/Entitlements/EntitlementsClient.cs">ListFeatureUsageHistoryAsync</a>(ListFeatureUsageHistoryRequest { ... }) -> WithRawResponseTask&lt;ListFeatureUsageHistoryResponse&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Entitlements.ListFeatureUsageHistoryAsync(
+    new ListFeatureUsageHistoryRequest
+    {
+        CompanyIds = new List<string>() { "company_ids" },
+        EndTime = new DateTime(2024, 01, 15, 09, 30, 00, 000),
+        FeatureIds = new List<string>() { "feature_ids" },
+        Granularity = TimeSeriesGranularity.Daily,
+        StartTime = new DateTime(2024, 01, 15, 09, 30, 00, 000),
+        Limit = 1000000,
+        Offset = 1000000,
+    }
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `ListFeatureUsageHistoryRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.Entitlements.<a href="/src/SchematicHQ.Client/Entitlements/EntitlementsClient.cs">GetFeatureUsageTimeSeriesAsync</a>(GetFeatureUsageTimeSeriesRequest { ... }) -> WithRawResponseTask&lt;GetFeatureUsageTimeSeriesResponse&gt;</code></summary>
 <dl>
 <dd>
@@ -8004,12 +8057,7 @@ await client.Plans.RetryCustomPlanBillingAsync(
 
 ```csharp
 await client.Plans.CreateCustomPlanAsync(
-    new CreateCustomPlanRequestBody
-    {
-        CompanyId = "company_id",
-        Description = "description",
-        Name = "name",
-    }
+    new CreateCustomPlanRequestBody { CompanyId = "company_id", Name = "name" }
 );
 ```
 </dd>
@@ -8112,12 +8160,7 @@ await client.Plans.ListPlansAsync(
 
 ```csharp
 await client.Plans.CreatePlanAsync(
-    new CreatePlanRequestBody
-    {
-        Description = "description",
-        Name = "name",
-        PlanType = PlanType.Plan,
-    }
+    new CreatePlanRequestBody { Name = "name", PlanType = PlanType.Plan }
 );
 ```
 </dd>
@@ -8352,7 +8395,6 @@ await client.Plans.UpsertPlanForBillingProductAsync(
     new CreateBillingLinkedPlanRequestBody
     {
         BillingProvider = BillingProviderType.Metronome,
-        Description = "description",
         ExternalResourceId = "external_resource_id",
         Name = "name",
         PlanType = PlanType.Plan,
@@ -9061,9 +9103,19 @@ await client.Components.PreviewComponentDataAsync(
 await client.Planbundle.CreateCustomPlanBundleAsync(
     new CreateCustomPlanBundleRequestBody
     {
+        BillingProduct = new UpsertBillingProductRequestBody
+        {
+            ChargeType = ChargeType.Free,
+            IsTrialable = true,
+        },
         Entitlements = new List<PlanBundleEntitlementRequestBody>()
         {
             new PlanBundleEntitlementRequestBody { Action = PlanBundleAction.Create },
+        },
+        Plan = new CreateCustomPlanBundlePlanRequestBody
+        {
+            CompanyId = "company_id",
+            Name = "name",
         },
     }
 );
@@ -9113,6 +9165,7 @@ await client.Planbundle.CreatePlanBundleAsync(
         {
             new PlanBundleEntitlementRequestBody { Action = PlanBundleAction.Create },
         },
+        Plan = new CreatePlanRequestBody { Name = "name", PlanType = PlanType.Plan },
     }
 );
 ```
@@ -9162,6 +9215,7 @@ await client.Planbundle.UpdatePlanBundleAsync(
         {
             new PlanBundleEntitlementRequestBody { Action = PlanBundleAction.Create },
         },
+        Plan = new UpdatePlanRequestBody { Name = "name" },
     }
 );
 ```
@@ -11277,7 +11331,6 @@ await client.Plangroups.CreatePlanGroupAsync(
     new CreatePlanGroupRequestBody
     {
         AddOnIds = new List<string>() { "add_on_ids" },
-        CheckoutBundlePurchaseBehavior = CheckoutBundlePurchaseBehavior.Individual,
         CheckoutCollectAddress = true,
         CheckoutCollectEmail = true,
         CheckoutCollectPhone = true,
@@ -11352,7 +11405,6 @@ await client.Plangroups.UpdatePlanGroupAsync(
     new UpdatePlanGroupRequestBody
     {
         AddOnIds = new List<string>() { "add_on_ids" },
-        CheckoutBundlePurchaseBehavior = CheckoutBundlePurchaseBehavior.Individual,
         CheckoutCollectAddress = true,
         CheckoutCollectEmail = true,
         CheckoutCollectPhone = true,

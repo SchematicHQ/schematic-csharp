@@ -96,6 +96,24 @@ public record PlanChangeResponseData : IJsonOnDeserialized
     public IEnumerable<SubscriptionTraitUpdate> TraitsUpdated { get; set; } =
         new List<SubscriptionTraitUpdate>();
 
+    /// <summary>
+    /// When the company's trial had converted to a paid subscription as of this change. Null when the trial had not converted, or for changes recorded before trial status was tracked.
+    /// </summary>
+    [JsonPropertyName("trial_converted_at")]
+    public DateTime? TrialConvertedAt { get; set; }
+
+    /// <summary>
+    /// When the company's trial was set to end as of this change. Null when the company had never trialed, or for changes recorded before trial status was tracked.
+    /// </summary>
+    [JsonPropertyName("trial_expires_at")]
+    public DateTime? TrialExpiresAt { get; set; }
+
+    /// <summary>
+    /// The company's trial status. Null when the company had never trialed, or for changes recorded before trial status was tracked.
+    /// </summary>
+    [JsonPropertyName("trial_status")]
+    public TrialStatus? TrialStatus { get; set; }
+
     [JsonPropertyName("updated_at")]
     public required DateTime UpdatedAt { get; set; }
 

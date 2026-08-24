@@ -14,6 +14,8 @@ public readonly record struct MigrationProrationBehavior : IStringEnum
         Values.CreateProrations
     );
 
+    public static readonly MigrationProrationBehavior None = new(Values.None);
+
     public MigrationProrationBehavior(string value)
     {
         Value = value;
@@ -113,5 +115,7 @@ public readonly record struct MigrationProrationBehavior : IStringEnum
         public const string AlwaysInvoice = "always_invoice";
 
         public const string CreateProrations = "create_prorations";
+
+        public const string None = "none";
     }
 }

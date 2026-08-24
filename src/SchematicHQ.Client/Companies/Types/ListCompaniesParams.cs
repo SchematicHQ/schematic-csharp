@@ -75,6 +75,12 @@ public record ListCompaniesParams : IJsonOnDeserialized
     public IEnumerable<string>? PlanVersionIds { get; set; }
 
     /// <summary>
+    /// Filter companies assigned to a plan version that is no longer published, meaning the plan has since moved on to a newer version
+    /// </summary>
+    [JsonPropertyName("plan_version_unpublished")]
+    public bool? PlanVersionUnpublished { get; set; }
+
+    /// <summary>
     /// Search for companies by name, keys or string traits
     /// </summary>
     [JsonPropertyName("q")]

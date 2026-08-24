@@ -29,6 +29,9 @@ public record PlanVersionMigrationPreviewCompanyResponseData : IJsonOnDeserializ
     [JsonPropertyName("will_update_subscription")]
     public required bool WillUpdateSubscription { get; set; }
 
+    [JsonPropertyName("would_fail")]
+    public required bool WouldFail { get; set; }
+
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();
 

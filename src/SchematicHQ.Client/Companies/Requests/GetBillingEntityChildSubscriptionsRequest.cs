@@ -7,7 +7,7 @@ namespace SchematicHQ.Client;
 public record GetBillingEntityChildSubscriptionsRequest
 {
     [JsonIgnore]
-    public string? CompanyId { get; set; }
+    public required string CompanyId { get; set; }
 
     /// <inheritdoc />
     public override string ToString()

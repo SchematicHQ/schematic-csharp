@@ -55,6 +55,12 @@ public record CountCompaniesRequest
     public IEnumerable<string> PlanVersionIds { get; set; } = new List<string>();
 
     /// <summary>
+    /// Filter companies assigned to a plan version that is no longer published, meaning the plan has since moved on to a newer version
+    /// </summary>
+    [JsonIgnore]
+    public bool? PlanVersionUnpublished { get; set; }
+
+    /// <summary>
     /// Search for companies by name, keys or string traits
     /// </summary>
     [JsonIgnore]

@@ -17,7 +17,7 @@ public record CreatePlanBundleRequestBody
         new List<PlanBundleEntitlementRequestBody>();
 
     [JsonPropertyName("plan")]
-    public CreatePlanRequestBody? Plan { get; set; }
+    public required CreatePlanRequestBody Plan { get; set; }
 
     /// <inheritdoc />
     public override string ToString()

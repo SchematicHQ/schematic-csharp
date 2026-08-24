@@ -17,6 +17,9 @@ public record OnboardingRequirementView : IJsonOnDeserialized
     [JsonPropertyName("id")]
     public required OnboardingRequirement Id { get; set; }
 
+    [JsonPropertyName("reached_at")]
+    public DateTime? ReachedAt { get; set; }
+
     [JsonPropertyName("satisfied_by")]
     public string? SatisfiedBy { get; set; }
 

@@ -12,7 +12,7 @@ public record CreatePlanRequestBody : IJsonOnDeserialized
         new Dictionary<string, JsonElement>();
 
     [JsonPropertyName("description")]
-    public required string Description { get; set; }
+    public string? Description { get; set; }
 
     [JsonPropertyName("icon")]
     public PlanIcon? Icon { get; set; }

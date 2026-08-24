@@ -48,7 +48,7 @@ public record BillingPlanCreditGrantResponseData : IJsonOnDeserialized
     public long? AutoTopupThresholdPercent { get; set; }
 
     /// <summary>
-    /// Whether buyers can purchase one-time credit bundles on this grant, independent of auto top-up availability.
+    /// Deprecated: bundle availability is a per-bundle plan compatibility set now; use compatible_plan_ids on credit bundles instead.
     /// </summary>
     [JsonPropertyName("can_buy_bundles")]
     public required bool CanBuyBundles { get; set; }

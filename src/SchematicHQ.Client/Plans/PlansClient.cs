@@ -2934,12 +2934,7 @@ public partial class PlansClient : IPlansClient
 
     /// <example><code>
     /// await client.Plans.CreateCustomPlanAsync(
-    ///     new CreateCustomPlanRequestBody
-    ///     {
-    ///         CompanyId = "company_id",
-    ///         Description = "description",
-    ///         Name = "name",
-    ///     }
+    ///     new CreateCustomPlanRequestBody { CompanyId = "company_id", Name = "name" }
     /// );
     /// </code></example>
     public WithRawResponseTask<CreateCustomPlanResponse> CreateCustomPlanAsync(
@@ -2990,12 +2985,7 @@ public partial class PlansClient : IPlansClient
 
     /// <example><code>
     /// await client.Plans.CreatePlanAsync(
-    ///     new CreatePlanRequestBody
-    ///     {
-    ///         Description = "description",
-    ///         Name = "name",
-    ///         PlanType = PlanType.Plan,
-    ///     }
+    ///     new CreatePlanRequestBody { Name = "name", PlanType = PlanType.Plan }
     /// );
     /// </code></example>
     public WithRawResponseTask<CreatePlanResponse> CreatePlanAsync(
@@ -3079,7 +3069,6 @@ public partial class PlansClient : IPlansClient
     ///     new CreateBillingLinkedPlanRequestBody
     ///     {
     ///         BillingProvider = BillingProviderType.Metronome,
-    ///         Description = "description",
     ///         ExternalResourceId = "external_resource_id",
     ///         Name = "name",
     ///         PlanType = PlanType.Plan,

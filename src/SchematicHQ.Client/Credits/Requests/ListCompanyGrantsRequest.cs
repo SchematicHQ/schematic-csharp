@@ -7,7 +7,7 @@ namespace SchematicHQ.Client;
 public record ListCompanyGrantsRequest
 {
     [JsonIgnore]
-    public string? CompanyId { get; set; }
+    public required string CompanyId { get; set; }
 
     [JsonIgnore]
     public CreditGrantSortOrder? Order { get; set; }

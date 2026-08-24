@@ -97,7 +97,7 @@ public record ComponentHydrateResponseData : IJsonOnDeserialized
     public bool? TrialPaymentMethodRequired { get; set; }
 
     [JsonPropertyName("upcoming_invoice")]
-    public InvoiceResponseData? UpcomingInvoice { get; set; }
+    public UpcomingInvoiceResponseData? UpcomingInvoice { get; set; }
 
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();
