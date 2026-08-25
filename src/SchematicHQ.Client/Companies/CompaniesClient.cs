@@ -18,7 +18,7 @@ public partial class CompaniesClient : ICompaniesClient
         CancellationToken cancellationToken = default
     )
     {
-        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 20)
+        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 21)
             .Add("credit_type_ids", request.CreditTypeIds)
             .Add("has_scheduled_downgrade", request.HasScheduledDowngrade)
             .Add("ids", request.Ids)
@@ -27,6 +27,7 @@ public partial class CompaniesClient : ICompaniesClient
             .Add("plan_ids", request.PlanIds)
             .Add("plan_version_id", request.PlanVersionId)
             .Add("plan_version_ids", request.PlanVersionIds)
+            .Add("plan_version_unpublished", request.PlanVersionUnpublished)
             .Add("q", request.Q)
             .Add("sort_order_column", request.SortOrderColumn)
             .Add("sort_order_direction", request.SortOrderDirection)
@@ -641,7 +642,7 @@ public partial class CompaniesClient : ICompaniesClient
         CancellationToken cancellationToken = default
     )
     {
-        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 20)
+        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 21)
             .Add("credit_type_ids", request.CreditTypeIds)
             .Add("has_scheduled_downgrade", request.HasScheduledDowngrade)
             .Add("ids", request.Ids)
@@ -650,6 +651,7 @@ public partial class CompaniesClient : ICompaniesClient
             .Add("plan_ids", request.PlanIds)
             .Add("plan_version_id", request.PlanVersionId)
             .Add("plan_version_ids", request.PlanVersionIds)
+            .Add("plan_version_unpublished", request.PlanVersionUnpublished)
             .Add("q", request.Q)
             .Add("sort_order_column", request.SortOrderColumn)
             .Add("sort_order_direction", request.SortOrderDirection)
@@ -6668,6 +6670,7 @@ public partial class CompaniesClient : ICompaniesClient
     ///         PlanIds = new List&lt;string&gt;() { "plan_ids" },
     ///         PlanVersionId = "plan_version_id",
     ///         PlanVersionIds = new List&lt;string&gt;() { "plan_version_ids" },
+    ///         PlanVersionUnpublished = true,
     ///         Q = "q",
     ///         SortOrderColumn = "sort_order_column",
     ///         SortOrderDirection = SortDirection.Asc,
@@ -6754,6 +6757,7 @@ public partial class CompaniesClient : ICompaniesClient
     ///         PlanIds = new List&lt;string&gt;() { "plan_ids" },
     ///         PlanVersionId = "plan_version_id",
     ///         PlanVersionIds = new List&lt;string&gt;() { "plan_version_ids" },
+    ///         PlanVersionUnpublished = true,
     ///         Q = "q",
     ///         SortOrderColumn = "sort_order_column",
     ///         SortOrderDirection = SortDirection.Asc,
@@ -6816,8 +6820,8 @@ public partial class CompaniesClient : ICompaniesClient
     /// Company lookup is determined to resolve a company from its keys, similar to how many of our other apis work.
     /// The following approaches will all work to resolve a company and any of them are appropriate:
     /// 1. `/companies/lookup?keys={"foo": "bar", "fizz": "buzz"}`
-    /// 2. `/companies/lookup?keys[foo]=bar&keys[fizz]=buzz`
-    /// 2. `/companies/lookup?foo=bar&fizz=buzz`
+    /// 2. `/companies/lookup?keys[foo]=bar&amp;keys[fizz]=buzz`
+    /// 2. `/companies/lookup?foo=bar&amp;fizz=buzz`
     /// </summary>
     /// <example><code>
     /// await client.Companies.LookupCompanyAsync(

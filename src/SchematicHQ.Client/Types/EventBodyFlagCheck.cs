@@ -36,6 +36,12 @@ public record EventBodyFlagCheck : IJsonOnDeserialized
     public required string FlagKey { get; set; }
 
     /// <summary>
+    /// Whether the check was a preflight, asking whether an action would be allowed rather than reporting one that happened. Absent on ordinary checks
+    /// </summary>
+    [JsonPropertyName("preflight")]
+    public bool? Preflight { get; set; }
+
+    /// <summary>
     /// The reason why the value was returned
     /// </summary>
     [JsonPropertyName("reason")]

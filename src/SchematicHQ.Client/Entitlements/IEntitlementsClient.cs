@@ -57,6 +57,12 @@ public partial interface IEntitlementsClient
         CancellationToken cancellationToken = default
     );
 
+    WithRawResponseTask<ListFeatureUsageHistoryResponse> ListFeatureUsageHistoryAsync(
+        ListFeatureUsageHistoryRequest request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    );
+
     WithRawResponseTask<GetFeatureUsageTimeSeriesResponse> GetFeatureUsageTimeSeriesAsync(
         GetFeatureUsageTimeSeriesRequest request,
         RequestOptions? options = null,

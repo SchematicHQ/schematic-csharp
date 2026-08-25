@@ -78,6 +78,12 @@ public record CompanyFeatureUsageExportMetadata : IJsonOnDeserialized
     public string? PlanVersionId { get; set; }
 
     /// <summary>
+    /// Restrict the export to companies on a plan version that is no longer published
+    /// </summary>
+    [JsonPropertyName("plan_version_unpublished")]
+    public bool? PlanVersionUnpublished { get; set; }
+
+    /// <summary>
     /// Free-text search over company name and keys
     /// </summary>
     [JsonPropertyName("q")]

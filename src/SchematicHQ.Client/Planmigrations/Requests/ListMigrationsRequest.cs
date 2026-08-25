@@ -7,7 +7,7 @@ namespace SchematicHQ.Client;
 public record ListMigrationsRequest
 {
     [JsonIgnore]
-    public string? PlanVersionId { get; set; }
+    public required string PlanVersionId { get; set; }
 
     [JsonIgnore]
     public PlanVersionMigrationStatus? Status { get; set; }

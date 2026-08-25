@@ -42,6 +42,9 @@ public record PreviewSubscriptionFinanceResponseData : IJsonOnDeserialized
     [JsonPropertyName("proration")]
     public required long Proration { get; set; }
 
+    [JsonPropertyName("proration_billed_at")]
+    public DateTime? ProrationBilledAt { get; set; }
+
     [JsonPropertyName("tax_amount")]
     public long? TaxAmount { get; set; }
 

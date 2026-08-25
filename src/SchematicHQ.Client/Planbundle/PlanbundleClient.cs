@@ -483,9 +483,19 @@ public partial class PlanbundleClient : IPlanbundleClient
     /// await client.Planbundle.CreateCustomPlanBundleAsync(
     ///     new CreateCustomPlanBundleRequestBody
     ///     {
+    ///         BillingProduct = new UpsertBillingProductRequestBody
+    ///         {
+    ///             ChargeType = ChargeType.Free,
+    ///             IsTrialable = true,
+    ///         },
     ///         Entitlements = new List&lt;PlanBundleEntitlementRequestBody&gt;()
     ///         {
     ///             new PlanBundleEntitlementRequestBody { Action = PlanBundleAction.Create },
+    ///         },
+    ///         Plan = new CreateCustomPlanBundlePlanRequestBody
+    ///         {
+    ///             CompanyId = "company_id",
+    ///             Name = "name",
     ///         },
     ///     }
     /// );
@@ -509,6 +519,7 @@ public partial class PlanbundleClient : IPlanbundleClient
     ///         {
     ///             new PlanBundleEntitlementRequestBody { Action = PlanBundleAction.Create },
     ///         },
+    ///         Plan = new CreatePlanRequestBody { Name = "name", PlanType = PlanType.Plan },
     ///     }
     /// );
     /// </code></example>
@@ -532,6 +543,7 @@ public partial class PlanbundleClient : IPlanbundleClient
     ///         {
     ///             new PlanBundleEntitlementRequestBody { Action = PlanBundleAction.Create },
     ///         },
+    ///         Plan = new UpdatePlanRequestBody { Name = "name" },
     ///     }
     /// );
     /// </code></example>

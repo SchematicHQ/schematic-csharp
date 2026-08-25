@@ -7,7 +7,7 @@ namespace SchematicHQ.Client;
 public record CountCompanyMigrationsRequest
 {
     [JsonIgnore]
-    public string? MigrationId { get; set; }
+    public required string MigrationId { get; set; }
 
     [JsonIgnore]
     public string? Q { get; set; }

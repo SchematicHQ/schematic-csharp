@@ -11,6 +11,9 @@ public record AuditLogResponseData : IJsonOnDeserialized
     private readonly IDictionary<string, JsonElement> _extensionData =
         new Dictionary<string, JsonElement>();
 
+    [JsonPropertyName("account_member_id")]
+    public string? AccountMemberId { get; set; }
+
     [JsonPropertyName("actor_type")]
     public required ActorType ActorType { get; set; }
 

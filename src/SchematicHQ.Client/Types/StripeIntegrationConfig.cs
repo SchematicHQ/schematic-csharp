@@ -47,6 +47,12 @@ public record StripeIntegrationConfig : IJsonOnDeserialized
     [JsonPropertyName("onboard_url")]
     public string? OnboardUrl { get; set; }
 
+    /// <summary>
+    /// App location that started the connect flow; the OAuth callback redirects back there on success
+    /// </summary>
+    [JsonPropertyName("return_to")]
+    public string? ReturnTo { get; set; }
+
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();
 

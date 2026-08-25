@@ -37,6 +37,12 @@ public record PublishPlanVersionRequestBody
     public MigrationProrationBehavior? ProrationBehavior { get; set; }
 
     /// <summary>
+    /// Refuse the publish if any company would be migrated onto the new version
+    /// </summary>
+    [JsonPropertyName("require_no_migration")]
+    public bool? RequireNoMigration { get; set; }
+
+    /// <summary>
     /// Whether Stripe emails the invoice when it is finalized. Defaults to true.
     /// </summary>
     [JsonPropertyName("send_invoice")]

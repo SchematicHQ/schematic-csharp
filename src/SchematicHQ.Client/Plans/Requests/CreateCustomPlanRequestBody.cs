@@ -12,8 +12,11 @@ public record CreateCustomPlanRequestBody
     [JsonPropertyName("copied_from_plan_id")]
     public string? CopiedFromPlanId { get; set; }
 
+    [JsonPropertyName("copied_price_id")]
+    public string? CopiedPriceId { get; set; }
+
     [JsonPropertyName("description")]
-    public required string Description { get; set; }
+    public string? Description { get; set; }
 
     [JsonPropertyName("icon")]
     public PlanIcon? Icon { get; set; }

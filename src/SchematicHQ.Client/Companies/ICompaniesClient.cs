@@ -49,8 +49,8 @@ public partial interface ICompaniesClient
     /// Company lookup is determined to resolve a company from its keys, similar to how many of our other apis work.
     /// The following approaches will all work to resolve a company and any of them are appropriate:
     /// 1. `/companies/lookup?keys={"foo": "bar", "fizz": "buzz"}`
-    /// 2. `/companies/lookup?keys[foo]=bar&keys[fizz]=buzz`
-    /// 2. `/companies/lookup?foo=bar&fizz=buzz`
+    /// 2. `/companies/lookup?keys[foo]=bar&amp;keys[fizz]=buzz`
+    /// 2. `/companies/lookup?foo=bar&amp;fizz=buzz`
     /// </summary>
     WithRawResponseTask<LookupCompanyResponse> LookupCompanyAsync(
         LookupCompanyRequest request,

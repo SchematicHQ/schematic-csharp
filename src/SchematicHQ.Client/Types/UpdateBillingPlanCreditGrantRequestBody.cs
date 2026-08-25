@@ -44,6 +44,9 @@ public record UpdateBillingPlanCreditGrantRequestBody : IJsonOnDeserialized
     [JsonPropertyName("auto_topup_threshold_percent")]
     public long? AutoTopupThresholdPercent { get; set; }
 
+    /// <summary>
+    /// Deprecated: use compatible_plan_ids on credit bundles instead. Still accepted; writes through to the credit's bundle compatibility.
+    /// </summary>
     [JsonPropertyName("can_buy_bundles")]
     public bool? CanBuyBundles { get; set; }
 

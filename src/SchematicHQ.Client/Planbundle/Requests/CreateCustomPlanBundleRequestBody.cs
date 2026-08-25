@@ -7,7 +7,7 @@ namespace SchematicHQ.Client;
 public record CreateCustomPlanBundleRequestBody
 {
     [JsonPropertyName("billing_product")]
-    public UpsertBillingProductRequestBody? BillingProduct { get; set; }
+    public required UpsertBillingProductRequestBody BillingProduct { get; set; }
 
     [JsonPropertyName("credit_grants")]
     public IEnumerable<PlanBundleCreditGrantRequestBody>? CreditGrants { get; set; }
@@ -17,7 +17,7 @@ public record CreateCustomPlanBundleRequestBody
         new List<PlanBundleEntitlementRequestBody>();
 
     [JsonPropertyName("plan")]
-    public CreateCustomPlanBundlePlanRequestBody? Plan { get; set; }
+    public required CreateCustomPlanBundlePlanRequestBody Plan { get; set; }
 
     /// <inheritdoc />
     public override string ToString()

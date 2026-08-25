@@ -10,7 +10,7 @@ public record CreateBillingLinkedPlanRequestBody
     public required BillingProviderType BillingProvider { get; set; }
 
     [JsonPropertyName("description")]
-    public required string Description { get; set; }
+    public string? Description { get; set; }
 
     [JsonPropertyName("external_resource_id")]
     public required string ExternalResourceId { get; set; }

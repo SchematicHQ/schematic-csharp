@@ -481,7 +481,6 @@ public partial class PlangroupsClient : IPlangroupsClient
     ///     new CreatePlanGroupRequestBody
     ///     {
     ///         AddOnIds = new List&lt;string&gt;() { "add_on_ids" },
-    ///         CheckoutBundlePurchaseBehavior = CheckoutBundlePurchaseBehavior.Individual,
     ///         CheckoutCollectAddress = true,
     ///         CheckoutCollectEmail = true,
     ///         CheckoutCollectPhone = true,
@@ -530,7 +529,6 @@ public partial class PlangroupsClient : IPlangroupsClient
     ///     new UpdatePlanGroupRequestBody
     ///     {
     ///         AddOnIds = new List&lt;string&gt;() { "add_on_ids" },
-    ///         CheckoutBundlePurchaseBehavior = CheckoutBundlePurchaseBehavior.Individual,
     ///         CheckoutCollectAddress = true,
     ///         CheckoutCollectEmail = true,
     ///         CheckoutCollectPhone = true,

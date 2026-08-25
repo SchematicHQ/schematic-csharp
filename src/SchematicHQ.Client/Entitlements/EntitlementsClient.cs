@@ -1433,6 +1433,168 @@ public partial class EntitlementsClient : IEntitlementsClient
     }
 
     private async Task<
+        WithRawResponse<ListFeatureUsageHistoryResponse>
+    > ListFeatureUsageHistoryAsyncCore(
+        ListFeatureUsageHistoryRequest request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 7)
+            .Add("company_ids", request.CompanyIds)
+            .Add("end_time", request.EndTime)
+            .Add("feature_ids", request.FeatureIds)
+            .Add("granularity", request.Granularity)
+            .Add("start_time", request.StartTime)
+            .Add("limit", request.Limit)
+            .Add("offset", request.Offset)
+            .MergeAdditional(options?.AdditionalQueryParameters)
+            .Build();
+        var _headers = await new SchematicHQ.Client.Core.HeadersBuilder.Builder()
+            .Add(_client.Options.Headers)
+            .Add(_client.Options.AdditionalHeaders)
+            .Add(options?.AdditionalHeaders)
+            .BuildAsync()
+            .ConfigureAwait(false);
+        var response = await _client
+            .SendRequestAsync(
+                new JsonRequest
+                {
+                    Method = HttpMethod.Get,
+                    Path = "feature-usage-history",
+                    QueryString = _queryString,
+                    Headers = _headers,
+                    Options = options,
+                },
+                cancellationToken
+            )
+            .ConfigureAwait(false);
+        if (response.StatusCode is >= 200 and < 400)
+        {
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
+            try
+            {
+                var responseData = JsonUtils.Deserialize<ListFeatureUsageHistoryResponse>(
+                    responseBody
+                )!;
+                return new WithRawResponse<ListFeatureUsageHistoryResponse>()
+                {
+                    Data = responseData,
+                    RawResponse = new SchematicHQ.Client.RawResponse()
+                    {
+                        StatusCode = response.Raw.StatusCode,
+                        Url = response.Raw.RequestMessage?.RequestUri ?? new Uri("about:blank"),
+                        Headers = ResponseHeaders.FromHttpResponseMessage(response.Raw),
+                    },
+                };
+            }
+            catch (JsonException e)
+            {
+                throw new SchematicApiException(
+                    "Failed to deserialize response",
+                    response.StatusCode,
+                    responseBody,
+                    e,
+                    rawResponse: new SchematicHQ.Client.RawResponse()
+                    {
+                        StatusCode = response.Raw.StatusCode,
+                        Url = response.Raw.RequestMessage?.RequestUri ?? new Uri("about:blank"),
+                        Headers = ResponseHeaders.FromHttpResponseMessage(response.Raw),
+                    }
+                );
+            }
+        }
+        {
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
+            try
+            {
+                switch (response.StatusCode)
+                {
+                    case 400:
+                        throw new BadRequestError(
+                            JsonUtils.Deserialize<ApiError>(responseBody),
+                            rawResponse: new SchematicHQ.Client.RawResponse()
+                            {
+                                StatusCode = response.Raw.StatusCode,
+                                Url =
+                                    response.Raw.RequestMessage?.RequestUri
+                                    ?? new Uri("about:blank"),
+                                Headers = ResponseHeaders.FromHttpResponseMessage(response.Raw),
+                            }
+                        );
+                    case 401:
+                        throw new UnauthorizedError(
+                            JsonUtils.Deserialize<ApiError>(responseBody),
+                            rawResponse: new SchematicHQ.Client.RawResponse()
+                            {
+                                StatusCode = response.Raw.StatusCode,
+                                Url =
+                                    response.Raw.RequestMessage?.RequestUri
+                                    ?? new Uri("about:blank"),
+                                Headers = ResponseHeaders.FromHttpResponseMessage(response.Raw),
+                            }
+                        );
+                    case 403:
+                        throw new ForbiddenError(
+                            JsonUtils.Deserialize<ApiError>(responseBody),
+                            rawResponse: new SchematicHQ.Client.RawResponse()
+                            {
+                                StatusCode = response.Raw.StatusCode,
+                                Url =
+                                    response.Raw.RequestMessage?.RequestUri
+                                    ?? new Uri("about:blank"),
+                                Headers = ResponseHeaders.FromHttpResponseMessage(response.Raw),
+                            }
+                        );
+                    case 404:
+                        throw new NotFoundError(
+                            JsonUtils.Deserialize<ApiError>(responseBody),
+                            rawResponse: new SchematicHQ.Client.RawResponse()
+                            {
+                                StatusCode = response.Raw.StatusCode,
+                                Url =
+                                    response.Raw.RequestMessage?.RequestUri
+                                    ?? new Uri("about:blank"),
+                                Headers = ResponseHeaders.FromHttpResponseMessage(response.Raw),
+                            }
+                        );
+                    case 500:
+                        throw new InternalServerError(
+                            JsonUtils.Deserialize<ApiError>(responseBody),
+                            rawResponse: new SchematicHQ.Client.RawResponse()
+                            {
+                                StatusCode = response.Raw.StatusCode,
+                                Url =
+                                    response.Raw.RequestMessage?.RequestUri
+                                    ?? new Uri("about:blank"),
+                                Headers = ResponseHeaders.FromHttpResponseMessage(response.Raw),
+                            }
+                        );
+                }
+            }
+            catch (JsonException)
+            {
+                // unable to map error response, throwing generic error
+            }
+            throw new SchematicApiException(
+                $"Error with status code {response.StatusCode}",
+                response.StatusCode,
+                responseBody,
+                rawResponse: new SchematicHQ.Client.RawResponse()
+                {
+                    StatusCode = response.Raw.StatusCode,
+                    Url = response.Raw.RequestMessage?.RequestUri ?? new Uri("about:blank"),
+                    Headers = ResponseHeaders.FromHttpResponseMessage(response.Raw),
+                }
+            );
+        }
+    }
+
+    private async Task<
         WithRawResponse<GetFeatureUsageTimeSeriesResponse>
     > GetFeatureUsageTimeSeriesAsyncCore(
         GetFeatureUsageTimeSeriesRequest request,
@@ -3935,6 +4097,31 @@ public partial class EntitlementsClient : IEntitlementsClient
     {
         return new WithRawResponseTask<ListFeatureUsageResponse>(
             ListFeatureUsageAsyncCore(request, options, cancellationToken)
+        );
+    }
+
+    /// <example><code>
+    /// await client.Entitlements.ListFeatureUsageHistoryAsync(
+    ///     new ListFeatureUsageHistoryRequest
+    ///     {
+    ///         CompanyIds = new List&lt;string&gt;() { "company_ids" },
+    ///         EndTime = new DateTime(2024, 01, 15, 09, 30, 00, 000),
+    ///         FeatureIds = new List&lt;string&gt;() { "feature_ids" },
+    ///         Granularity = TimeSeriesGranularity.Daily,
+    ///         StartTime = new DateTime(2024, 01, 15, 09, 30, 00, 000),
+    ///         Limit = 1000000,
+    ///         Offset = 1000000,
+    ///     }
+    /// );
+    /// </code></example>
+    public WithRawResponseTask<ListFeatureUsageHistoryResponse> ListFeatureUsageHistoryAsync(
+        ListFeatureUsageHistoryRequest request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        return new WithRawResponseTask<ListFeatureUsageHistoryResponse>(
+            ListFeatureUsageHistoryAsyncCore(request, options, cancellationToken)
         );
     }
 
