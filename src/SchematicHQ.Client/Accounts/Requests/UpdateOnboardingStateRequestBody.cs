@@ -6,6 +6,9 @@ namespace SchematicHQ.Client;
 [Serializable]
 public record UpdateOnboardingStateRequestBody
 {
+    [JsonPropertyName("dismissed")]
+    public bool? Dismissed { get; set; }
+
     [JsonPropertyName("path")]
     public OnboardingPath? Path { get; set; }
 

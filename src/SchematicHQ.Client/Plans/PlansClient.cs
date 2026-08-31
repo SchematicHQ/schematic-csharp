@@ -3205,7 +3205,7 @@ public partial class PlansClient : IPlansClient
     ///     new PublishPlanVersionRequestBody
     ///     {
     ///         ExcludedCompanyIds = new List&lt;string&gt;() { "excluded_company_ids" },
-    ///         MigrationStrategy = PlanVersionMigrationStrategy.Immediate,
+    ///         MigrationStrategy = PlanVersionMigrationStrategy.EndOfBillingPeriod,
     ///     }
     /// );
     /// </code></example>

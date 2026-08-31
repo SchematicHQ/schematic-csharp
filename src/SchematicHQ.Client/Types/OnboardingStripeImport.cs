@@ -4,21 +4,17 @@ using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
 
-[JsonConverter(typeof(PlanVersionMigrationStatus.PlanVersionMigrationStatusSerializer))]
+[JsonConverter(typeof(OnboardingStripeImport.OnboardingStripeImportSerializer))]
 [Serializable]
-public readonly record struct PlanVersionMigrationStatus : IStringEnum
+public readonly record struct OnboardingStripeImport : IStringEnum
 {
-    public static readonly PlanVersionMigrationStatus Cancelled = new(Values.Cancelled);
+    public static readonly OnboardingStripeImport Complete = new(Values.Complete);
 
-    public static readonly PlanVersionMigrationStatus Completed = new(Values.Completed);
+    public static readonly OnboardingStripeImport NotStarted = new(Values.NotStarted);
 
-    public static readonly PlanVersionMigrationStatus Failed = new(Values.Failed);
+    public static readonly OnboardingStripeImport Running = new(Values.Running);
 
-    public static readonly PlanVersionMigrationStatus InProgress = new(Values.InProgress);
-
-    public static readonly PlanVersionMigrationStatus Pending = new(Values.Pending);
-
-    public PlanVersionMigrationStatus(string value)
+    public OnboardingStripeImport(string value)
     {
         Value = value;
     }
@@ -31,9 +27,9 @@ public readonly record struct PlanVersionMigrationStatus : IStringEnum
     /// <summary>
     /// Create a string enum with the given value.
     /// </summary>
-    public static PlanVersionMigrationStatus FromCustom(string value)
+    public static OnboardingStripeImport FromCustom(string value)
     {
-        return new PlanVersionMigrationStatus(value);
+        return new OnboardingStripeImport(value);
     }
 
     public bool Equals(string? other)
@@ -49,19 +45,19 @@ public readonly record struct PlanVersionMigrationStatus : IStringEnum
         return Value;
     }
 
-    public static bool operator ==(PlanVersionMigrationStatus value1, string value2) =>
+    public static bool operator ==(OnboardingStripeImport value1, string value2) =>
         value1.Value.Equals(value2);
 
-    public static bool operator !=(PlanVersionMigrationStatus value1, string value2) =>
+    public static bool operator !=(OnboardingStripeImport value1, string value2) =>
         !value1.Value.Equals(value2);
 
-    public static explicit operator string(PlanVersionMigrationStatus value) => value.Value;
+    public static explicit operator string(OnboardingStripeImport value) => value.Value;
 
-    public static explicit operator PlanVersionMigrationStatus(string value) => new(value);
+    public static explicit operator OnboardingStripeImport(string value) => new(value);
 
-    internal class PlanVersionMigrationStatusSerializer : JsonConverter<PlanVersionMigrationStatus>
+    internal class OnboardingStripeImportSerializer : JsonConverter<OnboardingStripeImport>
     {
-        public override PlanVersionMigrationStatus Read(
+        public override OnboardingStripeImport Read(
             ref Utf8JsonReader reader,
             Type typeToConvert,
             JsonSerializerOptions options
@@ -72,19 +68,19 @@ public readonly record struct PlanVersionMigrationStatus : IStringEnum
                 ?? throw new global::System.Exception(
                     "The JSON value could not be read as a string."
                 );
-            return new PlanVersionMigrationStatus(stringValue);
+            return new OnboardingStripeImport(stringValue);
         }
 
         public override void Write(
             Utf8JsonWriter writer,
-            PlanVersionMigrationStatus value,
+            OnboardingStripeImport value,
             JsonSerializerOptions options
         )
         {
             writer.WriteStringValue(value.Value);
         }
 
-        public override PlanVersionMigrationStatus ReadAsPropertyName(
+        public override OnboardingStripeImport ReadAsPropertyName(
             ref Utf8JsonReader reader,
             Type typeToConvert,
             JsonSerializerOptions options
@@ -95,12 +91,12 @@ public readonly record struct PlanVersionMigrationStatus : IStringEnum
                 ?? throw new global::System.Exception(
                     "The JSON property name could not be read as a string."
                 );
-            return new PlanVersionMigrationStatus(stringValue);
+            return new OnboardingStripeImport(stringValue);
         }
 
         public override void WriteAsPropertyName(
             Utf8JsonWriter writer,
-            PlanVersionMigrationStatus value,
+            OnboardingStripeImport value,
             JsonSerializerOptions options
         )
         {
@@ -114,14 +110,10 @@ public readonly record struct PlanVersionMigrationStatus : IStringEnum
     [Serializable]
     public static class Values
     {
-        public const string Cancelled = "cancelled";
+        public const string Complete = "complete";
 
-        public const string Completed = "completed";
+        public const string NotStarted = "not_started";
 
-        public const string Failed = "failed";
-
-        public const string InProgress = "in_progress";
-
-        public const string Pending = "pending";
+        public const string Running = "running";
     }
 }

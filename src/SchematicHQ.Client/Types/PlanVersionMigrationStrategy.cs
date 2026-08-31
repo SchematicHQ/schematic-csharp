@@ -8,6 +8,10 @@ namespace SchematicHQ.Client;
 [Serializable]
 public readonly record struct PlanVersionMigrationStrategy : IStringEnum
 {
+    public static readonly PlanVersionMigrationStrategy EndOfBillingPeriod = new(
+        Values.EndOfBillingPeriod
+    );
+
     public static readonly PlanVersionMigrationStrategy Immediate = new(Values.Immediate);
 
     public static readonly PlanVersionMigrationStrategy Leave = new(Values.Leave);
@@ -109,6 +113,8 @@ public readonly record struct PlanVersionMigrationStrategy : IStringEnum
     [Serializable]
     public static class Values
     {
+        public const string EndOfBillingPeriod = "end_of_billing_period";
+
         public const string Immediate = "immediate";
 
         public const string Leave = "leave";

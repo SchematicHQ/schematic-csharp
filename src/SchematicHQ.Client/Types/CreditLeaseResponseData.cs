@@ -32,6 +32,9 @@ public record CreditLeaseResponseData : IJsonOnDeserialized
     [JsonPropertyName("released_at")]
     public DateTime? ReleasedAt { get; set; }
 
+    [JsonPropertyName("tracked_amount")]
+    public required double TrackedAmount { get; set; }
+
     [JsonPropertyName("updated_at")]
     public required DateTime UpdatedAt { get; set; }
 

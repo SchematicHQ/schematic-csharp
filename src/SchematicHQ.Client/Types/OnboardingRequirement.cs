@@ -8,6 +8,8 @@ namespace SchematicHQ.Client;
 [Serializable]
 public readonly record struct OnboardingRequirement : IStringEnum
 {
+    public static readonly OnboardingRequirement ConnectAgent = new(Values.ConnectAgent);
+
     public static readonly OnboardingRequirement ConnectBilling = new(Values.ConnectBilling);
 
     public static readonly OnboardingRequirement CreateApiKey = new(Values.CreateApiKey);
@@ -116,6 +118,8 @@ public readonly record struct OnboardingRequirement : IStringEnum
     [Serializable]
     public static class Values
     {
+        public const string ConnectAgent = "connect_agent";
+
         public const string ConnectBilling = "connect_billing";
 
         public const string CreateApiKey = "create_api_key";
