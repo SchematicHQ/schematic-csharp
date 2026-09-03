@@ -47,6 +47,12 @@ public record CustomPlanBillingResponseData : IJsonOnDeserialized
     [JsonPropertyName("plan_id")]
     public required string PlanId { get; set; }
 
+    /// <summary>
+    /// Whether the shortened period the renewal date created was billed pro rata when the subscription started. False means that period is free and the first invoice is the one raised on the renewal date.
+    /// </summary>
+    [JsonPropertyName("prorate_first_period")]
+    public bool? ProrateFirstPeriod { get; set; }
+
     [JsonPropertyName("published_at")]
     public DateTime? PublishedAt { get; set; }
 

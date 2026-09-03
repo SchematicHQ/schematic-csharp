@@ -12,6 +12,12 @@ public record PublishPlanVersionRequestBody
     [JsonPropertyName("address")]
     public CustomerBillingAddress? Address { get; set; }
 
+    /// <summary>
+    /// The date the subscription's billing period renews on. Only honored on a first publish that starts a subscription.
+    /// </summary>
+    [JsonPropertyName("billing_cycle_anchor")]
+    public DateTime? BillingCycleAnchor { get; set; }
+
     [JsonPropertyName("coupon_external_id")]
     public string? CouponExternalId { get; set; }
 
@@ -32,6 +38,12 @@ public record PublishPlanVersionRequestBody
 
     [JsonPropertyName("phone")]
     public string? Phone { get; set; }
+
+    /// <summary>
+    /// When true, the partial period between the subscription starting and its renewal date is billed pro rata straight away. When false that period is free and no invoice is raised until the renewal date. Only applies alongside billing_cycle_anchor. Defaults to true.
+    /// </summary>
+    [JsonPropertyName("prorate_first_period")]
+    public bool? ProrateFirstPeriod { get; set; }
 
     [JsonPropertyName("proration_behavior")]
     public MigrationProrationBehavior? ProrationBehavior { get; set; }

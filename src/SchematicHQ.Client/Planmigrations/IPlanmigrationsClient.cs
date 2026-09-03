@@ -38,6 +38,19 @@ public partial interface IPlanmigrationsClient
         CancellationToken cancellationToken = default
     );
 
+    WithRawResponseTask<CancelMigrationResponse> CancelMigrationAsync(
+        string planVersionMigrationId,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    );
+
+    WithRawResponseTask<CompleteMigrationNowResponse> CompleteMigrationNowAsync(
+        string planVersionMigrationId,
+        CompleteMigrationNowRequestBody request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    );
+
     WithRawResponseTask<RetryMigrationResponse> RetryMigrationAsync(
         string planVersionMigrationId,
         RetryMigrationRequestBody request,

@@ -29,6 +29,9 @@ public record PlanVersionMigrationResponseData : IJsonOnDeserialized
     [JsonPropertyName("id")]
     public required string Id { get; set; }
 
+    [JsonPropertyName("next_due_at")]
+    public DateTime? NextDueAt { get; set; }
+
     [JsonPropertyName("plan_id")]
     public required string PlanId { get; set; }
 

@@ -70,6 +70,9 @@ public record CompanyDetailResponseData : IJsonOnDeserialized
     public IEnumerable<PaymentMethodResponseData> PaymentMethods { get; set; } =
         new List<PaymentMethodResponseData>();
 
+    [JsonPropertyName("pending_migration")]
+    public PendingMigrationResponseData? PendingMigration { get; set; }
+
     [JsonPropertyName("plan")]
     public CompanyPlanWithBillingSubView? Plan { get; set; }
 

@@ -11,6 +11,12 @@ public record GetOnboardingStateResp : IJsonOnDeserialized
     private readonly IDictionary<string, JsonElement> _extensionData =
         new Dictionary<string, JsonElement>();
 
+    [JsonPropertyName("agent_connected_at")]
+    public DateTime? AgentConnectedAt { get; set; }
+
+    [JsonPropertyName("dismissed_at")]
+    public DateTime? DismissedAt { get; set; }
+
     [JsonPropertyName("environment_id")]
     public string? EnvironmentId { get; set; }
 
@@ -21,9 +27,15 @@ public record GetOnboardingStateResp : IJsonOnDeserialized
     [JsonPropertyName("path")]
     public OnboardingPath? Path { get; set; }
 
+    [JsonPropertyName("pricing_page_url")]
+    public string? PricingPageUrl { get; set; }
+
     [JsonPropertyName("requirements")]
     public IEnumerable<OnboardingRequirementView> Requirements { get; set; } =
         new List<OnboardingRequirementView>();
+
+    [JsonPropertyName("stripe_import")]
+    public OnboardingStripeImport? StripeImport { get; set; }
 
     [JsonPropertyName("suggested_next")]
     public IEnumerable<OnboardingRequirement> SuggestedNext { get; set; } =
@@ -31,6 +43,9 @@ public record GetOnboardingStateResp : IJsonOnDeserialized
 
     [JsonPropertyName("track")]
     public OnboardingTrack? Track { get; set; }
+
+    [JsonPropertyName("website_url")]
+    public string? WebsiteUrl { get; set; }
 
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();

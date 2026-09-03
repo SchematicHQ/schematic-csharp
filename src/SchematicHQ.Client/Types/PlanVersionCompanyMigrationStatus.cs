@@ -10,6 +10,8 @@ namespace SchematicHQ.Client;
 [Serializable]
 public readonly record struct PlanVersionCompanyMigrationStatus : IStringEnum
 {
+    public static readonly PlanVersionCompanyMigrationStatus Cancelled = new(Values.Cancelled);
+
     public static readonly PlanVersionCompanyMigrationStatus Completed = new(Values.Completed);
 
     public static readonly PlanVersionCompanyMigrationStatus Failed = new(Values.Failed);
@@ -117,6 +119,8 @@ public readonly record struct PlanVersionCompanyMigrationStatus : IStringEnum
     [Serializable]
     public static class Values
     {
+        public const string Cancelled = "cancelled";
+
         public const string Completed = "completed";
 
         public const string Failed = "failed";

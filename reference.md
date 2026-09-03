@@ -8694,7 +8694,7 @@ await client.Plans.PublishPlanVersionAsync(
     new PublishPlanVersionRequestBody
     {
         ExcludedCompanyIds = new List<string>() { "excluded_company_ids" },
-        MigrationStrategy = PlanVersionMigrationStrategy.Immediate,
+        MigrationStrategy = PlanVersionMigrationStrategy.EndOfBillingPeriod,
     }
 );
 ```
@@ -11488,7 +11488,7 @@ await client.Planmigrations.ListCompanyMigrationsAsync(
     {
         MigrationId = "migration_id",
         Q = "q",
-        Status = PlanVersionCompanyMigrationStatus.Completed,
+        Status = PlanVersionCompanyMigrationStatus.Cancelled,
         Limit = 1000000,
         Offset = 1000000,
     }
@@ -11577,7 +11577,7 @@ await client.Planmigrations.CountCompanyMigrationsAsync(
     {
         MigrationId = "migration_id",
         Q = "q",
-        Status = PlanVersionCompanyMigrationStatus.Completed,
+        Status = PlanVersionCompanyMigrationStatus.Cancelled,
         Limit = 1000000,
         Offset = 1000000,
     }
@@ -11625,7 +11625,7 @@ await client.Planmigrations.ListMigrationsAsync(
     new ListMigrationsRequest
     {
         PlanVersionId = "plan_version_id",
-        Status = PlanVersionMigrationStatus.Completed,
+        Status = PlanVersionMigrationStatus.Cancelled,
         Limit = 1000000,
         Offset = 1000000,
     }
@@ -11674,7 +11674,7 @@ await client.Planmigrations.CreateMigrationAsync(
     {
         PlanId = "plan_id",
         PlanVersionIdTo = "plan_version_id_to",
-        Strategy = PlanVersionMigrationStrategy.Immediate,
+        Strategy = PlanVersionMigrationStrategy.EndOfBillingPeriod,
         TargetPlanType = PlanType.Plan,
     }
 );
@@ -11733,6 +11733,97 @@ await client.Planmigrations.GetMigrationAsync("plan_version_migration_id");
 <dd>
 
 **planVersionMigrationId:** `string` — plan_version_migration_id
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Planmigrations.<a href="/src/SchematicHQ.Client/Planmigrations/PlanmigrationsClient.cs">CancelMigrationAsync</a>(planVersionMigrationId) -> WithRawResponseTask&lt;CancelMigrationResponse&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Planmigrations.CancelMigrationAsync("plan_version_migration_id");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**planVersionMigrationId:** `string` — plan_version_migration_id
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Planmigrations.<a href="/src/SchematicHQ.Client/Planmigrations/PlanmigrationsClient.cs">CompleteMigrationNowAsync</a>(planVersionMigrationId, CompleteMigrationNowRequestBody { ... }) -> WithRawResponseTask&lt;CompleteMigrationNowResponse&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Planmigrations.CompleteMigrationNowAsync(
+    "plan_version_migration_id",
+    new CompleteMigrationNowRequestBody()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**planVersionMigrationId:** `string` — plan_version_migration_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `CompleteMigrationNowRequestBody` 
     
 </dd>
 </dl>
@@ -11818,7 +11909,7 @@ await client.Planmigrations.CountMigrationsAsync(
     new CountMigrationsRequest
     {
         PlanVersionId = "plan_version_id",
-        Status = PlanVersionMigrationStatus.Completed,
+        Status = PlanVersionMigrationStatus.Cancelled,
         Limit = 1000000,
         Offset = 1000000,
     }
