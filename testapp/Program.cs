@@ -131,12 +131,9 @@ app.MapPost("/configure", async (HttpRequest req) =>
     var cacheTtl = TimeSpan.FromMilliseconds(CacheTtlMs);
     if (noCache)
     {
-        // The SDK auto-adds a default LocalCache when CacheProviders is empty.
-        // Use a 0-capacity LocalCache so Get/Set are no-ops — effectively no cache.
-        options.CacheProviders = new List<ICacheProvider<CheckFlagWithEntitlementResponse?>>
-        {
-            new LocalCache<CheckFlagWithEntitlementResponse?>(maxItems: 0, ttl: cacheTtl, enableBackgroundCleanup: false)
-        };
+        // The SDK adds a default LocalCache when none is configured. Use a
+        // 0-capacity LocalCache so Get/Set are no-ops — effectively no cache.
+        options.CacheProvider = new LocalCache(maxItems: 0, ttl: cacheTtl, enableBackgroundCleanup: false);
     }
     // else: SDK default LocalCache (replaced by Redis/datastream wiring below).
 
@@ -155,7 +152,7 @@ app.MapPost("/configure", async (HttpRequest req) =>
             var endpoint = redisUrl.StartsWith("redis://")
                 ? redisUrl.Substring("redis://".Length)
                 : redisUrl;
-            dsOpts.WithRedisCache(new RedisCacheConfig
+            options.WithRedisCache(new RedisCacheConfig
             {
                 Endpoints = new List<string> { endpoint },
                 CacheTTL = cacheTtl,
