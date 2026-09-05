@@ -60,6 +60,12 @@ public record CompanyOverrideResponseData : IJsonOnDeserialized
     [JsonPropertyName("value_bool")]
     public bool? ValueBool { get; set; }
 
+    [JsonPropertyName("value_credit")]
+    public BillingCreditResponseData? ValueCredit { get; set; }
+
+    [JsonPropertyName("value_credit_id")]
+    public string? ValueCreditId { get; set; }
+
     [JsonPropertyName("value_numeric")]
     public long? ValueNumeric { get; set; }
 

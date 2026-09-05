@@ -1,0 +1,37 @@
+using global::System.Text.Json;
+using global::System.Text.Json.Serialization;
+using SchematicHQ.Client.Core;
+
+namespace SchematicHQ.Client;
+
+[Serializable]
+public record RuleConditionPlanVersionResponseData : IJsonOnDeserialized
+{
+    [JsonExtensionData]
+    private readonly IDictionary<string, JsonElement> _extensionData =
+        new Dictionary<string, JsonElement>();
+
+    [JsonPropertyName("id")]
+    public required string Id { get; set; }
+
+    [JsonPropertyName("name")]
+    public required string Name { get; set; }
+
+    [JsonPropertyName("status")]
+    public required PlanVersionStatus Status { get; set; }
+
+    [JsonPropertyName("version")]
+    public required long Version { get; set; }
+
+    [JsonIgnore]
+    public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();
+
+    void IJsonOnDeserialized.OnDeserialized() =>
+        AdditionalProperties.CopyFromExtensionData(_extensionData);
+
+    /// <inheritdoc />
+    public override string ToString()
+    {
+        return JsonUtils.Serialize(this);
+    }
+}

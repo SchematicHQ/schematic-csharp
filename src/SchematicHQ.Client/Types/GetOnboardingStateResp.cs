@@ -14,6 +14,9 @@ public record GetOnboardingStateResp : IJsonOnDeserialized
     [JsonPropertyName("agent_connected_at")]
     public DateTime? AgentConnectedAt { get; set; }
 
+    [JsonPropertyName("country")]
+    public string? Country { get; set; }
+
     [JsonPropertyName("dismissed_at")]
     public DateTime? DismissedAt { get; set; }
 

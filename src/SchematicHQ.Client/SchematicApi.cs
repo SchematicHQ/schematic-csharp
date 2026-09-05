@@ -15,7 +15,7 @@ public partial class SchematicApi : ISchematicApi
                 { "X-Fern-Language", "C#" },
                 { "X-Fern-SDK-Name", "SchematicHQ.Client" },
                 { "X-Fern-SDK-Version", global::SchematicHQ.Client.Version.Current },
-                { "User-Agent", "SchematicHQ.Client/1.5.8" },
+                { "User-Agent", "SchematicHQ.Client/1.5.9" },
             }
         );
         foreach (var header in platformHeaders)

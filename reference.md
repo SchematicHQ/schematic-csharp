@@ -2021,6 +2021,109 @@ await client.Billing.CountBillingProductsAsync(
 </dl>
 </details>
 
+<details><summary><code>client.Billing.<a href="/src/SchematicHQ.Client/Billing/BillingClient.cs">ListCompanyBillingProfilesAsync</a>(ListCompanyBillingProfilesRequest { ... }) -> WithRawResponseTask&lt;ListCompanyBillingProfilesResponse&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Billing.ListCompanyBillingProfilesAsync(
+    new ListCompanyBillingProfilesRequest
+    {
+        CompanyId = "company_id",
+        IsDefault = true,
+        ProviderType = BillingProviderType.Metronome,
+        Limit = 1000000,
+        Offset = 1000000,
+    }
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `ListCompanyBillingProfilesRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Billing.<a href="/src/SchematicHQ.Client/Billing/BillingClient.cs">UpdateCompanyBillingProfileAsync</a>(billingProfileId, UpdateCompanyBillingProfileRequestBody { ... }) -> WithRawResponseTask&lt;UpdateCompanyBillingProfileResponse&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Billing.UpdateCompanyBillingProfileAsync(
+    "billing_profile_id",
+    new UpdateCompanyBillingProfileRequestBody
+    {
+        CollectionMethod = BillingCollectionMethod.ChargeAutomatically,
+    }
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**billingProfileId:** `string` — billing_profile_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `UpdateCompanyBillingProfileRequestBody` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.Billing.<a href="/src/SchematicHQ.Client/Billing/BillingClient.cs">UpsertBillingSubscriptionAsync</a>(CreateBillingSubscriptionRequestBody { ... }) -> WithRawResponseTask&lt;UpsertBillingSubscriptionResponse&gt;</code></summary>
 <dl>
 <dd>
@@ -3417,6 +3520,285 @@ await client.Credits.CountBillingPlanCreditGrantsAsync(
 <dd>
 
 **request:** `CountBillingPlanCreditGrantsRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Credits.<a href="/src/SchematicHQ.Client/Credits/CreditsClient.cs">ListCreditSpendPoliciesAsync</a>(ListCreditSpendPoliciesRequest { ... }) -> WithRawResponseTask&lt;ListCreditSpendPoliciesResponse&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Credits.ListCreditSpendPoliciesAsync(
+    new ListCreditSpendPoliciesRequest
+    {
+        BillingCreditId = "billing_credit_id",
+        CompanyId = "company_id",
+        ScopeType = CreditSpendPolicyScope.Company,
+        UserId = "user_id",
+        UserIds = new List<string>() { "user_ids" },
+        Limit = 1000000,
+        Offset = 1000000,
+    }
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `ListCreditSpendPoliciesRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Credits.<a href="/src/SchematicHQ.Client/Credits/CreditsClient.cs">CreateCreditSpendPolicyAsync</a>(CreateCreditSpendPolicyRequestBody { ... }) -> WithRawResponseTask&lt;CreateCreditSpendPolicyResponse&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Credits.CreateCreditSpendPolicyAsync(
+    new CreateCreditSpendPolicyRequestBody
+    {
+        BillingCreditId = "billing_credit_id",
+        MaxPerDraw = 1.1,
+    }
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `CreateCreditSpendPolicyRequestBody` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Credits.<a href="/src/SchematicHQ.Client/Credits/CreditsClient.cs">GetCreditSpendPolicyAsync</a>(spendPolicyId) -> WithRawResponseTask&lt;GetCreditSpendPolicyResponse&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Credits.GetCreditSpendPolicyAsync("spend_policy_id");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**spendPolicyId:** `string` — spend_policy_id
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Credits.<a href="/src/SchematicHQ.Client/Credits/CreditsClient.cs">UpdateCreditSpendPolicyAsync</a>(spendPolicyId, UpdateCreditSpendPolicyRequestBody { ... }) -> WithRawResponseTask&lt;UpdateCreditSpendPolicyResponse&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Credits.UpdateCreditSpendPolicyAsync(
+    "spend_policy_id",
+    new UpdateCreditSpendPolicyRequestBody()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**spendPolicyId:** `string` — spend_policy_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `UpdateCreditSpendPolicyRequestBody` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Credits.<a href="/src/SchematicHQ.Client/Credits/CreditsClient.cs">DeleteCreditSpendPolicyAsync</a>(spendPolicyId) -> WithRawResponseTask&lt;DeleteCreditSpendPolicyResponse&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Credits.DeleteCreditSpendPolicyAsync("spend_policy_id");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**spendPolicyId:** `string` — spend_policy_id
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Credits.<a href="/src/SchematicHQ.Client/Credits/CreditsClient.cs">CountCreditSpendPoliciesAsync</a>(CountCreditSpendPoliciesRequest { ... }) -> WithRawResponseTask&lt;CountCreditSpendPoliciesResponse&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Credits.CountCreditSpendPoliciesAsync(
+    new CountCreditSpendPoliciesRequest
+    {
+        BillingCreditId = "billing_credit_id",
+        CompanyId = "company_id",
+        ScopeType = CreditSpendPolicyScope.Company,
+        UserId = "user_id",
+        UserIds = new List<string>() { "user_ids" },
+        Limit = 1000000,
+        Offset = 1000000,
+    }
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `CountCreditSpendPoliciesRequest` 
     
 </dd>
 </dl>
@@ -9658,6 +10040,98 @@ await client.Events.GetEventAsync("event_id");
 </dl>
 </details>
 
+<details><summary><code>client.Events.<a href="/src/SchematicHQ.Client/Events/EventsClient.cs">GetOtlpEnvironmentSettingsAsync</a>() -> WithRawResponseTask&lt;GetOtlpEnvironmentSettingsResponse&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Events.GetOtlpEnvironmentSettingsAsync();
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Events.<a href="/src/SchematicHQ.Client/Events/EventsClient.cs">UpsertOtlpEnvironmentSettingsAsync</a>(UpsertOtlpEnvironmentSettingsRequestBody { ... }) -> WithRawResponseTask&lt;UpsertOtlpEnvironmentSettingsResponse&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Events.UpsertOtlpEnvironmentSettingsAsync(
+    new UpsertOtlpEnvironmentSettingsRequestBody { ToolEventsEnabled = true }
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `UpsertOtlpEnvironmentSettingsRequestBody` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Events.<a href="/src/SchematicHQ.Client/Events/EventsClient.cs">DeleteOtlpEnvironmentSettingsAsync</a>() -> WithRawResponseTask&lt;DeleteOtlpEnvironmentSettingsResponse&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Events.DeleteOtlpEnvironmentSettingsAsync();
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.Events.<a href="/src/SchematicHQ.Client/Events/EventsClient.cs">GetSegmentIntegrationStatusAsync</a>() -> WithRawResponseTask&lt;GetSegmentIntegrationStatusResponse&gt;</code></summary>
 <dl>
 <dd>
@@ -11010,6 +11484,98 @@ await client.Integrationsapi.LoadSampleDataSetAsync();
 </dl>
 </details>
 
+<details><summary><code>client.Integrationsapi.<a href="/src/SchematicHQ.Client/Integrationsapi/IntegrationsapiClient.cs">GetStripeSandboxClaimLinkAsync</a>() -> WithRawResponseTask&lt;GetStripeSandboxClaimLinkResponse&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Integrationsapi.GetStripeSandboxClaimLinkAsync();
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Integrationsapi.<a href="/src/SchematicHQ.Client/Integrationsapi/IntegrationsapiClient.cs">GetStripeSandboxKeysAsync</a>() -> WithRawResponseTask&lt;GetStripeSandboxKeysResponse&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Integrationsapi.GetStripeSandboxKeysAsync();
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Integrationsapi.<a href="/src/SchematicHQ.Client/Integrationsapi/IntegrationsapiClient.cs">ClaimStripeSandboxKeysAsync</a>(ClaimStripeSandboxKeysRequestBody { ... }) -> WithRawResponseTask&lt;ClaimStripeSandboxKeysResponse&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Integrationsapi.ClaimStripeSandboxKeysAsync(
+    new ClaimStripeSandboxKeysRequestBody { Token = "token" }
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `ClaimStripeSandboxKeysRequestBody` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.Integrationsapi.<a href="/src/SchematicHQ.Client/Integrationsapi/IntegrationsapiClient.cs">AssumeStripeInstalledAsync</a>(InstallIntegrationRequestBody { ... }) -> WithRawResponseTask&lt;AssumeStripeInstalledResponse&gt;</code></summary>
 <dl>
 <dd>
@@ -11084,6 +11650,73 @@ await client.Integrationsapi.InstallStripeAsync(
 
 **request:** `InstallIntegrationRequestBody` 
     
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Integrationsapi.<a href="/src/SchematicHQ.Client/Integrationsapi/IntegrationsapiClient.cs">InstallStripeClaimableSandboxAsync</a>(InstallStripeSandboxRequestBody { ... }) -> WithRawResponseTask&lt;InstallStripeClaimableSandboxResponse&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Integrationsapi.InstallStripeClaimableSandboxAsync(
+    new InstallStripeSandboxRequestBody { Email = "email" }
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `InstallStripeSandboxRequestBody` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Integrationsapi.<a href="/src/SchematicHQ.Client/Integrationsapi/IntegrationsapiClient.cs">ListStripeSandboxCountriesAsync</a>() -> WithRawResponseTask&lt;ListStripeSandboxCountriesResponse&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Integrationsapi.ListStripeSandboxCountriesAsync();
+```
 </dd>
 </dl>
 </dd>

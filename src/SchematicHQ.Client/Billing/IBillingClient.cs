@@ -140,6 +140,19 @@ public partial interface IBillingClient
         CancellationToken cancellationToken = default
     );
 
+    WithRawResponseTask<ListCompanyBillingProfilesResponse> ListCompanyBillingProfilesAsync(
+        ListCompanyBillingProfilesRequest request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    );
+
+    WithRawResponseTask<UpdateCompanyBillingProfileResponse> UpdateCompanyBillingProfileAsync(
+        string billingProfileId,
+        UpdateCompanyBillingProfileRequestBody request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    );
+
     WithRawResponseTask<UpsertBillingSubscriptionResponse> UpsertBillingSubscriptionAsync(
         CreateBillingSubscriptionRequestBody request,
         RequestOptions? options = null,

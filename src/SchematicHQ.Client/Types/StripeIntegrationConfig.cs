@@ -24,6 +24,24 @@ public record StripeIntegrationConfig : IJsonOnDeserialized
     public string? AccountName { get; set; }
 
     /// <summary>
+    /// When Stripe deletes the sandbox if nobody claims it, 60 days from creation; absent on sandboxes created before it was recorded
+    /// </summary>
+    [JsonPropertyName("claimable_sandbox_expires_at")]
+    public DateTime? ClaimableSandboxExpiresAt { get; set; }
+
+    /// <summary>
+    /// Stripe claimable sandbox this connection was provisioned from; absent for an OAuth connect
+    /// </summary>
+    [JsonPropertyName("claimable_sandbox_id")]
+    public string? ClaimableSandboxId { get; set; }
+
+    /// <summary>
+    /// Stripe's claim status for the sandbox: unclaimed, claimed, or live
+    /// </summary>
+    [JsonPropertyName("claimable_sandbox_status")]
+    public string? ClaimableSandboxStatus { get; set; }
+
+    /// <summary>
     /// When importing Stripe customers, only update existing companies, do not create new companies
     /// </summary>
     [JsonPropertyName("company_update_only")]

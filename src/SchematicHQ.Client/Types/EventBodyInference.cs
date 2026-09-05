@@ -12,7 +12,13 @@ public record EventBodyInference : IJsonOnDeserialized
         new Dictionary<string, JsonElement>();
 
     /// <summary>
-    /// Number of input tokens served from cache
+    /// Number of input tokens written to a prompt cache; a subset of input_tokens
+    /// </summary>
+    [JsonPropertyName("cache_creation_input_tokens")]
+    public long? CacheCreationInputTokens { get; set; }
+
+    /// <summary>
+    /// Number of input tokens served from cache; a subset of input_tokens
     /// </summary>
     [JsonPropertyName("cached_input_tokens")]
     public long? CachedInputTokens { get; set; }
@@ -42,7 +48,7 @@ public record EventBodyInference : IJsonOnDeserialized
     public string? Event { get; set; }
 
     /// <summary>
-    /// Number of input tokens for the inference request
+    /// Total number of input tokens for the inference request, including those served from and written to a prompt cache
     /// </summary>
     [JsonPropertyName("input_tokens")]
     public required long InputTokens { get; set; }
