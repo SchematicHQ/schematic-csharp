@@ -141,10 +141,11 @@ app.MapPost("/configure", async (HttpRequest req) =>
     if (useDataStream)
     {
         options.UseDatastream = true;
-        var dsOpts = new DatastreamOptions
-        {
-            CacheTTL = cacheTtl,
-        };
+        // Entity caches keep the SDK default TTL, matching the Go testapp. The
+        // short cacheTtl is only for the flag-check cache; in replicator mode the
+        // replicator owns the Redis entries and a short TTL on the SDK's
+        // write-back (track -> UpdateCompanyMetrics) would expire them.
+        var dsOpts = new DatastreamOptions();
 
         if (!string.IsNullOrEmpty(redisUrl))
         {
@@ -155,7 +156,6 @@ app.MapPost("/configure", async (HttpRequest req) =>
             options.WithRedisCache(new RedisCacheConfig
             {
                 Endpoints = new List<string> { endpoint },
-                CacheTTL = cacheTtl,
             });
         }
 
