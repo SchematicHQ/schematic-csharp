@@ -14,7 +14,7 @@ using SchematicHQ.Client.RulesEngine;
 
 namespace SchematicHQ.Client;
 
-public partial class Schematic
+public partial class Schematic : IAsyncDisposable
 {
     private readonly ClientOptions _options;
     private readonly IEventBuffer<CreateEventRequestBody> _eventBuffer;
@@ -25,6 +25,8 @@ public partial class Schematic
     private readonly bool _replicatorMode;
     private bool _datastreamConnected;
     private bool _disposed;
+    private readonly object _shutdownLock = new();
+    private Task? _shutdownTask;
     public readonly SchematicApi API;
 
     public AccesstokensClient Accesstokens { get; init; }
@@ -244,10 +246,22 @@ public partial class Schematic
         });
     }
 
-    public async Task Shutdown()
+    /// <summary>
+    /// Flushes buffered events and closes the datastream connection. Idempotent: repeat and concurrent
+    /// callers await the same shutdown work.
+    /// </summary>
+    public Task Shutdown()
+    {
+        lock (_shutdownLock)
+        {
+            return _shutdownTask ??= ShutdownCore();
+        }
+    }
+
+    private async Task ShutdownCore()
     {
         _disposed = true;
-        
+
         if (_eventBuffer != null)
         {
             await _eventBuffer.Stop();
@@ -257,6 +271,16 @@ public partial class Schematic
         {
             _datastreamClient.Close();
         }
+    }
+
+    /// <summary>
+    /// Disposes the client via <see cref="Shutdown"/>, enabling <c>await using</c> and automatic
+    /// disposal by DI containers.
+    /// </summary>
+    public async ValueTask DisposeAsync()
+    {
+        await Shutdown();
+        GC.SuppressFinalize(this);
     }
 
     public async Task<bool> CheckFlag(string flagKey, Dictionary<string, string>? company = null, Dictionary<string, string>? user = null)
