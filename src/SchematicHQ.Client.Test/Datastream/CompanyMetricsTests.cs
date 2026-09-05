@@ -200,6 +200,21 @@ namespace SchematicHQ.Client.Test.Datastream
         }
 
         [Test]
+        public void CacheKeys_UseProviderPrefixOnly_MatchingTheReplicatorLayout()
+        {
+            // The Redis provider prepends "schematic:"; the replicator writes
+            // "schematic:company:<version>:<key>:<value>". A second hard-coded
+            // "schematic" here would double the prefix and miss every entry.
+            var lookupKey = ResourceKeyToCacheKey("ExternalId", "Acme-Co");
+            var idKey = CompanyIdCacheKey("comp_123");
+
+            Assert.That(lookupKey, Does.Not.StartWith("schematic:"));
+            Assert.That(idKey, Does.Not.StartWith("schematic:"));
+            Assert.That(lookupKey, Does.Match("^company:[^:]+:externalid:acme-co$"));
+            Assert.That(idKey, Does.Match("^company:[^:]+:comp_123$"));
+        }
+
+        [Test]
         public async Task UpdateCompanyMetrics_WithMatchingMetric_UpdatesValueWithDefaultQuantity()
         {
             // Arrange
