@@ -61,7 +61,6 @@ namespace SchematicHQ.Client.Datastream
     private static readonly TimeSpan MaxCacheTTL = TimeSpan.FromDays(30); // Maximum TTL for cache items
 
     // Cache key prefixes
-    private const string CacheKeyPrefix = "schematic";
     private const string CacheKeyPrefixCompany = "company";
     private const string CacheKeyPrefixFlags = "flags";
     private const string CacheKeyPrefixUser = "user";
@@ -495,7 +494,7 @@ namespace SchematicHQ.Client.Datastream
           cacheKeys.Add(cacheKey);
         }
 
-        await _flagsCache.DeleteMissing(cacheKeys, $"{CacheKeyPrefix}:{CacheKeyPrefixFlags}:*");
+        await _flagsCache.DeleteMissing(cacheKeys, $"{CacheKeyPrefixFlags}:*");
 
         lock (_pendingRequestsLock)
         {
@@ -1339,25 +1338,25 @@ namespace SchematicHQ.Client.Datastream
     private string FlagCacheKey(string key)
     {
       var schemaVersion = GetCacheVersion();
-      return $"{CacheKeyPrefix}:{CacheKeyPrefixFlags}:{schemaVersion}:{key.ToLowerInvariant()}";
+      return $"{CacheKeyPrefixFlags}:{schemaVersion}:{key.ToLowerInvariant()}";
     }
 
     private string ResourceKeyToCacheKey<T>(string resourceType, string key, string value)
     {
       var schemaVersion = GetCacheVersion();
-      return $"{CacheKeyPrefix}:{resourceType}:{schemaVersion}:{key.ToLowerInvariant()}:{value.ToLowerInvariant()}";
+      return $"{resourceType}:{schemaVersion}:{key.ToLowerInvariant()}:{value.ToLowerInvariant()}";
     }
 
     private string CompanyIdCacheKey(string id)
     {
       var schemaVersion = GetCacheVersion();
-      return $"{CacheKeyPrefix}:{CacheKeyPrefixCompany}:{schemaVersion}:{id}";
+      return $"{CacheKeyPrefixCompany}:{schemaVersion}:{id}";
     }
 
     private string UserIdCacheKey(string id)
     {
       var schemaVersion = GetCacheVersion();
-      return $"{CacheKeyPrefix}:{CacheKeyPrefixUser}:{schemaVersion}:{id}";
+      return $"{CacheKeyPrefixUser}:{schemaVersion}:{id}";
     }
 
     private async Task CacheCompanyForKeys(RulesengineCompany company)
