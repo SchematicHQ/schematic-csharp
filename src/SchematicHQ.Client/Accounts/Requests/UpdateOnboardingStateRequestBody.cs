@@ -6,6 +6,9 @@ namespace SchematicHQ.Client;
 [Serializable]
 public record UpdateOnboardingStateRequestBody
 {
+    [JsonPropertyName("country")]
+    public string? Country { get; set; }
+
     [JsonPropertyName("dismissed")]
     public bool? Dismissed { get; set; }
 

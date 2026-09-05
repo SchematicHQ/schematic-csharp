@@ -32,6 +32,22 @@ public partial interface IEventsClient
         CancellationToken cancellationToken = default
     );
 
+    WithRawResponseTask<GetOtlpEnvironmentSettingsResponse> GetOtlpEnvironmentSettingsAsync(
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    );
+
+    WithRawResponseTask<UpsertOtlpEnvironmentSettingsResponse> UpsertOtlpEnvironmentSettingsAsync(
+        UpsertOtlpEnvironmentSettingsRequestBody request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    );
+
+    WithRawResponseTask<DeleteOtlpEnvironmentSettingsResponse> DeleteOtlpEnvironmentSettingsAsync(
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    );
+
     WithRawResponseTask<GetSegmentIntegrationStatusResponse> GetSegmentIntegrationStatusAsync(
         RequestOptions? options = null,
         CancellationToken cancellationToken = default

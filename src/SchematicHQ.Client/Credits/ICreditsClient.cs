@@ -177,6 +177,43 @@ public partial interface ICreditsClient
         CancellationToken cancellationToken = default
     );
 
+    WithRawResponseTask<ListCreditSpendPoliciesResponse> ListCreditSpendPoliciesAsync(
+        ListCreditSpendPoliciesRequest request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    );
+
+    WithRawResponseTask<CreateCreditSpendPolicyResponse> CreateCreditSpendPolicyAsync(
+        CreateCreditSpendPolicyRequestBody request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    );
+
+    WithRawResponseTask<GetCreditSpendPolicyResponse> GetCreditSpendPolicyAsync(
+        string spendPolicyId,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    );
+
+    WithRawResponseTask<UpdateCreditSpendPolicyResponse> UpdateCreditSpendPolicyAsync(
+        string spendPolicyId,
+        UpdateCreditSpendPolicyRequestBody request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    );
+
+    WithRawResponseTask<DeleteCreditSpendPolicyResponse> DeleteCreditSpendPolicyAsync(
+        string spendPolicyId,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    );
+
+    WithRawResponseTask<CountCreditSpendPoliciesResponse> CountCreditSpendPoliciesAsync(
+        CountCreditSpendPoliciesRequest request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    );
+
     WithRawResponseTask<ListCreditEventLedgerResponse> ListCreditEventLedgerAsync(
         ListCreditEventLedgerRequest request,
         RequestOptions? options = null,

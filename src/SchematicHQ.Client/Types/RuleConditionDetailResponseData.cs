@@ -50,6 +50,9 @@ public record RuleConditionDetailResponseData : IJsonOnDeserialized
     [JsonPropertyName("operator")]
     public required ComparableOperator Operator { get; set; }
 
+    [JsonPropertyName("plan_versions")]
+    public IEnumerable<RuleConditionPlanVersionResponseData>? PlanVersions { get; set; }
+
     [JsonPropertyName("resource_ids")]
     public IEnumerable<string> ResourceIds { get; set; } = new List<string>();
 

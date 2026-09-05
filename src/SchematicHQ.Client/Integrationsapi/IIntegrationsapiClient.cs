@@ -37,6 +37,22 @@ public partial interface IIntegrationsapiClient
         CancellationToken cancellationToken = default
     );
 
+    WithRawResponseTask<GetStripeSandboxClaimLinkResponse> GetStripeSandboxClaimLinkAsync(
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    );
+
+    WithRawResponseTask<GetStripeSandboxKeysResponse> GetStripeSandboxKeysAsync(
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    );
+
+    WithRawResponseTask<ClaimStripeSandboxKeysResponse> ClaimStripeSandboxKeysAsync(
+        ClaimStripeSandboxKeysRequestBody request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    );
+
     WithRawResponseTask<AssumeStripeInstalledResponse> AssumeStripeInstalledAsync(
         InstallIntegrationRequestBody request,
         RequestOptions? options = null,
@@ -45,6 +61,17 @@ public partial interface IIntegrationsapiClient
 
     WithRawResponseTask<InstallStripeResponse> InstallStripeAsync(
         InstallIntegrationRequestBody request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    );
+
+    WithRawResponseTask<InstallStripeClaimableSandboxResponse> InstallStripeClaimableSandboxAsync(
+        InstallStripeSandboxRequestBody request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    );
+
+    WithRawResponseTask<ListStripeSandboxCountriesResponse> ListStripeSandboxCountriesAsync(
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     );
