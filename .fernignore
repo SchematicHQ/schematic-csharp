@@ -3,6 +3,7 @@
 .github/CODEOWNERS
 .github/workflows/claude-code.yml
 .github/workflows/ci.yml
+.github/workflows/sdk-e2e-status.yml
 .gitignore
 WASM_VERSION
 scripts/download-wasm.sh
