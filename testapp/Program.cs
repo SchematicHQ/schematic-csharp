@@ -8,7 +8,7 @@
 // Endpoints:
 //   GET  /health            Returns {"status":"waiting"} or {"status":"configured"}
 //   POST /configure         Initialize SDK client. Body: apiKey, baseUrl,
-//                           eventCaptureBaseUrl, noCache, redisUrl,
+//                           eventCaptureBaseUrl, noCache, redisUrl, redisKeyPrefix,
 //                           useDataStream, replicatorUrl, offline, flagDefaults
 //   POST /check-flag        Body: flagKey, company?, user?
 //   POST /identify          Body: company?, user?, keys?
@@ -107,6 +107,9 @@ app.MapPost("/configure", async (HttpRequest req) =>
     bool useDataStream = GetBool(config, "useDataStream");
     string? redisUrl = GetString(config, "redisUrl");
     string? replicatorUrl = GetString(config, "replicatorUrl");
+    // Optional Redis key prefix, as a README-following user would set it. In
+    // replicator mode it must match the keys the replicator writes ("schematic:").
+    string? redisKeyPrefix = GetString(config, "redisKeyPrefix");
     var flagDefaults = GetBoolMap(config, "flagDefaults");
 
     Schematic? oldClient;
@@ -153,10 +156,12 @@ app.MapPost("/configure", async (HttpRequest req) =>
             var endpoint = redisUrl.StartsWith("redis://")
                 ? redisUrl.Substring("redis://".Length)
                 : redisUrl;
-            options.WithRedisCache(new RedisCacheConfig
+            var dsRedis = new RedisCacheConfig
             {
                 Endpoints = new List<string> { endpoint },
-            });
+            };
+            if (!string.IsNullOrEmpty(redisKeyPrefix)) dsRedis.KeyPrefix = redisKeyPrefix;
+            options.WithRedisCache(dsRedis);
         }
 
         options.DatastreamOptions = dsOpts;
@@ -172,11 +177,13 @@ app.MapPost("/configure", async (HttpRequest req) =>
         var endpoint = redisUrl.StartsWith("redis://")
             ? redisUrl.Substring("redis://".Length)
             : redisUrl;
-        options.WithRedisCache(new RedisCacheConfig
+        var flagRedis = new RedisCacheConfig
         {
             Endpoints = new List<string> { endpoint },
             CacheTTL = cacheTtl,
-        });
+        };
+        if (!string.IsNullOrEmpty(redisKeyPrefix)) flagRedis.KeyPrefix = redisKeyPrefix;
+        options.WithRedisCache(flagRedis);
     }
 
     var newClient = new Schematic(apiKey, options);

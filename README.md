@@ -741,7 +741,7 @@ var options = new ClientOptions()
     .WithRedisCache(new RedisCacheConfig
     {
         Configuration = "localhost:6379",
-        KeyPrefix = "schematic-replica:",
+        KeyPrefix = "schematic:",
         CacheTTL = TimeSpan.FromHours(24)
     })
     .WithReplicatorMode("https://health.your-app.com/schematic-replicator");
@@ -765,7 +765,7 @@ var options = new ClientOptions()
     .WithRedisCache(new RedisCacheConfig
     {
         ConfigurationOptions = redisOptions,
-        KeyPrefix = "schematic-replica:",
+        KeyPrefix = "schematic:",
         CacheTTL = TimeSpan.FromHours(24)
     })
     .WithReplicatorMode("https://health.your-app.com/schematic-replicator");
@@ -779,6 +779,7 @@ var schematic = new Schematic("YOUR_API_KEY", options);
 |---------------------|-------------|---------|
 | `.WithReplicatorMode(url)` | Enables replicator mode and sets the health check endpoint URL | `"https://health.example.com/replicator"` |
 | `.WithRedisCache(config)` | Configures Redis as the cache provider for replicator data | Required for replicator mode |
+| `RedisCacheConfig.KeyPrefix` | Prefix for every Redis key. In replicator mode this must be `schematic:` (the default): the replicator writes `schematic:flags:...`, `schematic:company:...` and `schematic:user:...` and has no prefix setting, so any other value makes every lookup miss | `"schematic:"` |
 
 ## Contributing
 While we value open-source contributions to this SDK, this library
