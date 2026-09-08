@@ -48,17 +48,11 @@ namespace SchematicHQ.Client.Datastream
       // "Dangerous" refers to the memory cost of carrying a compression context across
       // messages; we disable context takeover in both directions, which is what the
       // server negotiates anyway, and leave the window sizes at their defaults.
-      //
-      // WebSocketDeflateOptions is .NET 6+. The generated csproj still lists net462 and
-      // netstandard2.0, so keep the guard even though Custom.props narrows the build to
-      // net8.0;net9.0.
-#if NET6_0_OR_GREATER
       _clientWebSocket.Options.DangerousDeflateOptions = new WebSocketDeflateOptions
       {
         ClientContextTakeover = false,
         ServerContextTakeover = false,
       };
-#endif
       _options = new StandardWebSocketOptions(_clientWebSocket.Options);
     }
 
