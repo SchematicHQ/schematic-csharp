@@ -24,7 +24,12 @@ nuget install SchematicHQ.Client
 using SchematicHQ;
 
 Schematic schematic = new Schematic("YOUR_API_KEY")
+
+// on application exit
+await schematic.DisposeAsync();
 ```
+
+The client implements `IAsyncDisposable` and should be disposed via `await using` or `DisposeAsync()` on application shutdown. This flushes buffered events and closes any datastream connection, equivalent to calling `Shutdown()` directly.
 
 ## Usage
 
@@ -63,9 +68,6 @@ schematic.Identify(
         { "is_staff", false }
     }
 );
-
-// to guarantee that all events are sent before the application exits, call this method before your program shuts down
-await schematic.Shutdown();
 ```
 
 This call is non-blocking and there is no response to check.
@@ -82,8 +84,6 @@ schematic.Track(
     company: new Dictionary<string, string> { { "id", "your-company-id" } }
 );
 
-// to guarantee that all events are sent before the application exits, call this method before your program shuts down
-await schematic.Shutdown();
 ```
 
 This call is non-blocking and there is no response to check.
