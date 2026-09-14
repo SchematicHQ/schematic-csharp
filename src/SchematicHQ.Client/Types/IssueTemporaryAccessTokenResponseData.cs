@@ -12,7 +12,7 @@ public record IssueTemporaryAccessTokenResponseData : IJsonOnDeserialized
         new Dictionary<string, JsonElement>();
 
     [JsonPropertyName("api_key_id")]
-    public required string ApiKeyId { get; set; }
+    public string? ApiKeyId { get; set; }
 
     [JsonPropertyName("created_at")]
     public required DateTime CreatedAt { get; set; }
@@ -25,6 +25,9 @@ public record IssueTemporaryAccessTokenResponseData : IJsonOnDeserialized
 
     [JsonPropertyName("id")]
     public required string Id { get; set; }
+
+    [JsonPropertyName("issuer_type")]
+    public required TemporaryAccessTokenIssuerType IssuerType { get; set; }
 
     [JsonPropertyName("resource_type")]
     public string ResourceType { get; set; } = "company";

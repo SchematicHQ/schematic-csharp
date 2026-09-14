@@ -3531,6 +3531,104 @@ await client.Credits.CountBillingPlanCreditGrantsAsync(
 </dl>
 </details>
 
+<details><summary><code>client.Credits.<a href="/src/SchematicHQ.Client/Credits/CreditsClient.cs">ReserveCreditsAsync</a>(ReserveCreditsRequestBody { ... }) -> WithRawResponseTask&lt;ReserveCreditsResponse&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Credits.ReserveCreditsAsync(
+    new ReserveCreditsRequestBody
+    {
+        Amount = 1.1,
+        CompanyId = "company_id",
+        CreditTypeId = "credit_type_id",
+    }
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `ReserveCreditsRequestBody` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Credits.<a href="/src/SchematicHQ.Client/Credits/CreditsClient.cs">ReleaseCreditReservationAsync</a>(reservationId, Dictionary&lt;string, object?&gt; { ... }) -> WithRawResponseTask&lt;ReleaseCreditReservationResponse&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Credits.ReleaseCreditReservationAsync(
+    "reservation_id",
+    new Dictionary<string, object?>() { { "key", "value" } }
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**reservationId:** `string` — reservation_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `Dictionary<string, object?>` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.Credits.<a href="/src/SchematicHQ.Client/Credits/CreditsClient.cs">ListCreditSpendPoliciesAsync</a>(ListCreditSpendPoliciesRequest { ... }) -> WithRawResponseTask&lt;ListCreditSpendPoliciesResponse&gt;</code></summary>
 <dl>
 <dd>
@@ -8486,6 +8584,7 @@ await client.Plans.ListPlansAsync(
         CompanyId = "company_id",
         CompanyScopedOnly = true,
         ExcludeCompanyScoped = true,
+        ExcludeUnused = true,
         ForFallbackPlan = true,
         ForInitialPlan = true,
         ForTrialExpiryPlan = true,
@@ -8923,6 +9022,7 @@ await client.Plans.CountPlansAsync(
         CompanyId = "company_id",
         CompanyScopedOnly = true,
         ExcludeCompanyScoped = true,
+        ExcludeUnused = true,
         ForFallbackPlan = true,
         ForInitialPlan = true,
         ForTrialExpiryPlan = true,
@@ -10849,6 +10949,54 @@ await client.Features.CheckFlagAsync("key", new CheckFlagRequestBody());
 <dd>
 
 **request:** `CheckFlagRequestBody` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Features.<a href="/src/SchematicHQ.Client/Features/FeaturesClient.cs">CheckAndReserveFlagAsync</a>(key, CheckAndReserveFlagRequestBody { ... }) -> WithRawResponseTask&lt;CheckAndReserveFlagResponse&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Features.CheckAndReserveFlagAsync("key", new CheckAndReserveFlagRequestBody());
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**key:** `string` — key
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `CheckAndReserveFlagRequestBody` 
     
 </dd>
 </dl>

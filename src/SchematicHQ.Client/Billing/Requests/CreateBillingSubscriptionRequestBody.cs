@@ -56,6 +56,9 @@ public record CreateBillingSubscriptionRequestBody
     [JsonPropertyName("provider_type")]
     public BillingProviderType? ProviderType { get; set; }
 
+    [JsonPropertyName("started_at")]
+    public DateTime? StartedAt { get; set; }
+
     [JsonPropertyName("status")]
     public string? Status { get; set; }
 

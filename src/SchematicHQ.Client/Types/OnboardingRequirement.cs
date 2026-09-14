@@ -16,6 +16,8 @@ public readonly record struct OnboardingRequirement : IStringEnum
 
     public static readonly OnboardingRequirement FirstFlagCheck = new(Values.FirstFlagCheck);
 
+    public static readonly OnboardingRequirement GenerateRoadmap = new(Values.GenerateRoadmap);
+
     public static readonly OnboardingRequirement ImportCompanies = new(Values.ImportCompanies);
 
     public static readonly OnboardingRequirement ModelPackaging = new(Values.ModelPackaging);
@@ -125,6 +127,8 @@ public readonly record struct OnboardingRequirement : IStringEnum
         public const string CreateApiKey = "create_api_key";
 
         public const string FirstFlagCheck = "first_flag_check";
+
+        public const string GenerateRoadmap = "generate_roadmap";
 
         public const string ImportCompanies = "import_companies";
 

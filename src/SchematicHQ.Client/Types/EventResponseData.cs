@@ -56,6 +56,9 @@ public record EventResponseData : IJsonOnDeserialized
     [JsonPropertyName("quantity")]
     public required long Quantity { get; set; }
 
+    [JsonPropertyName("reservation_id")]
+    public string? ReservationId { get; set; }
+
     [JsonPropertyName("sent_at")]
     public DateTime? SentAt { get; set; }
 

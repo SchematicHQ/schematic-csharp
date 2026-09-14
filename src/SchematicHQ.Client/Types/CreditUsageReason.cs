@@ -16,6 +16,10 @@ public readonly record struct CreditUsageReason : IStringEnum
 
     public static readonly CreditUsageReason Reconciliation = new(Values.Reconciliation);
 
+    public static readonly CreditUsageReason ReservationHold = new(Values.ReservationHold);
+
+    public static readonly CreditUsageReason ReservationRelease = new(Values.ReservationRelease);
+
     public static readonly CreditUsageReason Track = new(Values.Track);
 
     public CreditUsageReason(string value)
@@ -121,6 +125,10 @@ public readonly record struct CreditUsageReason : IStringEnum
         public const string ManualAdjustment = "manual_adjustment";
 
         public const string Reconciliation = "reconciliation";
+
+        public const string ReservationHold = "reservation_hold";
+
+        public const string ReservationRelease = "reservation_release";
 
         public const string Track = "track";
     }

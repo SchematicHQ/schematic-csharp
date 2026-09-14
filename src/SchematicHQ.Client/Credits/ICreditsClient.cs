@@ -177,6 +177,19 @@ public partial interface ICreditsClient
         CancellationToken cancellationToken = default
     );
 
+    WithRawResponseTask<ReserveCreditsResponse> ReserveCreditsAsync(
+        ReserveCreditsRequestBody request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    );
+
+    WithRawResponseTask<ReleaseCreditReservationResponse> ReleaseCreditReservationAsync(
+        string reservationId,
+        Dictionary<string, object?> request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    );
+
     WithRawResponseTask<ListCreditSpendPoliciesResponse> ListCreditSpendPoliciesAsync(
         ListCreditSpendPoliciesRequest request,
         RequestOptions? options = null,
