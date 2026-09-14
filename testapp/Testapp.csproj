@@ -15,18 +15,24 @@
       local (default) — <ProjectReference> to the source tree.
       pack            — the real NuGet package built from the working tree by
                         scripts/e2e-pack.sh, restored from artifacts/local-feed
-                        (registered in nuget.config). This is the only mode that
-                        exercises packaging, e.g. the embedded rulesengine.wasm
-                        surviving pack, restore and run.
+                        (registered in nuget.config). This is the mode that
+                        exercises packaging before a release, e.g. the embedded
+                        rulesengine.wasm surviving pack, restore and run.
+      published       — the release on nuget.org: SchematicPackageVersion (or
+                        the harness's SDK_VERSION) if set, else the latest
+                        stable (floating "*").
 
-    Set it with -p:SchematicSdkSource=pack, or let it fall back to the harness's
+    Set it with -p:SchematicSdkSource=<mode>, or let it fall back to the harness's
     SDK_SOURCE environment variable (MSBuild reads env vars as properties), so
     a no-build `dotnet run` picks the same mode the build used.
   -->
   <PropertyGroup>
     <SchematicSdkSource Condition="'$(SchematicSdkSource)' == ''">$(SDK_SOURCE)</SchematicSdkSource>
     <SchematicSdkSource Condition="'$(SchematicSdkSource)' == ''">local</SchematicSdkSource>
-    <!-- Version stamped by scripts/e2e-pack.sh. -->
+    <!-- published: pinned version from the harness, else the latest stable release. -->
+    <SchematicPackageVersion Condition="'$(SchematicPackageVersion)' == '' And '$(SchematicSdkSource)' == 'published'">$(SDK_VERSION)</SchematicPackageVersion>
+    <SchematicPackageVersion Condition="'$(SchematicPackageVersion)' == '' And '$(SchematicSdkSource)' == 'published'">*</SchematicPackageVersion>
+    <!-- pack: version stamped by scripts/e2e-pack.sh. -->
     <SchematicPackageVersion Condition="'$(SchematicPackageVersion)' == ''">0.0.0-e2e</SchematicPackageVersion>
   </PropertyGroup>
 
@@ -34,14 +40,14 @@
     <ProjectReference Include="../src/SchematicHQ.Client/SchematicHQ.Client.csproj" />
   </ItemGroup>
 
-  <ItemGroup Condition="'$(SchematicSdkSource)' == 'pack'">
+  <ItemGroup Condition="'$(SchematicSdkSource)' == 'pack' Or '$(SchematicSdkSource)' == 'published'">
     <PackageReference Include="SchematicHQ.Client" Version="$(SchematicPackageVersion)" />
   </ItemGroup>
 
   <Target Name="ValidateSchematicSdkSource" BeforeTargets="CollectPackageReferences;PrepareForBuild">
     <Error
-      Condition="'$(SchematicSdkSource)' != 'local' And '$(SchematicSdkSource)' != 'pack'"
-      Text="Unsupported SchematicSdkSource '$(SchematicSdkSource)'. Supported values: local, pack."
+      Condition="'$(SchematicSdkSource)' != 'local' And '$(SchematicSdkSource)' != 'pack' And '$(SchematicSdkSource)' != 'published'"
+      Text="Unsupported SchematicSdkSource '$(SchematicSdkSource)'. Supported values: local, pack, published."
     />
   </Target>
 
