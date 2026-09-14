@@ -11,6 +11,18 @@ public record BillingPlanCreditGrantResponseData : IJsonOnDeserialized
     private readonly IDictionary<string, JsonElement> _extensionData =
         new Dictionary<string, JsonElement>();
 
+    /// <summary>
+    /// Which boundary closes a monthly arrears window. Only meaningful when arrears_cadence is monthly.
+    /// </summary>
+    [JsonPropertyName("arrears_anchor")]
+    public BillingArrearsAnchor? ArrearsAnchor { get; set; }
+
+    /// <summary>
+    /// How often postpaid charges are closed and invoiced. Defaults to end_of_billing_period.
+    /// </summary>
+    [JsonPropertyName("arrears_cadence")]
+    public BillingArrearsCadence? ArrearsCadence { get; set; }
+
     [JsonPropertyName("auto_topup_amount")]
     public long? AutoTopupAmount { get; set; }
 
@@ -107,6 +119,12 @@ public record BillingPlanCreditGrantResponseData : IJsonOnDeserialized
     [JsonPropertyName("license_id")]
     public string? LicenseId { get; set; }
 
+    /// <summary>
+    /// Optional limit on how far the balance may go below zero, in credits. A floor on the balance, not an allowance per invoice window: consumption is denied once the balance would fall below minus this figure, and stays denied until a new grant lands or the negative balance is settled. Absent means no limit.
+    /// </summary>
+    [JsonPropertyName("overdraft_limit")]
+    public double? OverdraftLimit { get; set; }
+
     [JsonPropertyName("plan")]
     public PreviewObjectResponseData? Plan { get; set; }
 
@@ -121,6 +139,24 @@ public record BillingPlanCreditGrantResponseData : IJsonOnDeserialized
 
     [JsonPropertyName("plan_version_id")]
     public string? PlanVersionId { get; set; }
+
+    /// <summary>
+    /// Whether consumption may continue past a zero balance, accruing at postpaid_rate_per_unit rather than being denied.
+    /// </summary>
+    [JsonPropertyName("postpaid_enabled")]
+    public required bool PostpaidEnabled { get; set; }
+
+    /// <summary>
+    /// Amount charged per credit consumed past zero, in the currency's minor unit. Defaults to the credit's own cost basis when postpaid is enabled without one.
+    /// </summary>
+    [JsonPropertyName("postpaid_rate_per_unit")]
+    public long? PostpaidRatePerUnit { get; set; }
+
+    /// <summary>
+    /// Decimal form of postpaid_rate_per_unit, for rates finer than one minor unit.
+    /// </summary>
+    [JsonPropertyName("postpaid_rate_per_unit_decimal")]
+    public string? PostpaidRatePerUnitDecimal { get; set; }
 
     [JsonPropertyName("reset_cadence")]
     public BillingPlanCreditGrantResetCadence? ResetCadence { get; set; }

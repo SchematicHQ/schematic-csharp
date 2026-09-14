@@ -116,6 +116,9 @@ public record PlanGroupDetailResponseData : IJsonOnDeserialized
     [JsonPropertyName("trial_days")]
     public long? TrialDays { get; set; }
 
+    [JsonPropertyName("trial_eligibility_per_plan")]
+    public required bool TrialEligibilityPerPlan { get; set; }
+
     [JsonPropertyName("trial_expiry_plan")]
     public PlanGroupPlanDetailResponseData? TrialExpiryPlan { get; set; }
 

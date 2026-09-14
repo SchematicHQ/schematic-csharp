@@ -11,6 +11,12 @@ public record PlanCreditGrantView : IJsonOnDeserialized
     private readonly IDictionary<string, JsonElement> _extensionData =
         new Dictionary<string, JsonElement>();
 
+    [JsonPropertyName("billing_credit_arrears_anchor")]
+    public BillingArrearsAnchor? BillingCreditArrearsAnchor { get; set; }
+
+    [JsonPropertyName("billing_credit_arrears_cadence")]
+    public BillingArrearsCadence? BillingCreditArrearsCadence { get; set; }
+
     [JsonPropertyName("billing_credit_auto_topup_amount")]
     public long? BillingCreditAutoTopupAmount { get; set; }
 
@@ -43,6 +49,18 @@ public record PlanCreditGrantView : IJsonOnDeserialized
 
     [JsonPropertyName("billing_credit_can_buy_bundles")]
     public required bool BillingCreditCanBuyBundles { get; set; }
+
+    [JsonPropertyName("billing_credit_overdraft_limit")]
+    public double? BillingCreditOverdraftLimit { get; set; }
+
+    [JsonPropertyName("billing_credit_postpaid_enabled")]
+    public required bool BillingCreditPostpaidEnabled { get; set; }
+
+    [JsonPropertyName("billing_credit_postpaid_rate_per_unit")]
+    public long? BillingCreditPostpaidRatePerUnit { get; set; }
+
+    [JsonPropertyName("billing_credit_postpaid_rate_per_unit_decimal")]
+    public string? BillingCreditPostpaidRatePerUnitDecimal { get; set; }
 
     [JsonPropertyName("company_credit_amount")]
     public required long CompanyCreditAmount { get; set; }

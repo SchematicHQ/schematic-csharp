@@ -4,17 +4,17 @@ using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
 
-[JsonConverter(typeof(RulesEngineSchemaVersion.RulesEngineSchemaVersionSerializer))]
+[JsonConverter(typeof(BillingArrearsCadence.BillingArrearsCadenceSerializer))]
 [Serializable]
-public readonly record struct RulesEngineSchemaVersion : IStringEnum
+public readonly record struct BillingArrearsCadence : IStringEnum
 {
-    public static readonly RulesEngineSchemaVersion V94B8F7A7 = new(Values.V94B8F7A7);
-
-    public static readonly RulesEngineSchemaVersion PlaceholderForFernCompatibility = new(
-        Values.PlaceholderForFernCompatibility
+    public static readonly BillingArrearsCadence EndOfBillingPeriod = new(
+        Values.EndOfBillingPeriod
     );
 
-    public RulesEngineSchemaVersion(string value)
+    public static readonly BillingArrearsCadence Monthly = new(Values.Monthly);
+
+    public BillingArrearsCadence(string value)
     {
         Value = value;
     }
@@ -27,9 +27,9 @@ public readonly record struct RulesEngineSchemaVersion : IStringEnum
     /// <summary>
     /// Create a string enum with the given value.
     /// </summary>
-    public static RulesEngineSchemaVersion FromCustom(string value)
+    public static BillingArrearsCadence FromCustom(string value)
     {
-        return new RulesEngineSchemaVersion(value);
+        return new BillingArrearsCadence(value);
     }
 
     public bool Equals(string? other)
@@ -45,19 +45,19 @@ public readonly record struct RulesEngineSchemaVersion : IStringEnum
         return Value;
     }
 
-    public static bool operator ==(RulesEngineSchemaVersion value1, string value2) =>
+    public static bool operator ==(BillingArrearsCadence value1, string value2) =>
         value1.Value.Equals(value2);
 
-    public static bool operator !=(RulesEngineSchemaVersion value1, string value2) =>
+    public static bool operator !=(BillingArrearsCadence value1, string value2) =>
         !value1.Value.Equals(value2);
 
-    public static explicit operator string(RulesEngineSchemaVersion value) => value.Value;
+    public static explicit operator string(BillingArrearsCadence value) => value.Value;
 
-    public static explicit operator RulesEngineSchemaVersion(string value) => new(value);
+    public static explicit operator BillingArrearsCadence(string value) => new(value);
 
-    internal class RulesEngineSchemaVersionSerializer : JsonConverter<RulesEngineSchemaVersion>
+    internal class BillingArrearsCadenceSerializer : JsonConverter<BillingArrearsCadence>
     {
-        public override RulesEngineSchemaVersion Read(
+        public override BillingArrearsCadence Read(
             ref Utf8JsonReader reader,
             Type typeToConvert,
             JsonSerializerOptions options
@@ -68,19 +68,19 @@ public readonly record struct RulesEngineSchemaVersion : IStringEnum
                 ?? throw new global::System.Exception(
                     "The JSON value could not be read as a string."
                 );
-            return new RulesEngineSchemaVersion(stringValue);
+            return new BillingArrearsCadence(stringValue);
         }
 
         public override void Write(
             Utf8JsonWriter writer,
-            RulesEngineSchemaVersion value,
+            BillingArrearsCadence value,
             JsonSerializerOptions options
         )
         {
             writer.WriteStringValue(value.Value);
         }
 
-        public override RulesEngineSchemaVersion ReadAsPropertyName(
+        public override BillingArrearsCadence ReadAsPropertyName(
             ref Utf8JsonReader reader,
             Type typeToConvert,
             JsonSerializerOptions options
@@ -91,12 +91,12 @@ public readonly record struct RulesEngineSchemaVersion : IStringEnum
                 ?? throw new global::System.Exception(
                     "The JSON property name could not be read as a string."
                 );
-            return new RulesEngineSchemaVersion(stringValue);
+            return new BillingArrearsCadence(stringValue);
         }
 
         public override void WriteAsPropertyName(
             Utf8JsonWriter writer,
-            RulesEngineSchemaVersion value,
+            BillingArrearsCadence value,
             JsonSerializerOptions options
         )
         {
@@ -110,8 +110,8 @@ public readonly record struct RulesEngineSchemaVersion : IStringEnum
     [Serializable]
     public static class Values
     {
-        public const string V94B8F7A7 = "v94b8f7a7";
+        public const string EndOfBillingPeriod = "end_of_billing_period";
 
-        public const string PlaceholderForFernCompatibility = "placeholder-for-fern-compatibility";
+        public const string Monthly = "monthly";
     }
 }
