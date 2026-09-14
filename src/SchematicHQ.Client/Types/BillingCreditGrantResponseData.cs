@@ -26,6 +26,12 @@ public record BillingCreditGrantResponseData : IJsonOnDeserialized
     [JsonPropertyName("created_at")]
     public required DateTime CreatedAt { get; set; }
 
+    /// <summary>
+    /// The catalog bundle this grant was issued from, when the company bought one.
+    /// </summary>
+    [JsonPropertyName("credit_bundle_id")]
+    public string? CreditBundleId { get; set; }
+
     [JsonPropertyName("credit_icon")]
     public string? CreditIcon { get; set; }
 
@@ -58,6 +64,21 @@ public record BillingCreditGrantResponseData : IJsonOnDeserialized
 
     [JsonPropertyName("plan_name")]
     public string? PlanName { get; set; }
+
+    /// <summary>
+    /// What the postpaid charges costs, in the currency's minor unit.
+    /// </summary>
+    [JsonPropertyName("postpaid_charge_amount")]
+    public long? PostpaidChargeAmount { get; set; }
+
+    [JsonPropertyName("postpaid_charge_currency")]
+    public string? PostpaidChargeCurrency { get; set; }
+
+    /// <summary>
+    /// Credits consumed past a zero balance in the window still open.
+    /// </summary>
+    [JsonPropertyName("postpaid_charged_credits")]
+    public double? PostpaidChargedCredits { get; set; }
 
     [JsonPropertyName("price")]
     public BillingPriceResponseData? Price { get; set; }

@@ -29,6 +29,9 @@ public record CheckoutDataResponseData : IJsonOnDeserialized
     [JsonPropertyName("company")]
     public CompanyDetailResponseData? Company { get; set; }
 
+    [JsonPropertyName("company_can_trial_selected_plan")]
+    public required bool CompanyCanTrialSelectedPlan { get; set; }
+
     [JsonPropertyName("custom_checkout_fields")]
     public IEnumerable<CheckoutFieldWithValue> CustomCheckoutFields { get; set; } =
         new List<CheckoutFieldWithValue>();
@@ -42,6 +45,9 @@ public record CheckoutDataResponseData : IJsonOnDeserialized
 
     [JsonPropertyName("selected_plan")]
     public PlanDetailResponseData? SelectedPlan { get; set; }
+
+    [JsonPropertyName("selected_plan_already_trialed")]
+    public required bool SelectedPlanAlreadyTrialed { get; set; }
 
     [JsonPropertyName("selected_usage_based_entitlements")]
     public IEnumerable<UsageBasedEntitlementResponseData> SelectedUsageBasedEntitlements { get; set; } =

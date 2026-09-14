@@ -134,7 +134,6 @@ public partial interface ICreditsClient
 
     WithRawResponseTask<ReleaseCreditLeaseResponse> ReleaseCreditLeaseAsync(
         string leaseId,
-        Dictionary<string, object?> request,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     );
@@ -173,6 +172,18 @@ public partial interface ICreditsClient
 
     WithRawResponseTask<CountBillingPlanCreditGrantsResponse> CountBillingPlanCreditGrantsAsync(
         CountBillingPlanCreditGrantsRequest request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    );
+
+    WithRawResponseTask<ReserveCreditsResponse> ReserveCreditsAsync(
+        ReserveCreditsRequestBody request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    );
+
+    WithRawResponseTask<ReleaseCreditReservationResponse> ReleaseCreditReservationAsync(
+        string reservationId,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     );
