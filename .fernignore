@@ -6,7 +6,9 @@
 .github/workflows/sdk-e2e-status.yml
 .gitignore
 WASM_VERSION
+artifacts/
 scripts/download-wasm.sh
+scripts/e2e-pack.sh
 CLAUDE.md
 LICENSE
 README.md

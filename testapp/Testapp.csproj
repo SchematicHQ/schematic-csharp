@@ -8,8 +8,41 @@
     <AssemblyName>Testapp</AssemblyName>
   </PropertyGroup>
 
-  <ItemGroup>
+  <!--
+    How this app consumes the SDK, for the shared E2E harness
+    (SchematicHQ/actions .github/workflows/sdk-e2e.yml):
+
+      local (default) — <ProjectReference> to the source tree.
+      pack            — the real NuGet package built from the working tree by
+                        scripts/e2e-pack.sh, restored from artifacts/local-feed
+                        (registered in nuget.config). This is the only mode that
+                        exercises packaging, e.g. the embedded rulesengine.wasm
+                        surviving pack, restore and run.
+
+    Set it with -p:SchematicSdkSource=pack, or let it fall back to the harness's
+    SDK_SOURCE environment variable (MSBuild reads env vars as properties), so
+    a no-build `dotnet run` picks the same mode the build used.
+  -->
+  <PropertyGroup>
+    <SchematicSdkSource Condition="'$(SchematicSdkSource)' == ''">$(SDK_SOURCE)</SchematicSdkSource>
+    <SchematicSdkSource Condition="'$(SchematicSdkSource)' == ''">local</SchematicSdkSource>
+    <!-- Version stamped by scripts/e2e-pack.sh. -->
+    <SchematicPackageVersion Condition="'$(SchematicPackageVersion)' == ''">0.0.0-e2e</SchematicPackageVersion>
+  </PropertyGroup>
+
+  <ItemGroup Condition="'$(SchematicSdkSource)' == 'local'">
     <ProjectReference Include="../src/SchematicHQ.Client/SchematicHQ.Client.csproj" />
   </ItemGroup>
+
+  <ItemGroup Condition="'$(SchematicSdkSource)' == 'pack'">
+    <PackageReference Include="SchematicHQ.Client" Version="$(SchematicPackageVersion)" />
+  </ItemGroup>
+
+  <Target Name="ValidateSchematicSdkSource" BeforeTargets="CollectPackageReferences;PrepareForBuild">
+    <Error
+      Condition="'$(SchematicSdkSource)' != 'local' And '$(SchematicSdkSource)' != 'pack'"
+      Text="Unsupported SchematicSdkSource '$(SchematicSdkSource)'. Supported values: local, pack."
+    />
+  </Target>
 
 </Project>
