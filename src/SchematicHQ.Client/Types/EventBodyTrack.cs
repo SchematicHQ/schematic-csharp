@@ -36,6 +36,12 @@ public record EventBodyTrack : IJsonOnDeserialized
     public long? Quantity { get; set; }
 
     /// <summary>
+    /// Credit reservation ID this track event settles. lease_id takes precedence when both are set
+    /// </summary>
+    [JsonPropertyName("reservation_id")]
+    public string? ReservationId { get; set; }
+
+    /// <summary>
     /// A map of trait names to trait values
     /// </summary>
     [JsonPropertyName("traits")]

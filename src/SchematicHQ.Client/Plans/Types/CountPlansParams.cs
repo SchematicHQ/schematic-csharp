@@ -30,6 +30,12 @@ public record CountPlansParams : IJsonOnDeserialized
     public bool? ExcludeCompanyScoped { get; set; }
 
     /// <summary>
+    /// Exclude plans that nothing is using: no company is on the plan and it has no draft version
+    /// </summary>
+    [JsonPropertyName("exclude_unused")]
+    public bool? ExcludeUnused { get; set; }
+
+    /// <summary>
     /// Filter for plans valid as fallback plans (not linked to billing)
     /// </summary>
     [JsonPropertyName("for_fallback_plan")]

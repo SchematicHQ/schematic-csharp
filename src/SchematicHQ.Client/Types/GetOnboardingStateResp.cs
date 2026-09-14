@@ -37,6 +37,9 @@ public record GetOnboardingStateResp : IJsonOnDeserialized
     public IEnumerable<OnboardingRequirementView> Requirements { get; set; } =
         new List<OnboardingRequirementView>();
 
+    [JsonPropertyName("roadmap")]
+    public OnboardingRoadmapView? Roadmap { get; set; }
+
     [JsonPropertyName("slack_connect")]
     public SlackConnectInviteView? SlackConnect { get; set; }
 

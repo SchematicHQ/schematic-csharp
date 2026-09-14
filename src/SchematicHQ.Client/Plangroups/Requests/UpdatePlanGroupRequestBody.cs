@@ -117,6 +117,9 @@ public record UpdatePlanGroupRequestBody
     [JsonPropertyName("trial_days")]
     public long? TrialDays { get; set; }
 
+    [JsonPropertyName("trial_eligibility_per_plan")]
+    public bool? TrialEligibilityPerPlan { get; set; }
+
     [JsonPropertyName("trial_expiry_plan_id")]
     public string? TrialExpiryPlanId { get; set; }
 

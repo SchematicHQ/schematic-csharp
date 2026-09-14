@@ -812,10 +812,11 @@ public partial class PlansClient : IPlansClient
         CancellationToken cancellationToken = default
     )
     {
-        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 17)
+        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 18)
             .Add("company_id", request.CompanyId)
             .Add("company_scoped_only", request.CompanyScopedOnly)
             .Add("exclude_company_scoped", request.ExcludeCompanyScoped)
+            .Add("exclude_unused", request.ExcludeUnused)
             .Add("for_fallback_plan", request.ForFallbackPlan)
             .Add("for_initial_plan", request.ForInitialPlan)
             .Add("for_trial_expiry_plan", request.ForTrialExpiryPlan)
@@ -2215,10 +2216,11 @@ public partial class PlansClient : IPlansClient
         CancellationToken cancellationToken = default
     )
     {
-        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 17)
+        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 18)
             .Add("company_id", request.CompanyId)
             .Add("company_scoped_only", request.CompanyScopedOnly)
             .Add("exclude_company_scoped", request.ExcludeCompanyScoped)
+            .Add("exclude_unused", request.ExcludeUnused)
             .Add("for_fallback_plan", request.ForFallbackPlan)
             .Add("for_initial_plan", request.ForInitialPlan)
             .Add("for_trial_expiry_plan", request.ForTrialExpiryPlan)
@@ -2955,6 +2957,7 @@ public partial class PlansClient : IPlansClient
     ///         CompanyId = "company_id",
     ///         CompanyScopedOnly = true,
     ///         ExcludeCompanyScoped = true,
+    ///         ExcludeUnused = true,
     ///         ForFallbackPlan = true,
     ///         ForInitialPlan = true,
     ///         ForTrialExpiryPlan = true,
@@ -3137,6 +3140,7 @@ public partial class PlansClient : IPlansClient
     ///         CompanyId = "company_id",
     ///         CompanyScopedOnly = true,
     ///         ExcludeCompanyScoped = true,
+    ///         ExcludeUnused = true,
     ///         ForFallbackPlan = true,
     ///         ForInitialPlan = true,
     ///         ForTrialExpiryPlan = true,

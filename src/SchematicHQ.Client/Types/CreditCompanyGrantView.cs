@@ -11,6 +11,9 @@ public record CreditCompanyGrantView : IJsonOnDeserialized
     private readonly IDictionary<string, JsonElement> _extensionData =
         new Dictionary<string, JsonElement>();
 
+    [JsonPropertyName("arrears_cadence")]
+    public BillingArrearsCadence? ArrearsCadence { get; set; }
+
     [JsonPropertyName("billing_credit_bundle_id")]
     public string? BillingCreditBundleId { get; set; }
 
@@ -73,6 +76,24 @@ public record CreditCompanyGrantView : IJsonOnDeserialized
 
     [JsonPropertyName("plural_name")]
     public string? PluralName { get; set; }
+
+    [JsonPropertyName("postpaid_charge_amount")]
+    public long? PostpaidChargeAmount { get; set; }
+
+    [JsonPropertyName("postpaid_charge_currency")]
+    public string? PostpaidChargeCurrency { get; set; }
+
+    [JsonPropertyName("postpaid_charged_credits")]
+    public double? PostpaidChargedCredits { get; set; }
+
+    [JsonPropertyName("postpaid_period_end")]
+    public DateTime? PostpaidPeriodEnd { get; set; }
+
+    [JsonPropertyName("postpaid_rate")]
+    public long? PostpaidRate { get; set; }
+
+    [JsonPropertyName("postpaid_rate_decimal")]
+    public string? PostpaidRateDecimal { get; set; }
 
     [JsonPropertyName("price")]
     public BillingProductPriceResponseData? Price { get; set; }

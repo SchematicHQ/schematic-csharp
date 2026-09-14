@@ -12,6 +12,9 @@ public record CreateCompanyCreditGrant
     [JsonPropertyName("company_id")]
     public required string CompanyId { get; set; }
 
+    [JsonPropertyName("credit_bundle_id")]
+    public string? CreditBundleId { get; set; }
+
     [JsonPropertyName("credit_id")]
     public required string CreditId { get; set; }
 

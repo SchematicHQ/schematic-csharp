@@ -90,6 +90,13 @@ public partial interface IFeaturesClient
         CancellationToken cancellationToken = default
     );
 
+    WithRawResponseTask<CheckAndReserveFlagResponse> CheckAndReserveFlagAsync(
+        string key,
+        CheckAndReserveFlagRequestBody request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    );
+
     WithRawResponseTask<CheckFlagsResponse> CheckFlagsAsync(
         CheckFlagRequestBody request,
         RequestOptions? options = null,
