@@ -84,5 +84,11 @@ generations:
     cli_version: unknown
     generator_versions:
       fernapi/fern-csharp-sdk: 2.83.2
-current_generation: e86e545d9c03cf7f0f8f47ae5299d5db5a5264c0
+  - commit_sha: 43302c0cd48663cc40484b4e8fa27e755ec6a566
+    tree_hash: 17a534f21ac41d6ea6b9ca7249d79c514f0d3d23
+    timestamp: 2026-09-14T10:02:47.996Z
+    cli_version: unknown
+    generator_versions:
+      fernapi/fern-csharp-sdk: 2.83.3
+current_generation: 43302c0cd48663cc40484b4e8fa27e755ec6a566
 patches: []
