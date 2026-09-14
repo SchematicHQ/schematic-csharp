@@ -486,3 +486,13 @@ $RECYCLE.BIN/
 # Rules engine WASM binary (downloaded at build time from schematic-api GitHub Releases)
 src/SchematicHQ.Client/RulesEngine/Wasm/rulesengine.wasm
 src/SchematicHQ.Client/RulesEngine/Wasm/.wasm_version
+
+# Local NuGet feed produced by scripts/e2e-pack.sh for the E2E pack install mode.
+# artifacts/ is ignored further up; keep the empty feed directory tracked, because
+# NuGet fails every restore when a configured local source does not exist — see
+# artifacts/local-feed/.gitkeep and testapp/nuget.config.
+!artifacts/
+artifacts/*
+!artifacts/local-feed/
+artifacts/local-feed/*
+!artifacts/local-feed/.gitkeep
