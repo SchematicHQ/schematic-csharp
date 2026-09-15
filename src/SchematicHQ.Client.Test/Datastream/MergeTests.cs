@@ -499,6 +499,114 @@ namespace SchematicHQ.Client.Test.Datastream
             Assert.That(existing.Rules.First().Id, Is.EqualTo("rule-1"));
         }
 
+        // --- credit_postpaid tests ---
+
+        private static Dictionary<string, RulesengineCreditPostpaidConfig> SamplePostpaid()
+        {
+            return new Dictionary<string, RulesengineCreditPostpaidConfig>
+            {
+                ["credit-1"] = new RulesengineCreditPostpaidConfig { OverdraftLimit = 50.0 },
+                ["credit-2"] = new RulesengineCreditPostpaidConfig()
+            };
+        }
+
+        [Test]
+        public void PartialCompany_ReplacesCreditPostpaidWholesale()
+        {
+            var existing = BaseCompany();
+            existing.CreditPostpaid = SamplePostpaid();
+            var partial = @"{""credit_postpaid"":{""credit-3"":{""overdraft_limit"":10}}}";
+
+            var merged = Merge.PartialCompany(existing, partial);
+
+            // Keys missing from the partial are gone, not kept from the existing map
+            Assert.That(merged.CreditPostpaid, Is.Not.Null);
+            Assert.That(merged.CreditPostpaid!.Keys, Is.EquivalentTo(new[] { "credit-3" }));
+            Assert.That(merged.CreditPostpaid["credit-3"].OverdraftLimit, Is.EqualTo(10.0));
+            Assert.That(existing.CreditPostpaid!.Keys, Is.EquivalentTo(new[] { "credit-1", "credit-2" }));
+        }
+
+        [Test]
+        public void PartialCompany_NullCreditPostpaidClearsIt()
+        {
+            var existing = BaseCompany();
+            existing.CreditPostpaid = SamplePostpaid();
+
+            var merged = Merge.PartialCompany(existing, @"{""credit_postpaid"":null}");
+
+            Assert.That(merged.CreditPostpaid, Is.Null);
+            Assert.That(existing.CreditPostpaid, Is.Not.Null);
+        }
+
+        [Test]
+        public void PartialCompany_CreditPostpaidDropsNullEntries()
+        {
+            var existing = BaseCompany();
+            existing.CreditPostpaid = SamplePostpaid();
+            var partial = @"{""credit_postpaid"":{""credit-1"":null,""credit-2"":{}}}";
+
+            var merged = Merge.PartialCompany(existing, partial);
+
+            // credit-1 is off: absent, never an empty config that would read as "on, no limit"
+            Assert.That(merged.CreditPostpaid!.Keys, Is.EquivalentTo(new[] { "credit-2" }));
+            Assert.That(merged.CreditPostpaid["credit-2"].OverdraftLimit, Is.Null);
+        }
+
+        [Test]
+        public void PartialCompany_WithoutCreditPostpaidKeepsExisting()
+        {
+            var existing = BaseCompany();
+            existing.CreditPostpaid = SamplePostpaid();
+
+            var merged = Merge.PartialCompany(existing, @"{""credit_balances"":{""credit-1"":5.0}}");
+
+            Assert.That(merged.CreditPostpaid!.Keys, Is.EquivalentTo(new[] { "credit-1", "credit-2" }));
+            Assert.That(merged.CreditPostpaid["credit-1"].OverdraftLimit, Is.EqualTo(50.0));
+            Assert.That(merged.CreditPostpaid, Is.Not.SameAs(existing.CreditPostpaid));
+        }
+
+        [Test]
+        public void DeepCopyCompany_CopiesCreditPostpaidIndependently()
+        {
+            var orig = BaseCompany();
+            orig.CreditPostpaid = SamplePostpaid();
+
+            var cp = Merge.DeepCopyCompany(orig);
+
+            Assert.That(cp.CreditPostpaid!.Keys, Is.EquivalentTo(new[] { "credit-1", "credit-2" }));
+            Assert.That(cp.CreditPostpaid["credit-1"].OverdraftLimit, Is.EqualTo(50.0));
+            Assert.That(cp.CreditPostpaid["credit-2"].OverdraftLimit, Is.Null);
+
+            // Map and configs are independent
+            Assert.That(cp.CreditPostpaid, Is.Not.SameAs(orig.CreditPostpaid));
+            Assert.That(cp.CreditPostpaid["credit-1"], Is.Not.SameAs(orig.CreditPostpaid!["credit-1"]));
+            cp.CreditPostpaid["credit-1"].OverdraftLimit = 999;
+            cp.CreditPostpaid.Remove("credit-2");
+            cp.CreditPostpaid["credit-3"] = new RulesengineCreditPostpaidConfig();
+            Assert.That(orig.CreditPostpaid["credit-1"].OverdraftLimit, Is.EqualTo(50.0));
+            Assert.That(orig.CreditPostpaid.Keys, Is.EquivalentTo(new[] { "credit-1", "credit-2" }));
+        }
+
+        [Test]
+        public void DeepCopyCompany_DropsNullCreditPostpaidEntries()
+        {
+            var orig = BaseCompany();
+            orig.CreditPostpaid = SamplePostpaid();
+            orig.CreditPostpaid["credit-off"] = null!;
+
+            var cp = Merge.DeepCopyCompany(orig);
+
+            Assert.That(cp.CreditPostpaid!.Keys, Is.EquivalentTo(new[] { "credit-1", "credit-2" }));
+        }
+
+        [Test]
+        public void DeepCopyCompany_NullCreditPostpaidStaysNull()
+        {
+            var cp = Merge.DeepCopyCompany(BaseCompany());
+
+            Assert.That(cp.CreditPostpaid, Is.Null);
+        }
+
         // --- DeepCopyCompany tests ---
 
         [Test]

@@ -62,6 +62,14 @@ namespace SchematicHQ.Client.Datastream
                         }
                         partialBalances = cb;
                         break;
+                    case "credit_postpaid":
+                        // Replace rather than merge per key: the API always sends this map
+                        // whole, and a null entry decodes to nothing, so a per-key merge
+                        // could never turn a credit off. A null field clears the map.
+                        merged.CreditPostpaid = prop.Value.ValueKind == JsonValueKind.Null
+                            ? null
+                            : CopyCreditPostpaid(JsonSerializer.Deserialize<Dictionary<string, RulesengineCreditPostpaidConfig>>(raw, JsonOptions));
+                        break;
                     case "entitlements":
                         merged.Entitlements = JsonSerializer.Deserialize<List<RulesengineFeatureEntitlement>>(raw, JsonOptions)!;
                         entitlementsInPartial = true;
@@ -270,6 +278,7 @@ namespace SchematicHQ.Client.Datastream
                 BasePlanId = c.BasePlanId,
                 BillingProductIds = new List<string>(c.BillingProductIds ?? Enumerable.Empty<string>()),
                 CreditBalances = creditBalancesCopy ?? new Dictionary<string, double>(),
+                CreditPostpaid = CopyCreditPostpaid(c.CreditPostpaid),
                 Entitlements = c.Entitlements?.ToList(),
                 Keys = keysCopy,
                 Metrics = metricsCopy,
@@ -279,6 +288,31 @@ namespace SchematicHQ.Client.Datastream
                 Subscription = subscriptionCopy,
                 Traits = traitsCopy
             };
+        }
+
+        /// <summary>
+        /// Copies a credit_postpaid map and each config in it, dropping null entries.
+        /// The API sends a null entry to mean postpaid is off, and the rules engine reads
+        /// a missing key the same way. Dropping it means no later code can turn it into
+        /// an empty config, which would encode as {} and read as postpaid on with no limit.
+        /// </summary>
+        internal static Dictionary<string, RulesengineCreditPostpaidConfig>? CopyCreditPostpaid(
+            Dictionary<string, RulesengineCreditPostpaidConfig>? source)
+        {
+            if (source == null)
+            {
+                return null;
+            }
+
+            var copy = new Dictionary<string, RulesengineCreditPostpaidConfig>(source.Count);
+            foreach (var kvp in source)
+            {
+                if (kvp.Value is { } config)
+                {
+                    copy[kvp.Key] = config with { };
+                }
+            }
+            return copy;
         }
 
         /// <summary>
