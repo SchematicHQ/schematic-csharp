@@ -674,6 +674,10 @@ namespace SchematicHQ.Client.Datastream
         else
         {
           company = JsonSerializer.Deserialize<RulesengineCompany>(jsonString, options);
+          if (company != null)
+          {
+            company.CreditPostpaid = Merge.CopyCreditPostpaid(company.CreditPostpaid);
+          }
         }
 
         if (company == null)

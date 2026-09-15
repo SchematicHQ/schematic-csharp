@@ -64,5 +64,46 @@ namespace SchematicHQ.Client.Test.RulesEngine.Wasm
             Assert.That(result.FeatureUsageResetAt, Is.Not.Null);
             Assert.That(result.FeatureUsageResetAt, Is.GreaterThan(DateTime.UtcNow));
         }
+
+        private bool CreditFlagAllowed(double balance, Dictionary<string, RulesengineCreditPostpaidConfig>? postpaid)
+        {
+            const string creditId = "cred-1";
+            var company = TestHelpers.CreateTestCompany();
+            company.CreditBalances = new Dictionary<string, double> { [creditId] = balance };
+            company.CreditPostpaid = postpaid;
+
+            var condition = TestHelpers.CreateTestCondition(RulesengineConditionType.Credit);
+            condition.CreditId = creditId;
+            condition.Operator = ComparableOperator.Lt;
+            var rule = TestHelpers.CreateTestRule();
+            rule.Conditions = new List<RulesengineCondition> { condition };
+            var flag = TestHelpers.CreateTestFlag();
+            flag.DefaultValue = false;
+            flag.Rules = new List<RulesengineRule> { rule };
+
+            return _engine.CheckFlag(company, null, flag).Value;
+        }
+
+        [Test]
+        public void Credit_Postpaid_Absent_Or_Null_Is_Off()
+        {
+            Assert.That(CreditFlagAllowed(0, null), Is.False);
+            Assert.That(CreditFlagAllowed(0, new Dictionary<string, RulesengineCreditPostpaidConfig>()), Is.False);
+            Assert.That(CreditFlagAllowed(0, new Dictionary<string, RulesengineCreditPostpaidConfig> { ["cred-1"] = null! }), Is.False);
+        }
+
+        [Test]
+        public void Credit_Postpaid_Config_Moves_The_Floor()
+        {
+            var unlimited = new Dictionary<string, RulesengineCreditPostpaidConfig> { ["cred-1"] = new() };
+            Assert.That(CreditFlagAllowed(0, unlimited), Is.True);
+
+            var limited = new Dictionary<string, RulesengineCreditPostpaidConfig>
+            {
+                ["cred-1"] = new() { OverdraftLimit = 100 }
+            };
+            Assert.That(CreditFlagAllowed(-40, limited), Is.True);
+            Assert.That(CreditFlagAllowed(-150, limited), Is.False);
+        }
     }
 }
