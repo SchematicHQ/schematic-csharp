@@ -14,6 +14,9 @@ public record CountMigrationsParams : IJsonOnDeserialized
     private readonly IDictionary<string, JsonElement> _extensionData =
         new Dictionary<string, JsonElement>();
 
+    [JsonPropertyName("feature_id")]
+    public string? FeatureId { get; set; }
+
     /// <summary>
     /// Page limit (default 100)
     /// </summary>

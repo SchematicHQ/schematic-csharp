@@ -496,7 +496,8 @@ public partial class PlanmigrationsClient : IPlanmigrationsClient
         CancellationToken cancellationToken = default
     )
     {
-        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 4)
+        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 5)
+            .Add("feature_id", request.FeatureId)
             .Add("plan_version_id", request.PlanVersionId)
             .Add("status", request.Status)
             .Add("limit", request.Limit)
@@ -1416,7 +1417,8 @@ public partial class PlanmigrationsClient : IPlanmigrationsClient
         CancellationToken cancellationToken = default
     )
     {
-        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 4)
+        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 5)
+            .Add("feature_id", request.FeatureId)
             .Add("plan_version_id", request.PlanVersionId)
             .Add("status", request.Status)
             .Add("limit", request.Limit)
@@ -1786,6 +1788,7 @@ public partial class PlanmigrationsClient : IPlanmigrationsClient
     /// await client.Planmigrations.ListMigrationsAsync(
     ///     new ListMigrationsRequest
     ///     {
+    ///         FeatureId = "feature_id",
     ///         PlanVersionId = "plan_version_id",
     ///         Status = PlanVersionMigrationStatus.Cancelled,
     ///         Limit = 1000000,
@@ -1905,6 +1908,7 @@ public partial class PlanmigrationsClient : IPlanmigrationsClient
     /// await client.Planmigrations.CountMigrationsAsync(
     ///     new CountMigrationsRequest
     ///     {
+    ///         FeatureId = "feature_id",
     ///         PlanVersionId = "plan_version_id",
     ///         Status = PlanVersionMigrationStatus.Cancelled,
     ///         Limit = 1000000,

@@ -21,7 +21,7 @@ public record CreateBillingPlanCreditGrantRequestBody : IJsonOnDeserialized
     public BillingArrearsAnchor? ArrearsAnchor { get; set; }
 
     /// <summary>
-    /// How often postpaid charges are closed and invoiced: end_of_billing_period (the default) or monthly.
+    /// How often postpaid charges are closed and invoiced: end_of_billing_period (the default) or monthly. Quarterly is not available for postpaid charges.
     /// </summary>
     [JsonPropertyName("arrears_cadence")]
     public BillingArrearsCadence? ArrearsCadence { get; set; }

@@ -18,6 +18,16 @@ public readonly record struct BillingCreditGrantReason : IStringEnum
 
     public static readonly BillingCreditGrantReason Plan = new(Values.Plan);
 
+    public static readonly BillingCreditGrantReason PostpaidForgiven = new(Values.PostpaidForgiven);
+
+    public static readonly BillingCreditGrantReason PostpaidOverdraft = new(
+        Values.PostpaidOverdraft
+    );
+
+    public static readonly BillingCreditGrantReason PostpaidSettlement = new(
+        Values.PostpaidSettlement
+    );
+
     public static readonly BillingCreditGrantReason Purchased = new(Values.Purchased);
 
     public static readonly BillingCreditGrantReason Rollover = new(Values.Rollover);
@@ -125,6 +135,12 @@ public readonly record struct BillingCreditGrantReason : IStringEnum
         public const string Free = "free";
 
         public const string Plan = "plan";
+
+        public const string PostpaidForgiven = "postpaid_forgiven";
+
+        public const string PostpaidOverdraft = "postpaid_overdraft";
+
+        public const string PostpaidSettlement = "postpaid_settlement";
 
         public const string Purchased = "purchased";
 

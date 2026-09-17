@@ -812,7 +812,7 @@ public partial class PlansClient : IPlansClient
         CancellationToken cancellationToken = default
     )
     {
-        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 18)
+        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 20)
             .Add("company_id", request.CompanyId)
             .Add("company_scoped_only", request.CompanyScopedOnly)
             .Add("exclude_company_scoped", request.ExcludeCompanyScoped)
@@ -827,6 +827,11 @@ public partial class PlansClient : IPlansClient
             .Add("q", request.Q)
             .Add("scoped_to_company_id", request.ScopedToCompanyId)
             .Add("with_entitlements", request.WithEntitlements)
+            .Add("with_published_version", request.WithPublishedVersion)
+            .Add(
+                "without_entitlement_for_include_drafts",
+                request.WithoutEntitlementForIncludeDrafts
+            )
             .Add("without_entitlement_for", request.WithoutEntitlementFor)
             .Add("without_paid_product_id", request.WithoutPaidProductId)
             .Add("limit", request.Limit)
@@ -2216,7 +2221,7 @@ public partial class PlansClient : IPlansClient
         CancellationToken cancellationToken = default
     )
     {
-        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 18)
+        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 20)
             .Add("company_id", request.CompanyId)
             .Add("company_scoped_only", request.CompanyScopedOnly)
             .Add("exclude_company_scoped", request.ExcludeCompanyScoped)
@@ -2231,6 +2236,11 @@ public partial class PlansClient : IPlansClient
             .Add("q", request.Q)
             .Add("scoped_to_company_id", request.ScopedToCompanyId)
             .Add("with_entitlements", request.WithEntitlements)
+            .Add("with_published_version", request.WithPublishedVersion)
+            .Add(
+                "without_entitlement_for_include_drafts",
+                request.WithoutEntitlementForIncludeDrafts
+            )
             .Add("without_entitlement_for", request.WithoutEntitlementFor)
             .Add("without_paid_product_id", request.WithoutPaidProductId)
             .Add("limit", request.Limit)
@@ -2968,6 +2978,8 @@ public partial class PlansClient : IPlansClient
     ///         Q = "q",
     ///         ScopedToCompanyId = "scoped_to_company_id",
     ///         WithEntitlements = true,
+    ///         WithPublishedVersion = true,
+    ///         WithoutEntitlementForIncludeDrafts = true,
     ///         WithoutEntitlementFor = "without_entitlement_for",
     ///         WithoutPaidProductId = true,
     ///         Limit = 1000000,
@@ -3151,6 +3163,8 @@ public partial class PlansClient : IPlansClient
     ///         Q = "q",
     ///         ScopedToCompanyId = "scoped_to_company_id",
     ///         WithEntitlements = true,
+    ///         WithPublishedVersion = true,
+    ///         WithoutEntitlementForIncludeDrafts = true,
     ///         WithoutEntitlementFor = "without_entitlement_for",
     ///         WithoutPaidProductId = true,
     ///         Limit = 1000000,

@@ -102,10 +102,22 @@ public record ListPlansParams : IJsonOnDeserialized
     public bool? WithEntitlements { get; set; }
 
     /// <summary>
+    /// Only return plans that have a published version
+    /// </summary>
+    [JsonPropertyName("with_published_version")]
+    public bool? WithPublishedVersion { get; set; }
+
+    /// <summary>
     /// Filter out plans that already have a plan entitlement for the specified feature ID
     /// </summary>
     [JsonPropertyName("without_entitlement_for")]
     public string? WithoutEntitlementFor { get; set; }
+
+    /// <summary>
+    /// With without_entitlement_for, also treat an entitlement on a plan's draft version as existing
+    /// </summary>
+    [JsonPropertyName("without_entitlement_for_include_drafts")]
+    public bool? WithoutEntitlementForIncludeDrafts { get; set; }
 
     /// <summary>
     /// Filter out plans that have a paid billing product ID

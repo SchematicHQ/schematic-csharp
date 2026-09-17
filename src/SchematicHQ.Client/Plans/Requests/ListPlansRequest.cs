@@ -82,6 +82,18 @@ public record ListPlansRequest
     public bool? WithEntitlements { get; set; }
 
     /// <summary>
+    /// Only return plans that have a published version
+    /// </summary>
+    [JsonIgnore]
+    public bool? WithPublishedVersion { get; set; }
+
+    /// <summary>
+    /// With without_entitlement_for, also treat an entitlement on a plan's draft version as existing
+    /// </summary>
+    [JsonIgnore]
+    public bool? WithoutEntitlementForIncludeDrafts { get; set; }
+
+    /// <summary>
     /// Filter out plans that already have a plan entitlement for the specified feature ID
     /// </summary>
     [JsonIgnore]
