@@ -44,6 +44,9 @@ public partial class Schematic
     // True when lease state lives in a shared Redis backend that sibling pods
     // may also be drawing on, so a shutdown must not release its leases.
     private bool _leaseBackendShared;
+    // The lease Redis backend the SDK built for itself, and so has to close on
+    // shutdown. Null when the caller supplied the backend.
+    private IDisposable? _ownedLeaseRedis;
     private TimeSpan _prewarmResolveTimeout = LeaseDefaults.PrewarmResolveTimeout;
     // The configured mode. Null when CreditLeases is not configured.
     private CreditLeaseMode? _creditLeaseMode;
@@ -332,7 +335,14 @@ public partial class Schematic
         {
             try
             {
-                redis = StackExchangeLeaseRedis.FromConfig(redisConfig);
+                var built = StackExchangeLeaseRedis.FromConfig(redisConfig);
+                // Closing this is the SDK's job only where the SDK opened it.
+                // A backend the caller passed in, and a multiplexer their
+                // factory handed back, are shared with the rest of their
+                // process and outlive this client; the instance below knows
+                // which case it is and its Dispose is a no-op for theirs.
+                _ownedLeaseRedis = built;
+                redis = built;
             }
             catch (Exception ex)
             {
@@ -511,6 +521,8 @@ public partial class Schematic
         {
             _datastreamClient.Close();
         }
+
+        _ownedLeaseRedis?.Dispose();
     }
 
     public async Task<bool> CheckFlag(string flagKey, Dictionary<string, string>? company = null, Dictionary<string, string>? user = null)
@@ -1247,11 +1259,11 @@ public partial class Schematic
     {
         TrackEvent(
             new EventBodyTrack
-        {
-            Company = company,
-            Event = eventName,
-            Traits = traits,
-            User = user,
+            {
+                Company = company,
+                Event = eventName,
+                Traits = traits,
+                User = user,
                 Quantity = quantity,
                 LeaseId = options?.LeaseId,
                 ReservationId = options?.ReservationId

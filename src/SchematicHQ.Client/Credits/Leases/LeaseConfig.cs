@@ -209,10 +209,17 @@ public sealed class CreditLeaseConfig
 
     /// <summary>
     /// Pre-connected Redis backend for lease and reservation state. Optional:
-    /// when omitted the SDK reuses the datastream cache's Redis connection if
-    /// one is configured, so an existing Redis setup backs leases
-    /// automatically. Set this only to point lease state at a different Redis
-    /// than the datastream cache.
+    /// when omitted the SDK builds one from <see cref="RedisConfig"/>, or from
+    /// the datastream cache's Redis settings, so an existing Redis setup backs
+    /// leases with nothing else to wire up. Set this to point lease state at a
+    /// different Redis than the datastream cache, or to hand the SDK a
+    /// connection you already manage.
+    ///
+    /// <para>Those settings share the datastream cache's connection only when
+    /// they carry a ConnectionMultiplexerFactory. From a configuration string
+    /// or a ConfigurationOptions the SDK opens a second connection, which it
+    /// closes on Shutdown. A backend passed in here is never closed by the SDK,
+    /// since it belongs to the caller.</para>
     ///
     /// <para>When neither this nor a datastream Redis cache is configured the
     /// SDK falls back to per-process in-memory stores, which is single-pod only

@@ -79,6 +79,32 @@ public class CheckPreflightRestTests
     }
 
     [Test]
+    public async Task A_Zero_Usage_Sends_No_Preflight_And_Stays_On_The_Cache()
+    {
+        StubCheck(value: true);
+
+        var first = await _schematic.Check(
+            "inference",
+            Company("co_4"),
+            options: new CheckOptions { Usage = 0 }
+        );
+        var second = await _schematic.Check(
+            "inference",
+            Company("co_4"),
+            options: new CheckOptions { Usage = 0 }
+        );
+
+        Assert.That(first.Allowed, Is.True);
+        Assert.That(second.Allowed, Is.True);
+
+        // Zero usage is documented as having no effect, so sending it would
+        // only cost the check its cache entry.
+        var bodies = SentBodies();
+        Assert.That(bodies, Has.Length.EqualTo(1));
+        Assert.That(bodies[0].TryGetProperty("preflight", out _), Is.False);
+    }
+
+    [Test]
     public async Task A_Preflighted_Check_Neither_Reads_Nor_Writes_The_Cache()
     {
         StubCheck(value: true);

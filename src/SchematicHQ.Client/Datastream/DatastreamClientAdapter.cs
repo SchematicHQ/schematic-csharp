@@ -337,12 +337,6 @@ namespace SchematicHQ.Client.Datastream
     }
 
     /// <summary>
-    /// Whether the websocket is currently connected. Read by the lease paths,
-    /// which fetch a company over the stream only when it can answer.
-    /// </summary>
-    internal bool IsConnected => _connectionTracker.IsConnected;
-
-    /// <summary>
     /// The cached flag definition, or null when the flag has not streamed in.
     /// </summary>
     internal ValueTask<RulesengineFlag?> GetCachedFlag(string flagKey) => _client.GetFlag(flagKey);

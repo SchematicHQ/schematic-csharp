@@ -33,6 +33,29 @@ public static class ConformanceVectors
         );
     }
 
+    /// <summary>
+    /// Every vector file in the directory, sorted so runs are reproducible. The
+    /// list is read off disk rather than written down here, so a vector file
+    /// synced from the reference implementation runs without anyone
+    /// remembering to enroll it.
+    /// </summary>
+    public static IEnumerable<string> FileNames()
+    {
+        var names = System.IO.Directory
+            .GetFiles(Directory(), "*.json")
+            .Select(Path.GetFileName)
+            .Select(name => name!)
+            .ToList();
+        names.Sort(StringComparer.Ordinal);
+        if (names.Count == 0)
+        {
+            throw new FileNotFoundException("no vector files found in " + Directory());
+        }
+        return names;
+    }
+
+    public static IEnumerable<ConformanceCase> Cases() => Cases(FileNames());
+
     public static IEnumerable<ConformanceCase> Cases(IEnumerable<string> fileNames)
     {
         var directory = Directory();

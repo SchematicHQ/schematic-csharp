@@ -13,18 +13,40 @@ namespace SchematicHQ.Client.Leases;
 /// Backs <see cref="ILeaseRedis"/> with StackExchange.Redis, the same client
 /// the SDK's Redis cache uses.
 /// </summary>
-public sealed class StackExchangeLeaseRedis : ILeaseRedis
+public sealed class StackExchangeLeaseRedis : ILeaseRedis, IDisposable
 {
     private readonly IDatabase _db;
+    private readonly IConnectionMultiplexer? _owned;
 
     public StackExchangeLeaseRedis(IDatabase db)
+        : this(db, null) { }
+
+    private StackExchangeLeaseRedis(IDatabase db, IConnectionMultiplexer? owned)
     {
         _db = db ?? throw new ArgumentNullException(nameof(db));
+        _owned = owned;
     }
+
+    /// <summary>
+    /// Whether this instance opened the connection behind it, and so is the one
+    /// that has to close it. A multiplexer a caller's factory handed back is
+    /// shared with whatever else that factory serves, so it stays the caller's
+    /// to close even though the SDK is the one that asked for it.
+    /// </summary>
+    internal bool OwnsConnection => _owned != null;
+
+    /// <summary>
+    /// The connection this instance opened, or null when it is using one that
+    /// belongs to the caller.
+    /// </summary>
+    internal IConnectionMultiplexer? OwnedConnection => _owned;
 
     /// <summary>
     /// Opens a connection from the same configuration shape the datastream
     /// Redis cache takes, so lease state can reuse an existing Redis setup.
+    /// A factory supplies a connection the caller already manages; a
+    /// configuration string or options object makes a second one, which this
+    /// instance then owns and closes on <see cref="Dispose"/>.
     /// </summary>
     public static StackExchangeLeaseRedis FromConfig(RedisCacheConfig config)
     {
@@ -34,9 +56,11 @@ public sealed class StackExchangeLeaseRedis : ILeaseRedis
         }
 
         IConnectionMultiplexer multiplexer;
+        var owned = true;
         if (config.ConnectionMultiplexerFactory != null)
         {
             multiplexer = config.ConnectionMultiplexerFactory.Invoke();
+            owned = false;
         }
         else if (config.ConfigurationOptions != null)
         {
@@ -54,8 +78,16 @@ public sealed class StackExchangeLeaseRedis : ILeaseRedis
             );
         }
 
-        return new StackExchangeLeaseRedis(multiplexer.GetDatabase(config.Database));
+        return new StackExchangeLeaseRedis(
+            multiplexer.GetDatabase(config.Database),
+            owned ? multiplexer : null
+        );
     }
+
+    /// <summary>
+    /// Closes the connection, if this instance is the one that opened it.
+    /// </summary>
+    public void Dispose() => _owned?.Dispose();
 
     public async Task<IReadOnlyDictionary<string, string>> HashGetAllAsync(string key)
     {
