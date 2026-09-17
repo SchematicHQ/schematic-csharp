@@ -314,7 +314,7 @@ await provider.TrackEventAsync(
 
 ## Credit Leases and Reservations
 
-For features metered by credit burndown (for example inference tokens), `Check` holds credits for the work about to run and `TrackWithReservation` settles the hold with actual usage. The SDK gates in one of two modes:
+For features metered by credit burndown (for example inference tokens), `Check` reserves credits for the work about to run and `TrackWithReservation` settles the reservation with actual usage. The SDK gates in one of two modes:
 
 - **Client mode** acquires a **lease**, a tranche of credits held against the company's balance, and carves a per-request **reservation** out of it locally, so a check needs no API call. It requires [Datastream](#datastream) (or [Replicator Mode](#replicator-mode)) and, across multiple processes, a shared Redis so every instance gates against the same lease.
 - **Server mode** makes one `check-and-reserve` API call per check. No lease, no Redis, no local state.
@@ -395,9 +395,9 @@ else
 }
 ```
 
-The hold is sized from the exact `Usage` times the entitlement's consumption rate, so a fractional usage holds a fractional number of credits. Quantities that have to be whole numbers round up: the preflight the engine gates on, and the `quantity` on the settling track event. A check for 2.5 units therefore holds 2.5 credits' worth and bills 3 units.
+`Usage` may be fractional. The reservation keeps the fraction, while the preflight quantity and the quantity a settle bills round up to whole units.
 
-A check can allow without taking a hold (the feature is not credit-metered, `Usage` is 0, or the check failed open), and that usage still has to be tracked.
+A check can allow without reserving credits (the feature is not credit-metered, `Usage` is 0, or the check failed open), and that usage still has to be tracked.
 
 An unsettled reservation expires after `DefaultReservationTTL` and its credits return to the lease. A late settle still bills the usage (the track event carries a deterministic idempotency key, so it never double-bills) but does not re-debit the local lease, so set `DefaultReservationTTL` above the longest expected gap between `Check` and `TrackWithReservation`.
 
@@ -774,17 +774,17 @@ var schematic = new Schematic("...", new ClientOptions{
 
 | Option | Type | Default | Description |
 |---|---|---|---|
-| `Mode` | `CreditLeaseMode` | `Auto` | Where the credit hold lives; `Auto` picks client mode when datastream is enabled, server mode otherwise |
+| `Mode` | `CreditLeaseMode` | `Auto` | Where credits are reserved; `Auto` picks client mode when datastream is enabled, server mode otherwise |
 | `DefaultReservationTTL` | `TimeSpan?` | 60 seconds | How long an unsettled reservation is held |
 | `DefaultLeaseDuration` | `TimeSpan?` | 5 minutes | (client mode) Lease lifetime |
 | `DefaultLeaseSize` | `double?` | 10000 | (client mode) Credits requested per lease acquire or extend |
 | `LowWaterMark` | `double?` | 0.25 | (client mode) Extend in the background when the lease balance dips below this fraction |
 | `SweepInterval` | `TimeSpan?` | 1 second | (client mode) Sweep interval for expired reservations |
-| `PrewarmResolveTimeout` | `TimeSpan?` | 5 seconds | (client mode) How long `Prewarm` waits for a freshly identified company to surface |
+| `PrewarmResolveTimeout` | `TimeSpan?` | 5 seconds | (client mode) How long `Prewarm` waits for a freshly identified company to surface; zero resolves from the datastream cache only |
 | `RedisClient` | `ILeaseRedis?` | the cache's Redis | (client mode) A Redis backend you already hold, for lease and reservation state |
 | `RedisConfig` | `RedisCacheConfig?` | `CacheConfiguration.RedisConfig` | (client mode) Connection settings the SDK builds a lease backend from |
 | `RedisKeyPrefix` | `string?` | the cache's key prefix | (client mode) Key prefix for lease and reservation keys |
-| `Overrides` | `Dictionary<string, LeaseOverride>?` | | (client mode) Per-credit-type overrides of the four knobs above, keyed by credit type ID |
+| `Overrides` | `Dictionary<string, LeaseOverride>?` | none | (client mode) Per-credit-type overrides of the four knobs above, keyed by credit type ID |
 
 Without a Redis backend the SDK keeps lease and reservation state per process, which loses cross-pod gating, and warns at startup.
 
