@@ -10,11 +10,13 @@ artifacts/
 scripts/download-wasm.sh
 scripts/e2e-pack.sh
 CLAUDE.md
+conformance/
 LICENSE
 README.md
 examples/
 testapp/
 src/SchematicHQ.Client.Test/Cache/
+src/SchematicHQ.Client.Test/Credits/Leases/
 src/SchematicHQ.Client.Test/Datastream/
 src/SchematicHQ.Client.Test/Integration/
 src/SchematicHQ.Client.Test/TestCache.cs
@@ -28,6 +30,7 @@ src/SchematicHQ.Client.Test/SchematicHQ.Client.Test.Custom.props
 src/SchematicHQ.Client.Test/Webhooks/
 src/SchematicHQ.Client.Test/OpenFeature/
 src/SchematicHQ.Client/Cache/
+src/SchematicHQ.Client/Credits/Leases/
 src/SchematicHQ.Client/Core/Public/ClientOptionsCustom.cs
 src/SchematicHQ.Client/Datastream
 src/SchematicHQ.Client/EventBuffer.cs

@@ -195,9 +195,13 @@ namespace SchematicHQ.Client.Datastream
     }
 
     /// <summary>
-    /// Check a feature flag via datastream
+    /// Check a feature flag via datastream.
+    ///
+    /// <para>A preflight is hypothetical usage the caller is about to record.
+    /// Every local evaluation below gates on it, so a credit-aware check that
+    /// falls back to a plain one still answers for the post-call balance.</para>
     /// </summary>
-    public async Task<CheckFlagResult> CheckFlag(CheckFlagRequestBody request, string flagKey)
+    public async Task<CheckFlagResult> CheckFlag(CheckFlagRequestBody request, string flagKey, PreflightRequestBody? preflight = null)
     {
       CancellationToken cancellationToken = CancellationToken.None;
       
@@ -235,7 +239,7 @@ namespace SchematicHQ.Client.Datastream
           {
             // All required resources in cache - evaluate flag
             _logger.LogDebug("Replicator mode: All required resources in cache, evaluating flag '{FlagKey}'", flagKey);
-            return await _client.CheckFlag(cachedCompany, cachedUser, cachedFlag!);
+            return await _client.CheckFlag(cachedCompany, cachedUser, cachedFlag!, preflight);
           }
           else if (!flagInCache)
           {
@@ -253,7 +257,7 @@ namespace SchematicHQ.Client.Datastream
           {
             // Some company/user resources missing - evaluate with available data
             _logger.LogWarning("Replicator mode: Some required resources missing from cache for flag '{FlagKey}', evaluating with available data", flagKey);
-            return await _client.CheckFlag(cachedCompany, cachedUser, cachedFlag!);
+            return await _client.CheckFlag(cachedCompany, cachedUser, cachedFlag!, preflight);
           }
         }
         else
@@ -263,7 +267,7 @@ namespace SchematicHQ.Client.Datastream
           {
             // All required resources in cache - evaluate flag even though replicator is unhealthy
             _logger.LogWarning("Replicator mode: Replicator unhealthy but all required resources in cache, evaluating flag '{FlagKey}'", flagKey);
-            return await _client.CheckFlag(cachedCompany, cachedUser, cachedFlag!);
+            return await _client.CheckFlag(cachedCompany, cachedUser, cachedFlag!, preflight);
           }
           else
           {
@@ -279,7 +283,7 @@ namespace SchematicHQ.Client.Datastream
         if (allRequiredResourcesInCache)
         {
           // All required resources in cache - evaluate flag
-          return await _client.CheckFlag(cachedCompany, cachedUser, cachedFlag!);
+          return await _client.CheckFlag(cachedCompany, cachedUser, cachedFlag!, preflight);
         }
 
         // Handle missing flag case first - return FlagNotFound regardless of connection state
@@ -316,7 +320,7 @@ namespace SchematicHQ.Client.Datastream
             user = await _client.GetUserAsync(request.User, cancellationToken);
           }
 
-          return await _client.CheckFlag(company, user, cachedFlag);
+          return await _client.CheckFlag(company, user, cachedFlag, preflight);
         }
         catch (Exception ex)
         {
@@ -331,6 +335,61 @@ namespace SchematicHQ.Client.Datastream
         }
       }
     }
+
+    /// <summary>
+    /// Whether the websocket is currently connected. Read by the lease paths,
+    /// which fetch a company over the stream only when it can answer.
+    /// </summary>
+    internal bool IsConnected => _connectionTracker.IsConnected;
+
+    /// <summary>
+    /// The cached flag definition, or null when the flag has not streamed in.
+    /// </summary>
+    internal ValueTask<RulesengineFlag?> GetCachedFlag(string flagKey) => _client.GetFlag(flagKey);
+
+    /// <summary>
+    /// The cached company, without asking the stream for one that is missing.
+    /// </summary>
+    internal ValueTask<RulesengineCompany?> GetCachedCompany(Dictionary<string, string> keys) =>
+     _client.GetCompanyFromCache(keys);
+
+    /// <summary>
+    /// Resolves a company the way a plain datastream flag check does:
+    /// cache-first, then a live fetch over the websocket that waits for the
+    /// entity to stream back. Returns null when it cannot be resolved, which
+    /// the lease paths treat as a reason to fall back rather than to deny.
+    /// </summary>
+    internal async Task<RulesengineCompany?> ResolveCompany(Dictionary<string, string> keys, CancellationToken cancellationToken = default)
+    {
+      var cached = await _client.GetCompanyFromCache(keys);
+      if (cached != null || !_connectionTracker.IsConnected)
+      {
+        return cached;
+      }
+      return await _client.GetCompanyAsync(keys, cancellationToken);
+    }
+
+    /// <summary>
+    /// Resolves a user the same way <see cref="ResolveCompany"/> resolves a
+    /// company. Evaluating with a missing user is not an option: it would
+    /// silently skip user-targeted rules and overrides.
+    /// </summary>
+    internal async Task<RulesengineUser?> ResolveUser(Dictionary<string, string> keys, CancellationToken cancellationToken = default)
+    {
+      var cached = await _client.GetUserFromCache(keys);
+      if (cached != null || !_connectionTracker.IsConnected)
+      {
+        return cached;
+      }
+      return await _client.GetUserAsync(keys, cancellationToken);
+    }
+
+    /// <summary>
+    /// Runs the local rules engine against an already-resolved company, user
+    /// and flag, threading the caller's hypothetical usage through.
+    /// </summary>
+    internal Task<CheckFlagResult> Evaluate(RulesengineCompany? company, RulesengineUser? user, RulesengineFlag flag, PreflightRequestBody? preflight = null) =>
+     _client.CheckFlag(company, user, flag, preflight);
 
     private class ConnectionStateTracker
     {

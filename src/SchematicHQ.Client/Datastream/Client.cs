@@ -869,6 +869,15 @@ namespace SchematicHQ.Client.Datastream
 
     internal Task<CheckFlagResult> CheckFlag(RulesengineCompany? company, RulesengineUser? user, RulesengineFlag flag, CancellationToken cancellationToken = default)
     {
+      return CheckFlag(company, user, flag, null, cancellationToken);
+    }
+
+    /// <summary>
+    /// Evaluates a flag locally, threading the caller's hypothetical usage to
+    /// the engine so the verdict accounts for the action about to happen.
+    /// </summary>
+    internal Task<CheckFlagResult> CheckFlag(RulesengineCompany? company, RulesengineUser? user, RulesengineFlag flag, PreflightRequestBody? preflight, CancellationToken cancellationToken = default)
+    {
       if (_rulesEngine == null || !_rulesEngine.IsInitialized)
       {
         _logger.LogWarning("WASM rules engine unavailable; returning default value for flag {FlagKey}", flag.Key);
@@ -885,7 +894,7 @@ namespace SchematicHQ.Client.Datastream
 
       try
       {
-        var result = _rulesEngine.CheckFlag(company, user, flag);
+        var result = _rulesEngine.CheckFlag(company, user, flag, preflight);
         return Task.FromResult(result);
       }
       catch (Exception ex)
