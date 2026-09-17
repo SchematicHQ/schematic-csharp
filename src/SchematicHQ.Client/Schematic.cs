@@ -527,8 +527,9 @@ public partial class Schematic
     /// <summary>
     /// The plain flag check, with the knobs a credit-aware check threads through
     /// it: the caller's hypothetical usage, a per-call timeout, and a default to
-    /// fall back to. Only a local evaluation honors the preflight; the REST path
-    /// ignores it, as it has no way to ask the server a hypothetical.
+    /// fall back to. Both paths honor the preflight, the local evaluation by
+    /// handing it to the rules engine and the REST path by putting it on the
+    /// request body.
     /// </summary>
     private async Task<CheckFlagWithEntitlementResponse> CheckFlagWithEntitlementInternal(
         string flagKey,
@@ -583,15 +584,15 @@ public partial class Schematic
             {
                 // Fall back to API if datastream fails
                 _logger.LogDebug(ex, "Datastream flag check failed, falling back to API");
-                return await CheckFlagWithEntitlementApi(flagKey, company, user, timeout, defaultValue);
+                return await CheckFlagWithEntitlementApi(flagKey, company, user, preflight, timeout, defaultValue);
             }
         }
 
         // Fall back to API request
-        return await CheckFlagWithEntitlementApi(flagKey, company, user, timeout, defaultValue);
+        return await CheckFlagWithEntitlementApi(flagKey, company, user, preflight, timeout, defaultValue);
     }
 
-    private async Task<CheckFlagWithEntitlementResponse> CheckFlagWithEntitlementApi(string flagKey, Dictionary<string, string>? company, Dictionary<string, string>? user, TimeSpan? timeout = null, bool? defaultValue = null)
+    private async Task<CheckFlagWithEntitlementResponse> CheckFlagWithEntitlementApi(string flagKey, Dictionary<string, string>? company, Dictionary<string, string>? user, PreflightRequestBody? preflight = null, TimeSpan? timeout = null, bool? defaultValue = null)
     {
         try
         {
@@ -599,18 +600,26 @@ public partial class Schematic
             var requestBody = new CheckFlagRequestBody
             {
                 Company = company ?? new Dictionary<string, string>(),
-                User = user ?? new Dictionary<string, string>()
+                User = user ?? new Dictionary<string, string>(),
+                Preflight = preflight
             };
 
             string cacheKey = BuildFlagCacheKey(flagKey, company, user);
 
-            // Check cache first
-            var cachedResponse = await _cache.Get<CheckFlagWithEntitlementResponse>(cacheKey);
-            if (cachedResponse != null)
+            // The cache is keyed by flag, company and user, and a preflighted
+            // check asks a different question ("would this action be allowed?")
+            // than the plain one, so it can neither be answered from the cache
+            // nor written to it.
+            if (preflight == null)
             {
-                // Submit flag check event for cached value
-                SubmitFlagCheckEventForValue(flagKey, cachedResponse.Value, company, user, "cache");
-                return cachedResponse;
+                // Check cache first
+                var cachedResponse = await _cache.Get<CheckFlagWithEntitlementResponse>(cacheKey);
+                if (cachedResponse != null)
+                {
+                    // Submit flag check event for cached value
+                    SubmitFlagCheckEventForValue(flagKey, cachedResponse.Value, company, user, "cache");
+                    return cachedResponse;
+                }
             }
 
             // Make API request
@@ -633,20 +642,23 @@ public partial class Schematic
             var result = CheckFlagWithEntitlementResponse.FromApiResponse(apiResponse.Data, flagKey);
 
             // Cache the result
-            try
+            if (preflight == null)
             {
                 try
                 {
-                await _cache.Set(cacheKey, result);
+                    try
+                    {
+                        await _cache.Set(cacheKey, result);
+                    }
+                    catch (Exception cacheEx)
+                    {
+                        _logger.LogError(cacheEx, "Error caching flag result");
+                    }
                 }
                 catch (Exception cacheEx)
                 {
-                    _logger.LogError(cacheEx, "Error caching flag result");
+                    _logger.LogError("Error caching flag result: {0}", cacheEx.Message);
                 }
-            }
-            catch (Exception cacheEx)
-            {
-                _logger.LogError("Error caching flag result: {0}", cacheEx.Message);
             }
 
             return result;
@@ -855,8 +867,8 @@ public partial class Schematic
     /// <para>Without CreditLeases configured, or with no usage, this falls
     /// through to a plain flag check and returns the flag's value with no
     /// reservation. The caller's preflight is still threaded through that plain
-    /// check, so a local evaluation gates on the post-call balance, just without
-    /// a hold.</para>
+    /// check, by both the local evaluation and the REST call, so the verdict
+    /// accounts for the usage about to be recorded, just without a hold.</para>
     /// </summary>
     public async Task<CheckResult> Check(
         string flagKey,
