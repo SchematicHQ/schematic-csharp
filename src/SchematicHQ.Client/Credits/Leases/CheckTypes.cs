@@ -129,6 +129,16 @@ public static class LeasePreflight
         }
 
         var quantity = PreflightQuantity(options.Usage.Value);
+        if (quantity == 0)
+        {
+            // Zero usage changes no verdict, and any preflight at all takes the
+            // check off the flag cache, which is keyed by flag, company and user
+            // alone. Sending it would cost every such check a round trip and buy
+            // nothing. A zero credit cost is a different statement, free rather
+            // than absent, and is built elsewhere.
+            return null;
+        }
+
         if (!string.IsNullOrEmpty(options.EventSubtype))
         {
             return new PreflightRequestBody

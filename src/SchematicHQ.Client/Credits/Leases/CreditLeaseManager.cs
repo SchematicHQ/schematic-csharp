@@ -42,7 +42,7 @@ public sealed class CreditLeaseManager
     // these out so a close releases what they installed.
     private readonly HashSet<Task> _background = new();
 
-    private bool _stopped;
+    private volatile bool _stopped;
 
     public CreditLeaseManager(
         ILeaseWireClient wire,

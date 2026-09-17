@@ -125,8 +125,95 @@ public sealed partial class ConformanceRunner
         }
     }
 
+    /// <summary>
+    /// The expect keys each operation asserts on. An assertion this runner does
+    /// not implement is skipped rather than failed, so a vector carrying a key
+    /// from a newer reference implementation would pass while pinning nothing.
+    /// Keep an entry here in step with every operation below.
+    /// </summary>
+    private static readonly Dictionary<string, string[]> RecognizedExpectKeys = new()
+    {
+        ["advance_clock"] = Array.Empty<string>(),
+        ["replace_lease"] = new[] { "written" },
+        ["drop_lease"] = Array.Empty<string>(),
+        ["try_reserve"] = new[] { "balance", "lease_id" },
+        ["refund_lease"] = Array.Empty<string>(),
+        ["extend_lease"] = Array.Empty<string>(),
+        ["get_lease"] = new[]
+        {
+            "exists",
+            "lease_id",
+            "granted_amount",
+            "local_remaining_credits",
+        },
+        ["add_reservation"] = Array.Empty<string>(),
+        ["consume_reservation"] = new[] { "consumed" },
+        ["get_reservation"] = new[] { "exists" },
+        ["reserved_credits"] = new[] { "total" },
+        ["reservation_count"] = new[] { "count" },
+        ["sweep_expired"] = new[] { "swept" },
+        ["acquire_if_needed"] = new[]
+        {
+            "lease_id",
+            "wire_acquires",
+            "last_acquire_requested_amount",
+            "released_lease_ids",
+        },
+        ["maybe_extend"] = new[]
+        {
+            "wire_extends",
+            "last_extend_additional_amount",
+            "last_extend_lease_id",
+        },
+        ["release_all_local_leases"] = new[] { "released_lease_ids", "remaining_slots" },
+        ["check"] = new[]
+        {
+            "allowed",
+            "reason",
+            "err",
+            "has_reservation",
+            "fallback_called",
+            "reservation",
+            "engine_calls",
+            "wire_extends",
+            "last_extend_additional_amount",
+        },
+        ["track"] = new[] { "settled_locally", "track" },
+    };
+
+    /// <summary>
+    /// Any operation may be expected to throw, so this key is recognized
+    /// everywhere: the catch in <see cref="RunAsync"/> reads it, not the
+    /// operation handlers.
+    /// </summary>
+    private const string ThrowsKey = "throws";
+
+    internal static void AssertExpectKeysRecognized(string name, JsonElement op)
+    {
+        if (
+            Expect(op) is not { } expect
+            || expect.ValueKind != JsonValueKind.Object
+            || !RecognizedExpectKeys.TryGetValue(name, out var recognized)
+        )
+        {
+            return;
+        }
+        foreach (var property in expect.EnumerateObject())
+        {
+            if (property.Name == ThrowsKey || recognized.Contains(property.Name))
+            {
+                continue;
+            }
+            Assert.Fail(
+                $"the '{name}' operation does not assert on the expect key '{property.Name}', so the vector would pin nothing"
+            );
+        }
+    }
+
     private async Task ExecuteAsync(string name, JsonElement op)
     {
+        AssertExpectKeysRecognized(name, op);
+
         switch (name)
         {
             case "advance_clock":
