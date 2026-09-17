@@ -312,6 +312,134 @@ await provider.TrackEventAsync(
 );
 ```
 
+## Credit Leases and Reservations
+
+For features metered by credit burndown (for example inference tokens), `Check` holds credits for the work about to run and `TrackWithReservation` settles the hold with actual usage. The SDK gates in one of two modes:
+
+- **Client mode** acquires a **lease**, a tranche of credits held against the company's balance, and carves a per-request **reservation** out of it locally, so a check needs no API call. It requires [Datastream](#datastream) (or [Replicator Mode](#replicator-mode)) and, across multiple processes, a shared Redis so every instance gates against the same lease.
+- **Server mode** makes one `check-and-reserve` API call per check. No lease, no Redis, no local state.
+
+`CreditLeases.Mode` defaults to `Auto`: client when datastream is enabled, server otherwise. Client mode suits high-throughput gating; server mode suits low-volume checks and operations that run for seconds.
+
+### Setup
+
+```csharp
+using SchematicHQ.Client;
+using SchematicHQ.Client.Datastream;
+using SchematicHQ.Client.Leases;
+
+var options = new ClientOptions
+{
+    UseDatastream = true,
+    CreditLeases = new CreditLeaseConfig
+    {
+        DefaultLeaseSize = 10_000,                            // credits requested per lease
+        DefaultLeaseDuration = TimeSpan.FromMinutes(5),       // lease lifetime
+        DefaultReservationTTL = TimeSpan.FromSeconds(60)      // how long a reservation is held if no track settles it
+    }
+}.WithRedisCache(new RedisCacheConfig { Configuration = "localhost:6379" });
+
+Schematic schematic = new Schematic("YOUR_API_KEY", options);
+```
+
+The Redis the cache is configured with also backs lease and reservation state. Set `CreditLeases.RedisConfig` (or `CreditLeases.RedisClient`, for a connection you own) to keep lease state in a different Redis.
+
+Server mode needs only a TTL:
+
+```csharp
+var options = new ClientOptions
+{
+    CreditLeases = new CreditLeaseConfig
+    {
+        // How long the server holds the credits if no track settles them. One hour is the maximum.
+        DefaultReservationTTL = TimeSpan.FromSeconds(60)
+    }
+};
+
+Schematic schematic = new Schematic("YOUR_API_KEY", options);
+```
+
+Only `Mode` and `DefaultReservationTTL` apply in server mode; the SDK warns at startup if a client-only option is set.
+
+### Checking and tracking
+
+```csharp
+var company = new Dictionary<string, string> { { "id", "your-company-id" } };
+
+// Reserve up to maxTokens for this operation.
+var result = await schematic.Check(
+    "inference",
+    company: company,
+    options: new CheckOptions
+    {
+        Usage = maxTokens,                  // upper bound for this operation
+        EventSubtype = "inference_tokens"   // the metered event
+    }
+);
+
+if (!result.Allowed)
+{
+    throw new InvalidOperationException("credit balance exceeded");
+}
+
+var inference = await RunInference();
+
+// Report actual usage; the unused slice of the reservation is refunded.
+if (result.Reservation != null)
+{
+    await schematic.TrackWithReservation(result.Reservation, inference.TokensUsed);
+}
+else
+{
+    schematic.Track("inference_tokens", company: company, quantity: inference.TokensUsed);
+}
+```
+
+A check can allow without taking a hold (the feature is not credit-metered, `Usage` is 0, or the check failed open), and that usage still has to be tracked.
+
+An unsettled reservation expires after `DefaultReservationTTL` and its credits return to the lease. A late settle still bills the usage (the track event carries a deterministic idempotency key, so it never double-bills) but does not re-debit the local lease, so set `DefaultReservationTTL` above the longest expected gap between `Check` and `TrackWithReservation`.
+
+### Pre-warming
+
+Pre-warm leases when the user is identified, so a session's first check does not wait on a lease acquire:
+
+```csharp
+schematic.Identify(
+    keys: new Dictionary<string, string> { { "user_id", "your-user-id" } },
+    company: new EventBodyIdentifyCompany
+    {
+        Keys = new Dictionary<string, string> { { "id", "your-company-id" } }
+    },
+    options: new IdentifyOptions
+    {
+        Prewarm = new List<string> { "credit-type-id" }   // credit type IDs to acquire leases for
+    }
+);
+```
+
+Or call `schematic.Prewarm(company, creditTypeIds)` directly. Both are no-ops in server mode.
+
+### Failure behavior
+
+A check that cannot be gated (API unreachable, Redis down, lease exhausted) fails closed by default. Override per check:
+
+```csharp
+var result = await schematic.Check(
+    "inference",
+    company: company,
+    options: new CheckOptions
+    {
+        Usage = maxTokens,
+        EventSubtype = "inference_tokens",
+        OnAcquireFailure = OnAcquireFailure.FailOpen
+    }
+);
+```
+
+In client mode, `FailOpen` still evaluates the flag's rules with the credit balance assumed sufficient, so plan targeting and all non-credit conditions apply and only the credit gate is bypassed. In server mode it returns the flag's default value, which is `false` unless you pass `CheckOptions.DefaultValue` or configure a `FlagDefaults` entry.
+
+See [Credit Lease Options](#credit-lease-options) for the full set of knobs.
+
 ## Webhook Verification
 
 Schematic can send webhooks to notify your application of events. To ensure the security of these webhooks, Schematic signs each request using HMAC-SHA256. The .NET SDK provides utility functions to verify these signatures.
@@ -637,6 +765,26 @@ var schematic = new Schematic("...", new ClientOptions{
     TimeoutInSeconds = 20 // Lower timeout
 });
 ```
+
+### Credit Lease Options
+
+`ClientOptions.CreditLeases` enables credit reservation behavior on `Check` and `TrackWithReservation`. Omit it to keep the client credit-unaware. See [Credit Leases and Reservations](#credit-leases-and-reservations) for the flow these knobs steer.
+
+| Option | Type | Default | Description |
+|---|---|---|---|
+| `Mode` | `CreditLeaseMode` | `Auto` | Where the credit hold lives; `Auto` picks client mode when datastream is enabled, server mode otherwise |
+| `DefaultReservationTTL` | `TimeSpan?` | 60 seconds | How long an unsettled reservation is held |
+| `DefaultLeaseDuration` | `TimeSpan?` | 5 minutes | (client mode) Lease lifetime |
+| `DefaultLeaseSize` | `double?` | 10000 | (client mode) Credits requested per lease acquire or extend |
+| `LowWaterMark` | `double?` | 0.25 | (client mode) Extend in the background when the lease balance dips below this fraction |
+| `SweepInterval` | `TimeSpan?` | 1 second | (client mode) Sweep interval for expired reservations |
+| `PrewarmResolveTimeout` | `TimeSpan?` | 5 seconds | (client mode) How long `Prewarm` waits for a freshly identified company to surface |
+| `RedisClient` | `ILeaseRedis?` | the cache's Redis | (client mode) A Redis backend you already hold, for lease and reservation state |
+| `RedisConfig` | `RedisCacheConfig?` | `CacheConfiguration.RedisConfig` | (client mode) Connection settings the SDK builds a lease backend from |
+| `RedisKeyPrefix` | `string?` | the cache's key prefix | (client mode) Key prefix for lease and reservation keys |
+| `Overrides` | `Dictionary<string, LeaseOverride>?` | | (client mode) Per-credit-type overrides of the four knobs above, keyed by credit type ID |
+
+Without a Redis backend the SDK keeps lease and reservation state per process, which loses cross-pod gating, and warns at startup.
 
 ## Exception Handling
 When the API returns a non-zero status code, (4xx or 5xx response),
