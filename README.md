@@ -395,6 +395,8 @@ else
 }
 ```
 
+The hold is sized from the exact `Usage` times the entitlement's consumption rate, so a fractional usage holds a fractional number of credits. Quantities that have to be whole numbers round up: the preflight the engine gates on, and the `quantity` on the settling track event. A check for 2.5 units therefore holds 2.5 credits' worth and bills 3 units.
+
 A check can allow without taking a hold (the feature is not credit-metered, `Usage` is 0, or the check failed open), and that usage still has to be tracked.
 
 An unsettled reservation expires after `DefaultReservationTTL` and its credits return to the lease. A late settle still bills the usage (the track event carries a deterministic idempotency key, so it never double-bills) but does not re-debit the local lease, so set `DefaultReservationTTL` above the longest expected gap between `Check` and `TrackWithReservation`.

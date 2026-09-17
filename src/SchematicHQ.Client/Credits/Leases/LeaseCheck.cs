@@ -343,12 +343,12 @@ public static class LeaseCheck
             Id = deps.NewId(),
             // The lease the debit came out of, which the slot may have taken on
             // since the acquire above: the window between them spans the
-            // extend's network call. A record pinned to the lease the acquire
-            // returned would have its refunds dropped and would bill the wrong
-            // lease.
-            LeaseId = string.IsNullOrEmpty(reserve.Value.LeaseId)
-                ? lease.LeaseId
-                : reserve.Value.LeaseId,
+            // extend's network call. Never the acquired id as a fallback, even
+            // when the store names no lease: the settle refund, the sweep
+            // refund and the track event's lease id all have to name the lease
+            // that was actually charged, and guessing sends all three to one
+            // that never held the credits.
+            LeaseId = reserve.Value.LeaseId,
             CompanyId = companyId,
             CreditTypeId = creditId,
             EventSubtype = eventSubtype,

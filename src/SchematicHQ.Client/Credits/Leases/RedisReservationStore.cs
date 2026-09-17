@@ -51,7 +51,7 @@ public sealed class RedisReservationStore : IReservationStore
     /// what makes a consume exactly-once: of two racing callers only one gets
     /// the fields back and proceeds to refund.
     /// </summary>
-    private const string ClaimScript =
+    internal const string ClaimScript =
         @"
 local raw = redis.call('HGETALL', KEYS[1])
 if #raw == 0 then return nil end

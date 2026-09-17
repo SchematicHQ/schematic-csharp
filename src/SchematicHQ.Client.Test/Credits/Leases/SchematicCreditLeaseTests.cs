@@ -170,6 +170,31 @@ public class SchematicCreditLeaseTests
     }
 
     [Test]
+    public async Task Prewarm_Without_A_Datastream_Resolves_Nothing_Rather_Than_Throwing()
+    {
+        // Client mode builds the local plumbing even with no datastream, so a
+        // prewarm reaches the company resolver. With only secondary keys there
+        // is no cache to read and nothing to fetch over, so it has to give up
+        // quietly.
+        var schematic = Client(new CreditLeaseConfig { Mode = CreditLeaseMode.Client });
+        try
+        {
+            Assert.DoesNotThrowAsync(
+                () =>
+                    schematic.Prewarm(
+                        new Dictionary<string, string> { ["email"] = "wcoyote@acme.net" },
+                        new[] { "ct_1" }
+                    )
+            );
+            Assert.That(_events.Events, Is.Empty);
+        }
+        finally
+        {
+            await schematic.Shutdown();
+        }
+    }
+
+    [Test]
     public async Task Client_Mode_Without_Datastream_Warns_That_Usage_Is_Ignored()
     {
         var schematic = Client(new CreditLeaseConfig { Mode = CreditLeaseMode.Client });
