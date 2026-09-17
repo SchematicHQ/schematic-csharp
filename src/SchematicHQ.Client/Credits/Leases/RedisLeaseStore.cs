@@ -38,7 +38,7 @@ public sealed class RedisLeaseStore : ILeaseStore
     // converts TIME to integer milliseconds (matching the stored expiresAt);
     // replicate_commands() comes first so the non-deterministic TIME read is
     // allowed alongside writes on Redis 5 and 6.
-    private const string LeaseNowMs =
+    internal const string LeaseNowMs =
         @"
 redis.replicate_commands()
 local t = redis.call('TIME')
@@ -55,7 +55,7 @@ local now = (tonumber(t[1]) * 1000) + math.floor(tonumber(t[2]) / 1000)
     /// instead of rewritten, which would reset the balance and erase debits
     /// whose reservations are still open.
     /// </summary>
-    private const string ReplaceScript =
+    internal const string ReplaceScript =
         LeaseNowMs
         + @"
 local existing_id = redis.call('HGET', KEYS[1], 'leaseId')
@@ -106,7 +106,7 @@ return 1
     /// script is what lets the caller pin its reservation to the lease the
     /// debit actually landed on.
     /// </summary>
-    private const string TryReserveScript =
+    internal const string TryReserveScript =
         LeaseNowMs
         + @"
 local raw = redis.call('HGET', KEYS[1], 'localRemainingCredits')
@@ -130,7 +130,7 @@ return { tostring(new_remaining), lease_id }
     /// remainder was already returned to the company balance server-side, so
     /// crediting the successor would mint phantom credits.
     /// </summary>
-    private const string RefundScript =
+    internal const string RefundScript =
         @"
 local raw_remaining = redis.call('HGET', KEYS[1], 'localRemainingCredits')
 if not raw_remaining then return 0 end
@@ -158,7 +158,7 @@ return 1
     /// mint phantom credits. Expiry only ever moves forward. ARGV[4], when
     /// non-empty, pins the extend to a specific leaseId.
     /// </summary>
-    private const string ExtendScript =
+    internal const string ExtendScript =
         @"
 local raw_granted = redis.call('HGET', KEYS[1], 'grantedAmount')
 if not raw_granted then return 0 end

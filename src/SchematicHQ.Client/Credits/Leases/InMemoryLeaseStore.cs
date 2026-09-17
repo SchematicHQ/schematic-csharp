@@ -146,7 +146,11 @@ public sealed class InMemoryLeaseStore : ILeaseStore, ILeaseLister
             {
                 return Task.CompletedTask;
             }
-            if (!string.IsNullOrEmpty(pinLeaseId) && entry.LeaseId != pinLeaseId)
+            // Null means no pin. An empty string is a pin like any other, and
+            // matches no real lease id, so a caller that lost track of the
+            // charged lease drops the refund instead of crediting whichever
+            // lease happens to hold the slot.
+            if (pinLeaseId != null && entry.LeaseId != pinLeaseId)
             {
                 return Task.CompletedTask;
             }
@@ -173,7 +177,9 @@ public sealed class InMemoryLeaseStore : ILeaseStore, ILeaseLister
             {
                 return Task.CompletedTask;
             }
-            if (!string.IsNullOrEmpty(pinLeaseId) && entry.LeaseId != pinLeaseId)
+            // Null means no pin; an empty string pins to a lease id nothing can
+            // hold. Mirrors the pin on the refund above.
+            if (pinLeaseId != null && entry.LeaseId != pinLeaseId)
             {
                 return Task.CompletedTask;
             }

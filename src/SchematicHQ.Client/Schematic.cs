@@ -1132,9 +1132,17 @@ public partial class Schematic
         {
             return id;
         }
-        if (_datastreamClient == null || _prewarmResolveTimeout <= TimeSpan.Zero)
+        if (_datastreamClient == null)
         {
-            var cachedOnly = await _datastreamClient!.GetCachedCompany(company);
+            // Without a datastream there is no cache to read and nothing to
+            // fetch over, so secondary keys cannot be resolved to an id at all.
+            return null;
+        }
+        if (_prewarmResolveTimeout <= TimeSpan.Zero)
+        {
+            // A zero timeout means cache-only: answer from whatever an earlier
+            // check already warmed, and never wait on the socket.
+            var cachedOnly = await _datastreamClient.GetCachedCompany(company);
             return cachedOnly?.Id;
         }
 
