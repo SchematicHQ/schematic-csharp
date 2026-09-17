@@ -26,6 +26,12 @@ public record PlanVersionMigrationResponseData : IJsonOnDeserialized
     [JsonPropertyName("failed_companies")]
     public required long FailedCompanies { get; set; }
 
+    [JsonPropertyName("feature_id")]
+    public string? FeatureId { get; set; }
+
+    [JsonPropertyName("feature_plan_rollout_id")]
+    public string? FeaturePlanRolloutId { get; set; }
+
     [JsonPropertyName("id")]
     public required string Id { get; set; }
 

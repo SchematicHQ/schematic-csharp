@@ -8573,6 +8573,8 @@ await client.Plans.ListPlansAsync(
         Q = "q",
         ScopedToCompanyId = "scoped_to_company_id",
         WithEntitlements = true,
+        WithPublishedVersion = true,
+        WithoutEntitlementForIncludeDrafts = true,
         WithoutEntitlementFor = "without_entitlement_for",
         WithoutPaidProductId = true,
         Limit = 1000000,
@@ -9011,6 +9013,8 @@ await client.Plans.CountPlansAsync(
         Q = "q",
         ScopedToCompanyId = "scoped_to_company_id",
         WithEntitlements = true,
+        WithPublishedVersion = true,
+        WithoutEntitlementForIncludeDrafts = true,
         WithoutEntitlementFor = "without_entitlement_for",
         WithoutPaidProductId = true,
         Limit = 1000000,
@@ -12383,6 +12387,7 @@ await client.Planmigrations.CountCompanyMigrationsAsync(
 await client.Planmigrations.ListMigrationsAsync(
     new ListMigrationsRequest
     {
+        FeatureId = "feature_id",
         PlanVersionId = "plan_version_id",
         Status = PlanVersionMigrationStatus.Cancelled,
         Limit = 1000000,
@@ -12667,6 +12672,7 @@ await client.Planmigrations.RetryMigrationAsync(
 await client.Planmigrations.CountMigrationsAsync(
     new CountMigrationsRequest
     {
+        FeatureId = "feature_id",
         PlanVersionId = "plan_version_id",
         Status = PlanVersionMigrationStatus.Cancelled,
         Limit = 1000000,

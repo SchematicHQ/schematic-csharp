@@ -42,6 +42,9 @@ public record BillingCreditResponseData : IJsonOnDeserialized
     [JsonPropertyName("id")]
     public required string Id { get; set; }
 
+    [JsonPropertyName("ledger_authority")]
+    public required BillingCreditLedgerAuthority LedgerAuthority { get; set; }
+
     [JsonPropertyName("name")]
     public required string Name { get; set; }
 

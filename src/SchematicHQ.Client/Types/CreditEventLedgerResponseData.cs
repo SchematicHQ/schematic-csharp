@@ -98,6 +98,9 @@ public record CreditEventLedgerResponseData : IJsonOnDeserialized
     [JsonPropertyName("to_grant_id")]
     public string? ToGrantId { get; set; }
 
+    [JsonPropertyName("transfer_reason")]
+    public CreditTransferReason? TransferReason { get; set; }
+
     [JsonPropertyName("usage_event_id")]
     public string? UsageEventId { get; set; }
 

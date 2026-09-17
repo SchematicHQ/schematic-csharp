@@ -4,19 +4,19 @@ using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
 
-[JsonConverter(typeof(BillingArrearsCadence.BillingArrearsCadenceSerializer))]
+[JsonConverter(typeof(CreditTransferReason.CreditTransferReasonSerializer))]
 [Serializable]
-public readonly record struct BillingArrearsCadence : IStringEnum
+public readonly record struct CreditTransferReason : IStringEnum
 {
-    public static readonly BillingArrearsCadence EndOfBillingPeriod = new(
-        Values.EndOfBillingPeriod
-    );
+    public static readonly CreditTransferReason OverdraftRecovery = new(Values.OverdraftRecovery);
 
-    public static readonly BillingArrearsCadence Monthly = new(Values.Monthly);
+    public static readonly CreditTransferReason PostpaidDebtMoved = new(Values.PostpaidDebtMoved);
 
-    public static readonly BillingArrearsCadence Quarterly = new(Values.Quarterly);
+    public static readonly CreditTransferReason PostpaidForgiven = new(Values.PostpaidForgiven);
 
-    public BillingArrearsCadence(string value)
+    public static readonly CreditTransferReason PostpaidPaid = new(Values.PostpaidPaid);
+
+    public CreditTransferReason(string value)
     {
         Value = value;
     }
@@ -29,9 +29,9 @@ public readonly record struct BillingArrearsCadence : IStringEnum
     /// <summary>
     /// Create a string enum with the given value.
     /// </summary>
-    public static BillingArrearsCadence FromCustom(string value)
+    public static CreditTransferReason FromCustom(string value)
     {
-        return new BillingArrearsCadence(value);
+        return new CreditTransferReason(value);
     }
 
     public bool Equals(string? other)
@@ -47,19 +47,19 @@ public readonly record struct BillingArrearsCadence : IStringEnum
         return Value;
     }
 
-    public static bool operator ==(BillingArrearsCadence value1, string value2) =>
+    public static bool operator ==(CreditTransferReason value1, string value2) =>
         value1.Value.Equals(value2);
 
-    public static bool operator !=(BillingArrearsCadence value1, string value2) =>
+    public static bool operator !=(CreditTransferReason value1, string value2) =>
         !value1.Value.Equals(value2);
 
-    public static explicit operator string(BillingArrearsCadence value) => value.Value;
+    public static explicit operator string(CreditTransferReason value) => value.Value;
 
-    public static explicit operator BillingArrearsCadence(string value) => new(value);
+    public static explicit operator CreditTransferReason(string value) => new(value);
 
-    internal class BillingArrearsCadenceSerializer : JsonConverter<BillingArrearsCadence>
+    internal class CreditTransferReasonSerializer : JsonConverter<CreditTransferReason>
     {
-        public override BillingArrearsCadence Read(
+        public override CreditTransferReason Read(
             ref Utf8JsonReader reader,
             Type typeToConvert,
             JsonSerializerOptions options
@@ -70,19 +70,19 @@ public readonly record struct BillingArrearsCadence : IStringEnum
                 ?? throw new global::System.Exception(
                     "The JSON value could not be read as a string."
                 );
-            return new BillingArrearsCadence(stringValue);
+            return new CreditTransferReason(stringValue);
         }
 
         public override void Write(
             Utf8JsonWriter writer,
-            BillingArrearsCadence value,
+            CreditTransferReason value,
             JsonSerializerOptions options
         )
         {
             writer.WriteStringValue(value.Value);
         }
 
-        public override BillingArrearsCadence ReadAsPropertyName(
+        public override CreditTransferReason ReadAsPropertyName(
             ref Utf8JsonReader reader,
             Type typeToConvert,
             JsonSerializerOptions options
@@ -93,12 +93,12 @@ public readonly record struct BillingArrearsCadence : IStringEnum
                 ?? throw new global::System.Exception(
                     "The JSON property name could not be read as a string."
                 );
-            return new BillingArrearsCadence(stringValue);
+            return new CreditTransferReason(stringValue);
         }
 
         public override void WriteAsPropertyName(
             Utf8JsonWriter writer,
-            BillingArrearsCadence value,
+            CreditTransferReason value,
             JsonSerializerOptions options
         )
         {
@@ -112,10 +112,12 @@ public readonly record struct BillingArrearsCadence : IStringEnum
     [Serializable]
     public static class Values
     {
-        public const string EndOfBillingPeriod = "end_of_billing_period";
+        public const string OverdraftRecovery = "overdraft_recovery";
 
-        public const string Monthly = "monthly";
+        public const string PostpaidDebtMoved = "postpaid_debt_moved";
 
-        public const string Quarterly = "quarterly";
+        public const string PostpaidForgiven = "postpaid_forgiven";
+
+        public const string PostpaidPaid = "postpaid_paid";
     }
 }
