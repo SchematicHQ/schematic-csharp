@@ -914,7 +914,7 @@ public partial class Schematic
     /// reasons, not by throwing, so this is the only way to tell a real "false"
     /// from "could not evaluate".
     /// </summary>
-    private static bool EngineDeclined(CheckFlagResult result) =>
+    internal static bool EngineDeclined(CheckFlagResult result) =>
         result.Error != null
         || result.Reason == DatastreamClient.ReasonRulesEngineUnavailable
         || result.Reason == DatastreamClient.ReasonRulesEngineError;
