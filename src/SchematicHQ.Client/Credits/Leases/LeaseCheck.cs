@@ -254,12 +254,7 @@ public static class LeaseCheck
             return await fallback().ConfigureAwait(false);
         }
 
-        // Size the hold from the quantity that will be billed, not the raw
-        // usage: a settle carries whole units, so a fractional usage that held
-        // only its fraction would bill more than it held. Rounding the same way
-        // on both sides keeps the hold and the bill equal.
-        var billedQuantity = LeasePreflight.PreflightQuantity(usage);
-        var creditCost = billedQuantity * consumptionRate;
+        var creditCost = usage * consumptionRate;
         var companyId = resolvedCompany.Id;
         var ids = new FlagCheckIds { CompanyId = companyId, UserId = resolvedUser?.Id };
 
@@ -358,7 +353,7 @@ public static class LeaseCheck
             CompanyId = companyId,
             CreditTypeId = creditId,
             EventSubtype = eventSubtype,
-            QuantityReserved = billedQuantity,
+            QuantityReserved = usage,
             CreditsReserved = creditCost,
             ConsumptionRate = consumptionRate,
             ExpiresAt = deps.Now() + resolvedConfig.ReservationTTL,
@@ -381,25 +376,29 @@ public static class LeaseCheck
             return await Failure("lease_store_error").ConfigureAwait(false);
         }
 
-        // Gate against the lease's local view rather than the server's balance.
-        // The substituted figure is the pre-reservation balance (what TryReserve
-        // returned plus what it debited, exact as of the debit), and the credit
-        // cost tells the engine what this call costs, so it evaluates the same
-        // arithmetic TryReserve just enforced, plus every non-credit rule.
-        var substituted = SubstituteCreditBalance(
-            resolvedCompany,
-            creditId,
-            reserve.Value.Balance + creditCost
-        );
-        var gate = new PreflightRequestBody
-        {
-            CreditCost = new Dictionary<string, double> { [creditId] = creditCost },
-        };
-
         CheckFlagResult? result = null;
         Exception? gateError = null;
         try
         {
+            // Gate against the lease's local view rather than the server's
+            // balance. The substituted figure is the pre-reservation balance
+            // (what TryReserve returned plus what it debited, exact as of the
+            // debit), and the credit cost tells the engine what this call
+            // costs, so it evaluates the same arithmetic TryReserve just
+            // enforced, plus every non-credit rule.
+            //
+            // Built inside the try because it reads the company payload: the
+            // hold is already taken, so anything that throws here has to unwind
+            // through the same refund an engine failure does.
+            var substituted = SubstituteCreditBalance(
+                resolvedCompany,
+                creditId,
+                reserve.Value.Balance + creditCost
+            );
+            var gate = new PreflightRequestBody
+            {
+                CreditCost = new Dictionary<string, double> { [creditId] = creditCost },
+            };
             result = await datastream
                 .EvaluateAsync(flag, substituted, resolvedUser, gate)
                 .ConfigureAwait(false);
@@ -656,10 +655,14 @@ public static class LeaseCheck
         double balance
     )
     {
-        var balances = new Dictionary<string, double>(company.CreditBalances)
-        {
-            [creditId] = balance,
-        };
+        // A company can arrive with no credit balances at all: the payload
+        // omits the field rather than sending an empty map, and copying null
+        // throws. The merge path does the same defaulting before reading it.
+        var balances =
+            company.CreditBalances == null
+                ? new Dictionary<string, double>()
+                : new Dictionary<string, double>(company.CreditBalances);
+        balances[creditId] = balance;
         return company with { CreditBalances = balances };
     }
 

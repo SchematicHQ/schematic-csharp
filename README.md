@@ -395,7 +395,7 @@ else
 }
 ```
 
-`Usage` may be fractional. The API carries whole quantities, so it rounds up everywhere: the reservation, the preflight quantity, and the quantity a settle bills. A reservation is never smaller than what its track event charges.
+`Usage` may be fractional. A client-mode reservation holds it unrounded, as does the ledger debit a settle makes. The integer fields on the wire round up: the preflight quantity and the quantity a track event bills, so a partial unit is never billed as none.
 
 A check can allow without reserving credits (the feature is not credit-metered, `Usage` is 0, or the check failed open), and that usage still has to be tracked.
 
@@ -441,6 +441,8 @@ var result = await schematic.Check(
 ```
 
 In client mode, `FailOpen` still evaluates the flag's rules with the credit balance assumed sufficient, so plan targeting and all non-credit conditions apply and only the credit gate is bypassed. In server mode it returns the flag's default value, which is `false` unless you pass `CheckOptions.DefaultValue` or configure a `FlagDefaults` entry.
+
+In server mode, a check that times out after the server has already reserved leaves those credits reserved until the TTL expires, so keep `DefaultReservationTTL` short there.
 
 See [Credit Lease Options](#credit-lease-options) for the full set of knobs.
 

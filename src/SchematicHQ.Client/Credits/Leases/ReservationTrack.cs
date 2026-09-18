@@ -44,15 +44,8 @@ public static class ReservationTrack
         TrackWithReservationOptions? options = null
     )
     {
-        // Debit the billed quantity, not the raw one. The event below carries
-        // whole units, so charging the lease the fraction would leave the local
-        // ledger permanently under what the server bills and the drift would
-        // compound over every settle.
         var claimed = await reservations
-            .ConsumeAsync(
-                reservation.Id,
-                SettleQuantity(actualQuantity) * reservation.ConsumptionRate
-            )
+            .ConsumeAsync(reservation.Id, actualQuantity * reservation.ConsumptionRate)
             .ConfigureAwait(false);
         return new SettleOutcome
         {

@@ -87,6 +87,70 @@ public class LeaseCheckEngineFailureTests
         Assert.That(result.Reservation, Is.Null);
     }
 
+    [Test]
+    public async Task A_Company_With_No_Credit_Balances_Is_Evaluated_Rather_Than_Throwing()
+    {
+        var leases = new InMemoryLeaseStore();
+        using var reservations = new InMemoryReservationStore(leases);
+        // The payload omits credit_balances rather than sending an empty map,
+        // and the gate has to substitute into it anyway.
+        var company = Company();
+        company.CreditBalances = null;
+        var datastream = new StubCheckDataStream(FlagKey, company)
+            .ProbesCredit(CreditId, 10, "inference_tokens")
+            .Answers(true, "ok");
+
+        var result = await CheckAsync(leases, reservations, datastream, OnAcquireFailure.FailClosed);
+
+        Assert.That(result.Allowed, Is.True);
+        Assert.That(result.Reservation, Is.Not.Null);
+    }
+
+    [Test]
+    public async Task Anything_Thrown_While_Gating_Refunds_The_Hold()
+    {
+        var leases = new InMemoryLeaseStore();
+        using var reservations = new InMemoryReservationStore(leases);
+        var datastream = new ThrowingCheckDataStream(FlagKey, Company());
+
+        var result = await CheckAsync(leases, reservations, datastream, OnAcquireFailure.FailClosed);
+
+        Assert.That(result.Allowed, Is.False);
+        // The hold is taken before the gate runs, so every way out of it has to
+        // go back through the refund.
+        var lease = await leases.GetAsync("co_1", CreditId);
+        Assert.That(lease!.LocalRemainingCredits, Is.EqualTo(1000));
+        Assert.That(await reservations.CountAsync(), Is.EqualTo(0));
+    }
+
+    /// <summary>
+    /// Probes the entitlement, then throws on the gating evaluation.
+    /// </summary>
+    private sealed class ThrowingCheckDataStream : StubCheckDataStream
+    {
+        private int _calls;
+
+        public ThrowingCheckDataStream(string flagKey, RulesengineCompany company)
+            : base(flagKey, company)
+        {
+            ProbesCredit(CreditId, 10, "inference_tokens");
+        }
+
+        public override Task<CheckFlagResult> EvaluateAsync(
+            RulesengineFlag flag,
+            RulesengineCompany company,
+            RulesengineUser? user,
+            PreflightRequestBody? preflight
+        )
+        {
+            if (_calls++ == 0)
+            {
+                return base.EvaluateAsync(flag, company, user, preflight);
+            }
+            throw new InvalidOperationException("the gate blew up");
+        }
+    }
+
     private static Task<CheckResult> CheckAsync(
         ILeaseStore leases,
         IReservationStore reservations,

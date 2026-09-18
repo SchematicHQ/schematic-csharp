@@ -150,9 +150,7 @@ public static class ServerCheck
         {
             Company = company,
             User = user,
-            // Whole units, matching the quantity the settling event bills and
-            // the preflight below, so the server holds exactly what it charges.
-            Quantity = LeasePreflight.PreflightQuantity(options.Usage.Value),
+            Quantity = options.Usage.Value,
             ExpiresAt = deps.Now() + deps.ReservationTTL,
             Preflight = LeasePreflight.Build(options),
             // A hold is a side effect, so a retry without a key would take a

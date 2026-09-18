@@ -8,7 +8,7 @@ namespace SchematicHQ.Client.Test.Credits.Leases;
 /// the next scripted result, in call order. The conformance runner has its own
 /// vector-driven version; this one is for the tests that build a case in code.
 /// </summary>
-public sealed class StubCheckDataStream : ICheckDataStream
+public class StubCheckDataStream : ICheckDataStream
 {
     private readonly Queue<CheckFlagResult> _results = new();
 
@@ -119,7 +119,7 @@ public sealed class StubCheckDataStream : ICheckDataStream
     public Task<RulesengineUser?> GetUserAsync(Dictionary<string, string> keys) =>
         Task.FromResult<RulesengineUser?>(null);
 
-    public Task<CheckFlagResult> EvaluateAsync(
+    public virtual Task<CheckFlagResult> EvaluateAsync(
         RulesengineFlag flag,
         RulesengineCompany company,
         RulesengineUser? user,

@@ -408,5 +408,13 @@ public sealed class FakeLeaseRedis : ILeaseRedis
             ? parsed
             : 0;
 
-    private static string Text(double value) => value.ToString("R", CultureInfo.InvariantCulture);
+    /// <summary>
+    /// Renders a number the way the real scripts do. Redis runs Lua 5.1, whose
+    /// tostring writes %.14g, so a balance that round-trips through a script
+    /// loses everything past 14 significant digits. Formatting to full
+    /// precision here would let the fake allow reserves real Redis refuses, and
+    /// refuse ones it allows.
+    /// </summary>
+    private static string Text(double value) =>
+        value.ToString("G14", CultureInfo.InvariantCulture);
 }
