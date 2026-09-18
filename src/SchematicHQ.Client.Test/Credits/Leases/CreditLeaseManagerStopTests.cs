@@ -1,3 +1,5 @@
+using System.Diagnostics;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using NUnit.Framework;
 using SchematicHQ.Client.Leases;
@@ -48,6 +50,58 @@ public class CreditLeaseManagerStopTests
         Assert.That(lease, Is.Not.Null);
         Assert.That(wire.ReleasedLeaseIds, Is.Empty);
         Assert.That((await leases.GetAsync("co_1", "ct_1"))!.LeaseId, Is.EqualTo("lse_1"));
+    }
+
+    [Test]
+    public async Task A_Release_That_Never_Lands_Does_Not_Hold_The_Close_Open()
+    {
+        var leases = new InMemoryLeaseStore();
+        await leases.ReplaceAsync(Grant());
+        var wire = new HangingReleaseWire();
+        using var logs = new RecordingLoggerFactory();
+        var manager = new CreditLeaseManager(
+            wire,
+            leases,
+            new CreditLeaseConfig { DefaultLeaseSize = 1000 },
+            logs.CreateLogger("test")
+        );
+
+        var clock = Stopwatch.StartNew();
+        await manager.ReleaseAllLocalLeasesAsync(TimeSpan.FromMilliseconds(50));
+        clock.Stop();
+
+        Assert.That(clock.Elapsed, Is.LessThan(TimeSpan.FromSeconds(2)));
+        Assert.That(logs.Logged(LogLevel.Warning, "releasing credit leases on close"), Is.True);
+        // Abandoned, not cancelled: the lease is still the server's to expire.
+        wire.Finish();
+    }
+
+    /// <summary>
+    /// A server whose release call never answers, which is what the shutdown
+    /// budget exists for.
+    /// </summary>
+    private sealed class HangingReleaseWire : ILeaseWireClient
+    {
+        private readonly TaskCompletionSource<bool> _hang = new();
+
+        public void Finish() => _hang.TrySetResult(true);
+
+        public Task<LeaseGrant> AcquireAsync(
+            string companyId,
+            string creditTypeId,
+            double requestedAmount,
+            DateTime expiresAt,
+            RequestOptions? options = null
+        ) => throw new InvalidOperationException("no acquire was expected");
+
+        public Task<LeaseGrant> ExtendAsync(
+            string leaseId,
+            double additionalAmount,
+            DateTime expiresAt,
+            RequestOptions? options = null
+        ) => throw new InvalidOperationException("no extend was expected");
+
+        public Task ReleaseAsync(string leaseId, RequestOptions? options = null) => _hang.Task;
     }
 
     private static CreditLeaseManager Manager(ScriptedLeaseWireClient wire, ILeaseStore leases) =>

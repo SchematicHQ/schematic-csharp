@@ -319,7 +319,7 @@ For features metered by credit burndown (for example inference tokens), `Check` 
 - **Client mode** acquires a **lease**, a tranche of credits held against the company's balance, and carves a per-request **reservation** out of it locally, so a check needs no API call. It requires [Datastream](#datastream) (or [Replicator Mode](#replicator-mode)) and, across multiple processes, a shared Redis so every instance gates against the same lease.
 - **Server mode** makes one `check-and-reserve` API call per check. No lease, no Redis, no local state.
 
-`CreditLeases.Mode` defaults to `Auto`: client when datastream is enabled, server otherwise. Client mode suits high-throughput gating; server mode suits low-volume checks and operations that run for seconds.
+`CreditLeases.Mode` defaults to `Auto`: client when the datastream is running, server otherwise. A datastream that fails to start counts as server, since there is no local engine behind the gate. Client mode suits high-throughput gating; server mode suits low-volume checks and operations that run for seconds.
 
 ### Setup
 
@@ -395,7 +395,7 @@ else
 }
 ```
 
-`Usage` may be fractional. A client-mode reservation holds it unrounded, as does the ledger debit a settle makes. The integer fields on the wire round up: the preflight quantity and the quantity a track event bills, so a partial unit is never billed as none.
+`Usage` may be fractional, but a fraction of an event is not something the server bills, so everything that moves credits rounds up to whole units. A client-mode reservation holds `ceil(Usage)` times the consumption rate, and a settle debits `ceil` of the actual quantity, so the local ledger moves by exactly what the track event charges. The preflight quantity and the quantity a track event bills round the same way. A check for 2.5 units at a rate of 10 holds 30 credits and bills 3 units, while the reservation still records the `Usage` the caller declared.
 
 A check can allow without reserving credits (the feature is not credit-metered, `Usage` is 0, or the check failed open), and that usage still has to be tracked.
 
@@ -420,6 +420,8 @@ schematic.Identify(
 ```
 
 Or call `schematic.Prewarm(company, creditTypeIds)` directly. Both are no-ops in server mode.
+
+Pre-warming resolves the company the way the server does: it looks the keys up first, whatever they are named, and only when nothing matches does it read a value carrying Schematic's `comp_` prefix as the company id.
 
 An `Identify` that carries `Prewarm` flushes the event buffer so the company exists before the lease acquire asks for it, which makes it a call to place once at the start of a session rather than on every event.
 

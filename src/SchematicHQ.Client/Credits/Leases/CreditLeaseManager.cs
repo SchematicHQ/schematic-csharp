@@ -24,6 +24,14 @@ namespace SchematicHQ.Client.Leases;
 /// </summary>
 public sealed class CreditLeaseManager
 {
+    /// <summary>
+    /// How many in-flight extends one caller will wait out before issuing its
+    /// own. Two covers the case the single-flight was written for: the flight a
+    /// caller joins, and the follow-up another caller registers while it was
+    /// waiting.
+    /// </summary>
+    private const int MaxExtendJoins = 2;
+
     private readonly ILeaseWireClient _wire;
     private readonly ILeaseStore _leaseStore;
     private readonly ILogger _logger;
@@ -279,7 +287,9 @@ public sealed class CreditLeaseManager
     /// shortfall is larger than what that extend asked for, it waits the flight
     /// out and then issues exactly one follow-up extend for the remaining
     /// difference; otherwise it would inherit a tranche-sized ask and fail its
-    /// post-extend retry with credits still sitting on the server.</para>
+    /// post-extend retry with credits still sitting on the server. A flight it
+    /// finds on the way back is only joined if that one covers the shortfall
+    /// too; a smaller one is waited out, never inherited.</para>
     ///
     /// <para>Returns the in-flight task so callers can await it or fire and
     /// forget. It never throws.</para>
@@ -306,16 +316,112 @@ public sealed class CreditLeaseManager
         // Tracked whole, not just the wire call inside it: callers drop this
         // task, so between the store read and the extend there would otherwise
         // be a window where a drain sees nothing pending.
-        return Track(ExtendIfNeededAsync(companyId, creditTypeId, requiredCredits, options, true));
+        return Track(ExtendIfNeededAsync(companyId, creditTypeId, requiredCredits, options));
     }
 
     private async Task<LeaseState?> ExtendIfNeededAsync(
         string companyId,
         string creditTypeId,
         double? requiredCredits,
-        RequestOptions? options,
-        bool allowFollowUp
+        RequestOptions? options
     )
+    {
+        // A joiner waits on someone else's wire call, which runs on whatever
+        // timeout ITS caller set (a background refresh uses the client
+        // default). So the wait is capped at this caller's own timeout: a check
+        // with 200ms to spend must not sit behind a 30s extend.
+        var joinDeadline = JoinDeadline(options);
+        // Joins are budgeted, extends of our own are not: a caller may wait out
+        // flights that ask for too little, but once the budget runs out it
+        // issues its own single extend rather than joining again. Without the
+        // budget a caller could wait behind an unbounded run of other callers'
+        // follow-ups; without the own extend it would return a balance it
+        // already knows is short and fail its retry with credits on the server.
+        for (var joinsLeft = MaxExtendJoins; ; joinsLeft--)
+        {
+            var entry = await ReadLiveLeaseAsync(companyId, creditTypeId).ConfigureAwait(false);
+            if (entry == null)
+            {
+                return null;
+            }
+
+            var resolved = ResolveConfig(creditTypeId);
+            if (!NeedsExtend(entry, resolved, requiredCredits))
+            {
+                return entry;
+            }
+
+            // Size the extend to cover the request that triggered it: a single
+            // check needing more than the remaining plus a tranche would
+            // otherwise fail its post-extend retry forever, even with ample
+            // server balance. The watermark-driven steady-state path keeps
+            // requesting the configured tranche. Sized here, one level above
+            // the wire call, so the flight registered below and the request
+            // body provably carry the same number for a joiner to compare
+            // against.
+            var shortfall = requiredCredits.HasValue
+                ? requiredCredits.Value - entry.LocalRemainingCredits
+                : 0;
+            var additionalAmount = Math.Max(resolved.LeaseSize, shortfall);
+
+            var key = LeaseKeys.Slot(companyId, creditTypeId);
+            ExtendFlight? inflight;
+            lock (_gate)
+            {
+                _inflightExtend.TryGetValue(key, out inflight);
+            }
+
+            if (inflight != null && joinsLeft > 0)
+            {
+                var join = await JoinWithinAsync(inflight.Task, joinDeadline)
+                    .ConfigureAwait(false);
+                if (join.TimedOut)
+                {
+                    // The flight runs on for everybody else; we just stop
+                    // waiting on it. Reporting no entry sends the caller down
+                    // its fail-open or fail-closed path, which is what its
+                    // timeout asked for.
+                    _logger.LogDebug(
+                        "Extend in flight for {CompanyId}/{CreditTypeId} outlasted the caller's timeout; not waiting on it",
+                        companyId,
+                        creditTypeId
+                    );
+                    return null;
+                }
+                // The flight asked for at least what we need: every
+                // watermark-driven joiner, and any check the tranche covers.
+                // One wire call serves all of them, which is the point of
+                // single-flight.
+                if (additionalAmount <= inflight.RequestedAdditional)
+                {
+                    return join.Entry;
+                }
+                // It asked for less. Go round again to re-read the slot it just
+                // moved, so what we ask for next is sized against the balance
+                // it left rather than the one we started from.
+                continue;
+            }
+
+            return await StartExtendAsync(
+                    key,
+                    companyId,
+                    creditTypeId,
+                    resolved,
+                    requiredCredits,
+                    additionalAmount,
+                    options
+                )
+                .ConfigureAwait(false);
+        }
+    }
+
+    /// <summary>
+    /// The slot's lease, or null when the read fails or the lease is absent or
+    /// expired. An expired lease is never extended: the server treats it as
+    /// released, with its remainder already refunded to the company balance, so
+    /// the right move is the fresh acquire the next check performs.
+    /// </summary>
+    private async Task<LeaseState?> ReadLiveLeaseAsync(string companyId, string creditTypeId)
     {
         LeaseState? entry;
         try
@@ -333,75 +439,58 @@ public sealed class CreditLeaseManager
             return null;
         }
 
-        if (entry == null)
+        if (entry == null || entry.ExpiresAt <= _clock())
         {
             return null;
         }
-        // Never extend an expired lease: the server treats it as released, with
-        // its remainder already refunded to the company balance, so the right
-        // move is the fresh acquire the next check performs.
-        if (entry.ExpiresAt <= _clock())
+        return entry;
+    }
+
+    /// <summary>
+    /// When a joiner's wait on a shared flight runs out, or null for no cap.
+    /// </summary>
+    private static DateTime? JoinDeadline(RequestOptions? options)
+    {
+        var timeout = options?.Timeout;
+        if (timeout == null)
         {
             return null;
         }
+        return DateTime.UtcNow + timeout.Value;
+    }
 
-        var resolved = ResolveConfig(creditTypeId);
-        var ratio = entry.LocalRemainingCredits / Math.Max(entry.GrantedAmount, 1);
-        var belowWatermark = ratio <= resolved.LowWaterMark;
-        var belowRequired =
-            requiredCredits.HasValue && entry.LocalRemainingCredits < requiredCredits.Value;
-        if (!belowWatermark && !belowRequired)
+    /// <summary>
+    /// Awaits a flight somebody else is running, giving up at
+    /// <paramref name="deadline"/>. Giving up abandons only our wait: the
+    /// flight keeps running for the callers still on it, and whatever it
+    /// installs is there for our next check to read.
+    ///
+    /// <para>Timed against the wall clock rather than the injected one, because
+    /// the delay it races is a real timer.</para>
+    /// </summary>
+    private static async Task<(LeaseState? Entry, bool TimedOut)> JoinWithinAsync(
+        Task<LeaseState?> flight,
+        DateTime? deadline
+    )
+    {
+        if (deadline == null)
         {
-            return entry;
+            return (await flight.ConfigureAwait(false), false);
         }
-
-        // Size the extend to cover the request that triggered it: a single
-        // check needing more than the remaining plus a tranche would otherwise
-        // fail its post-extend retry forever, even with ample server balance.
-        // The watermark-driven steady-state path keeps requesting the
-        // configured tranche. Sized here, one level above the wire call, so the
-        // flight registered below and the request body provably carry the same
-        // number for a joiner to compare against.
-        var shortfall = requiredCredits.HasValue
-            ? requiredCredits.Value - entry.LocalRemainingCredits
-            : 0;
-        var additionalAmount = Math.Max(resolved.LeaseSize, shortfall);
-
-        var key = LeaseKeys.Slot(companyId, creditTypeId);
-        ExtendFlight? inflight;
-        lock (_gate)
+        var remaining = deadline.Value - DateTime.UtcNow;
+        if (remaining <= TimeSpan.Zero)
         {
-            _inflightExtend.TryGetValue(key, out inflight);
+            return (null, true);
         }
-
-        if (inflight != null)
+        using var expiry = new CancellationTokenSource();
+        var timer = Task.Delay(remaining, expiry.Token);
+        var finished = await Task.WhenAny(flight, timer).ConfigureAwait(false);
+        if (finished != flight)
         {
-            var joined = await inflight.Task.ConfigureAwait(false);
-            // The flight already asked for at least what we need: every
-            // watermark-driven joiner, and any check the tranche covers. One
-            // wire call serves all of them, which is the point of single-flight.
-            if (additionalAmount <= inflight.RequestedAdditional || !allowFollowUp)
-            {
-                return joined;
-            }
-            // Our shortfall outran the flight's ask. We waited it out rather
-            // than racing a second extend onto the same lease; now top up the
-            // difference with exactly one more, re-reading the slot the flight
-            // just moved. Disallowing a further follow-up keeps this from
-            // chaining: when the server cannot cover the request, a chain would
-            // spin.
-            return await ExtendIfNeededAsync(
-                    companyId,
-                    creditTypeId,
-                    requiredCredits,
-                    options,
-                    false
-                )
-                .ConfigureAwait(false);
+            return (null, true);
         }
-
-        return await StartExtendAsync(key, entry, resolved, additionalAmount, options)
-            .ConfigureAwait(false);
+        expiry.Cancel();
+        return (await flight.ConfigureAwait(false), false);
     }
 
     /// <summary>
@@ -412,8 +501,10 @@ public sealed class CreditLeaseManager
     /// </summary>
     private Task<LeaseState?> StartExtendAsync(
         string key,
-        LeaseState entry,
+        string companyId,
+        string creditTypeId,
         ResolvedLeaseConfig resolved,
+        double? requiredCredits,
         double additionalAmount,
         RequestOptions? options
     )
@@ -426,12 +517,65 @@ public sealed class CreditLeaseManager
             {
                 return existing.Task;
             }
-            task = ExtendAsync(entry, resolved, additionalAmount, options);
+            task = RecheckAndExtendAsync(
+                companyId,
+                creditTypeId,
+                resolved,
+                requiredCredits,
+                additionalAmount,
+                options
+            );
             flight = new ExtendFlight(additionalAmount, task);
             _inflightExtend[key] = flight;
         }
 
         return AwaitAndClear(key, flight);
+    }
+
+    /// <summary>
+    /// Re-reads the slot now that this flight owns it, and extends only if the
+    /// fresh row still warrants one. The row that decided this extend was read
+    /// before the flight was registered, so an extend that landed in that gap,
+    /// clearing its own flight on the way out, would otherwise be followed by a
+    /// second extend, under a new idempotency key, for a lease it already
+    /// topped up. The registered additional amount stands: a joiner compares
+    /// its shortfall against that figure, so the wire body has to carry it.
+    /// </summary>
+    private async Task<LeaseState?> RecheckAndExtendAsync(
+        string companyId,
+        string creditTypeId,
+        ResolvedLeaseConfig resolved,
+        double? requiredCredits,
+        double additionalAmount,
+        RequestOptions? options
+    )
+    {
+        var entry = await ReadLiveLeaseAsync(companyId, creditTypeId).ConfigureAwait(false);
+        if (entry == null)
+        {
+            return null;
+        }
+        if (!NeedsExtend(entry, resolved, requiredCredits))
+        {
+            return entry;
+        }
+        return await ExtendAsync(entry, resolved, additionalAmount, options).ConfigureAwait(false);
+    }
+
+    /// <summary>
+    /// Whether a lease sits low enough to warrant an extend.
+    /// </summary>
+    private static bool NeedsExtend(
+        LeaseState entry,
+        ResolvedLeaseConfig resolved,
+        double? requiredCredits
+    )
+    {
+        var ratio = entry.LocalRemainingCredits / Math.Max(entry.GrantedAmount, 1);
+        var belowWatermark = ratio <= resolved.LowWaterMark;
+        var belowRequired =
+            requiredCredits.HasValue && entry.LocalRemainingCredits < requiredCredits.Value;
+        return belowWatermark || belowRequired;
     }
 
     private async Task<LeaseState?> AwaitAndClear(string key, ExtendFlight flight)
@@ -518,8 +662,12 @@ public sealed class CreditLeaseManager
     /// and is excluded by the <see cref="ILeaseLister"/> check below. Best
     /// effort: failures are logged and the lease falls back to server-side
     /// expiry.
+    ///
+    /// <para>Bounded by <paramref name="timeout"/>, so a store or wire call that
+    /// never lands cannot hold a closing client open; whatever is abandoned
+    /// expires server-side.</para>
     /// </summary>
-    public async Task ReleaseAllLocalLeasesAsync()
+    public async Task ReleaseAllLocalLeasesAsync(TimeSpan? timeout = null)
     {
         if (_leaseStore is not ILeaseLister lister)
         {
@@ -532,37 +680,45 @@ public sealed class CreditLeaseManager
             return;
         }
 
-        await Task.WhenAll(
-                entries.Select(async entry =>
+        var budget = timeout ?? LeaseDefaults.ShutdownDrainTimeout;
+        var releases = entries
+            .Select(async entry =>
+            {
+                // Skip expired leases: the server already swept and
+                // refunded them.
+                if (entry.ExpiresAt <= _clock())
                 {
-                    // Skip expired leases: the server already swept and
-                    // refunded them.
-                    if (entry.ExpiresAt <= _clock())
-                    {
-                        return;
-                    }
-                    try
-                    {
-                        await _wire.ReleaseAsync(entry.LeaseId).ConfigureAwait(false);
-                        await _leaseStore
-                            .DropAsync(entry.CompanyId, entry.CreditTypeId)
-                            .ConfigureAwait(false);
-                        _logger.LogDebug(
-                            "Released credit lease {LeaseId} on close",
-                            entry.LeaseId
-                        );
-                    }
-                    catch (Exception ex)
-                    {
-                        _logger.LogWarning(
-                            ex,
-                            "Failed to release credit lease {LeaseId} on close; it will expire server-side",
-                            entry.LeaseId
-                        );
-                    }
-                })
-            )
-            .ConfigureAwait(false);
+                    return;
+                }
+                try
+                {
+                    await _wire.ReleaseAsync(entry.LeaseId).ConfigureAwait(false);
+                    await _leaseStore
+                        .DropAsync(entry.CompanyId, entry.CreditTypeId)
+                        .ConfigureAwait(false);
+                    _logger.LogDebug(
+                        "Released credit lease {LeaseId} on close",
+                        entry.LeaseId
+                    );
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogWarning(
+                        ex,
+                        "Failed to release credit lease {LeaseId} on close; it will expire server-side",
+                        entry.LeaseId
+                    );
+                }
+            })
+            .ToArray();
+
+        if (!await SettleWithinAsync(releases, budget).ConfigureAwait(false))
+        {
+            _logger.LogWarning(
+                "Timed out after {Timeout}ms releasing credit leases on close; any still held will be released by server-side expiry",
+                budget.TotalMilliseconds
+            );
+        }
     }
 
     /// <summary>

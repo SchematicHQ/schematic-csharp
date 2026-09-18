@@ -254,7 +254,11 @@ public static class LeaseCheck
             return await fallback().ConfigureAwait(false);
         }
 
-        var creditCost = usage * consumptionRate;
+        // Whole event units: a fraction of an event is not something the
+        // server bills, so the hold rounds up to what the settle will charge.
+        // Sizing it on the raw quantity would move the local ledger by less
+        // than the track event, and the two would drift apart over a session.
+        var creditCost = Math.Ceiling(usage) * consumptionRate;
         var companyId = resolvedCompany.Id;
         var ids = new FlagCheckIds { CompanyId = companyId, UserId = resolvedUser?.Id };
 

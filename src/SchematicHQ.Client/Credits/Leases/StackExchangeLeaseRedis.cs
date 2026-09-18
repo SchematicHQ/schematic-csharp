@@ -158,8 +158,10 @@ public sealed class StackExchangeLeaseRedis : ILeaseRedis, IDisposable
             key,
             DateTimeOffset.FromUnixTimeMilliseconds(unixTimeMilliseconds).UtcDateTime
         );
-        await transaction.ExecuteAsync().ConfigureAwait(false);
-        await Task.WhenAll(set, expire).ConfigureAwait(false);
+        // All three are awaited together rather than the EXEC first: the two
+        // queued commands have no caller of their own, so an EXEC that throws
+        // would leave them faulted and unobserved.
+        await Task.WhenAll(transaction.ExecuteAsync(), set, expire).ConfigureAwait(false);
     }
 
     public Task HashDeleteAsync(string key, string field) => _db.HashDeleteAsync(key, field);
