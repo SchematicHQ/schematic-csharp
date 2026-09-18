@@ -73,7 +73,10 @@ public sealed class InMemoryReservationStore : IReservationStore
 
         var consumed = Math.Max(0, Math.Min(creditsConsumed, claimed.CreditsReserved));
         var refund = claimed.CreditsReserved - consumed;
-        if (refund > 0)
+        // A hold that cannot name the lease it came out of is not refundable,
+        // the same judgement the Redis store makes: the slice comes back at
+        // lease expiry rather than risking a successor's balance.
+        if (refund > 0 && claimed.LeaseId.Length > 0)
         {
             // Pinned to the originating lease: if that lease has expired and a
             // successor occupies the slot, the refund is dropped, because the

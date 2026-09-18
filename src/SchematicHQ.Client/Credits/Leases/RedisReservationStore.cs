@@ -214,14 +214,21 @@ return raw
         // Index cleanup, both single-key. The credits leave the per-tenant hash
         // BEFORE the refund below so the lease (local remaining plus this hash)
         // never transiently double-counts the slice.
+        //
+        // The per-tenant field goes first and the expiry index second, because
+        // the index is what the sweeper would reach a surviving field through:
+        // dropping the index first and then failing on the field would orphan
+        // it, and the tenant's reserved-credits sum would read high forever.
+        // This order leaves the recoverable failure instead, since a surviving
+        // index entry is swept.
+        await Swallow(_client.HashDeleteAsync(ByCreditKey(companyId, creditTypeId), id))
+            .ConfigureAwait(false);
         await Swallow(
                 _client.SortedSetRemoveAsync(
                     IndexKey(),
                     EncodeMember(companyId, creditTypeId, id)
                 )
             )
-            .ConfigureAwait(false);
-        await Swallow(_client.HashDeleteAsync(ByCreditKey(companyId, creditTypeId), id))
             .ConfigureAwait(false);
 
         var consumed = creditsConsumed;
@@ -234,7 +241,13 @@ return raw
             consumed = reserved;
         }
         var refund = reserved - consumed;
-        if (refund > 0)
+        // A hold that cannot name the lease it came out of is not refundable:
+        // crediting whichever lease holds the slot now could inflate a
+        // successor whose grant the server already issued whole, and the slice
+        // comes back when the lease expires anyway. Decided here, where the
+        // hold is, rather than left to the lease store, because the two
+        // backends read an empty pin differently.
+        if (refund > 0 && Field(raw, "leaseId").Length > 0)
         {
             // Delegate the clamped refund to the lease store, which owns the
             // lease hash, keeping the cross-key write out of a Lua script.
