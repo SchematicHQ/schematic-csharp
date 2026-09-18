@@ -54,6 +54,17 @@ public partial class ClientOptions
     /// Health check URL for the replicator service (required when ReplicatorMode is true)
     /// </summary>
     public string? ReplicatorHealthUrl { get; set; }
+
+    /// <summary>
+    /// Enables credit reservation behavior on <c>Check</c> and
+    /// <c>TrackWithReservation</c>. Omit to keep the client credit-unaware.
+    ///
+    /// <para>Client mode (local leases) needs datastream (or replicator mode) so
+    /// the SDK has the cached flag and company state it gates against. Without
+    /// datastream the SDK gates in server mode instead: one check-and-reserve API
+    /// call per check. See <see cref="Leases.CreditLeaseMode"/>.</para>
+    /// </summary>
+    public Leases.CreditLeaseConfig? CreditLeases { get; set; }
 }
 
 public static class ClientOptionsExtensions
@@ -65,6 +76,7 @@ public static class ClientOptionsExtensions
             BaseUrl = options.BaseUrl,
             CacheProvider = options.CacheProvider,
             CacheConfiguration = options.CacheConfiguration,
+            CreditLeases = options.CreditLeases,
             DatastreamOptions = options.DatastreamOptions,
             DefaultEventBufferPeriod = options.DefaultEventBufferPeriod,
             EventBuffer = options.EventBuffer,

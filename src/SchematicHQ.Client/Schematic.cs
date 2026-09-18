@@ -8,6 +8,7 @@ using Microsoft.Extensions.Logging;
 using SchematicHQ.Client.Datastream;
 using SchematicHQ.Client.Cache;
 using SchematicHQ.Client.Core;
+using SchematicHQ.Client.Leases;
 using SchematicHQ.Client.RulesEngine;
 
 #nullable enable
@@ -21,11 +22,46 @@ public partial class Schematic
     private readonly ILogger _logger;
     private readonly ICacheProvider _cache;
     private readonly bool _offline;
-    private readonly DatastreamClientAdapter? _datastreamClient;
+    // Cleared when the stream fails to start, so every reader (the auto lease
+    // mode above all) sees a client with no local evaluation rather than one
+    // that claims a stream it never got.
+    private volatile DatastreamClientAdapter? _datastreamClient;
     private readonly bool _replicatorMode;
     private bool _datastreamConnected;
     private bool _disposed;
     public readonly SchematicApi API;
+
+    // Idempotency-key namespace for the track event a reservation settles into.
+    // Deterministic per reservation, so a recovery emit (work that outlived the
+    // local reservation TTL) and an accidental double settle collapse to one
+    // billed event: the pipeline drops duplicates by account, environment, event
+    // type and key for 24h before any credit consumption runs.
+    private const string ReservationTrackIdempotencyPrefix = "lease-reservation:";
+
+    // Credit lease plumbing. Null unless CreditLeases is configured, and in
+    // server mode only the reservation client is built.
+    private CreditLeaseManager? _creditLeaseManager;
+    private ILeaseStore? _leaseStore;
+    private IReservationStore? _reservations;
+    private IServerReservationClient? _serverReservations;
+    // True when lease state lives in a shared Redis backend that sibling pods
+    // may also be drawing on, so a shutdown must not release its leases.
+    private bool _leaseBackendShared;
+    // The lease Redis backend the SDK built for itself, and so has to close on
+    // shutdown. Null when the caller supplied the backend.
+    private IDisposable? _ownedLeaseRedis;
+    private TimeSpan _prewarmResolveTimeout = LeaseDefaults.PrewarmResolveTimeout;
+    // The configured mode. Null when CreditLeases is not configured.
+    private CreditLeaseMode? _creditLeaseMode;
+    // Applied to a server-side hold's expiry. Server mode only.
+    private TimeSpan _serverReservationTTL = LeaseDefaults.ReservationTTL;
+    // Set at the top of a shutdown, so work that is still starting is refused
+    // rather than racing the teardown.
+    private volatile bool _closing;
+    // Prewarms an identify spawned and nobody awaits. A shutdown waits them out:
+    // an acquire that lands after the release installs a lease nothing releases,
+    // and its credits stay held until the server expires them.
+    private readonly HashSet<Task> _pendingPrewarms = new();
 
     public AccesstokensClient Accesstokens { get; init; }
     public AccountsClient Accounts { get; init; }
@@ -52,6 +88,13 @@ public partial class Schematic
         _offline = _options.Offline;
         _replicatorMode = _options.ReplicatorMode;
         _logger = _options.LoggerFactory.CreateLogger("SchematicHQ.Client");
+
+        // Up here with the other configuration checks, and above everything the
+        // constructor starts: the event buffer's flush loop and the datastream
+        // socket are both running by the time the lease plumbing is built, so a
+        // throw down there would leak a thread and a websocket per rejected
+        // client.
+        _options.CreditLeases?.Validate();
 
         // Validate replicator mode configuration
         if (_replicatorMode && string.IsNullOrWhiteSpace(_options.ReplicatorHealthUrl))
@@ -173,36 +216,241 @@ public partial class Schematic
                 datastreamOptions.CacheTTL ??= _options.CacheConfiguration.CacheTtl;
             }
 
-            _datastreamClient = new DatastreamClientAdapter(
-                _options.BaseUrl,
-                _logger,
-                apiKey,
-                _cache,
-                datastreamOptions,
-                _replicatorMode,
-                _options.ReplicatorHealthUrl
-            );
-
-            if (!_replicatorMode)
+            try
             {
-                // Only start WebSocket connections when not in replicator mode
-                _datastreamClient.Start();
-                _datastreamConnected = true;
+                _datastreamClient = new DatastreamClientAdapter(
+                    _options.BaseUrl,
+                    _logger,
+                    apiKey,
+                    _cache,
+                    datastreamOptions,
+                    _replicatorMode,
+                    _options.ReplicatorHealthUrl
+                );
 
-                // Start a background task to monitor connection status
-                StartConnectionMonitoring();
+                if (!_replicatorMode)
+                {
+                    // Only start WebSocket connections when not in replicator mode
+                    _datastreamClient.Start();
+                    _datastreamConnected = true;
+
+                    // Start a background task to monitor connection status
+                    StartConnectionMonitoring();
+                }
+                else
+                {
+                    _datastreamConnected = false;
+                    _logger.LogInformation("Replicator mode enabled - datastream client created for cache access only");
+                }
             }
-            else
+            catch (Exception ex)
             {
+                // A stream that never came up evaluates nothing and caches
+                // nothing, so the client must stop claiming one: checks go over
+                // REST, and the lease mode resolves to server rather than to a
+                // local gate with no engine behind it. A bad base URL is the
+                // usual cause, and it is not worth failing the constructor over
+                // when REST can answer.
+                _logger.LogError(ex, "Failed to start the datastream client; falling back to API checks");
                 _datastreamConnected = false;
-                _logger.LogInformation("Replicator mode enabled - datastream client created for cache access only");
+                try
+                {
+                    _datastreamClient?.Close();
+                }
+                catch (Exception closeEx)
+                {
+                    _logger.LogDebug(closeEx, "Failed to close the datastream client after a failed start");
+                }
+                _datastreamClient = null;
             }
         }
+
+        ConfigureCreditLeases();
+    }
+
+    /// <summary>
+    /// Builds the credit lease and reservation plumbing the caller opted into.
+    /// Runs after the datastream client is wired, so the auto mode can resolve
+    /// against it.
+    /// </summary>
+    private void ConfigureCreditLeases()
+    {
+        var config = _options.CreditLeases;
+        if (config == null)
+        {
+            return;
+        }
+
+        if (_offline)
+        {
+            _logger.LogWarning(
+                "CreditLeases is configured but the client is in offline mode; lease-gated checks are disabled and Check will return flag defaults with no credit gating.");
+            return;
+        }
+
+        var mode = config.Mode;
+        _creditLeaseMode = mode;
+        _serverReservations = new ApiServerReservationClient(Features, Credits);
+
+        var configuredTTL = config.DefaultReservationTTL ?? LeaseDefaults.ReservationTTL;
+        // The API refuses a hold expiring more than an hour after its own clock,
+        // and this TTL is applied to the caller's, so clamp a step below the cap
+        // to leave room for skew. Only server mode sends the value to the API: in
+        // client mode it sizes the local sweep, so clamping it there would
+        // shorten holds for no reason and the warning would be untrue.
+        var maxTTL = LeaseDefaults.MaxReservationTTL - LeaseDefaults.ReservationTTLSkewAllowance;
+        _serverReservationTTL = mode == CreditLeaseMode.Client
+            ? configuredTTL
+            : (configuredTTL < maxTTL ? configuredTTL : maxTTL);
+        if (mode != CreditLeaseMode.Client && configuredTTL > maxTTL)
+        {
+            _logger.LogWarning(
+                "CreditLeases.DefaultReservationTTL of {Configured} is longer than the API will hold credits for; server-mode holds will be clamped to {Clamped} (the {Max} maximum, less {Skew} of room for clock skew).",
+                configuredTTL,
+                maxTTL,
+                LeaseDefaults.MaxReservationTTL,
+                LeaseDefaults.ReservationTTLSkewAllowance);
+        }
+
+        // Server mode holds credits over the API, so none of the local lease
+        // plumbing is built and the options that only steer it would silently do
+        // nothing. Say so once, at startup. Auto with no datastream lands in
+        // server mode too, and is the likelier way to get here.
+        if (mode == CreditLeaseMode.Server || (mode == CreditLeaseMode.Auto && _datastreamClient == null))
+        {
+            var clientOnly = new List<string>();
+            if (config.DefaultLeaseDuration != null) clientOnly.Add(nameof(config.DefaultLeaseDuration));
+            if (config.DefaultLeaseSize != null) clientOnly.Add(nameof(config.DefaultLeaseSize));
+            if (config.LowWaterMark != null) clientOnly.Add(nameof(config.LowWaterMark));
+            if (config.SweepInterval != null) clientOnly.Add(nameof(config.SweepInterval));
+            if (config.RedisClient != null) clientOnly.Add(nameof(config.RedisClient));
+            if (config.RedisConfig != null) clientOnly.Add(nameof(config.RedisConfig));
+            if (config.RedisKeyPrefix != null) clientOnly.Add(nameof(config.RedisKeyPrefix));
+            if (config.PrewarmResolveTimeout != null) clientOnly.Add(nameof(config.PrewarmResolveTimeout));
+            if (config.Overrides != null) clientOnly.Add(nameof(config.Overrides));
+            if (clientOnly.Count > 0)
+            {
+                _logger.LogWarning(
+                    "CreditLeases resolves to server mode, so {Options} will be ignored: those options only apply to client mode (local leases over datastream).",
+                    string.Join(", ", clientOnly));
+            }
+        }
+
+        // Auto with no datastream is the server-mode default, not a
+        // misconfiguration: check-and-reserve gates over the API instead. Client
+        // mode without a datastream is the degraded path, where every check falls
+        // back to a plain flag check with the usage ignored, so it still warns.
+        if (mode == CreditLeaseMode.Auto && _datastreamClient == null)
+        {
+            _logger.LogInformation(
+                "CreditLeases is configured and datastream is not enabled; credit reservations will run in server mode (one check-and-reserve API call per check). Set UseDatastream to true (or replicator mode) for client-side leases.");
+        }
+        if (mode == CreditLeaseMode.Client && _datastreamClient == null)
+        {
+            _logger.LogWarning(
+                "CreditLeases is configured but datastream is not enabled; Check will fall back to plain flag checks with NO credit gating (usage is ignored). Set UseDatastream to true (or replicator mode) to enable lease-gated checks.");
+        }
+
+        if (!CreditLeaseModeUsesLeases())
+        {
+            return;
+        }
+
+        var sweepInterval = config.SweepInterval ?? LeaseDefaults.SweepInterval;
+        // Lease and reservation state belongs in a shared cache so gating holds
+        // across horizontally scaled pods. Prefer an explicit client, then an
+        // explicit connection config, then the Redis the cache is already
+        // configured with, so an existing Redis setup backs leases with no
+        // second client to wire up.
+        var redisConfig = config.RedisConfig ?? _options.CacheConfiguration?.RedisConfig;
+        var redis = config.RedisClient;
+        if (redis == null && redisConfig != null)
+        {
+            try
+            {
+                var built = StackExchangeLeaseRedis.FromConfig(redisConfig);
+                // Closing this is the SDK's job only where the SDK opened it.
+                // A backend the caller passed in, and a multiplexer their
+                // factory handed back, are shared with the rest of their
+                // process and outlive this client; the instance below knows
+                // which case it is and its Dispose is a no-op for theirs.
+                _ownedLeaseRedis = built;
+                redis = built;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "CreditLeases: failed to connect the lease Redis backend; falling back to per-process stores");
+            }
+        }
+        var keyPrefix = config.RedisKeyPrefix ?? redisConfig?.KeyPrefix ?? LeaseDefaults.KeyPrefix;
+
+        if (redis != null)
+        {
+            // A shared backend: the lease balance and the reservation table live
+            // in Redis, and single-key Lua scripts give cross-pod gating without
+            // a separate lock service.
+            _leaseBackendShared = true;
+            _leaseStore = new RedisLeaseStore(redis, keyPrefix, config.DefaultLeaseDuration);
+            _reservations = new RedisReservationStore(redis, _leaseStore, sweepInterval, keyPrefix);
+        }
+        else
+        {
+            // No shared backend: each pod then acquires and gates against its own
+            // leases, which defeats the cross-pod overspend protection that is
+            // the point of leasing, so warn rather than degrade silently.
+            _logger.LogWarning(
+                "CreditLeases is enabled without a shared Redis backend; lease and reservation state will be kept per-process. Configure a Redis cache (or CreditLeases.RedisClient) so leases gate correctly across multiple SDK instances.");
+            _leaseStore = new InMemoryLeaseStore();
+            _reservations = new InMemoryReservationStore(_leaseStore, sweepInterval);
+        }
+
+        _reservations.StartSweep();
+        _creditLeaseManager = new CreditLeaseManager(
+            new ApiLeaseWireClient(Credits),
+            _leaseStore,
+            config,
+            _logger);
+        _prewarmResolveTimeout = config.PrewarmResolveTimeout ?? LeaseDefaults.PrewarmResolveTimeout;
+    }
+
+    /// <summary>
+    /// Whether the configured mode wants the local lease plumbing. Read during
+    /// construction, after the datastream client has been wired, so the auto mode
+    /// can resolve against it.
+    /// </summary>
+    private bool CreditLeaseModeUsesLeases()
+    {
+        if (_creditLeaseMode == null || _creditLeaseMode == CreditLeaseMode.Server) return false;
+        if (_creditLeaseMode == CreditLeaseMode.Client) return true;
+        return _datastreamClient != null;
+    }
+
+    /// <summary>
+    /// Which mode a check with a usage resolves to right now. Null means no
+    /// credit gating at all: CreditLeases is not configured, or the client is
+    /// offline.
+    ///
+    /// <para>The auto mode resolves per check rather than once at startup, so a
+    /// datastream that failed to start after construction falls to server mode
+    /// instead of silently dropping every check to a plain, ungated one.</para>
+    /// </summary>
+    private CreditLeaseMode? EffectiveLeaseMode()
+    {
+        if (_creditLeaseMode == null || _offline) return null;
+        if (_creditLeaseMode == CreditLeaseMode.Server) return CreditLeaseMode.Server;
+        if (_creditLeaseMode == CreditLeaseMode.Client) return CreditLeaseMode.Client;
+        var clientPlumbingReady = _creditLeaseManager != null && _leaseStore != null && _reservations != null;
+        return _datastreamClient != null && clientPlumbingReady
+            ? CreditLeaseMode.Client
+            : CreditLeaseMode.Server;
     }
 
     private void StartConnectionMonitoring()
     {
-        if (_datastreamClient == null)
+        // Held locally: the field is cleared when the stream fails to start, and
+        // the loop below must not race that.
+        var datastream = _datastreamClient;
+        if (datastream == null)
             return;
 
         // Start a background task that periodically checks the connection status
@@ -215,7 +463,7 @@ public partial class Schematic
                     try
                     {
                         // Check connection status every 2 seconds
-                        var isConnected = await _datastreamClient.IsConnectedAsync(TimeSpan.FromMilliseconds(2000));
+                        var isConnected = await datastream.IsConnectedAsync(TimeSpan.FromMilliseconds(2000));
                         if (_datastreamConnected != isConnected)
                         {
                             _datastreamConnected = isConnected;
@@ -244,10 +492,75 @@ public partial class Schematic
         });
     }
 
+    /// <summary>
+    /// Stops the event buffer, the reservation sweeper, the lease manager and the
+    /// datastream client.
+    ///
+    /// <para>Credit leases: with the per-process in-memory backend this process
+    /// is the only holder of its leases, so they are released here (best effort)
+    /// and their unspent remainder returns to the company balance immediately
+    /// rather than waiting out the lease expiry. With a shared Redis backend
+    /// leases are deliberately not released: one row per company and credit is
+    /// shared by every SDK instance pointed at that backend, so a single pod
+    /// shutting down must not refund a lease its siblings are still drawing on.
+    /// Shared leases reclaim themselves by expiring or being consumed.</para>
+    ///
+    /// <para>Lease work already in flight is waited out before the release, so
+    /// an acquire that lands mid-shutdown is one the release can see. The wait
+    /// and the release share one <see cref="LeaseDefaults.ShutdownDrainTimeout"/>
+    /// budget, so a shutdown stays bounded however slow the store or the wire
+    /// is.</para>
+    /// </summary>
     public async Task Shutdown()
     {
         _disposed = true;
-        
+        _closing = true;
+
+        // The lease teardown is wrapped so it cannot take the rest of the
+        // shutdown with it: the event buffer still has to flush what it is
+        // holding and the socket still has to close, whatever the lease store
+        // does. A failure here at worst leaves credits to expire server-side.
+        try
+        {
+            if (_reservations != null)
+            {
+                _reservations.Stop();
+            }
+
+            if (_creditLeaseManager != null)
+            {
+                // Refuse new lease work first, so the waits below are waiting on work
+                // that is already unwinding rather than work still starting. Both
+                // steps run for a shared backend too: the work must not outlive the
+                // client, even where there is nothing to release.
+                _creditLeaseManager.Stop();
+                // One budget across both waits, not each timeout in turn: a caller
+                // shutting a client down wants a bounded shutdown, not the sum of
+                // every wait inside it.
+                var deadline = DateTime.UtcNow + LeaseDefaults.ShutdownDrainTimeout;
+                Task[] prewarms;
+                lock (_pendingPrewarms)
+                {
+                    prewarms = _pendingPrewarms.ToArray();
+                }
+                if (!await CreditLeaseManager.SettleWithinAsync(prewarms, deadline - DateTime.UtcNow))
+                {
+                    _logger.LogWarning(
+                        "Timed out after {Timeout} waiting for in-flight prewarms on shutdown",
+                        LeaseDefaults.ShutdownDrainTimeout);
+                }
+                await _creditLeaseManager.DrainAsync(deadline - DateTime.UtcNow);
+                if (!_leaseBackendShared)
+                {
+                    await _creditLeaseManager.ReleaseAllLocalLeasesAsync(deadline - DateTime.UtcNow);
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            _logger.LogWarning(ex, "Credit lease teardown failed on shutdown; any credits it holds will be released by server-side expiry");
+        }
+
         if (_eventBuffer != null)
         {
             await _eventBuffer.Stop();
@@ -257,6 +570,8 @@ public partial class Schematic
         {
             _datastreamClient.Close();
         }
+
+        _ownedLeaseRedis?.Dispose();
     }
 
     public async Task<bool> CheckFlag(string flagKey, Dictionary<string, string>? company = null, Dictionary<string, string>? user = null)
@@ -265,13 +580,31 @@ public partial class Schematic
         return resp.Value;
     }
 
-    public async Task<CheckFlagWithEntitlementResponse> CheckFlagWithEntitlement(string flagKey, Dictionary<string, string>? company = null, Dictionary<string, string>? user = null)
+    public Task<CheckFlagWithEntitlementResponse> CheckFlagWithEntitlement(string flagKey, Dictionary<string, string>? company = null, Dictionary<string, string>? user = null)
+    {
+        return CheckFlagWithEntitlementInternal(flagKey, company, user, null, null, null);
+    }
+
+    /// <summary>
+    /// The plain flag check, with the knobs a credit-aware check threads through
+    /// it: the caller's hypothetical usage, a per-call timeout, and a default to
+    /// fall back to. Both paths honor the preflight, the local evaluation by
+    /// handing it to the rules engine and the REST path by putting it on the
+    /// request body.
+    /// </summary>
+    private async Task<CheckFlagWithEntitlementResponse> CheckFlagWithEntitlementInternal(
+        string flagKey,
+        Dictionary<string, string>? company,
+        Dictionary<string, string>? user,
+        PreflightRequestBody? preflight,
+        TimeSpan? timeout,
+        bool? defaultValue)
     {
         if (_offline)
             return new CheckFlagWithEntitlementResponse
             {
                 FlagKey = flagKey,
-                Value = GetFlagDefault(flagKey),
+                Value = defaultValue ?? GetFlagDefault(flagKey),
                 Reason = "offline mode"
             };
 
@@ -285,20 +618,33 @@ public partial class Schematic
                     Company = company,
                     User = user
                 };
-                var flagResult = await _datastreamClient.CheckFlag(request, flagKey);
+                var flagResult = await _datastreamClient.CheckFlag(request, flagKey, preflight);
+
+                // The engine declining to answer is the case a caller-supplied
+                // default exists for. It does not throw for that: it hands back
+                // the client-wide flag default under one of the engine reasons,
+                // so the catch below never sees it and the caller's value would
+                // be silently ignored on the datastream path while server mode
+                // honored it.
+                var value = flagResult.Value;
+                if (defaultValue.HasValue && EngineDeclined(flagResult))
+                {
+                    value = defaultValue.Value;
+                }
 
                 var response = CheckFlagWithEntitlementResponse.FromCheckFlagResult(flagResult);
+                response.Value = value;
 
                 // Submit flag check event for successful datastream evaluation
                 SubmitFlagCheckEvent(
                     flagKey,
-                    flagResult.Value,
+                    value,
                     company,
                     user,
                     new EventBodyFlagCheck
                     {
                         FlagKey = flagKey,
-                        Value = flagResult.Value,
+                        Value = value,
                         FlagId = flagResult.FlagId,
                         RuleId = flagResult.RuleId,
                         CompanyId = flagResult.CompanyId,
@@ -312,15 +658,15 @@ public partial class Schematic
             {
                 // Fall back to API if datastream fails
                 _logger.LogDebug(ex, "Datastream flag check failed, falling back to API");
-                return await CheckFlagWithEntitlementApi(flagKey, company, user);
+                return await CheckFlagWithEntitlementApi(flagKey, company, user, preflight, timeout, defaultValue);
             }
         }
 
         // Fall back to API request
-        return await CheckFlagWithEntitlementApi(flagKey, company, user);
+        return await CheckFlagWithEntitlementApi(flagKey, company, user, preflight, timeout, defaultValue);
     }
 
-    private async Task<CheckFlagWithEntitlementResponse> CheckFlagWithEntitlementApi(string flagKey, Dictionary<string, string>? company, Dictionary<string, string>? user)
+    private async Task<CheckFlagWithEntitlementResponse> CheckFlagWithEntitlementApi(string flagKey, Dictionary<string, string>? company, Dictionary<string, string>? user, PreflightRequestBody? preflight = null, TimeSpan? timeout = null, bool? defaultValue = null)
     {
         try
         {
@@ -328,22 +674,33 @@ public partial class Schematic
             var requestBody = new CheckFlagRequestBody
             {
                 Company = company ?? new Dictionary<string, string>(),
-                User = user ?? new Dictionary<string, string>()
+                User = user ?? new Dictionary<string, string>(),
+                Preflight = preflight
             };
 
             string cacheKey = BuildFlagCacheKey(flagKey, company, user);
 
-            // Check cache first
-            var cachedResponse = await _cache.Get<CheckFlagWithEntitlementResponse>(cacheKey);
-            if (cachedResponse != null)
+            // The cache is keyed by flag, company and user, and a preflighted
+            // check asks a different question ("would this action be allowed?")
+            // than the plain one, so it can neither be answered from the cache
+            // nor written to it.
+            if (preflight == null)
             {
-                // Submit flag check event for cached value
-                SubmitFlagCheckEventForValue(flagKey, cachedResponse.Value, company, user, "cache");
-                return cachedResponse;
+                // Check cache first
+                var cachedResponse = await _cache.Get<CheckFlagWithEntitlementResponse>(cacheKey);
+                if (cachedResponse != null)
+                {
+                    // Submit flag check event for cached value
+                    SubmitFlagCheckEventForValue(flagKey, cachedResponse.Value, company, user, "cache");
+                    return cachedResponse;
+                }
             }
 
             // Make API request
-            var apiResponse = await API.Features.CheckFlagAsync(flagKey, requestBody);
+            var apiResponse = await API.Features.CheckFlagAsync(
+                flagKey,
+                requestBody,
+                timeout == null ? null : new RequestOptions { Timeout = timeout });
 
             if (apiResponse == null)
             {
@@ -351,7 +708,7 @@ public partial class Schematic
                 return new CheckFlagWithEntitlementResponse
                 {
                     FlagKey = flagKey,
-                    Value = GetFlagDefault(flagKey),
+                    Value = defaultValue ?? GetFlagDefault(flagKey),
                     Reason = "no response"
                 };
             }
@@ -359,20 +716,23 @@ public partial class Schematic
             var result = CheckFlagWithEntitlementResponse.FromApiResponse(apiResponse.Data, flagKey);
 
             // Cache the result
-            try
+            if (preflight == null)
             {
                 try
                 {
-                await _cache.Set(cacheKey, result);
+                    try
+                    {
+                        await _cache.Set(cacheKey, result);
+                    }
+                    catch (Exception cacheEx)
+                    {
+                        _logger.LogError(cacheEx, "Error caching flag result");
+                    }
                 }
                 catch (Exception cacheEx)
                 {
-                    _logger.LogError(cacheEx, "Error caching flag result");
+                    _logger.LogError("Error caching flag result: {0}", cacheEx.Message);
                 }
-            }
-            catch (Exception cacheEx)
-            {
-                _logger.LogError("Error caching flag result: {0}", cacheEx.Message);
             }
 
             return result;
@@ -383,7 +743,7 @@ public partial class Schematic
             return new CheckFlagWithEntitlementResponse
             {
                 FlagKey = flagKey,
-                Value = GetFlagDefault(flagKey),
+                Value = defaultValue ?? GetFlagDefault(flagKey),
                 Reason = ex.Message
             };
         }
@@ -548,6 +908,17 @@ public partial class Schematic
     }
 
     // Helper method to build consistent cache keys
+    /// <summary>
+    /// Whether the local engine refused to evaluate rather than answering. It
+    /// reports that by returning the flag's registered default under one of two
+    /// reasons, not by throwing, so this is the only way to tell a real "false"
+    /// from "could not evaluate".
+    /// </summary>
+    internal static bool EngineDeclined(CheckFlagResult result) =>
+        result.Error != null
+        || result.Reason == DatastreamClient.ReasonRulesEngineUnavailable
+        || result.Reason == DatastreamClient.ReasonRulesEngineError;
+
     private string BuildFlagCacheKey(string flagKey, Dictionary<string, string>? company, Dictionary<string, string>? user)
     {
         string cacheKey = flagKey;
@@ -565,6 +936,390 @@ public partial class Schematic
         return cacheKey;
     }
 
+    /// <summary>
+    /// Credit-aware feature check. With CreditLeases configured and a usage
+    /// passed (optionally qualified by an event subtype), this gates the check
+    /// against the company's credit balance and hands back a reservation on
+    /// success. Pass that handle to <see cref="TrackWithReservation"/> when the
+    /// work completes.
+    ///
+    /// <para>In client mode (datastream enabled) the hold is carved out of a
+    /// local lease and the flag is evaluated by the WASM engine. In server mode
+    /// it is a single check-and-reserve API call that evaluates the flag and
+    /// takes the hold server-side. CreditLeases.Mode picks; the default resolves
+    /// to client mode when datastream is enabled and server mode otherwise.</para>
+    ///
+    /// <para>Without CreditLeases configured, or with no usage, this falls
+    /// through to a plain flag check and returns the flag's value with no
+    /// reservation. The caller's preflight is still threaded through that plain
+    /// check, by both the local evaluation and the REST call, so the verdict
+    /// accounts for the usage about to be recorded, just without a hold.</para>
+    /// </summary>
+    public async Task<CheckResult> Check(
+        string flagKey,
+        Dictionary<string, string>? company = null,
+        Dictionary<string, string>? user = null,
+        CheckOptions? options = null)
+    {
+        async Task<CheckResult> Fallback()
+        {
+            var resp = await CheckFlagWithEntitlementInternal(
+                flagKey,
+                company,
+                user,
+                LeasePreflight.Build(options),
+                options?.Timeout,
+                options?.DefaultValue);
+            return new CheckResult
+            {
+                Allowed = resp.Value,
+                Value = resp.Value,
+                Reason = resp.Reason,
+                Entitlement = resp.Entitlement,
+                FlagKey = resp.FlagKey,
+                FlagId = resp.FlagId
+            };
+        }
+
+        var mode = EffectiveLeaseMode();
+        if (options?.Usage == null || mode == null)
+        {
+            return await Fallback();
+        }
+
+        if (mode == CreditLeaseMode.Server)
+        {
+            return await ServerCheck.CheckWithServerReservationAsync(
+                new ServerCheckDeps
+                {
+                    Client = _serverReservations!,
+                    Logger = _logger,
+                    ReservationTTL = _serverReservationTTL,
+                    GetDefault = () => options.DefaultValue ?? GetFlagDefault(flagKey)
+                },
+                flagKey,
+                company,
+                user,
+                options,
+                Fallback);
+        }
+
+        // Client mode without the local plumbing (an explicit client mode and no
+        // datastream) keeps the plain, ungated flag check.
+        if (_creditLeaseManager == null || _leaseStore == null || _reservations == null || _datastreamClient == null)
+        {
+            return await Fallback();
+        }
+
+        return await LeaseCheck.CheckWithLeaseAsync(
+            new CheckDeps
+            {
+                LeaseStore = _leaseStore,
+                Reservations = _reservations,
+                Manager = _creditLeaseManager,
+                DataStream = new DatastreamCheckSource(_datastreamClient),
+                Logger = _logger,
+                // Lease-path checks must stay visible to flag-check analytics and
+                // company last-seen, same as every plain check path.
+                EmitFlagCheck = body => EnqueueEvent(EventType.FlagCheck, body)
+            },
+            flagKey,
+            company,
+            user,
+            options,
+            Fallback);
+    }
+
+    /// <summary>
+    /// Consumes a reservation a <see cref="Check"/> issued. A client-mode hold
+    /// refunds its unspent slice to the lease's local balance and emits a track
+    /// event carrying the actual quantity; the server-side processor consumes
+    /// that quantity times the consumption rate from the company's real balance.
+    ///
+    /// <para>A server-mode handle has no local hold to refund: the event carries
+    /// the reservation id and the server settles the hold when it processes
+    /// it.</para>
+    ///
+    /// <para>If the work outlived the reservation's TTL and the sweeper already
+    /// returned the hold to the lease, the local refund has happened but the
+    /// usage must still be billed, so the event goes out anyway as a recovery
+    /// emit. The server bills it against the lease's sub-ledger while the lease
+    /// is live, or falls through to a direct grant decrement once the server
+    /// lease has expired.</para>
+    ///
+    /// <para>Double-billing is prevented server-side: the event carries a
+    /// deterministic idempotency key derived from the reservation id, so a
+    /// recovery emit racing the normal one, or an accidental second settle,
+    /// collapses to a single billed event across pods and process restarts.</para>
+    /// </summary>
+    public async Task TrackWithReservation(
+        ReservationRecord? reservation,
+        double actualQuantity,
+        TrackWithReservationOptions? options = null)
+    {
+        if (_offline) return;
+
+        // A check allows without a hold in several ordinary cases: the feature is
+        // not credit-metered, the check failed open, the usage was 0, or credit
+        // leases are not configured. Callers pass the result's reservation
+        // straight through, so take the null and tell them how to bill the usage
+        // instead of throwing on a settle that has nothing to settle.
+        if (reservation == null)
+        {
+            _logger.LogError(
+                "TrackWithReservation called without a reservation: the check allowed without taking a hold, so there is nothing to settle. Report the usage with Track instead.");
+            return;
+        }
+
+        // Mirror the check path's usage guard. A non-finite quantity must reach
+        // neither the store (where the claim would take the hold with no refund
+        // of the unspent slice) nor the billing event; a negative one would bill
+        // negative usage. Skip the settle entirely: the untouched reservation
+        // expires at its TTL and the sweeper refunds the whole hold, so no
+        // credits are lost and nothing bogus is billed.
+        if (!LeaseQuantity.IsValid(actualQuantity))
+        {
+            _logger.LogError(
+                "TrackWithReservation: invalid actualQuantity {Quantity} for reservation {ReservationId}; must be a finite, non-negative number. Skipping the settle (the hold is refunded at its TTL).",
+                actualQuantity,
+                reservation.Id);
+            return;
+        }
+
+        var trackOptions = new TrackOptions
+        {
+            IdempotencyKey = ReservationTrackIdempotencyPrefix + reservation.Id
+        };
+
+        // Server mode: the hold lives on the server and settles by id, so there
+        // is nothing local to consume or refund.
+        if (reservation.Mode == CreditLeaseMode.Server)
+        {
+            TrackEvent(
+                ReservationTrack.BuildTrackEvent(reservation, actualQuantity, options),
+                trackOptions,
+                updateMetrics: true);
+            return;
+        }
+
+        if (_reservations == null)
+        {
+            _logger.LogWarning(
+                "TrackWithReservation called but CreditLeases is not configured; emitting an unsettled track event");
+            // No local store to settle against, but the event must still carry
+            // the lease id (the handle came from a lease-configured client, and
+            // dropping it would double-debit the grant) and the deterministic
+            // idempotency key.
+            TrackEvent(
+                ReservationTrack.BuildTrackEvent(reservation, actualQuantity, options),
+                trackOptions,
+                updateMetrics: true);
+            return;
+        }
+
+        EventBodyTrack track;
+        bool settledLocally;
+        try
+        {
+            var outcome = await ReservationTrack.ConsumeAndBuildEventAsync(
+                _reservations,
+                reservation,
+                actualQuantity,
+                options);
+            track = outcome.Track;
+            settledLocally = outcome.SettledLocally;
+        }
+        catch (Exception ex)
+        {
+            // The local settle failed, likely an unreachable Redis. The usage
+            // still has to be billed: build the event from the caller-held handle
+            // and emit it anyway. The unsettled local hold is reclaimed by the
+            // sweeper at its TTL or at lease expiry, and the idempotency key
+            // keeps a retried settle from double-billing.
+            _logger.LogWarning(
+                ex,
+                "TrackWithReservation: failed to settle reservation {ReservationId} locally; emitting the track event anyway",
+                reservation.Id);
+            track = ReservationTrack.BuildTrackEvent(reservation, actualQuantity, options);
+            settledLocally = false;
+        }
+
+        if (!settledLocally)
+        {
+            _logger.LogDebug(
+                "TrackWithReservation: reservation {ReservationId} was not settled locally (expired, swept, already settled, or the store was unreachable); emitting the track event keyed for idempotent server-side dedupe",
+                reservation.Id);
+        }
+
+        // The cached company metric moves only when this call moved local state
+        // with it: the server drops a duplicate event on the idempotency key,
+        // so bumping the metric for one would have a caller's retry deny its
+        // own next numeric-limit check until the stream pushes the real figure.
+        TrackEvent(track, trackOptions, settledLocally);
+    }
+
+    /// <summary>
+    /// Pre-warms a credit lease for each given credit type, so the first check
+    /// against it does not pay the acquire round trip. Failures are logged rather
+    /// than thrown.
+    ///
+    /// <para>When only secondary company keys are passed, this fetches the
+    /// company over the datastream (waiting up to
+    /// CreditLeases.PrewarmResolveTimeout for the socket to connect), which both
+    /// resolves the id and warms the cache so the first check hits the lease path.
+    /// It covers a brand-new company too: the fetch retries until the server has
+    /// ingested the preceding identify and can stream it back.</para>
+    /// </summary>
+    public async Task Prewarm(Dictionary<string, string>? company, IEnumerable<string> creditTypeIds)
+    {
+        if (_creditLeaseManager == null || _leaseStore == null)
+        {
+            _logger.LogDebug(
+                EffectiveLeaseMode() == CreditLeaseMode.Server
+                    ? "Prewarm is a no-op in server mode; there is no local lease to warm"
+                    : "Prewarm called but CreditLeases is not configured");
+            return;
+        }
+        if (company == null || company.Count == 0)
+        {
+            _logger.LogDebug("Prewarm requires company keys");
+            return;
+        }
+        if (_closing)
+        {
+            // A shutdown only waits out the prewarms it spawned; a caller
+            // invoking this directly would otherwise install a lease after the
+            // release has already listed the store.
+            _logger.LogDebug("Prewarm: the client is closing, skipping the acquire");
+            return;
+        }
+
+        var companyId = await ResolveCompanyIdWithWait(company);
+        if (companyId == null)
+        {
+            _logger.LogDebug(
+                "Prewarm: company not resolved within {Timeout} (the first check will acquire)",
+                _prewarmResolveTimeout);
+            return;
+        }
+
+        var acquires = new List<Task>();
+        foreach (var creditTypeId in creditTypeIds)
+        {
+            acquires.Add(PrewarmOne(companyId, creditTypeId));
+        }
+        await Task.WhenAll(acquires);
+    }
+
+    private async Task PrewarmOne(string companyId, string creditTypeId)
+    {
+        try
+        {
+            await _creditLeaseManager!.AcquireIfNeededAsync(companyId, creditTypeId);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogWarning(ex, "Prewarm: failed to acquire a lease for {CreditTypeId}", creditTypeId);
+        }
+    }
+
+    /// <summary>
+    /// The prefix Schematic's secure company ids carry, whatever key name they
+    /// are passed under.
+    /// </summary>
+    private const string CompanyIdPrefix = "comp_";
+
+    /// <summary>
+    /// The Schematic id hiding among a set of entity keys, recognized by its
+    /// secure-id prefix. The server reads keys this way once its own key lookup
+    /// has come up empty, so <c>{ account_id: "comp_1" }</c> resolves and
+    /// <c>{ id: "acme" }</c> does not: the prefix decides, not the name of the
+    /// key it sits under.
+    /// </summary>
+    internal static string? SchematicId(Dictionary<string, string> keys, string prefix)
+    {
+        foreach (var value in keys.Values)
+        {
+            if (value != null && value.StartsWith(prefix, StringComparison.Ordinal))
+            {
+                return value;
+            }
+        }
+        return null;
+    }
+
+    /// <summary>
+    /// Resolves a company id, actively fetching the company over the datastream
+    /// and warming the cache as a side effect. Null when the company never
+    /// surfaced and the keys carry no Schematic id either.
+    ///
+    /// <para>Resolved in the server's order: every supplied key and value pair
+    /// is an ordinary entity key and gets looked up first, because an account
+    /// is free to define a key called <c>id</c> holding its own identifier.
+    /// Only when nothing matches is a value read as the company's own id, by
+    /// its <c>comp_</c> prefix.</para>
+    ///
+    /// <para>An identify does not push a company into the datastream cache:
+    /// companies are only streamed in response to a request. So this fetches
+    /// (cache first, then over the socket) rather than polling a cache that would
+    /// stay empty until the timeout.</para>
+    /// </summary>
+    private async Task<string?> ResolveCompanyIdWithWait(Dictionary<string, string> company)
+    {
+        if (_datastreamClient == null)
+        {
+            // Without a datastream there is no cache to read and nothing to
+            // fetch over, so only a Schematic id the keys already carry can
+            // resolve.
+            return SchematicId(company, CompanyIdPrefix);
+        }
+        if (_prewarmResolveTimeout <= TimeSpan.Zero)
+        {
+            // A zero timeout means cache-only: answer from whatever an earlier
+            // check already warmed, and never wait on the socket.
+            var cachedOnly = await _datastreamClient.GetCachedCompany(company);
+            if (cachedOnly != null && !string.IsNullOrEmpty(cachedOnly.Id))
+            {
+                return cachedOnly.Id;
+            }
+            return SchematicId(company, CompanyIdPrefix);
+        }
+
+        // Already cached by an earlier check or prewarm.
+        var cached = await _datastreamClient.GetCachedCompany(company);
+        if (cached != null && !string.IsNullOrEmpty(cached.Id))
+        {
+            return cached.Id;
+        }
+
+        // Fetch, retrying across the brief connecting window at boot, bounded by
+        // the prewarm timeout.
+        var deadline = DateTime.UtcNow + _prewarmResolveTimeout;
+        while (true)
+        {
+            // A company resolved for a client that is shutting down warms
+            // nothing, and the shutdown would be waiting out the rest of this
+            // poll.
+            if (_closing) return null;
+            try
+            {
+                var resolved = await _datastreamClient.ResolveCompany(company);
+                if (resolved != null && !string.IsNullOrEmpty(resolved.Id))
+                {
+                    return resolved.Id;
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogDebug(ex, "Prewarm: datastream company fetch failed");
+            }
+            // The keys never resolved, so fall back to a prefixed value the
+            // way the server does once its own key lookup comes up empty.
+            if (DateTime.UtcNow >= deadline) return SchematicId(company, CompanyIdPrefix);
+            await Task.Delay(LeaseDefaults.PrewarmPollInterval);
+        }
+    }
+
     public void Identify(Dictionary<string, string> keys, EventBodyIdentifyCompany? company = null, string? name = null, Dictionary<string, object?>? traits = null, IdentifyOptions? options = null)
     {
         EnqueueEvent(
@@ -577,19 +1332,76 @@ public partial class Schematic
                 Traits = traits
             },
             idempotencyKey: options?.IdempotencyKey);
+
+        if (options?.Prewarm == null || options.Prewarm.Count == 0)
+        {
+            return;
+        }
+
+        // Force a flush so the server processes the identify as soon as it can:
+        // without it the company may sit in the buffer for a whole flush period
+        // before the server sees it, and the prewarm's bounded poll would only be
+        // waiting on us.
+        _ = _eventBuffer.Flush().ContinueWith(
+            t => _logger.LogDebug(t.Exception, "Identify: the flush before a prewarm failed"),
+            TaskContinuationOptions.OnlyOnFaulted);
+
+        var prewarming = PrewarmQuietly(company?.Keys, options.Prewarm);
+        lock (_pendingPrewarms)
+        {
+            _pendingPrewarms.Add(prewarming);
+        }
+        _ = prewarming.ContinueWith(t =>
+        {
+            lock (_pendingPrewarms)
+            {
+                _pendingPrewarms.Remove(t);
+            }
+        });
+    }
+
+    private async Task PrewarmQuietly(Dictionary<string, string>? company, List<string> creditTypeIds)
+    {
+        try
+        {
+            await Prewarm(company, creditTypeIds);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogWarning(ex, "Identify prewarm failed");
+        }
     }
 
     public void Track(string eventName, Dictionary<string, string>? company = null, Dictionary<string, string>? user = null, Dictionary<string, object?>? traits = null, int? quantity = null, TrackOptions? options = null)
     {
-        var eventBody = new EventBodyTrack
-        {
-            Company = company,
-            Event = eventName,
-            Traits = traits,
-            User = user,
-            Quantity = quantity
-        };
+        TrackEvent(
+            new EventBodyTrack
+            {
+                Company = company,
+                Event = eventName,
+                Traits = traits,
+                User = user,
+                Quantity = quantity,
+                LeaseId = options?.LeaseId,
+                ReservationId = options?.ReservationId
+            },
+            options,
+            updateMetrics: true);
+    }
 
+    /// <summary>
+    /// Enqueues an already-built track event, optimistically bumping the
+    /// datastream's view of the company's metrics with it unless
+    /// <paramref name="updateMetrics"/> says not to. The bump is a local
+    /// prediction of what the stream will push back, so it belongs only to an
+    /// event that records usage the server has not already counted.
+    ///
+    /// <para>Shared with the reservation settle, which builds its own body so
+    /// it can carry the lease or reservation id the server routes the credit
+    /// consumption by.</para>
+    /// </summary>
+    private void TrackEvent(EventBodyTrack eventBody, TrackOptions? options, bool updateMetrics)
+    {
         EnqueueEvent(
             EventType.Track,
             eventBody,
@@ -599,7 +1411,7 @@ public partial class Schematic
             backfill: options?.Backfill);
 
         // Update company metrics in datastream if available and connected
-        if (company != null && UseDatastream() && _datastreamClient != null && _datastreamConnected)
+        if (updateMetrics && eventBody.Company != null && UseDatastream() && _datastreamClient != null && _datastreamConnected)
         {
             try
             {
@@ -787,6 +1599,19 @@ public class TrackOptions
     /// API key and <see cref="TrustedClientClock"/>.
     /// </summary>
     public bool? Backfill { get; set; }
+
+    /// <summary>
+    /// Credit lease this event redeems against. It routes the server-side credit
+    /// consumption through the lease's sub-ledger instead of decrementing a grant
+    /// the acquire already pre-debited.
+    /// </summary>
+    public string? LeaseId { get; set; }
+
+    /// <summary>
+    /// Credit reservation this event settles. A lease id takes precedence when
+    /// both are set.
+    /// </summary>
+    public string? ReservationId { get; set; }
 }
 
 /// <summary>
@@ -801,6 +1626,14 @@ public class IdentifyOptions
     /// (scoped to the environment) are dropped server-side for 24 hours.
     /// </summary>
     public string? IdempotencyKey { get; set; }
+
+    /// <summary>
+    /// Credit type ids to acquire leases for in the background once the identify
+    /// event is enqueued. Failures are logged, never surfaced. Equivalent to
+    /// calling <see cref="Schematic.Prewarm"/> with the same company keys, and a
+    /// no-op unless CreditLeases is configured.
+    /// </summary>
+    public List<string>? Prewarm { get; set; }
 }
 
 public class OfflineHttpMessageHandler : HttpMessageHandler

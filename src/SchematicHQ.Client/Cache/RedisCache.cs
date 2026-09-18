@@ -55,6 +55,17 @@ namespace SchematicHQ.Client.Cache
             if(config.Configuration != null)
                 return ConnectionMultiplexer.Connect(config.Configuration);
             
+            return ConnectionMultiplexer.Connect(BuildOptionsFromEndpoints(config));
+        }
+
+        /// <summary>
+        /// Builds connection settings from the individual fields, the shape
+        /// that predates <see cref="RedisCacheConfig.ConfigurationOptions"/>.
+        /// Shared with the credit lease backend so a Redis setup that works for
+        /// the cache works for leases too.
+        /// </summary>
+        internal static ConfigurationOptions BuildOptionsFromEndpoints(RedisCacheConfig config)
+        {
             // Obsolete configuration below
 #pragma warning disable CS0618 // Type or member is obsolete
             if (config.Endpoints == null || !config.Endpoints.Any())
@@ -111,8 +122,8 @@ namespace SchematicHQ.Client.Cache
                 options.User = config.Username;
             }
 #pragma warning restore CS0618 // Type or member is obsolete
-            
-            return ConnectionMultiplexer.Connect(options);
+
+            return options;
         }
 
         /// <inheritdoc/>
