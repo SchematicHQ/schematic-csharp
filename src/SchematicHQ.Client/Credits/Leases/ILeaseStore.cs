@@ -8,8 +8,8 @@ namespace SchematicHQ.Client.Leases;
 
 /// <summary>
 /// Holds at most one lease per (company, credit type) slot. Every mutation is
-/// atomic per slot: <see cref="InMemoryLeaseStore"/> gets that from a per-slot
-/// lock, <see cref="RedisLeaseStore"/> from single-key Lua.
+/// atomic per slot: <see cref="InMemoryLeaseStore"/> gets that from one monitor
+/// over the whole table, <see cref="RedisLeaseStore"/> from single-key Lua.
 /// </summary>
 public interface ILeaseStore
 {
