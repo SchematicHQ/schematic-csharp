@@ -41,6 +41,55 @@ public class ReservationStoreParityTests
         }
     }
 
+    [Test]
+    public async Task Neither_Backend_Refunds_A_Hold_That_Cannot_Name_Its_Lease()
+    {
+        // The two lease stores read an empty pin differently: the Lua takes it
+        // as no pin at all and would credit whichever lease holds the slot,
+        // while the per-process store takes it as a pin nothing matches. Left
+        // to them, one backend would refund and the other would not. Both
+        // reservation stores decide it instead, and both decline.
+        var now = new DateTime(2025, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+        LeaseClock clock = () => now;
+
+        var inMemoryLeases = new InMemoryLeaseStore(clock);
+        var inMemory = new InMemoryReservationStore(inMemoryLeases, clock: clock);
+
+        var redisClient = new FakeLeaseRedis(clock);
+        var redisLeases = new RedisLeaseStore(redisClient, clock: clock);
+        var redis = new RedisReservationStore(redisClient, redisLeases, clock: clock);
+
+        foreach (var pair in new (IReservationStore Store, ILeaseStore Leases)[]
+        {
+            (inMemory, inMemoryLeases),
+            (redis, redisLeases),
+        })
+        {
+            await pair.Leases.ReplaceAsync(
+                new LeaseGrant
+                {
+                    LeaseId = "lse_successor",
+                    CompanyId = "co_1",
+                    CreditTypeId = "ct_1",
+                    GrantedAmount = 1000,
+                    ExpiresAt = now.AddMinutes(5),
+                }
+            );
+            await pair.Leases.TryReserveAsync("co_1", "ct_1", 100);
+
+            var orphan = Record(now);
+            orphan.LeaseId = string.Empty;
+            await pair.Store.AddAsync(orphan);
+            await pair.Store.ConsumeAsync("res_1", 0);
+
+            // 900, not 1000: the successor's balance is untouched.
+            var lease = await pair.Leases.GetAsync("co_1", "ct_1");
+            Assert.That(lease!.LocalRemainingCredits, Is.EqualTo(900));
+
+            pair.Store.Stop();
+        }
+    }
+
     private static ReservationRecord Record(DateTime now) =>
         new()
         {
