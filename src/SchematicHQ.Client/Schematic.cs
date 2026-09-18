@@ -516,40 +516,51 @@ public partial class Schematic
         _disposed = true;
         _closing = true;
 
-        if (_reservations != null)
+        // The lease teardown is wrapped so it cannot take the rest of the
+        // shutdown with it: the event buffer still has to flush what it is
+        // holding and the socket still has to close, whatever the lease store
+        // does. A failure here at worst leaves credits to expire server-side.
+        try
         {
-            _reservations.Stop();
+            if (_reservations != null)
+            {
+                _reservations.Stop();
+            }
+
+            if (_creditLeaseManager != null)
+            {
+                // Refuse new lease work first, so the waits below are waiting on work
+                // that is already unwinding rather than work still starting. Both
+                // steps run for a shared backend too: the work must not outlive the
+                // client, even where there is nothing to release.
+                _creditLeaseManager.Stop();
+                // One budget across both waits, not each timeout in turn: a caller
+                // shutting a client down wants a bounded shutdown, not the sum of
+                // every wait inside it.
+                var deadline = DateTime.UtcNow + LeaseDefaults.ShutdownDrainTimeout;
+                Task[] prewarms;
+                lock (_pendingPrewarms)
+                {
+                    prewarms = _pendingPrewarms.ToArray();
+                }
+                if (!await CreditLeaseManager.SettleWithinAsync(prewarms, deadline - DateTime.UtcNow))
+                {
+                    _logger.LogWarning(
+                        "Timed out after {Timeout} waiting for in-flight prewarms on shutdown",
+                        LeaseDefaults.ShutdownDrainTimeout);
+                }
+                await _creditLeaseManager.DrainAsync(deadline - DateTime.UtcNow);
+                if (!_leaseBackendShared)
+                {
+                    await _creditLeaseManager.ReleaseAllLocalLeasesAsync(deadline - DateTime.UtcNow);
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            _logger.LogWarning(ex, "Credit lease teardown failed on shutdown; any credits it holds will be released by server-side expiry");
         }
 
-        if (_creditLeaseManager != null)
-        {
-            // Refuse new lease work first, so the waits below are waiting on work
-            // that is already unwinding rather than work still starting. Both
-            // steps run for a shared backend too: the work must not outlive the
-            // client, even where there is nothing to release.
-            _creditLeaseManager.Stop();
-            // One budget across both waits, not each timeout in turn: a caller
-            // shutting a client down wants a bounded shutdown, not the sum of
-            // every wait inside it.
-            var deadline = DateTime.UtcNow + LeaseDefaults.ShutdownDrainTimeout;
-            Task[] prewarms;
-            lock (_pendingPrewarms)
-            {
-                prewarms = _pendingPrewarms.ToArray();
-            }
-            if (!await CreditLeaseManager.SettleWithinAsync(prewarms, deadline - DateTime.UtcNow))
-            {
-                _logger.LogWarning(
-                    "Timed out after {Timeout} waiting for in-flight prewarms on shutdown",
-                    LeaseDefaults.ShutdownDrainTimeout);
-            }
-            await _creditLeaseManager.DrainAsync(deadline - DateTime.UtcNow);
-            if (!_leaseBackendShared)
-            {
-                await _creditLeaseManager.ReleaseAllLocalLeasesAsync(deadline - DateTime.UtcNow);
-            }
-        }
-        
         if (_eventBuffer != null)
         {
             await _eventBuffer.Stop();
@@ -609,18 +620,31 @@ public partial class Schematic
                 };
                 var flagResult = await _datastreamClient.CheckFlag(request, flagKey, preflight);
 
+                // The engine declining to answer is the case a caller-supplied
+                // default exists for. It does not throw for that: it hands back
+                // the client-wide flag default under one of the engine reasons,
+                // so the catch below never sees it and the caller's value would
+                // be silently ignored on the datastream path while server mode
+                // honored it.
+                var value = flagResult.Value;
+                if (defaultValue.HasValue && EngineDeclined(flagResult))
+                {
+                    value = defaultValue.Value;
+                }
+
                 var response = CheckFlagWithEntitlementResponse.FromCheckFlagResult(flagResult);
+                response.Value = value;
 
                 // Submit flag check event for successful datastream evaluation
                 SubmitFlagCheckEvent(
                     flagKey,
-                    flagResult.Value,
+                    value,
                     company,
                     user,
                     new EventBodyFlagCheck
                     {
                         FlagKey = flagKey,
-                        Value = flagResult.Value,
+                        Value = value,
                         FlagId = flagResult.FlagId,
                         RuleId = flagResult.RuleId,
                         CompanyId = flagResult.CompanyId,
@@ -884,6 +908,17 @@ public partial class Schematic
     }
 
     // Helper method to build consistent cache keys
+    /// <summary>
+    /// Whether the local engine refused to evaluate rather than answering. It
+    /// reports that by returning the flag's registered default under one of two
+    /// reasons, not by throwing, so this is the only way to tell a real "false"
+    /// from "could not evaluate".
+    /// </summary>
+    private static bool EngineDeclined(CheckFlagResult result) =>
+        result.Error != null
+        || result.Reason == DatastreamClient.ReasonRulesEngineUnavailable
+        || result.Reason == DatastreamClient.ReasonRulesEngineError;
+
     private string BuildFlagCacheKey(string flagKey, Dictionary<string, string>? company, Dictionary<string, string>? user)
     {
         string cacheKey = flagKey;

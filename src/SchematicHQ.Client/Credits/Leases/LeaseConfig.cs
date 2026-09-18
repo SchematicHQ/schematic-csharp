@@ -267,6 +267,16 @@ public sealed class CreditLeaseConfig
         Check(DefaultLeaseDuration, nameof(DefaultLeaseDuration));
         Check(DefaultReservationTTL, nameof(DefaultReservationTTL));
         Check(SweepInterval, nameof(SweepInterval));
+        // Zero is meaningful here, unlike the knobs above: it asks for a
+        // cache-only prewarm. A negative one asks for nothing and would
+        // silently land in that same branch.
+        if (PrewarmResolveTimeout.HasValue && PrewarmResolveTimeout.Value < TimeSpan.Zero)
+        {
+            throw new ArgumentException(
+                $"CreditLeases.{nameof(PrewarmResolveTimeout)} must not be negative, got {PrewarmResolveTimeout.Value}",
+                nameof(PrewarmResolveTimeout)
+            );
+        }
         Check(DefaultLeaseSize, nameof(DefaultLeaseSize));
         CheckWaterMark(LowWaterMark, nameof(LowWaterMark));
 
