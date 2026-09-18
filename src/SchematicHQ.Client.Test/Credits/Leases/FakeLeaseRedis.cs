@@ -94,6 +94,38 @@ public sealed class FakeLeaseRedis : ILeaseRedis
         }
     }
 
+    /// <summary>
+    /// Both writes under one monitor, matching the MULTI/EXEC the real backend
+    /// sends: an observer never sees the hash without its expiry.
+    /// </summary>
+    public Task HashSetWithExpiryAsync(
+        string key,
+        IReadOnlyList<KeyValuePair<string, string>> entries,
+        long unixTimeMilliseconds
+    )
+    {
+        lock (_gate)
+        {
+            if (FailNextHashSetWithExpiry)
+            {
+                FailNextHashSetWithExpiry = false;
+                throw new InvalidOperationException("scripted hash-with-expiry failure");
+            }
+            foreach (var entry in entries)
+            {
+                HashSet(key, entry.Key, entry.Value);
+            }
+            _expirations[key] = unixTimeMilliseconds;
+            return Task.CompletedTask;
+        }
+    }
+
+    /// <summary>
+    /// Makes the next combined write fail as a unit, the way a dropped
+    /// connection mid-transaction does.
+    /// </summary>
+    public bool FailNextHashSetWithExpiry { get; set; }
+
     public Task SortedSetAddAsync(string key, string member, double score)
     {
         lock (_gate)

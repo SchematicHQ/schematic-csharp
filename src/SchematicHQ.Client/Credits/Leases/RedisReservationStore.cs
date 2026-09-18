@@ -104,11 +104,14 @@ return raw
         var hashKey = HashKey(reservation.Id);
 
         // Write the hash first so the reservation exists before anything
-        // references it. These are independent single-key operations rather
-        // than one multi-key script: a partial failure at worst leaves an
-        // un-indexed reservation that the TTL reaps, never a double spend.
+        // references it, and write it with its expiry in one transaction: a
+        // crash between the two would leave a key with no TTL that the indexes
+        // below never came to point at, so nothing reaps it and nothing finds
+        // it. The index writes that follow are still independent single-key
+        // operations, where a partial failure at worst leaves an un-indexed
+        // reservation that the TTL reaps, never a double spend.
         await _client
-            .HashSetAsync(
+            .HashSetWithExpiryAsync(
                 hashKey,
                 new[]
                 {
@@ -131,15 +134,15 @@ return raw
                     ),
                     new KeyValuePair<string, string>("expiresAt", RedisLeaseStore.Text(expiresMs)),
                     new KeyValuePair<string, string>("evalCtx", EncodeEvalCtx(reservation)),
-                }
+                },
+                expiresMs + ReservationTtlGraceMs
             )
             .ConfigureAwait(false);
 
-        // The TTL and the two indexes only depend on the hash existing, not on
-        // each other, so they go out together: one round-trip wave instead of
-        // three. This sits on every allowed check, so the latency matters.
+        // The two indexes only depend on the hash existing, not on each other,
+        // so they go out together: one round-trip wave instead of two. This
+        // sits on every allowed check, so the latency matters.
         await Task.WhenAll(
-                _client.KeyExpireAtAsync(hashKey, expiresMs + ReservationTtlGraceMs),
                 _client.SortedSetAddAsync(IndexKey(), EncodeMember(reservation), expiresMs),
                 _client.HashSetAsync(
                     ByCreditKey(reservation.CompanyId, reservation.CreditTypeId),
@@ -315,7 +318,7 @@ return raw
 
     public void StartSweep()
     {
-        CancellationTokenSource cancellation;
+        CancellationToken token;
         lock (_gate)
         {
             if (_sweepCancellation != null || _stopped)
@@ -323,14 +326,13 @@ return raw
                 return;
             }
             _sweepCancellation = new CancellationTokenSource();
-            // Read the token off the local, not the field: a Stop between here
-            // and the loop below nulls the field and disposes what it held, and
-            // the read would then throw instead of starting a loop that is
-            // already cancelled.
-            cancellation = _sweepCancellation;
+            // Take the token here, inside the lock. A Stop right after this
+            // cancels the source and disposes it, and reading Token off a
+            // disposed source throws; a token taken beforehand survives, already
+            // cancelled, so the loop below sees that and exits at once.
+            token = _sweepCancellation.Token;
         }
 
-        var token = cancellation.Token;
         _ = Task.Run(
             async () =>
             {

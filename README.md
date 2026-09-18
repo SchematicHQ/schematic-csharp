@@ -395,7 +395,7 @@ else
 }
 ```
 
-`Usage` may be fractional. The reservation keeps the fraction, while the preflight quantity and the quantity a settle bills round up to whole units.
+`Usage` may be fractional, but it rounds up to a whole unit everywhere it counts: the reservation holds `ceil(Usage)` times the consumption rate, the preflight gates on `ceil(Usage)`, and the settling event bills `ceil(Usage)`. A check for 2.5 units at a rate of 10 therefore holds 30 credits and bills 3 units.
 
 A check can allow without reserving credits (the feature is not credit-metered, `Usage` is 0, or the check failed open), and that usage still has to be tracked.
 

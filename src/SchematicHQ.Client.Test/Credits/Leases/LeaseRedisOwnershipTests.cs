@@ -107,6 +107,12 @@ public class LeaseRedisOwnershipTests
         public Task HashSetAsync(string key, IReadOnlyList<KeyValuePair<string, string>> entries) =>
             _inner.HashSetAsync(key, entries);
 
+        public Task HashSetWithExpiryAsync(
+            string key,
+            IReadOnlyList<KeyValuePair<string, string>> entries,
+            long unixTimeMilliseconds
+        ) => _inner.HashSetWithExpiryAsync(key, entries, unixTimeMilliseconds);
+
         public Task HashDeleteAsync(string key, string field) => _inner.HashDeleteAsync(key, field);
 
         public Task KeyDeleteAsync(string key) => _inner.KeyDeleteAsync(key);

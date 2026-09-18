@@ -70,8 +70,8 @@ namespace SchematicHQ.Client.Datastream
 
     // Reasons returned when the WASM rules engine cannot evaluate a flag; the flag's
     // default value is returned in both cases (matching schematic-java's semantics).
-    private const string ReasonRulesEngineUnavailable = "RULES_ENGINE_UNAVAILABLE";
-    private const string ReasonRulesEngineError = "RULES_ENGINE_ERROR";
+    internal const string ReasonRulesEngineUnavailable = "RULES_ENGINE_UNAVAILABLE";
+    internal const string ReasonRulesEngineError = "RULES_ENGINE_ERROR";
 
     // Handshake headers attached to the WebSocket connection so the backend can
     // distinguish direct-SDK connections from the schematic-datastream-replicator

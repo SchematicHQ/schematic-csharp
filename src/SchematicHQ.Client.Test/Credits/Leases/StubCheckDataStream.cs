@@ -65,6 +65,37 @@ public sealed class StubCheckDataStream : ICheckDataStream
         return this;
     }
 
+    /// <summary>
+    /// Sets the flag's default, which is what the datastream substitutes when
+    /// the engine cannot answer.
+    /// </summary>
+    public StubCheckDataStream WithFlagDefault(bool value)
+    {
+        Flag.DefaultValue = value;
+        return this;
+    }
+
+    /// <summary>
+    /// Queues the answer the datastream gives when the engine faults. It does
+    /// not throw and it does not return null: it hands back the flag's default
+    /// under an engine reason, which is what a credit gate has to recognise as
+    /// a failure rather than a verdict.
+    /// </summary>
+    public StubCheckDataStream FailsInTheEngine(string reason, Exception? error = null)
+    {
+        _results.Enqueue(
+            new CheckFlagResult
+            {
+                Value = Flag.DefaultValue,
+                Reason = reason,
+                FlagKey = FlagKey,
+                FlagId = "flag_1",
+                Error = error,
+            }
+        );
+        return this;
+    }
+
     public StubCheckDataStream Answers(bool value, string reason)
     {
         _results.Enqueue(
