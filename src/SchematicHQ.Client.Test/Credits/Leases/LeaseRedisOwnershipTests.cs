@@ -117,9 +117,6 @@ public class LeaseRedisOwnershipTests
 
         public Task KeyDeleteAsync(string key) => _inner.KeyDeleteAsync(key);
 
-        public Task KeyExpireAtAsync(string key, long unixTimeMilliseconds) =>
-            _inner.KeyExpireAtAsync(key, unixTimeMilliseconds);
-
         public Task SortedSetAddAsync(string key, string member, double score) =>
             _inner.SortedSetAddAsync(key, member, score);
 

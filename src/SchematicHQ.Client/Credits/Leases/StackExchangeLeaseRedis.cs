@@ -166,9 +166,6 @@ public sealed class StackExchangeLeaseRedis : ILeaseRedis, IDisposable
 
     public Task KeyDeleteAsync(string key) => _db.KeyDeleteAsync(key);
 
-    public Task KeyExpireAtAsync(string key, long unixTimeMilliseconds) =>
-        _db.KeyExpireAsync(key, DateTimeOffset.FromUnixTimeMilliseconds(unixTimeMilliseconds).UtcDateTime);
-
     public Task SortedSetAddAsync(string key, string member, double score) =>
         _db.SortedSetAddAsync(key, member, score);
 

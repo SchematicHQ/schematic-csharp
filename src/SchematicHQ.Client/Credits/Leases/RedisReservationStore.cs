@@ -439,30 +439,63 @@ return raw
             ),
         };
 
-        var evalCtx = Field(raw, "evalCtx");
-        if (evalCtx.Length > 0)
+        ApplyEvalCtx(record, Field(raw, "evalCtx"));
+        return record;
+    }
+
+    /// <summary>
+    /// Reads the evaluation context off a stored hold, taking the company and
+    /// user keys and ignoring everything else.
+    ///
+    /// <para>Lenient on purpose: the other SDKs store the whole check request
+    /// body here, so a hold written by a sibling pod on the same Redis can
+    /// carry a preflight next to the company and user. A decoder that insisted
+    /// on a map of string maps would fail on that record and settle it with no
+    /// company or user keys at all.</para>
+    /// </summary>
+    private static void ApplyEvalCtx(ReservationRecord record, string evalCtx)
+    {
+        if (evalCtx.Length == 0)
         {
-            try
+            return;
+        }
+        try
+        {
+            using var document = JsonDocument.Parse(evalCtx);
+            if (document.RootElement.ValueKind != JsonValueKind.Object)
             {
-                var decoded = JsonSerializer.Deserialize<
-                    Dictionary<string, Dictionary<string, string>?>
-                >(evalCtx);
-                if (decoded != null)
-                {
-                    record.Company = decoded.TryGetValue("company", out var company)
-                        ? company
-                        : null;
-                    record.User = decoded.TryGetValue("user", out var user) ? user : null;
-                }
+                return;
             }
-            catch (JsonException)
+            record.Company = StringMap(document.RootElement, "company");
+            record.User = StringMap(document.RootElement, "user");
+        }
+        catch (JsonException)
+        {
+            // A hold whose context cannot be decoded still settles: the track
+            // event simply carries no company or user keys.
+        }
+    }
+
+    /// <summary>
+    /// One member of the evaluation context as entity keys. Entries that are
+    /// not strings are skipped rather than thrown on, so one odd value does not
+    /// cost the rest of the keys.
+    /// </summary>
+    private static Dictionary<string, string>? StringMap(JsonElement root, string name)
+    {
+        if (!root.TryGetProperty(name, out var value) || value.ValueKind != JsonValueKind.Object)
+        {
+            return null;
+        }
+        var map = new Dictionary<string, string>();
+        foreach (var property in value.EnumerateObject())
+        {
+            if (property.Value.ValueKind == JsonValueKind.String)
             {
-                // A hold whose context cannot be decoded still settles: the
-                // track event simply carries no company or user keys.
+                map[property.Name] = property.Value.GetString()!;
             }
         }
-
-        return record;
+        return map;
     }
 
     /// <summary>

@@ -85,15 +85,6 @@ public sealed class FakeLeaseRedis : ILeaseRedis
         }
     }
 
-    public Task KeyExpireAtAsync(string key, long unixTimeMilliseconds)
-    {
-        lock (_gate)
-        {
-            _expirations[key] = unixTimeMilliseconds;
-            return Task.CompletedTask;
-        }
-    }
-
     /// <summary>
     /// Both writes under one monitor, matching the MULTI/EXEC the real backend
     /// sends: an observer never sees the hash without its expiry.
