@@ -371,6 +371,9 @@ public static class LeaseEntitlement
             SoftLimit = entitlement.SoftLimit,
             Usage = entitlement.Usage,
             ValueType = new RulesengineEntitlementValueType(entitlement.ValueType.Value),
+            WarningTiers = entitlement.WarningTiers?.Select(
+                tier => new RulesengineWarningTier { Key = tier.Key, Value = tier.Value }
+            ),
         };
     }
 }
