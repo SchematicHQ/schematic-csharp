@@ -89,6 +89,13 @@ public partial class Schematic
         _replicatorMode = _options.ReplicatorMode;
         _logger = _options.LoggerFactory.CreateLogger("SchematicHQ.Client");
 
+        // Up here with the other configuration checks, and above everything the
+        // constructor starts: the event buffer's flush loop and the datastream
+        // socket are both running by the time the lease plumbing is built, so a
+        // throw down there would leak a thread and a websocket per rejected
+        // client.
+        _options.CreditLeases?.Validate();
+
         // Validate replicator mode configuration
         if (_replicatorMode && string.IsNullOrWhiteSpace(_options.ReplicatorHealthUrl))
         {
@@ -273,11 +280,6 @@ public partial class Schematic
         {
             return;
         }
-
-        // Before the offline and mode branches below, so a bad value is a
-        // startup failure in every configuration rather than only in the ones
-        // that happen to read it.
-        config.Validate();
 
         if (_offline)
         {
