@@ -1,3 +1,4 @@
+using System.Linq;
 namespace SchematicHQ.Client.RulesEngine
 {
     /// <summary>
@@ -104,11 +105,21 @@ namespace SchematicHQ.Client.RulesEngine
             return new RulesengineFeatureEntitlement
             {
                 Allocation = entitlement.Allocation,
+                // The credit split and the rate behind it cross too. A check
+                // that answers over REST carries the same entitlement as one
+                // the engine answered, and CheckResult tells callers to bind a
+                // credits-remaining counter to CreditSettled; dropping these
+                // left that counter empty on the path server mode uses for
+                // every check without a usage.
+                ConsumptionRate = entitlement.ConsumptionRate,
                 CreditId = entitlement.CreditId,
                 CreditRemaining = entitlement.CreditRemaining,
+                CreditReserved = entitlement.CreditReserved,
+                CreditSettled = entitlement.CreditSettled,
                 CreditTotal = entitlement.CreditTotal,
                 CreditUsed = entitlement.CreditUsed,
                 EventName = entitlement.EventName,
+                EventSubtype = entitlement.EventSubtype,
                 FeatureId = entitlement.FeatureId,
                 FeatureKey = entitlement.FeatureKey,
                 MetricPeriod = entitlement.MetricPeriod.HasValue
@@ -120,7 +131,10 @@ namespace SchematicHQ.Client.RulesEngine
                     : null,
                 SoftLimit = entitlement.SoftLimit,
                 Usage = entitlement.Usage,
-                ValueType = new RulesengineEntitlementValueType(entitlement.ValueType.Value)
+                ValueType = new RulesengineEntitlementValueType(entitlement.ValueType.Value),
+                WarningTiers = entitlement.WarningTiers?.Select(
+                    tier => new RulesengineWarningTier { Key = tier.Key, Value = tier.Value }
+                )
             };
         }
     }
