@@ -196,12 +196,24 @@ namespace SchematicHQ.Client.Datastream
 
     /// <summary>
     /// Check a feature flag via datastream.
-    ///
-    /// <para>A preflight is hypothetical usage the caller is about to record.
-    /// Every local evaluation below gates on it, so a credit-aware check that
-    /// falls back to a plain one still answers for the post-call balance.</para>
     /// </summary>
-    public async Task<CheckFlagResult> CheckFlag(CheckFlagRequestBody request, string flagKey, PreflightRequestBody? preflight = null)
+    ///
+    /// <remarks>Kept as its own method rather than folded into the preflight
+    /// overload with a default argument, so callers compiled against this
+    /// signature keep binding to it.</remarks>
+    public Task<CheckFlagResult> CheckFlag(CheckFlagRequestBody request, string flagKey)
+    {
+      return CheckFlag(request, flagKey, null);
+    }
+
+    /// <summary>
+    /// Check a feature flag via datastream, gating on hypothetical usage.
+    ///
+    /// <para>A preflight is usage the caller is about to record. Every local
+    /// evaluation below gates on it, so a credit-aware check that falls back to
+    /// a plain one still answers for the post-call balance.</para>
+    /// </summary>
+    public async Task<CheckFlagResult> CheckFlag(CheckFlagRequestBody request, string flagKey, PreflightRequestBody? preflight)
     {
       CancellationToken cancellationToken = CancellationToken.None;
       

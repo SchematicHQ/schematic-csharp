@@ -44,8 +44,13 @@ public static class ReservationTrack
         TrackWithReservationOptions? options = null
     )
     {
+        // Rounded up for the same reason the hold is: the debit has to move
+        // the local ledger by exactly what the track event bills.
         var claimed = await reservations
-            .ConsumeAsync(reservation.Id, actualQuantity * reservation.ConsumptionRate)
+            .ConsumeAsync(
+                reservation.Id,
+                Math.Ceiling(actualQuantity) * reservation.ConsumptionRate
+            )
             .ConfigureAwait(false);
         return new SettleOutcome
         {

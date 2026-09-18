@@ -58,12 +58,13 @@ public class WasmCreditGateTests
 
         var result = await harness.CheckAsync(usage: 2.5);
 
-        // The hold is sized from the unrounded usage times the rate, so no
-        // credit is over-held and the lease's arithmetic stays exact.
+        // The hold is sized from whole event units, since a fraction of an
+        // event is not something the server bills. The record still keeps the
+        // quantity the caller declared.
         Assert.That(result.Reservation!.QuantityReserved, Is.EqualTo(2.5));
-        Assert.That(result.Reservation.CreditsReserved, Is.EqualTo(2.5));
+        Assert.That(result.Reservation.CreditsReserved, Is.EqualTo(3));
         var lease = await harness.Leases.GetAsync("co", CreditId);
-        Assert.That(lease!.LocalRemainingCredits, Is.EqualTo(9_997.5));
+        Assert.That(lease!.LocalRemainingCredits, Is.EqualTo(9_997));
 
         // A track event's quantity is an integer, so a partial unit bills as a
         // whole one rather than as none. The preflight rounds the same way, so

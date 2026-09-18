@@ -22,7 +22,10 @@ public partial class Schematic
     private readonly ILogger _logger;
     private readonly ICacheProvider _cache;
     private readonly bool _offline;
-    private readonly DatastreamClientAdapter? _datastreamClient;
+    // Cleared when the stream fails to start, so every reader (the auto lease
+    // mode above all) sees a client with no local evaluation rather than one
+    // that claims a stream it never got.
+    private volatile DatastreamClientAdapter? _datastreamClient;
     private readonly bool _replicatorMode;
     private bool _datastreamConnected;
     private bool _disposed;
@@ -206,29 +209,52 @@ public partial class Schematic
                 datastreamOptions.CacheTTL ??= _options.CacheConfiguration.CacheTtl;
             }
 
-            _datastreamClient = new DatastreamClientAdapter(
-                _options.BaseUrl,
-                _logger,
-                apiKey,
-                _cache,
-                datastreamOptions,
-                _replicatorMode,
-                _options.ReplicatorHealthUrl
-            );
-
-            if (!_replicatorMode)
+            try
             {
-                // Only start WebSocket connections when not in replicator mode
-                _datastreamClient.Start();
-                _datastreamConnected = true;
+                _datastreamClient = new DatastreamClientAdapter(
+                    _options.BaseUrl,
+                    _logger,
+                    apiKey,
+                    _cache,
+                    datastreamOptions,
+                    _replicatorMode,
+                    _options.ReplicatorHealthUrl
+                );
 
-                // Start a background task to monitor connection status
-                StartConnectionMonitoring();
+                if (!_replicatorMode)
+                {
+                    // Only start WebSocket connections when not in replicator mode
+                    _datastreamClient.Start();
+                    _datastreamConnected = true;
+
+                    // Start a background task to monitor connection status
+                    StartConnectionMonitoring();
+                }
+                else
+                {
+                    _datastreamConnected = false;
+                    _logger.LogInformation("Replicator mode enabled - datastream client created for cache access only");
+                }
             }
-            else
+            catch (Exception ex)
             {
+                // A stream that never came up evaluates nothing and caches
+                // nothing, so the client must stop claiming one: checks go over
+                // REST, and the lease mode resolves to server rather than to a
+                // local gate with no engine behind it. A bad base URL is the
+                // usual cause, and it is not worth failing the constructor over
+                // when REST can answer.
+                _logger.LogError(ex, "Failed to start the datastream client; falling back to API checks");
                 _datastreamConnected = false;
-                _logger.LogInformation("Replicator mode enabled - datastream client created for cache access only");
+                try
+                {
+                    _datastreamClient?.Close();
+                }
+                catch (Exception closeEx)
+                {
+                    _logger.LogDebug(closeEx, "Failed to close the datastream client after a failed start");
+                }
+                _datastreamClient = null;
             }
         }
 
@@ -419,7 +445,10 @@ public partial class Schematic
 
     private void StartConnectionMonitoring()
     {
-        if (_datastreamClient == null)
+        // Held locally: the field is cleared when the stream fails to start, and
+        // the loop below must not race that.
+        var datastream = _datastreamClient;
+        if (datastream == null)
             return;
 
         // Start a background task that periodically checks the connection status
@@ -432,7 +461,7 @@ public partial class Schematic
                     try
                     {
                         // Check connection status every 2 seconds
-                        var isConnected = await _datastreamClient.IsConnectedAsync(TimeSpan.FromMilliseconds(2000));
+                        var isConnected = await datastream.IsConnectedAsync(TimeSpan.FromMilliseconds(2000));
                         if (_datastreamConnected != isConnected)
                         {
                             _datastreamConnected = isConnected;
@@ -474,9 +503,11 @@ public partial class Schematic
     /// shutting down must not refund a lease its siblings are still drawing on.
     /// Shared leases reclaim themselves by expiring or being consumed.</para>
     ///
-    /// <para>Lease work already in flight is waited out, bounded by
-    /// <see cref="LeaseDefaults.ShutdownDrainTimeout"/>, before the release, so an
-    /// acquire that lands mid-shutdown is one the release can see.</para>
+    /// <para>Lease work already in flight is waited out before the release, so
+    /// an acquire that lands mid-shutdown is one the release can see. The wait
+    /// and the release share one <see cref="LeaseDefaults.ShutdownDrainTimeout"/>
+    /// budget, so a shutdown stays bounded however slow the store or the wire
+    /// is.</para>
     /// </summary>
     public async Task Shutdown()
     {
@@ -513,7 +544,7 @@ public partial class Schematic
             await _creditLeaseManager.DrainAsync(deadline - DateTime.UtcNow);
             if (!_leaseBackendShared)
             {
-                await _creditLeaseManager.ReleaseAllLocalLeasesAsync();
+                await _creditLeaseManager.ReleaseAllLocalLeasesAsync(deadline - DateTime.UtcNow);
             }
         }
         
@@ -1027,7 +1058,10 @@ public partial class Schematic
         // is nothing local to consume or refund.
         if (reservation.Mode == CreditLeaseMode.Server)
         {
-            TrackEvent(ReservationTrack.BuildTrackEvent(reservation, actualQuantity, options), trackOptions);
+            TrackEvent(
+                ReservationTrack.BuildTrackEvent(reservation, actualQuantity, options),
+                trackOptions,
+                updateMetrics: true);
             return;
         }
 
@@ -1039,7 +1073,10 @@ public partial class Schematic
             // the lease id (the handle came from a lease-configured client, and
             // dropping it would double-debit the grant) and the deterministic
             // idempotency key.
-            TrackEvent(ReservationTrack.BuildTrackEvent(reservation, actualQuantity, options), trackOptions);
+            TrackEvent(
+                ReservationTrack.BuildTrackEvent(reservation, actualQuantity, options),
+                trackOptions,
+                updateMetrics: true);
             return;
         }
 
@@ -1077,7 +1114,11 @@ public partial class Schematic
                 reservation.Id);
         }
 
-        TrackEvent(track, trackOptions);
+        // The cached company metric moves only when this call moved local state
+        // with it: the server drops a duplicate event on the idempotency key,
+        // so bumping the metric for one would have a caller's retry deny its
+        // own next numeric-limit check until the stream pushes the real figure.
+        TrackEvent(track, trackOptions, settledLocally);
     }
 
     /// <summary>
@@ -1146,9 +1187,40 @@ public partial class Schematic
     }
 
     /// <summary>
+    /// The prefix Schematic's secure company ids carry, whatever key name they
+    /// are passed under.
+    /// </summary>
+    private const string CompanyIdPrefix = "comp_";
+
+    /// <summary>
+    /// The Schematic id hiding among a set of entity keys, recognized by its
+    /// secure-id prefix. The server reads keys this way once its own key lookup
+    /// has come up empty, so <c>{ account_id: "comp_1" }</c> resolves and
+    /// <c>{ id: "acme" }</c> does not: the prefix decides, not the name of the
+    /// key it sits under.
+    /// </summary>
+    internal static string? SchematicId(Dictionary<string, string> keys, string prefix)
+    {
+        foreach (var value in keys.Values)
+        {
+            if (value != null && value.StartsWith(prefix, StringComparison.Ordinal))
+            {
+                return value;
+            }
+        }
+        return null;
+    }
+
+    /// <summary>
     /// Resolves a company id, actively fetching the company over the datastream
-    /// when only secondary keys were passed, and warming the cache as a side
-    /// effect. Null when the company never surfaced within the prewarm timeout.
+    /// and warming the cache as a side effect. Null when the company never
+    /// surfaced and the keys carry no Schematic id either.
+    ///
+    /// <para>Resolved in the server's order: every supplied key and value pair
+    /// is an ordinary entity key and gets looked up first, because an account
+    /// is free to define a key called <c>id</c> holding its own identifier.
+    /// Only when nothing matches is a value read as the company's own id, by
+    /// its <c>comp_</c> prefix.</para>
     ///
     /// <para>An identify does not push a company into the datastream cache:
     /// companies are only streamed in response to a request. So this fetches
@@ -1157,22 +1229,23 @@ public partial class Schematic
     /// </summary>
     private async Task<string?> ResolveCompanyIdWithWait(Dictionary<string, string> company)
     {
-        if (company.TryGetValue("id", out var id) && !string.IsNullOrEmpty(id))
-        {
-            return id;
-        }
         if (_datastreamClient == null)
         {
             // Without a datastream there is no cache to read and nothing to
-            // fetch over, so secondary keys cannot be resolved to an id at all.
-            return null;
+            // fetch over, so only a Schematic id the keys already carry can
+            // resolve.
+            return SchematicId(company, CompanyIdPrefix);
         }
         if (_prewarmResolveTimeout <= TimeSpan.Zero)
         {
             // A zero timeout means cache-only: answer from whatever an earlier
             // check already warmed, and never wait on the socket.
             var cachedOnly = await _datastreamClient.GetCachedCompany(company);
-            return cachedOnly?.Id;
+            if (cachedOnly != null && !string.IsNullOrEmpty(cachedOnly.Id))
+            {
+                return cachedOnly.Id;
+            }
+            return SchematicId(company, CompanyIdPrefix);
         }
 
         // Already cached by an earlier check or prewarm.
@@ -1203,7 +1276,9 @@ public partial class Schematic
             {
                 _logger.LogDebug(ex, "Prewarm: datastream company fetch failed");
             }
-            if (DateTime.UtcNow >= deadline) return null;
+            // The keys never resolved, so fall back to a prefixed value the
+            // way the server does once its own key lookup comes up empty.
+            if (DateTime.UtcNow >= deadline) return SchematicId(company, CompanyIdPrefix);
             await Task.Delay(LeaseDefaults.PrewarmPollInterval);
         }
     }
@@ -1273,16 +1348,22 @@ public partial class Schematic
                 LeaseId = options?.LeaseId,
                 ReservationId = options?.ReservationId
             },
-            options);
+            options,
+            updateMetrics: true);
     }
 
     /// <summary>
-    /// Enqueues an already-built track event and updates the datastream's view
-    /// of the company's metrics. Shared with the reservation settle, which
-    /// builds its own body so it can carry the lease or reservation id the
-    /// server routes the credit consumption by.
+    /// Enqueues an already-built track event, optimistically bumping the
+    /// datastream's view of the company's metrics with it unless
+    /// <paramref name="updateMetrics"/> says not to. The bump is a local
+    /// prediction of what the stream will push back, so it belongs only to an
+    /// event that records usage the server has not already counted.
+    ///
+    /// <para>Shared with the reservation settle, which builds its own body so
+    /// it can carry the lease or reservation id the server routes the credit
+    /// consumption by.</para>
     /// </summary>
-    private void TrackEvent(EventBodyTrack eventBody, TrackOptions? options)
+    private void TrackEvent(EventBodyTrack eventBody, TrackOptions? options, bool updateMetrics)
     {
         EnqueueEvent(
             EventType.Track,
@@ -1293,7 +1374,7 @@ public partial class Schematic
             backfill: options?.Backfill);
 
         // Update company metrics in datastream if available and connected
-        if (eventBody.Company != null && UseDatastream() && _datastreamClient != null && _datastreamConnected)
+        if (updateMetrics && eventBody.Company != null && UseDatastream() && _datastreamClient != null && _datastreamConnected)
         {
             try
             {

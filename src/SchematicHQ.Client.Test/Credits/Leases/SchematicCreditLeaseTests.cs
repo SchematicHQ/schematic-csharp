@@ -195,6 +195,37 @@ public class SchematicCreditLeaseTests
     }
 
     [Test]
+    public async Task A_Datastream_That_Cannot_Start_Leaves_The_Client_Gating_Server_Side()
+    {
+        // A base URL the stream cannot parse. Failing the constructor over it
+        // would take down a client REST can still answer for, so the stream is
+        // dropped instead, and the auto mode has to see that.
+        var schematic = new Schematic(
+            "sch_test",
+            new ClientOptions
+            {
+                EventBuffer = _events,
+                LoggerFactory = _logs,
+                UseDatastream = true,
+                BaseUrl = "not a url",
+                CreditLeases = new CreditLeaseConfig(),
+            }
+        );
+        try
+        {
+            Assert.That(
+                _logs.Logged(LogLevel.Error, "Failed to start the datastream client"),
+                Is.True
+            );
+            Assert.That(_logs.Logged(LogLevel.Information, "server mode"), Is.True);
+        }
+        finally
+        {
+            await schematic.Shutdown();
+        }
+    }
+
+    [Test]
     public async Task Client_Mode_Without_Datastream_Warns_That_Usage_Is_Ignored()
     {
         var schematic = Client(new CreditLeaseConfig { Mode = CreditLeaseMode.Client });
