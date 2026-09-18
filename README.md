@@ -421,6 +421,8 @@ schematic.Identify(
 
 Or call `schematic.Prewarm(company, creditTypeIds)` directly. Both are no-ops in server mode.
 
+An `Identify` that carries `Prewarm` flushes the event buffer so the company exists before the lease acquire asks for it, which makes it a call to place once at the start of a session rather than on every event.
+
 ### Failure behavior
 
 A check that cannot be gated (API unreachable, Redis down, lease exhausted) fails closed by default. Override per check:

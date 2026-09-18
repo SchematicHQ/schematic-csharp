@@ -641,20 +641,7 @@ public sealed class CreditLeaseManager
     /// </summary>
     private Task<T> Track<T>(Task<T> task)
     {
-        lock (_gate)
-        {
-            _background.Add(task);
-        }
-        _ = task.ContinueWith(
-            completed =>
-            {
-                lock (_gate)
-                {
-                    _background.Remove(completed);
-                }
-            },
-            TaskContinuationOptions.ExecuteSynchronously
-        );
+        Track((Task)task);
         return task;
     }
 

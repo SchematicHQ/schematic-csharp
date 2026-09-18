@@ -36,9 +36,15 @@ public sealed class InMemoryReservationStore : IReservationStore
 
     public Task AddAsync(ReservationRecord reservation)
     {
+        var stored = reservation.Copy();
+        // Redis has no field for the mode, so a record read back from it is
+        // always a client-mode one. Drop it here too, so the two backends are
+        // interchangeable and nothing comes to depend on a round trip carrying
+        // it. A server-mode hold lives on the server and never reaches a store.
+        stored.Mode = CreditLeaseMode.Client;
         lock (_gate)
         {
-            _reservations[reservation.Id] = reservation.Copy();
+            _reservations[reservation.Id] = stored;
         }
         return Task.CompletedTask;
     }
@@ -127,6 +133,7 @@ public sealed class InMemoryReservationStore : IReservationStore
 
     public void StartSweep()
     {
+        CancellationTokenSource cancellation;
         lock (_gate)
         {
             if (_sweepCancellation != null || _stopped)
@@ -134,9 +141,14 @@ public sealed class InMemoryReservationStore : IReservationStore
                 return;
             }
             _sweepCancellation = new CancellationTokenSource();
+            // Read the token off the local, not the field: a Stop between here
+            // and the loop below nulls the field and disposes what it held, and
+            // the read would then throw instead of starting a loop that is
+            // already cancelled.
+            cancellation = _sweepCancellation;
         }
 
-        var token = _sweepCancellation.Token;
+        var token = cancellation.Token;
         _ = Task.Run(
             async () =>
             {
