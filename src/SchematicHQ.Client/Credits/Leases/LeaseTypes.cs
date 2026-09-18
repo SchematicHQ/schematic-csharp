@@ -192,11 +192,24 @@ public static class LeaseTime
 public static class LeaseQuantity
 {
     /// <summary>
+    /// The largest quantity that survives the trip to an event's integer
+    /// quantity. Past this a double no longer holds consecutive integers, and
+    /// the cast that rounds a quantity up stops meaning anything: on .NET Core
+    /// it saturates to long.MaxValue and on .NET Framework it wraps to a
+    /// negative number, so a caller who passed something absurd would bill one
+    /// of those rather than be refused.
+    /// </summary>
+    public const double MaxQuantity = 9007199254740991;
+
+    /// <summary>
     /// Reports whether a caller-supplied quantity can size a credit hold. NaN
     /// is the dangerous case: it slips through every numeric comparison, and a
     /// NaN balance would approve every later reserve on a possibly shared
     /// lease.
     /// </summary>
     public static bool IsValid(double value) =>
-        !double.IsNaN(value) && !double.IsInfinity(value) && value >= 0;
+        !double.IsNaN(value)
+        && !double.IsInfinity(value)
+        && value >= 0
+        && value <= MaxQuantity;
 }

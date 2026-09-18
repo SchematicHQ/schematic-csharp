@@ -6,9 +6,9 @@ using SchematicHQ.Client.RulesEngine;
 namespace SchematicHQ.Client.Test.Credits.Leases;
 
 /// <summary>
-/// A fractional usage rounds up on every side of the ledger. The settling event
-/// carries whole units, so a hold sized from the fraction would bill more than
-/// it held and the lease would drift by the difference on every check.
+/// A fractional usage is held and debited exactly. Only the two integer fields
+/// round up: the preflight the engine gates on, and the quantity the settling
+/// event bills.
 /// </summary>
 [TestFixture]
 public class FractionalUsageRoundingTests
@@ -17,7 +17,7 @@ public class FractionalUsageRoundingTests
     private const string FlagKey = "inference";
 
     [Test]
-    public async Task Half_A_Unit_At_A_Rate_Of_Ten_Holds_Ten_Credits()
+    public async Task Half_A_Unit_At_A_Rate_Of_Ten_Holds_Five_Credits()
     {
         var leases = new InMemoryLeaseStore();
         using var reservations = new InMemoryReservationStore(leases);
@@ -58,15 +58,19 @@ public class FractionalUsageRoundingTests
         );
 
         Assert.That(result.Allowed, Is.True);
-        Assert.That(result.Reservation!.QuantityReserved, Is.EqualTo(1));
-        Assert.That(result.Reservation.CreditsReserved, Is.EqualTo(10));
+        Assert.That(result.Reservation!.QuantityReserved, Is.EqualTo(0.5));
+        Assert.That(result.Reservation.CreditsReserved, Is.EqualTo(5));
 
         var lease = await leases.GetAsync("co_1", CreditId);
-        Assert.That(lease!.LocalRemainingCredits, Is.EqualTo(990));
+        Assert.That(lease!.LocalRemainingCredits, Is.EqualTo(995));
+
+        // The engine's gate rounds up, so a check never passes on less usage
+        // than the caller will record.
+        Assert.That(LeasePreflight.PreflightQuantity(0.5), Is.EqualTo(1));
     }
 
     [Test]
-    public async Task Settling_Half_A_Unit_At_A_Rate_Of_Ten_Debits_Ten_Credits()
+    public async Task Settling_Half_A_Unit_At_A_Rate_Of_Ten_Debits_Five_And_Bills_One()
     {
         var leases = new InMemoryLeaseStore();
         await leases.ReplaceAsync(
@@ -91,6 +95,7 @@ public class FractionalUsageRoundingTests
                 EventSubtype = "inference_tokens",
                 QuantityReserved = 1,
                 CreditsReserved = 10,
+                // The hold covers a whole unit; this settle spends half of it.
                 ConsumptionRate = 10,
                 ExpiresAt = DateTime.UtcNow.AddMinutes(1),
             }
@@ -102,12 +107,13 @@ public class FractionalUsageRoundingTests
             0.5
         );
 
-        // The event bills one whole unit, so the lease is charged the credits
-        // behind one whole unit and nothing is refunded.
+        // The lease is debited the exact credits the usage cost, and the
+        // unspent half of the hold goes back. The event's quantity is an
+        // integer, so it still bills a whole unit.
         Assert.That(outcome.Track.Quantity, Is.EqualTo(1));
         Assert.That(outcome.SettledLocally, Is.True);
         var lease = await leases.GetAsync("co_1", CreditId);
-        Assert.That(lease!.LocalRemainingCredits, Is.EqualTo(990));
+        Assert.That(lease!.LocalRemainingCredits, Is.EqualTo(995));
     }
 
     private static RulesengineCompany Company() =>

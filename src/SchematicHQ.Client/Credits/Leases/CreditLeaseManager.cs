@@ -169,19 +169,12 @@ public sealed class CreditLeaseManager
 
         try
         {
-            var lease = await started!.ConfigureAwait(false);
-            if (lease != null && _stopped)
-            {
-                // Stop landed while the wire call was out, so these credits
-                // were drawn for a manager that is shutting down and no check
-                // will ever spend them. Hand them back here: the shutdown path
-                // releases nothing against a shared backend, so otherwise they
-                // sit held until the lease expires.
-                await ReleaseOnStopAsync(companyId, creditTypeId, lease.LeaseId)
-                    .ConfigureAwait(false);
-                return null;
-            }
-            return lease;
+            // A lease that lands after a Stop is left alone. Releasing it would
+            // refund a lease sibling pods are already reserving against on a
+            // shared backend, and the lost-race path can hand back a sibling's
+            // live lease rather than one this call drew. The drain waits on
+            // this flight, and anything past that expires server-side.
+            return await started!.ConfigureAwait(false);
         }
         finally
         {
@@ -659,33 +652,6 @@ public sealed class CreditLeaseManager
         );
         var winner = await Task.WhenAny(settled, Task.Delay(timeout)).ConfigureAwait(false);
         return winner == settled;
-    }
-
-    /// <summary>
-    /// Gives back a lease that landed after the manager was stopped, dropping
-    /// the slot too so the shutdown release does not try the same lease again.
-    /// </summary>
-    private async Task ReleaseOnStopAsync(string companyId, string creditTypeId, string leaseId)
-    {
-        try
-        {
-            await _wire.ReleaseAsync(leaseId).ConfigureAwait(false);
-            await _leaseStore.DropAsync(companyId, creditTypeId).ConfigureAwait(false);
-            _logger.LogDebug(
-                "Released credit lease {LeaseId} acquired after stop for {CompanyId}/{CreditTypeId}",
-                leaseId,
-                companyId,
-                creditTypeId
-            );
-        }
-        catch (Exception ex)
-        {
-            _logger.LogWarning(
-                ex,
-                "Failed to release credit lease {LeaseId} acquired after stop; it will expire server-side",
-                leaseId
-            );
-        }
     }
 
     private async Task ReleaseQuietlyAsync(string leaseId)

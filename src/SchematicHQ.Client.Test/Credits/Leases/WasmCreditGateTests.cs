@@ -52,22 +52,22 @@ public class WasmCreditGateTests
     }
 
     [Test]
-    public async Task A_Fractional_Usage_Holds_The_Whole_Unit_It_Will_Bill()
+    public async Task A_Fractional_Usage_Holds_The_Exact_Cost_And_Bills_A_Whole_Unit()
     {
         var harness = new Harness(_engine, CreditFlag(), Company(100), grantedAmount: 10_000);
 
         var result = await harness.CheckAsync(usage: 2.5);
 
-        // A settle bills whole units, so the hold is sized from the same
-        // rounded quantity. Holding only the fraction would bill more than it
-        // held, and the lease would drift by the difference on every check.
-        Assert.That(result.Reservation!.QuantityReserved, Is.EqualTo(3));
-        Assert.That(result.Reservation.CreditsReserved, Is.EqualTo(3));
+        // The hold is sized from the unrounded usage times the rate, so no
+        // credit is over-held and the lease's arithmetic stays exact.
+        Assert.That(result.Reservation!.QuantityReserved, Is.EqualTo(2.5));
+        Assert.That(result.Reservation.CreditsReserved, Is.EqualTo(2.5));
         var lease = await harness.Leases.GetAsync("co", CreditId);
-        Assert.That(lease!.LocalRemainingCredits, Is.EqualTo(9_997));
+        Assert.That(lease!.LocalRemainingCredits, Is.EqualTo(9_997.5));
 
-        // The preflight rounds the same way, so the gate never passes on less
-        // usage than the caller will record.
+        // A track event's quantity is an integer, so a partial unit bills as a
+        // whole one rather than as none. The preflight rounds the same way, so
+        // the gate never passes on less usage than the caller will record.
         Assert.That(ReservationTrack.SettleQuantity(2.5), Is.EqualTo(3));
         Assert.That(LeasePreflight.PreflightQuantity(2.5), Is.EqualTo(3));
     }

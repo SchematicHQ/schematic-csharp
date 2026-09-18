@@ -27,7 +27,7 @@ public class CreditLeaseManagerStopTests
     }
 
     [Test]
-    public async Task A_Lease_That_Lands_After_A_Stop_Is_Handed_Straight_Back()
+    public async Task A_Lease_That_Lands_After_A_Stop_Is_Left_Where_It_Is()
     {
         var leases = new InMemoryLeaseStore();
         var wire = new ScriptedLeaseWireClient { NextAcquire = Grant() };
@@ -42,11 +42,12 @@ public class CreditLeaseManagerStopTests
 
         var lease = await manager.AcquireIfNeededAsync("co_1", "ct_1");
 
-        Assert.That(lease, Is.Null);
-        // No check will ever spend these credits, and the shutdown path
-        // releases nothing against a shared backend, so they go back here.
-        Assert.That(wire.ReleasedLeaseIds, Is.EqualTo(new[] { "lse_1" }));
-        Assert.That(await leases.GetAsync("co_1", "ct_1"), Is.Null);
+        // The drain waits on this flight, and the shutdown release handles a
+        // per-process store. Releasing here instead would refund a lease that
+        // sibling pods are already reserving against on a shared backend.
+        Assert.That(lease, Is.Not.Null);
+        Assert.That(wire.ReleasedLeaseIds, Is.Empty);
+        Assert.That((await leases.GetAsync("co_1", "ct_1"))!.LeaseId, Is.EqualTo("lse_1"));
     }
 
     private static CreditLeaseManager Manager(ScriptedLeaseWireClient wire, ILeaseStore leases) =>

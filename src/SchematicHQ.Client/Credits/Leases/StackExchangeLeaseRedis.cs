@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using SchematicHQ.Client.Cache;
 using SchematicHQ.Client.Datastream;
 using StackExchange.Redis;
 
@@ -62,26 +63,47 @@ public sealed class StackExchangeLeaseRedis : ILeaseRedis, IDisposable
             multiplexer = config.ConnectionMultiplexerFactory.Invoke();
             owned = false;
         }
-        else if (config.ConfigurationOptions != null)
-        {
-            multiplexer = ConnectionMultiplexer.Connect(config.ConfigurationOptions);
-        }
-        else if (config.Configuration != null)
-        {
-            multiplexer = ConnectionMultiplexer.Connect(config.Configuration);
-        }
         else
         {
-            throw new ArgumentException(
-                "Redis configuration needs one of ConnectionMultiplexerFactory, ConfigurationOptions or Configuration",
-                nameof(config)
-            );
+            multiplexer = ConnectionMultiplexer.Connect(BuildOptions(config));
         }
 
         return new StackExchangeLeaseRedis(
             multiplexer.GetDatabase(config.Database),
             owned ? multiplexer : null
         );
+    }
+
+    /// <summary>
+    /// The settings for a connection the SDK opens itself, read from every
+    /// shape the Redis cache accepts. Reading fewer of them than the cache does
+    /// would give a caller a working cache and leases that quietly fall back to
+    /// per-process stores.
+    /// </summary>
+    internal static ConfigurationOptions BuildOptions(RedisCacheConfig config)
+    {
+        ConfigurationOptions options;
+        if (config.ConfigurationOptions != null)
+        {
+            // Cloned: the abort setting below is this connection's business,
+            // not a change to an object the caller may be using elsewhere.
+            options = config.ConfigurationOptions.Clone();
+        }
+        else if (!string.IsNullOrEmpty(config.Configuration))
+        {
+            options = ConfigurationOptions.Parse(config.Configuration!);
+        }
+        else
+        {
+            options = RedisCache.BuildOptionsFromEndpoints(config);
+        }
+
+        // Never abort because Redis is down right now. The lease backend is
+        // built once, at construction, so a throw here leaves the client on
+        // per-process stores for its whole life; a multiplexer that keeps
+        // reconnecting picks the shared gating back up when Redis returns.
+        options.AbortOnConnectFail = false;
+        return options;
     }
 
     /// <summary>
