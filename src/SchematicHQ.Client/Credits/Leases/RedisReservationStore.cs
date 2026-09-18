@@ -315,6 +315,7 @@ return raw
 
     public void StartSweep()
     {
+        CancellationTokenSource cancellation;
         lock (_gate)
         {
             if (_sweepCancellation != null || _stopped)
@@ -322,9 +323,14 @@ return raw
                 return;
             }
             _sweepCancellation = new CancellationTokenSource();
+            // Read the token off the local, not the field: a Stop between here
+            // and the loop below nulls the field and disposes what it held, and
+            // the read would then throw instead of starting a loop that is
+            // already cancelled.
+            cancellation = _sweepCancellation;
         }
 
-        var token = _sweepCancellation.Token;
+        var token = cancellation.Token;
         _ = Task.Run(
             async () =>
             {

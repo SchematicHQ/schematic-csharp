@@ -455,7 +455,12 @@ public static class LeaseCheck
 
         // Allowed against the substituted balance, so the hold stands. Top the
         // lease up in the background now that it has been drawn down: the check
-        // that drew it down should not pay for the top-up.
+        // that drew it down should not pay for the top-up, which is why this
+        // one carries none of the caller's request options. The lease is shared
+        // with every other check on the slot, and a caller who asked for a
+        // short timeout asked it of their own check, not of a refill that
+        // outlives it. The awaited extend above does pass them, because there
+        // the caller is waiting on the result.
         _ = deps.Manager.MaybeExtendInBackgroundAsync(companyId, creditId);
 
         return Emit(
