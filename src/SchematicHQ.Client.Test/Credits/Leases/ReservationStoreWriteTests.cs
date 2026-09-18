@@ -21,7 +21,6 @@ public class ReservationStoreWriteTests
         // Two writes would leave a window where the hash exists with no TTL and
         // no index pointing at it, so nothing reaps it and nothing finds it.
         Assert.That(recording.HashSetWithExpiryCalls, Is.EqualTo(1));
-        Assert.That(recording.KeyExpireCalls, Is.EqualTo(0));
     }
 
     [Test]
@@ -86,8 +85,6 @@ public class ReservationStoreWriteTests
 
         public int HashSetWithExpiryCalls { get; private set; }
 
-        public int KeyExpireCalls { get; private set; }
-
         public Task HashSetWithExpiryAsync(
             string key,
             IReadOnlyList<KeyValuePair<string, string>> entries,
@@ -96,12 +93,6 @@ public class ReservationStoreWriteTests
         {
             HashSetWithExpiryCalls++;
             return _inner.HashSetWithExpiryAsync(key, entries, unixTimeMilliseconds);
-        }
-
-        public Task KeyExpireAtAsync(string key, long unixTimeMilliseconds)
-        {
-            KeyExpireCalls++;
-            return _inner.KeyExpireAtAsync(key, unixTimeMilliseconds);
         }
 
         public Task<IReadOnlyDictionary<string, string>> HashGetAllAsync(string key) =>

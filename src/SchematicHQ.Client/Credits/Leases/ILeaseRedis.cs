@@ -36,8 +36,6 @@ public interface ILeaseRedis
 
     Task KeyDeleteAsync(string key);
 
-    Task KeyExpireAtAsync(string key, long unixTimeMilliseconds);
-
     Task SortedSetAddAsync(string key, string member, double score);
 
     Task SortedSetRemoveAsync(string key, string member);

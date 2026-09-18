@@ -254,6 +254,16 @@ public sealed class CreditLeaseConfig
     /// </summary>
     public void Validate()
     {
+        if (!Enum.IsDefined(typeof(CreditLeaseMode), Mode))
+        {
+            // An undefined value compares equal to nothing, so it would fall
+            // through every arm of the mode switch and behave as Auto.
+            throw new ArgumentException(
+                $"CreditLeases.{nameof(Mode)} must be one of Auto, Client or Server, got {(int)Mode}",
+                nameof(Mode)
+            );
+        }
+
         Check(DefaultLeaseDuration, nameof(DefaultLeaseDuration));
         Check(DefaultReservationTTL, nameof(DefaultReservationTTL));
         Check(SweepInterval, nameof(SweepInterval));
@@ -295,10 +305,10 @@ public sealed class CreditLeaseConfig
         {
             return;
         }
-        if (double.IsNaN(value.Value) || value.Value <= 0)
+        if (double.IsNaN(value.Value) || double.IsInfinity(value.Value) || value.Value <= 0)
         {
             throw new ArgumentException(
-                $"CreditLeases.{name} must be a number greater than zero, got {value.Value}",
+                $"CreditLeases.{name} must be a finite number greater than zero, got {value.Value}",
                 name
             );
         }

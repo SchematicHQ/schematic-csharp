@@ -50,11 +50,32 @@ public class CreditLeaseConfigValidationTests
     }
 
     [Test]
-    public void A_Non_Positive_Or_NaN_Lease_Size_Is_Refused()
+    public void A_Lease_Size_That_Is_Not_A_Finite_Positive_Number_Is_Refused()
     {
         Rejects(new CreditLeaseConfig { DefaultLeaseSize = 0 });
         Rejects(new CreditLeaseConfig { DefaultLeaseSize = -1 });
         Rejects(new CreditLeaseConfig { DefaultLeaseSize = double.NaN });
+        // An infinite size asks the server for an infinite grant and makes
+        // every water-mark comparison meaningless.
+        Rejects(new CreditLeaseConfig { DefaultLeaseSize = double.PositiveInfinity });
+        Rejects(new CreditLeaseConfig { DefaultLeaseSize = double.NegativeInfinity });
+        Rejects(Override(new LeaseOverride { DefaultLeaseSize = double.PositiveInfinity }));
+    }
+
+    [Test]
+    public void A_Mode_Outside_The_Enum_Is_Refused()
+    {
+        // It compares equal to none of the arms, so it would fall through the
+        // mode switch and behave as Auto rather than as what the caller meant.
+        var error = Assert.Throws<ArgumentException>(
+            () => new CreditLeaseConfig { Mode = (CreditLeaseMode)99 }.Validate()
+        );
+        Assert.That(error!.Message, Does.Contain("99"));
+
+        foreach (CreditLeaseMode mode in Enum.GetValues(typeof(CreditLeaseMode)))
+        {
+            Assert.DoesNotThrow(() => new CreditLeaseConfig { Mode = mode }.Validate());
+        }
     }
 
     [Test]
