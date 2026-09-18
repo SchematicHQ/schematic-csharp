@@ -248,6 +248,11 @@ public partial class Schematic
             return;
         }
 
+        // Before the offline and mode branches below, so a bad value is a
+        // startup failure in every configuration rather than only in the ones
+        // that happen to read it.
+        config.Validate();
+
         if (_offline)
         {
             _logger.LogWarning(

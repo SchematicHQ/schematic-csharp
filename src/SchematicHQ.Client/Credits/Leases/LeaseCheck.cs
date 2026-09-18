@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
+using SchematicHQ.Client.Datastream;
 using SchematicHQ.Client.RulesEngine;
 
 #nullable enable
@@ -253,7 +254,12 @@ public static class LeaseCheck
             return await fallback().ConfigureAwait(false);
         }
 
-        var creditCost = usage * consumptionRate;
+        // Size the hold from the quantity that will be billed, not the raw
+        // usage: a settle carries whole units, so a fractional usage that held
+        // only its fraction would bill more than it held. Rounding the same way
+        // on both sides keeps the hold and the bill equal.
+        var billedQuantity = LeasePreflight.PreflightQuantity(usage);
+        var creditCost = billedQuantity * consumptionRate;
         var companyId = resolvedCompany.Id;
         var ids = new FlagCheckIds { CompanyId = companyId, UserId = resolvedUser?.Id };
 
@@ -352,7 +358,7 @@ public static class LeaseCheck
             CompanyId = companyId,
             CreditTypeId = creditId,
             EventSubtype = eventSubtype,
-            QuantityReserved = usage,
+            QuantityReserved = billedQuantity,
             CreditsReserved = creditCost,
             ConsumptionRate = consumptionRate,
             ExpiresAt = deps.Now() + resolvedConfig.ReservationTTL,
@@ -402,7 +408,7 @@ public static class LeaseCheck
         {
             gateError = ex;
         }
-        if (result == null)
+        if (result == null || EngineFailed(result))
         {
             logger.LogError(
                 gateError,
@@ -419,7 +425,7 @@ public static class LeaseCheck
                 StaticFailureResult(
                     failOpen,
                     flagKey,
-                    $"wasm_error: {gateError?.Message ?? "no result"}",
+                    $"wasm_error: {EngineFailureDetail(result, gateError)}",
                     flag
                 ),
                 ids
@@ -516,8 +522,13 @@ public static class LeaseCheck
             var result = await datastream
                 .EvaluateAsync(flag, substituted, user, LeasePreflight.Build(options))
                 .ConfigureAwait(false);
-            if (result == null)
+            if (result == null || EngineFailed(result))
             {
+                // The engine could not answer, so there is no verdict to defer
+                // to and fail-open means allow. Its stand-in value is the flag
+                // default, which is the right answer for a plain check and the
+                // wrong one here: a default of false would deny a caller who
+                // asked to fail open.
                 return StaticFailureResult(true, flagKey, reason, flag);
             }
             return new CheckResult
@@ -537,6 +548,27 @@ public static class LeaseCheck
             return StaticFailureResult(true, flagKey, reason, flag);
         }
     }
+
+    /// <summary>
+    /// Whether an engine call failed rather than answered. A fault inside the
+    /// engine does not surface as a thrown exception or a null: the datastream
+    /// path catches it and hands back the flag's default value under one of the
+    /// engine reasons. That is the right answer for a plain check and the wrong
+    /// one for a credit gate, where a default of true would allow without the
+    /// credits behind it, so the gate has to read it as a failure and resolve
+    /// by mode instead.
+    /// </summary>
+    private static bool EngineFailed(CheckFlagResult result) =>
+        result.Error != null
+        || result.Reason == DatastreamClient.ReasonRulesEngineUnavailable
+        || result.Reason == DatastreamClient.ReasonRulesEngineError;
+
+    /// <summary>
+    /// What to name in the failure reason: the thrown exception, then the one
+    /// the engine reported, then the reason it came back with.
+    /// </summary>
+    private static string EngineFailureDetail(CheckFlagResult? result, Exception? thrown) =>
+        thrown?.Message ?? result?.Error?.Message ?? result?.Reason ?? "no result";
 
     /// <summary>
     /// Resolves a mode with no evaluation behind it: deny for fail-closed,

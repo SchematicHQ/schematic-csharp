@@ -131,9 +131,17 @@ public sealed class CreditLeaseManager
         var key = LeaseKeys.Slot(companyId, creditTypeId);
         Task<LeaseState?>? joined = null;
         Task<LeaseState?>? started = null;
+        var stoppedUnderLock = false;
         lock (_gate)
         {
-            if (_inflightAcquire.TryGetValue(key, out var inflight))
+            // Re-check under the same lock Stop writes the flag on. The check
+            // above can pass and a Stop land before this registration, and the
+            // drain that follows a Stop only waits on flights it can see.
+            if (_stopped)
+            {
+                stoppedUnderLock = true;
+            }
+            else if (_inflightAcquire.TryGetValue(key, out var inflight))
             {
                 joined = inflight;
             }
@@ -144,6 +152,16 @@ public sealed class CreditLeaseManager
             }
         }
 
+        if (stoppedUnderLock)
+        {
+            _logger.LogDebug(
+                "Lease manager is stopped; skipping acquire for {CompanyId}/{CreditTypeId}",
+                companyId,
+                creditTypeId
+            );
+            return null;
+        }
+
         if (joined != null)
         {
             return await joined.ConfigureAwait(false);
@@ -151,7 +169,19 @@ public sealed class CreditLeaseManager
 
         try
         {
-            return await started!.ConfigureAwait(false);
+            var lease = await started!.ConfigureAwait(false);
+            if (lease != null && _stopped)
+            {
+                // Stop landed while the wire call was out, so these credits
+                // were drawn for a manager that is shutting down and no check
+                // will ever spend them. Hand them back here: the shutdown path
+                // releases nothing against a shared backend, so otherwise they
+                // sit held until the lease expires.
+                await ReleaseOnStopAsync(companyId, creditTypeId, lease.LeaseId)
+                    .ConfigureAwait(false);
+                return null;
+            }
+            return lease;
         }
         finally
         {
@@ -547,7 +577,15 @@ public sealed class CreditLeaseManager
     /// <see cref="DrainAsync"/>: stopping first is what makes the drain
     /// terminate, since nothing can enqueue behind it.
     /// </summary>
-    public void Stop() => _stopped = true;
+    public void Stop()
+    {
+        // Written under the gate, so an acquire that checks the flag inside the
+        // same lock cannot register a flight on the far side of this write.
+        lock (_gate)
+        {
+            _stopped = true;
+        }
+    }
 
     /// <summary>
     /// Waits out lease work already on the wire, so a close releases what that
@@ -621,6 +659,33 @@ public sealed class CreditLeaseManager
         );
         var winner = await Task.WhenAny(settled, Task.Delay(timeout)).ConfigureAwait(false);
         return winner == settled;
+    }
+
+    /// <summary>
+    /// Gives back a lease that landed after the manager was stopped, dropping
+    /// the slot too so the shutdown release does not try the same lease again.
+    /// </summary>
+    private async Task ReleaseOnStopAsync(string companyId, string creditTypeId, string leaseId)
+    {
+        try
+        {
+            await _wire.ReleaseAsync(leaseId).ConfigureAwait(false);
+            await _leaseStore.DropAsync(companyId, creditTypeId).ConfigureAwait(false);
+            _logger.LogDebug(
+                "Released credit lease {LeaseId} acquired after stop for {CompanyId}/{CreditTypeId}",
+                leaseId,
+                companyId,
+                creditTypeId
+            );
+        }
+        catch (Exception ex)
+        {
+            _logger.LogWarning(
+                ex,
+                "Failed to release credit lease {LeaseId} acquired after stop; it will expire server-side",
+                leaseId
+            );
+        }
     }
 
     private async Task ReleaseQuietlyAsync(string leaseId)

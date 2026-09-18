@@ -133,7 +133,7 @@ public sealed class InMemoryReservationStore : IReservationStore
 
     public void StartSweep()
     {
-        CancellationTokenSource cancellation;
+        CancellationToken token;
         lock (_gate)
         {
             if (_sweepCancellation != null || _stopped)
@@ -141,14 +141,13 @@ public sealed class InMemoryReservationStore : IReservationStore
                 return;
             }
             _sweepCancellation = new CancellationTokenSource();
-            // Read the token off the local, not the field: a Stop between here
-            // and the loop below nulls the field and disposes what it held, and
-            // the read would then throw instead of starting a loop that is
-            // already cancelled.
-            cancellation = _sweepCancellation;
+            // Take the token here, inside the lock. A Stop right after this
+            // cancels the source and disposes it, and reading Token off a
+            // disposed source throws; a token taken beforehand survives, already
+            // cancelled, so the loop below sees that and exits at once.
+            token = _sweepCancellation.Token;
         }
 
-        var token = cancellation.Token;
         _ = Task.Run(
             async () =>
             {

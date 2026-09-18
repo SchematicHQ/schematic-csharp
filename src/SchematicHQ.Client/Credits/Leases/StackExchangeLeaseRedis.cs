@@ -117,6 +117,29 @@ public sealed class StackExchangeLeaseRedis : ILeaseRedis, IDisposable
         return _db.HashSetAsync(key, hashEntries);
     }
 
+    public async Task HashSetWithExpiryAsync(
+        string key,
+        IReadOnlyList<KeyValuePair<string, string>> entries,
+        long unixTimeMilliseconds
+    )
+    {
+        // One MULTI/EXEC instead of two round trips. Both commands name the
+        // same key, so this stays Cluster-safe, and it needs no Lua: the script
+        // set has to stay byte-identical to the other SDKs' so a mixed fleet
+        // shares leases.
+        var transaction = _db.CreateTransaction();
+        var set = transaction.HashSetAsync(
+            key,
+            entries.Select(entry => new HashEntry(entry.Key, entry.Value)).ToArray()
+        );
+        var expire = transaction.KeyExpireAsync(
+            key,
+            DateTimeOffset.FromUnixTimeMilliseconds(unixTimeMilliseconds).UtcDateTime
+        );
+        await transaction.ExecuteAsync().ConfigureAwait(false);
+        await Task.WhenAll(set, expire).ConfigureAwait(false);
+    }
+
     public Task HashDeleteAsync(string key, string field) => _db.HashDeleteAsync(key, field);
 
     public Task KeyDeleteAsync(string key) => _db.KeyDeleteAsync(key);

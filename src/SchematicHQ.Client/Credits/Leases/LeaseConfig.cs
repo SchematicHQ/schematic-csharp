@@ -246,6 +246,83 @@ public sealed class CreditLeaseConfig
     public Dictionary<string, LeaseOverride>? Overrides { get; set; }
 
     /// <summary>
+    /// Rejects values that would break the lease plumbing rather than tune it:
+    /// a zero or negative size, duration or interval, or a water mark outside
+    /// the fraction it is supposed to be. Every one of them fails quietly at
+    /// run time, as a sweep that never runs or a lease that expires the instant
+    /// it is drawn, so the client refuses to start instead.
+    /// </summary>
+    public void Validate()
+    {
+        Check(DefaultLeaseDuration, nameof(DefaultLeaseDuration));
+        Check(DefaultReservationTTL, nameof(DefaultReservationTTL));
+        Check(SweepInterval, nameof(SweepInterval));
+        Check(DefaultLeaseSize, nameof(DefaultLeaseSize));
+        CheckWaterMark(LowWaterMark, nameof(LowWaterMark));
+
+        if (Overrides == null)
+        {
+            return;
+        }
+        foreach (var entry in Overrides)
+        {
+            if (entry.Value == null)
+            {
+                continue;
+            }
+            var where = $"Overrides[\"{entry.Key}\"]";
+            Check(entry.Value.DefaultLeaseDuration, $"{where}.{nameof(LeaseOverride.DefaultLeaseDuration)}");
+            Check(entry.Value.DefaultReservationTTL, $"{where}.{nameof(LeaseOverride.DefaultReservationTTL)}");
+            Check(entry.Value.DefaultLeaseSize, $"{where}.{nameof(LeaseOverride.DefaultLeaseSize)}");
+            CheckWaterMark(entry.Value.LowWaterMark, $"{where}.{nameof(LeaseOverride.LowWaterMark)}");
+        }
+    }
+
+    private static void Check(TimeSpan? value, string name)
+    {
+        if (value.HasValue && value.Value <= TimeSpan.Zero)
+        {
+            throw new ArgumentException(
+                $"CreditLeases.{name} must be greater than zero, got {value.Value}",
+                name
+            );
+        }
+    }
+
+    private static void Check(double? value, string name)
+    {
+        if (!value.HasValue)
+        {
+            return;
+        }
+        if (double.IsNaN(value.Value) || value.Value <= 0)
+        {
+            throw new ArgumentException(
+                $"CreditLeases.{name} must be a number greater than zero, got {value.Value}",
+                name
+            );
+        }
+    }
+
+    private static void CheckWaterMark(double? value, string name)
+    {
+        if (!value.HasValue)
+        {
+            return;
+        }
+        // A fraction of the lease. Zero is allowed and means never top up ahead
+        // of need; above one would extend on every check, and negative or NaN
+        // is a comparison that silently never fires.
+        if (double.IsNaN(value.Value) || value.Value < 0 || value.Value > 1)
+        {
+            throw new ArgumentException(
+                $"CreditLeases.{name} must be a fraction between 0 and 1, got {value.Value}",
+                name
+            );
+        }
+    }
+
+    /// <summary>
     /// Resolves the knobs for one credit type: the credit type's override wins,
     /// then the client-wide value, then the package default.
     /// </summary>

@@ -20,6 +20,18 @@ public interface ILeaseRedis
 
     Task HashSetAsync(string key, IReadOnlyList<KeyValuePair<string, string>> entries);
 
+    /// <summary>
+    /// Writes a hash and sets its expiry as one unit. Splitting them leaves a
+    /// window where a process that dies in between has written a key with no
+    /// TTL, which nothing reaps and, since the indexes are written after, which
+    /// nothing points at either.
+    /// </summary>
+    Task HashSetWithExpiryAsync(
+        string key,
+        IReadOnlyList<KeyValuePair<string, string>> entries,
+        long unixTimeMilliseconds
+    );
+
     Task HashDeleteAsync(string key, string field);
 
     Task KeyDeleteAsync(string key);
