@@ -29,6 +29,30 @@ public class CreditLeaseManagerStopTests
     }
 
     [Test]
+    public async Task A_Stopped_Manager_Does_Not_Extend()
+    {
+        // Same contract as the acquire above, and for the same reason: the flag
+        // is read under the gate the Stop writes it on, so a drain either sees
+        // the flight or the flag stopped it being registered. An extend that
+        // slipped past would re-hold credits on a lease the close has already
+        // released.
+        var leases = new InMemoryLeaseStore();
+        var wire = new ScriptedLeaseWireClient();
+        var manager = Manager(wire, leases);
+        await leases.ReplaceAsync(Grant());
+        // Down to 100 of 1000, well under the water mark, so an extend is due.
+        await leases.TryReserveAsync("co_1", "ct_1", 900);
+
+        manager.Stop();
+        var extended = await manager.MaybeExtendInBackgroundAsync("co_1", "ct_1");
+
+        Assert.That(extended, Is.Null);
+        Assert.That(wire.ExtendCount, Is.EqualTo(0));
+        // Nothing was registered either, so the drain has nothing to wait out.
+        await manager.DrainAsync(TimeSpan.FromSeconds(1));
+    }
+
+    [Test]
     public async Task A_Lease_That_Lands_After_A_Stop_Is_Left_Where_It_Is()
     {
         var leases = new InMemoryLeaseStore();

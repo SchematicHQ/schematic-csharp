@@ -301,22 +301,31 @@ public sealed class CreditLeaseManager
         RequestOptions? options = null
     )
     {
-        if (_stopped)
-        {
-            // Extending past Stop re-holds credits on a lease the close is
-            // about to release, or has already released.
-            _logger.LogDebug(
-                "Lease manager is stopped; skipping extend for {CompanyId}/{CreditTypeId}",
-                companyId,
-                creditTypeId
-            );
-            return Task.FromResult<LeaseState?>(null);
-        }
-
+        // Checked and registered under the same lock Stop writes the flag on.
+        // Read outside it, the check could pass, a Stop and its drain could
+        // snapshot an empty pending set, and only then would Track register:
+        // the extend would land after the close released the lease and re-hold
+        // credits nothing is left to draw on.
+        //
         // Tracked whole, not just the wire call inside it: callers drop this
         // task, so between the store read and the extend there would otherwise
         // be a window where a drain sees nothing pending.
-        return Track(ExtendIfNeededAsync(companyId, creditTypeId, requiredCredits, options));
+        lock (_gate)
+        {
+            if (_stopped)
+            {
+                // Extending past Stop re-holds credits on a lease the close is
+                // about to release, or has already released.
+                _logger.LogDebug(
+                    "Lease manager is stopped; skipping extend for {CompanyId}/{CreditTypeId}",
+                    companyId,
+                    creditTypeId
+                );
+                return Task.FromResult<LeaseState?>(null);
+            }
+
+            return Track(ExtendIfNeededAsync(companyId, creditTypeId, requiredCredits, options));
+        }
     }
 
     private async Task<LeaseState?> ExtendIfNeededAsync(
@@ -513,10 +522,13 @@ public sealed class CreditLeaseManager
         ExtendFlight flight = null!;
         lock (_gate)
         {
-            if (_inflightExtend.TryGetValue(key, out var existing))
-            {
-                return existing.Task;
-            }
+            // No joining here, even when a flight is already registered. This is
+            // reached only once the caller's join budget is spent, and joining
+            // again would wait without its deadline and inherit an ask that may
+            // be smaller than its shortfall, which are the two things the budget
+            // exists to stop. Registering over the top is what the other SDKs
+            // do; the cleanup below is identity-guarded, so the flight we
+            // displace still clears only itself.
             task = RecheckAndExtendAsync(
                 companyId,
                 creditTypeId,
