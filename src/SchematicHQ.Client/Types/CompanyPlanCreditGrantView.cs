@@ -62,6 +62,12 @@ public record CompanyPlanCreditGrantView : IJsonOnDeserialized
     [JsonPropertyName("billing_credit_postpaid_rate_per_unit_decimal")]
     public string? BillingCreditPostpaidRatePerUnitDecimal { get; set; }
 
+    [JsonPropertyName("billing_mode")]
+    public required BillingPlanCreditGrantBillingMode BillingMode { get; set; }
+
+    [JsonPropertyName("billing_product_price_id")]
+    public string? BillingProductPriceId { get; set; }
+
     [JsonPropertyName("company_auto_topup_amount")]
     public long? CompanyAutoTopupAmount { get; set; }
 
@@ -133,6 +139,9 @@ public record CompanyPlanCreditGrantView : IJsonOnDeserialized
     /// </summary>
     [JsonPropertyName("plural_name")]
     public string? PluralName { get; set; }
+
+    [JsonPropertyName("price")]
+    public BillingPriceView? Price { get; set; }
 
     [JsonPropertyName("reset_cadence")]
     public BillingPlanCreditGrantResetCadence? ResetCadence { get; set; }
