@@ -57,6 +57,12 @@ public record UpdateBillingPlanCreditGrantRequestBody : IJsonOnDeserialized
     public long? AutoTopupThresholdPercent { get; set; }
 
     /// <summary>
+    /// Whether the credits are included in the plan price (granted) or billed as their own subscription line at a price per credit (billed). Billed is only available on custom plans.
+    /// </summary>
+    [JsonPropertyName("billing_mode")]
+    public BillingPlanCreditGrantBillingMode? BillingMode { get; set; }
+
+    /// <summary>
     /// Deprecated: use compatible_plan_ids on credit bundles instead. Still accepted; writes through to the credit's bundle compatibility.
     /// </summary>
     [JsonPropertyName("can_buy_bundles")]
@@ -110,6 +116,12 @@ public record UpdateBillingPlanCreditGrantRequestBody : IJsonOnDeserialized
     [JsonPropertyName("postpaid_rate_per_unit_decimal")]
     public string? PostpaidRatePerUnitDecimal { get; set; }
 
+    /// <summary>
+    /// Tier table pricing the credits on this grant, cheapest bound first, the last tier unbounded. Sending it moves the grant off one rate per credit. Requires tier_mode.
+    /// </summary>
+    [JsonPropertyName("price_tiers")]
+    public IEnumerable<CreditGrantPriceTierRequestBody>? PriceTiers { get; set; }
+
     [JsonPropertyName("reset_cadence")]
     public required BillingPlanCreditGrantResetCadence ResetCadence { get; set; }
 
@@ -130,6 +142,24 @@ public record UpdateBillingPlanCreditGrantRequestBody : IJsonOnDeserialized
     /// </summary>
     [JsonPropertyName("scaling")]
     public PlanCreditGrantScaling? Scaling { get; set; }
+
+    /// <summary>
+    /// How price_tiers apply: volume prices every credit at the rate of the tier the total lands in, graduated prices each tier's own credits at its own rate. Required with price_tiers.
+    /// </summary>
+    [JsonPropertyName("tier_mode")]
+    public BillingTiersMode? TierMode { get; set; }
+
+    /// <summary>
+    /// Price per credit in the plan currency's smallest unit. Required when billing_mode is billed, unless unit_price_decimal or price_tiers is set. Sending it moves a tiered grant back to one rate per credit.
+    /// </summary>
+    [JsonPropertyName("unit_price")]
+    public long? UnitPrice { get; set; }
+
+    /// <summary>
+    /// Price per credit as a decimal in the plan currency's smallest unit, for prices below one cent.
+    /// </summary>
+    [JsonPropertyName("unit_price_decimal")]
+    public string? UnitPriceDecimal { get; set; }
 
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();

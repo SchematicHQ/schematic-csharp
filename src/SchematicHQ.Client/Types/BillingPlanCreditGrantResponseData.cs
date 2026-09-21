@@ -60,6 +60,12 @@ public record BillingPlanCreditGrantResponseData : IJsonOnDeserialized
     public long? AutoTopupThresholdPercent { get; set; }
 
     /// <summary>
+    /// Whether the credits are included in the plan price (granted) or billed as their own subscription line at a price per credit (billed).
+    /// </summary>
+    [JsonPropertyName("billing_mode")]
+    public required BillingPlanCreditGrantBillingMode BillingMode { get; set; }
+
+    /// <summary>
     /// Deprecated: bundle availability is a per-bundle plan compatibility set now; use compatible_plan_ids on credit bundles instead.
     /// </summary>
     [JsonPropertyName("can_buy_bundles")]
@@ -158,6 +164,19 @@ public record BillingPlanCreditGrantResponseData : IJsonOnDeserialized
     [JsonPropertyName("postpaid_rate_per_unit_decimal")]
     public string? PostpaidRatePerUnitDecimal { get; set; }
 
+    /// <summary>
+    /// The Stripe price a billed grant bills through. Minted when the plan version is published.
+    /// </summary>
+    [JsonPropertyName("price")]
+    public BillingPriceResponseData? Price { get; set; }
+
+    /// <summary>
+    /// Tier table pricing the credits, cheapest bound first. Empty unless billing_mode is billed and the credits are priced on tiers.
+    /// </summary>
+    [JsonPropertyName("price_tiers")]
+    public IEnumerable<BillingPlanCreditGrantPriceTierResponseData> PriceTiers { get; set; } =
+        new List<BillingPlanCreditGrantPriceTierResponseData>();
+
     [JsonPropertyName("reset_cadence")]
     public BillingPlanCreditGrantResetCadence? ResetCadence { get; set; }
 
@@ -178,6 +197,24 @@ public record BillingPlanCreditGrantResponseData : IJsonOnDeserialized
     /// </summary>
     [JsonPropertyName("scaling")]
     public required PlanCreditGrantScaling Scaling { get; set; }
+
+    /// <summary>
+    /// How price_tiers apply: volume prices every credit at the rate of the tier the total lands in, graduated prices each tier's own credits at its own rate. Set only when price_tiers is non-empty.
+    /// </summary>
+    [JsonPropertyName("tier_mode")]
+    public BillingTiersMode? TierMode { get; set; }
+
+    /// <summary>
+    /// Price per credit in the plan currency's smallest unit. Set only when billing_mode is billed and the credits are priced at one rate.
+    /// </summary>
+    [JsonPropertyName("unit_price")]
+    public long? UnitPrice { get; set; }
+
+    /// <summary>
+    /// Price per credit as a decimal in the plan currency's smallest unit. Set only when billing_mode is billed and the rate is below one cent.
+    /// </summary>
+    [JsonPropertyName("unit_price_decimal")]
+    public string? UnitPriceDecimal { get; set; }
 
     [JsonPropertyName("updated_at")]
     public required DateTime UpdatedAt { get; set; }
