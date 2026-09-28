@@ -76,11 +76,16 @@ public sealed class CreditLeaseManager
     /// win. Never throws: a store or wire failure is logged and reported as
     /// null, so callers route it through their fail-open or fail-closed
     /// handling.
+    ///
+    /// <para>A wait on another caller's acquire gives up at
+    /// <paramref name="joinDeadline"/>, or at <paramref name="options"/>'
+    /// timeout from now when none is passed, and reports null.</para>
     /// </summary>
     public async Task<LeaseState?> AcquireIfNeededAsync(
         string companyId,
         string creditTypeId,
-        RequestOptions? options = null
+        RequestOptions? options = null,
+        DateTime? joinDeadline = null
     )
     {
         if (_stopped)
@@ -138,7 +143,7 @@ public sealed class CreditLeaseManager
 
         var key = LeaseKeys.Slot(companyId, creditTypeId);
         Task<LeaseState?>? joined = null;
-        Task<LeaseState?>? started = null;
+        TaskCompletionSource<LeaseState?>? placeholder = null;
         var stoppedUnderLock = false;
         lock (_gate)
         {
@@ -155,8 +160,8 @@ public sealed class CreditLeaseManager
             }
             else
             {
-                started = AcquireAsync(companyId, creditTypeId, options);
-                _inflightAcquire[key] = started;
+                placeholder = Placeholder<LeaseState?>();
+                _inflightAcquire[key] = placeholder.Task;
             }
         }
 
@@ -172,9 +177,25 @@ public sealed class CreditLeaseManager
 
         if (joined != null)
         {
-            return await joined.ConfigureAwait(false);
+            // The flight runs on its starter's timeout, not ours.
+            var join = await JoinWithinAsync(
+                    joined,
+                    joinDeadline ?? JoinDeadline(options?.Timeout)
+                )
+                .ConfigureAwait(false);
+            if (join.TimedOut)
+            {
+                _logger.LogDebug(
+                    "Acquire in flight for {CompanyId}/{CreditTypeId} outlasted the caller's timeout; not waiting on it",
+                    companyId,
+                    creditTypeId
+                );
+            }
+            return join.Entry;
         }
 
+        var started = placeholder!.Task;
+        _ = RunInto(placeholder, () => AcquireAsync(companyId, creditTypeId, options));
         try
         {
             // A lease that lands after a Stop is left alone. Releasing it would
@@ -182,7 +203,7 @@ public sealed class CreditLeaseManager
             // shared backend, and the lost-race path can hand back a sibling's
             // live lease rather than one this call drew. The drain waits on
             // this flight, and anything past that expires server-side.
-            return await started!.ConfigureAwait(false);
+            return await started.ConfigureAwait(false);
         }
         finally
         {
@@ -291,6 +312,11 @@ public sealed class CreditLeaseManager
     /// finds on the way back is only joined if that one covers the shortfall
     /// too; a smaller one is waited out, never inherited.</para>
     ///
+    /// <para>A wait on another caller's flight gives up at
+    /// <paramref name="joinDeadline"/>. A check passes the deadline it took when
+    /// it started; without one the cap is <paramref name="options"/>' timeout
+    /// from now.</para>
+    ///
     /// <para>Returns the in-flight task so callers can await it or fire and
     /// forget. It never throws.</para>
     /// </summary>
@@ -298,7 +324,8 @@ public sealed class CreditLeaseManager
         string companyId,
         string creditTypeId,
         double? requiredCredits = null,
-        RequestOptions? options = null
+        RequestOptions? options = null,
+        DateTime? joinDeadline = null
     )
     {
         // Checked and registered under the same lock Stop writes the flag on.
@@ -309,7 +336,9 @@ public sealed class CreditLeaseManager
         //
         // Tracked whole, not just the wire call inside it: callers drop this
         // task, so between the store read and the extend there would otherwise
-        // be a window where a drain sees nothing pending.
+        // be a window where a drain sees nothing pending. Only the placeholder
+        // is registered under the lock; the work starts once it is released.
+        TaskCompletionSource<LeaseState?> placeholder;
         lock (_gate)
         {
             if (_stopped)
@@ -324,22 +353,30 @@ public sealed class CreditLeaseManager
                 return Task.FromResult<LeaseState?>(null);
             }
 
-            return Track(ExtendIfNeededAsync(companyId, creditTypeId, requiredCredits, options));
+            placeholder = Placeholder<LeaseState?>();
+            Track(placeholder.Task);
         }
+
+        joinDeadline ??= JoinDeadline(options?.Timeout);
+        _ = RunInto(
+            placeholder,
+            () => ExtendIfNeededAsync(companyId, creditTypeId, requiredCredits, options, joinDeadline)
+        );
+        return placeholder.Task;
     }
 
     private async Task<LeaseState?> ExtendIfNeededAsync(
         string companyId,
         string creditTypeId,
         double? requiredCredits,
-        RequestOptions? options
+        RequestOptions? options,
+        DateTime? joinDeadline
     )
     {
         // A joiner waits on someone else's wire call, which runs on whatever
         // timeout ITS caller set (a background refresh uses the client
-        // default). So the wait is capped at this caller's own timeout: a check
+        // default). So the wait is capped at this caller's own deadline: a check
         // with 200ms to spend must not sit behind a 30s extend.
-        var joinDeadline = JoinDeadline(options);
         // Joins are budgeted, extends of our own are not: a caller may wait out
         // flights that ask for too little, but once the budget runs out it
         // issues its own single extend rather than joining again. Without the
@@ -400,14 +437,21 @@ public sealed class CreditLeaseManager
                 // The flight asked for at least what we need: every
                 // watermark-driven joiner, and any check the tranche covers.
                 // One wire call serves all of them, which is the point of
-                // single-flight.
-                if (additionalAmount <= inflight.RequestedAdditional)
+                // single-flight. But the flight rechecks against its starter's
+                // requirement, not ours, so a sibling extend landing first can
+                // talk it out of extending at all. Only take its result if it
+                // covers what we need.
+                if (
+                    additionalAmount <= inflight.RequestedAdditional
+                    && (join.Entry == null || Covers(join.Entry, requiredCredits))
+                )
                 {
                     return join.Entry;
                 }
-                // It asked for less. Go round again to re-read the slot it just
-                // moved, so what we ask for next is sized against the balance
-                // it left rather than the one we started from.
+                // It asked for less, or left less than we need. Go round again
+                // to re-read the slot it just moved, so what we ask for next is
+                // sized against the balance it left rather than the one we
+                // started from.
                 continue;
             }
 
@@ -456,11 +500,11 @@ public sealed class CreditLeaseManager
     }
 
     /// <summary>
-    /// When a joiner's wait on a shared flight runs out, or null for no cap.
+    /// When a joiner's wait on a shared flight runs out if it starts now, or
+    /// null for no cap.
     /// </summary>
-    private static DateTime? JoinDeadline(RequestOptions? options)
+    internal static DateTime? JoinDeadline(TimeSpan? timeout)
     {
-        var timeout = options?.Timeout;
         if (timeout == null)
         {
             return null;
@@ -518,8 +562,8 @@ public sealed class CreditLeaseManager
         RequestOptions? options
     )
     {
-        Task<LeaseState?> task = null!;
-        ExtendFlight flight = null!;
+        var placeholder = Placeholder<LeaseState?>();
+        var flight = new ExtendFlight(additionalAmount, placeholder.Task);
         lock (_gate)
         {
             // No joining here, even when a flight is already registered. This is
@@ -529,18 +573,21 @@ public sealed class CreditLeaseManager
             // exists to stop. Registering over the top is what the other SDKs
             // do; the cleanup below is identity-guarded, so the flight we
             // displace still clears only itself.
-            task = RecheckAndExtendAsync(
-                companyId,
-                creditTypeId,
-                resolved,
-                requiredCredits,
-                additionalAmount,
-                options
-            );
-            flight = new ExtendFlight(additionalAmount, task);
             _inflightExtend[key] = flight;
         }
 
+        _ = RunInto(
+            placeholder,
+            () =>
+                RecheckAndExtendAsync(
+                    companyId,
+                    creditTypeId,
+                    resolved,
+                    requiredCredits,
+                    additionalAmount,
+                    options
+                )
+        );
         return AwaitAndClear(key, flight);
     }
 
@@ -585,10 +632,14 @@ public sealed class CreditLeaseManager
     {
         var ratio = entry.LocalRemainingCredits / Math.Max(entry.GrantedAmount, 1);
         var belowWatermark = ratio <= resolved.LowWaterMark;
-        var belowRequired =
-            requiredCredits.HasValue && entry.LocalRemainingCredits < requiredCredits.Value;
-        return belowWatermark || belowRequired;
+        return belowWatermark || !Covers(entry, requiredCredits);
     }
+
+    /// <summary>
+    /// Whether a lease has enough left for a caller's requirement, if it has one.
+    /// </summary>
+    private static bool Covers(LeaseState entry, double? requiredCredits) =>
+        !requiredCredits.HasValue || entry.LocalRemainingCredits >= requiredCredits.Value;
 
     private async Task<LeaseState?> AwaitAndClear(string key, ExtendFlight flight)
     {
@@ -686,7 +737,19 @@ public sealed class CreditLeaseManager
             return;
         }
 
-        var entries = await lister.ListAsync().ConfigureAwait(false);
+        IReadOnlyList<LeaseState> entries;
+        try
+        {
+            entries = await lister.ListAsync().ConfigureAwait(false);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogWarning(
+                ex,
+                "Failed to list credit leases on close; any still held will be released by server-side expiry"
+            );
+            return;
+        }
         if (entries.Count == 0)
         {
             return;
@@ -760,6 +823,9 @@ public sealed class CreditLeaseManager
         var deadline = DateTime.UtcNow.Add(budget);
         while (true)
         {
+            // Finished work is left out even while it still sits in a map: its
+            // cleanup continuation may not have run yet, and waiting on it again
+            // would spin this loop without yielding until it does.
             List<Task> pending;
             lock (_gate)
             {
@@ -767,6 +833,7 @@ public sealed class CreditLeaseManager
                     .Values.Cast<Task>()
                     .Concat(_inflightExtend.Values.Select(flight => (Task)flight.Task))
                     .Concat(_background)
+                    .Where(task => !task.IsCompleted)
                     .ToList();
             }
 
@@ -831,6 +898,33 @@ public sealed class CreditLeaseManager
         catch (Exception ex)
         {
             _logger.LogWarning(ex, "Failed to release redundant credit lease {LeaseId}", leaseId);
+        }
+    }
+
+    /// <summary>
+    /// A stand-in for work that is registered under <c>_gate</c> but started
+    /// only once the lock is released. An async method runs synchronously up to
+    /// its first real await, so starting it under the lock would run store reads
+    /// and request setup there, and a store or wire client that blocks would
+    /// stall every slot behind it. Continuations run asynchronously so whoever
+    /// completes the placeholder never runs a waiter's code inline.
+    /// </summary>
+    private static TaskCompletionSource<T> Placeholder<T>() =>
+        new(TaskCreationOptions.RunContinuationsAsynchronously);
+
+    /// <summary>
+    /// Runs <paramref name="work"/> and settles <paramref name="placeholder"/>
+    /// with its outcome.
+    /// </summary>
+    private static async Task RunInto<T>(TaskCompletionSource<T> placeholder, Func<Task<T>> work)
+    {
+        try
+        {
+            placeholder.SetResult(await work().ConfigureAwait(false));
+        }
+        catch (Exception ex)
+        {
+            placeholder.SetException(ex);
         }
     }
 

@@ -90,6 +90,9 @@ public static class LeaseCheck
         Func<Task<CheckResult>> fallback
     )
     {
+        // Taken before any lease work, so waiting on another caller's acquire or
+        // extend spends what is left of this check's timeout, not a fresh one.
+        var joinDeadline = CreditLeaseManager.JoinDeadline(options.Timeout);
         var logger = deps.Logger;
         var failOpen = options.OnAcquireFailure == OnAcquireFailure.FailOpen;
 
@@ -289,7 +292,7 @@ public static class LeaseCheck
         }
 
         var lease = await deps
-            .Manager.AcquireIfNeededAsync(companyId, creditId, requestOptions)
+            .Manager.AcquireIfNeededAsync(companyId, creditId, requestOptions, joinDeadline)
             .ConfigureAwait(false);
         if (lease == null)
         {
@@ -314,7 +317,8 @@ public static class LeaseCheck
                         companyId,
                         creditId,
                         creditCost,
-                        requestOptions
+                        requestOptions,
+                        joinDeadline
                     )
                     .ConfigureAwait(false);
                 reserve = await deps

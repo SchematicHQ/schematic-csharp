@@ -89,6 +89,68 @@ public class CreditLeaseManagerExtendTests
         Assert.That(first!.GrantedAmount, Is.EqualTo(2_000));
     }
 
+    [Test]
+    public async Task A_Joiner_Spends_The_Deadline_Its_Check_Started_With()
+    {
+        // A check takes its deadline before acquiring and reserving, so a join
+        // late in the check gets what is left of its timeout, not a fresh one.
+        var wire = new GrantingExtendWire(1_000) { HoldFirstCall = true };
+        var store = new InMemoryLeaseStore();
+        var manager = Manager(wire, store);
+        await Seed(store, 1_000);
+        await store.TryReserveAsync(Company, CreditType, 800);
+
+        var flight = manager.MaybeExtendInBackgroundAsync(Company, CreditType);
+
+        var clock = Stopwatch.StartNew();
+        var late = await manager.MaybeExtendInBackgroundAsync(
+            Company,
+            CreditType,
+            900,
+            new RequestOptions { Timeout = TimeSpan.FromSeconds(30) },
+            joinDeadline: DateTime.UtcNow.AddMilliseconds(-1)
+        );
+        clock.Stop();
+
+        Assert.That(late, Is.Null);
+        Assert.That(clock.Elapsed, Is.LessThan(TimeSpan.FromSeconds(2)));
+
+        wire.ReleaseFirstCall();
+        await flight;
+    }
+
+    [Test]
+    public async Task A_Joiner_Does_Not_Take_A_Flight_That_Decided_Not_To_Extend()
+    {
+        // The flight rechecks against its starter's requirement. A sibling pod's
+        // extend landing first satisfies that, so the flight extends nothing,
+        // and a joiner needing more must not come back with what it left.
+        var inner = new InMemoryLeaseStore();
+        var store = new GatedReadStore(inner) { GateOnRead = 2 };
+        var wire = new GrantingExtendWire(1_500);
+        var manager = Manager(wire, store);
+        await Seed(inner, 1_000);
+        await inner.TryReserveAsync(Company, CreditType, 400);
+
+        // Needs 700 of the 600 left: registers a flight, whose recheck read
+        // parks on the gate.
+        var starter = manager.MaybeExtendInBackgroundAsync(Company, CreditType, 700);
+        await store.Parked;
+        // Needs 1,200. Its tranche-sized ask matches the flight's, so it joins.
+        var joiner = manager.MaybeExtendInBackgroundAsync(Company, CreditType, 1_200);
+
+        // A sibling pod tops the shared lease up to 1,500, leaving 1,100.
+        await inner.ExtendAsync(Company, CreditType, 1_500, pinLeaseId: "lse_1");
+        store.Release();
+
+        var started = await starter;
+        var joined = await joiner;
+
+        Assert.That(started!.LocalRemainingCredits, Is.EqualTo(1_100));
+        Assert.That(joined!.LocalRemainingCredits, Is.GreaterThanOrEqualTo(1_200));
+        Assert.That(wire.ExtendAmounts, Has.Count.EqualTo(1));
+    }
+
     private static CreditLeaseManager Manager(ILeaseWireClient wire, ILeaseStore store) =>
         new(
             wire,
@@ -108,6 +170,65 @@ public class CreditLeaseManagerExtendTests
                 ExpiresAt = DateTime.UtcNow.AddMinutes(5),
             }
         );
+
+    /// <summary>
+    /// Passes every call through, except that one read, counted from the first,
+    /// parks until the test releases it.
+    /// </summary>
+    private sealed class GatedReadStore : ILeaseStore
+    {
+        private readonly ILeaseStore _inner;
+        private readonly TaskCompletionSource<bool> _parked = new();
+        private readonly TaskCompletionSource<bool> _gate = new();
+        private int _reads;
+
+        public GatedReadStore(ILeaseStore inner)
+        {
+            _inner = inner;
+        }
+
+        public int GateOnRead { get; set; }
+
+        public Task Parked => _parked.Task;
+
+        public void Release() => _gate.TrySetResult(true);
+
+        public async Task<LeaseState?> GetAsync(string companyId, string creditTypeId)
+        {
+            if (Interlocked.Increment(ref _reads) == GateOnRead)
+            {
+                _parked.TrySetResult(true);
+                await _gate.Task.ConfigureAwait(false);
+            }
+            return await _inner.GetAsync(companyId, creditTypeId).ConfigureAwait(false);
+        }
+
+        public Task<bool> ReplaceAsync(LeaseGrant grant) => _inner.ReplaceAsync(grant);
+
+        public Task<ReserveResult?> TryReserveAsync(
+            string companyId,
+            string creditTypeId,
+            double credits
+        ) => _inner.TryReserveAsync(companyId, creditTypeId, credits);
+
+        public Task RefundAsync(
+            string companyId,
+            string creditTypeId,
+            double credits,
+            string? pinLeaseId = null
+        ) => _inner.RefundAsync(companyId, creditTypeId, credits, pinLeaseId);
+
+        public Task ExtendAsync(
+            string companyId,
+            string creditTypeId,
+            double grantedTotal,
+            DateTime? newExpiresAt = null,
+            string? pinLeaseId = null
+        ) => _inner.ExtendAsync(companyId, creditTypeId, grantedTotal, newExpiresAt, pinLeaseId);
+
+        public Task DropAsync(string companyId, string creditTypeId) =>
+            _inner.DropAsync(companyId, creditTypeId);
+    }
 
     /// <summary>
     /// A server that grants every extend in full, answering with the lease's new
