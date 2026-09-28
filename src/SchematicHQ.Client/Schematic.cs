@@ -911,8 +911,8 @@ public partial class Schematic
     /// </summary>
     internal static bool EngineDeclined(CheckFlagResult result) =>
         result.Error != null
-        || result.Reason == DatastreamClient.ReasonRulesEngineUnavailable
-        || result.Reason == DatastreamClient.ReasonRulesEngineError;
+        || result.Reason == SchematicHQ.Client.Datastream.DatastreamClient.ReasonRulesEngineUnavailable
+        || result.Reason == SchematicHQ.Client.Datastream.DatastreamClient.ReasonRulesEngineError;
 
     private string BuildFlagCacheKey(string flagKey, Dictionary<string, string>? company, Dictionary<string, string>? user)
     {

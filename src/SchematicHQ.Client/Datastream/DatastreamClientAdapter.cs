@@ -47,21 +47,13 @@ namespace SchematicHQ.Client.Datastream
       _logger = logger;
       _replicatorMode = replicatorMode;
 
-      // Initialize replicator health service if in replicator mode, defaulting the
-      // URL to ClientOptions.DefaultReplicatorHealthUrl like the other SDKs
+      // Resolved up front, defaulting to ClientOptions.DefaultReplicatorHealthUrl
+      // like the other SDKs
       ReplicatorHealthUrl = ClientOptions.ResolveReplicatorHealthUrl(_replicatorMode, replicatorHealthUrl);
-      if (ReplicatorHealthUrl != null)
-      {
-        // Create a simple HTTP client for health checks
-        var httpClient = new System.Net.Http.HttpClient();
-        _replicatorHealthService = new ReplicatorHealthService(httpClient, ReplicatorHealthUrl, logger);
 
-        // Subscribe to cache version changes for logging and potential cache invalidation
-        _replicatorHealthService.CacheVersionChanged += OnCacheVersionChanged;
-
-        _replicatorHealthService.Start();
-      }
-
+      // Built before the health poller starts: a caller whose construction
+      // fails has no adapter to close, so nothing may be left running when
+      // this constructor throws.
       _client = new DatastreamClient(
           baseUrl,
           logger,
@@ -73,6 +65,28 @@ namespace SchematicHQ.Client.Datastream
           options,
           _replicatorMode ? GetReplicatorCacheVersionWithFallback : null // cache version provider
           );
+
+      // Initialize replicator health service if in replicator mode
+      if (ReplicatorHealthUrl != null)
+      {
+        try
+        {
+          // Create a simple HTTP client for health checks
+          var httpClient = new System.Net.Http.HttpClient();
+          _replicatorHealthService = new ReplicatorHealthService(httpClient, ReplicatorHealthUrl, logger);
+
+          // Subscribe to cache version changes for logging and potential cache invalidation
+          _replicatorHealthService.CacheVersionChanged += OnCacheVersionChanged;
+
+          _replicatorHealthService.Start();
+        }
+        catch
+        {
+          _replicatorHealthService?.Dispose();
+          _client.Dispose();
+          throw;
+        }
+      }
     }
 
     /// <summary>
