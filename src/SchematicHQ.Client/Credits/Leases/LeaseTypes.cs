@@ -172,18 +172,20 @@ public static class LeaseTime
     /// Epoch milliseconds, the wire form both Redis backends store expiries in
     /// so every SDK reads the same row the same way.
     /// </summary>
-    public static long ToUnixMilliseconds(DateTime value)
-    {
-        // An unspecified kind is treated as UTC rather than local: every
-        // DateTime the lease paths handle comes from the API or from UtcNow, so
-        // converting an unspecified one as local would shift the expiry by the
-        // host's offset.
-        var utc =
-            value.Kind == DateTimeKind.Local
-                ? value.ToUniversalTime()
-                : DateTime.SpecifyKind(value, DateTimeKind.Utc);
-        return new DateTimeOffset(utc).ToUnixTimeMilliseconds();
-    }
+    public static long ToUnixMilliseconds(DateTime value) =>
+        new DateTimeOffset(ToUtc(value)).ToUnixTimeMilliseconds();
+
+    /// <summary>
+    /// The same instant as a UTC DateTime. DateTime comparisons ignore Kind, so
+    /// anything compared against UtcNow must be normalized first. An
+    /// unspecified kind is treated as UTC rather than local: every DateTime the
+    /// lease paths handle comes from the API or from UtcNow, so converting an
+    /// unspecified one as local would shift the expiry by the host's offset.
+    /// </summary>
+    public static DateTime ToUtc(DateTime value) =>
+        value.Kind == DateTimeKind.Local
+            ? value.ToUniversalTime()
+            : DateTime.SpecifyKind(value, DateTimeKind.Utc);
 
     public static DateTime FromUnixMilliseconds(long value) =>
         DateTimeOffset.FromUnixTimeMilliseconds(value).UtcDateTime;

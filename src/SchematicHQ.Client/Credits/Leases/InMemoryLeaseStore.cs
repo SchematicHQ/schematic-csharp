@@ -64,9 +64,10 @@ public sealed class InMemoryLeaseStore : ILeaseStore, ILeaseLister
                         existing.GrantedAmount = grant.GrantedAmount;
                         existing.LocalRemainingCredits += add;
                     }
-                    if (grant.ExpiresAt > existing.ExpiresAt)
+                    var grantExpiry = LeaseTime.ToUtc(grant.ExpiresAt);
+                    if (grantExpiry > existing.ExpiresAt)
                     {
-                        existing.ExpiresAt = grant.ExpiresAt;
+                        existing.ExpiresAt = grantExpiry;
                     }
                     return Task.FromResult(false);
                 }
@@ -79,7 +80,7 @@ public sealed class InMemoryLeaseStore : ILeaseStore, ILeaseLister
                 CreditTypeId = grant.CreditTypeId,
                 GrantedAmount = grant.GrantedAmount,
                 LocalRemainingCredits = grant.GrantedAmount,
-                ExpiresAt = grant.ExpiresAt,
+                ExpiresAt = LeaseTime.ToUtc(grant.ExpiresAt),
             };
             return Task.FromResult(true);
         }
@@ -192,9 +193,9 @@ public sealed class InMemoryLeaseStore : ILeaseStore, ILeaseLister
             }
             // Expiry only moves forward: an out-of-order apply must not shorten
             // a lease a concurrent extend already pushed out.
-            if (newExpiresAt.HasValue && newExpiresAt.Value > entry.ExpiresAt)
+            if (newExpiresAt.HasValue && LeaseTime.ToUtc(newExpiresAt.Value) > entry.ExpiresAt)
             {
-                entry.ExpiresAt = newExpiresAt.Value;
+                entry.ExpiresAt = LeaseTime.ToUtc(newExpiresAt.Value);
             }
             return Task.CompletedTask;
         }
