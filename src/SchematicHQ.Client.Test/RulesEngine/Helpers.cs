@@ -76,7 +76,7 @@ namespace SchematicHQ.Client.Test.RulesEngine
         EnvironmentId = GenerateTestId("env"),
         ConditionType = conditionType,
         ResourceIds = new List<string>(),
-        Operator = ComparableOperator.Eq,
+        Operator = RulesengineComparableOperator.Eq,
         TraitValue = ""
       };
 

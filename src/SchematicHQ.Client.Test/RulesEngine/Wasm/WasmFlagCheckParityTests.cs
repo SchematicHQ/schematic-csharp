@@ -139,7 +139,7 @@ namespace SchematicHQ.Client.Test.RulesEngine.Wasm
             var condition = TestHelpers.CreateTestCondition(RulesengineConditionType.Metric);
             condition.EventSubtype = eventSubtype;
             condition.MetricValue = 10;
-            condition.Operator = ComparableOperator.Lte;
+            condition.Operator = RulesengineComparableOperator.Lte;
 
             rule.Conditions = new List<RulesengineCondition> { condition };
             flag.Rules = new List<RulesengineRule> { rule };
@@ -172,7 +172,7 @@ namespace SchematicHQ.Client.Test.RulesEngine.Wasm
             var condition = TestHelpers.CreateTestCondition(RulesengineConditionType.Trait);
             condition.TraitDefinition = traitDef;
             condition.TraitValue = "10";
-            condition.Operator = ComparableOperator.Lte;
+            condition.Operator = RulesengineComparableOperator.Lte;
 
             rule.Conditions = new List<RulesengineCondition> { condition };
             flag.Rules = new List<RulesengineRule> { rule };
@@ -221,7 +221,7 @@ namespace SchematicHQ.Client.Test.RulesEngine.Wasm
             var condition = TestHelpers.CreateTestCondition(RulesengineConditionType.Trait);
             condition.TraitDefinition = traitDef;
             condition.TraitValue = "test-value";
-            condition.Operator = ComparableOperator.Eq;
+            condition.Operator = RulesengineComparableOperator.Eq;
 
             rule.Conditions = new List<RulesengineCondition> { condition };
             flag.Rules = new List<RulesengineRule> { rule };
@@ -249,7 +249,7 @@ namespace SchematicHQ.Client.Test.RulesEngine.Wasm
             var condition2 = TestHelpers.CreateTestCondition(RulesengineConditionType.Trait);
             condition2.TraitDefinition = trait.TraitDefinition;
             condition2.TraitValue = "test-value";
-            condition2.Operator = ComparableOperator.Eq;
+            condition2.Operator = RulesengineComparableOperator.Eq;
 
             rule.Conditions = new List<RulesengineCondition> { condition1, condition2 };
 
@@ -289,7 +289,7 @@ namespace SchematicHQ.Client.Test.RulesEngine.Wasm
                 AccountId = "",
                 EnvironmentId = "",
                 ConditionType = RulesengineConditionType.Metric,
-                Operator = ComparableOperator.Eq,
+                Operator = RulesengineComparableOperator.Eq,
                 TraitValue = ""
             };
             rule.Conditions = new List<RulesengineCondition> { condition };
