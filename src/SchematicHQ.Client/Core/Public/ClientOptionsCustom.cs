@@ -62,6 +62,7 @@ public static class ClientOptionsExtensions
     {
         return new ClientOptions
         {
+            AdditionalHeaders = options.AdditionalHeaders,
             BaseUrl = options.BaseUrl,
             CacheProvider = options.CacheProvider,
             CacheConfiguration = options.CacheConfiguration,
