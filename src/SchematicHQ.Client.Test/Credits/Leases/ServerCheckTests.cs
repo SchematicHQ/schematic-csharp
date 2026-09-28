@@ -53,6 +53,19 @@ public class ServerCheckTests
     }
 
     [Test]
+    public async Task Rounds_A_Fractional_Usage_Up_Before_Holding()
+    {
+        _client.NextResponse = Allowed(Held());
+
+        await CheckAsync(new CheckOptions { Usage = 2.5, EventSubtype = "inference_tokens" });
+
+        // The settle bills whole units, so the hold must cover the rounded-up
+        // quantity or the track charges more than was held.
+        Assert.That(_client.LastBody!.Quantity, Is.EqualTo(3));
+        Assert.That(_client.LastBody.Preflight!.EventUsage!.Quantity, Is.EqualTo(3));
+    }
+
+    [Test]
     public async Task Sends_A_Fresh_Idempotency_Key_Per_Check()
     {
         _client.NextResponse = Allowed(Held());

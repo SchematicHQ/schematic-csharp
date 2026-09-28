@@ -154,10 +154,9 @@ public static class LeasePreflight
     }
 
     /// <summary>
-    /// Casts a usage onto the integer the engine's preflight carries. A hold can
-    /// be sized from a fractional usage, but a preflight asks an upper-bound
-    /// question, so a fraction rounds up: the check must not pass on less usage
-    /// than the operation is about to record.
+    /// Casts a usage onto the integer the engine's preflight carries. A fraction
+    /// rounds up: the check must not pass on less usage than the operation is
+    /// about to record.
     /// </summary>
     public static long PreflightQuantity(double usage) => (long)Math.Ceiling(usage);
 }
