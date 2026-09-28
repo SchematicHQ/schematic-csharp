@@ -50,6 +50,9 @@ public record InvoiceRequestBody : IJsonOnDeserialized
     [JsonPropertyName("subtotal")]
     public required long Subtotal { get; set; }
 
+    [JsonPropertyName("total")]
+    public long? Total { get; set; }
+
     [JsonPropertyName("url")]
     public string? Url { get; set; }
 
