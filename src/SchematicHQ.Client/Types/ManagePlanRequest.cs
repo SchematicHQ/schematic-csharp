@@ -69,6 +69,12 @@ public record ManagePlanRequest : IJsonOnDeserialized
     public IEnumerable<UpdateCreditBundleRequestBody> CreditBundles { get; set; } =
         new List<UpdateCreditBundleRequestBody>();
 
+    /// <summary>
+    /// ISO 4217 currency this change is being built in. Prices are still selected by id; this records the intent.
+    /// </summary>
+    [JsonPropertyName("currency")]
+    public string? Currency { get; set; }
+
     [JsonPropertyName("custom_field_values")]
     public IEnumerable<CheckoutFieldValue> CustomFieldValues { get; set; } =
         new List<CheckoutFieldValue>();

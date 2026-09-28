@@ -68,6 +68,12 @@ public record InvoiceResponseData : IJsonOnDeserialized
     [JsonPropertyName("subtotal")]
     public required long Subtotal { get; set; }
 
+    /// <summary>
+    /// Amount after discounts and tax, before applying the customer balance. Null when the provider has not reported it: rows synced before the column existed, or pushed without one.
+    /// </summary>
+    [JsonPropertyName("total")]
+    public long? Total { get; set; }
+
     [JsonPropertyName("updated_at")]
     public required DateTime UpdatedAt { get; set; }
 

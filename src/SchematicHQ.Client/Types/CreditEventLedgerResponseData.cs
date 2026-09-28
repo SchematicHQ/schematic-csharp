@@ -107,6 +107,9 @@ public record CreditEventLedgerResponseData : IJsonOnDeserialized
     [JsonPropertyName("usage_reason")]
     public CreditUsageReason? UsageReason { get; set; }
 
+    [JsonPropertyName("user_id")]
+    public string? UserId { get; set; }
+
     [JsonPropertyName("zeroed_out_reason")]
     public BillingCreditGrantZeroedOutReason? ZeroedOutReason { get; set; }
 

@@ -48,7 +48,7 @@ namespace SchematicHQ.Client.Test.RulesEngine.Wasm
             var condition = TestHelpers.CreateTestCondition(RulesengineConditionType.Metric);
             condition.EventSubtype = eventSubtype;
             condition.MetricValue = 10;
-            condition.Operator = ComparableOperator.Lte;
+            condition.Operator = RulesengineComparableOperator.Lte;
             condition.MetricPeriod = RulesengineMetricPeriod.CurrentMonth;
             rule.Conditions = new List<RulesengineCondition> { condition };
             flag.Rules = new List<RulesengineRule> { rule };
@@ -74,7 +74,7 @@ namespace SchematicHQ.Client.Test.RulesEngine.Wasm
 
             var condition = TestHelpers.CreateTestCondition(RulesengineConditionType.Credit);
             condition.CreditId = creditId;
-            condition.Operator = ComparableOperator.Lt;
+            condition.Operator = RulesengineComparableOperator.Lt;
             var rule = TestHelpers.CreateTestRule();
             rule.Conditions = new List<RulesengineCondition> { condition };
             var flag = TestHelpers.CreateTestFlag();

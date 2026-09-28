@@ -26,6 +26,10 @@ public readonly record struct CompanyFeatureUsageExportMetadataVisibleColumnsIte
         Values.LastSeenAt
     );
 
+    public static readonly CompanyFeatureUsageExportMetadataVisibleColumnsItem CreatedAt = new(
+        Values.CreatedAt
+    );
+
     public CompanyFeatureUsageExportMetadataVisibleColumnsItem(string value)
     {
         Value = value;
@@ -138,5 +142,7 @@ public readonly record struct CompanyFeatureUsageExportMetadataVisibleColumnsIte
         public const string Users = "users";
 
         public const string LastSeenAt = "last_seen_at";
+
+        public const string CreatedAt = "created_at";
     }
 }

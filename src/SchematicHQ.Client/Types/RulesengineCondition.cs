@@ -45,7 +45,7 @@ public record RulesengineCondition : IJsonOnDeserialized
     public long? MetricValue { get; set; }
 
     [JsonPropertyName("operator")]
-    public required ComparableOperator Operator { get; set; }
+    public required RulesengineComparableOperator Operator { get; set; }
 
     [JsonPropertyName("resource_ids")]
     public IEnumerable<string> ResourceIds { get; set; } = new List<string>();
