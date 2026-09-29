@@ -226,18 +226,9 @@ namespace SchematicHQ.Client.Datastream
 
       if (_replicatorMode)
       {
-        bool replicatorHealthy = _replicatorHealthService?.IsHealthy == true;
-        
-        if (replicatorHealthy)
+        if (!flagInCache)
         {
-          // Replicator is connected and healthy
-          if (allRequiredResourcesInCache)
-          {
-            // All required resources in cache - evaluate flag
-            _logger.LogDebug("Replicator mode: All required resources in cache, evaluating flag '{FlagKey}'", flagKey);
-            return await _client.CheckFlag(cachedCompany, cachedUser, cachedFlag!);
-          }
-          else if (!flagInCache)
+          if (_replicatorHealthService?.IsHealthy == true)
           {
             // Flag missing from cache - replicator should have populated it, so flag doesn't exist
             _logger.LogDebug("Replicator mode: Flag '{FlagKey}' missing from cache, replicator is healthy so flag doesn't exist", flagKey);
@@ -249,29 +240,26 @@ namespace SchematicHQ.Client.Datastream
               Error = Errors.ErrorFlagNotFound,
             };
           }
-          else
-          {
-            // Some company/user resources missing - evaluate with available data
-            _logger.LogWarning("Replicator mode: Some required resources missing from cache for flag '{FlagKey}', evaluating with available data", flagKey);
-            return await _client.CheckFlag(cachedCompany, cachedUser, cachedFlag!);
-          }
+
+          // Replicator is not ready and the flag is not cached, so there is nothing
+          // to evaluate locally. Let the caller fall back to the API.
+          _logger.LogWarning("Replicator mode: Replicator not ready and flag '{FlagKey}' missing from cache, falling back to API", flagKey);
+          throw new InvalidOperationException($"Replicator not ready and flag '{flagKey}' missing from cache - API fallback required");
+        }
+
+        // The flag is cached. Evaluate with whatever company and user the cache holds,
+        // whether or not the replicator reports ready. The replicator owns populating the
+        // cache, and a replicator that is not ready (for example because Schematic is
+        // unreachable) still serves its last known state from Redis.
+        if (allRequiredResourcesInCache)
+        {
+          _logger.LogDebug("Replicator mode: All required resources in cache, evaluating flag '{FlagKey}'", flagKey);
         }
         else
         {
-          // Replicator is not connected/healthy
-          if (allRequiredResourcesInCache)
-          {
-            // All required resources in cache - evaluate flag even though replicator is unhealthy
-            _logger.LogWarning("Replicator mode: Replicator unhealthy but all required resources in cache, evaluating flag '{FlagKey}'", flagKey);
-            return await _client.CheckFlag(cachedCompany, cachedUser, cachedFlag!);
-          }
-          else
-          {
-            // Not all resources in cache and replicator unhealthy - fallback to API
-            _logger.LogWarning("Replicator mode: Replicator unhealthy and missing required resources for flag '{FlagKey}', falling back to API", flagKey);
-            throw new InvalidOperationException($"Replicator unhealthy and required resources missing for flag '{flagKey}' - API fallback required");
-          }
+          _logger.LogWarning("Replicator mode: Some required resources missing from cache for flag '{FlagKey}', evaluating with available data", flagKey);
         }
+        return await _client.CheckFlag(cachedCompany, cachedUser, cachedFlag!);
       }
       else
       {
