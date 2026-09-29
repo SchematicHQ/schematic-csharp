@@ -593,15 +593,23 @@ public partial class Schematic
             trustedClientClock: options?.TrustedClientClock,
             backfill: options?.Backfill);
 
-        // Update company metrics in datastream if available and connected
-        if (company != null && UseDatastream() && _datastreamClient != null && _datastreamConnected)
+        // Optimistically bump the cached company's metrics so flag checks see this usage
+        // before the server pushes an updated company. This runs whether or not the
+        // datastream is connected or the replicator reports ready: flag checks keep
+        // evaluating from the cache in both cases, so usage should keep counting there.
+        // Server updates carry absolute metric values and replace the cached company, so
+        // the local bump is superseded rather than double counted. If the company is not
+        // cached, nothing is written.
+        if (company != null && company.Count > 0 && _datastreamClient != null)
         {
             try
             {
                 var success = _datastreamClient.UpdateCompanyMetrics(eventBody);
                 if (!success)
                 {
-                    _logger.LogError("Failed to update company metrics: datastream update failed");
+                    // Also covers the routine cases of an uncached company or an event with no
+                    // matching metric. Real failures are logged inside UpdateCompanyMetrics.
+                    _logger.LogDebug("Company metrics not updated for event {EventName}", eventName);
                 }
             }
             catch (Exception ex)
@@ -725,14 +733,6 @@ private void SubmitFlagCheckEvent(
     /// The datastream adapter, exposed for tests
     /// </summary>
     internal DatastreamClientAdapter? DatastreamClient => _datastreamClient;
-
-    /// <summary>
-    /// Gets whether the client is using datastream
-    /// </summary>
-    private bool UseDatastream()
-    {
-        return _datastreamClient != null;
-    }
 
     public void SetFlagDefault(string flag, bool value)
     {
