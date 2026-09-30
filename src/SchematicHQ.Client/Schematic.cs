@@ -53,12 +53,6 @@ public partial class Schematic
         _replicatorMode = _options.ReplicatorMode;
         _logger = _options.LoggerFactory.CreateLogger("SchematicHQ.Client");
 
-        // Validate replicator mode configuration
-        if (_replicatorMode && string.IsNullOrWhiteSpace(_options.ReplicatorHealthUrl))
-        {
-            throw new ArgumentException("ReplicatorHealthUrl is required when ReplicatorMode is enabled");
-        }
-
         // Validate that Redis cache is configured when replicator mode is enabled
         if (_replicatorMode)
         {
@@ -180,7 +174,8 @@ public partial class Schematic
                 _cache,
                 datastreamOptions,
                 _replicatorMode,
-                _options.ReplicatorHealthUrl
+                // Falls back to ClientOptions.DefaultReplicatorHealthUrl in replicator mode
+                _options.ResolveReplicatorHealthUrl()
             );
 
             if (!_replicatorMode)
@@ -725,6 +720,11 @@ private void SubmitFlagCheckEvent(
     {
         return _replicatorMode;
     }
+
+    /// <summary>
+    /// The datastream adapter, exposed for tests
+    /// </summary>
+    internal DatastreamClientAdapter? DatastreamClient => _datastreamClient;
 
     /// <summary>
     /// Gets whether the client is using datastream

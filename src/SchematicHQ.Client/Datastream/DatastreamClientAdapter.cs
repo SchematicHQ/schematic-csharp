@@ -26,21 +26,35 @@ namespace SchematicHQ.Client.Datastream
 
     private readonly ConnectionStateTracker _connectionTracker = new ConnectionStateTracker();
 
+    /// <summary>
+    /// The replicator health check URL in use, or null when not in replicator mode
+    /// </summary>
+    internal string? ReplicatorHealthUrl { get; }
 
     /// <summary>
-    /// Creates a new datastream client adapter
+    /// Whether a replicator health service was created
+    /// </summary>
+    internal bool HasReplicatorHealthService => _replicatorHealthService != null;
+
+
+    /// <summary>
+    /// Creates a new datastream client adapter. In replicator mode a null or blank
+    /// replicatorHealthUrl falls back to <see cref="ClientOptions.DefaultReplicatorHealthUrl"/>;
+    /// outside replicator mode it is ignored.
     /// </summary>
     public DatastreamClientAdapter(string baseUrl, ILogger logger, string apiKey, ICacheProvider provider, DatastreamOptions options, bool replicatorMode = false, string? replicatorHealthUrl = null)
     {
       _logger = logger;
       _replicatorMode = replicatorMode;
 
-      // Initialize replicator health service if in replicator mode
-      if (_replicatorMode && !string.IsNullOrWhiteSpace(replicatorHealthUrl))
+      // Initialize replicator health service if in replicator mode, defaulting the
+      // URL to ClientOptions.DefaultReplicatorHealthUrl like the other SDKs
+      ReplicatorHealthUrl = ClientOptions.ResolveReplicatorHealthUrl(_replicatorMode, replicatorHealthUrl);
+      if (ReplicatorHealthUrl != null)
       {
         // Create a simple HTTP client for health checks
         var httpClient = new System.Net.Http.HttpClient();
-        _replicatorHealthService = new ReplicatorHealthService(httpClient, replicatorHealthUrl, logger);
+        _replicatorHealthService = new ReplicatorHealthService(httpClient, ReplicatorHealthUrl, logger);
 
         // Subscribe to cache version changes for logging and potential cache invalidation
         _replicatorHealthService.CacheVersionChanged += OnCacheVersionChanged;

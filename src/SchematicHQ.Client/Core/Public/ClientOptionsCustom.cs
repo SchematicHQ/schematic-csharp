@@ -46,14 +46,38 @@ public partial class ClientOptions
     public string? EventCaptureBaseUrl { get; set; }
 
     /// <summary>
+    /// Health check URL used in replicator mode when <see cref="ReplicatorHealthUrl"/> is not set.
+    /// Matches the default used by the other Schematic SDKs.
+    /// </summary>
+    public const string DefaultReplicatorHealthUrl = "http://localhost:8090/ready";
+
+    /// <summary>
     /// Enable replicator mode - uses only cached data from a replicator service
     /// </summary>
     public bool ReplicatorMode { get; set; } = false;
 
     /// <summary>
-    /// Health check URL for the replicator service (required when ReplicatorMode is true)
+    /// Health check URL for the replicator service. Only used when <see cref="ReplicatorMode"/> is true.
+    /// When null, empty or whitespace, replicator mode uses <see cref="DefaultReplicatorHealthUrl"/>
+    /// (<c>http://localhost:8090/ready</c>). The replicator is polled every 30 seconds.
     /// </summary>
     public string? ReplicatorHealthUrl { get; set; }
+
+    /// <summary>
+    /// Resolves the health check URL the client should use: the configured
+    /// <see cref="ReplicatorHealthUrl"/> if set, else <see cref="DefaultReplicatorHealthUrl"/>
+    /// in replicator mode, else null.
+    /// </summary>
+    internal string? ResolveReplicatorHealthUrl() =>
+        ResolveReplicatorHealthUrl(ReplicatorMode, ReplicatorHealthUrl);
+
+    internal static string? ResolveReplicatorHealthUrl(bool replicatorMode, string? healthUrl)
+    {
+        if (!replicatorMode)
+            return null;
+
+        return string.IsNullOrWhiteSpace(healthUrl) ? DefaultReplicatorHealthUrl : healthUrl;
+    }
 }
 
 public static class ClientOptionsExtensions
@@ -142,17 +166,35 @@ public static class ClientOptionsExtensions
     }
 
     /// <summary>
-    /// Configure the client to use replicator mode
+    /// Configure the client to use replicator mode with the default health check URL,
+    /// <see cref="ClientOptions.DefaultReplicatorHealthUrl"/> (<c>http://localhost:8090/ready</c>).
+    /// </summary>
+    /// <param name="options">Client options</param>
+    /// <returns>Updated client options</returns>
+    public static ClientOptions WithReplicatorMode(this ClientOptions options)
+    {
+        return WithReplicatorMode(options, ClientOptions.DefaultReplicatorHealthUrl);
+    }
+
+    /// <summary>
+    /// Configure the client to use replicator mode with an explicit health check URL.
+    /// Use the parameterless overload to get the default, <c>http://localhost:8090/ready</c>.
     /// </summary>
     /// <param name="options">Client options</param>
     /// <param name="healthUrl">Health check URL for the replicator service</param>
     /// <returns>Updated client options</returns>
+    /// <exception cref="ArgumentException">
+    /// <paramref name="healthUrl"/> is null, empty or whitespace. An explicitly passed blank URL
+    /// usually means a missing config value, so it fails fast instead of silently using the default.
+    /// </exception>
     public static ClientOptions WithReplicatorMode(
         this ClientOptions options,
         string healthUrl)
     {
         if (string.IsNullOrWhiteSpace(healthUrl))
-            throw new ArgumentException("Health URL is required for replicator mode", nameof(healthUrl));
+            throw new ArgumentException(
+                "Health URL cannot be empty. Call WithReplicatorMode() with no arguments to use the default " +
+                ClientOptions.DefaultReplicatorHealthUrl, nameof(healthUrl));
 
         options.ReplicatorMode = true;
         options.ReplicatorHealthUrl = healthUrl;
