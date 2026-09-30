@@ -95,11 +95,26 @@ namespace SchematicHQ.Client.Datastream
     }
 
     /// <summary>
-    /// Check if replicator is ready (only valid in replicator mode)
+    /// Check if replicator is ready (only valid in replicator mode).
+    /// In replicator mode this reports the replicator's readiness, which is the same value
+    /// as <see cref="IsCacheReady"/>; prefer that method when deciding whether flag checks
+    /// are served from the cache.
     /// </summary>
     public bool IsReplicatorReady()
     {
       return _replicatorMode && _replicatorHealthService?.IsHealthy == true;
+    }
+
+    /// <summary>
+    /// Whether flag checks may be evaluated from the cache. In replicator mode this is the
+    /// readiness from the most recent replicator health poll (HTTP 200 with <c>ready: true</c>);
+    /// while it is false, flag checks skip the cache and use the API. Outside replicator mode it
+    /// is always true, because the SDK fills its own cache over the websocket and fetches misses
+    /// on demand.
+    /// </summary>
+    public bool IsCacheReady()
+    {
+      return !_replicatorMode || IsReplicatorReady();
     }
 
     /// <summary>
@@ -165,7 +180,9 @@ namespace SchematicHQ.Client.Datastream
     }
 
     /// <summary>
-    /// Get a task that completes when the datastream connection is established
+    /// Get a task that completes when the datastream connection is established.
+    /// This reports the websocket connection state. In replicator mode the SDK does not open a
+    /// websocket, so this does not reflect replicator readiness; use <see cref="IsCacheReady"/>.
     /// </summary>
     /// <param name="timeout">Optional timeout for the connection check</param>
     /// <returns>A task that completes with true if connected, or false if timeout or not connected</returns>
@@ -195,11 +212,19 @@ namespace SchematicHQ.Client.Datastream
     }
 
     /// <summary>
-    /// Check a feature flag via datastream
+    /// Check a feature flag via datastream.
+    /// In replicator mode this throws, without reading the cache, while <see cref="IsCacheReady"/>
+    /// is false, and throws when the flag is not in the cache; callers fall back to the API.
     /// </summary>
     public async Task<CheckFlagResult> CheckFlag(CheckFlagRequestBody request, string flagKey)
     {
       CancellationToken cancellationToken = CancellationToken.None;
+
+      if (!IsCacheReady())
+      {
+        _logger.LogDebug("Replicator mode: cache not ready, skipping cache for flag '{FlagKey}'", flagKey);
+        throw new InvalidOperationException($"Replicator cache is not ready - API fallback required for flag '{flagKey}'");
+      }
       
       var needsCompany = request.Company != null && request.Company.Count > 0;
       var needsUser = request.User != null && request.User.Count > 0;
@@ -226,52 +251,20 @@ namespace SchematicHQ.Client.Datastream
 
       if (_replicatorMode)
       {
-        bool replicatorHealthy = _replicatorHealthService?.IsHealthy == true;
-        
-        if (replicatorHealthy)
+        // The cache is ready (checked above), so evaluate from it as the Go client does.
+        if (!flagInCache)
         {
-          // Replicator is connected and healthy
-          if (allRequiredResourcesInCache)
-          {
-            // All required resources in cache - evaluate flag
-            _logger.LogDebug("Replicator mode: All required resources in cache, evaluating flag '{FlagKey}'", flagKey);
-            return await _client.CheckFlag(cachedCompany, cachedUser, cachedFlag!);
-          }
-          else if (!flagInCache)
-          {
-            // Flag missing from cache - replicator should have populated it, so flag doesn't exist
-            _logger.LogDebug("Replicator mode: Flag '{FlagKey}' missing from cache, replicator is healthy so flag doesn't exist", flagKey);
-            return new CheckFlagResult
-            {
-              Reason = "FlagNotFound",
-              FlagKey = flagKey,
-              Value = false,
-              Error = Errors.ErrorFlagNotFound,
-            };
-          }
-          else
-          {
-            // Some company/user resources missing - evaluate with available data
-            _logger.LogWarning("Replicator mode: Some required resources missing from cache for flag '{FlagKey}', evaluating with available data", flagKey);
-            return await _client.CheckFlag(cachedCompany, cachedUser, cachedFlag!);
-          }
+          _logger.LogDebug("Replicator mode: Flag '{FlagKey}' missing from cache, falling back to API", flagKey);
+          throw new InvalidOperationException($"Flag '{flagKey}' not found in replicator cache - API fallback required");
         }
-        else
+
+        if (!allRequiredResourcesInCache)
         {
-          // Replicator is not connected/healthy
-          if (allRequiredResourcesInCache)
-          {
-            // All required resources in cache - evaluate flag even though replicator is unhealthy
-            _logger.LogWarning("Replicator mode: Replicator unhealthy but all required resources in cache, evaluating flag '{FlagKey}'", flagKey);
-            return await _client.CheckFlag(cachedCompany, cachedUser, cachedFlag!);
-          }
-          else
-          {
-            // Not all resources in cache and replicator unhealthy - fallback to API
-            _logger.LogWarning("Replicator mode: Replicator unhealthy and missing required resources for flag '{FlagKey}', falling back to API", flagKey);
-            throw new InvalidOperationException($"Replicator unhealthy and required resources missing for flag '{flagKey}' - API fallback required");
-          }
+          // The replicator owns populating the cache, so evaluate with what it holds rather than fetching
+          _logger.LogWarning("Replicator mode: Some required resources missing from cache for flag '{FlagKey}', evaluating with available data", flagKey);
         }
+
+        return await _client.CheckFlag(cachedCompany, cachedUser, cachedFlag!);
       }
       else
       {

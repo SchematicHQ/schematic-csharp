@@ -275,8 +275,8 @@ public partial class Schematic
                 Reason = "offline mode"
             };
 
-        // Try datastream first if enabled
-        if (_datastreamClient != null)
+        // Try datastream first if enabled and its cache is ready
+        if (UseDatastreamCache())
         {
             try
             {
@@ -285,7 +285,7 @@ public partial class Schematic
                     Company = company,
                     User = user
                 };
-                var flagResult = await _datastreamClient.CheckFlag(request, flagKey);
+                var flagResult = await _datastreamClient!.CheckFlag(request, flagKey);
 
                 var response = CheckFlagWithEntitlementResponse.FromCheckFlagResult(flagResult);
 
@@ -419,7 +419,7 @@ public partial class Schematic
                 User = user
             };
 
-            if (_datastreamClient != null && keyList != null && keyList.Count > 0)
+            if (UseDatastreamCache() && keyList != null && keyList.Count > 0)
             {
                 var dsResults = await CheckFlagsViaDatastream(keyList, requestBody);
                 if (dsResults != null)
@@ -711,11 +711,34 @@ private void SubmitFlagCheckEvent(
     }
 
     /// <summary>
-    /// Gets whether the external replicator is healthy (only valid in replicator mode)
+    /// Gets whether the external replicator is healthy (only valid in replicator mode).
+    /// In replicator mode this reports the replicator's readiness, the same value as
+    /// <see cref="IsCacheReady"/>; prefer that method when deciding whether flag checks are
+    /// served from the cache.
     /// </summary>
     public bool IsReplicatorHealthy()
     {
         return _datastreamClient?.IsReplicatorReady() == true;
+    }
+
+    /// <summary>
+    /// Gets whether flag checks may be evaluated from the datastream cache. In replicator mode
+    /// this is the replicator's readiness: until the replicator reports ready, CheckFlag,
+    /// CheckFlagWithEntitlement and CheckFlags skip the cache and use the API. In websocket
+    /// datastream mode it is always true. False when datastream is not in use.
+    /// </summary>
+    public bool IsCacheReady()
+    {
+        return _datastreamClient?.IsCacheReady() == true;
+    }
+
+    /// <summary>
+    /// Gets whether flag checks should be evaluated from the datastream cache. Single and bulk
+    /// flag checks both use this, so in replicator mode neither reads the cache until it is ready.
+    /// </summary>
+    private bool UseDatastreamCache()
+    {
+        return _datastreamClient != null && _datastreamClient.IsCacheReady();
     }
 
     /// <summary>
