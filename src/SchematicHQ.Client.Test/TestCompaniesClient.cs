@@ -77,7 +77,7 @@ namespace SchematicHQ.Client.Test
         [TearDown]
         public async Task TearDown()
         {
-            if (_schematic != null) await _schematic.Shutdown();
+            if (_schematic != null) await _schematic.DisposeAsync();
         }
 
         [Test]

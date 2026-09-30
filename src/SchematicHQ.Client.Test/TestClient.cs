@@ -131,7 +131,7 @@ namespace SchematicHQ.Client.Test
         [TearDown]
         public async Task TearDown()
         {
-            if (_schematic != null) await _schematic.Shutdown();
+            if (_schematic != null) await _schematic.DisposeAsync();
         }
 
         [Test]
@@ -664,6 +664,22 @@ namespace SchematicHQ.Client.Test
             Assert.That(results.First(r => r.Flag == "flag_a").Value, Is.True);
             Assert.That(results.First(r => r.Flag == "flag_b").Value, Is.False);
         }
+
+        [Test]
+        public async Task DisposeAsync_FlushesBufferedEvents()
+        {
+            // Arrange
+            SetupSchematicTestClient(isOffline: false, response: CreateEventBatchResponse(HttpStatusCode.OK));
+            _schematic.Track("event_name");
+            Assert.That(_schematic.GetBufferWaitingEventCount(), Is.EqualTo(1));
+
+            // Act
+            await _schematic.DisposeAsync();
+
+            // Assert
+            Assert.That(_schematic.GetBufferWaitingEventCount(), Is.EqualTo(0));
+        }
+
 
         [Test]
         public async Task Track_IncludesQuantityWhenProvided()
