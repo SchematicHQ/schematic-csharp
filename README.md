@@ -730,6 +730,8 @@ The difference is that with Datastream enabled, after the initial data load, sub
 
 Replicator mode is an advanced Datastream configuration that maintains a local replica of your Schematic data using a persistent cache layer. This mode provides enhanced performance and reliability for high-throughput applications.
 
+The SDK serves flag checks from the replicator cache only once the replicator reports the cache ready, which it does by answering its health endpoint with HTTP 200 and `ready: true`. Before that, and whenever the health endpoint can't be reached, `CheckFlag`, `CheckFlagWithEntitlement` and `CheckFlags` skip the cache and use the Schematic API, falling back to your flag defaults if the API call fails. Once the cache is ready, single and bulk flag checks both evaluate from it, and a flag missing from the cache is checked via the API. `schematic.IsCacheReady()` reports whether the cache is ready; outside replicator mode it is always true when Datastream is enabled.
+
 #### Enabling Replicator Mode
 
 ```csharp
