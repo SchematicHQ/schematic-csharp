@@ -744,10 +744,12 @@ var options = new ClientOptions()
         KeyPrefix = "schematic:",
         CacheTTL = TimeSpan.FromHours(24)
     })
-    .WithReplicatorMode("https://health.your-app.com/schematic-replicator");
+    .WithReplicatorMode(); // health checks http://localhost:8090/ready
 
 var schematic = new Schematic("YOUR_API_KEY", options);
 ```
+
+In replicator mode the client polls the replicator's health endpoint every 30 seconds to learn whether it is ready and which cache version to read. If you don't set a health URL, it uses `http://localhost:8090/ready`, the same default as the other Schematic SDKs. This applies whether you call `.WithReplicatorMode()` or set `ReplicatorMode = true` directly and leave `ReplicatorHealthUrl` unset (null, empty or whitespace). To point at a replicator elsewhere, pass its URL, `.WithReplicatorMode("http://my-replicator:8090/ready")`, or set `ReplicatorHealthUrl`. An explicit URL always takes precedence. Passing an empty or whitespace string to `.WithReplicatorMode(url)` throws an `ArgumentException`; call the overload with no arguments to use the default.
 
 #### Advanced Replicator Configuration
 
@@ -777,7 +779,9 @@ var schematic = new Schematic("YOUR_API_KEY", options);
 
 | Configuration Method | Description | Example |
 |---------------------|-------------|---------|
+| `.WithReplicatorMode()` | Enables replicator mode with the default health check URL, `http://localhost:8090/ready` | |
 | `.WithReplicatorMode(url)` | Enables replicator mode and sets the health check endpoint URL | `"https://health.example.com/replicator"` |
+| `ReplicatorHealthUrl` | Health check endpoint URL. Defaults to `http://localhost:8090/ready` in replicator mode when unset | `"http://my-replicator:8090/ready"` |
 | `.WithRedisCache(config)` | Configures Redis as the cache provider for replicator data | Required for replicator mode |
 | `RedisCacheConfig.KeyPrefix` | Prefix for every Redis key. In replicator mode this must be `schematic:` (the default): the replicator writes `schematic:flags:...`, `schematic:company:...` and `schematic:user:...` and has no prefix setting, so any other value makes every lookup miss | `"schematic:"` |
 
