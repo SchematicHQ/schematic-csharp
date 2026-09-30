@@ -134,11 +134,18 @@ namespace SchematicHQ.Client.RulesEngine
 
         /// <summary>
         /// Evaluates a flag using the WASM rules engine.
+        ///
+        /// <para>A preflight is hypothetical usage to evaluate against, threaded
+        /// to the engine as its <c>options</c> envelope. The generated request
+        /// body doubles as that envelope: the engine serializes options
+        /// snake_case in both directions, which is the shape this type already
+        /// carries.</para>
         /// </summary>
         public CheckFlagResult CheckFlag(
             RulesengineCompany? company,
             RulesengineUser? user,
-            RulesengineFlag flag
+            RulesengineFlag flag,
+            PreflightRequestBody? preflight = null
         )
         {
             if (!_initialized)
@@ -158,6 +165,10 @@ namespace SchematicHQ.Client.RulesEngine
             {
                 envelope["user"] = Sanitize(JsonUtils.SerializeToNode(user), "user");
             }
+            if (HasPreflight(preflight))
+            {
+                envelope["options"] = JsonUtils.SerializeToNode(preflight);
+            }
 
             var resultJson = CallWasm(envelope.ToJsonString());
 
@@ -170,6 +181,18 @@ namespace SchematicHQ.Client.RulesEngine
 
             return ToCheckFlagResult(result);
         }
+
+        /// <summary>
+        /// Reports whether any preflight knob was supplied. With none, the
+        /// envelope omits options entirely and the engine uses its defaults.
+        /// </summary>
+        private static bool HasPreflight(PreflightRequestBody? preflight) =>
+            preflight != null
+            && (
+                (preflight.CreditCost != null && preflight.CreditCost.Count > 0)
+                || preflight.Usage.HasValue
+                || preflight.EventUsage != null
+            );
 
         private static CheckFlagResult ToCheckFlagResult(RulesengineCheckFlagResult r) =>
             new()

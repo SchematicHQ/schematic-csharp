@@ -1,1 +1,8 @@
 .fern/replay.lock linguist-generated=true
+
+# The credit lease stores embed Lua scripts whose bytes have to match the other
+# SDKs' exactly, since a mixed fleet shares one Redis and Redis keys a cached
+# script by the SHA1 of its text. A Windows checkout with autocrlf would rewrite
+# the line endings inside those strings and split the fleet in two.
+src/SchematicHQ.Client/Credits/Leases/RedisLeaseStore.cs text eol=lf
+src/SchematicHQ.Client/Credits/Leases/RedisReservationStore.cs text eol=lf
