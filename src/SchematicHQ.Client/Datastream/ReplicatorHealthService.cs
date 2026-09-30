@@ -218,7 +218,14 @@ namespace SchematicHQ.Client.Datastream
                 // 2. Ready field in response is true
                 // This matches the Go replicator behavior exactly
                 _isHealthy = response.IsSuccessStatusCode && healthResponse?.Ready == true;
-                _cacheVersion = healthResponse?.CacheVersion;
+
+                // Record the cache version from any response that carries one, including a 503
+                // from a replicator that is still loading. An empty or missing value keeps the
+                // last known version, matching the Go client.
+                if (!string.IsNullOrEmpty(healthResponse?.CacheVersion))
+                {
+                    _cacheVersion = healthResponse!.CacheVersion;
+                }
                 
                 _logger.LogDebug("Updated cache version from '{PreviousCacheVersion}' to '{CacheVersion}'",
                     previousCacheVersion ?? "NULL", _cacheVersion ?? "NULL");
@@ -248,9 +255,10 @@ namespace SchematicHQ.Client.Datastream
                     CacheVersionChanged?.Invoke(previousCacheVersion, _cacheVersion);
                 }
             }
-            catch (OperationCanceledException)
+            catch (OperationCanceledException) when (_cancellationTokenSource.IsCancellationRequested)
             {
-                // Expected during shutdown
+                // Expected during shutdown. A request timeout also surfaces as an
+                // OperationCanceledException and is handled below as a failed poll.
                 throw;
             }
             catch (System.Text.Json.JsonException ex)
