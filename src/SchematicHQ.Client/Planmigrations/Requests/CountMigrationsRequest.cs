@@ -10,6 +10,9 @@ public record CountMigrationsRequest
     public string? FeatureId { get; set; }
 
     [JsonIgnore]
+    public string? FeaturePlanRolloutId { get; set; }
+
+    [JsonIgnore]
     public string? PlanVersionId { get; set; }
 
     [JsonIgnore]

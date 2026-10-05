@@ -17,6 +17,13 @@ public record CheckFlagsResponseData : IJsonOnDeserialized
     [JsonPropertyName("credit_balances")]
     public Dictionary<string, CompanyCreditBalance>? CreditBalances { get; set; }
 
+    /// <summary>
+    /// Credit spend policies binding the evaluated company and user; empty when none bind. Each response carries the whole set, so replace any previously received set with it. Advisory: the flag values do not reflect them, since a check names no draw amount
+    /// </summary>
+    [JsonPropertyName("credit_spend_policies")]
+    public IEnumerable<CreditSpendPolicy> CreditSpendPolicies { get; set; } =
+        new List<CreditSpendPolicy>();
+
     [JsonPropertyName("flags")]
     public IEnumerable<CheckFlagResponseData> Flags { get; set; } =
         new List<CheckFlagResponseData>();

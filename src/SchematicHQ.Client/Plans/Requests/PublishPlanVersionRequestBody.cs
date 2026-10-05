@@ -18,6 +18,12 @@ public record PublishPlanVersionRequestBody
     [JsonPropertyName("billing_cycle_anchor")]
     public DateTime? BillingCycleAnchor { get; set; }
 
+    /// <summary>
+    /// The date the contract term starts. A past date backdates the subscription so the first invoice covers the term from this date to the renewal date. Requires billing_cycle_anchor. Only honored on a first publish that starts a subscription.
+    /// </summary>
+    [JsonPropertyName("billing_start_date")]
+    public DateTime? BillingStartDate { get; set; }
+
     [JsonPropertyName("coupon_external_id")]
     public string? CouponExternalId { get; set; }
 
@@ -45,6 +51,9 @@ public record PublishPlanVersionRequestBody
     [JsonPropertyName("prorate_first_period")]
     public bool? ProrateFirstPeriod { get; set; }
 
+    /// <summary>
+    /// How Stripe handles the price difference when companies are migrated. With migration_strategy immediate, omitted means create_prorations. With end_of_billing_period only none is accepted and means the same as omitting it: the change lands on the renewal boundary, so there is nothing to prorate. With scheduled any value is accepted and omitted means none. Not accepted with leave.
+    /// </summary>
     [JsonPropertyName("proration_behavior")]
     public MigrationProrationBehavior? ProrationBehavior { get; set; }
 
@@ -53,6 +62,12 @@ public record PublishPlanVersionRequestBody
     /// </summary>
     [JsonPropertyName("require_no_migration")]
     public bool? RequireNoMigration { get; set; }
+
+    /// <summary>
+    /// When every company moves, for migration_strategy scheduled. Must be in the future; the migration runs within about a minute of this time. Not accepted with other strategies.
+    /// </summary>
+    [JsonPropertyName("scheduled_at")]
+    public DateTime? ScheduledAt { get; set; }
 
     /// <summary>
     /// Whether Stripe emails the invoice when it is finalized. Defaults to true.

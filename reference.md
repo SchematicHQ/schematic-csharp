@@ -3672,11 +3672,7 @@ await client.Credits.ListCreditSpendPoliciesAsync(
 
 ```csharp
 await client.Credits.CreateCreditSpendPolicyAsync(
-    new CreateCreditSpendPolicyRequestBody
-    {
-        BillingCreditId = "billing_credit_id",
-        MaxPerDraw = 1.1,
-    }
+    new CreateCreditSpendPolicyRequestBody { BillingCreditId = "billing_credit_id" }
 );
 ```
 </dd>
@@ -3886,6 +3882,53 @@ await client.Credits.CountCreditSpendPoliciesAsync(
 </dl>
 </details>
 
+<details><summary><code>client.Credits.<a href="/src/SchematicHQ.Client/Credits/CreditsClient.cs">GetCreditSpendPolicyUsageAsync</a>(GetCreditSpendPolicyUsageRequest { ... }) -> WithRawResponseTask&lt;GetCreditSpendPolicyUsageResponse&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Credits.GetCreditSpendPolicyUsageAsync(
+    new GetCreditSpendPolicyUsageRequest
+    {
+        BillingCreditId = "billing_credit_id",
+        CompanyId = "company_id",
+        UserIds = new List<string>() { "user_ids" },
+    }
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `GetCreditSpendPolicyUsageRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.Credits.<a href="/src/SchematicHQ.Client/Credits/CreditsClient.cs">ListCreditEventLedgerAsync</a>(ListCreditEventLedgerRequest { ... }) -> WithRawResponseTask&lt;ListCreditEventLedgerResponse&gt;</code></summary>
 <dl>
 <dd>
@@ -3905,7 +3948,7 @@ await client.Credits.ListCreditEventLedgerAsync(
         BillingCreditId = "billing_credit_id",
         CompanyId = "company_id",
         EndTime = "end_time",
-        EventType = CreditEventType.Grant,
+        EventType = CreditEventType.Adjustment,
         FeatureId = "feature_id",
         StartTime = "start_time",
         Limit = 1000000,
@@ -3957,7 +4000,7 @@ await client.Credits.CountCreditEventLedgerAsync(
         BillingCreditId = "billing_credit_id",
         CompanyId = "company_id",
         EndTime = "end_time",
-        EventType = CreditEventType.Grant,
+        EventType = CreditEventType.Adjustment,
         FeatureId = "feature_id",
         StartTime = "start_time",
         Limit = 1000000,
@@ -8248,6 +8291,155 @@ await client.Entitlements.GetUserUsageByCompanyAsync(
 </dl>
 </details>
 
+<details><summary><code>client.Entitlements.<a href="/src/SchematicHQ.Client/Entitlements/EntitlementsClient.cs">GetCompanyUserUsageMetricsAsync</a>(GetCompanyUserUsageMetricsRequest { ... }) -> WithRawResponseTask&lt;GetCompanyUserUsageMetricsResponse&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Entitlements.GetCompanyUserUsageMetricsAsync(
+    new GetCompanyUserUsageMetricsRequest
+    {
+        CompanyId = "company_id",
+        EndTime = new DateTime(2024, 01, 15, 09, 30, 00, 000),
+        StartTime = new DateTime(2024, 01, 15, 09, 30, 00, 000),
+    }
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `GetCompanyUserUsageMetricsRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Entitlements.<a href="/src/SchematicHQ.Client/Entitlements/EntitlementsClient.cs">ListCompanyUserUsageAsync</a>(ListCompanyUserUsageRequest { ... }) -> WithRawResponseTask&lt;ListCompanyUserUsageResponse&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Entitlements.ListCompanyUserUsageAsync(
+    new ListCompanyUserUsageRequest
+    {
+        CompanyId = "company_id",
+        EndTime = new DateTime(2024, 01, 15, 09, 30, 00, 000),
+        FeatureId = "feature_id",
+        Metric = UserUsageMetric.Credits,
+        Limit = 1000000,
+        Offset = 1000000,
+        StartTime = new DateTime(2024, 01, 15, 09, 30, 00, 000),
+    }
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `ListCompanyUserUsageRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Entitlements.<a href="/src/SchematicHQ.Client/Entitlements/EntitlementsClient.cs">CountCompanyUserUsageAsync</a>(CountCompanyUserUsageRequest { ... }) -> WithRawResponseTask&lt;CountCompanyUserUsageResponse&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Entitlements.CountCompanyUserUsageAsync(
+    new CountCompanyUserUsageRequest
+    {
+        CompanyId = "company_id",
+        EndTime = new DateTime(2024, 01, 15, 09, 30, 00, 000),
+        FeatureId = "feature_id",
+        Metric = UserUsageMetric.Credits,
+        Limit = 1000000,
+        Offset = 1000000,
+        StartTime = new DateTime(2024, 01, 15, 09, 30, 00, 000),
+    }
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `CountCompanyUserUsageRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.Entitlements.<a href="/src/SchematicHQ.Client/Entitlements/EntitlementsClient.cs">GetUserUsageDetailAsync</a>(GetUserUsageDetailRequest { ... }) -> WithRawResponseTask&lt;GetUserUsageDetailResponse&gt;</code></summary>
 <dl>
 <dd>
@@ -12117,6 +12309,7 @@ await client.Plangroups.CreatePlanGroupAsync(
         ProrationBehavior = ProrationBehavior.CreateProrations,
         ShowAsMonthlyPrices = true,
         ShowCredits = true,
+        ShowEstimatedTotal = true,
         ShowFeatureDescription = true,
         ShowHardLimit = true,
         ShowPeriodToggle = true,
@@ -12191,6 +12384,7 @@ await client.Plangroups.UpdatePlanGroupAsync(
         ProrationBehavior = ProrationBehavior.CreateProrations,
         ShowAsMonthlyPrices = true,
         ShowCredits = true,
+        ShowEstimatedTotal = true,
         ShowFeatureDescription = true,
         ShowHardLimit = true,
         ShowPeriodToggle = true,
@@ -12388,6 +12582,7 @@ await client.Planmigrations.ListMigrationsAsync(
     new ListMigrationsRequest
     {
         FeatureId = "feature_id",
+        FeaturePlanRolloutId = "feature_plan_rollout_id",
         PlanVersionId = "plan_version_id",
         Status = PlanVersionMigrationStatus.Cancelled,
         Limit = 1000000,
@@ -12673,6 +12868,7 @@ await client.Planmigrations.CountMigrationsAsync(
     new CountMigrationsRequest
     {
         FeatureId = "feature_id",
+        FeaturePlanRolloutId = "feature_plan_rollout_id",
         PlanVersionId = "plan_version_id",
         Status = PlanVersionMigrationStatus.Cancelled,
         Limit = 1000000,

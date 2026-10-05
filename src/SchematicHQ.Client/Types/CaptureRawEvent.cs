@@ -14,6 +14,12 @@ public record CaptureRawEvent : IJsonOnDeserialized
     [JsonPropertyName("captured_at")]
     public required DateTime CapturedAt { get; set; }
 
+    [JsonPropertyName("context_signature")]
+    public string? ContextSignature { get; set; }
+
+    [JsonPropertyName("context_signature_checked")]
+    public bool? ContextSignatureChecked { get; set; }
+
     [JsonPropertyName("event_id")]
     public string? EventId { get; set; }
 

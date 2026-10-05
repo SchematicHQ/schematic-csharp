@@ -17,6 +17,9 @@ public record ListMigrationsParams : IJsonOnDeserialized
     [JsonPropertyName("feature_id")]
     public string? FeatureId { get; set; }
 
+    [JsonPropertyName("feature_plan_rollout_id")]
+    public string? FeaturePlanRolloutId { get; set; }
+
     /// <summary>
     /// Page limit (default 100)
     /// </summary>

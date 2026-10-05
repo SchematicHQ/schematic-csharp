@@ -23,6 +23,9 @@ public record EnvironmentResponseData : IJsonOnDeserialized
     [JsonPropertyName("name")]
     public required string Name { get; set; }
 
+    [JsonPropertyName("require_context_signature")]
+    public required bool RequireContextSignature { get; set; }
+
     [JsonPropertyName("updated_at")]
     public required DateTime UpdatedAt { get; set; }
 

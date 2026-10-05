@@ -16,6 +16,8 @@ public readonly record struct PlanVersionMigrationStrategy : IStringEnum
 
     public static readonly PlanVersionMigrationStrategy Leave = new(Values.Leave);
 
+    public static readonly PlanVersionMigrationStrategy Scheduled = new(Values.Scheduled);
+
     public PlanVersionMigrationStrategy(string value)
     {
         Value = value;
@@ -118,5 +120,7 @@ public readonly record struct PlanVersionMigrationStrategy : IStringEnum
         public const string Immediate = "immediate";
 
         public const string Leave = "leave";
+
+        public const string Scheduled = "scheduled";
     }
 }

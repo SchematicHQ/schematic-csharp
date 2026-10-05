@@ -21,6 +21,12 @@ public record ExtendCreditLeaseRequestBody
     [JsonPropertyName("idempotency_key")]
     public string? IdempotencyKey { get; set; }
 
+    /// <summary>
+    /// The user drawing the top-up, so a user-scope spend policy applies to it
+    /// </summary>
+    [JsonPropertyName("user_id")]
+    public string? UserId { get; set; }
+
     /// <inheritdoc />
     public override string ToString()
     {

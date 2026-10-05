@@ -14,6 +14,9 @@ public record RulesengineUser : IJsonOnDeserialized
     [JsonPropertyName("account_id")]
     public required string AccountId { get; set; }
 
+    [JsonPropertyName("credit_spend_policies")]
+    public IEnumerable<RulesengineCreditSpendPolicy>? CreditSpendPolicies { get; set; }
+
     [JsonPropertyName("environment_id")]
     public required string EnvironmentId { get; set; }
 

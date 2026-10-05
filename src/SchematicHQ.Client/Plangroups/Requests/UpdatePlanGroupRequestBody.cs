@@ -99,6 +99,9 @@ public record UpdatePlanGroupRequestBody
     [JsonPropertyName("show_credits")]
     public required bool ShowCredits { get; set; }
 
+    [JsonPropertyName("show_estimated_total")]
+    public required bool ShowEstimatedTotal { get; set; }
+
     [JsonPropertyName("show_feature_description")]
     public required bool ShowFeatureDescription { get; set; }
 

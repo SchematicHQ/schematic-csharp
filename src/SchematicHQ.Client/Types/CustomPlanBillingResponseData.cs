@@ -20,6 +20,12 @@ public record CustomPlanBillingResponseData : IJsonOnDeserialized
     [JsonPropertyName("billing_cycle_anchor")]
     public DateTime? BillingCycleAnchor { get; set; }
 
+    /// <summary>
+    /// The date the contract term starts, when the operator pinned one. A past date was backdated onto the subscription so the first period runs from the contract date rather than from finalization.
+    /// </summary>
+    [JsonPropertyName("billing_start_date")]
+    public DateTime? BillingStartDate { get; set; }
+
     [JsonPropertyName("company_id")]
     public required string CompanyId { get; set; }
 

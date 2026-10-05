@@ -21,6 +21,12 @@ public record AcquireCreditLeaseRequestBody
     [JsonPropertyName("requested_amount")]
     public required double RequestedAmount { get; set; }
 
+    /// <summary>
+    /// The user drawing the hold, so a user-scope spend policy applies to it
+    /// </summary>
+    [JsonPropertyName("user_id")]
+    public string? UserId { get; set; }
+
     /// <inheritdoc />
     public override string ToString()
     {

@@ -12,6 +12,9 @@ public record UpdateEnvironmentRequestBody
     [JsonPropertyName("name")]
     public string? Name { get; set; }
 
+    [JsonPropertyName("require_context_signature")]
+    public bool? RequireContextSignature { get; set; }
+
     /// <inheritdoc />
     public override string ToString()
     {

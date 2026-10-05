@@ -15,6 +15,12 @@ public record RetryCustomPlanBillingRequestBody
     [JsonPropertyName("billing_cycle_anchor")]
     public DateTime? BillingCycleAnchor { get; set; }
 
+    /// <summary>
+    /// The date the contract term starts. A past date backdates the subscription so the first invoice covers the term from this date to the renewal date. Requires billing_cycle_anchor. When both are omitted, the term pinned at finalize is reissued. Only honored when the retry creates a subscription.
+    /// </summary>
+    [JsonPropertyName("billing_start_date")]
+    public DateTime? BillingStartDate { get; set; }
+
     [JsonPropertyName("customer_email")]
     public required string CustomerEmail { get; set; }
 

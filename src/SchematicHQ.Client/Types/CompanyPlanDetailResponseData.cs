@@ -89,6 +89,9 @@ public record CompanyPlanDetailResponseData : IJsonOnDeserialized
     [JsonPropertyName("entitlements")]
     public IEnumerable<PlanEntitlementResponseData>? Entitlements { get; set; }
 
+    [JsonPropertyName("estimated_totals")]
+    public IEnumerable<EstimatedPlanTotal>? EstimatedTotals { get; set; }
+
     [JsonPropertyName("features")]
     public IEnumerable<FeatureInPlanResponseData> Features { get; set; } =
         new List<FeatureInPlanResponseData>();

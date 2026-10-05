@@ -27,6 +27,9 @@ public record RulesengineCompany : IJsonOnDeserialized
     [JsonPropertyName("credit_postpaid")]
     public Dictionary<string, RulesengineCreditPostpaidConfig>? CreditPostpaid { get; set; }
 
+    [JsonPropertyName("credit_spend_policies")]
+    public IEnumerable<RulesengineCreditSpendPolicy>? CreditSpendPolicies { get; set; }
+
     [JsonPropertyName("entitlements")]
     public IEnumerable<RulesengineFeatureEntitlement>? Entitlements { get; set; }
 

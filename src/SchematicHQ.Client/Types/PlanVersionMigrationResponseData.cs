@@ -53,6 +53,9 @@ public record PlanVersionMigrationResponseData : IJsonOnDeserialized
     [JsonPropertyName("proration_behavior")]
     public MigrationProrationBehavior? ProrationBehavior { get; set; }
 
+    [JsonPropertyName("scheduled_at")]
+    public DateTime? ScheduledAt { get; set; }
+
     [JsonPropertyName("skipped_companies")]
     public required long SkippedCompanies { get; set; }
 
