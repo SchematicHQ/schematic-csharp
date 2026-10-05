@@ -8,7 +8,13 @@ namespace SchematicHQ.Client;
 [Serializable]
 public readonly record struct CreditEventType : IStringEnum
 {
+    public static readonly CreditEventType Adjustment = new(Values.Adjustment);
+
+    public static readonly CreditEventType Charge = new(Values.Charge);
+
     public static readonly CreditEventType Grant = new(Values.Grant);
+
+    public static readonly CreditEventType Settlement = new(Values.Settlement);
 
     public static readonly CreditEventType Transfer = new(Values.Transfer);
 
@@ -112,7 +118,13 @@ public readonly record struct CreditEventType : IStringEnum
     [Serializable]
     public static class Values
     {
+        public const string Adjustment = "adjustment";
+
+        public const string Charge = "charge";
+
         public const string Grant = "grant";
+
+        public const string Settlement = "settlement";
 
         public const string Transfer = "transfer";
 

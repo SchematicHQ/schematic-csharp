@@ -21,7 +21,7 @@ public record CreditEventLedgerResponseData : IJsonOnDeserialized
     public string? BillingCreditBundleId { get; set; }
 
     [JsonPropertyName("billing_credit_id")]
-    public required string BillingCreditId { get; set; }
+    public string? BillingCreditId { get; set; }
 
     [JsonPropertyName("company")]
     public CompanyLedgerResponseData? Company { get; set; }
@@ -34,6 +34,9 @@ public record CreditEventLedgerResponseData : IJsonOnDeserialized
 
     [JsonPropertyName("credit_name")]
     public required string CreditName { get; set; }
+
+    [JsonPropertyName("currency")]
+    public string? Currency { get; set; }
 
     [JsonPropertyName("environment_id")]
     public required string EnvironmentId { get; set; }
@@ -82,6 +85,9 @@ public record CreditEventLedgerResponseData : IJsonOnDeserialized
 
     [JsonPropertyName("grant_valid_from")]
     public DateTime? GrantValidFrom { get; set; }
+
+    [JsonPropertyName("kind")]
+    public required CreditLedgerEntryKind Kind { get; set; }
 
     [JsonPropertyName("plan_id")]
     public string? PlanId { get; set; }

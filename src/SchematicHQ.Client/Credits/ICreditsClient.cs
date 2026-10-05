@@ -225,6 +225,12 @@ public partial interface ICreditsClient
         CancellationToken cancellationToken = default
     );
 
+    WithRawResponseTask<GetCreditSpendPolicyUsageResponse> GetCreditSpendPolicyUsageAsync(
+        GetCreditSpendPolicyUsageRequest request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    );
+
     WithRawResponseTask<ListCreditEventLedgerResponse> ListCreditEventLedgerAsync(
         ListCreditEventLedgerRequest request,
         RequestOptions? options = null,

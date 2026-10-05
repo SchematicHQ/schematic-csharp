@@ -148,6 +148,24 @@ public partial interface IEntitlementsClient
         CancellationToken cancellationToken = default
     );
 
+    WithRawResponseTask<GetCompanyUserUsageMetricsResponse> GetCompanyUserUsageMetricsAsync(
+        GetCompanyUserUsageMetricsRequest request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    );
+
+    WithRawResponseTask<ListCompanyUserUsageResponse> ListCompanyUserUsageAsync(
+        ListCompanyUserUsageRequest request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    );
+
+    WithRawResponseTask<CountCompanyUserUsageResponse> CountCompanyUserUsageAsync(
+        CountCompanyUserUsageRequest request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    );
+
     WithRawResponseTask<GetUserUsageDetailResponse> GetUserUsageDetailAsync(
         GetUserUsageDetailRequest request,
         RequestOptions? options = null,

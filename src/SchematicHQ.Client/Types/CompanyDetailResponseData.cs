@@ -18,6 +18,9 @@ public record CompanyDetailResponseData : IJsonOnDeserialized
     [JsonPropertyName("billing_credit_balances")]
     public Dictionary<string, double>? BillingCreditBalances { get; set; }
 
+    [JsonPropertyName("billing_email")]
+    public string? BillingEmail { get; set; }
+
     [JsonPropertyName("billing_profile")]
     public CompanyBillingProfileResponseData? BillingProfile { get; set; }
 

@@ -12,6 +12,12 @@ public record UpdateCreditSpendPolicyRequestBody
     [JsonPropertyName("max_per_draw")]
     public double? MaxPerDraw { get; set; }
 
+    [JsonPropertyName("window_amount")]
+    public double? WindowAmount { get; set; }
+
+    [JsonPropertyName("window_unit")]
+    public CreditSpendWindowUnit? WindowUnit { get; set; }
+
     /// <inheritdoc />
     public override string ToString()
     {

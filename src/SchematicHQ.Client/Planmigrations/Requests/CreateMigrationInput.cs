@@ -21,8 +21,17 @@ public record CreateMigrationInput
     [JsonPropertyName("plan_version_ids_from")]
     public IEnumerable<string>? PlanVersionIdsFrom { get; set; }
 
+    /// <summary>
+    /// How Stripe handles the price difference when companies are migrated. With strategy immediate, omitted means create_prorations. With end_of_billing_period only none is accepted and means the same as omitting it: the change lands on the renewal boundary, so there is nothing to prorate. With scheduled any value is accepted and omitted means none.
+    /// </summary>
     [JsonPropertyName("proration_behavior")]
     public MigrationProrationBehavior? ProrationBehavior { get; set; }
+
+    /// <summary>
+    /// When every company moves, for strategy scheduled. Must be in the future; the migration runs within about a minute of this time. Not accepted with other strategies.
+    /// </summary>
+    [JsonPropertyName("scheduled_at")]
+    public DateTime? ScheduledAt { get; set; }
 
     [JsonPropertyName("strategy")]
     public required PlanVersionMigrationStrategy Strategy { get; set; }
