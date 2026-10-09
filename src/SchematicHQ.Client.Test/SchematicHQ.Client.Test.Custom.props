@@ -14,4 +14,7 @@ Configure additional MSBuild properties for your project in this file:
     <PackageReference Include="Moq" Version="4.20.72" />
     <PackageReference Include="Moq.Contrib.HttpClient" Version="1.4.0" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="RulesEngine/Wasm/testdata/*.json" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
 </Project>
