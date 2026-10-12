@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Text.Json.Nodes;
 using Microsoft.Extensions.Logging;
@@ -165,9 +166,10 @@ namespace SchematicHQ.Client.RulesEngine
             {
                 envelope["user"] = Sanitize(JsonUtils.SerializeToNode(user), "user");
             }
-            if (HasPreflight(preflight))
+            var options = PreflightNode(preflight);
+            if (options != null)
             {
-                envelope["options"] = JsonUtils.SerializeToNode(preflight);
+                envelope["options"] = options;
             }
 
             var resultJson = CallWasm(envelope.ToJsonString());
@@ -183,16 +185,29 @@ namespace SchematicHQ.Client.RulesEngine
         }
 
         /// <summary>
-        /// Reports whether any preflight knob was supplied. With none, the
-        /// envelope omits options entirely and the engine uses its defaults.
+        /// The preflight as the engine's options envelope, or null when no knob
+        /// was supplied, so the envelope omits options and the engine uses its
+        /// defaults. Every field the body serializes goes through, not a fixed
+        /// list, so a knob the generated type gains (event_quantities, once the
+        /// API's preflight body carries it) reaches the engine without a change
+        /// here. A null or empty-object field counts as unset, so an empty
+        /// credit_cost still declares nothing.
         /// </summary>
-        private static bool HasPreflight(PreflightRequestBody? preflight) =>
-            preflight != null
-            && (
-                (preflight.CreditCost != null && preflight.CreditCost.Count > 0)
-                || preflight.Usage.HasValue
-                || preflight.EventUsage != null
-            );
+        private static JsonObject? PreflightNode(PreflightRequestBody? preflight)
+        {
+            if (preflight == null || JsonUtils.SerializeToNode(preflight) is not JsonObject node)
+            {
+                return null;
+            }
+            foreach (var key in node.Select(p => p.Key).ToList())
+            {
+                if (node[key] is null || node[key] is JsonObject { Count: 0 })
+                {
+                    node.Remove(key);
+                }
+            }
+            return node.Count == 0 ? null : node;
+        }
 
         private static CheckFlagResult ToCheckFlagResult(RulesengineCheckFlagResult r) =>
             new()
