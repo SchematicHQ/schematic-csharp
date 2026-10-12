@@ -26,6 +26,9 @@ public record FeatureView : IJsonOnDeserialized
     [JsonPropertyName("description")]
     public required string Description { get; set; }
 
+    [JsonPropertyName("event_source")]
+    public required FeatureEventSource EventSource { get; set; }
+
     [JsonPropertyName("event_subtype")]
     public string? EventSubtype { get; set; }
 

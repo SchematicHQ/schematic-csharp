@@ -21,7 +21,7 @@ public record CreateEntitlementInBundleRequestBody : IJsonOnDeserialized
     public double? CreditConsumptionRate { get; set; }
 
     [JsonPropertyName("currency")]
-    public string? Currency { get; set; }
+    public Currency? Currency { get; set; }
 
     [JsonPropertyName("currency_prices")]
     public IEnumerable<CurrencyPriceRequestBody>? CurrencyPrices { get; set; }
@@ -76,6 +76,12 @@ public record CreateEntitlementInBundleRequestBody : IJsonOnDeserialized
     /// </summary>
     [JsonPropertyName("price_tiers")]
     public IEnumerable<CreatePriceTierRequestBody>? PriceTiers { get; set; }
+
+    /// <summary>
+    /// Credits per unit of the quantity (per token for inference features), keyed by quantity key. Inference features may price input_tokens, output_tokens, cached_input_tokens, cache_creation_input_tokens and reasoning_tokens; reasoning_tokens is priced on top of output_tokens, so leave its rate at zero for providers that count reasoning inside output. Omit to leave the schedule as it is; send null to clear it.
+    /// </summary>
+    [JsonPropertyName("quantity_rates")]
+    public Dictionary<string, double>? QuantityRates { get; set; }
 
     [JsonPropertyName("quarterly_metered_price_id")]
     public string? QuarterlyMeteredPriceId { get; set; }

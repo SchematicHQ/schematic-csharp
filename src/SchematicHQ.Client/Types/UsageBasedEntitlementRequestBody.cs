@@ -18,7 +18,7 @@ public record UsageBasedEntitlementRequestBody : IJsonOnDeserialized
     public long? BillingThreshold { get; set; }
 
     [JsonPropertyName("currency")]
-    public string? Currency { get; set; }
+    public Currency? Currency { get; set; }
 
     [JsonPropertyName("currency_prices")]
     public IEnumerable<CurrencyPriceRequestBody>? CurrencyPrices { get; set; }

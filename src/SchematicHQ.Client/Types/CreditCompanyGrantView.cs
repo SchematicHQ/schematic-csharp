@@ -42,7 +42,7 @@ public record CreditCompanyGrantView : IJsonOnDeserialized
     public required string CreditName { get; set; }
 
     [JsonPropertyName("currency")]
-    public string? Currency { get; set; }
+    public Currency? Currency { get; set; }
 
     [JsonPropertyName("exhausted_at")]
     public DateTime? ExhaustedAt { get; set; }
@@ -81,7 +81,7 @@ public record CreditCompanyGrantView : IJsonOnDeserialized
     public long? PostpaidChargeAmount { get; set; }
 
     [JsonPropertyName("postpaid_charge_currency")]
-    public string? PostpaidChargeCurrency { get; set; }
+    public Currency? PostpaidChargeCurrency { get; set; }
 
     [JsonPropertyName("postpaid_charged_credits")]
     public double? PostpaidChargedCredits { get; set; }

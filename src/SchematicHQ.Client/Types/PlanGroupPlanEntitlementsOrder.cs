@@ -11,6 +11,9 @@ public record PlanGroupPlanEntitlementsOrder : IJsonOnDeserialized
     private readonly IDictionary<string, JsonElement> _extensionData =
         new Dictionary<string, JsonElement>();
 
+    [JsonPropertyName("credits")]
+    public IEnumerable<PlanCreditOrder> Credits { get; set; } = new List<PlanCreditOrder>();
+
     [JsonPropertyName("entitlements")]
     public IEnumerable<PlanEntitlementsOrder>? Entitlements { get; set; }
 

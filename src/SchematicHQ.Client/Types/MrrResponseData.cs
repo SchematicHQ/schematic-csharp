@@ -15,7 +15,7 @@ public record MrrResponseData : IJsonOnDeserialized
     public required long Amount { get; set; }
 
     [JsonPropertyName("currency")]
-    public required string Currency { get; set; }
+    public required Currency Currency { get; set; }
 
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();

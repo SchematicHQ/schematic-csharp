@@ -19,7 +19,7 @@ public record CreateCompanyCreditGrant
     public required string CreditId { get; set; }
 
     [JsonPropertyName("currency")]
-    public string? Currency { get; set; }
+    public Currency? Currency { get; set; }
 
     [JsonPropertyName("expires_at")]
     public DateTime? ExpiresAt { get; set; }

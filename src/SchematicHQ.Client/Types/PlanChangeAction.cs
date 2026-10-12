@@ -8,6 +8,8 @@ namespace SchematicHQ.Client;
 [Serializable]
 public readonly record struct PlanChangeAction : IStringEnum
 {
+    public static readonly PlanChangeAction Amendment = new(Values.Amendment);
+
     public static readonly PlanChangeAction Checkout = new(Values.Checkout);
 
     public static readonly PlanChangeAction CompanyUpsert = new(Values.CompanyUpsert);
@@ -128,6 +130,8 @@ public readonly record struct PlanChangeAction : IStringEnum
     [Serializable]
     public static class Values
     {
+        public const string Amendment = "amendment";
+
         public const string Checkout = "checkout";
 
         public const string CompanyUpsert = "company_upsert";

@@ -9,6 +9,12 @@ public record CreateFeatureRequestBody
     [JsonPropertyName("description")]
     public required string Description { get; set; }
 
+    /// <summary>
+    /// Which event stream meters this feature; defaults to track, and cannot change after creation. Inference is only valid on event features: their event_subtype matches the event label on inference events, and they meter through credits only.
+    /// </summary>
+    [JsonPropertyName("event_source")]
+    public FeatureEventSource? EventSource { get; set; }
+
     [JsonPropertyName("event_subtype")]
     public string? EventSubtype { get; set; }
 

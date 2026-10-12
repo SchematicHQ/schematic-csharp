@@ -18,7 +18,7 @@ public record ListBillingProductPricesParams : IJsonOnDeserialized
     /// Filter for prices in a specific currency (e.g. usd, eur)
     /// </summary>
     [JsonPropertyName("currency")]
-    public string? Currency { get; set; }
+    public Currency? Currency { get; set; }
 
     /// <summary>
     /// Filter for prices valid for initial plans (free prices only)

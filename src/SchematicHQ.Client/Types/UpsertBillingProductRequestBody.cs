@@ -21,7 +21,7 @@ public record UpsertBillingProductRequestBody : IJsonOnDeserialized
     public required ChargeType ChargeType { get; set; }
 
     [JsonPropertyName("currency")]
-    public string? Currency { get; set; }
+    public Currency? Currency { get; set; }
 
     [JsonPropertyName("currency_prices")]
     public IEnumerable<PlanCurrencyPriceRequestBody>? CurrencyPrices { get; set; }

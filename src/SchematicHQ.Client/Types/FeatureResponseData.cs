@@ -17,6 +17,12 @@ public record FeatureResponseData : IJsonOnDeserialized
     [JsonPropertyName("description")]
     public required string Description { get; set; }
 
+    /// <summary>
+    /// Which event stream meters this feature. Track features are metered by track events; inference features are metered by inference events whose event label matches event_subtype, and meter through credits only.
+    /// </summary>
+    [JsonPropertyName("event_source")]
+    public required FeatureEventSource EventSource { get; set; }
+
     [JsonPropertyName("event_subtype")]
     public string? EventSubtype { get; set; }
 

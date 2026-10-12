@@ -26,6 +26,12 @@ public record CustomPlanBillingResponseData : IJsonOnDeserialized
     [JsonPropertyName("billing_start_date")]
     public DateTime? BillingStartDate { get; set; }
 
+    /// <summary>
+    /// The checkout this billing record was created from, when it was created from one.
+    /// </summary>
+    [JsonPropertyName("checkout_id")]
+    public string? CheckoutId { get; set; }
+
     [JsonPropertyName("company_id")]
     public required string CompanyId { get; set; }
 
@@ -41,17 +47,30 @@ public record CustomPlanBillingResponseData : IJsonOnDeserialized
     [JsonPropertyName("id")]
     public required string Id { get; set; }
 
+    /// <summary>
+    /// The plan version migration this amendment invoice belongs to. Null for a first publish or a plan assigned through Manage Plan.
+    /// </summary>
+    [JsonPropertyName("migration_id")]
+    public string? MigrationId { get; set; }
+
     [JsonPropertyName("paid_at")]
     public DateTime? PaidAt { get; set; }
 
     /// <summary>
-    /// The flow that created this billing record: a custom plan, or a standard plan assigned by invoice through Manage Plan.
+    /// The flow that created this billing record: a custom plan's first publish, an amendment of a live custom plan, or a standard plan assigned by invoice through Manage Plan.
     /// </summary>
     [JsonPropertyName("plan_billing_source")]
     public required PlanBillingSource PlanBillingSource { get; set; }
 
     [JsonPropertyName("plan_id")]
     public required string PlanId { get; set; }
+
+    /// <summary>
+    /// What the linked checkout still reports wrong, in the order found. Empty when there is no linked checkout or it completed cleanly.
+    /// </summary>
+    [JsonPropertyName("problems")]
+    public IEnumerable<CheckoutProblemResponseData> Problems { get; set; } =
+        new List<CheckoutProblemResponseData>();
 
     /// <summary>
     /// Whether the shortened period the renewal date created was billed pro rata when the subscription started. False means that period is free and the first invoice is the one raised on the renewal date.

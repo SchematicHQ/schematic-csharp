@@ -42,7 +42,7 @@ public record BillingCreditGrantResponseData : IJsonOnDeserialized
     public required string CreditName { get; set; }
 
     [JsonPropertyName("currency")]
-    public string? Currency { get; set; }
+    public Currency? Currency { get; set; }
 
     [JsonPropertyName("expires_at")]
     public DateTime? ExpiresAt { get; set; }
@@ -72,7 +72,7 @@ public record BillingCreditGrantResponseData : IJsonOnDeserialized
     public long? PostpaidChargeAmount { get; set; }
 
     [JsonPropertyName("postpaid_charge_currency")]
-    public string? PostpaidChargeCurrency { get; set; }
+    public Currency? PostpaidChargeCurrency { get; set; }
 
     /// <summary>
     /// Credits consumed past a zero balance in the window still open.

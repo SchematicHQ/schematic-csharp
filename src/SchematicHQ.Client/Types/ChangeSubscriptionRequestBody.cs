@@ -33,7 +33,7 @@ public record ChangeSubscriptionRequestBody : IJsonOnDeserialized
     /// ISO 4217 currency this cart is being built in. Prices are still selected by id; this records the intent, and a cart that prices in another currency is reported as a problem.
     /// </summary>
     [JsonPropertyName("currency")]
-    public string? Currency { get; set; }
+    public Currency? Currency { get; set; }
 
     [JsonPropertyName("custom_field_values")]
     public IEnumerable<CheckoutFieldValue> CustomFieldValues { get; set; } =

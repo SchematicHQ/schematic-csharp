@@ -9,6 +9,12 @@ public record UpdateFeatureRequestBody
     [JsonPropertyName("description")]
     public string? Description { get; set; }
 
+    /// <summary>
+    /// Which event stream meters this feature. It is fixed at creation: an update that changes it is rejected.
+    /// </summary>
+    [JsonPropertyName("event_source")]
+    public FeatureEventSource? EventSource { get; set; }
+
     [JsonPropertyName("event_subtype")]
     public string? EventSubtype { get; set; }
 

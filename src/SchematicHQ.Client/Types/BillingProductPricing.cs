@@ -15,7 +15,7 @@ public record BillingProductPricing : IJsonOnDeserialized
     public long? BillingThreshold { get; set; }
 
     [JsonPropertyName("currency")]
-    public required string Currency { get; set; }
+    public required Currency Currency { get; set; }
 
     [JsonPropertyName("interval")]
     public required string Interval { get; set; }

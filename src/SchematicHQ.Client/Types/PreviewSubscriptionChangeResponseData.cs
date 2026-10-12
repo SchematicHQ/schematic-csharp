@@ -44,6 +44,10 @@ public record PreviewSubscriptionChangeResponseData : IJsonOnDeserialized
     [JsonPropertyName("period_start")]
     public required DateTime PeriodStart { get; set; }
 
+    [JsonPropertyName("problems")]
+    public IEnumerable<CheckoutProblemResponseData> Problems { get; set; } =
+        new List<CheckoutProblemResponseData>();
+
     [JsonPropertyName("promo_code_applied")]
     public required bool PromoCodeApplied { get; set; }
 

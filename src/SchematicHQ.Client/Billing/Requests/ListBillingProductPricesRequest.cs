@@ -10,7 +10,7 @@ public record ListBillingProductPricesRequest
     /// Filter for prices in a specific currency (e.g. usd, eur)
     /// </summary>
     [JsonIgnore]
-    public string? Currency { get; set; }
+    public Currency? Currency { get; set; }
 
     /// <summary>
     /// Filter for prices valid for initial plans (free prices only)

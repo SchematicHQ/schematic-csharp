@@ -153,6 +153,17 @@ public partial interface IBillingClient
         CancellationToken cancellationToken = default
     );
 
+    WithRawResponseTask<GetBillingSettingsResponse> GetBillingSettingsAsync(
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    );
+
+    WithRawResponseTask<UpdateBillingSettingsResponse> UpdateBillingSettingsAsync(
+        UpdateBillingSettingsRequestBody request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    );
+
     WithRawResponseTask<UpsertBillingSubscriptionResponse> UpsertBillingSubscriptionAsync(
         CreateBillingSubscriptionRequestBody request,
         RequestOptions? options = null,

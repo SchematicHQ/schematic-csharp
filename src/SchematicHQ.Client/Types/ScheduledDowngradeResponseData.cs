@@ -12,7 +12,7 @@ public record ScheduledDowngradeResponseData : IJsonOnDeserialized
         new Dictionary<string, JsonElement>();
 
     [JsonPropertyName("currency")]
-    public required string Currency { get; set; }
+    public required Currency Currency { get; set; }
 
     [JsonPropertyName("effective_after")]
     public required DateTime EffectiveAfter { get; set; }

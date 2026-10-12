@@ -6,6 +6,9 @@ namespace SchematicHQ.Client;
 [Serializable]
 public record PublishPlanVersionRequestBody
 {
+    /// <summary>
+    /// When the company gets the plan. On a custom-plan republish, on_payment is only accepted when the amendment is invoiced today (migration_strategy immediate, proration_behavior always_invoice, collection_method send_invoice): the company stays on its current version until that invoice is paid.
+    /// </summary>
     [JsonPropertyName("activation_strategy")]
     public CustomPlanActivationStrategy? ActivationStrategy { get; set; }
 
@@ -24,6 +27,15 @@ public record PublishPlanVersionRequestBody
     [JsonPropertyName("billing_start_date")]
     public DateTime? BillingStartDate { get; set; }
 
+    /// <summary>
+    /// How the invoice a custom-plan republish raises today is collected. send_invoice (the default) issues it for the company to pay; charge_automatically charges the default payment method straight away. Only accepted on a custom-plan republish with migration_strategy immediate and proration_behavior always_invoice.
+    /// </summary>
+    [JsonPropertyName("collection_method")]
+    public BillingCollectionMethod? CollectionMethod { get; set; }
+
+    /// <summary>
+    /// A Stripe coupon to apply. On a custom-plan republish it discounts the amendment invoice and is only used when that invoice is raised today; it must exist in Stripe. It is attached to the subscription, so a repeating or forever coupon also discounts the renewals that follow.
+    /// </summary>
     [JsonPropertyName("coupon_external_id")]
     public string? CouponExternalId { get; set; }
 
@@ -33,6 +45,9 @@ public record PublishPlanVersionRequestBody
     [JsonPropertyName("customer_email")]
     public string? CustomerEmail { get; set; }
 
+    /// <summary>
+    /// Payment terms in days. On a custom-plan republish they apply to the amendment invoice only, leave the subscription's renewal terms unchanged, and are only used when that invoice is raised today and sent rather than charged. Defaults to the subscription's terms.
+    /// </summary>
     [JsonPropertyName("days_until_due")]
     public long? DaysUntilDue { get; set; }
 

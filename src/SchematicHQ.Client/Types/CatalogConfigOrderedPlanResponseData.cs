@@ -11,6 +11,10 @@ public record CatalogConfigOrderedPlanResponseData : IJsonOnDeserialized
     private readonly IDictionary<string, JsonElement> _extensionData =
         new Dictionary<string, JsonElement>();
 
+    [JsonPropertyName("credits")]
+    public IEnumerable<CatalogConfigPlanCreditResponseData> Credits { get; set; } =
+        new List<CatalogConfigPlanCreditResponseData>();
+
     [JsonPropertyName("entitlements")]
     public IEnumerable<CatalogConfigOrderedEntitlementResponseData> Entitlements { get; set; } =
         new List<CatalogConfigOrderedEntitlementResponseData>();

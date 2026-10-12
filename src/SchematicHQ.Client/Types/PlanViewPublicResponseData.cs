@@ -60,6 +60,9 @@ public record PlanViewPublicResponseData : IJsonOnDeserialized
     [JsonPropertyName("created_at")]
     public required DateTime CreatedAt { get; set; }
 
+    [JsonPropertyName("credit_visibility")]
+    public IEnumerable<PlanCreditVisibility>? CreditVisibility { get; set; }
+
     [JsonPropertyName("credits")]
     public IEnumerable<BillingCreditResponseData> Credits { get; set; } =
         new List<BillingCreditResponseData>();

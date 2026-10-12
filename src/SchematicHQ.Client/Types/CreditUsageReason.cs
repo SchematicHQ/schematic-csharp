@@ -8,6 +8,8 @@ namespace SchematicHQ.Client;
 [Serializable]
 public readonly record struct CreditUsageReason : IStringEnum
 {
+    public static readonly CreditUsageReason Inference = new(Values.Inference);
+
     public static readonly CreditUsageReason LeaseHold = new(Values.LeaseHold);
 
     public static readonly CreditUsageReason LeaseRelease = new(Values.LeaseRelease);
@@ -118,6 +120,8 @@ public readonly record struct CreditUsageReason : IStringEnum
     [Serializable]
     public static class Values
     {
+        public const string Inference = "inference";
+
         public const string LeaseHold = "lease_hold";
 
         public const string LeaseRelease = "lease_release";

@@ -12,7 +12,7 @@ public record BillingCustomerSubscription : IJsonOnDeserialized
         new Dictionary<string, JsonElement>();
 
     [JsonPropertyName("currency")]
-    public required string Currency { get; set; }
+    public required Currency Currency { get; set; }
 
     [JsonPropertyName("expired_at")]
     public DateTime? ExpiredAt { get; set; }

@@ -22,7 +22,7 @@ public record CreateCreditBundleRequestBody
     public required string CreditId { get; set; }
 
     [JsonPropertyName("currency")]
-    public required string Currency { get; set; }
+    public required Currency Currency { get; set; }
 
     [JsonPropertyName("currency_prices")]
     public IEnumerable<CreditBundleCurrencyPriceRequestBody>? CurrencyPrices { get; set; }

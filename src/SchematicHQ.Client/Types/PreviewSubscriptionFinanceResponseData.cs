@@ -18,7 +18,7 @@ public record PreviewSubscriptionFinanceResponseData : IJsonOnDeserialized
     /// ISO 4217 currency every amount in this block is denominated in.
     /// </summary>
     [JsonPropertyName("currency")]
-    public required string Currency { get; set; }
+    public required Currency Currency { get; set; }
 
     [JsonPropertyName("discount_amount")]
     public required long DiscountAmount { get; set; }

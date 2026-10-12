@@ -102,6 +102,12 @@ public record RulesengineFeatureEntitlement : IJsonOnDeserialized
     public RulesengineMetricPeriodMonthReset? MonthReset { get; set; }
 
     /// <summary>
+    /// If the company has a credit-based entitlement for this feature, the credit cost per unit of each quantity an event carries, keyed by quantity key (per token for inference features). Absent when the entitlement prices requests only
+    /// </summary>
+    [JsonPropertyName("quantity_rates")]
+    public Dictionary<string, double>? QuantityRates { get; set; }
+
+    /// <summary>
     /// For usage-based pricing, the soft limit for overage charges or the next tier boundary
     /// </summary>
     [JsonPropertyName("soft_limit")]
