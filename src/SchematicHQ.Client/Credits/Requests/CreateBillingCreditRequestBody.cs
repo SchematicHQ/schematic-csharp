@@ -10,7 +10,7 @@ public record CreateBillingCreditRequestBody
     public BillingCreditBurnStrategy? BurnStrategy { get; set; }
 
     [JsonPropertyName("currency")]
-    public required string Currency { get; set; }
+    public required Currency Currency { get; set; }
 
     [JsonPropertyName("currency_prices")]
     public IEnumerable<CreditCurrencyPriceRequestBody>? CurrencyPrices { get; set; }

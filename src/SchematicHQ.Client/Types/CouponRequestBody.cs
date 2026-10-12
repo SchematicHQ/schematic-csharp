@@ -15,7 +15,7 @@ public record CouponRequestBody : IJsonOnDeserialized
     public required long AmountOff { get; set; }
 
     [JsonPropertyName("currency")]
-    public string? Currency { get; set; }
+    public Currency? Currency { get; set; }
 
     [JsonPropertyName("duration")]
     public required string Duration { get; set; }

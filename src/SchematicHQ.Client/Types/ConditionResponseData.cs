@@ -56,6 +56,9 @@ public record ConditionResponseData : IJsonOnDeserialized
     [JsonPropertyName("operator")]
     public required ComparableOperator Operator { get; set; }
 
+    [JsonPropertyName("quantity_rates")]
+    public Dictionary<string, double>? QuantityRates { get; set; }
+
     [JsonPropertyName("resource_unspecified_ids")]
     public IEnumerable<string> ResourceUnspecifiedIds { get; set; } = new List<string>();
 

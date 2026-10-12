@@ -23,6 +23,12 @@ public record PlanChangeResponseData : IJsonOnDeserialized
     [JsonPropertyName("add_ons_removed")]
     public IEnumerable<PlanSnapshotView> AddOnsRemoved { get; set; } = new List<PlanSnapshotView>();
 
+    /// <summary>
+    /// Set when the action is amendment. A custom plan amendment records one plan change per status: scheduled when it is finalized for a later date, then applied when the company moves to the new version, cancelled when the scheduled change is called off, or failed or skipped when its migration ends without moving the company (an error, or the company was no longer on the version the amendment started from). Only an applied amendment changed the company's plan version.
+    /// </summary>
+    [JsonPropertyName("amendment_status")]
+    public PlanChangeAmendmentStatus? AmendmentStatus { get; set; }
+
     [JsonPropertyName("api_key")]
     public ApiKeyResponseData? ApiKey { get; set; }
 
@@ -70,6 +76,12 @@ public record PlanChangeResponseData : IJsonOnDeserialized
     /// </summary>
     [JsonPropertyName("is_version_upgrade")]
     public required bool IsVersionUpgrade { get; set; }
+
+    /// <summary>
+    /// The plan version migration that carries this change. Set on amendment plan changes, where it ties the scheduled, applied and cancelled records of one amendment together.
+    /// </summary>
+    [JsonPropertyName("migration_id")]
+    public string? MigrationId { get; set; }
 
     [JsonPropertyName("previous_base_plan")]
     public PlanSnapshotView? PreviousBasePlan { get; set; }

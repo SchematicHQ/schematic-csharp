@@ -19,7 +19,7 @@ public record CreateBillingSubscriptionRequestBody
     public string? CompanyId { get; set; }
 
     [JsonPropertyName("currency")]
-    public required string Currency { get; set; }
+    public required Currency Currency { get; set; }
 
     [JsonPropertyName("customer_external_id")]
     public required string CustomerExternalId { get; set; }

@@ -19,7 +19,7 @@ public record ListCustomPlanBillingsRequest
     public string? PlanId { get; set; }
 
     /// <summary>
-    /// Filter by the flow that created the billing record. Defaults to custom_plan.
+    /// Filter by the flow that created the billing record: custom_plan for a first publish, amendment for a republish, manage_plan for a standard plan assigned by invoice. Defaults to custom_plan.
     /// </summary>
     [JsonIgnore]
     public PlanBillingSource? PlanBillingSource { get; set; }

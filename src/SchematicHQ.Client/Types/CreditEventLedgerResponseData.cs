@@ -23,6 +23,12 @@ public record CreditEventLedgerResponseData : IJsonOnDeserialized
     [JsonPropertyName("billing_credit_id")]
     public string? BillingCreditId { get; set; }
 
+    /// <summary>
+    /// The part of the draw this row covers: one line per priced quantity, including the request line, summing to the row amount. Set on inference-driven draws only.
+    /// </summary>
+    [JsonPropertyName("burn_breakdown")]
+    public IEnumerable<CreditBurnBreakdownLine>? BurnBreakdown { get; set; }
+
     [JsonPropertyName("company")]
     public CompanyLedgerResponseData? Company { get; set; }
 
@@ -36,7 +42,7 @@ public record CreditEventLedgerResponseData : IJsonOnDeserialized
     public required string CreditName { get; set; }
 
     [JsonPropertyName("currency")]
-    public string? Currency { get; set; }
+    public Currency? Currency { get; set; }
 
     [JsonPropertyName("environment_id")]
     public required string EnvironmentId { get; set; }
@@ -46,6 +52,9 @@ public record CreditEventLedgerResponseData : IJsonOnDeserialized
 
     [JsonPropertyName("event_id")]
     public required string EventId { get; set; }
+
+    [JsonPropertyName("event_ids")]
+    public IEnumerable<string> EventIds { get; set; } = new List<string>();
 
     [JsonPropertyName("event_type")]
     public required CreditEventType EventType { get; set; }

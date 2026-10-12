@@ -7239,7 +7239,7 @@ public partial class CompaniesClient : ICompaniesClient
     /// await client.Companies.ListPlanChangesAsync(
     ///     new ListPlanChangesRequest
     ///     {
-    ///         Action = PlanChangeAction.Checkout,
+    ///         Action = PlanChangeAction.Amendment,
     ///         BasePlanAction = PlanChangeBasePlanAction.Fallback,
     ///         CompanyId = "company_id",
     ///         CompanyIds = new List&lt;string&gt;() { "company_ids" },

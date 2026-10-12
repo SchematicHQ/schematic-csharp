@@ -21,7 +21,7 @@ public record BillingProductForSubscriptionResponseData : IJsonOnDeserialized
     public required DateTime CreatedAt { get; set; }
 
     [JsonPropertyName("currency")]
-    public required string Currency { get; set; }
+    public required Currency Currency { get; set; }
 
     [JsonPropertyName("environment_id")]
     public required string EnvironmentId { get; set; }

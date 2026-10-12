@@ -1303,7 +1303,7 @@ await client.Billing.UpsertInvoiceAsync(
         AmountPaid = 1000000,
         AmountRemaining = 1000000,
         CollectionMethod = "collection_method",
-        Currency = "currency",
+        Currency = Currency.Aed,
         CustomerExternalId = "customer_external_id",
         Subtotal = 1000000,
     }
@@ -1620,7 +1620,7 @@ await client.Billing.DeletePaymentMethodByExternalIdAsync("billing_id");
 await client.Billing.ListBillingPricesAsync(
     new ListBillingPricesRequest
     {
-        Currency = "currency",
+        Currency = Currency.Aed,
         ForInitialPlan = true,
         ForTrialExpiryPlan = true,
         Ids = new List<string>() { "ids" },
@@ -1683,7 +1683,7 @@ await client.Billing.UpsertBillingPriceAsync(
     new CreateBillingPriceRequestBody
     {
         BillingScheme = BillingPriceScheme.PerUnit,
-        Currency = "currency",
+        Currency = Currency.Aed,
         ExternalAccountId = "external_account_id",
         Interval = "interval",
         IsActive = true,
@@ -1779,7 +1779,7 @@ await client.Billing.DeleteBillingProductAsync("billing_id");
 await client.Billing.ListBillingProductPricesAsync(
     new ListBillingProductPricesRequest
     {
-        Currency = "currency",
+        Currency = Currency.Aed,
         ForInitialPlan = true,
         ForTrialExpiryPlan = true,
         Ids = new List<string>() { "ids" },
@@ -2124,6 +2124,71 @@ await client.Billing.UpdateCompanyBillingProfileAsync(
 </dl>
 </details>
 
+<details><summary><code>client.Billing.<a href="/src/SchematicHQ.Client/Billing/BillingClient.cs">GetBillingSettingsAsync</a>() -> WithRawResponseTask&lt;GetBillingSettingsResponse&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Billing.GetBillingSettingsAsync();
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Billing.<a href="/src/SchematicHQ.Client/Billing/BillingClient.cs">UpdateBillingSettingsAsync</a>(UpdateBillingSettingsRequestBody { ... }) -> WithRawResponseTask&lt;UpdateBillingSettingsResponse&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Billing.UpdateBillingSettingsAsync(new UpdateBillingSettingsRequestBody());
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `UpdateBillingSettingsRequestBody` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.Billing.<a href="/src/SchematicHQ.Client/Billing/BillingClient.cs">UpsertBillingSubscriptionAsync</a>(CreateBillingSubscriptionRequestBody { ... }) -> WithRawResponseTask&lt;UpsertBillingSubscriptionResponse&gt;</code></summary>
 <dl>
 <dd>
@@ -2141,7 +2206,7 @@ await client.Billing.UpsertBillingSubscriptionAsync(
     new CreateBillingSubscriptionRequestBody
     {
         CancelAtPeriodEnd = true,
-        Currency = "currency",
+        Currency = Currency.Aed,
         CustomerExternalId = "customer_external_id",
         Discounts = new List<BillingSubscriptionDiscount>()
         {
@@ -2158,7 +2223,7 @@ await client.Billing.UpsertBillingSubscriptionAsync(
         {
             new BillingProductPricing
             {
-                Currency = "currency",
+                Currency = Currency.Aed,
                 Interval = "interval",
                 Price = 1000000,
                 PriceExternalId = "price_external_id",
@@ -2262,7 +2327,7 @@ await client.Credits.ListBillingCreditsAsync(
 await client.Credits.CreateBillingCreditAsync(
     new CreateBillingCreditRequestBody
     {
-        Currency = "currency",
+        Currency = Currency.Aed,
         Description = "description",
         Name = "name",
     }
@@ -2466,6 +2531,54 @@ await client.Credits.ListCompanyCreditBalancesAsync(
 </dl>
 </details>
 
+<details><summary><code>client.Credits.<a href="/src/SchematicHQ.Client/Credits/CreditsClient.cs">GetCreditBalanceTimeSeriesAsync</a>(GetCreditBalanceTimeSeriesRequest { ... }) -> WithRawResponseTask&lt;GetCreditBalanceTimeSeriesResponse&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Credits.GetCreditBalanceTimeSeriesAsync(
+    new GetCreditBalanceTimeSeriesRequest
+    {
+        BillingCreditId = "billing_credit_id",
+        CompanyId = "company_id",
+        EndTime = new DateTime(2024, 01, 15, 09, 30, 00, 000),
+        StartTime = new DateTime(2024, 01, 15, 09, 30, 00, 000),
+    }
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `GetCreditBalanceTimeSeriesRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.Credits.<a href="/src/SchematicHQ.Client/Credits/CreditsClient.cs">ListCreditBundlesAsync</a>(ListCreditBundlesRequest { ... }) -> WithRawResponseTask&lt;ListCreditBundlesResponse&gt;</code></summary>
 <dl>
 <dd>
@@ -2534,7 +2647,7 @@ await client.Credits.CreateCreditBundleAsync(
     {
         BundleName = "bundle_name",
         CreditId = "credit_id",
-        Currency = "currency",
+        Currency = Currency.Aed,
         PricePerUnit = 1000000,
     }
 );
@@ -6472,7 +6585,7 @@ await client.Companies.CountEntityTraitsAsync(
 await client.Companies.ListPlanChangesAsync(
     new ListPlanChangesRequest
     {
-        Action = PlanChangeAction.Checkout,
+        Action = PlanChangeAction.Amendment,
         BasePlanAction = PlanChangeBasePlanAction.Fallback,
         CompanyId = "company_id",
         CompanyIds = new List<string>() { "company_ids" },
@@ -8558,7 +8671,7 @@ await client.Plans.ListCustomPlanBillingsAsync(
     {
         CompanyId = "company_id",
         PlanId = "plan_id",
-        PlanBillingSource = PlanBillingSource.CustomPlan,
+        PlanBillingSource = PlanBillingSource.Amendment,
         Status = CustomPlanBillingStatus.Active,
         Statuses = new List<CustomPlanBillingStatus>() { CustomPlanBillingStatus.Active },
         Limit = 1000000,
@@ -9321,6 +9434,57 @@ await client.Plans.DeletePlanVersionAsync(
 <dd>
 
 **request:** `DeletePlanVersionRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Plans.<a href="/src/SchematicHQ.Client/Plans/PlansClient.cs">GetPlanVersionDiffAsync</a>(planVersionId, GetPlanVersionDiffRequest { ... }) -> WithRawResponseTask&lt;GetPlanVersionDiffResponse&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Plans.GetPlanVersionDiffAsync(
+    "plan_version_id",
+    new GetPlanVersionDiffRequest { Against = "against" }
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**planVersionId:** `string` — plan_version_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `GetPlanVersionDiffRequest` 
     
 </dd>
 </dl>

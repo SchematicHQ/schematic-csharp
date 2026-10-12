@@ -111,6 +111,13 @@ public partial interface IPlansClient
         CancellationToken cancellationToken = default
     );
 
+    WithRawResponseTask<GetPlanVersionDiffResponse> GetPlanVersionDiffAsync(
+        string planVersionId,
+        GetPlanVersionDiffRequest request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    );
+
     WithRawResponseTask<PublishPlanVersionResponse> PublishPlanVersionAsync(
         string planVersionId,
         PublishPlanVersionRequestBody request,

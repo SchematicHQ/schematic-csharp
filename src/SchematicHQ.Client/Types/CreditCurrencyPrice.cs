@@ -12,7 +12,7 @@ public record CreditCurrencyPrice : IJsonOnDeserialized
         new Dictionary<string, JsonElement>();
 
     [JsonPropertyName("currency")]
-    public required string Currency { get; set; }
+    public required Currency Currency { get; set; }
 
     [JsonPropertyName("price")]
     public BillingPriceView? Price { get; set; }

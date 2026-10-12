@@ -12,7 +12,7 @@ public record CurrencyPriceRequestBody : IJsonOnDeserialized
         new Dictionary<string, JsonElement>();
 
     [JsonPropertyName("currency")]
-    public required string Currency { get; set; }
+    public required Currency Currency { get; set; }
 
     [JsonPropertyName("monthly_price_tiers")]
     public IEnumerable<CreatePriceTierRequestBody>? MonthlyPriceTiers { get; set; }

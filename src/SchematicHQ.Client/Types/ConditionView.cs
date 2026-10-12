@@ -74,6 +74,9 @@ public record ConditionView : IJsonOnDeserialized
     [JsonPropertyName("plans")]
     public IEnumerable<GenericPreviewObject> Plans { get; set; } = new List<GenericPreviewObject>();
 
+    [JsonPropertyName("quantity_rates")]
+    public Dictionary<string, double>? QuantityRates { get; set; }
+
     [JsonPropertyName("resource_unspecified_ids")]
     public IEnumerable<string> ResourceUnspecifiedIds { get; set; } = new List<string>();
 

@@ -941,6 +941,153 @@ public partial class CreditsClient : ICreditsClient
         }
     }
 
+    private async Task<
+        WithRawResponse<GetCreditBalanceTimeSeriesResponse>
+    > GetCreditBalanceTimeSeriesAsyncCore(
+        GetCreditBalanceTimeSeriesRequest request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 4)
+            .Add("billing_credit_id", request.BillingCreditId)
+            .Add("company_id", request.CompanyId)
+            .Add("end_time", request.EndTime)
+            .Add("start_time", request.StartTime)
+            .MergeAdditional(options?.AdditionalQueryParameters)
+            .Build();
+        var _headers = await new SchematicHQ.Client.Core.HeadersBuilder.Builder()
+            .Add(_client.Options.Headers)
+            .Add(_client.Options.AdditionalHeaders)
+            .Add(options?.AdditionalHeaders)
+            .BuildAsync()
+            .ConfigureAwait(false);
+        var response = await _client
+            .SendRequestAsync(
+                new JsonRequest
+                {
+                    Method = HttpMethod.Get,
+                    Path = "billing/credits/balance-timeseries",
+                    QueryString = _queryString,
+                    Headers = _headers,
+                    Options = options,
+                },
+                cancellationToken
+            )
+            .ConfigureAwait(false);
+        if (response.StatusCode is >= 200 and < 400)
+        {
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
+            try
+            {
+                var responseData = JsonUtils.Deserialize<GetCreditBalanceTimeSeriesResponse>(
+                    responseBody
+                )!;
+                return new WithRawResponse<GetCreditBalanceTimeSeriesResponse>()
+                {
+                    Data = responseData,
+                    RawResponse = new SchematicHQ.Client.RawResponse()
+                    {
+                        StatusCode = response.Raw.StatusCode,
+                        Url = response.Raw.RequestMessage?.RequestUri ?? new Uri("about:blank"),
+                        Headers = ResponseHeaders.FromHttpResponseMessage(response.Raw),
+                    },
+                };
+            }
+            catch (JsonException e)
+            {
+                throw new SchematicApiException(
+                    "Failed to deserialize response",
+                    response.StatusCode,
+                    responseBody,
+                    e,
+                    rawResponse: new SchematicHQ.Client.RawResponse()
+                    {
+                        StatusCode = response.Raw.StatusCode,
+                        Url = response.Raw.RequestMessage?.RequestUri ?? new Uri("about:blank"),
+                        Headers = ResponseHeaders.FromHttpResponseMessage(response.Raw),
+                    }
+                );
+            }
+        }
+        {
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
+            try
+            {
+                switch (response.StatusCode)
+                {
+                    case 401:
+                        throw new UnauthorizedError(
+                            JsonUtils.Deserialize<ApiError>(responseBody),
+                            rawResponse: new SchematicHQ.Client.RawResponse()
+                            {
+                                StatusCode = response.Raw.StatusCode,
+                                Url =
+                                    response.Raw.RequestMessage?.RequestUri
+                                    ?? new Uri("about:blank"),
+                                Headers = ResponseHeaders.FromHttpResponseMessage(response.Raw),
+                            }
+                        );
+                    case 403:
+                        throw new ForbiddenError(
+                            JsonUtils.Deserialize<ApiError>(responseBody),
+                            rawResponse: new SchematicHQ.Client.RawResponse()
+                            {
+                                StatusCode = response.Raw.StatusCode,
+                                Url =
+                                    response.Raw.RequestMessage?.RequestUri
+                                    ?? new Uri("about:blank"),
+                                Headers = ResponseHeaders.FromHttpResponseMessage(response.Raw),
+                            }
+                        );
+                    case 404:
+                        throw new NotFoundError(
+                            JsonUtils.Deserialize<ApiError>(responseBody),
+                            rawResponse: new SchematicHQ.Client.RawResponse()
+                            {
+                                StatusCode = response.Raw.StatusCode,
+                                Url =
+                                    response.Raw.RequestMessage?.RequestUri
+                                    ?? new Uri("about:blank"),
+                                Headers = ResponseHeaders.FromHttpResponseMessage(response.Raw),
+                            }
+                        );
+                    case 500:
+                        throw new InternalServerError(
+                            JsonUtils.Deserialize<ApiError>(responseBody),
+                            rawResponse: new SchematicHQ.Client.RawResponse()
+                            {
+                                StatusCode = response.Raw.StatusCode,
+                                Url =
+                                    response.Raw.RequestMessage?.RequestUri
+                                    ?? new Uri("about:blank"),
+                                Headers = ResponseHeaders.FromHttpResponseMessage(response.Raw),
+                            }
+                        );
+                }
+            }
+            catch (JsonException)
+            {
+                // unable to map error response, throwing generic error
+            }
+            throw new SchematicApiException(
+                $"Error with status code {response.StatusCode}",
+                response.StatusCode,
+                responseBody,
+                rawResponse: new SchematicHQ.Client.RawResponse()
+                {
+                    StatusCode = response.Raw.StatusCode,
+                    Url = response.Raw.RequestMessage?.RequestUri ?? new Uri("about:blank"),
+                    Headers = ResponseHeaders.FromHttpResponseMessage(response.Raw),
+                }
+            );
+        }
+    }
+
     private async Task<WithRawResponse<ListCreditBundlesResponse>> ListCreditBundlesAsyncCore(
         ListCreditBundlesRequest request,
         RequestOptions? options = null,
@@ -6179,7 +6326,7 @@ public partial class CreditsClient : ICreditsClient
     /// await client.Credits.CreateBillingCreditAsync(
     ///     new CreateBillingCreditRequestBody
     ///     {
-    ///         Currency = "currency",
+    ///         Currency = Currency.Aed,
     ///         Description = "description",
     ///         Name = "name",
     ///     }
@@ -6259,6 +6406,28 @@ public partial class CreditsClient : ICreditsClient
     }
 
     /// <example><code>
+    /// await client.Credits.GetCreditBalanceTimeSeriesAsync(
+    ///     new GetCreditBalanceTimeSeriesRequest
+    ///     {
+    ///         BillingCreditId = "billing_credit_id",
+    ///         CompanyId = "company_id",
+    ///         EndTime = new DateTime(2024, 01, 15, 09, 30, 00, 000),
+    ///         StartTime = new DateTime(2024, 01, 15, 09, 30, 00, 000),
+    ///     }
+    /// );
+    /// </code></example>
+    public WithRawResponseTask<GetCreditBalanceTimeSeriesResponse> GetCreditBalanceTimeSeriesAsync(
+        GetCreditBalanceTimeSeriesRequest request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        return new WithRawResponseTask<GetCreditBalanceTimeSeriesResponse>(
+            GetCreditBalanceTimeSeriesAsyncCore(request, options, cancellationToken)
+        );
+    }
+
+    /// <example><code>
     /// await client.Credits.ListCreditBundlesAsync(
     ///     new ListCreditBundlesRequest
     ///     {
@@ -6288,7 +6457,7 @@ public partial class CreditsClient : ICreditsClient
     ///     {
     ///         BundleName = "bundle_name",
     ///         CreditId = "credit_id",
-    ///         Currency = "currency",
+    ///         Currency = Currency.Aed,
     ///         PricePerUnit = 1000000,
     ///     }
     /// );

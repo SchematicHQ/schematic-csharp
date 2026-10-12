@@ -15,7 +15,7 @@ public record EstimatedPlanTotal : IJsonOnDeserialized
     public required long Amount { get; set; }
 
     [JsonPropertyName("currency")]
-    public required string Currency { get; set; }
+    public required Currency Currency { get; set; }
 
     [JsonPropertyName("period")]
     public required PlanPriceCadence Period { get; set; }

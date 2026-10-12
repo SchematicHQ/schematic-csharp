@@ -73,7 +73,7 @@ public record ManagePlanRequest : IJsonOnDeserialized
     /// ISO 4217 currency this change is being built in. Prices are still selected by id; this records the intent.
     /// </summary>
     [JsonPropertyName("currency")]
-    public string? Currency { get; set; }
+    public Currency? Currency { get; set; }
 
     [JsonPropertyName("custom_field_values")]
     public IEnumerable<CheckoutFieldValue> CustomFieldValues { get; set; } =
@@ -84,6 +84,12 @@ public record ManagePlanRequest : IJsonOnDeserialized
     /// </summary>
     [JsonPropertyName("days_until_due")]
     public long? DaysUntilDue { get; set; }
+
+    /// <summary>
+    /// If true, the first invoice is recorded in Stripe as paid outside Stripe and the company gets the plan straight away. Requires collection_method to be send_invoice, and the invoice is not emailed. Defaults to false.
+    /// </summary>
+    [JsonPropertyName("paid_outside_stripe")]
+    public bool? PaidOutsideStripe { get; set; }
 
     [JsonPropertyName("pay_in_advance_entitlements")]
     public IEnumerable<UpdatePayInAdvanceRequestBody> PayInAdvanceEntitlements { get; set; } =

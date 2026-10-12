@@ -101,6 +101,7 @@ public class EntitlementMappingTests
             MetricPeriod = new MetricPeriod(MetricPeriod.Values.CurrentMonth),
             MetricResetAt = new DateTime(2025, 2, 1, 0, 0, 0, DateTimeKind.Utc),
             MonthReset = new MetricPeriodMonthReset(MetricPeriodMonthReset.Values.FirstOfMonth),
+            QuantityRates = new Dictionary<string, double> { ["input_tokens"] = 0.5 },
             SoftLimit = 200,
             Usage = 60,
             ValueType = new EntitlementValueType(EntitlementValueType.Values.Credit),

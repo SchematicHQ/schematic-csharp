@@ -10,7 +10,7 @@ public record CreateBillingPriceRequestBody
     public required BillingPriceScheme BillingScheme { get; set; }
 
     [JsonPropertyName("currency")]
-    public required string Currency { get; set; }
+    public required Currency Currency { get; set; }
 
     [JsonPropertyName("external_account_id")]
     public required string ExternalAccountId { get; set; }

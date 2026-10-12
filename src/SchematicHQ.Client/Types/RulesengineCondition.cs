@@ -47,6 +47,9 @@ public record RulesengineCondition : IJsonOnDeserialized
     [JsonPropertyName("operator")]
     public required RulesengineComparableOperator Operator { get; set; }
 
+    [JsonPropertyName("quantity_rates")]
+    public Dictionary<string, double>? QuantityRates { get; set; }
+
     [JsonPropertyName("resource_ids")]
     public IEnumerable<string> ResourceIds { get; set; } = new List<string>();
 

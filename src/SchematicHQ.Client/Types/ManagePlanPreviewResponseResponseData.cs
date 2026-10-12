@@ -11,6 +11,10 @@ public record ManagePlanPreviewResponseResponseData : IJsonOnDeserialized
     private readonly IDictionary<string, JsonElement> _extensionData =
         new Dictionary<string, JsonElement>();
 
+    [JsonPropertyName("problems")]
+    public IEnumerable<CheckoutProblemResponseData> Problems { get; set; } =
+        new List<CheckoutProblemResponseData>();
+
     [JsonPropertyName("subscription_change_preview")]
     public PreviewSubscriptionChangeResponseData? SubscriptionChangePreview { get; set; }
 

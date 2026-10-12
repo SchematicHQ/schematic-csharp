@@ -11,8 +11,15 @@ public record ManagePlanResponseResponseData : IJsonOnDeserialized
     private readonly IDictionary<string, JsonElement> _extensionData =
         new Dictionary<string, JsonElement>();
 
+    [JsonPropertyName("checkout_id")]
+    public string? CheckoutId { get; set; }
+
     [JsonPropertyName("company")]
     public CompanyDetailResponseData? Company { get; set; }
+
+    [JsonPropertyName("problems")]
+    public IEnumerable<CheckoutProblemResponseData> Problems { get; set; } =
+        new List<CheckoutProblemResponseData>();
 
     [JsonPropertyName("success")]
     public required bool Success { get; set; }

@@ -18,7 +18,7 @@ public record BillingCouponResponseData : IJsonOnDeserialized
     public long? AmountOff { get; set; }
 
     [JsonPropertyName("currency")]
-    public string? Currency { get; set; }
+    public Currency? Currency { get; set; }
 
     [JsonPropertyName("duration")]
     public string? Duration { get; set; }

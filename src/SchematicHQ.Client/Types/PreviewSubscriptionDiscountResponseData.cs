@@ -18,7 +18,7 @@ public record PreviewSubscriptionDiscountResponseData : IJsonOnDeserialized
     public required string CouponName { get; set; }
 
     [JsonPropertyName("currency")]
-    public string? Currency { get; set; }
+    public Currency? Currency { get; set; }
 
     [JsonPropertyName("customer_facing_code")]
     public string? CustomerFacingCode { get; set; }

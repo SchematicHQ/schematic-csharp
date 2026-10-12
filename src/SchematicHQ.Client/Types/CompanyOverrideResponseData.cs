@@ -48,6 +48,12 @@ public record CompanyOverrideResponseData : IJsonOnDeserialized
     public IEnumerable<CompanyOverrideNoteResponseData> Notes { get; set; } =
         new List<CompanyOverrideNoteResponseData>();
 
+    /// <summary>
+    /// Credits per unit of the quantity (per token for inference features), keyed by quantity key. Absent when the entitlement prices requests only.
+    /// </summary>
+    [JsonPropertyName("quantity_rates")]
+    public Dictionary<string, double>? QuantityRates { get; set; }
+
     [JsonPropertyName("rule_id")]
     public string? RuleId { get; set; }
 
