@@ -370,6 +370,7 @@ public static class LeaseEntitlement
             MonthReset = entitlement.MonthReset.HasValue
                 ? new RulesengineMetricPeriodMonthReset(entitlement.MonthReset.Value.Value)
                 : null,
+            QuantityRates = entitlement.QuantityRates,
             SoftLimit = entitlement.SoftLimit,
             Usage = entitlement.Usage,
             ValueType = new RulesengineEntitlementValueType(entitlement.ValueType.Value),
