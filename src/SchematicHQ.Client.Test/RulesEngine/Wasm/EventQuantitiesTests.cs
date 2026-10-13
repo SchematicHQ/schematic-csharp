@@ -223,9 +223,10 @@ namespace SchematicHQ.Client.Test.RulesEngine.Wasm
                 InferenceFlag(0.5, null));
 
             Assert.That(result.Entitlement, Is.Not.Null);
-            var rates = result.Entitlement!.AdditionalProperties["quantity_rates"];
-            Assert.That(rates.GetProperty("input_tokens").GetDouble(), Is.EqualTo(0.001));
-            Assert.That(rates.GetProperty("output_tokens").GetDouble(), Is.EqualTo(0.01));
+            var rates = result.Entitlement!.QuantityRates;
+            Assert.That(rates, Is.Not.Null);
+            Assert.That(rates!["input_tokens"], Is.EqualTo(0.001));
+            Assert.That(rates["output_tokens"], Is.EqualTo(0.01));
         }
 
         private static IEnumerable<TestCaseData> FixtureCases()
