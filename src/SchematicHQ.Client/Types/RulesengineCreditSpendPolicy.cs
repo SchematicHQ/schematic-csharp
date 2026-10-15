@@ -12,6 +12,12 @@ public record RulesengineCreditSpendPolicy : IJsonOnDeserialized
         new Dictionary<string, JsonElement>();
 
     /// <summary>
+    /// For a user policy, the company it applies in
+    /// </summary>
+    [JsonPropertyName("company_id")]
+    public string? CompanyId { get; set; }
+
+    /// <summary>
     /// How much of the limit is already spent in the current period
     /// </summary>
     [JsonPropertyName("consumed")]

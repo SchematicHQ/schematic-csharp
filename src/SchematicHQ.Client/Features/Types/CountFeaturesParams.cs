@@ -60,7 +60,7 @@ public record CountFeaturesParams : IJsonOnDeserialized
     public string? Q { get; set; }
 
     /// <summary>
-    /// Filter out features that already have a company override for the specified company ID
+    /// Filter out features that have an unexpired company override for the specified company ID
     /// </summary>
     [JsonPropertyName("without_company_override_for")]
     public string? WithoutCompanyOverrideFor { get; set; }

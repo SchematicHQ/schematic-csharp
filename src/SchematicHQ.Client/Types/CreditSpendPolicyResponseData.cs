@@ -14,6 +14,9 @@ public record CreditSpendPolicyResponseData : IJsonOnDeserialized
     [JsonPropertyName("billing_credit_id")]
     public required string BillingCreditId { get; set; }
 
+    /// <summary>
+    /// The company the policy applies in
+    /// </summary>
     [JsonPropertyName("company_id")]
     public string? CompanyId { get; set; }
 
@@ -53,6 +56,9 @@ public record CreditSpendPolicyResponseData : IJsonOnDeserialized
     [JsonPropertyName("updated_at")]
     public required DateTime UpdatedAt { get; set; }
 
+    /// <summary>
+    /// For a user policy, the user whose spend in the company it limits
+    /// </summary>
     [JsonPropertyName("user_id")]
     public string? UserId { get; set; }
 

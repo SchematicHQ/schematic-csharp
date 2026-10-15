@@ -177,10 +177,12 @@ public partial class PlansClient : IPlansClient
         CancellationToken cancellationToken = default
     )
     {
-        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 7)
+        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 9)
             .Add("company_id", request.CompanyId)
             .Add("plan_id", request.PlanId)
+            .Add("plan_version_id", request.PlanVersionId)
             .Add("plan_billing_source", request.PlanBillingSource)
+            .Add("plan_billing_sources", request.PlanBillingSources)
             .Add("status", request.Status)
             .Add("statuses", request.Statuses)
             .Add("limit", request.Limit)
@@ -2999,6 +3001,167 @@ public partial class PlansClient : IPlansClient
         }
     }
 
+    private async Task<
+        WithRawResponse<PreviewPublishPlanVersionResponse>
+    > PreviewPublishPlanVersionAsyncCore(
+        string planVersionId,
+        PublishPlanVersionRequestBody request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 0)
+            .MergeAdditional(options?.AdditionalQueryParameters)
+            .Build();
+        var _headers = await new SchematicHQ.Client.Core.HeadersBuilder.Builder()
+            .Add(_client.Options.Headers)
+            .Add(_client.Options.AdditionalHeaders)
+            .Add(options?.AdditionalHeaders)
+            .BuildAsync()
+            .ConfigureAwait(false);
+        var response = await _client
+            .SendRequestAsync(
+                new JsonRequest
+                {
+                    Method = HttpMethod.Post,
+                    Path = string.Format(
+                        "plans/version/{0}/publish-preview",
+                        ValueConvert.ToPathParameterString(planVersionId)
+                    ),
+                    Body = request,
+                    QueryString = _queryString,
+                    Headers = _headers,
+                    ContentType = "application/json",
+                    Options = options,
+                },
+                cancellationToken
+            )
+            .ConfigureAwait(false);
+        if (response.StatusCode is >= 200 and < 400)
+        {
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
+            try
+            {
+                var responseData = JsonUtils.Deserialize<PreviewPublishPlanVersionResponse>(
+                    responseBody
+                )!;
+                return new WithRawResponse<PreviewPublishPlanVersionResponse>()
+                {
+                    Data = responseData,
+                    RawResponse = new SchematicHQ.Client.RawResponse()
+                    {
+                        StatusCode = response.Raw.StatusCode,
+                        Url = response.Raw.RequestMessage?.RequestUri ?? new Uri("about:blank"),
+                        Headers = ResponseHeaders.FromHttpResponseMessage(response.Raw),
+                    },
+                };
+            }
+            catch (JsonException e)
+            {
+                throw new SchematicApiException(
+                    "Failed to deserialize response",
+                    response.StatusCode,
+                    responseBody,
+                    e,
+                    rawResponse: new SchematicHQ.Client.RawResponse()
+                    {
+                        StatusCode = response.Raw.StatusCode,
+                        Url = response.Raw.RequestMessage?.RequestUri ?? new Uri("about:blank"),
+                        Headers = ResponseHeaders.FromHttpResponseMessage(response.Raw),
+                    }
+                );
+            }
+        }
+        {
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
+            try
+            {
+                switch (response.StatusCode)
+                {
+                    case 400:
+                        throw new BadRequestError(
+                            JsonUtils.Deserialize<ApiError>(responseBody),
+                            rawResponse: new SchematicHQ.Client.RawResponse()
+                            {
+                                StatusCode = response.Raw.StatusCode,
+                                Url =
+                                    response.Raw.RequestMessage?.RequestUri
+                                    ?? new Uri("about:blank"),
+                                Headers = ResponseHeaders.FromHttpResponseMessage(response.Raw),
+                            }
+                        );
+                    case 401:
+                        throw new UnauthorizedError(
+                            JsonUtils.Deserialize<ApiError>(responseBody),
+                            rawResponse: new SchematicHQ.Client.RawResponse()
+                            {
+                                StatusCode = response.Raw.StatusCode,
+                                Url =
+                                    response.Raw.RequestMessage?.RequestUri
+                                    ?? new Uri("about:blank"),
+                                Headers = ResponseHeaders.FromHttpResponseMessage(response.Raw),
+                            }
+                        );
+                    case 403:
+                        throw new ForbiddenError(
+                            JsonUtils.Deserialize<ApiError>(responseBody),
+                            rawResponse: new SchematicHQ.Client.RawResponse()
+                            {
+                                StatusCode = response.Raw.StatusCode,
+                                Url =
+                                    response.Raw.RequestMessage?.RequestUri
+                                    ?? new Uri("about:blank"),
+                                Headers = ResponseHeaders.FromHttpResponseMessage(response.Raw),
+                            }
+                        );
+                    case 404:
+                        throw new NotFoundError(
+                            JsonUtils.Deserialize<ApiError>(responseBody),
+                            rawResponse: new SchematicHQ.Client.RawResponse()
+                            {
+                                StatusCode = response.Raw.StatusCode,
+                                Url =
+                                    response.Raw.RequestMessage?.RequestUri
+                                    ?? new Uri("about:blank"),
+                                Headers = ResponseHeaders.FromHttpResponseMessage(response.Raw),
+                            }
+                        );
+                    case 500:
+                        throw new InternalServerError(
+                            JsonUtils.Deserialize<ApiError>(responseBody),
+                            rawResponse: new SchematicHQ.Client.RawResponse()
+                            {
+                                StatusCode = response.Raw.StatusCode,
+                                Url =
+                                    response.Raw.RequestMessage?.RequestUri
+                                    ?? new Uri("about:blank"),
+                                Headers = ResponseHeaders.FromHttpResponseMessage(response.Raw),
+                            }
+                        );
+                }
+            }
+            catch (JsonException)
+            {
+                // unable to map error response, throwing generic error
+            }
+            throw new SchematicApiException(
+                $"Error with status code {response.StatusCode}",
+                response.StatusCode,
+                responseBody,
+                rawResponse: new SchematicHQ.Client.RawResponse()
+                {
+                    StatusCode = response.Raw.StatusCode,
+                    Url = response.Raw.RequestMessage?.RequestUri ?? new Uri("about:blank"),
+                    Headers = ResponseHeaders.FromHttpResponseMessage(response.Raw),
+                }
+            );
+        }
+    }
+
     /// <example><code>
     /// await client.Plans.UpdateCompanyPlansAsync(
     ///     "company_id",
@@ -3023,7 +3186,9 @@ public partial class PlansClient : IPlansClient
     ///     {
     ///         CompanyId = "company_id",
     ///         PlanId = "plan_id",
+    ///         PlanVersionId = "plan_version_id",
     ///         PlanBillingSource = PlanBillingSource.Amendment,
+    ///         PlanBillingSources = new List&lt;PlanBillingSource&gt;() { PlanBillingSource.Amendment },
     ///         Status = CustomPlanBillingStatus.Active,
     ///         Statuses = new List&lt;CustomPlanBillingStatus&gt;() { CustomPlanBillingStatus.Active },
     ///         Limit = 1000000,
@@ -3398,6 +3563,28 @@ public partial class PlansClient : IPlansClient
     {
         return new WithRawResponseTask<PublishPlanVersionResponse>(
             PublishPlanVersionAsyncCore(planVersionId, request, options, cancellationToken)
+        );
+    }
+
+    /// <example><code>
+    /// await client.Plans.PreviewPublishPlanVersionAsync(
+    ///     "plan_version_id",
+    ///     new PublishPlanVersionRequestBody
+    ///     {
+    ///         ExcludedCompanyIds = new List&lt;string&gt;() { "excluded_company_ids" },
+    ///         MigrationStrategy = PlanVersionMigrationStrategy.EndOfBillingPeriod,
+    ///     }
+    /// );
+    /// </code></example>
+    public WithRawResponseTask<PreviewPublishPlanVersionResponse> PreviewPublishPlanVersionAsync(
+        string planVersionId,
+        PublishPlanVersionRequestBody request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        return new WithRawResponseTask<PreviewPublishPlanVersionResponse>(
+            PreviewPublishPlanVersionAsyncCore(planVersionId, request, options, cancellationToken)
         );
     }
 }

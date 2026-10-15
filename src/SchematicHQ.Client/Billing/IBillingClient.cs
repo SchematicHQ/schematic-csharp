@@ -169,4 +169,47 @@ public partial interface IBillingClient
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     );
+
+    WithRawResponseTask<ListNativeInvoicesResponse> ListNativeInvoicesAsync(
+        ListNativeInvoicesRequest request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    );
+
+    WithRawResponseTask<GetNativeInvoiceResponse> GetNativeInvoiceAsync(
+        string invoiceId,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    );
+
+    WithRawResponseTask<global::System.IO.Stream> ExportNativeInvoiceAsync(
+        string invoiceId,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    );
+
+    WithRawResponseTask<FinalizeNativeInvoiceResponse> FinalizeNativeInvoiceAsync(
+        string invoiceId,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    );
+
+    WithRawResponseTask<MarkNativeInvoicePaidResponse> MarkNativeInvoicePaidAsync(
+        string invoiceId,
+        MarkInvoicePaidRequestBody request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    );
+
+    WithRawResponseTask<VoidNativeInvoiceResponse> VoidNativeInvoiceAsync(
+        string invoiceId,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    );
+
+    WithRawResponseTask<CountNativeInvoicesResponse> CountNativeInvoicesAsync(
+        CountNativeInvoicesRequest request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    );
 }

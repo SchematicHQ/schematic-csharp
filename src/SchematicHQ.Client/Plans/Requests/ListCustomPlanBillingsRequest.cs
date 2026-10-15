@@ -19,10 +19,23 @@ public record ListCustomPlanBillingsRequest
     public string? PlanId { get; set; }
 
     /// <summary>
-    /// Filter by the flow that created the billing record: custom_plan for a first publish, amendment for a republish, manage_plan for a standard plan assigned by invoice. Defaults to custom_plan.
+    /// Filter by the plan version the billing record was created for
+    /// </summary>
+    [JsonIgnore]
+    public string? PlanVersionId { get; set; }
+
+    /// <summary>
+    /// Filter by the flow that created the billing record: custom_plan for a first publish, amendment for a republish, manage_plan for a standard plan assigned by invoice. Defaults to custom_plan unless plan_billing_sources is set.
     /// </summary>
     [JsonIgnore]
     public PlanBillingSource? PlanBillingSource { get; set; }
+
+    /// <summary>
+    /// Filter by multiple billing sources. Takes precedence over plan_billing_source.
+    /// </summary>
+    [JsonIgnore]
+    public IEnumerable<PlanBillingSource> PlanBillingSources { get; set; } =
+        new List<PlanBillingSource>();
 
     /// <summary>
     /// Filter by billing status
