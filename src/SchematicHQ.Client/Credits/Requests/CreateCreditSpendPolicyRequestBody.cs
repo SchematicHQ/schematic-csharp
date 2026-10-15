@@ -10,7 +10,7 @@ public record CreateCreditSpendPolicyRequestBody
     public required string BillingCreditId { get; set; }
 
     /// <summary>
-    /// The company the cap applies to. Set exactly one of company_id and user_id.
+    /// The company the cap applies in. Alone, it caps the whole company. With user_id, it caps that user's spend in this company. Required with user_id when the user belongs to more than one company.
     /// </summary>
     [JsonPropertyName("company_id")]
     public string? CompanyId { get; set; }
@@ -25,7 +25,7 @@ public record CreateCreditSpendPolicyRequestBody
     public double? MaxPerDraw { get; set; }
 
     /// <summary>
-    /// The user the cap applies to. Set exactly one of company_id and user_id.
+    /// The user the cap applies to. The user must belong to company_id, and with no company_id, to exactly one company.
     /// </summary>
     [JsonPropertyName("user_id")]
     public string? UserId { get; set; }

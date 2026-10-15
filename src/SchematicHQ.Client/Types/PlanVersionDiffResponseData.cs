@@ -44,7 +44,7 @@ public record PlanVersionDiffResponseData : IJsonOnDeserialized
     public required bool HasBillingChanges { get; set; }
 
     /// <summary>
-    /// Plan-level fields that changed: name, description, icon, and charge_type.
+    /// Plan-level fields that changed: name, description, icon, charge_type, billing_strategy, is_trialable, and trial_days.
     /// </summary>
     [JsonPropertyName("plan_fields")]
     public IEnumerable<PlanVersionFieldChangeResponseData> PlanFields { get; set; } =

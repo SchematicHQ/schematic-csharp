@@ -12,6 +12,18 @@ public record CompanyCreditBalance : IJsonOnDeserialized
         new Dictionary<string, JsonElement>();
 
     /// <summary>
+    /// For a postpaid credit, how far below zero the balance may run. Absent when the credit is not postpaid or postpaid has no limit
+    /// </summary>
+    [JsonPropertyName("overdraft_limit")]
+    public double? OverdraftLimit { get; set; }
+
+    /// <summary>
+    /// Whether consumption may continue past a zero balance. When true and overdraft_limit is absent, the balance has no floor
+    /// </summary>
+    [JsonPropertyName("postpaid")]
+    public required bool Postpaid { get; set; }
+
+    /// <summary>
     /// Remaining credit, excluding any open lease hold (the value SDKs gate on)
     /// </summary>
     [JsonPropertyName("remaining")]

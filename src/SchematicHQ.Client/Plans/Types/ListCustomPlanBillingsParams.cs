@@ -33,16 +33,28 @@ public record ListCustomPlanBillingsParams : IJsonOnDeserialized
     public long? Offset { get; set; }
 
     /// <summary>
-    /// Filter by the flow that created the billing record: custom_plan for a first publish, amendment for a republish, manage_plan for a standard plan assigned by invoice. Defaults to custom_plan.
+    /// Filter by the flow that created the billing record: custom_plan for a first publish, amendment for a republish, manage_plan for a standard plan assigned by invoice. Defaults to custom_plan unless plan_billing_sources is set.
     /// </summary>
     [JsonPropertyName("plan_billing_source")]
     public PlanBillingSource? PlanBillingSource { get; set; }
+
+    /// <summary>
+    /// Filter by multiple billing sources. Takes precedence over plan_billing_source.
+    /// </summary>
+    [JsonPropertyName("plan_billing_sources")]
+    public IEnumerable<PlanBillingSource>? PlanBillingSources { get; set; }
 
     /// <summary>
     /// Filter by plan ID
     /// </summary>
     [JsonPropertyName("plan_id")]
     public string? PlanId { get; set; }
+
+    /// <summary>
+    /// Filter by the plan version the billing record was created for
+    /// </summary>
+    [JsonPropertyName("plan_version_id")]
+    public string? PlanVersionId { get; set; }
 
     /// <summary>
     /// Filter by billing status

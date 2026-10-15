@@ -124,4 +124,11 @@ public partial interface IPlansClient
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     );
+
+    WithRawResponseTask<PreviewPublishPlanVersionResponse> PreviewPublishPlanVersionAsync(
+        string planVersionId,
+        PublishPlanVersionRequestBody request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    );
 }

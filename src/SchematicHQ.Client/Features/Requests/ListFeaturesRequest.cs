@@ -40,7 +40,7 @@ public record ListFeaturesRequest
     public string? Q { get; set; }
 
     /// <summary>
-    /// Filter out features that already have a company override for the specified company ID
+    /// Filter out features that have an unexpired company override for the specified company ID
     /// </summary>
     [JsonIgnore]
     public string? WithoutCompanyOverrideFor { get; set; }

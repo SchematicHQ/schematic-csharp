@@ -22,7 +22,7 @@ public record CheckAndReserveFlagRequestBody
     public string? IdempotencyKey { get; set; }
 
     /// <summary>
-    /// Hypothetical usage to evaluate the flag against. When credit_cost names the entitlement's credit, that cost is what gets held; otherwise the hold is the entitlement's consumption rate times quantity, or, when quantity is omitted, times the usage stated here
+    /// Hypothetical usage to evaluate the flag against. When credit_cost names the entitlement's credit, that cost is what gets held; otherwise the hold is the entitlement's consumption rate times quantity, or, when quantity is omitted, times the usage stated here. event_quantities is not supported here and is rejected
     /// </summary>
     [JsonPropertyName("preflight")]
     public PreflightRequestBody? Preflight { get; set; }

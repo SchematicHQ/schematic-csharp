@@ -123,7 +123,7 @@ public record ListCompaniesParams : IJsonOnDeserialized
     public bool? WithSubscription { get; set; }
 
     /// <summary>
-    /// Filter out companies that already have a company override for the specified feature ID
+    /// Filter out companies that have an unexpired company override for the specified feature ID
     /// </summary>
     [JsonPropertyName("without_feature_override_for")]
     public string? WithoutFeatureOverrideFor { get; set; }

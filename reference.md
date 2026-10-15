@@ -2262,6 +2262,315 @@ await client.Billing.UpsertBillingSubscriptionAsync(
 </dl>
 </details>
 
+<details><summary><code>client.Billing.<a href="/src/SchematicHQ.Client/Billing/BillingClient.cs">ListNativeInvoicesAsync</a>(ListNativeInvoicesRequest { ... }) -> WithRawResponseTask&lt;ListNativeInvoicesResponse&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Billing.ListNativeInvoicesAsync(
+    new ListNativeInvoicesRequest
+    {
+        CompanyId = "company_id",
+        ContractId = "contract_id",
+        DocumentState = InvoiceDocumentState.Credited,
+        Limit = 1000000,
+        Offset = 1000000,
+    }
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `ListNativeInvoicesRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Billing.<a href="/src/SchematicHQ.Client/Billing/BillingClient.cs">GetNativeInvoiceAsync</a>(invoiceId) -> WithRawResponseTask&lt;GetNativeInvoiceResponse&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Billing.GetNativeInvoiceAsync("invoice_id");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**invoiceId:** `string` — invoice_id
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Billing.<a href="/src/SchematicHQ.Client/Billing/BillingClient.cs">ExportNativeInvoiceAsync</a>(invoiceId) -> WithRawResponseTask&lt;Stream&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Billing.ExportNativeInvoiceAsync("invoice_id");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**invoiceId:** `string` — invoice_id
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Billing.<a href="/src/SchematicHQ.Client/Billing/BillingClient.cs">FinalizeNativeInvoiceAsync</a>(invoiceId) -> WithRawResponseTask&lt;FinalizeNativeInvoiceResponse&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Billing.FinalizeNativeInvoiceAsync("invoice_id");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**invoiceId:** `string` — invoice_id
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Billing.<a href="/src/SchematicHQ.Client/Billing/BillingClient.cs">MarkNativeInvoicePaidAsync</a>(invoiceId, MarkInvoicePaidRequestBody { ... }) -> WithRawResponseTask&lt;MarkNativeInvoicePaidResponse&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Billing.MarkNativeInvoicePaidAsync(
+    "invoice_id",
+    new MarkInvoicePaidRequestBody { IdempotencyKey = "idempotency_key" }
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**invoiceId:** `string` — invoice_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `MarkInvoicePaidRequestBody` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Billing.<a href="/src/SchematicHQ.Client/Billing/BillingClient.cs">VoidNativeInvoiceAsync</a>(invoiceId) -> WithRawResponseTask&lt;VoidNativeInvoiceResponse&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Billing.VoidNativeInvoiceAsync("invoice_id");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**invoiceId:** `string` — invoice_id
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Billing.<a href="/src/SchematicHQ.Client/Billing/BillingClient.cs">CountNativeInvoicesAsync</a>(CountNativeInvoicesRequest { ... }) -> WithRawResponseTask&lt;CountNativeInvoicesResponse&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Billing.CountNativeInvoicesAsync(
+    new CountNativeInvoicesRequest
+    {
+        CompanyId = "company_id",
+        ContractId = "contract_id",
+        DocumentState = InvoiceDocumentState.Credited,
+        Limit = 1000000,
+        Offset = 1000000,
+    }
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `CountNativeInvoicesRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 ## credits
 <details><summary><code>client.Credits.<a href="/src/SchematicHQ.Client/Credits/CreditsClient.cs">ListBillingCreditsAsync</a>(ListBillingCreditsRequest { ... }) -> WithRawResponseTask&lt;ListBillingCreditsResponse&gt;</code></summary>
 <dl>
@@ -8671,7 +8980,9 @@ await client.Plans.ListCustomPlanBillingsAsync(
     {
         CompanyId = "company_id",
         PlanId = "plan_id",
+        PlanVersionId = "plan_version_id",
         PlanBillingSource = PlanBillingSource.Amendment,
+        PlanBillingSources = new List<PlanBillingSource>() { PlanBillingSource.Amendment },
         Status = CustomPlanBillingStatus.Active,
         Statuses = new List<CustomPlanBillingStatus>() { CustomPlanBillingStatus.Active },
         Limit = 1000000,
@@ -9510,6 +9821,61 @@ await client.Plans.GetPlanVersionDiffAsync(
 
 ```csharp
 await client.Plans.PublishPlanVersionAsync(
+    "plan_version_id",
+    new PublishPlanVersionRequestBody
+    {
+        ExcludedCompanyIds = new List<string>() { "excluded_company_ids" },
+        MigrationStrategy = PlanVersionMigrationStrategy.EndOfBillingPeriod,
+    }
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**planVersionId:** `string` — plan_version_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `PublishPlanVersionRequestBody` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Plans.<a href="/src/SchematicHQ.Client/Plans/PlansClient.cs">PreviewPublishPlanVersionAsync</a>(planVersionId, PublishPlanVersionRequestBody { ... }) -> WithRawResponseTask&lt;PreviewPublishPlanVersionResponse&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Plans.PreviewPublishPlanVersionAsync(
     "plan_version_id",
     new PublishPlanVersionRequestBody
     {
