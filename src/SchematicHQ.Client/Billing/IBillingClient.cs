@@ -170,6 +170,12 @@ public partial interface IBillingClient
         CancellationToken cancellationToken = default
     );
 
+    WithRawResponseTask<GetCompanyNativeSubscriptionResponse> GetCompanyNativeSubscriptionAsync(
+        string companyId,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    );
+
     WithRawResponseTask<ListNativeInvoicesResponse> ListNativeInvoicesAsync(
         ListNativeInvoicesRequest request,
         RequestOptions? options = null,
@@ -197,6 +203,12 @@ public partial interface IBillingClient
     WithRawResponseTask<MarkNativeInvoicePaidResponse> MarkNativeInvoicePaidAsync(
         string invoiceId,
         MarkInvoicePaidRequestBody request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    );
+
+    WithRawResponseTask<global::System.IO.Stream> DownloadNativeInvoicePdfAsync(
+        string invoiceId,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     );

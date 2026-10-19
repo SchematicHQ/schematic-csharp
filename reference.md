@@ -2262,6 +2262,46 @@ await client.Billing.UpsertBillingSubscriptionAsync(
 </dl>
 </details>
 
+<details><summary><code>client.Billing.<a href="/src/SchematicHQ.Client/Billing/BillingClient.cs">GetCompanyNativeSubscriptionAsync</a>(companyId) -> WithRawResponseTask&lt;GetCompanyNativeSubscriptionResponse&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Billing.GetCompanyNativeSubscriptionAsync("company_id");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**companyId:** `string` — company_id
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.Billing.<a href="/src/SchematicHQ.Client/Billing/BillingClient.cs">ListNativeInvoicesAsync</a>(ListNativeInvoicesRequest { ... }) -> WithRawResponseTask&lt;ListNativeInvoicesResponse&gt;</code></summary>
 <dl>
 <dd>
@@ -2471,6 +2511,46 @@ await client.Billing.MarkNativeInvoicePaidAsync(
 <dd>
 
 **request:** `MarkInvoicePaidRequestBody` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Billing.<a href="/src/SchematicHQ.Client/Billing/BillingClient.cs">DownloadNativeInvoicePdfAsync</a>(invoiceId) -> WithRawResponseTask&lt;Stream&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Billing.DownloadNativeInvoicePdfAsync("invoice_id");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**invoiceId:** `string` — invoice_id
     
 </dd>
 </dl>
@@ -11359,7 +11439,6 @@ await client.Features.ListFlagsAsync(
 await client.Features.CreateFlagAsync(
     new CreateFlagRequestBody
     {
-        DefaultValue = true,
         Description = "description",
         FlagType = "boolean",
         Key = "key",
@@ -11449,7 +11528,6 @@ await client.Features.UpdateFlagAsync(
     "flag_id",
     new CreateFlagRequestBody
     {
-        DefaultValue = true,
         Description = "description",
         FlagType = "boolean",
         Key = "key",

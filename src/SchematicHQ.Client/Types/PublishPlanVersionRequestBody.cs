@@ -12,7 +12,7 @@ public record PublishPlanVersionRequestBody : IJsonOnDeserialized
         new Dictionary<string, JsonElement>();
 
     /// <summary>
-    /// When the company gets the plan. On a custom-plan republish, on_payment is only accepted when the amendment is invoiced today (migration_strategy immediate, proration_behavior always_invoice, collection_method send_invoice): the company stays on its current version until that invoice is paid.
+    /// When the company gets the plan. On a custom-plan first publish, charging the default payment method always activates on payment. On a custom-plan republish, on_payment is only accepted when the amendment is invoiced today (migration_strategy immediate, proration_behavior always_invoice, collection_method send_invoice): the company stays on its current version until that invoice is paid.
     /// </summary>
     [JsonPropertyName("activation_strategy")]
     public CustomPlanActivationStrategy? ActivationStrategy { get; set; }
@@ -33,7 +33,7 @@ public record PublishPlanVersionRequestBody : IJsonOnDeserialized
     public DateTime? BillingStartDate { get; set; }
 
     /// <summary>
-    /// How the invoice a custom-plan republish raises today is collected. send_invoice (the default) issues it for the company to pay; charge_automatically charges the default payment method straight away. Only accepted on a custom-plan republish with migration_strategy immediate and proration_behavior always_invoice.
+    /// How a custom plan's invoice is collected. send_invoice issues it for the company to pay; charge_automatically charges the default payment method straight away. On a first publish, omitted charges the default payment method when the company has one and the first period is billed, and sends the invoice otherwise. On a republish, omitted means send_invoice, and it is only accepted with migration_strategy immediate and proration_behavior always_invoice.
     /// </summary>
     [JsonPropertyName("collection_method")]
     public BillingCollectionMethod? CollectionMethod { get; set; }

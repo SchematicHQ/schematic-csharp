@@ -11,8 +11,11 @@ public record CreateFlagRequestBody : IJsonOnDeserialized
     private readonly IDictionary<string, JsonElement> _extensionData =
         new Dictionary<string, JsonElement>();
 
+    /// <summary>
+    /// Deprecated. On create, the value a check returns in every environment until that environment has a default rule. Ignored on update: flags are account-wide and rules are per environment, so set an environment's default through its default rule via the flag rules endpoint
+    /// </summary>
     [JsonPropertyName("default_value")]
-    public required bool DefaultValue { get; set; }
+    public bool? DefaultValue { get; set; }
 
     [JsonPropertyName("description")]
     public required string Description { get; set; }

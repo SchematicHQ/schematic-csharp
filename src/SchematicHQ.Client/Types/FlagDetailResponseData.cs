@@ -14,8 +14,11 @@ public record FlagDetailResponseData : IJsonOnDeserialized
     [JsonPropertyName("created_at")]
     public required DateTime CreatedAt { get; set; }
 
+    /// <summary>
+    /// Deprecated. The value a check returns in the requesting environment when no other rule matches: its default rule, or the flag's seed value while it has none. Read the default rule instead
+    /// </summary>
     [JsonPropertyName("default_value")]
-    public required bool DefaultValue { get; set; }
+    public bool? DefaultValue { get; set; }
 
     [JsonPropertyName("description")]
     public required string Description { get; set; }

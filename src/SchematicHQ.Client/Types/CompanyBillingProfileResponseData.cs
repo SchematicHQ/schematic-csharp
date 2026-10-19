@@ -20,17 +20,26 @@ public record CompanyBillingProfileResponseData : IJsonOnDeserialized
     [JsonPropertyName("collection_method")]
     public required BillingCollectionMethod CollectionMethod { get; set; }
 
+    [JsonPropertyName("collector")]
+    public Collector? Collector { get; set; }
+
     [JsonPropertyName("company_id")]
     public required string CompanyId { get; set; }
 
     [JsonPropertyName("created_at")]
     public required DateTime CreatedAt { get; set; }
 
+    [JsonPropertyName("currency")]
+    public Currency? Currency { get; set; }
+
     [JsonPropertyName("days_until_due")]
     public long? DaysUntilDue { get; set; }
 
     [JsonPropertyName("environment_id")]
     public required string EnvironmentId { get; set; }
+
+    [JsonPropertyName("gating_days")]
+    public required long GatingDays { get; set; }
 
     [JsonPropertyName("id")]
     public required string Id { get; set; }
@@ -41,6 +50,12 @@ public record CompanyBillingProfileResponseData : IJsonOnDeserialized
     [JsonPropertyName("name")]
     public string? Name { get; set; }
 
+    [JsonPropertyName("overdraft_limit")]
+    public long? OverdraftLimit { get; set; }
+
+    [JsonPropertyName("payment_gating")]
+    public required PaymentGating PaymentGating { get; set; }
+
     [JsonPropertyName("payment_method_id")]
     public string? PaymentMethodId { get; set; }
 
@@ -49,6 +64,9 @@ public record CompanyBillingProfileResponseData : IJsonOnDeserialized
 
     [JsonPropertyName("provider_type")]
     public required BillingProviderType ProviderType { get; set; }
+
+    [JsonPropertyName("purchase_order")]
+    public string? PurchaseOrder { get; set; }
 
     [JsonPropertyName("updated_at")]
     public required DateTime UpdatedAt { get; set; }
