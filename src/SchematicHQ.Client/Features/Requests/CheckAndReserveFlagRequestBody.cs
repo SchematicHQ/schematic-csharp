@@ -10,7 +10,7 @@ public record CheckAndReserveFlagRequestBody
     public Dictionary<string, string>? Company { get; set; }
 
     /// <summary>
-    /// When the hold lapses if no track event settles it; defaults to one minute from now and may be at most one hour out. The unspent hold is refunded on expiry
+    /// When the hold lapses if no track or inference event settles it; defaults to one minute from now and may be at most one hour out. The unspent hold is refunded on expiry
     /// </summary>
     [JsonPropertyName("expires_at")]
     public DateTime? ExpiresAt { get; set; }
@@ -22,13 +22,13 @@ public record CheckAndReserveFlagRequestBody
     public string? IdempotencyKey { get; set; }
 
     /// <summary>
-    /// Hypothetical usage to evaluate the flag against. When credit_cost names the entitlement's credit, that cost is what gets held; otherwise the hold is the entitlement's consumption rate times quantity, or, when quantity is omitted, times the usage stated here. event_quantities is not supported here and is rejected
+    /// Hypothetical usage to evaluate the flag against. When credit_cost names the entitlement's credit, that cost is what gets held; otherwise, when event_quantities names the entitlement's event subtype, the hold is that event priced at the entitlement's consumption rate and quantity rates, and quantity is ignored; otherwise the hold is the entitlement's consumption rate times quantity, or, when quantity is omitted, times the usage stated here
     /// </summary>
     [JsonPropertyName("preflight")]
     public PreflightRequestBody? Preflight { get; set; }
 
     /// <summary>
-    /// Units of the feature the operation will consume. Sets the hold size together with the entitlement's consumption rate, and is echoed back on the reservation for the settling track event. When it is omitted the units come from preflight.event_usage.quantity, if that event subtype is the entitlement's, else from preflight.usage, else 1
+    /// Units of the feature the operation will consume. Sets the hold size together with the entitlement's consumption rate, and is echoed back on the reservation for the settling track event. When it is omitted the units come from preflight.event_usage.quantity, if that event subtype is the entitlement's, else from preflight.usage, else 1. Ignored when preflight.event_quantities names the entitlement's event subtype, whose quantity is used instead
     /// </summary>
     [JsonPropertyName("quantity")]
     public double? Quantity { get; set; }

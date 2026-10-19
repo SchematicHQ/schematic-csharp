@@ -30,13 +30,13 @@ public record FlagCheckReservationResponseData : IJsonOnDeserialized
     public required double CreditsReserved { get; set; }
 
     /// <summary>
-    /// The event subtype the settling track event should carry
+    /// The event subtype the settling track event should carry, or the event name of a settling inference event
     /// </summary>
     [JsonPropertyName("event_subtype")]
     public string? EventSubtype { get; set; }
 
     /// <summary>
-    /// When the unspent hold is refunded if no track event settles it
+    /// When the unspent hold is refunded if no track or inference event settles it
     /// </summary>
     [JsonPropertyName("expires_at")]
     public required DateTime ExpiresAt { get; set; }

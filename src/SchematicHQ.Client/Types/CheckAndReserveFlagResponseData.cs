@@ -78,7 +78,7 @@ public record CheckAndReserveFlagResponseData : IJsonOnDeserialized
     public required string Reason { get; set; }
 
     /// <summary>
-    /// The hold taken on the company's credit balance for this operation, when the flag allowed it and the feature is credit-metered. Settle it by sending a track event carrying its ID as reservation_id; the unspent hold is refunded at expires_at otherwise
+    /// The hold taken on the company's credit balance for this operation, when the flag allowed it and the feature is credit-metered. Settle it by sending a track or inference event carrying its ID as reservation_id; the unspent hold is refunded at expires_at otherwise
     /// </summary>
     [JsonPropertyName("reservation")]
     public FlagCheckReservationResponseData? Reservation { get; set; }

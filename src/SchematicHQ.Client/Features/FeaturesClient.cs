@@ -2955,7 +2955,6 @@ public partial class FeaturesClient : IFeaturesClient
     /// await client.Features.CreateFlagAsync(
     ///     new CreateFlagRequestBody
     ///     {
-    ///         DefaultValue = true,
     ///         Description = "description",
     ///         FlagType = "boolean",
     ///         Key = "key",
@@ -2993,7 +2992,6 @@ public partial class FeaturesClient : IFeaturesClient
     ///     "flag_id",
     ///     new CreateFlagRequestBody
     ///     {
-    ///         DefaultValue = true,
     ///         Description = "description",
     ///         FlagType = "boolean",
     ///         Key = "key",

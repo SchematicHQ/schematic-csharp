@@ -54,6 +54,12 @@ public record EventBodyInference : IJsonOnDeserialized
     public required long InputTokens { get; set; }
 
     /// <summary>
+    /// Credit lease ID this inference event's credit burn is redeeming against
+    /// </summary>
+    [JsonPropertyName("lease_id")]
+    public string? LeaseId { get; set; }
+
+    /// <summary>
     /// The inference operation; defaults to 'chat'
     /// </summary>
     [JsonPropertyName("operation")]
@@ -88,6 +94,12 @@ public record EventBodyInference : IJsonOnDeserialized
     /// </summary>
     [JsonPropertyName("requests")]
     public long? Requests { get; set; }
+
+    /// <summary>
+    /// Credit reservation ID this inference event's credit burn settles. lease_id takes precedence when both are set
+    /// </summary>
+    [JsonPropertyName("reservation_id")]
+    public string? ReservationId { get; set; }
 
     /// <summary>
     /// The model that served the inference response
