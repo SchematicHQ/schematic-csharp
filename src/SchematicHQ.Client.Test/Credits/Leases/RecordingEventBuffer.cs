@@ -10,8 +10,9 @@ public sealed class RecordingEventBuffer : IEventBuffer<CreateEventRequestBody>
 
     public List<EventBodyTrack> Tracks =>
         Events
-            .Where(e => e.EventType == EventType.Track && e.Body?.IsT0 == true)
-            .Select(e => e.Body!.Value.AsT0)
+            .Where(e => e.EventType == EventType.Track)
+            .Select(e => e.Body?.Value as EventBodyTrack)
+            .OfType<EventBodyTrack>()
             .ToList();
 
     public int FlushCount { get; private set; }

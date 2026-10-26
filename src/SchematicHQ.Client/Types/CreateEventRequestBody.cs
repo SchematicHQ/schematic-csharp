@@ -20,10 +20,10 @@ public record CreateEventRequestBody : IJsonOnDeserialized
 
     [JsonPropertyName("body")]
     public OneOf<
-        EventBodyTrack,
+        EventBodyInference,
         EventBodyFlagCheck,
-        EventBodyIdentify,
-        EventBodyInference
+        EventBodyTrack,
+        EventBodyIdentify
     >? Body { get; set; }
 
     /// <summary>
