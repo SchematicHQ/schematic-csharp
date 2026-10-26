@@ -5982,12 +5982,13 @@ public partial class CreditsClient : ICreditsClient
         CancellationToken cancellationToken = default
     )
     {
-        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 8)
+        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 9)
             .Add("billing_credit_id", request.BillingCreditId)
             .Add("company_id", request.CompanyId)
             .Add("end_time", request.EndTime)
             .Add("event_type", request.EventType)
             .Add("feature_id", request.FeatureId)
+            .Add("source_event_id", request.SourceEventId)
             .Add("start_time", request.StartTime)
             .Add("limit", request.Limit)
             .Add("offset", request.Offset)
@@ -6138,6 +6139,152 @@ public partial class CreditsClient : ICreditsClient
     }
 
     private async Task<
+        WithRawResponse<GetCreditEventLedgerEntryResponse>
+    > GetCreditEventLedgerEntryAsyncCore(
+        string ledgerEntryId,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 0)
+            .MergeAdditional(options?.AdditionalQueryParameters)
+            .Build();
+        var _headers = await new SchematicHQ.Client.Core.HeadersBuilder.Builder()
+            .Add(_client.Options.Headers)
+            .Add(_client.Options.AdditionalHeaders)
+            .Add(options?.AdditionalHeaders)
+            .BuildAsync()
+            .ConfigureAwait(false);
+        var response = await _client
+            .SendRequestAsync(
+                new JsonRequest
+                {
+                    Method = HttpMethod.Get,
+                    Path = string.Format(
+                        "v2/billing/credits/ledger/{0}",
+                        ValueConvert.ToPathParameterString(ledgerEntryId)
+                    ),
+                    QueryString = _queryString,
+                    Headers = _headers,
+                    Options = options,
+                },
+                cancellationToken
+            )
+            .ConfigureAwait(false);
+        if (response.StatusCode is >= 200 and < 400)
+        {
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
+            try
+            {
+                var responseData = JsonUtils.Deserialize<GetCreditEventLedgerEntryResponse>(
+                    responseBody
+                )!;
+                return new WithRawResponse<GetCreditEventLedgerEntryResponse>()
+                {
+                    Data = responseData,
+                    RawResponse = new SchematicHQ.Client.RawResponse()
+                    {
+                        StatusCode = response.Raw.StatusCode,
+                        Url = response.Raw.RequestMessage?.RequestUri ?? new Uri("about:blank"),
+                        Headers = ResponseHeaders.FromHttpResponseMessage(response.Raw),
+                    },
+                };
+            }
+            catch (JsonException e)
+            {
+                throw new SchematicApiException(
+                    "Failed to deserialize response",
+                    response.StatusCode,
+                    responseBody,
+                    e,
+                    rawResponse: new SchematicHQ.Client.RawResponse()
+                    {
+                        StatusCode = response.Raw.StatusCode,
+                        Url = response.Raw.RequestMessage?.RequestUri ?? new Uri("about:blank"),
+                        Headers = ResponseHeaders.FromHttpResponseMessage(response.Raw),
+                    }
+                );
+            }
+        }
+        {
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
+            try
+            {
+                switch (response.StatusCode)
+                {
+                    case 401:
+                        throw new UnauthorizedError(
+                            JsonUtils.Deserialize<ApiError>(responseBody),
+                            rawResponse: new SchematicHQ.Client.RawResponse()
+                            {
+                                StatusCode = response.Raw.StatusCode,
+                                Url =
+                                    response.Raw.RequestMessage?.RequestUri
+                                    ?? new Uri("about:blank"),
+                                Headers = ResponseHeaders.FromHttpResponseMessage(response.Raw),
+                            }
+                        );
+                    case 403:
+                        throw new ForbiddenError(
+                            JsonUtils.Deserialize<ApiError>(responseBody),
+                            rawResponse: new SchematicHQ.Client.RawResponse()
+                            {
+                                StatusCode = response.Raw.StatusCode,
+                                Url =
+                                    response.Raw.RequestMessage?.RequestUri
+                                    ?? new Uri("about:blank"),
+                                Headers = ResponseHeaders.FromHttpResponseMessage(response.Raw),
+                            }
+                        );
+                    case 404:
+                        throw new NotFoundError(
+                            JsonUtils.Deserialize<ApiError>(responseBody),
+                            rawResponse: new SchematicHQ.Client.RawResponse()
+                            {
+                                StatusCode = response.Raw.StatusCode,
+                                Url =
+                                    response.Raw.RequestMessage?.RequestUri
+                                    ?? new Uri("about:blank"),
+                                Headers = ResponseHeaders.FromHttpResponseMessage(response.Raw),
+                            }
+                        );
+                    case 500:
+                        throw new InternalServerError(
+                            JsonUtils.Deserialize<ApiError>(responseBody),
+                            rawResponse: new SchematicHQ.Client.RawResponse()
+                            {
+                                StatusCode = response.Raw.StatusCode,
+                                Url =
+                                    response.Raw.RequestMessage?.RequestUri
+                                    ?? new Uri("about:blank"),
+                                Headers = ResponseHeaders.FromHttpResponseMessage(response.Raw),
+                            }
+                        );
+                }
+            }
+            catch (JsonException)
+            {
+                // unable to map error response, throwing generic error
+            }
+            throw new SchematicApiException(
+                $"Error with status code {response.StatusCode}",
+                response.StatusCode,
+                responseBody,
+                rawResponse: new SchematicHQ.Client.RawResponse()
+                {
+                    StatusCode = response.Raw.StatusCode,
+                    Url = response.Raw.RequestMessage?.RequestUri ?? new Uri("about:blank"),
+                    Headers = ResponseHeaders.FromHttpResponseMessage(response.Raw),
+                }
+            );
+        }
+    }
+
+    private async Task<
         WithRawResponse<CountCreditEventLedgerResponse>
     > CountCreditEventLedgerAsyncCore(
         CountCreditEventLedgerRequest request,
@@ -6145,12 +6292,13 @@ public partial class CreditsClient : ICreditsClient
         CancellationToken cancellationToken = default
     )
     {
-        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 8)
+        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 9)
             .Add("billing_credit_id", request.BillingCreditId)
             .Add("company_id", request.CompanyId)
             .Add("end_time", request.EndTime)
             .Add("event_type", request.EventType)
             .Add("feature_id", request.FeatureId)
+            .Add("source_event_id", request.SourceEventId)
             .Add("start_time", request.StartTime)
             .Add("limit", request.Limit)
             .Add("offset", request.Offset)
@@ -7051,6 +7199,7 @@ public partial class CreditsClient : ICreditsClient
     ///         EndTime = "end_time",
     ///         EventType = CreditEventType.Adjustment,
     ///         FeatureId = "feature_id",
+    ///         SourceEventId = "source_event_id",
     ///         StartTime = "start_time",
     ///         Limit = 1000000,
     ///         Offset = 1000000,
@@ -7069,6 +7218,20 @@ public partial class CreditsClient : ICreditsClient
     }
 
     /// <example><code>
+    /// await client.Credits.GetCreditEventLedgerEntryAsync("ledger_entry_id");
+    /// </code></example>
+    public WithRawResponseTask<GetCreditEventLedgerEntryResponse> GetCreditEventLedgerEntryAsync(
+        string ledgerEntryId,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        return new WithRawResponseTask<GetCreditEventLedgerEntryResponse>(
+            GetCreditEventLedgerEntryAsyncCore(ledgerEntryId, options, cancellationToken)
+        );
+    }
+
+    /// <example><code>
     /// await client.Credits.CountCreditEventLedgerAsync(
     ///     new CountCreditEventLedgerRequest
     ///     {
@@ -7077,6 +7240,7 @@ public partial class CreditsClient : ICreditsClient
     ///         EndTime = "end_time",
     ///         EventType = CreditEventType.Adjustment,
     ///         FeatureId = "feature_id",
+    ///         SourceEventId = "source_event_id",
     ///         StartTime = "start_time",
     ///         Limit = 1000000,
     ///         Offset = 1000000,

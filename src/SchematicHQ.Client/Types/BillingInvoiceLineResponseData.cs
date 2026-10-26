@@ -23,8 +23,23 @@ public record BillingInvoiceLineResponseData : IJsonOnDeserialized
     [JsonPropertyName("charge_ids")]
     public IEnumerable<string> ChargeIds { get; set; } = new List<string>();
 
+    /// <summary>
+    /// What the line bills for: the product, plan, add-on or credit. Null when the line has no subscription line behind it.
+    /// </summary>
+    [JsonPropertyName("description")]
+    public string? Description { get; set; }
+
+    /// <summary>
+    /// The billing provider's line ID. Null on an invoice Schematic issued.
+    /// </summary>
+    [JsonPropertyName("external_id")]
+    public string? ExternalId { get; set; }
+
+    /// <summary>
+    /// Null on a Stripe invoice line.
+    /// </summary>
     [JsonPropertyName("id")]
-    public required string Id { get; set; }
+    public string? Id { get; set; }
 
     [JsonPropertyName("kind")]
     public required InvoiceLineKind Kind { get; set; }

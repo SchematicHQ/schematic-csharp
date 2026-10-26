@@ -5,20 +5,20 @@ using SchematicHQ.Client.Core;
 namespace SchematicHQ.Client;
 
 [Serializable]
-public record GetNativeInvoiceResponse : IJsonOnDeserialized
+public record CatalogCustomPlanCtaResponseData : IJsonOnDeserialized
 {
     [JsonExtensionData]
     private readonly IDictionary<string, JsonElement> _extensionData =
         new Dictionary<string, JsonElement>();
 
-    [JsonPropertyName("data")]
-    public required BillingInvoiceDetailResponseData Data { get; set; }
+    [JsonPropertyName("cta_text")]
+    public string? CtaText { get; set; }
 
-    /// <summary>
-    /// Input parameters
-    /// </summary>
-    [JsonPropertyName("params")]
-    public Dictionary<string, object?> Params { get; set; } = new Dictionary<string, object?>();
+    [JsonPropertyName("cta_url")]
+    public string? CtaUrl { get; set; }
+
+    [JsonPropertyName("price_text")]
+    public string? PriceText { get; set; }
 
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();

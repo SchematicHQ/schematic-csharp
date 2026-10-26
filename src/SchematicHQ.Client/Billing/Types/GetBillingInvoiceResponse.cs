@@ -5,14 +5,14 @@ using SchematicHQ.Client.Core;
 namespace SchematicHQ.Client;
 
 [Serializable]
-public record CreateApiKeyResponse : IJsonOnDeserialized
+public record GetBillingInvoiceResponse : IJsonOnDeserialized
 {
     [JsonExtensionData]
     private readonly IDictionary<string, JsonElement> _extensionData =
         new Dictionary<string, JsonElement>();
 
     [JsonPropertyName("data")]
-    public required ApiKeyCreateResponseData Data { get; set; }
+    public required BillingInvoiceDetailResponseData Data { get; set; }
 
     /// <summary>
     /// Input parameters

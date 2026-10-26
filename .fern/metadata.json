@@ -1,17 +1,17 @@
 {
   "cliVersion": "5.50.0",
   "generatorName": "fernapi/fern-csharp-sdk",
-  "generatorVersion": "2.92.2",
+  "generatorVersion": "2.92.3",
   "generatorConfig": {
     "namespace": "SchematicHQ.Client",
     "client-class-name": "SchematicApi",
     "exported-client-class-name": "Schematic",
     "generate-mock-server-tests": false
   },
-  "originGitCommit": "5df5ee39faba7ee0d2fd40aa455ee0a1b1a00034",
+  "originGitCommit": "b9f637b364a3244444214cc711c017f5b768da6b",
   "originGitCommitIsDirty": false,
   "invokedBy": "ci",
-  "requestedVersion": "1.6.5",
+  "requestedVersion": "1.7.0",
   "ciProvider": "github",
-  "sdkVersion": "1.6.5"
+  "sdkVersion": "1.7.0"
 }

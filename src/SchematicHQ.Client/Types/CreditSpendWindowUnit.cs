@@ -12,6 +12,10 @@ public readonly record struct CreditSpendWindowUnit : IStringEnum
 
     public static readonly CreditSpendWindowUnit Day = new(Values.Day);
 
+    public static readonly CreditSpendWindowUnit Week = new(Values.Week);
+
+    public static readonly CreditSpendWindowUnit Month = new(Values.Month);
+
     public static readonly CreditSpendWindowUnit BillingPeriod = new(Values.BillingPeriod);
 
     public CreditSpendWindowUnit(string value)
@@ -113,6 +117,10 @@ public readonly record struct CreditSpendWindowUnit : IStringEnum
         public const string Hour = "hour";
 
         public const string Day = "day";
+
+        public const string Week = "week";
+
+        public const string Month = "month";
 
         public const string BillingPeriod = "billing_period";
     }

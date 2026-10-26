@@ -47,6 +47,12 @@ public record PublishPreviewResponseData : IJsonOnDeserialized
     [JsonPropertyName("effective_at")]
     public DateTime? EffectiveAt { get; set; }
 
+    /// <summary>
+    /// When the subscription ends instead of renewing once the amendment is finalized: the end date moved back to a renewal, or the end it already has. Null when it renews.
+    /// </summary>
+    [JsonPropertyName("ends_at")]
+    public DateTime? EndsAt { get; set; }
+
     [JsonPropertyName("has_billing_changes")]
     public required bool HasBillingChanges { get; set; }
 

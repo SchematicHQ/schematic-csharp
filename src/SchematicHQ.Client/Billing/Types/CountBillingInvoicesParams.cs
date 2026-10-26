@@ -8,7 +8,7 @@ namespace SchematicHQ.Client;
 /// Input parameters
 /// </summary>
 [Serializable]
-public record ListNativeInvoicesParams : IJsonOnDeserialized
+public record CountBillingInvoicesParams : IJsonOnDeserialized
 {
     [JsonExtensionData]
     private readonly IDictionary<string, JsonElement> _extensionData =
@@ -34,6 +34,27 @@ public record ListNativeInvoicesParams : IJsonOnDeserialized
     /// </summary>
     [JsonPropertyName("offset")]
     public long? Offset { get; set; }
+
+    /// <summary>
+    /// Only open invoices with an amount left to pay whose due date has passed.
+    /// </summary>
+    [JsonPropertyName("past_due")]
+    public bool? PastDue { get; set; }
+
+    /// <summary>
+    /// Only invoices from this billing provider. Leave empty for invoices from Schematic and Stripe.
+    /// </summary>
+    [JsonPropertyName("provider_type")]
+    public BillingProviderType? ProviderType { get; set; }
+
+    /// <summary>
+    /// Search by invoice number, provider invoice ID or company name.
+    /// </summary>
+    [JsonPropertyName("q")]
+    public string? Q { get; set; }
+
+    [JsonPropertyName("status")]
+    public InvoiceStatus? Status { get; set; }
 
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();

@@ -20,8 +20,15 @@ public record PlanVersionMigrationPreviewCompanyResponseData : IJsonOnDeserializ
     [JsonPropertyName("has_custom_pricing")]
     public required bool HasCustomPricing { get; set; }
 
+    /// <summary>
+    /// The message of the first blocking note, or of the first note when none is blocking. Kept for clients that read a single note; prefer notes.
+    /// </summary>
     [JsonPropertyName("note")]
     public string? Note { get; set; }
+
+    [JsonPropertyName("notes")]
+    public IEnumerable<PlanVersionMigrationPreviewNoteResponseData> Notes { get; set; } =
+        new List<PlanVersionMigrationPreviewNoteResponseData>();
 
     [JsonPropertyName("plan_version_id_from")]
     public string? PlanVersionIdFrom { get; set; }

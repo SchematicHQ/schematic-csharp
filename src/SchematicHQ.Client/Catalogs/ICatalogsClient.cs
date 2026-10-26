@@ -91,4 +91,15 @@ public partial interface ICatalogsClient
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     );
+
+    WithRawResponseTask<GetPublicCatalogResponse> GetPublicCatalogAsync(
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    );
+
+    WithRawResponseTask<GetPublicCatalogByIdResponse> GetPublicCatalogByIdAsync(
+        string catalogId,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    );
 }

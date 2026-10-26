@@ -19,6 +19,9 @@ public record CreateCustomPlanBundleRequestBody
     [JsonPropertyName("plan")]
     public required CreateCustomPlanBundlePlanRequestBody Plan { get; set; }
 
+    [JsonPropertyName("renewal_policy")]
+    public RenewalPolicy? RenewalPolicy { get; set; }
+
     /// <inheritdoc />
     public override string ToString()
     {

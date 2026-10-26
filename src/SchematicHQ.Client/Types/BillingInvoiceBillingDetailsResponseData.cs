@@ -5,20 +5,24 @@ using SchematicHQ.Client.Core;
 namespace SchematicHQ.Client;
 
 [Serializable]
-public record UpdateEnvironmentResponse : IJsonOnDeserialized
+public record BillingInvoiceBillingDetailsResponseData : IJsonOnDeserialized
 {
     [JsonExtensionData]
     private readonly IDictionary<string, JsonElement> _extensionData =
         new Dictionary<string, JsonElement>();
 
-    [JsonPropertyName("data")]
-    public required EnvironmentResponseData Data { get; set; }
+    [JsonPropertyName("address")]
+    public BillingInvoiceAddressResponseData? Address { get; set; }
 
-    /// <summary>
-    /// Input parameters
-    /// </summary>
-    [JsonPropertyName("params")]
-    public Dictionary<string, object?> Params { get; set; } = new Dictionary<string, object?>();
+    [JsonPropertyName("email")]
+    public string? Email { get; set; }
+
+    [JsonPropertyName("phone")]
+    public string? Phone { get; set; }
+
+    [JsonPropertyName("tax_ids")]
+    public IEnumerable<BillingInvoiceTaxIdResponseData> TaxIds { get; set; } =
+        new List<BillingInvoiceTaxIdResponseData>();
 
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();

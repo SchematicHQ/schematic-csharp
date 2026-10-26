@@ -35,6 +35,9 @@ public record PlanVersionResponseData : IJsonOnDeserialized
     [JsonPropertyName("plan_type")]
     public required PlanType PlanType { get; set; }
 
+    [JsonPropertyName("renewal_policy")]
+    public required RenewalPolicy RenewalPolicy { get; set; }
+
     [JsonPropertyName("status")]
     public required PlanVersionStatus Status { get; set; }
 

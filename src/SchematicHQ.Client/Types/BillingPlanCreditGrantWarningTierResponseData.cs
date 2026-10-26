@@ -5,32 +5,23 @@ using SchematicHQ.Client.Core;
 namespace SchematicHQ.Client;
 
 [Serializable]
-public record EnvironmentDetailResponseData : IJsonOnDeserialized
+public record BillingPlanCreditGrantWarningTierResponseData : IJsonOnDeserialized
 {
     [JsonExtensionData]
     private readonly IDictionary<string, JsonElement> _extensionData =
         new Dictionary<string, JsonElement>();
 
-    [JsonPropertyName("api_keys")]
-    public IEnumerable<ApiKeyResponseData> ApiKeys { get; set; } = new List<ApiKeyResponseData>();
-
-    [JsonPropertyName("created_at")]
-    public required DateTime CreatedAt { get; set; }
-
-    [JsonPropertyName("environment_type")]
-    public required EnvironmentType EnvironmentType { get; set; }
-
     [JsonPropertyName("id")]
     public required string Id { get; set; }
 
-    [JsonPropertyName("name")]
-    public required string Name { get; set; }
+    [JsonPropertyName("key")]
+    public required string Key { get; set; }
 
-    [JsonPropertyName("require_context_signature")]
-    public required bool RequireContextSignature { get; set; }
-
-    [JsonPropertyName("updated_at")]
-    public required DateTime UpdatedAt { get; set; }
+    /// <summary>
+    /// Credits remaining in the company's balance at which this warning is reached.
+    /// </summary>
+    [JsonPropertyName("value")]
+    public required long Value { get; set; }
 
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();

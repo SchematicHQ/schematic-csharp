@@ -170,6 +170,12 @@ public record CreateBillingPlanCreditGrantRequestBody : IJsonOnDeserialized
     [JsonPropertyName("unit_price_decimal")]
     public string? UnitPriceDecimal { get; set; }
 
+    /// <summary>
+    /// Usage-warning thresholds, in credits remaining in the company's balance (grant, rollover, top-ups and bundles together). Each value must be below the grant amount, and values must be unique. Schematic sends a credit.usage_warning_reached webhook once when the balance drops to each threshold, and again after the balance rises back above it. Omit to leave the thresholds as they are; send an empty list to remove them. At most 5.
+    /// </summary>
+    [JsonPropertyName("warning_tiers")]
+    public IEnumerable<PlanCreditGrantWarningTierRequestBody>? WarningTiers { get; set; }
+
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();
 

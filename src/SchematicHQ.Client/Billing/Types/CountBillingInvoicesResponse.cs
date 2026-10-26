@@ -4,36 +4,21 @@ using SchematicHQ.Client.Core;
 
 namespace SchematicHQ.Client;
 
-/// <summary>
-/// Input parameters
-/// </summary>
 [Serializable]
-public record CountNativeInvoicesParams : IJsonOnDeserialized
+public record CountBillingInvoicesResponse : IJsonOnDeserialized
 {
     [JsonExtensionData]
     private readonly IDictionary<string, JsonElement> _extensionData =
         new Dictionary<string, JsonElement>();
 
-    [JsonPropertyName("company_id")]
-    public string? CompanyId { get; set; }
-
-    [JsonPropertyName("contract_id")]
-    public string? ContractId { get; set; }
-
-    [JsonPropertyName("document_state")]
-    public InvoiceDocumentState? DocumentState { get; set; }
+    [JsonPropertyName("data")]
+    public required CountResponse Data { get; set; }
 
     /// <summary>
-    /// Page limit (default 100)
+    /// Input parameters
     /// </summary>
-    [JsonPropertyName("limit")]
-    public long? Limit { get; set; }
-
-    /// <summary>
-    /// Page offset (default 0)
-    /// </summary>
-    [JsonPropertyName("offset")]
-    public long? Offset { get; set; }
+    [JsonPropertyName("params")]
+    public required CountBillingInvoicesParams Params { get; set; }
 
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();

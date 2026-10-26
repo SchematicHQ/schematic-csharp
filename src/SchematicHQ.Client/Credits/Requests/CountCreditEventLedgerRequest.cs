@@ -21,6 +21,12 @@ public record CountCreditEventLedgerRequest
     [JsonIgnore]
     public string? FeatureId { get; set; }
 
+    /// <summary>
+    /// Return only entries drawn by this track or inference event. Pass the event ID that POST /events returned for it.
+    /// </summary>
+    [JsonIgnore]
+    public string? SourceEventId { get; set; }
+
     [JsonIgnore]
     public string? StartTime { get; set; }
 

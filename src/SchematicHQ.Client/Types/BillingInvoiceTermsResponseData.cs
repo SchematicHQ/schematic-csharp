@@ -11,6 +11,12 @@ public record BillingInvoiceTermsResponseData : IJsonOnDeserialized
     private readonly IDictionary<string, JsonElement> _extensionData =
         new Dictionary<string, JsonElement>();
 
+    /// <summary>
+    /// Who invoices are addressed to. On an invoice, these are the details copied when it was finalized. Null when the contract holds none.
+    /// </summary>
+    [JsonPropertyName("billing_details")]
+    public BillingInvoiceBillingDetailsResponseData? BillingDetails { get; set; }
+
     [JsonPropertyName("collection_method")]
     public required BillingCollectionMethod CollectionMethod { get; set; }
 

@@ -5,20 +5,20 @@ using SchematicHQ.Client.Core;
 namespace SchematicHQ.Client;
 
 [Serializable]
-public record MarkNativeInvoicePaidResponse : IJsonOnDeserialized
+public record CatalogBundleCurrencyPriceResponseData : IJsonOnDeserialized
 {
     [JsonExtensionData]
     private readonly IDictionary<string, JsonElement> _extensionData =
         new Dictionary<string, JsonElement>();
 
-    [JsonPropertyName("data")]
-    public required BillingInvoiceDetailResponseData Data { get; set; }
+    [JsonPropertyName("currency")]
+    public required Currency Currency { get; set; }
 
-    /// <summary>
-    /// Input parameters
-    /// </summary>
-    [JsonPropertyName("params")]
-    public Dictionary<string, object?> Params { get; set; } = new Dictionary<string, object?>();
+    [JsonPropertyName("price")]
+    public CatalogPriceResponseData? Price { get; set; }
+
+    [JsonPropertyName("unit_price")]
+    public CatalogPriceResponseData? UnitPrice { get; set; }
 
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();
