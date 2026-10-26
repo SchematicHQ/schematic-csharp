@@ -41,6 +41,12 @@ public record CountCreditEventLedgerParams : IJsonOnDeserialized
     [JsonPropertyName("offset")]
     public long? Offset { get; set; }
 
+    /// <summary>
+    /// Return only entries drawn by this track or inference event. Pass the event ID that POST /events returned for it.
+    /// </summary>
+    [JsonPropertyName("source_event_id")]
+    public string? SourceEventId { get; set; }
+
     [JsonPropertyName("start_time")]
     public string? StartTime { get; set; }
 

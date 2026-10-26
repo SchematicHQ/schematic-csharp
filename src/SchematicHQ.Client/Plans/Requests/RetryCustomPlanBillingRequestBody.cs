@@ -28,6 +28,12 @@ public record RetryCustomPlanBillingRequestBody
     public long? DaysUntilDue { get; set; }
 
     /// <summary>
+    /// When a plan that doesn't renew ends. Moved back to the last renewal on or before it. When omitted, the end date set at finalize is reissued. Only honored when the retry creates a subscription.
+    /// </summary>
+    [JsonPropertyName("end_date")]
+    public DateTime? EndDate { get; set; }
+
+    /// <summary>
     /// When true, the partial period between the subscription starting and its renewal date is billed pro rata straight away. When false that period is free and no invoice is raised until the renewal date. Only applies alongside billing_cycle_anchor. Defaults to true.
     /// </summary>
     [JsonPropertyName("prorate_first_period")]

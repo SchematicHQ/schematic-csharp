@@ -5,14 +5,14 @@ using SchematicHQ.Client.Core;
 namespace SchematicHQ.Client;
 
 [Serializable]
-public record DeleteEnvironmentResponse : IJsonOnDeserialized
+public record GetPublicCatalogByIdResponse : IJsonOnDeserialized
 {
     [JsonExtensionData]
     private readonly IDictionary<string, JsonElement> _extensionData =
         new Dictionary<string, JsonElement>();
 
     [JsonPropertyName("data")]
-    public required DeleteResponse Data { get; set; }
+    public required PublicCatalogResponseData Data { get; set; }
 
     /// <summary>
     /// Input parameters

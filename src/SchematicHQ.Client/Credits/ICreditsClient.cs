@@ -243,6 +243,12 @@ public partial interface ICreditsClient
         CancellationToken cancellationToken = default
     );
 
+    WithRawResponseTask<GetCreditEventLedgerEntryResponse> GetCreditEventLedgerEntryAsync(
+        string ledgerEntryId,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    );
+
     WithRawResponseTask<CountCreditEventLedgerResponse> CountCreditEventLedgerAsync(
         CountCreditEventLedgerRequest request,
         RequestOptions? options = null,

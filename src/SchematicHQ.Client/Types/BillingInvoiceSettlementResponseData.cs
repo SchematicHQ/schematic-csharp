@@ -17,8 +17,11 @@ public record BillingInvoiceSettlementResponseData : IJsonOnDeserialized
     [JsonPropertyName("collector")]
     public required Collector Collector { get; set; }
 
+    /// <summary>
+    /// Null on a payment Stripe recorded.
+    /// </summary>
     [JsonPropertyName("id")]
-    public required string Id { get; set; }
+    public string? Id { get; set; }
 
     [JsonPropertyName("reference")]
     public string? Reference { get; set; }

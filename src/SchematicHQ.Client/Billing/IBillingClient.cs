@@ -176,13 +176,13 @@ public partial interface IBillingClient
         CancellationToken cancellationToken = default
     );
 
-    WithRawResponseTask<ListNativeInvoicesResponse> ListNativeInvoicesAsync(
-        ListNativeInvoicesRequest request,
+    WithRawResponseTask<ListBillingInvoicesResponse> ListBillingInvoicesAsync(
+        ListBillingInvoicesRequest request,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     );
 
-    WithRawResponseTask<GetNativeInvoiceResponse> GetNativeInvoiceAsync(
+    WithRawResponseTask<GetBillingInvoiceResponse> GetBillingInvoiceAsync(
         string invoiceId,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
@@ -200,7 +200,7 @@ public partial interface IBillingClient
         CancellationToken cancellationToken = default
     );
 
-    WithRawResponseTask<MarkNativeInvoicePaidResponse> MarkNativeInvoicePaidAsync(
+    WithRawResponseTask<MarkBillingInvoicePaidResponse> MarkBillingInvoicePaidAsync(
         string invoiceId,
         MarkInvoicePaidRequestBody request,
         RequestOptions? options = null,
@@ -219,8 +219,8 @@ public partial interface IBillingClient
         CancellationToken cancellationToken = default
     );
 
-    WithRawResponseTask<CountNativeInvoicesResponse> CountNativeInvoicesAsync(
-        CountNativeInvoicesRequest request,
+    WithRawResponseTask<CountBillingInvoicesResponse> CountBillingInvoicesAsync(
+        CountBillingInvoicesRequest request,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     );

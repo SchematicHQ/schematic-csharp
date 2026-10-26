@@ -4562,16 +4562,20 @@ public partial class BillingClient : IBillingClient
         }
     }
 
-    private async Task<WithRawResponse<ListNativeInvoicesResponse>> ListNativeInvoicesAsyncCore(
-        ListNativeInvoicesRequest request,
+    private async Task<WithRawResponse<ListBillingInvoicesResponse>> ListBillingInvoicesAsyncCore(
+        ListBillingInvoicesRequest request,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
     {
-        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 5)
+        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 9)
             .Add("company_id", request.CompanyId)
             .Add("contract_id", request.ContractId)
             .Add("document_state", request.DocumentState)
+            .Add("past_due", request.PastDue)
+            .Add("provider_type", request.ProviderType)
+            .Add("q", request.Q)
+            .Add("status", request.Status)
             .Add("limit", request.Limit)
             .Add("offset", request.Offset)
             .MergeAdditional(options?.AdditionalQueryParameters)
@@ -4602,8 +4606,10 @@ public partial class BillingClient : IBillingClient
                 .ConfigureAwait(false);
             try
             {
-                var responseData = JsonUtils.Deserialize<ListNativeInvoicesResponse>(responseBody)!;
-                return new WithRawResponse<ListNativeInvoicesResponse>()
+                var responseData = JsonUtils.Deserialize<ListBillingInvoicesResponse>(
+                    responseBody
+                )!;
+                return new WithRawResponse<ListBillingInvoicesResponse>()
                 {
                     Data = responseData,
                     RawResponse = new SchematicHQ.Client.RawResponse()
@@ -4718,7 +4724,7 @@ public partial class BillingClient : IBillingClient
         }
     }
 
-    private async Task<WithRawResponse<GetNativeInvoiceResponse>> GetNativeInvoiceAsyncCore(
+    private async Task<WithRawResponse<GetBillingInvoiceResponse>> GetBillingInvoiceAsyncCore(
         string invoiceId,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
@@ -4756,8 +4762,8 @@ public partial class BillingClient : IBillingClient
                 .ConfigureAwait(false);
             try
             {
-                var responseData = JsonUtils.Deserialize<GetNativeInvoiceResponse>(responseBody)!;
-                return new WithRawResponse<GetNativeInvoiceResponse>()
+                var responseData = JsonUtils.Deserialize<GetBillingInvoiceResponse>(responseBody)!;
+                return new WithRawResponse<GetBillingInvoiceResponse>()
                 {
                     Data = responseData,
                     RawResponse = new SchematicHQ.Client.RawResponse()
@@ -5140,8 +5146,8 @@ public partial class BillingClient : IBillingClient
     }
 
     private async Task<
-        WithRawResponse<MarkNativeInvoicePaidResponse>
-    > MarkNativeInvoicePaidAsyncCore(
+        WithRawResponse<MarkBillingInvoicePaidResponse>
+    > MarkBillingInvoicePaidAsyncCore(
         string invoiceId,
         MarkInvoicePaidRequestBody request,
         RequestOptions? options = null,
@@ -5182,10 +5188,10 @@ public partial class BillingClient : IBillingClient
                 .ConfigureAwait(false);
             try
             {
-                var responseData = JsonUtils.Deserialize<MarkNativeInvoicePaidResponse>(
+                var responseData = JsonUtils.Deserialize<MarkBillingInvoicePaidResponse>(
                     responseBody
                 )!;
-                return new WithRawResponse<MarkNativeInvoicePaidResponse>()
+                return new WithRawResponse<MarkBillingInvoicePaidResponse>()
                 {
                     Data = responseData,
                     RawResponse = new SchematicHQ.Client.RawResponse()
@@ -5575,16 +5581,20 @@ public partial class BillingClient : IBillingClient
         }
     }
 
-    private async Task<WithRawResponse<CountNativeInvoicesResponse>> CountNativeInvoicesAsyncCore(
-        CountNativeInvoicesRequest request,
+    private async Task<WithRawResponse<CountBillingInvoicesResponse>> CountBillingInvoicesAsyncCore(
+        CountBillingInvoicesRequest request,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
     {
-        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 5)
+        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 9)
             .Add("company_id", request.CompanyId)
             .Add("contract_id", request.ContractId)
             .Add("document_state", request.DocumentState)
+            .Add("past_due", request.PastDue)
+            .Add("provider_type", request.ProviderType)
+            .Add("q", request.Q)
+            .Add("status", request.Status)
             .Add("limit", request.Limit)
             .Add("offset", request.Offset)
             .MergeAdditional(options?.AdditionalQueryParameters)
@@ -5615,10 +5625,10 @@ public partial class BillingClient : IBillingClient
                 .ConfigureAwait(false);
             try
             {
-                var responseData = JsonUtils.Deserialize<CountNativeInvoicesResponse>(
+                var responseData = JsonUtils.Deserialize<CountBillingInvoicesResponse>(
                     responseBody
                 )!;
-                return new WithRawResponse<CountNativeInvoicesResponse>()
+                return new WithRawResponse<CountBillingInvoicesResponse>()
                 {
                     Data = responseData,
                     RawResponse = new SchematicHQ.Client.RawResponse()
@@ -6388,39 +6398,43 @@ public partial class BillingClient : IBillingClient
     }
 
     /// <example><code>
-    /// await client.Billing.ListNativeInvoicesAsync(
-    ///     new ListNativeInvoicesRequest
+    /// await client.Billing.ListBillingInvoicesAsync(
+    ///     new ListBillingInvoicesRequest
     ///     {
     ///         CompanyId = "company_id",
     ///         ContractId = "contract_id",
     ///         DocumentState = InvoiceDocumentState.Credited,
+    ///         PastDue = true,
+    ///         ProviderType = BillingProviderType.Metronome,
+    ///         Q = "q",
+    ///         Status = InvoiceStatus.Draft,
     ///         Limit = 1000000,
     ///         Offset = 1000000,
     ///     }
     /// );
     /// </code></example>
-    public WithRawResponseTask<ListNativeInvoicesResponse> ListNativeInvoicesAsync(
-        ListNativeInvoicesRequest request,
+    public WithRawResponseTask<ListBillingInvoicesResponse> ListBillingInvoicesAsync(
+        ListBillingInvoicesRequest request,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
     {
-        return new WithRawResponseTask<ListNativeInvoicesResponse>(
-            ListNativeInvoicesAsyncCore(request, options, cancellationToken)
+        return new WithRawResponseTask<ListBillingInvoicesResponse>(
+            ListBillingInvoicesAsyncCore(request, options, cancellationToken)
         );
     }
 
     /// <example><code>
-    /// await client.Billing.GetNativeInvoiceAsync("invoice_id");
+    /// await client.Billing.GetBillingInvoiceAsync("invoice_id");
     /// </code></example>
-    public WithRawResponseTask<GetNativeInvoiceResponse> GetNativeInvoiceAsync(
+    public WithRawResponseTask<GetBillingInvoiceResponse> GetBillingInvoiceAsync(
         string invoiceId,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
     {
-        return new WithRawResponseTask<GetNativeInvoiceResponse>(
-            GetNativeInvoiceAsyncCore(invoiceId, options, cancellationToken)
+        return new WithRawResponseTask<GetBillingInvoiceResponse>(
+            GetBillingInvoiceAsyncCore(invoiceId, options, cancellationToken)
         );
     }
 
@@ -6453,20 +6467,20 @@ public partial class BillingClient : IBillingClient
     }
 
     /// <example><code>
-    /// await client.Billing.MarkNativeInvoicePaidAsync(
+    /// await client.Billing.MarkBillingInvoicePaidAsync(
     ///     "invoice_id",
     ///     new MarkInvoicePaidRequestBody { IdempotencyKey = "idempotency_key" }
     /// );
     /// </code></example>
-    public WithRawResponseTask<MarkNativeInvoicePaidResponse> MarkNativeInvoicePaidAsync(
+    public WithRawResponseTask<MarkBillingInvoicePaidResponse> MarkBillingInvoicePaidAsync(
         string invoiceId,
         MarkInvoicePaidRequestBody request,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
     {
-        return new WithRawResponseTask<MarkNativeInvoicePaidResponse>(
-            MarkNativeInvoicePaidAsyncCore(invoiceId, request, options, cancellationToken)
+        return new WithRawResponseTask<MarkBillingInvoicePaidResponse>(
+            MarkBillingInvoicePaidAsyncCore(invoiceId, request, options, cancellationToken)
         );
     }
 
@@ -6499,25 +6513,29 @@ public partial class BillingClient : IBillingClient
     }
 
     /// <example><code>
-    /// await client.Billing.CountNativeInvoicesAsync(
-    ///     new CountNativeInvoicesRequest
+    /// await client.Billing.CountBillingInvoicesAsync(
+    ///     new CountBillingInvoicesRequest
     ///     {
     ///         CompanyId = "company_id",
     ///         ContractId = "contract_id",
     ///         DocumentState = InvoiceDocumentState.Credited,
+    ///         PastDue = true,
+    ///         ProviderType = BillingProviderType.Metronome,
+    ///         Q = "q",
+    ///         Status = InvoiceStatus.Draft,
     ///         Limit = 1000000,
     ///         Offset = 1000000,
     ///     }
     /// );
     /// </code></example>
-    public WithRawResponseTask<CountNativeInvoicesResponse> CountNativeInvoicesAsync(
-        CountNativeInvoicesRequest request,
+    public WithRawResponseTask<CountBillingInvoicesResponse> CountBillingInvoicesAsync(
+        CountBillingInvoicesRequest request,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
     {
-        return new WithRawResponseTask<CountNativeInvoicesResponse>(
-            CountNativeInvoicesAsyncCore(request, options, cancellationToken)
+        return new WithRawResponseTask<CountBillingInvoicesResponse>(
+            CountBillingInvoicesAsyncCore(request, options, cancellationToken)
         );
     }
 }

@@ -10,6 +10,8 @@ public readonly record struct EntitlementType : IStringEnum
 {
     public static readonly EntitlementType CompanyOverride = new(Values.CompanyOverride);
 
+    public static readonly EntitlementType PlanCreditGrant = new(Values.PlanCreditGrant);
+
     public static readonly EntitlementType PlanEntitlement = new(Values.PlanEntitlement);
 
     public static readonly EntitlementType Unknown = new(Values.Unknown);
@@ -111,6 +113,8 @@ public readonly record struct EntitlementType : IStringEnum
     public static class Values
     {
         public const string CompanyOverride = "company_override";
+
+        public const string PlanCreditGrant = "plan_credit_grant";
 
         public const string PlanEntitlement = "plan_entitlement";
 

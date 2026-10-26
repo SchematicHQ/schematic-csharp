@@ -1,4 +1,214 @@
 # Reference
+<details><summary><code>client.<a href="/src/SchematicHQ.Client/Schematic.cs">PostApiKeysAsync</a>() -> WithRawResponseTask</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.PostApiKeysAsync();
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.<a href="/src/SchematicHQ.Client/Schematic.cs">PutApiKeysApiKeyIdAsync</a>(apiKeyId) -> WithRawResponseTask</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.PutApiKeysApiKeyIdAsync("api_key_id");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**apiKeyId:** `string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.<a href="/src/SchematicHQ.Client/Schematic.cs">DeleteApiKeysApiKeyIdAsync</a>(apiKeyId) -> WithRawResponseTask</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.DeleteApiKeysApiKeyIdAsync("api_key_id");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**apiKeyId:** `string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.<a href="/src/SchematicHQ.Client/Schematic.cs">PostEnvironmentsAsync</a>() -> WithRawResponseTask</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.PostEnvironmentsAsync();
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.<a href="/src/SchematicHQ.Client/Schematic.cs">PutEnvironmentsEnvironmentIdAsync</a>(environmentId) -> WithRawResponseTask</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.PutEnvironmentsEnvironmentIdAsync("environment_id");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**environmentId:** `string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.<a href="/src/SchematicHQ.Client/Schematic.cs">DeleteEnvironmentsEnvironmentIdAsync</a>(environmentId) -> WithRawResponseTask</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.DeleteEnvironmentsEnvironmentIdAsync("environment_id");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**environmentId:** `string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.<a href="/src/SchematicHQ.Client/Schematic.cs">GetCreditLedgerAsync</a>() -> WithRawResponseTask</code></summary>
 <dl>
 <dd>
@@ -211,46 +421,6 @@ await client.Accounts.ListApiKeysAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Accounts.<a href="/src/SchematicHQ.Client/Accounts/AccountsClient.cs">CreateApiKeyAsync</a>(CreateApiKeyRequestBody { ... }) -> WithRawResponseTask&lt;CreateApiKeyResponse&gt;</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```csharp
-await client.Accounts.CreateApiKeyAsync(new CreateApiKeyRequestBody { Name = "name" });
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**request:** `CreateApiKeyRequestBody` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
 <details><summary><code>client.Accounts.<a href="/src/SchematicHQ.Client/Accounts/AccountsClient.cs">GetApiKeyAsync</a>(apiKeyId) -> WithRawResponseTask&lt;GetApiKeyResponse&gt;</code></summary>
 <dl>
 <dd>
@@ -265,94 +435,6 @@ await client.Accounts.CreateApiKeyAsync(new CreateApiKeyRequestBody { Name = "na
 
 ```csharp
 await client.Accounts.GetApiKeyAsync("api_key_id");
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**apiKeyId:** `string` — api_key_id
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Accounts.<a href="/src/SchematicHQ.Client/Accounts/AccountsClient.cs">UpdateApiKeyAsync</a>(apiKeyId, UpdateApiKeyRequestBody { ... }) -> WithRawResponseTask&lt;UpdateApiKeyResponse&gt;</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```csharp
-await client.Accounts.UpdateApiKeyAsync("api_key_id", new UpdateApiKeyRequestBody());
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**apiKeyId:** `string` — api_key_id
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request:** `UpdateApiKeyRequestBody` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Accounts.<a href="/src/SchematicHQ.Client/Accounts/AccountsClient.cs">DeleteApiKeyAsync</a>(apiKeyId) -> WithRawResponseTask&lt;DeleteApiKeyResponse&gt;</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```csharp
-await client.Accounts.DeleteApiKeyAsync("api_key_id");
 ```
 </dd>
 </dl>
@@ -616,52 +698,6 @@ await client.Accounts.ListEnvironmentsAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Accounts.<a href="/src/SchematicHQ.Client/Accounts/AccountsClient.cs">CreateEnvironmentAsync</a>(CreateEnvironmentRequestBody { ... }) -> WithRawResponseTask&lt;CreateEnvironmentResponse&gt;</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```csharp
-await client.Accounts.CreateEnvironmentAsync(
-    new CreateEnvironmentRequestBody
-    {
-        EnvironmentType = EnvironmentType.Development,
-        Name = "name",
-    }
-);
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**request:** `CreateEnvironmentRequestBody` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
 <details><summary><code>client.Accounts.<a href="/src/SchematicHQ.Client/Accounts/AccountsClient.cs">GetEnvironmentAsync</a>(environmentId) -> WithRawResponseTask&lt;GetEnvironmentResponse&gt;</code></summary>
 <dl>
 <dd>
@@ -676,94 +712,6 @@ await client.Accounts.CreateEnvironmentAsync(
 
 ```csharp
 await client.Accounts.GetEnvironmentAsync("environment_id");
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**environmentId:** `string` — environment_id
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Accounts.<a href="/src/SchematicHQ.Client/Accounts/AccountsClient.cs">UpdateEnvironmentAsync</a>(environmentId, UpdateEnvironmentRequestBody { ... }) -> WithRawResponseTask&lt;UpdateEnvironmentResponse&gt;</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```csharp
-await client.Accounts.UpdateEnvironmentAsync("environment_id", new UpdateEnvironmentRequestBody());
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**environmentId:** `string` — environment_id
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request:** `UpdateEnvironmentRequestBody` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Accounts.<a href="/src/SchematicHQ.Client/Accounts/AccountsClient.cs">DeleteEnvironmentAsync</a>(environmentId) -> WithRawResponseTask&lt;DeleteEnvironmentResponse&gt;</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```csharp
-await client.Accounts.DeleteEnvironmentAsync("environment_id");
 ```
 </dd>
 </dl>
@@ -2302,7 +2250,7 @@ await client.Billing.GetCompanyNativeSubscriptionAsync("company_id");
 </dl>
 </details>
 
-<details><summary><code>client.Billing.<a href="/src/SchematicHQ.Client/Billing/BillingClient.cs">ListNativeInvoicesAsync</a>(ListNativeInvoicesRequest { ... }) -> WithRawResponseTask&lt;ListNativeInvoicesResponse&gt;</code></summary>
+<details><summary><code>client.Billing.<a href="/src/SchematicHQ.Client/Billing/BillingClient.cs">ListBillingInvoicesAsync</a>(ListBillingInvoicesRequest { ... }) -> WithRawResponseTask&lt;ListBillingInvoicesResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -2315,12 +2263,16 @@ await client.Billing.GetCompanyNativeSubscriptionAsync("company_id");
 <dd>
 
 ```csharp
-await client.Billing.ListNativeInvoicesAsync(
-    new ListNativeInvoicesRequest
+await client.Billing.ListBillingInvoicesAsync(
+    new ListBillingInvoicesRequest
     {
         CompanyId = "company_id",
         ContractId = "contract_id",
         DocumentState = InvoiceDocumentState.Credited,
+        PastDue = true,
+        ProviderType = BillingProviderType.Metronome,
+        Q = "q",
+        Status = InvoiceStatus.Draft,
         Limit = 1000000,
         Offset = 1000000,
     }
@@ -2339,7 +2291,7 @@ await client.Billing.ListNativeInvoicesAsync(
 <dl>
 <dd>
 
-**request:** `ListNativeInvoicesRequest` 
+**request:** `ListBillingInvoicesRequest` 
     
 </dd>
 </dl>
@@ -2351,7 +2303,7 @@ await client.Billing.ListNativeInvoicesAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Billing.<a href="/src/SchematicHQ.Client/Billing/BillingClient.cs">GetNativeInvoiceAsync</a>(invoiceId) -> WithRawResponseTask&lt;GetNativeInvoiceResponse&gt;</code></summary>
+<details><summary><code>client.Billing.<a href="/src/SchematicHQ.Client/Billing/BillingClient.cs">GetBillingInvoiceAsync</a>(invoiceId) -> WithRawResponseTask&lt;GetBillingInvoiceResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -2364,7 +2316,7 @@ await client.Billing.ListNativeInvoicesAsync(
 <dd>
 
 ```csharp
-await client.Billing.GetNativeInvoiceAsync("invoice_id");
+await client.Billing.GetBillingInvoiceAsync("invoice_id");
 ```
 </dd>
 </dl>
@@ -2471,7 +2423,7 @@ await client.Billing.FinalizeNativeInvoiceAsync("invoice_id");
 </dl>
 </details>
 
-<details><summary><code>client.Billing.<a href="/src/SchematicHQ.Client/Billing/BillingClient.cs">MarkNativeInvoicePaidAsync</a>(invoiceId, MarkInvoicePaidRequestBody { ... }) -> WithRawResponseTask&lt;MarkNativeInvoicePaidResponse&gt;</code></summary>
+<details><summary><code>client.Billing.<a href="/src/SchematicHQ.Client/Billing/BillingClient.cs">MarkBillingInvoicePaidAsync</a>(invoiceId, MarkInvoicePaidRequestBody { ... }) -> WithRawResponseTask&lt;MarkBillingInvoicePaidResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -2484,7 +2436,7 @@ await client.Billing.FinalizeNativeInvoiceAsync("invoice_id");
 <dd>
 
 ```csharp
-await client.Billing.MarkNativeInvoicePaidAsync(
+await client.Billing.MarkBillingInvoicePaidAsync(
     "invoice_id",
     new MarkInvoicePaidRequestBody { IdempotencyKey = "idempotency_key" }
 );
@@ -2602,7 +2554,7 @@ await client.Billing.VoidNativeInvoiceAsync("invoice_id");
 </dl>
 </details>
 
-<details><summary><code>client.Billing.<a href="/src/SchematicHQ.Client/Billing/BillingClient.cs">CountNativeInvoicesAsync</a>(CountNativeInvoicesRequest { ... }) -> WithRawResponseTask&lt;CountNativeInvoicesResponse&gt;</code></summary>
+<details><summary><code>client.Billing.<a href="/src/SchematicHQ.Client/Billing/BillingClient.cs">CountBillingInvoicesAsync</a>(CountBillingInvoicesRequest { ... }) -> WithRawResponseTask&lt;CountBillingInvoicesResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -2615,12 +2567,16 @@ await client.Billing.VoidNativeInvoiceAsync("invoice_id");
 <dd>
 
 ```csharp
-await client.Billing.CountNativeInvoicesAsync(
-    new CountNativeInvoicesRequest
+await client.Billing.CountBillingInvoicesAsync(
+    new CountBillingInvoicesRequest
     {
         CompanyId = "company_id",
         ContractId = "contract_id",
         DocumentState = InvoiceDocumentState.Credited,
+        PastDue = true,
+        ProviderType = BillingProviderType.Metronome,
+        Q = "q",
+        Status = InvoiceStatus.Draft,
         Limit = 1000000,
         Offset = 1000000,
     }
@@ -2639,7 +2595,7 @@ await client.Billing.CountNativeInvoicesAsync(
 <dl>
 <dd>
 
-**request:** `CountNativeInvoicesRequest` 
+**request:** `CountBillingInvoicesRequest` 
     
 </dd>
 </dl>
@@ -4452,6 +4408,7 @@ await client.Credits.ListCreditEventLedgerAsync(
         EndTime = "end_time",
         EventType = CreditEventType.Adjustment,
         FeatureId = "feature_id",
+        SourceEventId = "source_event_id",
         StartTime = "start_time",
         Limit = 1000000,
         Offset = 1000000,
@@ -4472,6 +4429,46 @@ await client.Credits.ListCreditEventLedgerAsync(
 <dd>
 
 **request:** `ListCreditEventLedgerRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Credits.<a href="/src/SchematicHQ.Client/Credits/CreditsClient.cs">GetCreditEventLedgerEntryAsync</a>(ledgerEntryId) -> WithRawResponseTask&lt;GetCreditEventLedgerEntryResponse&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Credits.GetCreditEventLedgerEntryAsync("ledger_entry_id");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**ledgerEntryId:** `string` — ledger_entry_id
     
 </dd>
 </dl>
@@ -4504,6 +4501,7 @@ await client.Credits.CountCreditEventLedgerAsync(
         EndTime = "end_time",
         EventType = CreditEventType.Adjustment,
         FeatureId = "feature_id",
+        SourceEventId = "source_event_id",
         StartTime = "start_time",
         Limit = 1000000,
         Offset = 1000000,
@@ -5144,6 +5142,71 @@ await client.Catalogs.RemovePlanAsync("catalog_id", "plan_id");
 <dd>
 
 **planId:** `string` — plan_id
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Catalogs.<a href="/src/SchematicHQ.Client/Catalogs/CatalogsClient.cs">GetPublicCatalogAsync</a>() -> WithRawResponseTask&lt;GetPublicCatalogResponse&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Catalogs.GetPublicCatalogAsync();
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Catalogs.<a href="/src/SchematicHQ.Client/Catalogs/CatalogsClient.cs">GetPublicCatalogByIdAsync</a>(catalogId) -> WithRawResponseTask&lt;GetPublicCatalogByIdResponse&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Catalogs.GetPublicCatalogByIdAsync("catalog_id");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**catalogId:** `string` — catalog_id
     
 </dd>
 </dl>

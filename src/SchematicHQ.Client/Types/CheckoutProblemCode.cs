@@ -58,6 +58,8 @@ public readonly record struct CheckoutProblemCode : IStringEnum
         Values.BillingStartDateTooFarInPast
     );
 
+    public static readonly CheckoutProblemCode CheckoutSuperseded = new(Values.CheckoutSuperseded);
+
     public static readonly CheckoutProblemCode CreditBundleIncompatible = new(
         Values.CreditBundleIncompatible
     );
@@ -80,6 +82,18 @@ public readonly record struct CheckoutProblemCode : IStringEnum
 
     public static readonly CheckoutProblemCode DowngradeNotPermitted = new(
         Values.DowngradeNotPermitted
+    );
+
+    public static readonly CheckoutProblemCode EndDateMustBeFuture = new(
+        Values.EndDateMustBeFuture
+    );
+
+    public static readonly CheckoutProblemCode EndDateNeedsNewSubscription = new(
+        Values.EndDateNeedsNewSubscription
+    );
+
+    public static readonly CheckoutProblemCode EndDateNotAfterRenewalDate = new(
+        Values.EndDateNotAfterRenewalDate
     );
 
     public static readonly CheckoutProblemCode FreeFirstPeriodActivatesOnPayment = new(
@@ -289,6 +303,8 @@ public readonly record struct CheckoutProblemCode : IStringEnum
 
         public const string BillingStartDateTooFarInPast = "billing_start_date_too_far_in_past";
 
+        public const string CheckoutSuperseded = "checkout_superseded";
+
         public const string CreditBundleIncompatible = "credit_bundle_incompatible";
 
         public const string CreditBundleUnavailable = "credit_bundle_unavailable";
@@ -302,6 +318,12 @@ public readonly record struct CheckoutProblemCode : IStringEnum
         public const string DiscountIneligible = "discount_ineligible";
 
         public const string DowngradeNotPermitted = "downgrade_not_permitted";
+
+        public const string EndDateMustBeFuture = "end_date_must_be_future";
+
+        public const string EndDateNeedsNewSubscription = "end_date_needs_new_subscription";
+
+        public const string EndDateNotAfterRenewalDate = "end_date_not_after_renewal_date";
 
         public const string FreeFirstPeriodActivatesOnPayment =
             "free_first_period_activates_on_payment";

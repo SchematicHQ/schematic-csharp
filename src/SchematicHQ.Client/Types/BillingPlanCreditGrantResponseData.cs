@@ -219,6 +219,13 @@ public record BillingPlanCreditGrantResponseData : IJsonOnDeserialized
     [JsonPropertyName("updated_at")]
     public required DateTime UpdatedAt { get; set; }
 
+    /// <summary>
+    /// Usage-warning thresholds, in credits remaining in the company's balance, highest first. Schematic sends a credit.usage_warning_reached webhook when the balance drops to each one. Empty when none are set.
+    /// </summary>
+    [JsonPropertyName("warning_tiers")]
+    public IEnumerable<BillingPlanCreditGrantWarningTierResponseData> WarningTiers { get; set; } =
+        new List<BillingPlanCreditGrantWarningTierResponseData>();
+
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();
 

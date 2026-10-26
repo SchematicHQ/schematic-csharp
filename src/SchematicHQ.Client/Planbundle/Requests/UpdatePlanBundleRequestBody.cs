@@ -22,6 +22,9 @@ public record UpdatePlanBundleRequestBody
     [JsonPropertyName("plan_version_id")]
     public string? PlanVersionId { get; set; }
 
+    [JsonPropertyName("renewal_policy")]
+    public RenewalPolicy? RenewalPolicy { get; set; }
+
     /// <inheritdoc />
     public override string ToString()
     {

@@ -48,6 +48,10 @@ public readonly record struct WebhookRequestType : IStringEnum
         Values.CreditPurchaseSuccess
     );
 
+    public static readonly WebhookRequestType CreditUsageWarningReached = new(
+        Values.CreditUsageWarningReached
+    );
+
     public static readonly WebhookRequestType EntitlementLimitReached = new(
         Values.EntitlementLimitReached
     );
@@ -247,6 +251,8 @@ public readonly record struct WebhookRequestType : IStringEnum
         public const string CreditLimitWarning = "credit.limit.warning";
 
         public const string CreditPurchaseSuccess = "credit.purchase.success";
+
+        public const string CreditUsageWarningReached = "credit.usage_warning_reached";
 
         public const string EntitlementLimitReached = "entitlement.limit.reached";
 

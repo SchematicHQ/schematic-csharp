@@ -20,6 +20,18 @@ public record PreviewSubscriptionFinanceResponseData : IJsonOnDeserialized
     [JsonPropertyName("currency")]
     public required Currency Currency { get; set; }
 
+    /// <summary>
+    /// What the company's stored credit covers of this invoice, in minor units.
+    /// </summary>
+    [JsonPropertyName("customer_balance_applied")]
+    public required long CustomerBalanceApplied { get; set; }
+
+    /// <summary>
+    /// Credit left on the company's balance after this invoice, in minor units: what it did not consume, plus what a total below zero adds, which the provider applies to later invoices.
+    /// </summary>
+    [JsonPropertyName("customer_balance_remaining")]
+    public required long CustomerBalanceRemaining { get; set; }
+
     [JsonPropertyName("discount_amount")]
     public required long DiscountAmount { get; set; }
 
@@ -50,6 +62,12 @@ public record PreviewSubscriptionFinanceResponseData : IJsonOnDeserialized
 
     [JsonPropertyName("proration_billed_at")]
     public DateTime? ProrationBilledAt { get; set; }
+
+    /// <summary>
+    /// The proration itemized in the cart's terms, by plan and price. Null when the change prorates nothing. upcoming_invoice_line_items stays as the billing provider reported it.
+    /// </summary>
+    [JsonPropertyName("proration_detail")]
+    public PreviewSubscriptionProrationResponseData? ProrationDetail { get; set; }
 
     [JsonPropertyName("tax_amount")]
     public long? TaxAmount { get; set; }

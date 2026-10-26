@@ -33,6 +33,9 @@ public record CreatePaymentMethodRequestBody
     [JsonPropertyName("card_last4")]
     public string? CardLast4 { get; set; }
 
+    [JsonPropertyName("customer_billing_details")]
+    public PaymentMethodBillingDetailsRequestBody? CustomerBillingDetails { get; set; }
+
     [JsonPropertyName("customer_external_id")]
     public required string CustomerExternalId { get; set; }
 
