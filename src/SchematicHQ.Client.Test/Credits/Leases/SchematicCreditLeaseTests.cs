@@ -246,7 +246,7 @@ public class SchematicCreditLeaseTests
             new CreditLeaseConfig
             {
                 Mode = CreditLeaseMode.Server,
-                DefaultReservationTTL = TimeSpan.FromHours(2),
+                DefaultReservationTTL = TimeSpan.FromHours(25),
             }
         );
         try

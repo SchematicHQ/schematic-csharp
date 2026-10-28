@@ -71,11 +71,11 @@ public static class LeaseDefaults
     /// The furthest out the API will hold credits, so a larger server-mode
     /// reservation TTL would fail every check.
     /// </summary>
-    public static readonly TimeSpan MaxReservationTTL = TimeSpan.FromHours(1);
+    public static readonly TimeSpan MaxReservationTTL = TimeSpan.FromHours(24);
 
     /// <summary>
     /// Held back from <see cref="MaxReservationTTL"/> because the API measures
-    /// that hour against its own clock while the SDK computes expiresAt against
+    /// that cap against its own clock while the SDK computes expiresAt against
     /// the caller's: a client running ahead would otherwise be rejected at
     /// exactly the cap.
     /// </summary>
@@ -174,8 +174,8 @@ public sealed class CreditLeaseConfig
     /// <summary>
     /// Default reservation TTL. Defaults to <see cref="LeaseDefaults.ReservationTTL"/>.
     /// In server mode it is capped at <see cref="LeaseDefaults.MaxReservationTTL"/>
-    /// less <see cref="LeaseDefaults.ReservationTTLSkewAllowance"/>, since an
-    /// hour out is the furthest the API will hold credits and it measures that
+    /// less <see cref="LeaseDefaults.ReservationTTLSkewAllowance"/>, since 24
+    /// hours out is the furthest the API will hold credits and it measures that
     /// against its own clock.
     /// </summary>
     public TimeSpan? DefaultReservationTTL { get; set; }
