@@ -288,7 +288,7 @@ public partial class Schematic
         _serverReservations = new ApiServerReservationClient(Features, Credits);
 
         var configuredTTL = config.DefaultReservationTTL ?? LeaseDefaults.ReservationTTL;
-        // The API refuses a hold expiring more than an hour after its own clock,
+        // The API refuses a hold expiring more than 24 hours after its own clock,
         // and this TTL is applied to the caller's, so clamp a step below the cap
         // to leave room for skew. Only server mode sends the value to the API: in
         // client mode it sizes the local sweep, so clamping it there would
