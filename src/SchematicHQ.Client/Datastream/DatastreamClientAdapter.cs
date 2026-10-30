@@ -139,6 +139,20 @@ namespace SchematicHQ.Client.Datastream
     }
 
     /// <summary>
+    /// Whether the current connection has received its full flags snapshot,
+    /// waiting up to <paramref name="timeout"/> for it when given. Until then
+    /// flag checks that miss the cache fall back to the API.
+    /// </summary>
+    public async Task<bool> IsReadyAsync(TimeSpan? timeout = null)
+    {
+      if (timeout.HasValue)
+      {
+        return await _client.WaitForFlagsSnapshotAsync(timeout.Value);
+      }
+      return _client.FlagsSnapshotReceived;
+    }
+
+    /// <summary>
     /// Gets the cache version from the replicator, attempting an immediate check if not available
     /// </summary>
     private string? GetReplicatorCacheVersionWithFallback()
@@ -326,7 +340,13 @@ namespace SchematicHQ.Client.Datastream
           return await _client.CheckFlag(cachedCompany, cachedUser, cachedFlag!, preflight);
         }
 
-        // Handle missing flag case first - return FlagNotFound regardless of connection state
+        // Before this connection's snapshot lands, a missing flag may simply
+        // not have arrived, so only the API can answer for it.
+        if (cachedFlag == null && !_client.FlagsSnapshotReceived)
+        {
+          throw new InvalidOperationException($"Flags not yet loaded from datastream, cannot evaluate flag '{flagKey}' locally");
+        }
+
         if (cachedFlag == null)
         {
           return new CheckFlagResult

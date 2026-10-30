@@ -41,7 +41,7 @@ namespace SchematicHQ.Client.Test.Datastream
         }
 
         [Test]
-        public void CheckFlag_WhenFlagIsNotInCache_ReturnsFalse()
+        public void CheckFlag_WhenFlagIsNotInCacheBeforeFlagsLoad_Throws()
         {
             // Arrange - create an adapter that will use our mock client
             var options = new DatastreamOptions();
@@ -52,9 +52,6 @@ namespace SchematicHQ.Client.Test.Datastream
                 System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
             clientField?.SetValue(adapter, _client);
 
-            // Set flag to null to simulate flag not in cache
-            _client.Start();
-
             var request = new CheckFlagRequestBody
             {
                 Company = new Dictionary<string, string>
@@ -63,11 +60,8 @@ namespace SchematicHQ.Client.Test.Datastream
                 }
             };
 
-            // Act
-            var result = adapter.CheckFlag(request, "non-existent-flag").GetAwaiter().GetResult();
-
-            // Assert
-            Assert.That(result.Value, Is.False);
+            Assert.ThrowsAsync<InvalidOperationException>(async () =>
+                await adapter.CheckFlag(request, "non-existent-flag"));
         }
 
         [Test]
@@ -152,19 +146,13 @@ namespace SchematicHQ.Client.Test.Datastream
         [Test]
         public async Task CachedResources_AreReusedWithoutWebSocketRequests()
         {
-            // Arrange
-            SetupFlagsResponse();
-
-            // Create an adapter that will use our mock client
             var options = new DatastreamOptions();
             var adapter = new DatastreamClientAdapter("wss://test.example.com", _mockLogger, "test-api-key", new LocalCache(), options);
 
-            // Get the private _client field from adapter and replace it with our mock client
             var clientField = typeof(DatastreamClientAdapter).GetField("_client",
                 System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
             clientField?.SetValue(adapter, _client);
 
-            // Get the private _connectionTracker field and set its IsConnected property to true
             var trackerField = typeof(DatastreamClientAdapter).GetField("_connectionTracker",
                 System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
             var tracker = trackerField?.GetValue(adapter);
@@ -172,8 +160,23 @@ namespace SchematicHQ.Client.Test.Datastream
                 System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance);
             updateMethod?.Invoke(tracker, new object[] { true });
 
-            // Start the client
-            _client.Start();
+            await HandleMessage(new DataStreamResponse
+            {
+                MessageType = MessageType.Full,
+                EntityType = SchematicHQ.Client.Datastream.EntityType.Flags,
+                Data = JsonDocument.Parse(JsonSerializer.Serialize(new List<RulesengineFlag>
+                {
+                    new RulesengineFlag
+                    {
+                        AccountId = "acc_123",
+                        EnvironmentId = "env_123",
+                        Id = "flag_789",
+                        Key = "new-event-name",
+                        DefaultValue = true,
+                        Rules = new List<RulesengineRule>()
+                    }
+                })).RootElement
+            });
 
             var companyResponse = new DataStreamResponse
             {
@@ -191,35 +194,33 @@ namespace SchematicHQ.Client.Test.Datastream
                 }, _jsonOptions)).RootElement
             };
 
-            // Setup fake WebSocket responses
-            _mockWebSocket.SetupToReceive(JsonSerializer.Serialize(companyResponse));
-
             var request = new CheckFlagRequestBody
             {
                 Company = new Dictionary<string, string> { { "id", "company-123" } }
             };
 
-            // Act - First request should fetch from WebSocket
-            adapter.CheckFlag(request, "new-event-name").GetAwaiter().GetResult();
+            // First request misses the company cache, so it asks the stream and
+            // waits for the answer.
+            var first = adapter.CheckFlag(request, "new-event-name");
+            for (var i = 0; i < 100 && _mockWebSocket.SentMessages.Count == 0; i++)
+            {
+                await Task.Delay(10);
+            }
+            Assert.That(_mockWebSocket.SentMessages.Count, Is.GreaterThan(0), "First request should ask the stream for the company");
+            await HandleMessage(companyResponse);
+            await first;
 
-            // Wait a bit to ensure any async WebSocket operations complete
-            await Task.Delay(50);
-
-            int initialRequestCount = _mockWebSocket.SentMessages.Count;
-            Assert.That(initialRequestCount, Is.GreaterThan(0), "First request should generate at least one WebSocket message");
-
-            // Clear sent messages to track new ones
             _mockWebSocket.SentMessages.Clear();
 
-            // Act - Second request should use cache
-            adapter.CheckFlag(request, "new-event-name").GetAwaiter().GetResult();
+            await adapter.CheckFlag(request, "new-event-name");
 
-            // Wait a bit to ensure any async WebSocket operations complete
-            await Task.Delay(50);
-
-            // Assert - No new messages should be sent when using cached data
             Assert.That(_mockWebSocket.SentMessages.Count, Is.EqualTo(0), "No new WebSocket messages should be sent when using cached data");
         }
+
+        private Task HandleMessage(DataStreamResponse response) =>
+            (Task)typeof(DatastreamClient).GetMethod("HandleMessageResponse",
+                System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)!
+                .Invoke(_client, new object?[] { response })!;
 
         [Test]
         public void Dispose_ClosesWebSocketConnection()

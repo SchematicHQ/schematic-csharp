@@ -287,5 +287,46 @@ namespace SchematicHQ.Client.Test.Datastream
             Assert.ThrowsAsync<TimeoutException>(async () =>
                 await _adapter.CheckFlag(request, "test-flag"));
         }
+
+        [Test]
+        public async Task CheckFlag_MissingFlag_ThrowsUntilFlagsSnapshotLands()
+        {
+            var tracker = typeof(DatastreamClientAdapter).GetField("_connectionTracker",
+                System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)!.GetValue(_adapter)!;
+            tracker.GetType().GetMethod("UpdateConnectionState")!.Invoke(tracker, new object[] { true });
+            var request = new CheckFlagRequestBody();
+
+            Assert.That(await _adapter.IsReadyAsync(TimeSpan.FromMilliseconds(10)), Is.False);
+            Assert.ThrowsAsync<InvalidOperationException>(async () =>
+                await _adapter.CheckFlag(request, "missing-flag"));
+
+            var client = typeof(DatastreamClientAdapter).GetField("_client",
+                System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)!.GetValue(_adapter)!;
+            var flags = new[]
+            {
+                new RulesengineFlag
+                {
+                    Id = "flag_123",
+                    Key = "other-flag",
+                    AccountId = "acc_123",
+                    EnvironmentId = "env_123",
+                    DefaultValue = true
+                }
+            };
+            var snapshot = new DataStreamResponse
+            {
+                MessageType = MessageType.Full,
+                EntityType = SchematicHQ.Client.Datastream.EntityType.Flags,
+                Data = System.Text.Json.JsonDocument.Parse(System.Text.Json.JsonSerializer.Serialize(flags)).RootElement
+            };
+            await (Task)client.GetType().GetMethod("HandleMessageResponse",
+                System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)!
+                .Invoke(client, new object?[] { snapshot })!;
+
+            Assert.That(await _adapter.IsReadyAsync(), Is.True);
+            var result = await _adapter.CheckFlag(request, "missing-flag");
+            Assert.That(result.Reason, Is.EqualTo("FlagNotFound"));
+            Assert.That(result.Value, Is.False);
+        }
     }
 }
