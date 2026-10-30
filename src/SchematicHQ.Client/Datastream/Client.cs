@@ -44,6 +44,11 @@ namespace SchematicHQ.Client.Datastream
     private TaskCompletionSource<bool>? _pendingFlagRequest;
     private readonly object _pendingRequestsLock = new object();
 
+    // Completes once a full flags snapshot lands on the current connection.
+    // Until then a flag missing from cache may just not have arrived yet.
+    private TaskCompletionSource<bool> _flagsSnapshot = NewFlagsSnapshotSource();
+    private readonly object _flagsSnapshotLock = new object();
+
     // Company update locking - per-company locks to prevent concurrent modifications
     private readonly ConcurrentDictionary<string, SemaphoreSlim> _companyUpdateLocks = new ConcurrentDictionary<string, SemaphoreSlim>();
     private readonly object _companyLockCleanupLock = new object();
@@ -202,6 +207,7 @@ namespace SchematicHQ.Client.Datastream
             _readCancellationSource.Dispose();
             _readCancellationSource = new CancellationTokenSource();
           }
+          ResetFlagsSnapshot();
           _webSocket.Options.SetRequestHeader("X-Schematic-Api-Key", _apiKey);
           _webSocket.Options.SetRequestHeader("X-Schematic-Datastream-Mode", DatastreamModeDirect);
           _webSocket.Options.SetRequestHeader("X-Schematic-Client", ClientName);
@@ -258,6 +264,10 @@ namespace SchematicHQ.Client.Datastream
           }
           finally
           {
+            // The next connection's snapshot may delete or add flags, so the
+            // cache stops counting as complete until it arrives.
+            ResetFlagsSnapshot();
+
             // Ensure connection is closed before reconnecting
             if (_webSocket.State == WebSocketState.Open)
             {
@@ -495,6 +505,11 @@ namespace SchematicHQ.Client.Datastream
         }
 
         await _flagsCache.DeleteMissing(cacheKeys, $"{CacheKeyPrefixFlags}:*");
+
+        lock (_flagsSnapshotLock)
+        {
+          _flagsSnapshot.TrySetResult(true);
+        }
 
         lock (_pendingRequestsLock)
         {
@@ -1088,6 +1103,35 @@ namespace SchematicHQ.Client.Datastream
         lock (_pendingRequestsLock)
         {
           _pendingFlagRequest = null;
+        }
+      }
+    }
+
+    internal bool FlagsSnapshotReceived => _flagsSnapshot.Task.IsCompleted;
+
+    internal async Task<bool> WaitForFlagsSnapshotAsync(TimeSpan timeout)
+    {
+      var snapshot = _flagsSnapshot.Task;
+      if (snapshot.IsCompleted)
+      {
+        return true;
+      }
+      using var delayCts = new CancellationTokenSource();
+      var completed = await Task.WhenAny(snapshot, Task.Delay(timeout, delayCts.Token));
+      delayCts.Cancel();
+      return completed == snapshot;
+    }
+
+    private static TaskCompletionSource<bool> NewFlagsSnapshotSource() =>
+      new TaskCompletionSource<bool>(TaskCreationOptions.RunContinuationsAsynchronously);
+
+    private void ResetFlagsSnapshot()
+    {
+      lock (_flagsSnapshotLock)
+      {
+        if (_flagsSnapshot.Task.IsCompleted)
+        {
+          _flagsSnapshot = NewFlagsSnapshotSource();
         }
       }
     }

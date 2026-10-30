@@ -188,39 +188,38 @@ app.MapPost("/configure", async (HttpRequest req) =>
 
     var newClient = new Schematic(apiKey, options);
 
-    // When DataStream is enabled, the SDK starts a WebSocket connection asynchronously
-    // and won't fall back to the API on cache miss until that connection is established.
-    // Wait for the underlying datastream client to report a connection (or timeout) so
-    // tests don't race against the initial sync. Uses reflection because the client is
-    // not exposed publicly on `Schematic`.
+    // When DataStream is enabled, the SDK connects and loads its flags snapshot
+    // asynchronously, and until the snapshot lands it answers flag checks over
+    // REST. The tests check flags right after configure, so wait for the
+    // snapshot to keep them on the datastream path rather than silently passing
+    // over REST. Uses reflection because the client is not exposed publicly on
+    // `Schematic`.
     if (useDataStream && !offline)
     {
-        // Wait for the underlying datastream client to report a connection so
-        // tests don't race against the initial sync. Uses reflection because the
-        // client is not exposed publicly on Schematic.
         try
         {
+            var ready = false;
             var dsField = typeof(Schematic).GetField("_datastreamClient",
                 System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic);
             var ds = dsField?.GetValue(newClient);
             if (ds != null)
             {
-                var method = ds.GetType().GetMethod("IsConnectedAsync");
+                var method = ds.GetType().GetMethod("IsReadyAsync");
                 if (method != null)
                 {
                     var task = (Task<bool>?)method.Invoke(ds, new object?[] { TimeSpan.FromSeconds(10) });
-                    if (task != null) await task;
+                    if (task != null) ready = await task;
                 }
+            }
+            if (!ready)
+            {
+                Console.Error.WriteLine("warn: datastream flags snapshot not ready; flag checks may use the API");
             }
         }
         catch (Exception ex)
         {
-            Console.Error.WriteLine($"warn: waiting for datastream connection failed: {ex.Message}");
+            Console.Error.WriteLine($"warn: waiting for datastream flags snapshot failed: {ex.Message}");
         }
-
-        // The initial flag/cache sync arrives in a separate WebSocket message after
-        // connection. Give it a moment to land before serving requests.
-        await Task.Delay(2000);
     }
 
     lock (stateLock)
