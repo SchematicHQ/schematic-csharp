@@ -364,14 +364,10 @@ namespace SchematicHQ.Client.Datastream
         }
         catch (Exception ex)
         {
-          _logger.LogError(ex, "Error fetching missing resources for flag {FlagKey}", flagKey);
-          return new CheckFlagResult
-          {
-            Reason = "Error",
-            FlagKey = flagKey,
-            Error = ex,
-            Value = false,
-          };
+          // A slow or failed fetch says nothing about the flag, so the caller
+          // falls back to the API instead of reading it as false.
+          _logger.LogWarning(ex, "Error fetching missing resources for flag {FlagKey}, falling back to API", flagKey);
+          throw;
         }
       }
     }

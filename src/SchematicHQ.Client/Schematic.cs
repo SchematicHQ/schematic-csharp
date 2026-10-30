@@ -227,7 +227,6 @@ public partial class Schematic
                 {
                     // Only start WebSocket connections when not in replicator mode
                     _datastreamClient.Start();
-                    _datastreamConnected = true;
 
                     // Start a background task to monitor connection status
                     StartConnectionMonitoring();

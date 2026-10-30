@@ -34,6 +34,11 @@ public class SettleMetricsTests
                 CreditLeases = new CreditLeaseConfig { Mode = CreditLeaseMode.Client },
             }
         );
+        // No socket opens against WireMock, and a track only moves the cached
+        // metric once the client has seen the stream connect.
+        typeof(Schematic)
+            .GetField("_datastreamConnected", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)!
+            .SetValue(_schematic, true);
     }
 
     [TearDown]
