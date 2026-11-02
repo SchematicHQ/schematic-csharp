@@ -65,8 +65,20 @@ public record PublishPlanVersionRequestBody : IJsonOnDeserialized
     [JsonPropertyName("excluded_company_ids")]
     public IEnumerable<string> ExcludedCompanyIds { get; set; } = new List<string>();
 
+    /// <summary>
+    /// With payment_gating revoke_after, how many days past due an invoice may go before the company loses the plan. 0 revokes at once. Only applies when Schematic bills the company. Applies to the company's contract and never creates a plan version. Omitted keeps the contract's setting.
+    /// </summary>
+    [JsonPropertyName("gating_days")]
+    public long? GatingDays { get; set; }
+
     [JsonPropertyName("migration_strategy")]
     public required PlanVersionMigrationStrategy MigrationStrategy { get; set; }
+
+    /// <summary>
+    /// What happens to the company's access when an invoice passes its due date: keep_serving keeps the plan and marks the subscription past due; revoke_after takes the plan away after gating_days. Only applies when Schematic bills the company, to every invoice on its contract, and never creates a plan version. Omitted keeps the contract's setting, which is keep_serving unless changed.
+    /// </summary>
+    [JsonPropertyName("payment_gating")]
+    public PaymentGating? PaymentGating { get; set; }
 
     [JsonPropertyName("phone")]
     public string? Phone { get; set; }

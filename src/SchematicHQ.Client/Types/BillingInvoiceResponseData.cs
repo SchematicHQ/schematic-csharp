@@ -11,6 +11,12 @@ public record BillingInvoiceResponseData : IJsonOnDeserialized
     private readonly IDictionary<string, JsonElement> _extensionData =
         new Dictionary<string, JsonElement>();
 
+    /// <summary>
+    /// What the company is asked to pay: the total less any balance applied to it, never below zero. Zero on a draft.
+    /// </summary>
+    [JsonPropertyName("amount_due")]
+    public required long AmountDue { get; set; }
+
     [JsonPropertyName("amount_paid")]
     public required long AmountPaid { get; set; }
 
@@ -51,6 +57,12 @@ public record BillingInvoiceResponseData : IJsonOnDeserialized
     public DateTime? DueAt { get; set; }
 
     /// <summary>
+    /// The company's balance after this invoice, in minor units. Below zero is credit the next invoice takes off what is due.
+    /// </summary>
+    [JsonPropertyName("ending_balance")]
+    public required long EndingBalance { get; set; }
+
+    /// <summary>
     /// The billing provider's invoice ID. Null on an invoice Schematic issued.
     /// </summary>
     [JsonPropertyName("external_id")]
@@ -79,6 +91,12 @@ public record BillingInvoiceResponseData : IJsonOnDeserialized
 
     [JsonPropertyName("provider_type")]
     public required BillingProviderType ProviderType { get; set; }
+
+    /// <summary>
+    /// The company's balance before this invoice, in minor units. Below zero is credit applied to this invoice.
+    /// </summary>
+    [JsonPropertyName("starting_balance")]
+    public required long StartingBalance { get; set; }
 
     [JsonPropertyName("status")]
     public required InvoiceStatus Status { get; set; }

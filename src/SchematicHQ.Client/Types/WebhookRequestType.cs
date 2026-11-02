@@ -90,6 +90,14 @@ public readonly record struct WebhookRequestType : IStringEnum
 
     public static readonly WebhookRequestType FlagUpdated = new(Values.FlagUpdated);
 
+    public static readonly WebhookRequestType InvoiceFinalized = new(Values.InvoiceFinalized);
+
+    public static readonly WebhookRequestType InvoicePaid = new(Values.InvoicePaid);
+
+    public static readonly WebhookRequestType InvoicePastDue = new(Values.InvoicePastDue);
+
+    public static readonly WebhookRequestType InvoiceVoided = new(Values.InvoiceVoided);
+
     public static readonly WebhookRequestType PlanCreated = new(Values.PlanCreated);
 
     public static readonly WebhookRequestType PlanDeleted = new(Values.PlanDeleted);
@@ -111,6 +119,10 @@ public readonly record struct WebhookRequestType : IStringEnum
     public static readonly WebhookRequestType PlanVersionDeleted = new(Values.PlanVersionDeleted);
 
     public static readonly WebhookRequestType RuleDeleted = new(Values.RuleDeleted);
+
+    public static readonly WebhookRequestType SubscriptionPeriodStarted = new(
+        Values.SubscriptionPeriodStarted
+    );
 
     public static readonly WebhookRequestType TestSend = new(Values.TestSend);
 
@@ -280,6 +292,14 @@ public readonly record struct WebhookRequestType : IStringEnum
 
         public const string FlagUpdated = "flag.updated";
 
+        public const string InvoiceFinalized = "invoice.finalized";
+
+        public const string InvoicePaid = "invoice.paid";
+
+        public const string InvoicePastDue = "invoice.past_due";
+
+        public const string InvoiceVoided = "invoice.voided";
+
         public const string PlanCreated = "plan.created";
 
         public const string PlanDeleted = "plan.deleted";
@@ -295,6 +315,8 @@ public readonly record struct WebhookRequestType : IStringEnum
         public const string PlanVersionDeleted = "plan_version.deleted";
 
         public const string RuleDeleted = "rule.deleted";
+
+        public const string SubscriptionPeriodStarted = "subscription.period.started";
 
         public const string TestSend = "test.send";
 

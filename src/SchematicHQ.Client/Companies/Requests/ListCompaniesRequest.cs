@@ -7,13 +7,19 @@ namespace SchematicHQ.Client;
 public record ListCompaniesRequest
 {
     /// <summary>
+    /// If true, filter companies with an active subscription that is set to cancel at the end of the current period; if false, filter companies without one
+    /// </summary>
+    [JsonIgnore]
+    public bool? CancelAtPeriodEnd { get; set; }
+
+    /// <summary>
     /// Filter companies by one or more credit type IDs (each ID starts with bcrd_)
     /// </summary>
     [JsonIgnore]
     public IEnumerable<string> CreditTypeIds { get; set; } = new List<string>();
 
     /// <summary>
-    /// Filter companies that have a pending scheduled downgrade
+    /// If true, filter companies that have a pending scheduled downgrade; if false, filter companies that do not
     /// </summary>
     [JsonIgnore]
     public bool? HasScheduledDowngrade { get; set; }

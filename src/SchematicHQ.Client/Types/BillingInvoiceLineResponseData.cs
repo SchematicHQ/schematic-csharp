@@ -24,7 +24,7 @@ public record BillingInvoiceLineResponseData : IJsonOnDeserialized
     public IEnumerable<string> ChargeIds { get; set; } = new List<string>();
 
     /// <summary>
-    /// What the line bills for: the product, plan, add-on or credit. Null when the line has no subscription line behind it.
+    /// What the line bills for: the product, plan, add-on or credit, and for part of a period, which part. Null when the line has no subscription line behind it.
     /// </summary>
     [JsonPropertyName("description")]
     public string? Description { get; set; }
@@ -49,6 +49,12 @@ public record BillingInvoiceLineResponseData : IJsonOnDeserialized
 
     [JsonPropertyName("period_start")]
     public DateTime? PeriodStart { get; set; }
+
+    /// <summary>
+    /// The share of a full billing period the line bills, as a decimal from 0 to 1. Null when the line bills a whole period.
+    /// </summary>
+    [JsonPropertyName("proration_fraction")]
+    public string? ProrationFraction { get; set; }
 
     [JsonPropertyName("quantity")]
     public long? Quantity { get; set; }

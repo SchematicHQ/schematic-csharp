@@ -10,6 +10,9 @@ public record ListAuditLogsRequest
     public ActorType? ActorType { get; set; }
 
     [JsonIgnore]
+    public string? CompanyId { get; set; }
+
+    [JsonIgnore]
     public DateTime? EndTime { get; set; }
 
     [JsonIgnore]

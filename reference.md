@@ -526,6 +526,7 @@ await client.Accounts.ListAuditLogsAsync(
     new ListAuditLogsRequest
     {
         ActorType = ActorType.ApiKey,
+        CompanyId = "company_id",
         EndTime = new DateTime(2024, 01, 15, 09, 30, 00, 000),
         EnvironmentId = "environment_id",
         Q = "q",
@@ -617,6 +618,7 @@ await client.Accounts.CountAuditLogsAsync(
     new CountAuditLogsRequest
     {
         ActorType = ActorType.ApiKey,
+        CompanyId = "company_id",
         EndTime = new DateTime(2024, 01, 15, 09, 30, 00, 000),
         EnvironmentId = "environment_id",
         Q = "q",
@@ -5720,6 +5722,7 @@ await client.Checkout.UpdateCustomerSubscriptionTrialEndAsync(
 await client.Companies.ListCompaniesAsync(
     new ListCompaniesRequest
     {
+        CancelAtPeriodEnd = true,
         CreditTypeIds = new List<string>() { "credit_type_ids" },
         HasScheduledDowngrade = true,
         Ids = new List<string>() { "ids" },
@@ -5902,6 +5905,61 @@ await client.Companies.DeleteCompanyAsync(
 </dl>
 </details>
 
+<details><summary><code>client.Companies.<a href="/src/SchematicHQ.Client/Companies/CompaniesClient.cs">GetCompanyInferenceCostAsync</a>(companyId, GetCompanyInferenceCostRequest { ... }) -> WithRawResponseTask&lt;GetCompanyInferenceCostResponse&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Companies.GetCompanyInferenceCostAsync(
+    "company_id",
+    new GetCompanyInferenceCostRequest
+    {
+        EndTime = new DateTime(2024, 01, 15, 09, 30, 00, 000),
+        StartTime = new DateTime(2024, 01, 15, 09, 30, 00, 000),
+    }
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**companyId:** `string` — company_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `GetCompanyInferenceCostRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.Companies.<a href="/src/SchematicHQ.Client/Companies/CompaniesClient.cs">CountCompaniesAsync</a>(CountCompaniesRequest { ... }) -> WithRawResponseTask&lt;CountCompaniesResponse&gt;</code></summary>
 <dl>
 <dd>
@@ -5918,6 +5976,7 @@ await client.Companies.DeleteCompanyAsync(
 await client.Companies.CountCompaniesAsync(
     new CountCompaniesRequest
     {
+        CancelAtPeriodEnd = true,
         CreditTypeIds = new List<string>() { "credit_type_ids" },
         HasScheduledDowngrade = true,
         Ids = new List<string>() { "ids" },
@@ -7037,7 +7096,7 @@ await client.Companies.CountEntityTraitsAsync(
 await client.Companies.ListPlanChangesAsync(
     new ListPlanChangesRequest
     {
-        Action = PlanChangeAction.Amendment,
+        Action = PlanChangeAction.AccessReinstated,
         BasePlanAction = PlanChangeBasePlanAction.Fallback,
         CompanyId = "company_id",
         CompanyIds = new List<string>() { "company_ids" },

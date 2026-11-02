@@ -17,6 +17,12 @@ public record BillingStatementLineResponseData : IJsonOnDeserialized
     [JsonPropertyName("amount")]
     public required long Amount { get; set; }
 
+    /// <summary>
+    /// What the line bills for, and for part of a period, which part. Null when the line has no subscription line behind it.
+    /// </summary>
+    [JsonPropertyName("description")]
+    public string? Description { get; set; }
+
     [JsonPropertyName("kind")]
     public required InvoiceLineKind Kind { get; set; }
 
@@ -25,6 +31,12 @@ public record BillingStatementLineResponseData : IJsonOnDeserialized
 
     [JsonPropertyName("period_start")]
     public DateTime? PeriodStart { get; set; }
+
+    /// <summary>
+    /// The share of a full billing period the line bills, as a decimal from 0 to 1. Null when the line bills a whole period.
+    /// </summary>
+    [JsonPropertyName("proration_fraction")]
+    public string? ProrationFraction { get; set; }
 
     [JsonPropertyName("quantity")]
     public long? Quantity { get; set; }

@@ -11,6 +11,12 @@ public record BillingNativeSubscriptionResponseData : IJsonOnDeserialized
     private readonly IDictionary<string, JsonElement> _extensionData =
         new Dictionary<string, JsonElement>();
 
+    /// <summary>
+    /// The company's balance on its contract, in minor units of the currency. Below zero is credit the next invoice takes off what is due. Zero when the company has no billing profile.
+    /// </summary>
+    [JsonPropertyName("balance")]
+    public required long Balance { get; set; }
+
     [JsonPropertyName("cancel_at")]
     public DateTime? CancelAt { get; set; }
 

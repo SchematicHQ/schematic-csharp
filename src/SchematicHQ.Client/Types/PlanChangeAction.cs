@@ -8,6 +8,10 @@ namespace SchematicHQ.Client;
 [Serializable]
 public readonly record struct PlanChangeAction : IStringEnum
 {
+    public static readonly PlanChangeAction AccessReinstated = new(Values.AccessReinstated);
+
+    public static readonly PlanChangeAction AccessRevoked = new(Values.AccessRevoked);
+
     public static readonly PlanChangeAction Amendment = new(Values.Amendment);
 
     public static readonly PlanChangeAction Checkout = new(Values.Checkout);
@@ -15,6 +19,8 @@ public readonly record struct PlanChangeAction : IStringEnum
     public static readonly PlanChangeAction CompanyUpsert = new(Values.CompanyUpsert);
 
     public static readonly PlanChangeAction FallbackPlan = new(Values.FallbackPlan);
+
+    public static readonly PlanChangeAction InvoicePastDue = new(Values.InvoicePastDue);
 
     public static readonly PlanChangeAction ManagePlan = new(Values.ManagePlan);
 
@@ -130,6 +136,10 @@ public readonly record struct PlanChangeAction : IStringEnum
     [Serializable]
     public static class Values
     {
+        public const string AccessReinstated = "access_reinstated";
+
+        public const string AccessRevoked = "access_revoked";
+
         public const string Amendment = "amendment";
 
         public const string Checkout = "checkout";
@@ -137,6 +147,8 @@ public readonly record struct PlanChangeAction : IStringEnum
         public const string CompanyUpsert = "company_upsert";
 
         public const string FallbackPlan = "fallback_plan";
+
+        public const string InvoicePastDue = "invoice_past_due";
 
         public const string ManagePlan = "manage_plan";
 

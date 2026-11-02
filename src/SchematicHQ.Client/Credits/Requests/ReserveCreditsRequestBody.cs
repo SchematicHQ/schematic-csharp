@@ -19,7 +19,7 @@ public record ReserveCreditsRequestBody
     public required string CreditTypeId { get; set; }
 
     /// <summary>
-    /// When the hold lapses if no track event settles it; defaults to one minute from now and may be at most one hour out. The unspent hold is refunded on expiry
+    /// When the hold lapses if no track event settles it; defaults to one minute from now and may be at most 24 hours out. The unspent hold is refunded on expiry
     /// </summary>
     [JsonPropertyName("expires_at")]
     public DateTime? ExpiresAt { get; set; }

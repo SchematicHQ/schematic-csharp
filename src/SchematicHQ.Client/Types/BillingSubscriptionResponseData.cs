@@ -11,6 +11,9 @@ public record BillingSubscriptionResponseData : IJsonOnDeserialized
     private readonly IDictionary<string, JsonElement> _extensionData =
         new Dictionary<string, JsonElement>();
 
+    [JsonPropertyName("access_revoked_at")]
+    public DateTime? AccessRevokedAt { get; set; }
+
     [JsonPropertyName("application_id")]
     public string? ApplicationId { get; set; }
 
