@@ -20,6 +20,12 @@ public record AuditLogListResponseData : IJsonOnDeserialized
     [JsonPropertyName("api_key_id")]
     public string? ApiKeyId { get; set; }
 
+    [JsonPropertyName("company")]
+    public AuditLogCompanyResponseData? Company { get; set; }
+
+    [JsonPropertyName("company_id")]
+    public string? CompanyId { get; set; }
+
     [JsonPropertyName("ended_at")]
     public DateTime? EndedAt { get; set; }
 
@@ -35,6 +41,9 @@ public record AuditLogListResponseData : IJsonOnDeserialized
     [JsonPropertyName("method")]
     public required string Method { get; set; }
 
+    /// <summary>
+    /// Always null. Use resource_id_string.
+    /// </summary>
     [JsonPropertyName("resource_id")]
     public long? ResourceId { get; set; }
 

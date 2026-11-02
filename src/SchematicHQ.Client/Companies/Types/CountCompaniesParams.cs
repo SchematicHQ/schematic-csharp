@@ -15,13 +15,19 @@ public record CountCompaniesParams : IJsonOnDeserialized
         new Dictionary<string, JsonElement>();
 
     /// <summary>
+    /// If true, filter companies with an active subscription that is set to cancel at the end of the current period; if false, filter companies without one
+    /// </summary>
+    [JsonPropertyName("cancel_at_period_end")]
+    public bool? CancelAtPeriodEnd { get; set; }
+
+    /// <summary>
     /// Filter companies by one or more credit type IDs (each ID starts with bcrd_)
     /// </summary>
     [JsonPropertyName("credit_type_ids")]
     public IEnumerable<string>? CreditTypeIds { get; set; }
 
     /// <summary>
-    /// Filter companies that have a pending scheduled downgrade
+    /// If true, filter companies that have a pending scheduled downgrade; if false, filter companies that do not
     /// </summary>
     [JsonPropertyName("has_scheduled_downgrade")]
     public bool? HasScheduledDowngrade { get; set; }

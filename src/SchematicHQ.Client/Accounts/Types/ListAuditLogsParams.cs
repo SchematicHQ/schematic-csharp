@@ -17,6 +17,9 @@ public record ListAuditLogsParams : IJsonOnDeserialized
     [JsonPropertyName("actor_type")]
     public ActorType? ActorType { get; set; }
 
+    [JsonPropertyName("company_id")]
+    public string? CompanyId { get; set; }
+
     [JsonPropertyName("end_time")]
     public DateTime? EndTime { get; set; }
 

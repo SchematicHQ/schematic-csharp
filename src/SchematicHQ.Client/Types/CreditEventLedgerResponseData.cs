@@ -107,8 +107,17 @@ public record CreditEventLedgerResponseData : IJsonOnDeserialized
     [JsonPropertyName("quantity_remaining_at_zero_out")]
     public double? QuantityRemainingAtZeroOut { get; set; }
 
+    /// <summary>
+    /// Always 0. Use source_id_string.
+    /// </summary>
     [JsonPropertyName("source_id")]
     public required long SourceId { get; set; }
+
+    [JsonPropertyName("source_id_string")]
+    public string? SourceIdString { get; set; }
+
+    [JsonPropertyName("source_type")]
+    public CreditLedgerSourceType? SourceType { get; set; }
 
     [JsonPropertyName("to_grant_id")]
     public string? ToGrantId { get; set; }

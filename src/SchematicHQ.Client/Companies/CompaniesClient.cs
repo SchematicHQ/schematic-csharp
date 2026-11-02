@@ -18,7 +18,8 @@ public partial class CompaniesClient : ICompaniesClient
         CancellationToken cancellationToken = default
     )
     {
-        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 21)
+        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 22)
+            .Add("cancel_at_period_end", request.CancelAtPeriodEnd)
             .Add("credit_type_ids", request.CreditTypeIds)
             .Add("has_scheduled_downgrade", request.HasScheduledDowngrade)
             .Add("ids", request.Ids)
@@ -636,13 +637,163 @@ public partial class CompaniesClient : ICompaniesClient
         }
     }
 
+    private async Task<
+        WithRawResponse<GetCompanyInferenceCostResponse>
+    > GetCompanyInferenceCostAsyncCore(
+        string companyId,
+        GetCompanyInferenceCostRequest request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 2)
+            .Add("end_time", request.EndTime)
+            .Add("start_time", request.StartTime)
+            .MergeAdditional(options?.AdditionalQueryParameters)
+            .Build();
+        var _headers = await new SchematicHQ.Client.Core.HeadersBuilder.Builder()
+            .Add(_client.Options.Headers)
+            .Add(_client.Options.AdditionalHeaders)
+            .Add(options?.AdditionalHeaders)
+            .BuildAsync()
+            .ConfigureAwait(false);
+        var response = await _client
+            .SendRequestAsync(
+                new JsonRequest
+                {
+                    Method = HttpMethod.Get,
+                    Path = string.Format(
+                        "companies/{0}/inference-cost",
+                        ValueConvert.ToPathParameterString(companyId)
+                    ),
+                    QueryString = _queryString,
+                    Headers = _headers,
+                    Options = options,
+                },
+                cancellationToken
+            )
+            .ConfigureAwait(false);
+        if (response.StatusCode is >= 200 and < 400)
+        {
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
+            try
+            {
+                var responseData = JsonUtils.Deserialize<GetCompanyInferenceCostResponse>(
+                    responseBody
+                )!;
+                return new WithRawResponse<GetCompanyInferenceCostResponse>()
+                {
+                    Data = responseData,
+                    RawResponse = new SchematicHQ.Client.RawResponse()
+                    {
+                        StatusCode = response.Raw.StatusCode,
+                        Url = response.Raw.RequestMessage?.RequestUri ?? new Uri("about:blank"),
+                        Headers = ResponseHeaders.FromHttpResponseMessage(response.Raw),
+                    },
+                };
+            }
+            catch (JsonException e)
+            {
+                throw new SchematicApiException(
+                    "Failed to deserialize response",
+                    response.StatusCode,
+                    responseBody,
+                    e,
+                    rawResponse: new SchematicHQ.Client.RawResponse()
+                    {
+                        StatusCode = response.Raw.StatusCode,
+                        Url = response.Raw.RequestMessage?.RequestUri ?? new Uri("about:blank"),
+                        Headers = ResponseHeaders.FromHttpResponseMessage(response.Raw),
+                    }
+                );
+            }
+        }
+        {
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
+            try
+            {
+                switch (response.StatusCode)
+                {
+                    case 401:
+                        throw new UnauthorizedError(
+                            JsonUtils.Deserialize<ApiError>(responseBody),
+                            rawResponse: new SchematicHQ.Client.RawResponse()
+                            {
+                                StatusCode = response.Raw.StatusCode,
+                                Url =
+                                    response.Raw.RequestMessage?.RequestUri
+                                    ?? new Uri("about:blank"),
+                                Headers = ResponseHeaders.FromHttpResponseMessage(response.Raw),
+                            }
+                        );
+                    case 403:
+                        throw new ForbiddenError(
+                            JsonUtils.Deserialize<ApiError>(responseBody),
+                            rawResponse: new SchematicHQ.Client.RawResponse()
+                            {
+                                StatusCode = response.Raw.StatusCode,
+                                Url =
+                                    response.Raw.RequestMessage?.RequestUri
+                                    ?? new Uri("about:blank"),
+                                Headers = ResponseHeaders.FromHttpResponseMessage(response.Raw),
+                            }
+                        );
+                    case 404:
+                        throw new NotFoundError(
+                            JsonUtils.Deserialize<ApiError>(responseBody),
+                            rawResponse: new SchematicHQ.Client.RawResponse()
+                            {
+                                StatusCode = response.Raw.StatusCode,
+                                Url =
+                                    response.Raw.RequestMessage?.RequestUri
+                                    ?? new Uri("about:blank"),
+                                Headers = ResponseHeaders.FromHttpResponseMessage(response.Raw),
+                            }
+                        );
+                    case 500:
+                        throw new InternalServerError(
+                            JsonUtils.Deserialize<ApiError>(responseBody),
+                            rawResponse: new SchematicHQ.Client.RawResponse()
+                            {
+                                StatusCode = response.Raw.StatusCode,
+                                Url =
+                                    response.Raw.RequestMessage?.RequestUri
+                                    ?? new Uri("about:blank"),
+                                Headers = ResponseHeaders.FromHttpResponseMessage(response.Raw),
+                            }
+                        );
+                }
+            }
+            catch (JsonException)
+            {
+                // unable to map error response, throwing generic error
+            }
+            throw new SchematicApiException(
+                $"Error with status code {response.StatusCode}",
+                response.StatusCode,
+                responseBody,
+                rawResponse: new SchematicHQ.Client.RawResponse()
+                {
+                    StatusCode = response.Raw.StatusCode,
+                    Url = response.Raw.RequestMessage?.RequestUri ?? new Uri("about:blank"),
+                    Headers = ResponseHeaders.FromHttpResponseMessage(response.Raw),
+                }
+            );
+        }
+    }
+
     private async Task<WithRawResponse<CountCompaniesResponse>> CountCompaniesAsyncCore(
         CountCompaniesRequest request,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
     {
-        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 21)
+        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 22)
+            .Add("cancel_at_period_end", request.CancelAtPeriodEnd)
             .Add("credit_type_ids", request.CreditTypeIds)
             .Add("has_scheduled_downgrade", request.HasScheduledDowngrade)
             .Add("ids", request.Ids)
@@ -6662,6 +6813,7 @@ public partial class CompaniesClient : ICompaniesClient
     /// await client.Companies.ListCompaniesAsync(
     ///     new ListCompaniesRequest
     ///     {
+    ///         CancelAtPeriodEnd = true,
     ///         CreditTypeIds = new List&lt;string&gt;() { "credit_type_ids" },
     ///         HasScheduledDowngrade = true,
     ///         Ids = new List&lt;string&gt;() { "ids" },
@@ -6746,9 +6898,32 @@ public partial class CompaniesClient : ICompaniesClient
     }
 
     /// <example><code>
+    /// await client.Companies.GetCompanyInferenceCostAsync(
+    ///     "company_id",
+    ///     new GetCompanyInferenceCostRequest
+    ///     {
+    ///         EndTime = new DateTime(2024, 01, 15, 09, 30, 00, 000),
+    ///         StartTime = new DateTime(2024, 01, 15, 09, 30, 00, 000),
+    ///     }
+    /// );
+    /// </code></example>
+    public WithRawResponseTask<GetCompanyInferenceCostResponse> GetCompanyInferenceCostAsync(
+        string companyId,
+        GetCompanyInferenceCostRequest request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        return new WithRawResponseTask<GetCompanyInferenceCostResponse>(
+            GetCompanyInferenceCostAsyncCore(companyId, request, options, cancellationToken)
+        );
+    }
+
+    /// <example><code>
     /// await client.Companies.CountCompaniesAsync(
     ///     new CountCompaniesRequest
     ///     {
+    ///         CancelAtPeriodEnd = true,
     ///         CreditTypeIds = new List&lt;string&gt;() { "credit_type_ids" },
     ///         HasScheduledDowngrade = true,
     ///         Ids = new List&lt;string&gt;() { "ids" },
@@ -7239,7 +7414,7 @@ public partial class CompaniesClient : ICompaniesClient
     /// await client.Companies.ListPlanChangesAsync(
     ///     new ListPlanChangesRequest
     ///     {
-    ///         Action = PlanChangeAction.Amendment,
+    ///         Action = PlanChangeAction.AccessReinstated,
     ///         BasePlanAction = PlanChangeBasePlanAction.Fallback,
     ///         CompanyId = "company_id",
     ///         CompanyIds = new List&lt;string&gt;() { "company_ids" },

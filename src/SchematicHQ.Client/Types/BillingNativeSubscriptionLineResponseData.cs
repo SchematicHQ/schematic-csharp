@@ -53,6 +53,12 @@ public record BillingNativeSubscriptionLineResponseData : IJsonOnDeserialized
     [JsonPropertyName("effective_to")]
     public DateTime? EffectiveTo { get; set; }
 
+    /// <summary>
+    /// The feature the line bills for when its price belongs to a plan entitlement, such as seats. Null on a plan's own price, an add-on's and a credit's.
+    /// </summary>
+    [JsonPropertyName("feature_name")]
+    public string? FeatureName { get; set; }
+
     [JsonPropertyName("id")]
     public required string Id { get; set; }
 

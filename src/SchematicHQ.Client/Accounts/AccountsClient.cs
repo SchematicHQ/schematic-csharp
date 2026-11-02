@@ -926,8 +926,9 @@ public partial class AccountsClient : IAccountsClient
         CancellationToken cancellationToken = default
     )
     {
-        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 7)
+        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 8)
             .Add("actor_type", request.ActorType)
+            .Add("company_id", request.CompanyId)
             .Add("end_time", request.EndTime)
             .Add("environment_id", request.EnvironmentId)
             .Add("q", request.Q)
@@ -1226,8 +1227,9 @@ public partial class AccountsClient : IAccountsClient
         CancellationToken cancellationToken = default
     )
     {
-        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 7)
+        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 8)
             .Add("actor_type", request.ActorType)
+            .Add("company_id", request.CompanyId)
             .Add("end_time", request.EndTime)
             .Add("environment_id", request.EnvironmentId)
             .Add("q", request.Q)
@@ -2380,6 +2382,7 @@ public partial class AccountsClient : IAccountsClient
     ///     new ListAuditLogsRequest
     ///     {
     ///         ActorType = ActorType.ApiKey,
+    ///         CompanyId = "company_id",
     ///         EndTime = new DateTime(2024, 01, 15, 09, 30, 00, 000),
     ///         EnvironmentId = "environment_id",
     ///         Q = "q",
@@ -2419,6 +2422,7 @@ public partial class AccountsClient : IAccountsClient
     ///     new CountAuditLogsRequest
     ///     {
     ///         ActorType = ActorType.ApiKey,
+    ///         CompanyId = "company_id",
     ///         EndTime = new DateTime(2024, 01, 15, 09, 30, 00, 000),
     ///         EnvironmentId = "environment_id",
     ///         Q = "q",

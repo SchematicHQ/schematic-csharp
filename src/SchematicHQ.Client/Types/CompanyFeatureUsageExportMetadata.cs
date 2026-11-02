@@ -12,6 +12,12 @@ public record CompanyFeatureUsageExportMetadata : IJsonOnDeserialized
         new Dictionary<string, JsonElement>();
 
     /// <summary>
+    /// If true, restrict the export to companies with an active subscription that is set to cancel at the end of the current period; if false, restrict it to companies without one
+    /// </summary>
+    [JsonPropertyName("cancel_at_period_end")]
+    public bool? CancelAtPeriodEnd { get; set; }
+
+    /// <summary>
     /// Restrict the export to these Schematic company IDs (starting with 'comp_')
     /// </summary>
     [JsonPropertyName("company_ids")]

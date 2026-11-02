@@ -27,6 +27,13 @@ public partial interface ICompaniesClient
         CancellationToken cancellationToken = default
     );
 
+    WithRawResponseTask<GetCompanyInferenceCostResponse> GetCompanyInferenceCostAsync(
+        string companyId,
+        GetCompanyInferenceCostRequest request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    );
+
     WithRawResponseTask<CountCompaniesResponse> CountCompaniesAsync(
         CountCompaniesRequest request,
         RequestOptions? options = null,

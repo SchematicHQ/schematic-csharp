@@ -32,6 +32,24 @@ public record EventDetailResponseData : IJsonOnDeserialized
     [JsonPropertyName("company_id")]
     public string? CompanyId { get; set; }
 
+    /// <summary>
+    /// What the inference call cost, as a decimal amount in currency (dollars, not cents, for usd). Absent when the call has no price, for other event types, and when listing events.
+    /// </summary>
+    [JsonPropertyName("cost")]
+    public string? Cost { get; set; }
+
+    /// <summary>
+    /// Where the inference call's cost came from: provided when the request reported it, list_price when Schematic priced it from the model's list price, unpriced when neither applied. Absent for other event types and when listing events.
+    /// </summary>
+    [JsonPropertyName("cost_source")]
+    public InferenceCostSource? CostSource { get; set; }
+
+    /// <summary>
+    /// Lowercase ISO currency code for cost. Absent for other event types and when listing events.
+    /// </summary>
+    [JsonPropertyName("currency")]
+    public string? Currency { get; set; }
+
     [JsonPropertyName("enriched_at")]
     public DateTime? EnrichedAt { get; set; }
 
