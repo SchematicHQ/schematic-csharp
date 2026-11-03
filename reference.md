@@ -11046,6 +11046,196 @@ await client.Events.GetEventAsync("event_id");
 </dl>
 </details>
 
+<details><summary><code>client.Events.<a href="/src/SchematicHQ.Client/Events/EventsClient.cs">ListAccountInferenceCostRatesAsync</a>(ListAccountInferenceCostRatesRequest { ... }) -> WithRawResponseTask&lt;ListAccountInferenceCostRatesResponse&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Events.ListAccountInferenceCostRatesAsync(
+    new ListAccountInferenceCostRatesRequest
+    {
+        Provider = "provider",
+        ResponseModel = "response_model",
+        Limit = 1000000,
+        Offset = 1000000,
+    }
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `ListAccountInferenceCostRatesRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Events.<a href="/src/SchematicHQ.Client/Events/EventsClient.cs">CreateAccountInferenceCostRateAsync</a>(CreateAccountInferenceCostRateRequestBody { ... }) -> WithRawResponseTask&lt;CreateAccountInferenceCostRateResponse&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Events.CreateAccountInferenceCostRateAsync(
+    new CreateAccountInferenceCostRateRequestBody
+    {
+        Provider = "provider",
+        Rates = new Dictionary<string, double>() { { "key", 1.1 } },
+        ResponseModel = "response_model",
+        StartingAt = new DateTime(2024, 01, 15, 09, 30, 00, 000),
+    }
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `CreateAccountInferenceCostRateRequestBody` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Events.<a href="/src/SchematicHQ.Client/Events/EventsClient.cs">UpdateAccountInferenceCostRateAsync</a>(inferenceRateSheetId, UpdateAccountInferenceCostRateRequestBody { ... }) -> WithRawResponseTask&lt;UpdateAccountInferenceCostRateResponse&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Events.UpdateAccountInferenceCostRateAsync(
+    "inference_rate_sheet_id",
+    new UpdateAccountInferenceCostRateRequestBody
+    {
+        Rates = new Dictionary<string, double>() { { "key", 1.1 } },
+    }
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**inferenceRateSheetId:** `string` — inference_rate_sheet_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `UpdateAccountInferenceCostRateRequestBody` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Events.<a href="/src/SchematicHQ.Client/Events/EventsClient.cs">DeleteAccountInferenceCostRateAsync</a>(inferenceRateSheetId) -> WithRawResponseTask&lt;DeleteAccountInferenceCostRateResponse&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Events.DeleteAccountInferenceCostRateAsync("inference_rate_sheet_id");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**inferenceRateSheetId:** `string` — inference_rate_sheet_id
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.Events.<a href="/src/SchematicHQ.Client/Events/EventsClient.cs">GetOtlpEnvironmentSettingsAsync</a>() -> WithRawResponseTask&lt;GetOtlpEnvironmentSettingsResponse&gt;</code></summary>
 <dl>
 <dd>

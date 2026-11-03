@@ -11,6 +11,9 @@ public record BillingSettingsResponseData : IJsonOnDeserialized
     private readonly IDictionary<string, JsonElement> _extensionData =
         new Dictionary<string, JsonElement>();
 
+    [JsonPropertyName("default_collector")]
+    public required Collector DefaultCollector { get; set; }
+
     [JsonPropertyName("default_provider_type")]
     public BillingProviderType? DefaultProviderType { get; set; }
 

@@ -17,6 +17,12 @@ public record CreditBurnBreakdownLine : IJsonOnDeserialized
     [JsonPropertyName("key")]
     public required string Key { get; set; }
 
+    [JsonPropertyName("model")]
+    public string? Model { get; set; }
+
+    [JsonPropertyName("provider")]
+    public string? Provider { get; set; }
+
     [JsonPropertyName("quantity")]
     public required double Quantity { get; set; }
 
