@@ -17,6 +17,9 @@ env:
 jobs:
   ci:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
 
     steps:
       - name: Checkout repo
@@ -52,8 +55,16 @@ jobs:
         if: github.event_name == 'push' && contains(github.ref, 'refs/tags/')
         run: dotnet pack src/SchematicHQ.Client/SchematicHQ.Client.csproj --no-build --no-restore -c Release
 
+      # Trusted publishing: exchanges the job's GitHub OIDC token for a short-lived
+      # NuGet API key. The policy lives under the "schematic" profile on nuget.org
+      # and is bound to this repo and workflow file.
+      - name: NuGet login
+        if: github.event_name == 'push' && contains(github.ref, 'refs/tags/')
+        id: nuget-login
+        uses: NuGet/login@v1
+        with:
+          user: ${{ secrets.NUGET_USER }}
+
       - name: Publish to NuGet.org
         if: github.event_name == 'push' && contains(github.ref, 'refs/tags/')
-        env:
-          NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
-        run: dotnet nuget push src/SchematicHQ.Client/bin/Release/*.nupkg --api-key $NUGET_API_KEY --source "nuget.org"
+        run: dotnet nuget push src/SchematicHQ.Client/bin/Release/*.nupkg --api-key ${{ steps.nuget-login.outputs.NUGET_API_KEY }} --source "nuget.org"
