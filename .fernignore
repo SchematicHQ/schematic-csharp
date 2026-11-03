@@ -16,6 +16,7 @@ README.md
 examples/
 testapp/
 src/SchematicHQ.Client.Test/Cache/
+src/SchematicHQ.Client.Test/ContextSignatures/
 src/SchematicHQ.Client.Test/Credits/Leases/
 src/SchematicHQ.Client.Test/Datastream/
 src/SchematicHQ.Client.Test/Integration/
@@ -31,6 +32,7 @@ src/SchematicHQ.Client.Test/SchematicHQ.Client.Test.Custom.props
 src/SchematicHQ.Client.Test/Webhooks/
 src/SchematicHQ.Client.Test/OpenFeature/
 src/SchematicHQ.Client/Cache/
+src/SchematicHQ.Client/ContextSignatures/
 src/SchematicHQ.Client/Credits/Leases/
 src/SchematicHQ.Client/Core/Public/ClientOptionsCustom.cs
 src/SchematicHQ.Client/Datastream
