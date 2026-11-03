@@ -44,6 +44,12 @@ public record CompanyOverrideResponseData : IJsonOnDeserialized
     [JsonPropertyName("metric_period_month_reset")]
     public MetricPeriodMonthReset? MetricPeriodMonthReset { get; set; }
 
+    /// <summary>
+    /// Per-model rate overrides for inference features, keyed by provider and model. Each entry replaces consumption_rate and quantity_rates for events from that model. Absent when every model burns at the entitlement's own rates.
+    /// </summary>
+    [JsonPropertyName("model_rates")]
+    public IEnumerable<CreditModelRate>? ModelRates { get; set; }
+
     [JsonPropertyName("notes")]
     public IEnumerable<CompanyOverrideNoteResponseData> Notes { get; set; } =
         new List<CompanyOverrideNoteResponseData>();

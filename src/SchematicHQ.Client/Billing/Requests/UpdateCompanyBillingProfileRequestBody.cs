@@ -9,6 +9,9 @@ public record UpdateCompanyBillingProfileRequestBody
     [JsonPropertyName("collection_method")]
     public required BillingCollectionMethod CollectionMethod { get; set; }
 
+    [JsonPropertyName("collector")]
+    public Collector? Collector { get; set; }
+
     [JsonPropertyName("currency")]
     public Currency? Currency { get; set; }
 

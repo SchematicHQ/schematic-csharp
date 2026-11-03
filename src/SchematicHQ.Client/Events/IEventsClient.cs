@@ -32,6 +32,31 @@ public partial interface IEventsClient
         CancellationToken cancellationToken = default
     );
 
+    WithRawResponseTask<ListAccountInferenceCostRatesResponse> ListAccountInferenceCostRatesAsync(
+        ListAccountInferenceCostRatesRequest request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    );
+
+    WithRawResponseTask<CreateAccountInferenceCostRateResponse> CreateAccountInferenceCostRateAsync(
+        CreateAccountInferenceCostRateRequestBody request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    );
+
+    WithRawResponseTask<UpdateAccountInferenceCostRateResponse> UpdateAccountInferenceCostRateAsync(
+        string inferenceRateSheetId,
+        UpdateAccountInferenceCostRateRequestBody request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    );
+
+    WithRawResponseTask<DeleteAccountInferenceCostRateResponse> DeleteAccountInferenceCostRateAsync(
+        string inferenceRateSheetId,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    );
+
     WithRawResponseTask<GetOtlpEnvironmentSettingsResponse> GetOtlpEnvironmentSettingsAsync(
         RequestOptions? options = null,
         CancellationToken cancellationToken = default

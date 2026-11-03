@@ -55,6 +55,12 @@ public record PlanEntitlementResponseData : IJsonOnDeserialized
     public MetricPeriodMonthReset? MetricPeriodMonthReset { get; set; }
 
     /// <summary>
+    /// Per-model rate overrides for inference features, keyed by provider and model. Each entry replaces consumption_rate and quantity_rates for events from that model. Absent when every model burns at the entitlement's own rates.
+    /// </summary>
+    [JsonPropertyName("model_rates")]
+    public IEnumerable<CreditModelRate>? ModelRates { get; set; }
+
+    /// <summary>
     /// How often overage charges are assessed and invoiced. Null or end_of_billing_period means the billing provider aggregates usage over the subscription's own period and bills it at period end. Monthly and quarterly mean Schematic assesses the overage each month or quarter and bills it on its own invoice. Only applies to overage price behavior.
     /// </summary>
     [JsonPropertyName("overage_billing_cadence")]

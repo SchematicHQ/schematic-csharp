@@ -6,6 +6,9 @@ namespace SchematicHQ.Client;
 [Serializable]
 public record UpdateBillingSettingsRequestBody
 {
+    [JsonPropertyName("default_collector")]
+    public Collector? DefaultCollector { get; set; }
+
     [JsonPropertyName("default_provider_type")]
     public BillingProviderType? DefaultProviderType { get; set; }
 
