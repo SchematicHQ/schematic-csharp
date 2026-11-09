@@ -66,6 +66,12 @@ public record StripeIntegrationConfig : IJsonOnDeserialized
     public string? OnboardUrl { get; set; }
 
     /// <summary>
+    /// Whether Stripe is connected only to collect payments on the invoices Schematic issues. Customers and their cards sync; subscriptions, invoices, products, prices and coupons do not, and plans are not created in Stripe.
+    /// </summary>
+    [JsonPropertyName("payments_only")]
+    public bool? PaymentsOnly { get; set; }
+
+    /// <summary>
     /// App location that started the connect flow; the OAuth callback redirects back there on success
     /// </summary>
     [JsonPropertyName("return_to")]

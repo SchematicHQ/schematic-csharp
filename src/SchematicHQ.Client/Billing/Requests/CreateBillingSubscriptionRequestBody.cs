@@ -43,6 +43,15 @@ public record CreateBillingSubscriptionRequestBody
     [JsonPropertyName("metadata")]
     public Dictionary<string, object?>? Metadata { get; set; }
 
+    /// <summary>
+    /// How the provider treats invoices while payment collection is paused. Omit it to keep the current pause, send null to clear it, or send a behavior to set one.
+    /// </summary>
+    [JsonPropertyName("pause_behavior")]
+    public BillingSubscriptionPauseBehavior? PauseBehavior { get; set; }
+
+    [JsonPropertyName("pause_resumes_at")]
+    public long? PauseResumesAt { get; set; }
+
     [JsonPropertyName("period_end")]
     public long? PeriodEnd { get; set; }
 

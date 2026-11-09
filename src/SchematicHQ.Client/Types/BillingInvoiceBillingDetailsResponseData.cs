@@ -17,6 +17,12 @@ public record BillingInvoiceBillingDetailsResponseData : IJsonOnDeserialized
     [JsonPropertyName("email")]
     public string? Email { get; set; }
 
+    /// <summary>
+    /// Who invoices are addressed to. Null to address them to the company by name.
+    /// </summary>
+    [JsonPropertyName("legal_name")]
+    public string? LegalName { get; set; }
+
     [JsonPropertyName("phone")]
     public string? Phone { get; set; }
 

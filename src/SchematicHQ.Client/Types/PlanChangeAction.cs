@@ -26,6 +26,8 @@ public readonly record struct PlanChangeAction : IStringEnum
 
     public static readonly PlanChangeAction Migration = new(Values.Migration);
 
+    public static readonly PlanChangeAction PastDueDefaultPlan = new(Values.PastDueDefaultPlan);
+
     public static readonly PlanChangeAction PlanBillingProductChanged = new(
         Values.PlanBillingProductChanged
     );
@@ -153,6 +155,8 @@ public readonly record struct PlanChangeAction : IStringEnum
         public const string ManagePlan = "manage_plan";
 
         public const string Migration = "migration";
+
+        public const string PastDueDefaultPlan = "past_due_default_plan";
 
         public const string PlanBillingProductChanged = "plan_billing_product_changed";
 

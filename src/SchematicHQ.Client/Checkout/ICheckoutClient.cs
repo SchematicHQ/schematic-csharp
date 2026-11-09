@@ -51,6 +51,18 @@ public partial interface ICheckoutClient
         CancellationToken cancellationToken = default
     );
 
+    WithRawResponseTask<PauseSubscriptionResponse> PauseSubscriptionAsync(
+        PauseSubscriptionRequest request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    );
+
+    WithRawResponseTask<ResumeSubscriptionResponse> ResumeSubscriptionAsync(
+        ResumeSubscriptionRequest request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    );
+
     WithRawResponseTask<UpdateCustomerSubscriptionTrialEndResponse> UpdateCustomerSubscriptionTrialEndAsync(
         string subscriptionId,
         UpdateTrialEndRequestBody request,

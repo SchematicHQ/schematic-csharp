@@ -57,6 +57,15 @@ public record BillingSubscriptionView : IJsonOnDeserialized
     [JsonPropertyName("metadata")]
     public Dictionary<string, object?>? Metadata { get; set; }
 
+    [JsonPropertyName("pause_behavior")]
+    public BillingSubscriptionPauseBehavior? PauseBehavior { get; set; }
+
+    [JsonPropertyName("pause_resumes_at")]
+    public long? PauseResumesAt { get; set; }
+
+    [JsonPropertyName("paused_at")]
+    public DateTime? PausedAt { get; set; }
+
     [JsonPropertyName("payment_method")]
     public PaymentMethodResponseData? PaymentMethod { get; set; }
 

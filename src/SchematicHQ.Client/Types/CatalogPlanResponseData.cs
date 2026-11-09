@@ -31,6 +31,18 @@ public record CatalogPlanResponseData : IJsonOnDeserialized
     public IEnumerable<CatalogCurrencyPricesResponseData> CurrencyPrices { get; set; } =
         new List<CatalogCurrencyPricesResponseData>();
 
+    /// <summary>
+    /// True for the catalog's custom plan, the one sold by quote: show custom_plan_cta in place of its price and action.
+    /// </summary>
+    [JsonPropertyName("custom")]
+    public required bool Custom { get; set; }
+
+    /// <summary>
+    /// The custom plan's price text and call to action; set only where custom is true.
+    /// </summary>
+    [JsonPropertyName("custom_plan_cta")]
+    public CatalogCustomPlanCtaResponseData? CustomPlanCta { get; set; }
+
     [JsonPropertyName("description")]
     public required string Description { get; set; }
 

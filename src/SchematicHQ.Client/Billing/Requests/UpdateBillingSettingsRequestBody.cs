@@ -12,6 +12,12 @@ public record UpdateBillingSettingsRequestBody
     [JsonPropertyName("default_provider_type")]
     public BillingProviderType? DefaultProviderType { get; set; }
 
+    /// <summary>
+    /// Where a payer's reply to an invoice email goes. Schematic sends no invoice email until it is set. Send null to clear it.
+    /// </summary>
+    [JsonPropertyName("invoice_reply_to_email")]
+    public string? InvoiceReplyToEmail { get; set; }
+
     /// <inheritdoc />
     public override string ToString()
     {

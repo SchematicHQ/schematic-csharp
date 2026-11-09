@@ -14,6 +14,18 @@ public record PublishPreviewResponseData : IJsonOnDeserialized
     [JsonPropertyName("billing_email")]
     public string? BillingEmail { get; set; }
 
+    /// <summary>
+    /// The company that pays for the subscription, when it isn't the plan's company. The amendment invoice is raised on its customer, so payment_method and billing_email are its.
+    /// </summary>
+    [JsonPropertyName("billing_entity_id")]
+    public string? BillingEntityId { get; set; }
+
+    /// <summary>
+    /// The name of the company in billing_entity_id.
+    /// </summary>
+    [JsonPropertyName("billing_entity_name")]
+    public string? BillingEntityName { get; set; }
+
     [JsonPropertyName("currency")]
     public Currency? Currency { get; set; }
 
