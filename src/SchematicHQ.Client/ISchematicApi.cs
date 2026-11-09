@@ -12,6 +12,7 @@ public partial interface ISchematicApi
     public IPlansClient Plans { get; }
     public IComponentsClient Components { get; }
     public IPlanbundleClient Planbundle { get; }
+    public ICustomplangrouprolloutsClient Customplangrouprollouts { get; }
     public IDataexportsClient Dataexports { get; }
     public IEventsClient Events { get; }
     public IFeaturesClient Features { get; }
@@ -24,40 +25,6 @@ public partial interface ISchematicApi
     public IScheduledcheckoutClient Scheduledcheckout { get; }
     public IAccesstokensClient Accesstokens { get; }
     public IWebhooksClient Webhooks { get; }
-    WithRawResponseTask PostApiKeysAsync(
-        RequestOptions? options = null,
-        CancellationToken cancellationToken = default
-    );
-
-    WithRawResponseTask PutApiKeysApiKeyIdAsync(
-        string apiKeyId,
-        RequestOptions? options = null,
-        CancellationToken cancellationToken = default
-    );
-
-    WithRawResponseTask DeleteApiKeysApiKeyIdAsync(
-        string apiKeyId,
-        RequestOptions? options = null,
-        CancellationToken cancellationToken = default
-    );
-
-    WithRawResponseTask PostEnvironmentsAsync(
-        RequestOptions? options = null,
-        CancellationToken cancellationToken = default
-    );
-
-    WithRawResponseTask PutEnvironmentsEnvironmentIdAsync(
-        string environmentId,
-        RequestOptions? options = null,
-        CancellationToken cancellationToken = default
-    );
-
-    WithRawResponseTask DeleteEnvironmentsEnvironmentIdAsync(
-        string environmentId,
-        RequestOptions? options = null,
-        CancellationToken cancellationToken = default
-    );
-
     WithRawResponseTask GetCreditLedgerAsync(
         RequestOptions? options = null,
         CancellationToken cancellationToken = default

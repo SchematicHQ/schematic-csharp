@@ -31,6 +31,18 @@ public record ListUsersRequest
     public string? Q { get; set; }
 
     /// <summary>
+    /// Column to sort by (e.g. name, created_at, last_seen_at)
+    /// </summary>
+    [JsonIgnore]
+    public string? SortOrderColumn { get; set; }
+
+    /// <summary>
+    /// Direction to sort by (asc or desc)
+    /// </summary>
+    [JsonIgnore]
+    public SortDirection? SortOrderDirection { get; set; }
+
+    /// <summary>
     /// Page limit (default 100)
     /// </summary>
     [JsonIgnore]

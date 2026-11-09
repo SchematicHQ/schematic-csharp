@@ -42,8 +42,23 @@ public record CompanyBillingEntitySubscriptionResponseData : IJsonOnDeserialized
     [JsonPropertyName("latest_invoice")]
     public InvoiceResponseData? LatestInvoice { get; set; }
 
+    [JsonPropertyName("pause_behavior")]
+    public BillingSubscriptionPauseBehavior? PauseBehavior { get; set; }
+
+    [JsonPropertyName("pause_resumes_at")]
+    public DateTime? PauseResumesAt { get; set; }
+
+    [JsonPropertyName("paused_at")]
+    public DateTime? PausedAt { get; set; }
+
     [JsonPropertyName("payment_method")]
     public PaymentMethodResponseData? PaymentMethod { get; set; }
+
+    [JsonPropertyName("period_end")]
+    public DateTime? PeriodEnd { get; set; }
+
+    [JsonPropertyName("period_start")]
+    public DateTime? PeriodStart { get; set; }
 
     [JsonPropertyName("plan_name")]
     public required string PlanName { get; set; }

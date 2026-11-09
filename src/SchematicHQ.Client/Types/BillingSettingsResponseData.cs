@@ -17,6 +17,12 @@ public record BillingSettingsResponseData : IJsonOnDeserialized
     [JsonPropertyName("default_provider_type")]
     public BillingProviderType? DefaultProviderType { get; set; }
 
+    /// <summary>
+    /// Where a payer's reply to an invoice email goes. Null until set, and Schematic sends no invoice email while it is null.
+    /// </summary>
+    [JsonPropertyName("invoice_reply_to_email")]
+    public string? InvoiceReplyToEmail { get; set; }
+
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();
 

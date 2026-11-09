@@ -153,6 +153,31 @@ public partial interface IBillingClient
         CancellationToken cancellationToken = default
     );
 
+    WithRawResponseTask<GetCompanyContractResponse> GetCompanyContractAsync(
+        string billingProfileId,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    );
+
+    WithRawResponseTask<global::System.IO.Stream> DownloadContractDocumentAsync(
+        string billingProfileId,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    );
+
+    WithRawResponseTask<UploadContractDocumentResponse> UploadContractDocumentAsync(
+        string billingProfileId,
+        UploadContractDocumentRequest request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    );
+
+    WithRawResponseTask<DeleteContractDocumentResponse> DeleteContractDocumentAsync(
+        string billingProfileId,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    );
+
     WithRawResponseTask<GetBillingSettingsResponse> GetBillingSettingsAsync(
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
@@ -176,6 +201,18 @@ public partial interface IBillingClient
         CancellationToken cancellationToken = default
     );
 
+    WithRawResponseTask<MoveToDefaultPlanResponse> MoveToDefaultPlanAsync(
+        string companyId,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    );
+
+    WithRawResponseTask<GetCompanyUpcomingInvoicesResponse> GetCompanyUpcomingInvoicesAsync(
+        string companyId,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    );
+
     WithRawResponseTask<ListBillingInvoicesResponse> ListBillingInvoicesAsync(
         ListBillingInvoicesRequest request,
         RequestOptions? options = null,
@@ -188,6 +225,12 @@ public partial interface IBillingClient
         CancellationToken cancellationToken = default
     );
 
+    WithRawResponseTask<ChargeNativeInvoiceResponse> ChargeNativeInvoiceAsync(
+        string invoiceId,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    );
+
     WithRawResponseTask<global::System.IO.Stream> ExportNativeInvoiceAsync(
         string invoiceId,
         RequestOptions? options = null,
@@ -195,6 +238,18 @@ public partial interface IBillingClient
     );
 
     WithRawResponseTask<FinalizeNativeInvoiceResponse> FinalizeNativeInvoiceAsync(
+        string invoiceId,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    );
+
+    WithRawResponseTask<ReissueNativeInvoiceLinkResponse> ReissueNativeInvoiceLinkAsync(
+        string invoiceId,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    );
+
+    WithRawResponseTask<RevokeNativeInvoiceLinkResponse> RevokeNativeInvoiceLinkAsync(
         string invoiceId,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default

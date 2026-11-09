@@ -21,6 +21,12 @@ public record CustomPlanBillingResponseData : IJsonOnDeserialized
     public DateTime? BillingCycleAnchor { get; set; }
 
     /// <summary>
+    /// The company that pays for the subscription, when it isn't the plan's company. Null when the company pays for itself.
+    /// </summary>
+    [JsonPropertyName("billing_entity_id")]
+    public string? BillingEntityId { get; set; }
+
+    /// <summary>
     /// The date the contract term starts, when the operator pinned one. A past date was backdated onto the subscription so the first period runs from the contract date rather than from finalization.
     /// </summary>
     [JsonPropertyName("billing_start_date")]

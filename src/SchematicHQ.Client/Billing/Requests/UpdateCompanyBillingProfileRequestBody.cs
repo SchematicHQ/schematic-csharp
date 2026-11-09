@@ -6,6 +6,9 @@ namespace SchematicHQ.Client;
 [Serializable]
 public record UpdateCompanyBillingProfileRequestBody
 {
+    [JsonPropertyName("billing_details")]
+    public ContractBillingDetailsRequestBody? BillingDetails { get; set; }
+
     [JsonPropertyName("collection_method")]
     public required BillingCollectionMethod CollectionMethod { get; set; }
 
@@ -38,6 +41,9 @@ public record UpdateCompanyBillingProfileRequestBody
 
     [JsonPropertyName("proration_behavior")]
     public ProrationBehavior? ProrationBehavior { get; set; }
+
+    [JsonPropertyName("purchase_order")]
+    public string? PurchaseOrder { get; set; }
 
     /// <inheritdoc />
     public override string ToString()

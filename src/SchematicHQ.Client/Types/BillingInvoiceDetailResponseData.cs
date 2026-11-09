@@ -88,6 +88,12 @@ public record BillingInvoiceDetailResponseData : IJsonOnDeserialized
     public string? Number { get; set; }
 
     /// <summary>
+    /// The card a charge takes the amount left to pay from: the card on the invoice's contract. Null unless Stripe Payments collects the invoice and the contract has a card.
+    /// </summary>
+    [JsonPropertyName("payment_method_id")]
+    public string? PaymentMethodId { get; set; }
+
+    /// <summary>
     /// The billing provider's PDF of the invoice. Null on an invoice Schematic issued, which downloads its PDF from this API.
     /// </summary>
     [JsonPropertyName("pdf_url")]
@@ -152,7 +158,7 @@ public record BillingInvoiceDetailResponseData : IJsonOnDeserialized
     public required long Total { get; set; }
 
     /// <summary>
-    /// The billing provider's hosted invoice page. Null on an invoice Schematic issued.
+    /// The hosted invoice page, which opens with no login. On an invoice Schematic issued, null while it is a draft or after its link is revoked.
     /// </summary>
     [JsonPropertyName("url")]
     public string? Url { get; set; }

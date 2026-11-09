@@ -21,10 +21,22 @@ public record PublishPlanVersionRequestBody : IJsonOnDeserialized
     public CustomerBillingAddress? Address { get; set; }
 
     /// <summary>
+    /// When true, the subscription renews on the same date as the subscriptions billing_entity_id pays for, and the partial first period is billed pro rata unless prorate_first_period is false. Requires billing_entity_id, and can't be combined with billing_cycle_anchor. Only honored on a first publish that starts a subscription.
+    /// </summary>
+    [JsonPropertyName("align_with_billing_entity")]
+    public bool? AlignWithBillingEntity { get; set; }
+
+    /// <summary>
     /// The date the subscription's billing period renews on. Only honored on a first publish that starts a subscription.
     /// </summary>
     [JsonPropertyName("billing_cycle_anchor")]
     public DateTime? BillingCycleAnchor { get; set; }
+
+    /// <summary>
+    /// The company that pays for the subscription a custom plan's first publish starts. Must already have a Stripe customer. Only honored on a first publish that starts a subscription, and not when Schematic bills the company.
+    /// </summary>
+    [JsonPropertyName("billing_entity_id")]
+    public string? BillingEntityId { get; set; }
 
     /// <summary>
     /// The date the contract term starts. A past date backdates the subscription so the first invoice covers the term from this date to the renewal date. Requires billing_cycle_anchor. Only honored on a first publish that starts a subscription.

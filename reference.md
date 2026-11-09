@@ -1,214 +1,4 @@
 # Reference
-<details><summary><code>client.<a href="/src/SchematicHQ.Client/Schematic.cs">PostApiKeysAsync</a>() -> WithRawResponseTask</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```csharp
-await client.PostApiKeysAsync();
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.<a href="/src/SchematicHQ.Client/Schematic.cs">PutApiKeysApiKeyIdAsync</a>(apiKeyId) -> WithRawResponseTask</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```csharp
-await client.PutApiKeysApiKeyIdAsync("api_key_id");
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**apiKeyId:** `string` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.<a href="/src/SchematicHQ.Client/Schematic.cs">DeleteApiKeysApiKeyIdAsync</a>(apiKeyId) -> WithRawResponseTask</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```csharp
-await client.DeleteApiKeysApiKeyIdAsync("api_key_id");
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**apiKeyId:** `string` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.<a href="/src/SchematicHQ.Client/Schematic.cs">PostEnvironmentsAsync</a>() -> WithRawResponseTask</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```csharp
-await client.PostEnvironmentsAsync();
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.<a href="/src/SchematicHQ.Client/Schematic.cs">PutEnvironmentsEnvironmentIdAsync</a>(environmentId) -> WithRawResponseTask</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```csharp
-await client.PutEnvironmentsEnvironmentIdAsync("environment_id");
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**environmentId:** `string` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.<a href="/src/SchematicHQ.Client/Schematic.cs">DeleteEnvironmentsEnvironmentIdAsync</a>(environmentId) -> WithRawResponseTask</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```csharp
-await client.DeleteEnvironmentsEnvironmentIdAsync("environment_id");
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**environmentId:** `string` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
 <details><summary><code>client.<a href="/src/SchematicHQ.Client/Schematic.cs">GetCreditLedgerAsync</a>() -> WithRawResponseTask</code></summary>
 <dl>
 <dd>
@@ -2074,6 +1864,177 @@ await client.Billing.UpdateCompanyBillingProfileAsync(
 </dl>
 </details>
 
+<details><summary><code>client.Billing.<a href="/src/SchematicHQ.Client/Billing/BillingClient.cs">GetCompanyContractAsync</a>(billingProfileId) -> WithRawResponseTask&lt;GetCompanyContractResponse&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Billing.GetCompanyContractAsync("billing_profile_id");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**billingProfileId:** `string` — billing_profile_id
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Billing.<a href="/src/SchematicHQ.Client/Billing/BillingClient.cs">DownloadContractDocumentAsync</a>(billingProfileId) -> WithRawResponseTask&lt;Stream&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Billing.DownloadContractDocumentAsync("billing_profile_id");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**billingProfileId:** `string` — billing_profile_id
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Billing.<a href="/src/SchematicHQ.Client/Billing/BillingClient.cs">UploadContractDocumentAsync</a>(billingProfileId, UploadContractDocumentRequest { ... }) -> WithRawResponseTask&lt;UploadContractDocumentResponse&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Billing.UploadContractDocumentAsync(
+    "billing_profile_id",
+    new UploadContractDocumentRequest()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**billingProfileId:** `string` — billing_profile_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `UploadContractDocumentRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Billing.<a href="/src/SchematicHQ.Client/Billing/BillingClient.cs">DeleteContractDocumentAsync</a>(billingProfileId) -> WithRawResponseTask&lt;DeleteContractDocumentResponse&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Billing.DeleteContractDocumentAsync("billing_profile_id");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**billingProfileId:** `string` — billing_profile_id
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.Billing.<a href="/src/SchematicHQ.Client/Billing/BillingClient.cs">GetBillingSettingsAsync</a>() -> WithRawResponseTask&lt;GetBillingSettingsResponse&gt;</code></summary>
 <dl>
 <dd>
@@ -2252,6 +2213,86 @@ await client.Billing.GetCompanyNativeSubscriptionAsync("company_id");
 </dl>
 </details>
 
+<details><summary><code>client.Billing.<a href="/src/SchematicHQ.Client/Billing/BillingClient.cs">MoveToDefaultPlanAsync</a>(companyId) -> WithRawResponseTask&lt;MoveToDefaultPlanResponse&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Billing.MoveToDefaultPlanAsync("company_id");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**companyId:** `string` — company_id
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Billing.<a href="/src/SchematicHQ.Client/Billing/BillingClient.cs">GetCompanyUpcomingInvoicesAsync</a>(companyId) -> WithRawResponseTask&lt;GetCompanyUpcomingInvoicesResponse&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Billing.GetCompanyUpcomingInvoicesAsync("company_id");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**companyId:** `string` — company_id
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.Billing.<a href="/src/SchematicHQ.Client/Billing/BillingClient.cs">ListBillingInvoicesAsync</a>(ListBillingInvoicesRequest { ... }) -> WithRawResponseTask&lt;ListBillingInvoicesResponse&gt;</code></summary>
 <dl>
 <dd>
@@ -2345,6 +2386,46 @@ await client.Billing.GetBillingInvoiceAsync("invoice_id");
 </dl>
 </details>
 
+<details><summary><code>client.Billing.<a href="/src/SchematicHQ.Client/Billing/BillingClient.cs">ChargeNativeInvoiceAsync</a>(invoiceId) -> WithRawResponseTask&lt;ChargeNativeInvoiceResponse&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Billing.ChargeNativeInvoiceAsync("invoice_id");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**invoiceId:** `string` — invoice_id
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.Billing.<a href="/src/SchematicHQ.Client/Billing/BillingClient.cs">ExportNativeInvoiceAsync</a>(invoiceId) -> WithRawResponseTask&lt;Stream&gt;</code></summary>
 <dl>
 <dd>
@@ -2399,6 +2480,86 @@ await client.Billing.ExportNativeInvoiceAsync("invoice_id");
 
 ```csharp
 await client.Billing.FinalizeNativeInvoiceAsync("invoice_id");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**invoiceId:** `string` — invoice_id
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Billing.<a href="/src/SchematicHQ.Client/Billing/BillingClient.cs">ReissueNativeInvoiceLinkAsync</a>(invoiceId) -> WithRawResponseTask&lt;ReissueNativeInvoiceLinkResponse&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Billing.ReissueNativeInvoiceLinkAsync("invoice_id");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**invoiceId:** `string` — invoice_id
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Billing.<a href="/src/SchematicHQ.Client/Billing/BillingClient.cs">RevokeNativeInvoiceLinkAsync</a>(invoiceId) -> WithRawResponseTask&lt;RevokeNativeInvoiceLinkResponse&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Billing.RevokeNativeInvoiceLinkAsync("invoice_id");
 ```
 </dd>
 </dl>
@@ -5654,6 +5815,90 @@ await client.Checkout.CancelSubscriptionAsync(
 </dl>
 </details>
 
+<details><summary><code>client.Checkout.<a href="/src/SchematicHQ.Client/Checkout/CheckoutClient.cs">PauseSubscriptionAsync</a>(PauseSubscriptionRequest { ... }) -> WithRawResponseTask&lt;PauseSubscriptionResponse&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Checkout.PauseSubscriptionAsync(
+    new PauseSubscriptionRequest { CompanyId = "company_id", Months = 1000000 }
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `PauseSubscriptionRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Checkout.<a href="/src/SchematicHQ.Client/Checkout/CheckoutClient.cs">ResumeSubscriptionAsync</a>(ResumeSubscriptionRequest { ... }) -> WithRawResponseTask&lt;ResumeSubscriptionResponse&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Checkout.ResumeSubscriptionAsync(
+    new ResumeSubscriptionRequest { CompanyId = "company_id" }
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `ResumeSubscriptionRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.Checkout.<a href="/src/SchematicHQ.Client/Checkout/CheckoutClient.cs">UpdateCustomerSubscriptionTrialEndAsync</a>(subscriptionId, UpdateTrialEndRequestBody { ... }) -> WithRawResponseTask&lt;UpdateCustomerSubscriptionTrialEndResponse&gt;</code></summary>
 <dl>
 <dd>
@@ -6201,6 +6446,97 @@ await client.Companies.GetCompanyBillingEntityAsync(
 <dd>
 
 **request:** `GetCompanyBillingEntityRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Companies.<a href="/src/SchematicHQ.Client/Companies/CompaniesClient.cs">GetBillingEntitySettingsAsync</a>(companyId) -> WithRawResponseTask&lt;GetBillingEntitySettingsResponse&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Companies.GetBillingEntitySettingsAsync("company_id");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**companyId:** `string` — company_id
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Companies.<a href="/src/SchematicHQ.Client/Companies/CompaniesClient.cs">UpdateBillingEntitySettingsAsync</a>(companyId, UpdateBillingEntitySettingsRequestBody { ... }) -> WithRawResponseTask&lt;UpdateBillingEntitySettingsResponse&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Companies.UpdateBillingEntitySettingsAsync(
+    "company_id",
+    new UpdateBillingEntitySettingsRequestBody()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**companyId:** `string` — company_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `UpdateBillingEntitySettingsRequestBody` 
     
 </dd>
 </dl>
@@ -7430,6 +7766,8 @@ await client.Companies.ListUsersAsync(
         Ids = new List<string>() { "ids" },
         PlanId = "plan_id",
         Q = "q",
+        SortOrderColumn = "sort_order_column",
+        SortOrderDirection = SortDirection.Asc,
         Limit = 1000000,
         Offset = 1000000,
     }
@@ -10629,6 +10967,249 @@ await client.Planbundle.UpdatePlanBundleAsync(
 <dd>
 
 **request:** `UpdatePlanBundleRequestBody` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## customplangrouprollouts
+<details><summary><code>client.Customplangrouprollouts.<a href="/src/SchematicHQ.Client/Customplangrouprollouts/CustomplangrouprolloutsClient.cs">ListGroupRolloutsAsync</a>(ListGroupRolloutsRequest { ... }) -> WithRawResponseTask&lt;ListGroupRolloutsResponse&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Customplangrouprollouts.ListGroupRolloutsAsync(
+    new ListGroupRolloutsRequest { PlanId = "plan_id" }
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `ListGroupRolloutsRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Customplangrouprollouts.<a href="/src/SchematicHQ.Client/Customplangrouprollouts/CustomplangrouprolloutsClient.cs">GetGroupRolloutAsync</a>(customPlanGroupRolloutId) -> WithRawResponseTask&lt;GetGroupRolloutResponse&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Customplangrouprollouts.GetGroupRolloutAsync("custom_plan_group_rollout_id");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**customPlanGroupRolloutId:** `string` — custom_plan_group_rollout_id
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Customplangrouprollouts.<a href="/src/SchematicHQ.Client/Customplangrouprollouts/CustomplangrouprolloutsClient.cs">CopyCustomPlanAsync</a>(planId, CopyCustomPlanRequestBody { ... }) -> WithRawResponseTask&lt;CopyCustomPlanResponse&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Customplangrouprollouts.CopyCustomPlanAsync(
+    "plan_id",
+    new CopyCustomPlanRequestBody { CompanyId = "company_id" }
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**planId:** `string` — plan_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `CopyCustomPlanRequestBody` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Customplangrouprollouts.<a href="/src/SchematicHQ.Client/Customplangrouprollouts/CustomplangrouprolloutsClient.cs">PreviewGroupRolloutAsync</a>(planId, PreviewGroupRolloutRequest { ... }) -> WithRawResponseTask&lt;PreviewGroupRolloutResponse&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Customplangrouprollouts.PreviewGroupRolloutAsync(
+    "plan_id",
+    new PreviewGroupRolloutRequest
+    {
+        FromPlanVersionId = "from_plan_version_id",
+        ToPlanVersionId = "to_plan_version_id",
+    }
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**planId:** `string` — plan_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `PreviewGroupRolloutRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Customplangrouprollouts.<a href="/src/SchematicHQ.Client/Customplangrouprollouts/CustomplangrouprolloutsClient.cs">StartGroupRolloutAsync</a>(planId, StartGroupRolloutRequestBody { ... }) -> WithRawResponseTask&lt;StartGroupRolloutResponse&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Customplangrouprollouts.StartGroupRolloutAsync(
+    "plan_id",
+    new StartGroupRolloutRequestBody
+    {
+        ExcludedCompanyIds = new List<string>() { "excluded_company_ids" },
+    }
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**planId:** `string` — plan_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `StartGroupRolloutRequestBody` 
     
 </dd>
 </dl>

@@ -20,6 +20,12 @@ public record ManagePlanRequest : IJsonOnDeserialized
     [JsonPropertyName("add_on_selections")]
     public IEnumerable<PlanSelection> AddOnSelections { get; set; } = new List<PlanSelection>();
 
+    /// <summary>
+    /// When true, the new subscription renews on the same date as the subscriptions billing_entity_id pays for, and the partial first period is billed pro rata. Requires billing_entity_id, and can't be combined with billing_cycle_anchor. Only honored when starting a new subscription.
+    /// </summary>
+    [JsonPropertyName("align_with_billing_entity")]
+    public bool? AlignWithBillingEntity { get; set; }
+
     [JsonPropertyName("base_plan_id")]
     public string? BasePlanId { get; set; }
 

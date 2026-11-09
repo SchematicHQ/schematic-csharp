@@ -21,6 +21,9 @@ public record CatalogConfigurationResponseData : IJsonOnDeserialized
     [JsonPropertyName("custom_plan_cta_url")]
     public string? CustomPlanCtaUrl { get; set; }
 
+    [JsonPropertyName("custom_plan_id")]
+    public string? CustomPlanId { get; set; }
+
     [JsonPropertyName("custom_plan_price_text")]
     public string? CustomPlanPriceText { get; set; }
 
