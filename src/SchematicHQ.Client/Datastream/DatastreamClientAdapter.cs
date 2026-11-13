@@ -63,7 +63,8 @@ namespace SchematicHQ.Client.Datastream
           options.CacheTTL,
           null, // default websocket client
           options,
-          _replicatorMode ? GetReplicatorCacheVersionWithFallback : null // cache version provider
+          _replicatorMode ? GetReplicatorCacheVersionWithFallback : null, // cache version provider
+          _replicatorMode
           );
 
       // Initialize replicator health service if in replicator mode

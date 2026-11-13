@@ -1384,5 +1384,35 @@ namespace SchematicHQ.Client.Test.Cache
             // Cleanup
             cache.Dispose();
         }
+
+        [Test]
+        public async Task SetKeepTtl_KeepsExistingExpiry()
+        {
+            using var cache = new LocalCache(maxItems: 10, ttl: TimeSpan.FromMinutes(5));
+            await cache.Set("limited", "a", TimeSpan.FromHours(1));
+            await cache.Set("unlimited", "a", LocalCache.UNLIMITED_TTL);
+            var limitedExpiry = Expiration(cache, "limited");
+
+            IKeepTtlCacheProvider keep = cache;
+            await keep.SetKeepTtl("limited", "b");
+            await keep.SetKeepTtl("unlimited", "b");
+            await keep.SetKeepTtl("missing", "b");
+
+            Assert.That(await cache.Get<string>("limited"), Is.EqualTo("b"));
+            Assert.That(await cache.Get<string>("unlimited"), Is.EqualTo("b"));
+            Assert.That(await cache.Get<string>("missing"), Is.EqualTo("b"));
+            Assert.That(Expiration(cache, "limited"), Is.EqualTo(limitedExpiry));
+            Assert.That(Expiration(cache, "unlimited"), Is.EqualTo(DateTime.MaxValue));
+            Assert.That(Expiration(cache, "missing"), Is.EqualTo(DateTime.MaxValue));
+        }
+
+        private static DateTime Expiration(LocalCache cache, string key)
+        {
+            var entries = (System.Collections.IDictionary)typeof(LocalCache)
+                .GetField("_cache", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)!
+                .GetValue(cache)!;
+            var item = entries[key]!;
+            return (DateTime)item.GetType().GetProperty("Expiration")!.GetValue(item)!;
+        }
     }
 }

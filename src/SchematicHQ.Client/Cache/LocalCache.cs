@@ -6,7 +6,7 @@ namespace SchematicHQ.Client.Cache;
     /// <summary>
     /// A thread-safe in-memory cache implementation with LRU eviction policy and background expiration
     /// </summary>
-    public class LocalCache : ICacheProvider, IDisposable
+    public class LocalCache : ICacheProvider, IKeepTtlCacheProvider, IDisposable
     {
         public const int DEFAULT_CACHE_CAPACITY = 10000;
         public static readonly TimeSpan DEFAULT_CACHE_TTL = TimeSpan.FromMilliseconds(5000); // 5000 milliseconds
@@ -73,13 +73,38 @@ namespace SchematicHQ.Client.Cache;
                 ? DateTime.MaxValue
                 : DateTime.UtcNow.Add(ttl);
 
+            SetCore(key, val, expiration);
+            return ValueTask.CompletedTask;
+        }
+
+        /// <inheritdoc/>
+        ValueTask IKeepTtlCacheProvider.SetKeepTtl<T>(string key, T val, CancellationToken token)
+        {
+            if (_maxItems == 0 || _disposed)
+                return ValueTask.CompletedTask;
+
+            // Matches Redis KEEPTTL: a key that is missing or already expired is written with no expiry.
+            SetCore(key, val, expiration: null);
+            return ValueTask.CompletedTask;
+        }
+
+        // A null expiration keeps the existing live item's expiry.
+        private void SetCore<T>(string key, T val, DateTime? expiration) where T : notnull
+        {
             lock (_lock)
             {
                 if (_cache.TryGetValue(key, out var existingItem))
                 {
                     // Update the existing item
                     existingItem.Value = val!;
-                    existingItem.Expiration = expiration;
+                    if (expiration.HasValue)
+                    {
+                        existingItem.Expiration = expiration.Value;
+                    }
+                    else if (existingItem.Expiration != DateTime.MaxValue && DateTime.UtcNow > existingItem.Expiration)
+                    {
+                        existingItem.Expiration = DateTime.MaxValue;
+                    }
                     
                     try
                     {
@@ -117,7 +142,7 @@ namespace SchematicHQ.Client.Cache;
 
                     // Add new item to cache and LRU list
                     var node = _lruList.AddFirst(key);
-                    var newItem = new CachedItem(val!, expiration, node);
+                    var newItem = new CachedItem(val!, expiration ?? DateTime.MaxValue, node);
                     if (!_cache.TryAdd(key, newItem))
                     {
                         // If we couldn't add it, clean up the linked list node
@@ -125,8 +150,6 @@ namespace SchematicHQ.Client.Cache;
                     }
                 }
             }
-
-            return ValueTask.CompletedTask;
         }
 
         private bool TryGet<T>(string key, [NotNullWhen(true)] out T? value) where T : notnull

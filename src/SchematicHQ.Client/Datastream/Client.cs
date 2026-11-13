@@ -34,6 +34,12 @@ namespace SchematicHQ.Client.Datastream
     // Cache providers
     private readonly ICacheProvider _cacheProvider;
     private readonly ICacheProvider _flagsCache;
+
+    // Set when the provider can overwrite a value without touching its expiry
+    private readonly IKeepTtlCacheProvider? _keepTtlCache;
+
+    // In replicator mode the replicator owns cache key lifetimes
+    private readonly bool _replicatorMode;
     
     // Cache version provider (optional, for replicator mode)
     private readonly Func<string?>? _cacheVersionProvider;
@@ -98,9 +104,11 @@ namespace SchematicHQ.Client.Datastream
         TimeSpan? cacheTtl = null,
         IWebSocketClient? webSocket = null,
         DatastreamOptions? options = null,
-        Func<string?>? cacheVersionProvider = null
+        Func<string?>? cacheVersionProvider = null,
+        bool replicatorMode = false
     )
     {
+      _replicatorMode = replicatorMode;
       _logger = logger ?? throw new ArgumentNullException(nameof(logger));
       _apiKey = apiKey ?? throw new ArgumentNullException(nameof(apiKey));
       _connectionStateCallback = connectionStateCallback ?? throw new ArgumentNullException(nameof(connectionStateCallback));
@@ -127,6 +135,7 @@ namespace SchematicHQ.Client.Datastream
       
       _cacheProvider = new DatastreamCacheDecorator(cacheProvider, _cacheTtl);
       _flagsCache = new DatastreamCacheDecorator(cacheProvider, flagTTL);
+      _keepTtlCache = cacheProvider as IKeepTtlCacheProvider;
       
       _webSocket = webSocket ?? new StandardWebSocketClient();
 
@@ -1252,7 +1261,9 @@ namespace SchematicHQ.Client.Datastream
                 // Cache the updated company using two-layer approach (still inside the lock)
                 try
                 {
-                    await CacheCompanyForKeys(companyCopy);
+                    // The replicator writes these keys with its own TTL (none by default), so
+                    // keep it rather than applying ours.
+                    await WriteCompanyForKeys(companyCopy, keepTtl: _replicatorMode);
                 }
                 catch (Exception ex)
                 {
@@ -1416,7 +1427,9 @@ namespace SchematicHQ.Client.Datastream
       return $"{CacheKeyPrefixUser}:{schemaVersion}:{id}";
     }
 
-    private async Task CacheCompanyForKeys(RulesengineCompany company)
+    private Task CacheCompanyForKeys(RulesengineCompany company) => WriteCompanyForKeys(company, keepTtl: false);
+
+    private async Task WriteCompanyForKeys(RulesengineCompany company, bool keepTtl)
     {
       var idKey = CompanyIdCacheKey(company.Id);
 
@@ -1436,14 +1449,23 @@ namespace SchematicHQ.Client.Datastream
       }
 
       // Store the company object at the ID-based key
-      await _cacheProvider.Set(idKey, company);
+      await SetCompanyKey(idKey, company, keepTtl);
 
       // Store the company ID string at each resource key
       foreach (var key in company.Keys)
       {
         var resourceKey = ResourceKeyToCacheKey<RulesengineCompany>(CacheKeyPrefixCompany, key.Key, key.Value);
-        await _cacheProvider.Set(resourceKey, company.Id);
+        await SetCompanyKey(resourceKey, company.Id, keepTtl);
       }
+    }
+
+    private ValueTask SetCompanyKey<T>(string key, T value, bool keepTtl) where T : notnull
+    {
+      if (keepTtl && _keepTtlCache != null)
+      {
+        return _keepTtlCache.SetKeepTtl(key, value);
+      }
+      return _cacheProvider.Set(key, value);
     }
 
     private async Task CacheUserForKeys(RulesengineUser user)

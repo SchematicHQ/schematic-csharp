@@ -7,7 +7,7 @@ namespace SchematicHQ.Client.Cache
     /// <summary>
     /// Redis cache provider for SchematicHQ client
     /// </summary>
-    public class RedisCache : ICacheProvider
+    public class RedisCache : ICacheProvider, IKeepTtlCacheProvider
     {
         public const string DEFAULT_KEY_PREFIX = "schematic:";
         public static readonly TimeSpan DEFAULT_CACHE_TTL = TimeSpan.FromMinutes(5);
@@ -144,6 +144,14 @@ namespace SchematicHQ.Client.Cache
 
             var json = JsonSerializer.Serialize(val, _jsonOptions);
             await _db.StringSetAsync(redisKey, json, expiry);
+        }
+
+        /// <inheritdoc/>
+        async ValueTask IKeepTtlCacheProvider.SetKeepTtl<T>(string key, T val, CancellationToken token)
+        {
+            var json = JsonSerializer.Serialize(val, _jsonOptions);
+            // SET ... KEEPTTL (Redis 6.0+)
+            await _db.StringSetAsync(GetRedisKey(key), json, expiry: null, keepTtl: true);
         }
         
         private async Task<(bool Found, T? Value)> TryGetInternalAsync<T>(string key) where T : notnull
