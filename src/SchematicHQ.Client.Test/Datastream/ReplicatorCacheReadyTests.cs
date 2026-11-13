@@ -215,29 +215,41 @@ namespace SchematicHQ.Client.Test.Datastream
             Assert.That(service.CacheVersion, Is.EqualTo("v1"));
         }
 
-        [Test]
-        public async Task HealthCheck_Unreachable_SetsNotReadyAndKeepsCacheVersion()
+        // A failed poll (no answer, or no boolean "ready" in the answer) changes nothing:
+        // readiness and cache_version stay as the last parsed answer left them.
+        private static IEnumerable<TestCaseData> FailedPolls()
+        {
+            yield return new TestCaseData((Func<HttpResponseMessage>)(() => throw new HttpRequestException("Connection refused"))).SetName("{m}(Unreachable)");
+            // HttpClient reports a request timeout as a TaskCanceledException
+            yield return new TestCaseData((Func<HttpResponseMessage>)(() => throw new TaskCanceledException("The request timed out"))).SetName("{m}(Timeout)");
+            yield return new TestCaseData((Func<HttpResponseMessage>)(() => Json(HttpStatusCode.OK, "not json"))).SetName("{m}(UnparseableBody)");
+            yield return new TestCaseData((Func<HttpResponseMessage>)(() => Json(HttpStatusCode.BadGateway, "<html>bad gateway</html>"))).SetName("{m}(Non2xxWithoutBody)");
+            yield return new TestCaseData((Func<HttpResponseMessage>)(() => Json(HttpStatusCode.OK, """{"cache_version": "v-garbled"}"""))).SetName("{m}(NoReadyField)");
+            yield return new TestCaseData((Func<HttpResponseMessage>)(() => Json(HttpStatusCode.OK, """{"ready": "false", "cache_version": "v-garbled"}"""))).SetName("{m}(NonBooleanReady)");
+        }
+
+        [TestCaseSource(nameof(FailedPolls))]
+        public async Task HealthCheck_FailedPollAfterReady_StaysReady(Func<HttpResponseMessage> failedPoll)
         {
             var responses = new Queue<Func<HttpResponseMessage>>();
             responses.Enqueue(() => Json(HttpStatusCode.OK, """{"ready": true, "cache_version": "v1"}"""));
-            responses.Enqueue(() => throw new HttpRequestException("Connection refused"));
+            responses.Enqueue(failedPoll);
             using var service = CreateHealthService(responses);
 
             await CheckHealth(service);
             Assert.That(service.IsHealthy, Is.True);
 
             await CheckHealth(service);
-            Assert.That(service.IsHealthy, Is.False);
+            Assert.That(service.IsHealthy, Is.True);
             Assert.That(service.CacheVersion, Is.EqualTo("v1"));
         }
 
-        [Test]
-        public async Task HealthCheck_Timeout_SetsNotReadyAndKeepsCacheVersion()
+        [TestCaseSource(nameof(FailedPolls))]
+        public async Task HealthCheck_FailedPollAfterNotReady_StaysNotReady(Func<HttpResponseMessage> failedPoll)
         {
             var responses = new Queue<Func<HttpResponseMessage>>();
-            responses.Enqueue(() => Json(HttpStatusCode.OK, """{"ready": true, "cache_version": "v1"}"""));
-            // HttpClient reports a request timeout as a TaskCanceledException
-            responses.Enqueue(() => throw new TaskCanceledException("The request timed out"));
+            responses.Enqueue(() => Json(HttpStatusCode.ServiceUnavailable, """{"ready": false, "cache_version": "v1"}"""));
+            responses.Enqueue(failedPoll);
             using var service = CreateHealthService(responses);
 
             await CheckHealth(service);
@@ -247,19 +259,17 @@ namespace SchematicHQ.Client.Test.Datastream
             Assert.That(service.CacheVersion, Is.EqualTo("v1"));
         }
 
-        [Test]
-        public async Task HealthCheck_UnparseableBody_SetsNotReadyAndKeepsCacheVersion()
+        [TestCaseSource(nameof(FailedPolls))]
+        public async Task HealthCheck_FailedPollBeforeAnyAnswer_StaysNotReady(Func<HttpResponseMessage> failedPoll)
         {
             var responses = new Queue<Func<HttpResponseMessage>>();
-            responses.Enqueue(() => Json(HttpStatusCode.OK, """{"ready": true, "cache_version": "v1"}"""));
-            responses.Enqueue(() => Json(HttpStatusCode.OK, "not json"));
+            responses.Enqueue(failedPoll);
             using var service = CreateHealthService(responses);
 
             await CheckHealth(service);
-            await CheckHealth(service);
 
             Assert.That(service.IsHealthy, Is.False);
-            Assert.That(service.CacheVersion, Is.EqualTo("v1"));
+            Assert.That(service.CacheVersion, Is.Null);
         }
 
         // ---- helpers ----

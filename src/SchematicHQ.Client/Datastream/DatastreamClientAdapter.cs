@@ -135,8 +135,9 @@ namespace SchematicHQ.Client.Datastream
 
     /// <summary>
     /// Whether flag checks may be evaluated from the cache. In replicator mode this is the
-    /// readiness from the most recent replicator health poll (HTTP 200 with <c>ready: true</c>);
-    /// while it is false, flag checks skip the cache and use the API. Outside replicator mode it
+    /// <c>ready</c> field from the last health poll that got an answer; a poll that gets none
+    /// keeps the previous value, and before the first answer it is false. While it is false,
+    /// flag checks skip the cache and use the API. Outside replicator mode it
     /// is always true, because the SDK fills its own cache over the websocket and fetches misses
     /// on demand.
     /// </summary>
