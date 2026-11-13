@@ -175,10 +175,13 @@ namespace SchematicHQ.Client.Datastream
                 {
                     await PerformHealthCheck();
                 }
+                catch (OperationCanceledException) when (_cancellationTokenSource.IsCancellationRequested)
+                {
+                    break;
+                }
                 catch (Exception ex)
                 {
                     _logger.LogError(ex, "Error during health check");
-                    _isHealthy = false;
                 }
 
                 try
@@ -192,96 +195,102 @@ namespace SchematicHQ.Client.Datastream
             }
         }
 
+        /// <summary>
+        /// Polls the replicator once. Readiness and the cache version change only on an
+        /// explicit answer: a JSON body with a boolean <c>ready</c> field, whatever the HTTP
+        /// status (the replicator answers 503 with <c>ready: false</c> while its cache loads).
+        /// A poll that gets no such answer (network error, timeout, or a body that is not
+        /// JSON or has no boolean <c>ready</c>) keeps the readiness and cache version from the
+        /// last answer. A missed poll says nothing about whether the cache is complete, and
+        /// treating it as not ready would send every flag check to the API on a replicator blip.
+        /// </summary>
         private async Task PerformHealthCheck()
         {
+            bool ready;
+            string? reportedCacheVersion;
             try
             {
                 using var response = await _httpClient.GetAsync(_healthUrl, _cancellationTokenSource.Token);
-                
-                // Read and parse the JSON response first
                 var responseBody = await response.Content.ReadAsStringAsync(_cancellationTokenSource.Token);
-                _logger.LogDebug("Raw health response: {ResponseBody}", responseBody);
-                
-                var healthResponse = System.Text.Json.JsonSerializer.Deserialize<HealthResponse>(responseBody, new System.Text.Json.JsonSerializerOptions
-                {
-                    PropertyNameCaseInsensitive = true
-                });
+                _logger.LogDebug("Raw health response (HTTP {StatusCode}): {ResponseBody}", (int)response.StatusCode, responseBody);
 
-                _logger.LogDebug("Deserialized health response - Ready: {Ready}, CacheVersion: '{CacheVersion}'",
-                    healthResponse?.Ready ?? false, healthResponse?.CacheVersion ?? "NULL");
-
-                bool wasHealthy = _isHealthy;
-                string? previousCacheVersion = _cacheVersion;
-                
-                // Replicator is ready only when:
-                // 1. HTTP status is 200 OK (ready endpoint returns 503 when not ready)
-                // 2. Ready field in response is true
-                // This matches the Go replicator behavior exactly
-                _isHealthy = response.IsSuccessStatusCode && healthResponse?.Ready == true;
-                _cacheVersion = healthResponse?.CacheVersion;
-                
-                _logger.LogDebug("Updated cache version from '{PreviousCacheVersion}' to '{CacheVersion}'",
-                    previousCacheVersion ?? "NULL", _cacheVersion ?? "NULL");
-
-                // Log state changes - matching Go client exactly
-                if (_isHealthy && !wasHealthy)
+                if (!TryParseHealthResponse(responseBody, out ready, out reportedCacheVersion))
                 {
-                    _logger.LogInformation("External replicator is now ready");
-                }
-                else if (!_isHealthy && wasHealthy)
-                {
-                    _logger.LogInformation("External replicator is no longer ready");
-                }
-
-                // Log readiness status for debugging
-                if (!response.IsSuccessStatusCode)
-                {
-                    _logger.LogDebug("Replicator readiness check: HTTP {StatusCode}, Ready={Ready}", response.StatusCode, healthResponse?.Ready ?? false);
-                }
-
-                // Log cache version changes and notify subscribers
-                if (_cacheVersion != previousCacheVersion)
-                {
-                    _logger.LogInformation("Replicator cache version updated: {PreviousCacheVersion} -> {CacheVersion}", previousCacheVersion ?? "(null)", _cacheVersion ?? "(null)");
-                    
-                    // Notify subscribers of the cache version change
-                    CacheVersionChanged?.Invoke(previousCacheVersion, _cacheVersion);
+                    _logger.LogWarning("Replicator health response (HTTP {StatusCode}) has no boolean ready field; keeping last known readiness", (int)response.StatusCode);
+                    return;
                 }
             }
-            catch (OperationCanceledException)
+            catch (OperationCanceledException) when (_cancellationTokenSource.IsCancellationRequested)
             {
-                // Expected during shutdown
+                // Expected during shutdown. A request timeout also surfaces as an
+                // OperationCanceledException and is handled below as a failed poll.
                 throw;
-            }
-            catch (System.Text.Json.JsonException ex)
-            {
-                bool wasHealthyBefore = _isHealthy;
-                _isHealthy = false;
-                
-                if (wasHealthyBefore)
-                {
-                    _logger.LogWarning(ex, "Failed to parse replicator health response");
-                }
             }
             catch (Exception ex)
             {
-                bool wasHealthyBefore = _isHealthy;
-                _isHealthy = false;
-                
-                if (wasHealthyBefore)
-                {
-                    _logger.LogDebug(ex, "Replicator health check failed");
-                }
+                _logger.LogDebug(ex, "Replicator health check failed; keeping last known readiness");
+                return;
+            }
+
+            bool wasHealthy = _isHealthy;
+            string? previousCacheVersion = _cacheVersion;
+
+            _isHealthy = ready;
+
+            // An empty or missing cache_version keeps the last known version, matching the Go client.
+            if (!string.IsNullOrEmpty(reportedCacheVersion))
+            {
+                _cacheVersion = reportedCacheVersion;
+            }
+
+            if (_isHealthy && !wasHealthy)
+            {
+                _logger.LogInformation("External replicator is now ready");
+            }
+            else if (!_isHealthy && wasHealthy)
+            {
+                _logger.LogInformation("External replicator is no longer ready");
+            }
+
+            if (_cacheVersion != previousCacheVersion)
+            {
+                _logger.LogInformation("Replicator cache version updated: {PreviousCacheVersion} -> {CacheVersion}", previousCacheVersion ?? "(null)", _cacheVersion ?? "(null)");
+                CacheVersionChanged?.Invoke(previousCacheVersion, _cacheVersion);
             }
         }
 
-        private class HealthResponse
+        private static bool TryParseHealthResponse(string body, out bool ready, out string? cacheVersion)
         {
-            [System.Text.Json.Serialization.JsonPropertyName("ready")]
-            public bool Ready { get; set; }
-            
-            [System.Text.Json.Serialization.JsonPropertyName("cache_version")]
-            public string? CacheVersion { get; set; }
+            ready = false;
+            cacheVersion = null;
+            try
+            {
+                using var doc = System.Text.Json.JsonDocument.Parse(body);
+                if (doc.RootElement.ValueKind != System.Text.Json.JsonValueKind.Object)
+                    return false;
+
+                bool foundReady = false;
+                foreach (var property in doc.RootElement.EnumerateObject())
+                {
+                    if (string.Equals(property.Name, "ready", StringComparison.OrdinalIgnoreCase)
+                        && (property.Value.ValueKind == System.Text.Json.JsonValueKind.True
+                            || property.Value.ValueKind == System.Text.Json.JsonValueKind.False))
+                    {
+                        ready = property.Value.GetBoolean();
+                        foundReady = true;
+                    }
+                    else if (string.Equals(property.Name, "cache_version", StringComparison.OrdinalIgnoreCase)
+                        && property.Value.ValueKind == System.Text.Json.JsonValueKind.String)
+                    {
+                        cacheVersion = property.Value.GetString();
+                    }
+                }
+                return foundReady;
+            }
+            catch (System.Text.Json.JsonException)
+            {
+                return false;
+            }
         }
 
         /// <inheritdoc/>
