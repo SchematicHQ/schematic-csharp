@@ -1005,6 +1005,15 @@ public partial class Schematic
             return await Fallback();
         }
 
+        // The lease flow reads the flag, company and user from the datastream
+        // cache. In replicator mode that cache is read only once the replicator
+        // reports it ready, so until then the check runs as the plain check the
+        // flow falls back to on a cache miss, and holds nothing.
+        if (!_datastreamClient.IsCacheReady())
+        {
+            return await Fallback();
+        }
+
         return await LeaseCheck.CheckWithLeaseAsync(
             new CheckDeps
             {
