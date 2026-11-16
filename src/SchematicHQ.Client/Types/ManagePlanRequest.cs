@@ -54,6 +54,12 @@ public record ManagePlanRequest : IJsonOnDeserialized
     public string? BillingEntityId { get; set; }
 
     /// <summary>
+    /// How often the plan renews. Only used when Schematic bills the company: the plan's published price for this billing period and the currency is charged, and base_plan_price_id must be left empty. A new billing period starts where the current one ends. Defaults to the subscription's current billing period.
+    /// </summary>
+    [JsonPropertyName("billing_period")]
+    public PlanPriceCadence? BillingPeriod { get; set; }
+
+    /// <summary>
     /// If false, subscription cancels at period end. Only applies when removing all plans. Defaults to true.
     /// </summary>
     [JsonPropertyName("cancel_immediately")]
@@ -76,7 +82,7 @@ public record ManagePlanRequest : IJsonOnDeserialized
         new List<UpdateCreditBundleRequestBody>();
 
     /// <summary>
-    /// ISO 4217 currency this change is being built in. Prices are still selected by id; this records the intent.
+    /// ISO 4217 currency this change is being built in. Prices are still selected by id; this records the intent. When Schematic bills the company, the plan is charged in this currency from the next billing period, and the company's contract moves to it; defaults to the subscription's current currency.
     /// </summary>
     [JsonPropertyName("currency")]
     public Currency? Currency { get; set; }

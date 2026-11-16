@@ -21,6 +21,12 @@ public record ManagePlanResponseResponseData : IJsonOnDeserialized
     public IEnumerable<CheckoutProblemResponseData> Problems { get; set; } =
         new List<CheckoutProblemResponseData>();
 
+    /// <summary>
+    /// When a scheduled plan change takes effect. The company stays on its current plan until then. Empty when the change took effect straight away.
+    /// </summary>
+    [JsonPropertyName("scheduled_change_at")]
+    public DateTime? ScheduledChangeAt { get; set; }
+
     [JsonPropertyName("success")]
     public required bool Success { get; set; }
 

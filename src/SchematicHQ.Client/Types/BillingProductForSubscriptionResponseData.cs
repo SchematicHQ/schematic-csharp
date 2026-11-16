@@ -75,6 +75,9 @@ public record BillingProductForSubscriptionResponseData : IJsonOnDeserialized
     [JsonPropertyName("subscription_item_external_id")]
     public string? SubscriptionItemExternalId { get; set; }
 
+    [JsonPropertyName("tiers_mode")]
+    public BillingTiersMode? TiersMode { get; set; }
+
     [JsonPropertyName("updated_at")]
     public required DateTime UpdatedAt { get; set; }
 

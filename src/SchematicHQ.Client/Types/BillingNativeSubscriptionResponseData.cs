@@ -67,6 +67,18 @@ public record BillingNativeSubscriptionResponseData : IJsonOnDeserialized
     [JsonPropertyName("terms")]
     public BillingInvoiceTermsResponseData? Terms { get; set; }
 
+    /// <summary>
+    /// When the subscription's trial ends, or ended. Null when it never had a trial.
+    /// </summary>
+    [JsonPropertyName("trial_end")]
+    public DateTime? TrialEnd { get; set; }
+
+    /// <summary>
+    /// What happens when the trial ends: subscribe starts billing, cancel ends the subscription.
+    /// </summary>
+    [JsonPropertyName("trial_end_setting")]
+    public BillingSubscriptionTrialEndSetting? TrialEndSetting { get; set; }
+
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();
 

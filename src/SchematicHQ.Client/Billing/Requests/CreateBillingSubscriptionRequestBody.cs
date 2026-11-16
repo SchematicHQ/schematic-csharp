@@ -9,6 +9,9 @@ public record CreateBillingSubscriptionRequestBody
     [JsonPropertyName("application_id")]
     public string? ApplicationId { get; set; }
 
+    [JsonPropertyName("billing_cycle_anchor")]
+    public DateTime? BillingCycleAnchor { get; set; }
+
     [JsonPropertyName("cancel_at")]
     public long? CancelAt { get; set; }
 

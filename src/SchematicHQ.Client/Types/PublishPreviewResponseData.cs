@@ -74,6 +74,12 @@ public record PublishPreviewResponseData : IJsonOnDeserialized
     [JsonPropertyName("immediate_invoice_amount")]
     public long? ImmediateInvoiceAmount { get; set; }
 
+    /// <summary>
+    /// Set when finalizing moves the subscription to another billing interval. Stripe starts a period on the new interval when the change lands and invoices it there, so an immediate change bills the new period now and next_invoice_at is a full new period later.
+    /// </summary>
+    [JsonPropertyName("interval_change")]
+    public PublishPreviewIntervalChangeResponseData? IntervalChange { get; set; }
+
     [JsonPropertyName("lands_on")]
     public required AmendmentProrationLandsOn LandsOn { get; set; }
 

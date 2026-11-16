@@ -15,6 +15,9 @@ public record CheckoutDataRequestBody
     [JsonPropertyName("selected_plan_id")]
     public string? SelectedPlanId { get; set; }
 
+    [JsonPropertyName("selected_plan_version_id")]
+    public string? SelectedPlanVersionId { get; set; }
+
     /// <inheritdoc />
     public override string ToString()
     {

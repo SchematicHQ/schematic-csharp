@@ -12,6 +12,8 @@ public readonly record struct DataExportType : IStringEnum
 
     public static readonly DataExportType CompanyFeatureUsage = new(Values.CompanyFeatureUsage);
 
+    public static readonly DataExportType CreditLedger = new(Values.CreditLedger);
+
     public static readonly DataExportType Event = new(Values.Event);
 
     public DataExportType(string value)
@@ -113,6 +115,8 @@ public readonly record struct DataExportType : IStringEnum
         public const string AuditLog = "audit-log";
 
         public const string CompanyFeatureUsage = "company-feature-usage";
+
+        public const string CreditLedger = "credit-ledger";
 
         public const string Event = "event";
     }

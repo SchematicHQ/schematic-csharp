@@ -42,6 +42,8 @@ public readonly record struct PlanChangeAction : IStringEnum
 
     public static readonly PlanChangeAction SubscriptionChange = new(Values.SubscriptionChange);
 
+    public static readonly PlanChangeAction Trial = new(Values.Trial);
+
     public PlanChangeAction(string value)
     {
         Value = value;
@@ -169,5 +171,7 @@ public readonly record struct PlanChangeAction : IStringEnum
         public const string Quickstart = "quickstart";
 
         public const string SubscriptionChange = "subscription_change";
+
+        public const string Trial = "trial";
     }
 }

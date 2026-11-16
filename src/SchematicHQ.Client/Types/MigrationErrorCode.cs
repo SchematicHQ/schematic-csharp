@@ -12,6 +12,10 @@ public readonly record struct MigrationErrorCode : IStringEnum
         Values.AmbiguousSubscriptionItem
     );
 
+    public static readonly MigrationErrorCode MixedBillingIntervals = new(
+        Values.MixedBillingIntervals
+    );
+
     public static readonly MigrationErrorCode MultipleSubscriptions = new(
         Values.MultipleSubscriptions
     );
@@ -137,6 +141,8 @@ public readonly record struct MigrationErrorCode : IStringEnum
     public static class Values
     {
         public const string AmbiguousSubscriptionItem = "ambiguous_subscription_item";
+
+        public const string MixedBillingIntervals = "mixed_billing_intervals";
 
         public const string MultipleSubscriptions = "multiple_subscriptions";
 
