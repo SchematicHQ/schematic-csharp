@@ -8,6 +8,7 @@ using Moq.Protected;
 using NUnit.Framework;
 using SchematicHQ.Client.Cache;
 using SchematicHQ.Client.Datastream;
+using SchematicHQ.Client.Leases;
 using StackExchange.Redis;
 
 namespace SchematicHQ.Client.Test.Datastream
@@ -181,6 +182,39 @@ namespace SchematicHQ.Client.Test.Datastream
             }
         }
 
+        // ---- credit lease check ----
+
+        [Test]
+        public async Task ClientModeCheckWithUsage_WaitsForTheCacheToBeReady()
+        {
+            var api = new FakeApiHandler(flagValue: true);
+            using var harness = CreateHarness(api, ready: false, creditLeases: new CreditLeaseConfig { Mode = CreditLeaseMode.Client });
+            await harness.CacheFlag(defaultValue: false);
+            await harness.CacheCompany();
+            harness.Cache.ResetCounts();
+
+            // Not ready: the lease flow would read the flag and company from the cache, so the
+            // check runs as the plain API check instead and holds nothing.
+            var notReady = await harness.Schematic.Check(
+                FlagKey, CompanyKeys, options: new CheckOptions { Usage = 5, EventSubtype = "tokens" });
+
+            Assert.That(notReady.Allowed, Is.True);
+            Assert.That(notReady.Reason, Is.EqualTo("api"));
+            Assert.That(notReady.Reservation, Is.Null);
+            Assert.That(api.SingleRequests, Is.EqualTo(1));
+            Assert.That(harness.Cache.GetCount, Is.EqualTo(0), "The replicator cache must not be read before it is ready");
+
+            // A caller passing the missing reservation through to the settle records nothing.
+            await harness.Schematic.TrackWithReservation(notReady.Reservation, 5);
+
+            // Ready: the same check goes through the lease flow, which reads the cache.
+            harness.Health.IsHealthy = true;
+            await harness.Schematic.Check(
+                FlagKey, CompanyKeys, options: new CheckOptions { Usage = 5, EventSubtype = "tokens" });
+
+            Assert.That(harness.Cache.GetCount, Is.GreaterThan(0), "A ready cache feeds the lease flow");
+        }
+
         // ---- health poll ----
 
         [Test]
@@ -292,7 +326,7 @@ namespace SchematicHQ.Client.Test.Datastream
                 .GetMethod("PerformHealthCheck", BindingFlags.NonPublic | BindingFlags.Instance)!
                 .Invoke(service, null)!;
 
-        private static Harness CreateHarness(FakeApiHandler api, bool ready, Dictionary<string, bool>? flagDefaults = null)
+        private static Harness CreateHarness(FakeApiHandler api, bool ready, Dictionary<string, bool>? flagDefaults = null, CreditLeaseConfig? creditLeases = null)
         {
             // Replicator mode requires a Redis cache; a mocked multiplexer satisfies that without a server.
             var redis = new Mock<IConnectionMultiplexer>();
@@ -305,6 +339,7 @@ namespace SchematicHQ.Client.Test.Datastream
                 CacheProvider = new RedisCache(new RedisCacheConfig { ConnectionMultiplexerFactory = () => redis.Object }),
                 EventBuffer = new NoopEventBuffer(),
                 FlagDefaults = flagDefaults ?? new Dictionary<string, bool>(),
+                CreditLeases = creditLeases,
             };
             var schematic = new Schematic("test-api-key", options.WithHttpClient(new HttpClient(api)));
 
