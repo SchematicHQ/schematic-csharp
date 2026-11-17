@@ -7356,7 +7356,7 @@ public partial class CompaniesClient : ICompaniesClient
     /// <example><code>
     /// await client.Companies.UpdateBillingEntitySettingsAsync(
     ///     "company_id",
-    ///     new UpdateBillingEntitySettingsRequestBody()
+    ///     new UpdateBillingEntitySettingsRequestBody { ChildrenMayChangePlan = null }
     /// );
     /// </code></example>
     public WithRawResponseTask<UpdateBillingEntitySettingsResponse> UpdateBillingEntitySettingsAsync(

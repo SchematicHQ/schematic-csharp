@@ -20,6 +20,9 @@ public record BillingCustomerSubscription : IJsonOnDeserialized
     [JsonPropertyName("interval")]
     public required string Interval { get; set; }
 
+    [JsonPropertyName("interval_count")]
+    public required long IntervalCount { get; set; }
+
     [JsonPropertyName("metered_usage")]
     public required bool MeteredUsage { get; set; }
 

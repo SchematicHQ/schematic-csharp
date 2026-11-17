@@ -128,6 +128,18 @@ public record PublishPlanVersionRequestBody : IJsonOnDeserialized
     [JsonPropertyName("tax_id")]
     public TaxIdInput? TaxId { get; set; }
 
+    /// <summary>
+    /// Starts the custom plan with a trial that ends at this time. Nothing is invoiced until the trial ends, and the billing period renews from then. Only for a company Schematic bills itself, on a first publish that starts a subscription.
+    /// </summary>
+    [JsonPropertyName("trial_end")]
+    public DateTime? TrialEnd { get; set; }
+
+    /// <summary>
+    /// What happens when the trial reaches its end date: subscribe starts billing, cancel moves the company off the plan. Defaults to subscribe. Requires trial_end.
+    /// </summary>
+    [JsonPropertyName("trial_end_behavior")]
+    public BillingSubscriptionTrialEndSetting? TrialEndBehavior { get; set; }
+
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();
 

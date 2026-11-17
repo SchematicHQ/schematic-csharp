@@ -207,6 +207,38 @@ public partial interface IBillingClient
         CancellationToken cancellationToken = default
     );
 
+    WithRawResponseTask<GetCompanyTrialResponse> GetCompanyTrialAsync(
+        string companyId,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    );
+
+    WithRawResponseTask<StartCompanyTrialResponse> StartCompanyTrialAsync(
+        string companyId,
+        StartCompanyTrialRequestBody request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    );
+
+    WithRawResponseTask<UpdateCompanyTrialResponse> UpdateCompanyTrialAsync(
+        string companyId,
+        UpdateCompanyTrialRequestBody request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    );
+
+    WithRawResponseTask<ConvertCompanyTrialResponse> ConvertCompanyTrialAsync(
+        string companyId,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    );
+
+    WithRawResponseTask<EndCompanyTrialResponse> EndCompanyTrialAsync(
+        string companyId,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    );
+
     WithRawResponseTask<GetCompanyUpcomingInvoicesResponse> GetCompanyUpcomingInvoicesAsync(
         string companyId,
         RequestOptions? options = null,

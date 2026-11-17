@@ -41,6 +41,9 @@ public record BillingProductPlanResponseData : IJsonOnDeserialized
     [JsonPropertyName("plan_id")]
     public required string PlanId { get; set; }
 
+    [JsonPropertyName("quarterly_price_id")]
+    public string? QuarterlyPriceId { get; set; }
+
     [JsonPropertyName("trial_days")]
     public long? TrialDays { get; set; }
 

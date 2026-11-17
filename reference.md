@@ -2253,6 +2253,229 @@ await client.Billing.MoveToDefaultPlanAsync("company_id");
 </dl>
 </details>
 
+<details><summary><code>client.Billing.<a href="/src/SchematicHQ.Client/Billing/BillingClient.cs">GetCompanyTrialAsync</a>(companyId) -> WithRawResponseTask&lt;GetCompanyTrialResponse&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Billing.GetCompanyTrialAsync("company_id");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**companyId:** `string` — company_id
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Billing.<a href="/src/SchematicHQ.Client/Billing/BillingClient.cs">StartCompanyTrialAsync</a>(companyId, StartCompanyTrialRequestBody { ... }) -> WithRawResponseTask&lt;StartCompanyTrialResponse&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Billing.StartCompanyTrialAsync(
+    "company_id",
+    new StartCompanyTrialRequestBody
+    {
+        Cadence = BillingProductPriceInterval.Day,
+        PlanId = "plan_id",
+    }
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**companyId:** `string` — company_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `StartCompanyTrialRequestBody` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Billing.<a href="/src/SchematicHQ.Client/Billing/BillingClient.cs">UpdateCompanyTrialAsync</a>(companyId, UpdateCompanyTrialRequestBody { ... }) -> WithRawResponseTask&lt;UpdateCompanyTrialResponse&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Billing.UpdateCompanyTrialAsync("company_id", new UpdateCompanyTrialRequestBody());
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**companyId:** `string` — company_id
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `UpdateCompanyTrialRequestBody` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Billing.<a href="/src/SchematicHQ.Client/Billing/BillingClient.cs">ConvertCompanyTrialAsync</a>(companyId) -> WithRawResponseTask&lt;ConvertCompanyTrialResponse&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Billing.ConvertCompanyTrialAsync("company_id");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**companyId:** `string` — company_id
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Billing.<a href="/src/SchematicHQ.Client/Billing/BillingClient.cs">EndCompanyTrialAsync</a>(companyId) -> WithRawResponseTask&lt;EndCompanyTrialResponse&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Billing.EndCompanyTrialAsync("company_id");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**companyId:** `string` — company_id
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.Billing.<a href="/src/SchematicHQ.Client/Billing/BillingClient.cs">GetCompanyUpcomingInvoicesAsync</a>(companyId) -> WithRawResponseTask&lt;GetCompanyUpcomingInvoicesResponse&gt;</code></summary>
 <dl>
 <dd>
@@ -6512,7 +6735,7 @@ await client.Companies.GetBillingEntitySettingsAsync("company_id");
 ```csharp
 await client.Companies.UpdateBillingEntitySettingsAsync(
     "company_id",
-    new UpdateBillingEntitySettingsRequestBody()
+    new UpdateBillingEntitySettingsRequestBody { ChildrenMayChangePlan = null }
 );
 ```
 </dd>

@@ -37,6 +37,15 @@ public record DataExportMetadata
     }
 
     /// <summary>
+    /// Create an instance of DataExportMetadata with <see cref="DataExportMetadata.CreditLedger"/>.
+    /// </summary>
+    public DataExportMetadata(DataExportMetadata.CreditLedger value)
+    {
+        ExportType = "credit-ledger";
+        Value = value.Value;
+    }
+
+    /// <summary>
     /// Create an instance of DataExportMetadata with <see cref="DataExportMetadata.Event"/>.
     /// </summary>
     public DataExportMetadata(DataExportMetadata.Event value)
@@ -67,6 +76,11 @@ public record DataExportMetadata
     public bool IsCompanyFeatureUsage => ExportType == "company-feature-usage";
 
     /// <summary>
+    /// Returns true if <see cref="ExportType"/> is "credit-ledger"
+    /// </summary>
+    public bool IsCreditLedger => ExportType == "credit-ledger";
+
+    /// <summary>
     /// Returns true if <see cref="ExportType"/> is "event"
     /// </summary>
     public bool IsEvent => ExportType == "event";
@@ -94,6 +108,17 @@ public record DataExportMetadata
             );
 
     /// <summary>
+    /// Returns the value as a <see cref="SchematicHQ.Client.CreditLedgerExportMetadata"/> if <see cref="ExportType"/> is 'credit-ledger', otherwise throws an exception.
+    /// </summary>
+    /// <exception cref="Exception">Thrown when <see cref="ExportType"/> is not 'credit-ledger'.</exception>
+    public SchematicHQ.Client.CreditLedgerExportMetadata AsCreditLedger() =>
+        IsCreditLedger
+            ? (SchematicHQ.Client.CreditLedgerExportMetadata)Value!
+            : throw new global::System.Exception(
+                "DataExportMetadata.ExportType is not 'credit-ledger'"
+            );
+
+    /// <summary>
     /// Returns the value as a <see cref="SchematicHQ.Client.EventExportMetadata"/> if <see cref="ExportType"/> is 'event', otherwise throws an exception.
     /// </summary>
     /// <exception cref="Exception">Thrown when <see cref="ExportType"/> is not 'event'.</exception>
@@ -105,6 +130,7 @@ public record DataExportMetadata
     public T Match<T>(
         Func<SchematicHQ.Client.AuditLogExportMetadata, T> onAuditLog,
         Func<SchematicHQ.Client.CompanyFeatureUsageExportMetadata, T> onCompanyFeatureUsage,
+        Func<SchematicHQ.Client.CreditLedgerExportMetadata, T> onCreditLedger,
         Func<SchematicHQ.Client.EventExportMetadata, T> onEvent,
         Func<string, object?, T> onUnknown_
     )
@@ -113,6 +139,7 @@ public record DataExportMetadata
         {
             "audit-log" => onAuditLog(AsAuditLog()),
             "company-feature-usage" => onCompanyFeatureUsage(AsCompanyFeatureUsage()),
+            "credit-ledger" => onCreditLedger(AsCreditLedger()),
             "event" => onEvent(AsEvent()),
             _ => onUnknown_(ExportType, Value),
         };
@@ -121,6 +148,7 @@ public record DataExportMetadata
     public void Visit(
         Action<SchematicHQ.Client.AuditLogExportMetadata> onAuditLog,
         Action<SchematicHQ.Client.CompanyFeatureUsageExportMetadata> onCompanyFeatureUsage,
+        Action<SchematicHQ.Client.CreditLedgerExportMetadata> onCreditLedger,
         Action<SchematicHQ.Client.EventExportMetadata> onEvent,
         Action<string, object?> onUnknown_
     )
@@ -132,6 +160,9 @@ public record DataExportMetadata
                 break;
             case "company-feature-usage":
                 onCompanyFeatureUsage(AsCompanyFeatureUsage());
+                break;
+            case "credit-ledger":
+                onCreditLedger(AsCreditLedger());
                 break;
             case "event":
                 onEvent(AsEvent());
@@ -173,6 +204,20 @@ public record DataExportMetadata
     }
 
     /// <summary>
+    /// Attempts to cast the value to a <see cref="SchematicHQ.Client.CreditLedgerExportMetadata"/> and returns true if successful.
+    /// </summary>
+    public bool TryAsCreditLedger(out SchematicHQ.Client.CreditLedgerExportMetadata? value)
+    {
+        if (ExportType == "credit-ledger")
+        {
+            value = (SchematicHQ.Client.CreditLedgerExportMetadata)Value!;
+            return true;
+        }
+        value = null;
+        return false;
+    }
+
+    /// <summary>
     /// Attempts to cast the value to a <see cref="SchematicHQ.Client.EventExportMetadata"/> and returns true if successful.
     /// </summary>
     public bool TryAsEvent(out SchematicHQ.Client.EventExportMetadata? value)
@@ -194,6 +239,9 @@ public record DataExportMetadata
     public static implicit operator DataExportMetadata(
         DataExportMetadata.CompanyFeatureUsage value
     ) => new(value);
+
+    public static implicit operator DataExportMetadata(DataExportMetadata.CreditLedger value) =>
+        new(value);
 
     public static implicit operator DataExportMetadata(DataExportMetadata.Event value) =>
         new(value);
@@ -253,6 +301,13 @@ public record DataExportMetadata
                         ?? throw new JsonException(
                             "Failed to deserialize SchematicHQ.Client.CompanyFeatureUsageExportMetadata"
                         ),
+                "credit-ledger" =>
+                    jsonWithoutDiscriminator.Deserialize<SchematicHQ.Client.CreditLedgerExportMetadata?>(
+                        options
+                    )
+                        ?? throw new JsonException(
+                            "Failed to deserialize SchematicHQ.Client.CreditLedgerExportMetadata"
+                        ),
                 "event" =>
                     jsonWithoutDiscriminator.Deserialize<SchematicHQ.Client.EventExportMetadata?>(
                         options
@@ -276,6 +331,7 @@ public record DataExportMetadata
                 {
                     "audit-log" => JsonSerializer.SerializeToNode(value.Value, options),
                     "company-feature-usage" => JsonSerializer.SerializeToNode(value.Value, options),
+                    "credit-ledger" => JsonSerializer.SerializeToNode(value.Value, options),
                     "event" => JsonSerializer.SerializeToNode(value.Value, options),
                     _ => JsonSerializer.SerializeToNode(value.Value, options),
                 } ?? new JsonObject();
@@ -342,6 +398,26 @@ public record DataExportMetadata
 
         public static implicit operator DataExportMetadata.CompanyFeatureUsage(
             SchematicHQ.Client.CompanyFeatureUsageExportMetadata value
+        ) => new(value);
+    }
+
+    /// <summary>
+    /// Discriminated union type for credit-ledger
+    /// </summary>
+    [Serializable]
+    public struct CreditLedger
+    {
+        public CreditLedger(SchematicHQ.Client.CreditLedgerExportMetadata value)
+        {
+            Value = value;
+        }
+
+        internal SchematicHQ.Client.CreditLedgerExportMetadata Value { get; set; }
+
+        public override string ToString() => Value.ToString() ?? "null";
+
+        public static implicit operator DataExportMetadata.CreditLedger(
+            SchematicHQ.Client.CreditLedgerExportMetadata value
         ) => new(value);
     }
 

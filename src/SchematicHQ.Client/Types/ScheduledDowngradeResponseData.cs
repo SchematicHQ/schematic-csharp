@@ -32,8 +32,20 @@ public record ScheduledDowngradeResponseData : IJsonOnDeserialized
     [JsonPropertyName("interval")]
     public required string Interval { get; set; }
 
+    /// <summary>
+    /// With interval, the current subscription's billing period: 3 with month is quarterly.
+    /// </summary>
+    [JsonPropertyName("interval_count")]
+    public required long IntervalCount { get; set; }
+
     [JsonPropertyName("scheduled_interval")]
     public string? ScheduledInterval { get; set; }
+
+    /// <summary>
+    /// With scheduled_interval, the scheduled price's billing period: 3 with month is quarterly. Null for a downgrade scheduled before the price was recorded.
+    /// </summary>
+    [JsonPropertyName("scheduled_interval_count")]
+    public long? ScheduledIntervalCount { get; set; }
 
     [JsonPropertyName("scheduled_price")]
     public long? ScheduledPrice { get; set; }

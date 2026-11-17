@@ -50,6 +50,12 @@ public record PlanChangeResponseData : IJsonOnDeserialized
     [JsonPropertyName("base_plan_version")]
     public PlanVersionSnapshotView? BasePlanVersion { get; set; }
 
+    /// <summary>
+    /// The billing interval this change moved the subscription to: monthly, quarterly or yearly. Set only when the interval changed, as when a custom plan amendment's new version is priced on another interval.
+    /// </summary>
+    [JsonPropertyName("billing_interval")]
+    public string? BillingInterval { get; set; }
+
     [JsonPropertyName("company")]
     public CompanyResponseData? Company { get; set; }
 
@@ -91,6 +97,12 @@ public record PlanChangeResponseData : IJsonOnDeserialized
     /// </summary>
     [JsonPropertyName("previous_base_plan_version")]
     public PlanVersionSnapshotView? PreviousBasePlanVersion { get; set; }
+
+    /// <summary>
+    /// The billing interval the subscription was on before this change: monthly, quarterly or yearly. Set only alongside billing_interval.
+    /// </summary>
+    [JsonPropertyName("previous_billing_interval")]
+    public string? PreviousBillingInterval { get; set; }
 
     [JsonPropertyName("request_id")]
     public string? RequestId { get; set; }

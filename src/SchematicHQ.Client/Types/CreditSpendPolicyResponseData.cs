@@ -21,7 +21,7 @@ public record CreditSpendPolicyResponseData : IJsonOnDeserialized
     public string? CompanyId { get; set; }
 
     /// <summary>
-    /// Credits spent in the current window. Set only by the usage route, and only for a window cap.
+    /// Credits spent in the current window. Set only by the routes that read usage, and only for a window cap.
     /// </summary>
     [JsonPropertyName("consumed")]
     public double? Consumed { get; set; }
@@ -30,7 +30,7 @@ public record CreditSpendPolicyResponseData : IJsonOnDeserialized
     public required DateTime CreatedAt { get; set; }
 
     /// <summary>
-    /// Credits left in the current window. Set only by the usage route, and only for a window cap.
+    /// Credits left in the current window. Set only by the routes that read usage, and only for a window cap.
     /// </summary>
     [JsonPropertyName("headroom")]
     public double? Headroom { get; set; }
@@ -45,7 +45,7 @@ public record CreditSpendPolicyResponseData : IJsonOnDeserialized
     public double? MaxPerDraw { get; set; }
 
     /// <summary>
-    /// When the current window ends. Set only by the usage route, and only for a window cap.
+    /// When the current window ends. Set only by the routes that read usage, and only for a window cap.
     /// </summary>
     [JsonPropertyName("resets_at")]
     public DateTime? ResetsAt { get; set; }
