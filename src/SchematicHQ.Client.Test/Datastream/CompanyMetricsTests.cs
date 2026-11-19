@@ -317,6 +317,125 @@ namespace SchematicHQ.Client.Test.Datastream
         }
 
         [Test]
+        public async Task UpdateCompanyMetricsAsync_WithNullQuantity_IncrementsByOne()
+        {
+            var companyJson = @"{
+                ""id"": ""company123"",
+                ""account_id"": ""acc123"",
+                ""environment_id"": ""env123"",
+                ""keys"": {
+                    ""company_id"": ""12345""
+                },
+                ""metrics"": [
+                    {
+                        ""account_id"": ""acc123"",
+                        ""company_id"": ""company123"",
+                        ""environment_id"": ""env123"",
+                        ""event_subtype"": ""metric1"",
+                        ""period"": ""all_time"",
+                        ""month_reset"": ""first_of_month"",
+                        ""value"": 100,
+                        ""created_at"": ""2023-01-01T00:00:00Z""
+                    }
+                ]
+            }";
+
+            await SetupCompanyInCache(companyJson);
+
+            var result = await _client.UpdateCompanyMetricsAsync(new EventBodyTrack
+            {
+                Company = SingleCompanyKey,
+                Event = "metric1",
+                Quantity = null
+            });
+
+            Assert.That(result, Is.True);
+            var company = await GetCompanyFromCache(SingleCompanyKey);
+            var metric = company?.Metrics?.FirstOrDefault(m => m.EventSubtype == "metric1");
+            Assert.That(metric?.Value, Is.EqualTo(101));
+        }
+
+        [Test]
+        public async Task UpdateCompanyMetricsAsync_WithZeroQuantity_SkipsCacheWrite()
+        {
+            var companyJson = @"{
+                ""id"": ""company123"",
+                ""account_id"": ""acc123"",
+                ""environment_id"": ""env123"",
+                ""keys"": {
+                    ""company_id"": ""12345""
+                },
+                ""metrics"": [
+                    {
+                        ""account_id"": ""acc123"",
+                        ""company_id"": ""company123"",
+                        ""environment_id"": ""env123"",
+                        ""event_subtype"": ""metric1"",
+                        ""period"": ""all_time"",
+                        ""month_reset"": ""first_of_month"",
+                        ""value"": 100,
+                        ""created_at"": ""2023-01-01T00:00:00Z""
+                    }
+                ]
+            }";
+
+            await SetupCompanyInCache(companyJson);
+            var before = await GetCompanyFromCache(SingleCompanyKey);
+
+            var result = await _client.UpdateCompanyMetricsAsync(new EventBodyTrack
+            {
+                Company = SingleCompanyKey,
+                Event = "metric1",
+                Quantity = 0
+            });
+
+            Assert.That(result, Is.False);
+            var after = await GetCompanyFromCache(SingleCompanyKey);
+            Assert.That(after, Is.SameAs(before));
+            Assert.That(after?.Metrics?.Single().Value, Is.EqualTo(100));
+        }
+
+        [Test]
+        public async Task UpdateCompanyMetricsAsync_WithNoMatchingMetric_SkipsCacheWrite()
+        {
+            var companyJson = @"{
+                ""id"": ""company123"",
+                ""account_id"": ""acc123"",
+                ""environment_id"": ""env123"",
+                ""keys"": {
+                    ""company_id"": ""12345""
+                },
+                ""metrics"": [
+                    {
+                        ""account_id"": ""acc123"",
+                        ""company_id"": ""company123"",
+                        ""environment_id"": ""env123"",
+                        ""event_subtype"": ""metric1"",
+                        ""period"": ""all_time"",
+                        ""month_reset"": ""first_of_month"",
+                        ""value"": 100,
+                        ""created_at"": ""2023-01-01T00:00:00Z""
+                    }
+                ]
+            }";
+
+            await SetupCompanyInCache(companyJson);
+            var before = await GetCompanyFromCache(SingleCompanyKey);
+
+            var result = await _client.UpdateCompanyMetricsAsync(new EventBodyTrack
+            {
+                Company = SingleCompanyKey,
+                Event = "metric2",
+                Quantity = 1
+            });
+
+            Assert.That(result, Is.False);
+            var after = await GetCompanyFromCache(SingleCompanyKey);
+            Assert.That(after, Is.SameAs(before));
+            Assert.That(after?.Metrics?.Single().Value, Is.EqualTo(100));
+        }
+
+        [Test]
         public async Task UpdateCompanyMetrics_WithMultipleKeys_UpdatesAllCacheEntries()
         {
             // Arrange
