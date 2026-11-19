@@ -1246,7 +1246,7 @@ namespace SchematicHQ.Client.Datastream
                 {
                     if (metric != null && metric.EventSubtype == eventBody.Event)
                     {
-                        long quantity = eventBody.Quantity ?? 0;
+                        long quantity = eventBody.Quantity ?? 1;
                         metric.Value += quantity;
                         metricUpdated = true;
                     }
