@@ -35,6 +35,12 @@ public record TemporaryAccessTokenResponseData : IJsonOnDeserialized
     [JsonPropertyName("updated_at")]
     public required DateTime UpdatedAt { get; set; }
 
+    /// <summary>
+    /// The user the token was issued for, when the request named one in user_lookup.
+    /// </summary>
+    [JsonPropertyName("user_id")]
+    public string? UserId { get; set; }
+
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();
 

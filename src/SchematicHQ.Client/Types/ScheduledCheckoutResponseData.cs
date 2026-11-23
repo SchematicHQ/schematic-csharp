@@ -38,6 +38,12 @@ public record ScheduledCheckoutResponseData : IJsonOnDeserialized
     [JsonPropertyName("scheduled_interval")]
     public string? ScheduledInterval { get; set; }
 
+    /// <summary>
+    /// With scheduled_interval, the scheduled price's billing period: 3 with month is quarterly. Null for a downgrade scheduled before the price was recorded.
+    /// </summary>
+    [JsonPropertyName("scheduled_interval_count")]
+    public long? ScheduledIntervalCount { get; set; }
+
     [JsonPropertyName("scheduled_price")]
     public long? ScheduledPrice { get; set; }
 

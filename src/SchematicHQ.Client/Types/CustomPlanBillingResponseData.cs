@@ -48,7 +48,7 @@ public record CustomPlanBillingResponseData : IJsonOnDeserialized
     public required long DaysUntilDue { get; set; }
 
     /// <summary>
-    /// When a custom plan that doesn't renew ends: the renewal the subscription stops on and the company moves to the default plan. Null for a plan that renews.
+    /// When a custom plan that doesn't renew ends: the renewal the subscription stops on and the company moves to the fallback plan. Null for a plan that renews.
     /// </summary>
     [JsonPropertyName("end_date")]
     public DateTime? EndDate { get; set; }

@@ -60,6 +60,12 @@ public record PreviewSubscriptionChangeResponseData : IJsonOnDeserialized
     [JsonPropertyName("trial_end")]
     public DateTime? TrialEnd { get; set; }
 
+    /// <summary>
+    /// Features whose usage so far this billing period is not billed if this change is made, because the new plan does not charge for them and the billing period continues.
+    /// </summary>
+    [JsonPropertyName("unbilled_usage_feature_ids")]
+    public IEnumerable<string> UnbilledUsageFeatureIds { get; set; } = new List<string>();
+
     [JsonPropertyName("usage_violations")]
     public IEnumerable<FeatureUsageResponseData> UsageViolations { get; set; } =
         new List<FeatureUsageResponseData>();

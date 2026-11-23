@@ -52,6 +52,10 @@ public readonly record struct WebhookRequestType : IStringEnum
         Values.CreditUsageWarningReached
     );
 
+    public static readonly WebhookRequestType DataExportCompleted = new(Values.DataExportCompleted);
+
+    public static readonly WebhookRequestType DataExportFailed = new(Values.DataExportFailed);
+
     public static readonly WebhookRequestType EntitlementLimitReached = new(
         Values.EntitlementLimitReached
     );
@@ -265,6 +269,10 @@ public readonly record struct WebhookRequestType : IStringEnum
         public const string CreditPurchaseSuccess = "credit.purchase.success";
 
         public const string CreditUsageWarningReached = "credit.usage_warning_reached";
+
+        public const string DataExportCompleted = "data_export.completed";
+
+        public const string DataExportFailed = "data_export.failed";
 
         public const string EntitlementLimitReached = "entitlement.limit.reached";
 

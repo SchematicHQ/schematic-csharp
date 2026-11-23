@@ -926,10 +926,11 @@ public partial class AccountsClient : IAccountsClient
         CancellationToken cancellationToken = default
     )
     {
-        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 8)
+        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 9)
             .Add("actor_type", request.ActorType)
             .Add("company_id", request.CompanyId)
             .Add("end_time", request.EndTime)
+            .Add("end_user_id", request.EndUserId)
             .Add("environment_id", request.EnvironmentId)
             .Add("q", request.Q)
             .Add("start_time", request.StartTime)
@@ -1227,10 +1228,11 @@ public partial class AccountsClient : IAccountsClient
         CancellationToken cancellationToken = default
     )
     {
-        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 8)
+        var _queryString = new SchematicHQ.Client.Core.QueryStringBuilder.Builder(capacity: 9)
             .Add("actor_type", request.ActorType)
             .Add("company_id", request.CompanyId)
             .Add("end_time", request.EndTime)
+            .Add("end_user_id", request.EndUserId)
             .Add("environment_id", request.EnvironmentId)
             .Add("q", request.Q)
             .Add("start_time", request.StartTime)
@@ -2384,6 +2386,7 @@ public partial class AccountsClient : IAccountsClient
     ///         ActorType = ActorType.ApiKey,
     ///         CompanyId = "company_id",
     ///         EndTime = new DateTime(2024, 01, 15, 09, 30, 00, 000),
+    ///         EndUserId = "end_user_id",
     ///         EnvironmentId = "environment_id",
     ///         Q = "q",
     ///         StartTime = new DateTime(2024, 01, 15, 09, 30, 00, 000),
@@ -2424,6 +2427,7 @@ public partial class AccountsClient : IAccountsClient
     ///         ActorType = ActorType.ApiKey,
     ///         CompanyId = "company_id",
     ///         EndTime = new DateTime(2024, 01, 15, 09, 30, 00, 000),
+    ///         EndUserId = "end_user_id",
     ///         EnvironmentId = "environment_id",
     ///         Q = "q",
     ///         StartTime = new DateTime(2024, 01, 15, 09, 30, 00, 000),

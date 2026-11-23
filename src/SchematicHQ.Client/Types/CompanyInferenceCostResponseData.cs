@@ -12,7 +12,7 @@ public record CompanyInferenceCostResponseData : IJsonOnDeserialized
         new Dictionary<string, JsonElement>();
 
     /// <summary>
-    /// Cost and event counts per provider and response model, busiest model first
+    /// Cost and event counts per provider and response model, busiest model first, for at most the 500 busiest models; the totals count every model
     /// </summary>
     [JsonPropertyName("by_model")]
     public IEnumerable<InferenceModelCostResponseData> ByModel { get; set; } =

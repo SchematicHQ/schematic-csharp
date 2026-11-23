@@ -35,6 +35,12 @@ public record PlanVersionResponseData : IJsonOnDeserialized
     [JsonPropertyName("plan_type")]
     public required PlanType PlanType { get; set; }
 
+    /// <summary>
+    /// Where the company moves at term end when renewal_policy is migrate_to_plan. Null for any other policy.
+    /// </summary>
+    [JsonPropertyName("renewal_destination")]
+    public RenewalDestinationResponseData? RenewalDestination { get; set; }
+
     [JsonPropertyName("renewal_policy")]
     public required RenewalPolicy RenewalPolicy { get; set; }
 

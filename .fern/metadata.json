@@ -8,10 +8,10 @@
     "exported-client-class-name": "Schematic",
     "generate-mock-server-tests": false
   },
-  "originGitCommit": "47e820113906faef63cb69ca180aab7ff64df91b",
+  "originGitCommit": "3d9efd5b60b30d53cb9c28b85c6a10448f7498d5",
   "originGitCommitIsDirty": false,
   "invokedBy": "ci",
-  "requestedVersion": "1.7.4",
+  "requestedVersion": "1.7.5",
   "ciProvider": "github",
-  "sdkVersion": "1.7.4"
+  "sdkVersion": "1.7.5"
 }

@@ -22,6 +22,12 @@ public record UpdatePlanBundleRequestBody
     [JsonPropertyName("plan_version_id")]
     public string? PlanVersionId { get; set; }
 
+    /// <summary>
+    /// Where the company moves at term end when the version's renewal_policy is migrate_to_plan. Left out, the version keeps the destination it has; refused for any other policy.
+    /// </summary>
+    [JsonPropertyName("renewal_destination")]
+    public RenewalDestinationRequestBody? RenewalDestination { get; set; }
+
     [JsonPropertyName("renewal_policy")]
     public RenewalPolicy? RenewalPolicy { get; set; }
 

@@ -318,6 +318,7 @@ await client.Accounts.ListAuditLogsAsync(
         ActorType = ActorType.ApiKey,
         CompanyId = "company_id",
         EndTime = new DateTime(2024, 01, 15, 09, 30, 00, 000),
+        EndUserId = "end_user_id",
         EnvironmentId = "environment_id",
         Q = "q",
         StartTime = new DateTime(2024, 01, 15, 09, 30, 00, 000),
@@ -410,6 +411,7 @@ await client.Accounts.CountAuditLogsAsync(
         ActorType = ActorType.ApiKey,
         CompanyId = "company_id",
         EndTime = new DateTime(2024, 01, 15, 09, 30, 00, 000),
+        EndUserId = "end_user_id",
         EnvironmentId = "environment_id",
         Q = "q",
         StartTime = new DateTime(2024, 01, 15, 09, 30, 00, 000),
@@ -11850,6 +11852,101 @@ await client.Events.GetEventAsync("event_id");
 </dl>
 </details>
 
+<details><summary><code>client.Events.<a href="/src/SchematicHQ.Client/Events/EventsClient.cs">GetInferenceCostAsync</a>(GetInferenceCostRequest { ... }) -> WithRawResponseTask&lt;GetInferenceCostResponse&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Events.GetInferenceCostAsync(
+    new GetInferenceCostRequest
+    {
+        EndTime = new DateTime(2024, 01, 15, 09, 30, 00, 000),
+        StartTime = new DateTime(2024, 01, 15, 09, 30, 00, 000),
+    }
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `GetInferenceCostRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Events.<a href="/src/SchematicHQ.Client/Events/EventsClient.cs">ListInferenceCostRatesAsync</a>(ListInferenceCostRatesRequest { ... }) -> WithRawResponseTask&lt;ListInferenceCostRatesResponse&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Events.ListInferenceCostRatesAsync(
+    new ListInferenceCostRatesRequest
+    {
+        Provider = "provider",
+        ResponseModel = "response_model",
+        Scope = InferenceCostRateScope.Account,
+        Limit = 1000000,
+        Offset = 1000000,
+    }
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `ListInferenceCostRatesRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.Events.<a href="/src/SchematicHQ.Client/Events/EventsClient.cs">ListAccountInferenceCostRatesAsync</a>(ListAccountInferenceCostRatesRequest { ... }) -> WithRawResponseTask&lt;ListAccountInferenceCostRatesResponse&gt;</code></summary>
 <dl>
 <dd>
@@ -13803,6 +13900,31 @@ await client.Integrationsapi.UninstallIntegrationAsync("integration_id");
 
 **integrationId:** `string` — integration_id
     
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Integrationsapi.<a href="/src/SchematicHQ.Client/Integrationsapi/IntegrationsapiClient.cs">GetZuoraConnectionHealthAsync</a>() -> WithRawResponseTask&lt;GetZuoraConnectionHealthResponse&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Integrationsapi.GetZuoraConnectionHealthAsync();
+```
 </dd>
 </dl>
 </dd>
