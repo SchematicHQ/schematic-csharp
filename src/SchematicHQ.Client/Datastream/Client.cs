@@ -1211,6 +1211,12 @@ namespace SchematicHQ.Client.Datastream
             return false;
         }
 
+        long quantity = eventBody.Quantity ?? 1;
+        if (quantity == 0)
+        {
+            return false;
+        }
+
         // Get the company-specific lock to prevent concurrent modifications
         var companyLock = GetCompanyLock(eventBody.Company);
         
@@ -1246,7 +1252,6 @@ namespace SchematicHQ.Client.Datastream
                 {
                     if (metric != null && metric.EventSubtype == eventBody.Event)
                     {
-                        long quantity = eventBody.Quantity ?? 0;
                         metric.Value += quantity;
                         metricUpdated = true;
                     }
