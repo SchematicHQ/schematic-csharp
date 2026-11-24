@@ -1556,6 +1556,43 @@ private void SubmitFlagCheckEvent(
     }
 
     /// <summary>
+    /// Reports whether the client can serve flag checks, for use as a readiness probe.
+    /// Never throws; any error returns false.
+    ///
+    /// <para>In offline mode this returns true, since flag checks serve flag defaults by
+    /// design. When flag checks would be evaluated from the datastream cache, it returns true
+    /// without a network call. Otherwise flag checks go to the API, so this calls the whoami
+    /// endpoint to confirm the API is reachable and the API key is valid, and returns true on
+    /// success.</para>
+    ///
+    /// <para>In API mode each call makes one network request, bounded by the client's
+    /// configured timeout, so call this from a probe rather than on every request.</para>
+    /// </summary>
+    public async Task<bool> IsReadyAsync(CancellationToken cancellationToken = default)
+    {
+        if (_offline)
+        {
+            return true;
+        }
+
+        try
+        {
+            if (UseDatastreamCache())
+            {
+                return true;
+            }
+
+            await Accounts.GetWhoAmIAsync(cancellationToken: cancellationToken);
+            return true;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogWarning(ex, "Readiness check failed");
+            return false;
+        }
+    }
+
+    /// <summary>
     /// Gets whether flag checks should be evaluated from the datastream cache. Single and bulk
     /// flag checks both use this, so in replicator mode neither reads the cache until it is ready.
     /// </summary>

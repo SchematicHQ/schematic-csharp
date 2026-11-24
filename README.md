@@ -975,6 +975,10 @@ var schematic = new Schematic("YOUR_API_KEY", options);
 | `.WithRedisCache(config)` | Configures Redis as the cache provider for replicator data | Required for replicator mode |
 | `RedisCacheConfig.KeyPrefix` | Prefix for every Redis key. In replicator mode this must be `schematic:` (the default): the replicator writes `schematic:flags:...`, `schematic:company:...` and `schematic:user:...` and has no prefix setting, so any other value makes every lookup miss | `"schematic:"` |
 
+### Readiness Checks
+
+`await schematic.IsReadyAsync()` reports whether the client can serve flag checks, for use in a readiness probe. It returns true in offline mode, and true with no network call when flag checks would be evaluated from the Datastream cache. Otherwise flag checks go to the Schematic API, so it calls the API once to confirm the API key works. It never throws; any error returns false. In API mode each call makes a request, so call it from a probe, not on every request.
+
 ## Contributing
 While we value open-source contributions to this SDK, this library
 is generated programmatically. Additions made directly to this library
