@@ -58,6 +58,26 @@ namespace SchematicHQ.Client.Test
         }
 
         [Test]
+        public async Task WebsocketConnected_ReturnsTrueWithoutRequest()
+        {
+            var api = new RecordingHandler(_ => Respond(HttpStatusCode.InternalServerError));
+            _schematic = CreateWebsocketSchematic(api, connected: true);
+
+            Assert.That(await _schematic.IsReadyAsync(), Is.True);
+            Assert.That(api.Requests, Is.Empty);
+        }
+
+        [Test]
+        public async Task WebsocketNotConnected_CallsWhoAmI()
+        {
+            var api = new RecordingHandler(_ => Respond(HttpStatusCode.OK, WhoAmIBody));
+            _schematic = CreateWebsocketSchematic(api, connected: false);
+
+            Assert.That(await _schematic.IsReadyAsync(), Is.True);
+            Assert.That(api.Requests, Is.EqualTo(new[] { "/whoami" }));
+        }
+
+        [Test]
         public async Task ApiMode_WhoAmISucceeds_ReturnsTrue()
         {
             var api = new RecordingHandler(_ => Respond(HttpStatusCode.OK, WhoAmIBody));
@@ -77,6 +97,29 @@ namespace SchematicHQ.Client.Test
         }
 
         [Test]
+        public async Task ApiMode_ServerError_ReturnsFalseWithoutRetry()
+        {
+            var api = new RecordingHandler(_ => Respond(HttpStatusCode.InternalServerError));
+            _schematic = CreateApiSchematic(api);
+
+            Assert.That(await _schematic.IsReadyAsync(), Is.False);
+            Assert.That(api.Requests, Is.EqualTo(new[] { "/whoami" }));
+        }
+
+        [Test]
+        public async Task ApiMode_IgnoresClientTimeout()
+        {
+            var api = new RecordingHandler(async token =>
+            {
+                await Task.Delay(TimeSpan.FromMilliseconds(300), token);
+                return Respond(HttpStatusCode.OK, WhoAmIBody);
+            });
+            _schematic = CreateApiSchematic(api, timeout: TimeSpan.FromMilliseconds(50));
+
+            Assert.That(await _schematic.IsReadyAsync(), Is.True);
+        }
+
+        [Test]
         public async Task ApiMode_NetworkError_ReturnsFalse()
         {
             var api = new RecordingHandler(_ => Task.FromException<HttpResponseMessage>(new HttpRequestException("Connection refused")));
@@ -93,11 +136,11 @@ namespace SchematicHQ.Client.Test
                 await Task.Delay(TimeSpan.FromSeconds(10), token);
                 return Respond(HttpStatusCode.OK, WhoAmIBody);
             });
-            _schematic = CreateApiSchematic(api, timeout: TimeSpan.FromMilliseconds(100));
+            _schematic = CreateApiSchematic(api, timeout: TimeSpan.FromMinutes(1));
 
             var started = DateTime.UtcNow;
             Assert.That(await _schematic.IsReadyAsync(), Is.False);
-            Assert.That(DateTime.UtcNow - started, Is.LessThan(TimeSpan.FromSeconds(5)));
+            Assert.That(DateTime.UtcNow - started, Is.LessThan(TimeSpan.FromSeconds(8)));
         }
 
         [Test]
@@ -149,10 +192,40 @@ namespace SchematicHQ.Client.Test
                 .GetField("_replicatorHealthService", BindingFlags.NonPublic | BindingFlags.Instance)!
                 .SetValue(adapter, new FakeReplicatorHealthService { IsHealthy = replicatorReady });
 
+            ReplaceAdapter(schematic, adapter);
+            return schematic;
+        }
+
+        private static Schematic CreateWebsocketSchematic(RecordingHandler api, bool connected)
+        {
+            var options = new ClientOptions
+            {
+                UseDatastream = true,
+                BaseUrl = "http://127.0.0.1:1",
+                EventBuffer = new NoopEventBuffer(),
+            };
+            var schematic = new Schematic("test-api-key", options.WithHttpClient(new HttpClient(api)));
+
+            var adapter = new DatastreamClientAdapter(
+                "wss://test.example.com",
+                new FakeLogger(),
+                "test-api-key",
+                new LocalCache(),
+                new DatastreamOptions());
+            var tracker = typeof(DatastreamClientAdapter)
+                .GetField("_connectionTracker", BindingFlags.NonPublic | BindingFlags.Instance)!
+                .GetValue(adapter)!;
+            tracker.GetType().GetMethod("UpdateConnectionState")!.Invoke(tracker, new object[] { connected });
+
+            ReplaceAdapter(schematic, adapter);
+            return schematic;
+        }
+
+        private static void ReplaceAdapter(Schematic schematic, DatastreamClientAdapter adapter)
+        {
             var field = typeof(Schematic).GetField("_datastreamClient", BindingFlags.NonPublic | BindingFlags.Instance)!;
             ((DatastreamClientAdapter)field.GetValue(schematic)!).Close();
             field.SetValue(schematic, adapter);
-            return schematic;
         }
 
         private static HttpResponseMessage Respond(HttpStatusCode status, string body = "{}") =>

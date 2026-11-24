@@ -1560,13 +1560,15 @@ private void SubmitFlagCheckEvent(
     /// Never throws; any error returns false.
     ///
     /// <para>In offline mode this returns true, since flag checks serve flag defaults by
-    /// design. When flag checks would be evaluated from the datastream cache, it returns true
-    /// without a network call. Otherwise flag checks go to the API, so this calls the whoami
+    /// design. When flag checks would be evaluated from the datastream cache and the datastream
+    /// is live (the websocket is connected, or in replicator mode the replicator reports its
+    /// cache ready), it returns true without a network call. Otherwise this calls the whoami
     /// endpoint to confirm the API is reachable and the API key is valid, and returns true on
     /// success.</para>
     ///
-    /// <para>In API mode each call makes one network request, bounded by the client's
-    /// configured timeout, so call this from a probe rather than on every request.</para>
+    /// <para>In API mode each call makes one network request with a 5-second timeout and no
+    /// retries, whatever the client's own timeout and retry settings, so call this from a probe
+    /// rather than on every request.</para>
     /// </summary>
     public async Task<bool> IsReadyAsync(CancellationToken cancellationToken = default)
     {
@@ -1577,12 +1579,16 @@ private void SubmitFlagCheckEvent(
 
         try
         {
-            if (UseDatastreamCache())
+            var datastream = _datastreamClient;
+            if (UseDatastreamCache() && datastream != null &&
+                (_replicatorMode || await datastream.IsConnectedAsync()))
             {
                 return true;
             }
 
-            await Accounts.GetWhoAmIAsync(cancellationToken: cancellationToken);
+            await Accounts.GetWhoAmIAsync(
+                new RequestOptions { MaxRetries = 0, Timeout = TimeSpan.FromSeconds(5) },
+                cancellationToken);
             return true;
         }
         catch (Exception ex)

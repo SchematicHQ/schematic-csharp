@@ -977,7 +977,7 @@ var schematic = new Schematic("YOUR_API_KEY", options);
 
 ### Readiness Checks
 
-`await schematic.IsReadyAsync()` reports whether the client can serve flag checks, for use in a readiness probe. It returns true in offline mode, and true with no network call when flag checks would be evaluated from the Datastream cache. Otherwise flag checks go to the Schematic API, so it calls the API once to confirm the API key works. It never throws; any error returns false. In API mode each call makes a request, so call it from a probe, not on every request.
+`await schematic.IsReadyAsync()` reports whether the client can serve flag checks, for use in a readiness probe. It returns true in offline mode, and true with no network call when flag checks would be evaluated from the Datastream cache and Datastream is live (the websocket is connected, or the replicator reports its cache ready). Otherwise it calls the Schematic API once to confirm the API key works. It never throws; any error returns false. In API mode each call makes one request with a 5-second timeout and no retries, so call it from a probe, not on every request.
 
 ## Contributing
 While we value open-source contributions to this SDK, this library
