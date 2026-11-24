@@ -36,6 +36,12 @@ public record CompanyBillingEntitySubscriptionResponseData : IJsonOnDeserialized
     [JsonPropertyName("interval")]
     public required string Interval { get; set; }
 
+    /// <summary>
+    /// With interval, the subscription's billing period: 3 with month is quarterly. Read from the subscription's line items, since interval alone is month for monthly and quarterly alike.
+    /// </summary>
+    [JsonPropertyName("interval_count")]
+    public long? IntervalCount { get; set; }
+
     [JsonPropertyName("is_initial")]
     public required bool IsInitial { get; set; }
 

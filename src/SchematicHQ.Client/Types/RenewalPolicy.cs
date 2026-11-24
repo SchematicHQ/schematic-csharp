@@ -14,6 +14,8 @@ public readonly record struct RenewalPolicy : IStringEnum
 
     public static readonly RenewalPolicy HoldWithGrace = new(Values.HoldWithGrace);
 
+    public static readonly RenewalPolicy MigrateToPlan = new(Values.MigrateToPlan);
+
     public RenewalPolicy(string value)
     {
         Value = value;
@@ -115,5 +117,7 @@ public readonly record struct RenewalPolicy : IStringEnum
         public const string ExpireToDefault = "expire_to_default";
 
         public const string HoldWithGrace = "hold_with_grace";
+
+        public const string MigrateToPlan = "migrate_to_plan";
     }
 }

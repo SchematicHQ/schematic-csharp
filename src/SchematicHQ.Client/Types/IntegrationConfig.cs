@@ -64,6 +64,15 @@ public record IntegrationConfig
     }
 
     /// <summary>
+    /// Create an instance of IntegrationConfig with <see cref="IntegrationConfig.Zuora"/>.
+    /// </summary>
+    public IntegrationConfig(IntegrationConfig.Zuora value)
+    {
+        Type = "zuora";
+        Value = value.Value;
+    }
+
+    /// <summary>
     /// Discriminant value
     /// </summary>
     [JsonPropertyName("type")]
@@ -98,6 +107,11 @@ public record IntegrationConfig
     /// Returns true if <see cref="Type"/> is "workos"
     /// </summary>
     public bool IsWorkos => Type == "workos";
+
+    /// <summary>
+    /// Returns true if <see cref="Type"/> is "zuora"
+    /// </summary>
+    public bool IsZuora => Type == "zuora";
 
     /// <summary>
     /// Returns the value as a <see cref="SchematicHQ.Client.ClerkIntegrationConfig"/> if <see cref="Type"/> is 'clerk', otherwise throws an exception.
@@ -144,12 +158,22 @@ public record IntegrationConfig
             ? (SchematicHQ.Client.WorkOsIntegrationConfig)Value!
             : throw new global::System.Exception("IntegrationConfig.Type is not 'workos'");
 
+    /// <summary>
+    /// Returns the value as a <see cref="SchematicHQ.Client.ZuoraIntegrationConfig"/> if <see cref="Type"/> is 'zuora', otherwise throws an exception.
+    /// </summary>
+    /// <exception cref="Exception">Thrown when <see cref="Type"/> is not 'zuora'.</exception>
+    public SchematicHQ.Client.ZuoraIntegrationConfig AsZuora() =>
+        IsZuora
+            ? (SchematicHQ.Client.ZuoraIntegrationConfig)Value!
+            : throw new global::System.Exception("IntegrationConfig.Type is not 'zuora'");
+
     public T Match<T>(
         Func<SchematicHQ.Client.ClerkIntegrationConfig, T> onClerk,
         Func<SchematicHQ.Client.MetronomeIntegrationConfig, T> onMetronome,
         Func<SchematicHQ.Client.OrbIntegrationConfig, T> onOrb,
         Func<SchematicHQ.Client.StripeIntegrationConfig, T> onStripe,
         Func<SchematicHQ.Client.WorkOsIntegrationConfig, T> onWorkos,
+        Func<SchematicHQ.Client.ZuoraIntegrationConfig, T> onZuora,
         Func<string, object?, T> onUnknown_
     )
     {
@@ -160,6 +184,7 @@ public record IntegrationConfig
             "orb" => onOrb(AsOrb()),
             "stripe" => onStripe(AsStripe()),
             "workos" => onWorkos(AsWorkos()),
+            "zuora" => onZuora(AsZuora()),
             _ => onUnknown_(Type, Value),
         };
     }
@@ -170,6 +195,7 @@ public record IntegrationConfig
         Action<SchematicHQ.Client.OrbIntegrationConfig> onOrb,
         Action<SchematicHQ.Client.StripeIntegrationConfig> onStripe,
         Action<SchematicHQ.Client.WorkOsIntegrationConfig> onWorkos,
+        Action<SchematicHQ.Client.ZuoraIntegrationConfig> onZuora,
         Action<string, object?> onUnknown_
     )
     {
@@ -189,6 +215,9 @@ public record IntegrationConfig
                 break;
             case "workos":
                 onWorkos(AsWorkos());
+                break;
+            case "zuora":
+                onZuora(AsZuora());
                 break;
             default:
                 onUnknown_(Type, Value);
@@ -266,6 +295,20 @@ public record IntegrationConfig
         return false;
     }
 
+    /// <summary>
+    /// Attempts to cast the value to a <see cref="SchematicHQ.Client.ZuoraIntegrationConfig"/> and returns true if successful.
+    /// </summary>
+    public bool TryAsZuora(out SchematicHQ.Client.ZuoraIntegrationConfig? value)
+    {
+        if (Type == "zuora")
+        {
+            value = (SchematicHQ.Client.ZuoraIntegrationConfig)Value!;
+            return true;
+        }
+        value = null;
+        return false;
+    }
+
     public override string ToString() => JsonUtils.Serialize(this);
 
     public static implicit operator IntegrationConfig(IntegrationConfig.Clerk value) => new(value);
@@ -278,6 +321,8 @@ public record IntegrationConfig
     public static implicit operator IntegrationConfig(IntegrationConfig.Stripe value) => new(value);
 
     public static implicit operator IntegrationConfig(IntegrationConfig.Workos value) => new(value);
+
+    public static implicit operator IntegrationConfig(IntegrationConfig.Zuora value) => new(value);
 
     [Serializable]
     internal sealed class JsonConverter : JsonConverter<IntegrationConfig>
@@ -355,6 +400,13 @@ public record IntegrationConfig
                         ?? throw new JsonException(
                             "Failed to deserialize SchematicHQ.Client.WorkOsIntegrationConfig"
                         ),
+                "zuora" =>
+                    jsonWithoutDiscriminator.Deserialize<SchematicHQ.Client.ZuoraIntegrationConfig?>(
+                        options
+                    )
+                        ?? throw new JsonException(
+                            "Failed to deserialize SchematicHQ.Client.ZuoraIntegrationConfig"
+                        ),
                 _ => json.Deserialize<object?>(options),
             };
             return new IntegrationConfig(discriminator, value);
@@ -374,6 +426,7 @@ public record IntegrationConfig
                     "orb" => JsonSerializer.SerializeToNode(value.Value, options),
                     "stripe" => JsonSerializer.SerializeToNode(value.Value, options),
                     "workos" => JsonSerializer.SerializeToNode(value.Value, options),
+                    "zuora" => JsonSerializer.SerializeToNode(value.Value, options),
                     _ => JsonSerializer.SerializeToNode(value.Value, options),
                 } ?? new JsonObject();
             json["type"] = value.Type;
@@ -499,6 +552,26 @@ public record IntegrationConfig
 
         public static implicit operator IntegrationConfig.Workos(
             SchematicHQ.Client.WorkOsIntegrationConfig value
+        ) => new(value);
+    }
+
+    /// <summary>
+    /// Discriminated union type for zuora
+    /// </summary>
+    [Serializable]
+    public struct Zuora
+    {
+        public Zuora(SchematicHQ.Client.ZuoraIntegrationConfig value)
+        {
+            Value = value;
+        }
+
+        internal SchematicHQ.Client.ZuoraIntegrationConfig Value { get; set; }
+
+        public override string ToString() => Value.ToString() ?? "null";
+
+        public static implicit operator IntegrationConfig.Zuora(
+            SchematicHQ.Client.ZuoraIntegrationConfig value
         ) => new(value);
     }
 }

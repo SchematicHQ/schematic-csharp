@@ -69,7 +69,7 @@ public record PublishPlanVersionRequestBody : IJsonOnDeserialized
     public long? DaysUntilDue { get; set; }
 
     /// <summary>
-    /// When a custom plan that doesn't renew ends: the company moves to the default plan then, and no renewal invoice is raised. Required when the version's renewal_policy is expire_to_default, and refused otherwise. Moved back to the last renewal on or before it, which must leave at least one whole billing period. Only honored on a first publish that starts a subscription.
+    /// When a custom plan that doesn't renew ends: the subscription is canceled, the company moves to the fallback plan, and no renewal invoice is raised. Required when the version's renewal_policy is expire_to_default, and refused otherwise. Moved back to the last renewal on or before it, which must leave at least one whole billing period. Only honored on a first publish that starts a subscription.
     /// </summary>
     [JsonPropertyName("end_date")]
     public DateTime? EndDate { get; set; }

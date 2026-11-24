@@ -81,4 +81,9 @@ public partial interface IIntegrationsapiClient
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     );
+
+    WithRawResponseTask<GetZuoraConnectionHealthResponse> GetZuoraConnectionHealthAsync(
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    );
 }

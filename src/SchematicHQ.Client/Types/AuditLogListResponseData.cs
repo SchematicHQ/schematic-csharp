@@ -26,6 +26,18 @@ public record AuditLogListResponseData : IJsonOnDeserialized
     [JsonPropertyName("company_id")]
     public string? CompanyId { get; set; }
 
+    /// <summary>
+    /// The user of your app the request's temporary access token was issued for. Absent when the token named no user or the user has since been deleted.
+    /// </summary>
+    [JsonPropertyName("end_user")]
+    public AuditLogEndUserResponseData? EndUser { get; set; }
+
+    /// <summary>
+    /// The ID of the user of your app the request's temporary access token was issued for
+    /// </summary>
+    [JsonPropertyName("end_user_id")]
+    public string? EndUserId { get; set; }
+
     [JsonPropertyName("ended_at")]
     public DateTime? EndedAt { get; set; }
 

@@ -23,6 +23,12 @@ public record ListAuditLogsParams : IJsonOnDeserialized
     [JsonPropertyName("end_time")]
     public DateTime? EndTime { get; set; }
 
+    /// <summary>
+    /// Only entries made with a temporary access token issued for this user
+    /// </summary>
+    [JsonPropertyName("end_user_id")]
+    public string? EndUserId { get; set; }
+
     [JsonPropertyName("environment_id")]
     public string? EnvironmentId { get; set; }
 

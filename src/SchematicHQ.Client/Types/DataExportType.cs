@@ -12,9 +12,13 @@ public readonly record struct DataExportType : IStringEnum
 
     public static readonly DataExportType CompanyFeatureUsage = new(Values.CompanyFeatureUsage);
 
+    public static readonly DataExportType CreditBalance = new(Values.CreditBalance);
+
     public static readonly DataExportType CreditLedger = new(Values.CreditLedger);
 
     public static readonly DataExportType Event = new(Values.Event);
+
+    public static readonly DataExportType User = new(Values.User);
 
     public DataExportType(string value)
     {
@@ -116,8 +120,12 @@ public readonly record struct DataExportType : IStringEnum
 
         public const string CompanyFeatureUsage = "company-feature-usage";
 
+        public const string CreditBalance = "credit-balance";
+
         public const string CreditLedger = "credit-ledger";
 
         public const string Event = "event";
+
+        public const string User = "user";
     }
 }

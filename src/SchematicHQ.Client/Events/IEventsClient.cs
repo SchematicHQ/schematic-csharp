@@ -32,6 +32,18 @@ public partial interface IEventsClient
         CancellationToken cancellationToken = default
     );
 
+    WithRawResponseTask<GetInferenceCostResponse> GetInferenceCostAsync(
+        GetInferenceCostRequest request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    );
+
+    WithRawResponseTask<ListInferenceCostRatesResponse> ListInferenceCostRatesAsync(
+        ListInferenceCostRatesRequest request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    );
+
     WithRawResponseTask<ListAccountInferenceCostRatesResponse> ListAccountInferenceCostRatesAsync(
         ListAccountInferenceCostRatesRequest request,
         RequestOptions? options = null,

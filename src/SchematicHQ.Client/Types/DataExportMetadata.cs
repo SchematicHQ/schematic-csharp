@@ -37,6 +37,15 @@ public record DataExportMetadata
     }
 
     /// <summary>
+    /// Create an instance of DataExportMetadata with <see cref="DataExportMetadata.CreditBalance"/>.
+    /// </summary>
+    public DataExportMetadata(DataExportMetadata.CreditBalance value)
+    {
+        ExportType = "credit-balance";
+        Value = value.Value;
+    }
+
+    /// <summary>
     /// Create an instance of DataExportMetadata with <see cref="DataExportMetadata.CreditLedger"/>.
     /// </summary>
     public DataExportMetadata(DataExportMetadata.CreditLedger value)
@@ -51,6 +60,15 @@ public record DataExportMetadata
     public DataExportMetadata(DataExportMetadata.Event value)
     {
         ExportType = "event";
+        Value = value.Value;
+    }
+
+    /// <summary>
+    /// Create an instance of DataExportMetadata with <see cref="DataExportMetadata.User"/>.
+    /// </summary>
+    public DataExportMetadata(DataExportMetadata.User value)
+    {
+        ExportType = "user";
         Value = value.Value;
     }
 
@@ -76,6 +94,11 @@ public record DataExportMetadata
     public bool IsCompanyFeatureUsage => ExportType == "company-feature-usage";
 
     /// <summary>
+    /// Returns true if <see cref="ExportType"/> is "credit-balance"
+    /// </summary>
+    public bool IsCreditBalance => ExportType == "credit-balance";
+
+    /// <summary>
     /// Returns true if <see cref="ExportType"/> is "credit-ledger"
     /// </summary>
     public bool IsCreditLedger => ExportType == "credit-ledger";
@@ -84,6 +107,11 @@ public record DataExportMetadata
     /// Returns true if <see cref="ExportType"/> is "event"
     /// </summary>
     public bool IsEvent => ExportType == "event";
+
+    /// <summary>
+    /// Returns true if <see cref="ExportType"/> is "user"
+    /// </summary>
+    public bool IsUser => ExportType == "user";
 
     /// <summary>
     /// Returns the value as a <see cref="SchematicHQ.Client.AuditLogExportMetadata"/> if <see cref="ExportType"/> is 'audit-log', otherwise throws an exception.
@@ -108,6 +136,17 @@ public record DataExportMetadata
             );
 
     /// <summary>
+    /// Returns the value as a <see cref="SchematicHQ.Client.CreditBalanceExportMetadata"/> if <see cref="ExportType"/> is 'credit-balance', otherwise throws an exception.
+    /// </summary>
+    /// <exception cref="Exception">Thrown when <see cref="ExportType"/> is not 'credit-balance'.</exception>
+    public SchematicHQ.Client.CreditBalanceExportMetadata AsCreditBalance() =>
+        IsCreditBalance
+            ? (SchematicHQ.Client.CreditBalanceExportMetadata)Value!
+            : throw new global::System.Exception(
+                "DataExportMetadata.ExportType is not 'credit-balance'"
+            );
+
+    /// <summary>
     /// Returns the value as a <see cref="SchematicHQ.Client.CreditLedgerExportMetadata"/> if <see cref="ExportType"/> is 'credit-ledger', otherwise throws an exception.
     /// </summary>
     /// <exception cref="Exception">Thrown when <see cref="ExportType"/> is not 'credit-ledger'.</exception>
@@ -127,11 +166,22 @@ public record DataExportMetadata
             ? (SchematicHQ.Client.EventExportMetadata)Value!
             : throw new global::System.Exception("DataExportMetadata.ExportType is not 'event'");
 
+    /// <summary>
+    /// Returns the value as a <see cref="SchematicHQ.Client.UserExportMetadata"/> if <see cref="ExportType"/> is 'user', otherwise throws an exception.
+    /// </summary>
+    /// <exception cref="Exception">Thrown when <see cref="ExportType"/> is not 'user'.</exception>
+    public SchematicHQ.Client.UserExportMetadata AsUser() =>
+        IsUser
+            ? (SchematicHQ.Client.UserExportMetadata)Value!
+            : throw new global::System.Exception("DataExportMetadata.ExportType is not 'user'");
+
     public T Match<T>(
         Func<SchematicHQ.Client.AuditLogExportMetadata, T> onAuditLog,
         Func<SchematicHQ.Client.CompanyFeatureUsageExportMetadata, T> onCompanyFeatureUsage,
+        Func<SchematicHQ.Client.CreditBalanceExportMetadata, T> onCreditBalance,
         Func<SchematicHQ.Client.CreditLedgerExportMetadata, T> onCreditLedger,
         Func<SchematicHQ.Client.EventExportMetadata, T> onEvent,
+        Func<SchematicHQ.Client.UserExportMetadata, T> onUser,
         Func<string, object?, T> onUnknown_
     )
     {
@@ -139,8 +189,10 @@ public record DataExportMetadata
         {
             "audit-log" => onAuditLog(AsAuditLog()),
             "company-feature-usage" => onCompanyFeatureUsage(AsCompanyFeatureUsage()),
+            "credit-balance" => onCreditBalance(AsCreditBalance()),
             "credit-ledger" => onCreditLedger(AsCreditLedger()),
             "event" => onEvent(AsEvent()),
+            "user" => onUser(AsUser()),
             _ => onUnknown_(ExportType, Value),
         };
     }
@@ -148,8 +200,10 @@ public record DataExportMetadata
     public void Visit(
         Action<SchematicHQ.Client.AuditLogExportMetadata> onAuditLog,
         Action<SchematicHQ.Client.CompanyFeatureUsageExportMetadata> onCompanyFeatureUsage,
+        Action<SchematicHQ.Client.CreditBalanceExportMetadata> onCreditBalance,
         Action<SchematicHQ.Client.CreditLedgerExportMetadata> onCreditLedger,
         Action<SchematicHQ.Client.EventExportMetadata> onEvent,
+        Action<SchematicHQ.Client.UserExportMetadata> onUser,
         Action<string, object?> onUnknown_
     )
     {
@@ -161,11 +215,17 @@ public record DataExportMetadata
             case "company-feature-usage":
                 onCompanyFeatureUsage(AsCompanyFeatureUsage());
                 break;
+            case "credit-balance":
+                onCreditBalance(AsCreditBalance());
+                break;
             case "credit-ledger":
                 onCreditLedger(AsCreditLedger());
                 break;
             case "event":
                 onEvent(AsEvent());
+                break;
+            case "user":
+                onUser(AsUser());
                 break;
             default:
                 onUnknown_(ExportType, Value);
@@ -204,6 +264,20 @@ public record DataExportMetadata
     }
 
     /// <summary>
+    /// Attempts to cast the value to a <see cref="SchematicHQ.Client.CreditBalanceExportMetadata"/> and returns true if successful.
+    /// </summary>
+    public bool TryAsCreditBalance(out SchematicHQ.Client.CreditBalanceExportMetadata? value)
+    {
+        if (ExportType == "credit-balance")
+        {
+            value = (SchematicHQ.Client.CreditBalanceExportMetadata)Value!;
+            return true;
+        }
+        value = null;
+        return false;
+    }
+
+    /// <summary>
     /// Attempts to cast the value to a <see cref="SchematicHQ.Client.CreditLedgerExportMetadata"/> and returns true if successful.
     /// </summary>
     public bool TryAsCreditLedger(out SchematicHQ.Client.CreditLedgerExportMetadata? value)
@@ -231,6 +305,20 @@ public record DataExportMetadata
         return false;
     }
 
+    /// <summary>
+    /// Attempts to cast the value to a <see cref="SchematicHQ.Client.UserExportMetadata"/> and returns true if successful.
+    /// </summary>
+    public bool TryAsUser(out SchematicHQ.Client.UserExportMetadata? value)
+    {
+        if (ExportType == "user")
+        {
+            value = (SchematicHQ.Client.UserExportMetadata)Value!;
+            return true;
+        }
+        value = null;
+        return false;
+    }
+
     public override string ToString() => JsonUtils.Serialize(this);
 
     public static implicit operator DataExportMetadata(DataExportMetadata.AuditLog value) =>
@@ -240,11 +328,16 @@ public record DataExportMetadata
         DataExportMetadata.CompanyFeatureUsage value
     ) => new(value);
 
+    public static implicit operator DataExportMetadata(DataExportMetadata.CreditBalance value) =>
+        new(value);
+
     public static implicit operator DataExportMetadata(DataExportMetadata.CreditLedger value) =>
         new(value);
 
     public static implicit operator DataExportMetadata(DataExportMetadata.Event value) =>
         new(value);
+
+    public static implicit operator DataExportMetadata(DataExportMetadata.User value) => new(value);
 
     [Serializable]
     internal sealed class JsonConverter : JsonConverter<DataExportMetadata>
@@ -301,6 +394,13 @@ public record DataExportMetadata
                         ?? throw new JsonException(
                             "Failed to deserialize SchematicHQ.Client.CompanyFeatureUsageExportMetadata"
                         ),
+                "credit-balance" =>
+                    jsonWithoutDiscriminator.Deserialize<SchematicHQ.Client.CreditBalanceExportMetadata?>(
+                        options
+                    )
+                        ?? throw new JsonException(
+                            "Failed to deserialize SchematicHQ.Client.CreditBalanceExportMetadata"
+                        ),
                 "credit-ledger" =>
                     jsonWithoutDiscriminator.Deserialize<SchematicHQ.Client.CreditLedgerExportMetadata?>(
                         options
@@ -314,6 +414,13 @@ public record DataExportMetadata
                     )
                         ?? throw new JsonException(
                             "Failed to deserialize SchematicHQ.Client.EventExportMetadata"
+                        ),
+                "user" =>
+                    jsonWithoutDiscriminator.Deserialize<SchematicHQ.Client.UserExportMetadata?>(
+                        options
+                    )
+                        ?? throw new JsonException(
+                            "Failed to deserialize SchematicHQ.Client.UserExportMetadata"
                         ),
                 _ => json.Deserialize<object?>(options),
             };
@@ -331,8 +438,10 @@ public record DataExportMetadata
                 {
                     "audit-log" => JsonSerializer.SerializeToNode(value.Value, options),
                     "company-feature-usage" => JsonSerializer.SerializeToNode(value.Value, options),
+                    "credit-balance" => JsonSerializer.SerializeToNode(value.Value, options),
                     "credit-ledger" => JsonSerializer.SerializeToNode(value.Value, options),
                     "event" => JsonSerializer.SerializeToNode(value.Value, options),
+                    "user" => JsonSerializer.SerializeToNode(value.Value, options),
                     _ => JsonSerializer.SerializeToNode(value.Value, options),
                 } ?? new JsonObject();
             json["export_type"] = value.ExportType;
@@ -402,6 +511,26 @@ public record DataExportMetadata
     }
 
     /// <summary>
+    /// Discriminated union type for credit-balance
+    /// </summary>
+    [Serializable]
+    public struct CreditBalance
+    {
+        public CreditBalance(SchematicHQ.Client.CreditBalanceExportMetadata value)
+        {
+            Value = value;
+        }
+
+        internal SchematicHQ.Client.CreditBalanceExportMetadata Value { get; set; }
+
+        public override string ToString() => Value.ToString() ?? "null";
+
+        public static implicit operator DataExportMetadata.CreditBalance(
+            SchematicHQ.Client.CreditBalanceExportMetadata value
+        ) => new(value);
+    }
+
+    /// <summary>
     /// Discriminated union type for credit-ledger
     /// </summary>
     [Serializable]
@@ -438,6 +567,26 @@ public record DataExportMetadata
 
         public static implicit operator DataExportMetadata.Event(
             SchematicHQ.Client.EventExportMetadata value
+        ) => new(value);
+    }
+
+    /// <summary>
+    /// Discriminated union type for user
+    /// </summary>
+    [Serializable]
+    public struct User
+    {
+        public User(SchematicHQ.Client.UserExportMetadata value)
+        {
+            Value = value;
+        }
+
+        internal SchematicHQ.Client.UserExportMetadata Value { get; set; }
+
+        public override string ToString() => Value.ToString() ?? "null";
+
+        public static implicit operator DataExportMetadata.User(
+            SchematicHQ.Client.UserExportMetadata value
         ) => new(value);
     }
 }

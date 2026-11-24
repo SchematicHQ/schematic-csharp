@@ -19,6 +19,12 @@ public record CreateCustomPlanBundleRequestBody
     [JsonPropertyName("plan")]
     public required CreateCustomPlanBundlePlanRequestBody Plan { get; set; }
 
+    /// <summary>
+    /// Where the company moves at term end when renewal_policy is migrate_to_plan. Required for that policy and refused for any other.
+    /// </summary>
+    [JsonPropertyName("renewal_destination")]
+    public RenewalDestinationRequestBody? RenewalDestination { get; set; }
+
     [JsonPropertyName("renewal_policy")]
     public RenewalPolicy? RenewalPolicy { get; set; }
 

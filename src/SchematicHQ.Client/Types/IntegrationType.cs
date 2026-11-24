@@ -20,6 +20,8 @@ public readonly record struct IntegrationType : IStringEnum
 
     public static readonly IntegrationType Workos = new(Values.Workos);
 
+    public static readonly IntegrationType Zuora = new(Values.Zuora);
+
     public IntegrationType(string value)
     {
         Value = value;
@@ -127,5 +129,7 @@ public readonly record struct IntegrationType : IStringEnum
         public const string Unknown = "unknown";
 
         public const string Workos = "workos";
+
+        public const string Zuora = "zuora";
     }
 }

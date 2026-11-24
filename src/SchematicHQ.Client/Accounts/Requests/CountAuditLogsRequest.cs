@@ -15,6 +15,12 @@ public record CountAuditLogsRequest
     [JsonIgnore]
     public DateTime? EndTime { get; set; }
 
+    /// <summary>
+    /// Only entries made with a temporary access token issued for this user
+    /// </summary>
+    [JsonIgnore]
+    public string? EndUserId { get; set; }
+
     [JsonIgnore]
     public string? EnvironmentId { get; set; }
 
