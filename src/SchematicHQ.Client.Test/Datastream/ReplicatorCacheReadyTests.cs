@@ -9,6 +9,7 @@ using NUnit.Framework;
 using SchematicHQ.Client.Cache;
 using SchematicHQ.Client.Datastream;
 using SchematicHQ.Client.Leases;
+using SchematicHQ.Client.Test.Datastream.Mocks;
 using StackExchange.Redis;
 
 namespace SchematicHQ.Client.Test.Datastream
@@ -328,34 +329,10 @@ namespace SchematicHQ.Client.Test.Datastream
 
         private static Harness CreateHarness(FakeApiHandler api, bool ready, Dictionary<string, bool>? flagDefaults = null, CreditLeaseConfig? creditLeases = null)
         {
-            // Replicator mode requires a Redis cache; a mocked multiplexer satisfies that without a server.
-            var redis = new Mock<IConnectionMultiplexer>();
-            redis.Setup(r => r.GetDatabase(It.IsAny<int>(), It.IsAny<object>())).Returns(new Mock<IDatabase>().Object);
-
-            var options = new ClientOptions
-            {
-                ReplicatorMode = true,
-                ReplicatorHealthUrl = "http://127.0.0.1:1/ready",
-                CacheProvider = new RedisCache(new RedisCacheConfig { ConnectionMultiplexerFactory = () => redis.Object }),
-                EventBuffer = new NoopEventBuffer(),
-                FlagDefaults = flagDefaults ?? new Dictionary<string, bool>(),
-                CreditLeases = creditLeases,
-            };
-            var schematic = new Schematic("test-api-key", options.WithHttpClient(new HttpClient(api)));
-
-            // Swap in an adapter backed by a local cache and a controllable health service.
-            var field = typeof(Schematic).GetField("_datastreamClient", BindingFlags.NonPublic | BindingFlags.Instance)!;
-            ((DatastreamClientAdapter)field.GetValue(schematic)!).Close();
-
             var cache = new CountingCache(new LocalCache());
             var health = new FakeReplicatorHealthService { IsHealthy = ready };
-            var adapter = new DatastreamClientAdapter(
-                "wss://test.example.com", new FakeLogger(), "test-api-key", cache, new DatastreamOptions(), replicatorMode: true);
-            typeof(DatastreamClientAdapter)
-                .GetField("_replicatorHealthService", BindingFlags.NonPublic | BindingFlags.Instance)!
-                .SetValue(adapter, health);
-            field.SetValue(schematic, adapter);
-
+            var schematic = ReplicatorTestHarness.CreateReplicatorSchematic(
+                api, cache, health, out var adapter, flagDefaults, creditLeases);
             return new Harness(schematic, adapter, health, cache);
         }
 
@@ -421,17 +398,6 @@ namespace SchematicHQ.Client.Test.Datastream
             }
         }
 
-        private sealed class FakeReplicatorHealthService : IReplicatorHealthService
-        {
-            public bool IsHealthy { get; set; }
-            public string? CacheVersion { get; set; } = "test-cache-version";
-            public Task<string?> GetCacheVersionAsync() => Task.FromResult(CacheVersion);
-            public event Action<string?, string?>? CacheVersionChanged { add { } remove { } }
-            public void Start() { }
-            public void Stop() { }
-            public void Dispose() { }
-        }
-
         /// <summary>Counts reads so tests can assert the replicator cache was not consulted.</summary>
         private sealed class CountingCache : ICacheProvider
         {
@@ -461,15 +427,6 @@ namespace SchematicHQ.Client.Test.Datastream
             public ValueTask<bool> Delete(string key, CancellationToken token = default) => _inner.Delete(key, token);
 
             public ValueTask DeleteMissing(IEnumerable<string> keys, string? scanPattern = null) => _inner.DeleteMissing(keys, scanPattern);
-        }
-
-        private sealed class NoopEventBuffer : IEventBuffer<CreateEventRequestBody>
-        {
-            public void Push(CreateEventRequestBody item) { }
-            public void Start() { }
-            public Task Stop() => Task.CompletedTask;
-            public Task Flush() => Task.CompletedTask;
-            public int GetEventCount() => 0;
         }
 
         /// <summary>Answers the single and bulk flag check endpoints and counts calls to each.</summary>

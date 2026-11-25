@@ -26,6 +26,7 @@ src/SchematicHQ.Client.Test/TestClientOptions.cs
 src/SchematicHQ.Client.Test/TestCompaniesClient.cs
 src/SchematicHQ.Client.Test/TestEventBuffer.cs
 src/SchematicHQ.Client.Test/TestEventCaptureClient.cs
+src/SchematicHQ.Client.Test/TestIsReady.cs
 src/SchematicHQ.Client.Test/TestLogger.cs
 src/SchematicHQ.Client.Test/RulesEngine/
 src/SchematicHQ.Client.Test/SchematicHQ.Client.Test.Custom.props

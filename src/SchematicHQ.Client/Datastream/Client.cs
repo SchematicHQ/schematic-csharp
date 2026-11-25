@@ -902,7 +902,7 @@ namespace SchematicHQ.Client.Datastream
     /// </summary>
     internal Task<CheckFlagResult> CheckFlag(RulesengineCompany? company, RulesengineUser? user, RulesengineFlag flag, PreflightRequestBody? preflight, CancellationToken cancellationToken = default)
     {
-      if (_rulesEngine == null || !_rulesEngine.IsInitialized)
+      if (!RulesEngineAvailable)
       {
         _logger.LogWarning("WASM rules engine unavailable; returning default value for flag {FlagKey}", flag.Key);
         return Task.FromResult(new CheckFlagResult
@@ -1117,6 +1117,8 @@ namespace SchematicHQ.Client.Datastream
     }
 
     internal bool FlagsSnapshotReceived => _flagsSnapshot.Task.IsCompleted;
+
+    internal bool RulesEngineAvailable => _rulesEngine != null && _rulesEngine.IsInitialized;
 
     internal async Task<bool> WaitForFlagsSnapshotAsync(TimeSpan timeout)
     {

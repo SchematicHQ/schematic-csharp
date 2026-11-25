@@ -975,6 +975,17 @@ var schematic = new Schematic("YOUR_API_KEY", options);
 | `.WithRedisCache(config)` | Configures Redis as the cache provider for replicator data | Required for replicator mode |
 | `RedisCacheConfig.KeyPrefix` | Prefix for every Redis key. In replicator mode this must be `schematic:` (the default): the replicator writes `schematic:flags:...`, `schematic:company:...` and `schematic:user:...` and has no prefix setting, so any other value makes every lookup miss | `"schematic:"` |
 
+### Start-up Checks
+
+`await schematic.IsReadyAsync()` reports whether the client loaded and can serve flag checks. It returns true in offline mode. It returns true with no network call when flag checks would be evaluated from the Datastream cache, the rules engine loaded, and Datastream is ready (the websocket connection has received its flags snapshot, or the replicator reports its cache ready). Otherwise it calls the Schematic API once, with no retries and a 5-second limit, to confirm the API key works. It never throws; any error returns false.
+
+Use it as a start-up check, such as a Kubernetes `startupProbe` or a gate before your app accepts traffic, and set the probe's `timeoutSeconds` above 5. Don't use it for liveness or ongoing readiness: it depends on Schematic's API, so an API outage would pull every pod out of service while flag checks keep serving defaults or cached values. From an ASP.NET Core endpoint, pass `HttpContext.RequestAborted` as the token:
+
+```csharp
+app.MapGet("/startup", async (HttpContext ctx) =>
+    await schematic.IsReadyAsync(ctx.RequestAborted) ? Results.Ok() : Results.StatusCode(503));
+```
+
 ## Contributing
 While we value open-source contributions to this SDK, this library
 is generated programmatically. Additions made directly to this library

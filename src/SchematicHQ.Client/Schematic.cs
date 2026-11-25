@@ -51,6 +51,7 @@ public partial class Schematic
     // shutdown. Null when the caller supplied the backend.
     private IDisposable? _ownedLeaseRedis;
     private TimeSpan _prewarmResolveTimeout = LeaseDefaults.PrewarmResolveTimeout;
+    internal TimeSpan _readinessTimeout = TimeSpan.FromSeconds(5);
     // The configured mode. Null when CreditLeases is not configured.
     private CreditLeaseMode? _creditLeaseMode;
     // Applied to a server-side hold's expiry. Server mode only.
@@ -1553,6 +1554,61 @@ private void SubmitFlagCheckEvent(
     public bool IsCacheReady()
     {
         return _datastreamClient?.IsCacheReady() == true;
+    }
+
+    /// <summary>
+    /// Reports whether the client loaded and can serve flag checks. Never throws; any error,
+    /// including cancellation, returns false.
+    ///
+    /// <para>In offline mode this returns true, since flag checks serve flag defaults by
+    /// design. When flag checks would be evaluated from the datastream cache, the rules engine
+    /// loaded, and the datastream is ready (in websocket mode the current connection has
+    /// received its flags snapshot; in replicator mode the replicator reports its cache ready),
+    /// it returns true without a network call. Otherwise it calls the whoami endpoint to
+    /// confirm the API is reachable and the API key is valid, and returns true on success.
+    /// That call makes one request with no retries and a 5-second limit on the whole call,
+    /// whatever the client's own timeout and retry settings.</para>
+    ///
+    /// <para>Use this as a start-up check, such as a Kubernetes <c>startupProbe</c> or a gate
+    /// before the app accepts traffic, with the probe's <c>timeoutSeconds</c> above 5. Do not
+    /// use it for liveness or ongoing readiness: it depends on Schematic's API, so an API
+    /// outage would pull every pod out of service while flag checks keep serving defaults or
+    /// cached values. From an ASP.NET Core endpoint, pass <c>HttpContext.RequestAborted</c>
+    /// as the token.</para>
+    /// </summary>
+    public async Task<bool> IsReadyAsync(CancellationToken cancellationToken = default)
+    {
+        if (_offline)
+        {
+            return true;
+        }
+
+        try
+        {
+            var datastream = _datastreamClient;
+            if (datastream != null && UseDatastreamCache() && datastream.IsRulesEngineAvailable() &&
+                (_replicatorMode || await datastream.IsReadyAsync()))
+            {
+                return true;
+            }
+
+            using var cts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
+            cts.CancelAfter(_readinessTimeout);
+            await Accounts.GetWhoAmIAsync(
+                new RequestOptions { MaxRetries = 0, Timeout = _readinessTimeout },
+                cts.Token);
+            return true;
+        }
+        catch (Exception ex) when (cancellationToken.IsCancellationRequested)
+        {
+            _logger.LogDebug(ex, "Readiness check cancelled");
+            return false;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogWarning(ex, "Readiness check failed");
+            return false;
+        }
     }
 
     /// <summary>
