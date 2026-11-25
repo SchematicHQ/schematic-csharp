@@ -559,15 +559,14 @@ public static class LeaseCheck
     /// <summary>
     /// Whether an engine call failed rather than answered. A fault inside the
     /// engine does not surface as a thrown exception or a null: the datastream
-    /// path catches it and hands back the flag's default value under one of the
-    /// engine reasons. That is the right answer for a plain check and the wrong
+    /// path catches it and hands back the flag's default value under the engine
+    /// error reason. That is the right answer for a plain check and the wrong
     /// one for a credit gate, where a default of true would allow without the
     /// credits behind it, so the gate has to read it as a failure and resolve
     /// by mode instead.
     /// </summary>
     private static bool EngineFailed(CheckFlagResult result) =>
         result.Error != null
-        || result.Reason == DatastreamClient.ReasonRulesEngineUnavailable
         || result.Reason == DatastreamClient.ReasonRulesEngineError;
 
     /// <summary>

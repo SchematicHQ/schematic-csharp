@@ -19,7 +19,6 @@ public class LeaseCheckEngineFailureTests
     private const string CreditId = "ct_1";
     private const string FlagKey = "inference";
     private const string EngineError = "RULES_ENGINE_ERROR";
-    private const string EngineUnavailable = "RULES_ENGINE_UNAVAILABLE";
 
     [Test]
     public async Task Fail_Closed_Denies_And_Refunds_Even_When_The_Flag_Defaults_To_True()
@@ -50,7 +49,7 @@ public class LeaseCheckEngineFailureTests
         var datastream = new StubCheckDataStream(FlagKey, Company())
             .WithFlagDefault(false)
             .ProbesCredit(CreditId, 10, "inference_tokens")
-            .FailsInTheEngine(EngineUnavailable);
+            .FailsInTheEngine(EngineError);
 
         var result = await CheckAsync(leases, reservations, datastream, OnAcquireFailure.FailOpen);
 
