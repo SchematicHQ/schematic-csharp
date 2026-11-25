@@ -12,9 +12,9 @@ namespace SchematicHQ.Client.Test.Credits.Leases;
 /// supposed to return when it fails, not only when the client is offline.
 ///
 /// <para>The same holds on the datastream branch, where the engine reports a
-/// refusal to evaluate as the flag's registered default under one of two
-/// reasons rather than by throwing. Telling that apart from a real verdict is
-/// what decides whether the caller's default applies.</para>
+/// failure to evaluate as the flag's registered default under an error reason
+/// rather than by throwing. Telling that apart from a real verdict is what
+/// decides whether the caller's default applies.</para>
 /// </summary>
 [TestFixture]
 public class CheckDefaultValueTests
@@ -80,13 +80,12 @@ public class CheckDefaultValueTests
         );
     }
 
-    [TestCase("RULES_ENGINE_UNAVAILABLE")]
     [TestCase("RULES_ENGINE_ERROR")]
     public void An_Engine_That_Could_Not_Evaluate_Is_A_Decline(string reason)
     {
-        // Neither of these is a verdict. The engine reports them with the flag's
-        // registered default in Value, which is why the caller's own default has
-        // to be resolved instead of trusting what came back.
+        // Not a verdict. The engine reports it with the flag's registered
+        // default in Value, which is why the caller's own default has to be
+        // resolved instead of trusting what came back.
         Assert.That(
             Schematic.EngineDeclined(
                 new CheckFlagResult

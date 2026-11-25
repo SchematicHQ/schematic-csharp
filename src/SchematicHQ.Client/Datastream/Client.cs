@@ -24,7 +24,7 @@ namespace SchematicHQ.Client.Datastream
     private IWebSocketClient _webSocket;
 
     // Local flag evaluator (shared Rust rules engine, hosted via WASM). Null when
-    // initialization failed, in which case flag checks fall back to the flag default.
+    // initialization failed, in which case flag checks fall back to the API.
     private readonly WasmRulesEngine? _rulesEngine;
 
     private readonly CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
@@ -79,9 +79,8 @@ namespace SchematicHQ.Client.Datastream
     // Authentication error close code
     private const int AuthErrorCloseCode = 4001;
 
-    // Reasons returned when the WASM rules engine cannot evaluate a flag; the flag's
-    // default value is returned in both cases (matching schematic-java's semantics).
-    internal const string ReasonRulesEngineUnavailable = "RULES_ENGINE_UNAVAILABLE";
+    // Reason returned, with the flag's default value, when the WASM rules engine
+    // throws while evaluating a flag.
     internal const string ReasonRulesEngineError = "RULES_ENGINE_ERROR";
 
     // Handshake headers attached to the WebSocket connection so the backend can
@@ -140,7 +139,7 @@ namespace SchematicHQ.Client.Datastream
       _webSocket = webSocket ?? new StandardWebSocketClient();
 
       // Initialize the WASM rules engine. On failure, degrade gracefully: flag
-      // checks return the flag's default value rather than throwing.
+      // checks fall back to the API rather than throwing.
       try
       {
         var rulesEngine = new WasmRulesEngine(_logger);
@@ -149,7 +148,7 @@ namespace SchematicHQ.Client.Datastream
       }
       catch (Exception ex)
       {
-        _logger.LogError(ex, "Failed to initialize WASM rules engine; flag checks will return default values");
+        _logger.LogError(ex, "Failed to initialize WASM rules engine; flag checks will fall back to the API");
         _rulesEngine = null;
       }
     }
@@ -902,18 +901,10 @@ namespace SchematicHQ.Client.Datastream
     /// </summary>
     internal Task<CheckFlagResult> CheckFlag(RulesengineCompany? company, RulesengineUser? user, RulesengineFlag flag, PreflightRequestBody? preflight, CancellationToken cancellationToken = default)
     {
-      if (_rulesEngine == null || !_rulesEngine.IsInitialized)
+      if (!RulesEngineAvailable)
       {
-        _logger.LogWarning("WASM rules engine unavailable; returning default value for flag {FlagKey}", flag.Key);
-        return Task.FromResult(new CheckFlagResult
-        {
-          Reason = ReasonRulesEngineUnavailable,
-          FlagKey = flag.Key,
-          FlagId = flag.Id,
-          Value = flag.DefaultValue,
-          CompanyId = company?.Id,
-          UserId = user?.Id,
-        });
+        return Task.FromException<CheckFlagResult>(new InvalidOperationException(
+          $"WASM rules engine unavailable - API fallback required for flag '{flag.Key}'"));
       }
 
       try
@@ -1117,6 +1108,8 @@ namespace SchematicHQ.Client.Datastream
     }
 
     internal bool FlagsSnapshotReceived => _flagsSnapshot.Task.IsCompleted;
+
+    internal bool RulesEngineAvailable => _rulesEngine != null && _rulesEngine.IsInitialized;
 
     internal async Task<bool> WaitForFlagsSnapshotAsync(TimeSpan timeout)
     {

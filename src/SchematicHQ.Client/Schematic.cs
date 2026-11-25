@@ -28,6 +28,7 @@ public partial class Schematic
     private volatile DatastreamClientAdapter? _datastreamClient;
     private readonly bool _replicatorMode;
     private bool _datastreamConnected;
+    private int _rulesEngineFallbackWarned;
     private bool _disposed;
     public readonly SchematicApi API;
 
@@ -425,8 +426,9 @@ public partial class Schematic
     /// offline.
     ///
     /// <para>The auto mode resolves per check rather than once at startup, so a
-    /// datastream that failed to start after construction falls to server mode
-    /// instead of silently dropping every check to a plain, ungated one.</para>
+    /// datastream that failed to start after construction, or one with no rules
+    /// engine, falls to server mode instead of silently dropping every check to a
+    /// plain, ungated one.</para>
     /// </summary>
     private CreditLeaseMode? EffectiveLeaseMode()
     {
@@ -434,7 +436,8 @@ public partial class Schematic
         if (_creditLeaseMode == CreditLeaseMode.Server) return CreditLeaseMode.Server;
         if (_creditLeaseMode == CreditLeaseMode.Client) return CreditLeaseMode.Client;
         var clientPlumbingReady = _creditLeaseManager != null && _leaseStore != null && _reservations != null;
-        return _datastreamClient != null && clientPlumbingReady
+        var datastream = _datastreamClient;
+        return datastream != null && clientPlumbingReady && RulesEngineAvailable(datastream)
             ? CreditLeaseMode.Client
             : CreditLeaseMode.Server;
     }
@@ -903,14 +906,13 @@ public partial class Schematic
 
     // Helper method to build consistent cache keys
     /// <summary>
-    /// Whether the local engine refused to evaluate rather than answering. It
-    /// reports that by returning the flag's registered default under one of two
-    /// reasons, not by throwing, so this is the only way to tell a real "false"
+    /// Whether the local engine failed to evaluate rather than answering. It
+    /// reports that by returning the flag's registered default under an error
+    /// reason, not by throwing, so this is the only way to tell a real "false"
     /// from "could not evaluate".
     /// </summary>
     internal static bool EngineDeclined(CheckFlagResult result) =>
         result.Error != null
-        || result.Reason == SchematicHQ.Client.Datastream.DatastreamClient.ReasonRulesEngineUnavailable
         || result.Reason == SchematicHQ.Client.Datastream.DatastreamClient.ReasonRulesEngineError;
 
     private string BuildFlagCacheKey(string flagKey, Dictionary<string, string>? company, Dictionary<string, string>? user)
@@ -999,8 +1001,9 @@ public partial class Schematic
         }
 
         // Client mode without the local plumbing (an explicit client mode and no
-        // datastream) keeps the plain, ungated flag check.
-        if (_creditLeaseManager == null || _leaseStore == null || _reservations == null || _datastreamClient == null)
+        // datastream or rules engine) keeps the plain, ungated flag check.
+        if (_creditLeaseManager == null || _leaseStore == null || _reservations == null || _datastreamClient == null
+            || !RulesEngineAvailable(_datastreamClient))
         {
             return await Fallback();
         }
@@ -1181,6 +1184,12 @@ public partial class Schematic
                 EffectiveLeaseMode() == CreditLeaseMode.Server
                     ? "Prewarm is a no-op in server mode; there is no local lease to warm"
                     : "Prewarm called but CreditLeases is not configured");
+            return;
+        }
+        var datastream = _datastreamClient;
+        if (datastream != null && !RulesEngineAvailable(datastream))
+        {
+            _logger.LogDebug("Prewarm is a no-op without the rules engine; checks will not use local leases");
             return;
         }
         if (company == null || company.Count == 0)
@@ -1557,11 +1566,26 @@ private void SubmitFlagCheckEvent(
 
     /// <summary>
     /// Gets whether flag checks should be evaluated from the datastream cache. Single and bulk
-    /// flag checks both use this, so in replicator mode neither reads the cache until it is ready.
+    /// flag checks both use this, so in replicator mode neither reads the cache until it is ready,
+    /// and without the rules engine both use the API.
     /// </summary>
     private bool UseDatastreamCache()
     {
-        return _datastreamClient != null && _datastreamClient.IsCacheReady();
+        var datastream = _datastreamClient;
+        return datastream != null && datastream.IsCacheReady() && RulesEngineAvailable(datastream);
+    }
+
+    private bool RulesEngineAvailable(DatastreamClientAdapter datastream)
+    {
+        if (datastream.IsRulesEngineAvailable())
+        {
+            return true;
+        }
+        if (Interlocked.Exchange(ref _rulesEngineFallbackWarned, 1) == 0)
+        {
+            _logger.LogWarning("WASM rules engine unavailable; flag checks will use the API instead of local evaluation");
+        }
+        return false;
     }
 
     /// <summary>

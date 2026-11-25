@@ -155,6 +155,8 @@ namespace SchematicHQ.Client.Datastream
       return _replicatorMode;
     }
 
+    internal bool IsRulesEngineAvailable() => _client.RulesEngineAvailable;
+
     /// <summary>
     /// Whether the current connection has received its full flags snapshot,
     /// waiting up to <paramref name="timeout"/> for it when given. Until then
