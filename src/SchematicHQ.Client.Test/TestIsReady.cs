@@ -2,11 +2,10 @@ using System.Net;
 using System.Reflection;
 using System.Text;
 using Microsoft.Extensions.Logging.Testing;
-using Moq;
 using NUnit.Framework;
 using SchematicHQ.Client.Cache;
 using SchematicHQ.Client.Datastream;
-using StackExchange.Redis;
+using SchematicHQ.Client.Test.Datastream.Mocks;
 
 namespace SchematicHQ.Client.Test
 {
@@ -38,7 +37,7 @@ namespace SchematicHQ.Client.Test
         }
 
         [Test]
-        public async Task DatastreamUsable_ReturnsTrueWithoutRequest()
+        public async Task ReplicatorReady_ReturnsTrueWithoutRequest()
         {
             var api = new RecordingHandler(_ => Respond(HttpStatusCode.InternalServerError));
             _schematic = CreateReplicatorSchematic(api, replicatorReady: true);
@@ -48,7 +47,7 @@ namespace SchematicHQ.Client.Test
         }
 
         [Test]
-        public async Task DatastreamNotUsable_CallsWhoAmI()
+        public async Task ReplicatorNotReady_CallsWhoAmI()
         {
             var api = new RecordingHandler(_ => Respond(HttpStatusCode.OK, WhoAmIBody));
             _schematic = CreateReplicatorSchematic(api, replicatorReady: false);
@@ -58,20 +57,57 @@ namespace SchematicHQ.Client.Test
         }
 
         [Test]
-        public async Task WebsocketConnected_ReturnsTrueWithoutRequest()
+        public async Task WebsocketSnapshotReceived_ReturnsTrueWithoutRequest()
         {
             var api = new RecordingHandler(_ => Respond(HttpStatusCode.InternalServerError));
-            _schematic = CreateWebsocketSchematic(api, connected: true);
+            _schematic = CreateWebsocketSchematic(api, connected: true, snapshotReceived: true);
 
             Assert.That(await _schematic.IsReadyAsync(), Is.True);
             Assert.That(api.Requests, Is.Empty);
         }
 
         [Test]
+        public async Task WebsocketConnectedWithoutSnapshot_CallsWhoAmI()
+        {
+            var api = new RecordingHandler(_ => Respond(HttpStatusCode.OK, WhoAmIBody));
+            _schematic = CreateWebsocketSchematic(api, connected: true, snapshotReceived: false);
+
+            Assert.That(await _schematic.IsReadyAsync(), Is.True);
+            Assert.That(api.Requests, Is.EqualTo(new[] { "/whoami" }));
+        }
+
+        [Test]
         public async Task WebsocketNotConnected_CallsWhoAmI()
         {
             var api = new RecordingHandler(_ => Respond(HttpStatusCode.OK, WhoAmIBody));
-            _schematic = CreateWebsocketSchematic(api, connected: false);
+            _schematic = CreateWebsocketSchematic(api, connected: false, snapshotReceived: false);
+
+            Assert.That(await _schematic.IsReadyAsync(), Is.True);
+            Assert.That(api.Requests, Is.EqualTo(new[] { "/whoami" }));
+        }
+
+        [Test]
+        public async Task RulesEngineUnavailable_CallsWhoAmI()
+        {
+            var api = new RecordingHandler(_ => Respond(HttpStatusCode.OK, WhoAmIBody));
+            _schematic = CreateWebsocketSchematic(api, connected: true, snapshotReceived: true);
+            var inner = typeof(DatastreamClientAdapter)
+                .GetField("_client", BindingFlags.NonPublic | BindingFlags.Instance)!
+                .GetValue(_schematic.DatastreamClient)!;
+            typeof(DatastreamClient)
+                .GetField("_rulesEngine", BindingFlags.NonPublic | BindingFlags.Instance)!
+                .SetValue(inner, null);
+
+            Assert.That(await _schematic.IsReadyAsync(), Is.True);
+            Assert.That(api.Requests, Is.EqualTo(new[] { "/whoami" }));
+        }
+
+        [Test]
+        public async Task DatastreamFailedToStart_CallsWhoAmI()
+        {
+            var api = new RecordingHandler(_ => Respond(HttpStatusCode.OK, WhoAmIBody));
+            _schematic = CreateWebsocketSchematic(api, connected: true, snapshotReceived: true);
+            ReplicatorTestHarness.ReplaceAdapter(_schematic, null);
 
             Assert.That(await _schematic.IsReadyAsync(), Is.True);
             Assert.That(api.Requests, Is.EqualTo(new[] { "/whoami" }));
@@ -114,7 +150,7 @@ namespace SchematicHQ.Client.Test
                 await Task.Delay(TimeSpan.FromMilliseconds(300), token);
                 return Respond(HttpStatusCode.OK, WhoAmIBody);
             });
-            _schematic = CreateApiSchematic(api, timeout: TimeSpan.FromMilliseconds(50));
+            _schematic = CreateApiSchematic(api, clientTimeout: TimeSpan.FromMilliseconds(50));
 
             Assert.That(await _schematic.IsReadyAsync(), Is.True);
         }
@@ -136,67 +172,63 @@ namespace SchematicHQ.Client.Test
                 await Task.Delay(TimeSpan.FromSeconds(10), token);
                 return Respond(HttpStatusCode.OK, WhoAmIBody);
             });
-            _schematic = CreateApiSchematic(api, timeout: TimeSpan.FromMinutes(1));
+            _schematic = CreateApiSchematic(api, clientTimeout: TimeSpan.FromMinutes(1));
+            _schematic._readinessTimeout = TimeSpan.FromMilliseconds(100);
 
             var started = DateTime.UtcNow;
             Assert.That(await _schematic.IsReadyAsync(), Is.False);
-            Assert.That(DateTime.UtcNow - started, Is.LessThan(TimeSpan.FromSeconds(8)));
+            Assert.That(DateTime.UtcNow - started, Is.LessThan(TimeSpan.FromSeconds(2)));
         }
 
         [Test]
-        public async Task ApiMode_CallerCancels_ReturnsFalse()
+        public async Task ApiMode_SlowBody_TimesOutWholeCall()
+        {
+            var api = new RecordingHandler(_ => Task.FromResult(new HttpResponseMessage(HttpStatusCode.OK)
+            {
+                Content = new StreamContent(new StallingStream()),
+            }));
+            _schematic = CreateApiSchematic(api, clientTimeout: TimeSpan.FromMinutes(1));
+            _schematic._readinessTimeout = TimeSpan.FromMilliseconds(100);
+
+            var started = DateTime.UtcNow;
+            Assert.That(await _schematic.IsReadyAsync(), Is.False);
+            Assert.That(DateTime.UtcNow - started, Is.LessThan(TimeSpan.FromSeconds(2)));
+        }
+
+        [Test]
+        public async Task ApiMode_CallerCancels_ReturnsFalseQuickly()
         {
             var api = new RecordingHandler(async token =>
             {
                 await Task.Delay(TimeSpan.FromSeconds(10), token);
                 return Respond(HttpStatusCode.OK, WhoAmIBody);
             });
-            _schematic = CreateApiSchematic(api);
+            var logger = new FakeLogger();
+            _schematic = CreateApiSchematic(api, logger: logger);
 
             using var cts = new CancellationTokenSource(TimeSpan.FromMilliseconds(100));
+            var started = DateTime.UtcNow;
             Assert.That(await _schematic.IsReadyAsync(cts.Token), Is.False);
+            Assert.That(DateTime.UtcNow - started, Is.LessThan(TimeSpan.FromSeconds(2)));
+            Assert.That(logger.Collector.GetSnapshot().Any(r => r.Level == Microsoft.Extensions.Logging.LogLevel.Warning), Is.False);
         }
 
-        private static Schematic CreateApiSchematic(RecordingHandler api, TimeSpan? timeout = null)
+        private static Schematic CreateApiSchematic(RecordingHandler api, TimeSpan? clientTimeout = null, FakeLogger? logger = null)
         {
             var options = new ClientOptions
             {
                 EventBuffer = new NoopEventBuffer(),
-                Timeout = timeout ?? TimeSpan.FromSeconds(30),
+                Timeout = clientTimeout ?? TimeSpan.FromSeconds(30),
+                LoggerFactory = (logger ?? new FakeLogger()).ToLoggerFactory(),
             };
             return new Schematic("test-api-key", options.WithHttpClient(new HttpClient(api)));
         }
 
-        private static Schematic CreateReplicatorSchematic(RecordingHandler api, bool replicatorReady)
-        {
-            var redis = new Mock<IConnectionMultiplexer>();
-            redis.Setup(r => r.GetDatabase(It.IsAny<int>(), It.IsAny<object>())).Returns(new Mock<IDatabase>().Object);
+        private static Schematic CreateReplicatorSchematic(RecordingHandler api, bool replicatorReady) =>
+            ReplicatorTestHarness.CreateReplicatorSchematic(
+                api, new LocalCache(), new FakeReplicatorHealthService { IsHealthy = replicatorReady }, out _);
 
-            var options = new ClientOptions
-            {
-                ReplicatorMode = true,
-                ReplicatorHealthUrl = "http://127.0.0.1:1/ready",
-                CacheProvider = new RedisCache(new RedisCacheConfig { ConnectionMultiplexerFactory = () => redis.Object }),
-                EventBuffer = new NoopEventBuffer(),
-            };
-            var schematic = new Schematic("test-api-key", options.WithHttpClient(new HttpClient(api)));
-
-            var adapter = new DatastreamClientAdapter(
-                "wss://test.example.com",
-                new FakeLogger(),
-                "test-api-key",
-                new LocalCache(),
-                new DatastreamOptions(),
-                replicatorMode: true);
-            typeof(DatastreamClientAdapter)
-                .GetField("_replicatorHealthService", BindingFlags.NonPublic | BindingFlags.Instance)!
-                .SetValue(adapter, new FakeReplicatorHealthService { IsHealthy = replicatorReady });
-
-            ReplaceAdapter(schematic, adapter);
-            return schematic;
-        }
-
-        private static Schematic CreateWebsocketSchematic(RecordingHandler api, bool connected)
+        private static Schematic CreateWebsocketSchematic(RecordingHandler api, bool connected, bool snapshotReceived)
         {
             var options = new ClientOptions
             {
@@ -216,20 +248,49 @@ namespace SchematicHQ.Client.Test
                 .GetField("_connectionTracker", BindingFlags.NonPublic | BindingFlags.Instance)!
                 .GetValue(adapter)!;
             tracker.GetType().GetMethod("UpdateConnectionState")!.Invoke(tracker, new object[] { connected });
+            if (snapshotReceived)
+            {
+                var inner = typeof(DatastreamClientAdapter)
+                    .GetField("_client", BindingFlags.NonPublic | BindingFlags.Instance)!
+                    .GetValue(adapter)!;
+                var snapshot = (TaskCompletionSource<bool>)typeof(DatastreamClient)
+                    .GetField("_flagsSnapshot", BindingFlags.NonPublic | BindingFlags.Instance)!
+                    .GetValue(inner)!;
+                snapshot.TrySetResult(true);
+            }
 
-            ReplaceAdapter(schematic, adapter);
+            ReplicatorTestHarness.ReplaceAdapter(schematic, adapter);
             return schematic;
-        }
-
-        private static void ReplaceAdapter(Schematic schematic, DatastreamClientAdapter adapter)
-        {
-            var field = typeof(Schematic).GetField("_datastreamClient", BindingFlags.NonPublic | BindingFlags.Instance)!;
-            ((DatastreamClientAdapter)field.GetValue(schematic)!).Close();
-            field.SetValue(schematic, adapter);
         }
 
         private static HttpResponseMessage Respond(HttpStatusCode status, string body = "{}") =>
             new HttpResponseMessage(status) { Content = new StringContent(body, Encoding.UTF8, "application/json") };
+
+        private sealed class StallingStream : Stream
+        {
+            public override bool CanRead => true;
+            public override bool CanSeek => false;
+            public override bool CanWrite => false;
+            public override long Length => throw new NotSupportedException();
+            public override long Position { get => 0; set => throw new NotSupportedException(); }
+            public override void Flush() { }
+            public override int Read(byte[] buffer, int offset, int count) => throw new NotSupportedException();
+            public override long Seek(long offset, SeekOrigin origin) => throw new NotSupportedException();
+            public override void SetLength(long value) => throw new NotSupportedException();
+            public override void Write(byte[] buffer, int offset, int count) => throw new NotSupportedException();
+
+            public override async Task<int> ReadAsync(byte[] buffer, int offset, int count, CancellationToken cancellationToken)
+            {
+                await Task.Delay(Timeout.Infinite, cancellationToken);
+                return 0;
+            }
+
+            public override async ValueTask<int> ReadAsync(Memory<byte> buffer, CancellationToken cancellationToken = default)
+            {
+                await Task.Delay(Timeout.Infinite, cancellationToken);
+                return 0;
+            }
+        }
 
         private sealed class RecordingHandler : HttpMessageHandler
         {
@@ -251,26 +312,6 @@ namespace SchematicHQ.Client.Test
                 lock (_requests) _requests.Add(request.RequestUri!.AbsolutePath);
                 return _respond(cancellationToken);
             }
-        }
-
-        private sealed class FakeReplicatorHealthService : IReplicatorHealthService
-        {
-            public bool IsHealthy { get; set; }
-            public string? CacheVersion { get; set; } = "test-cache-version";
-            public Task<string?> GetCacheVersionAsync() => Task.FromResult(CacheVersion);
-            public event Action<string?, string?>? CacheVersionChanged { add { } remove { } }
-            public void Start() { }
-            public void Stop() { }
-            public void Dispose() { }
-        }
-
-        private sealed class NoopEventBuffer : IEventBuffer<CreateEventRequestBody>
-        {
-            public void Push(CreateEventRequestBody item) { }
-            public void Start() { }
-            public Task Stop() => Task.CompletedTask;
-            public Task Flush() => Task.CompletedTask;
-            public int GetEventCount() => 0;
         }
     }
 }
